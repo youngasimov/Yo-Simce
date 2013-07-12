@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.ContactoCargo" table="contacto_cargo" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="base" type="boolean">
+            <column name="base" not-null="true" />
+        </property>
+        <bag name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="contacto_cargo_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Actividad" />
+        </bag>
+    </class>
+</hibernate-mapping>

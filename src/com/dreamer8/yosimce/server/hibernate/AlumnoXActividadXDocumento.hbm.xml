@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.AlumnoXActividadXDocumento" table="alumno_x_actividad_x_documento" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.AlumnoXActividadXDocumentoId">
+            <key-property name="alumnoXActividadId" type="int">
+                <column name="alumno_x_actividad_id" />
+            </key-property>
+            <key-property name="documentoId" type="int">
+                <column name="documento_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="documento" class="com.dreamer8.yosimce.server.hibernate.Documento" update="false" insert="false" fetch="select">
+            <column name="documento_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="documentoEstado" class="com.dreamer8.yosimce.server.hibernate.DocumentoEstado" fetch="select">
+            <column name="documento_estado_id" />
+        </many-to-one>
+        <many-to-one name="alumnoXActividad" class="com.dreamer8.yosimce.server.hibernate.AlumnoXActividad" update="false" insert="false" fetch="select">
+            <column name="alumno_x_actividad_id" not-null="true" />
+        </many-to-one>
+        <property name="entregado" type="java.lang.Boolean">
+            <column name="entregado" />
+        </property>
+        <property name="recibido" type="java.lang.Boolean">
+            <column name="recibido" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="29" />
+        </property>
+        <property name="modificadorId" type="java.lang.Integer">
+            <column name="modificador_id" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.AlumnoXActividad" table="alumno_x_actividad" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="alumnoEstado" class="com.dreamer8.yosimce.server.hibernate.AlumnoEstado" fetch="select">
+            <column name="alumno_estado_id" />
+        </many-to-one>
+        <many-to-one name="alumnoTipo" class="com.dreamer8.yosimce.server.hibernate.AlumnoTipo" fetch="select">
+            <column name="alumno_tipo_id" />
+        </many-to-one>
+        <many-to-one name="alumno" class="com.dreamer8.yosimce.server.hibernate.Alumno" fetch="select">
+            <column name="alumno_id" />
+        </many-to-one>
+        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" fetch="select">
+            <column name="actividad_id" />
+        </many-to-one>
+        <property name="alumnoJustificacion" type="string">
+            <column name="alumno_justificacion" />
+        </property>
+        <property name="modificadorId" type="java.lang.Integer">
+            <column name="modificador_id" />
+        </property>
+        <property name="pruebaComentario" type="string">
+            <column name="prueba_comentario" />
+        </property>
+        <bag name="alumnoXActividadXDocumentos" table="alumno_x_actividad_x_documento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="alumno_x_actividad_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AlumnoXActividadXDocumento" />
+        </bag>
+    </class>
+</hibernate-mapping>

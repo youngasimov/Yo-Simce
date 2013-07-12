@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.ActividadXIncidencia" table="actividad_x_incidencia" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="motivoFalla" class="com.dreamer8.yosimce.server.hibernate.MotivoFalla" fetch="select">
+            <column name="motivo_falla_id" />
+        </many-to-one>
+        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" fetch="select">
+            <column name="actividad_id" />
+        </many-to-one>
+        <property name="motivoDescripcion" type="string">
+            <column name="motivo_descripcion" />
+        </property>
+        <property name="inhabilitaAplicacion" type="java.lang.Boolean">
+            <column name="inhabilita_aplicacion" />
+        </property>
+    </class>
+</hibernate-mapping>

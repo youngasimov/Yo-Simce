@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Requisito" table="requisito" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="escala" class="com.dreamer8.yosimce.server.hibernate.Escala" fetch="select">
+            <column name="escala_id" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="pregunta" type="string">
+            <column name="pregunta" />
+        </property>
+        <property name="valorMinimo" type="java.lang.Integer">
+            <column name="valor_minimo" />
+        </property>
+        <property name="valorMaximo" type="java.lang.Integer">
+            <column name="valor_maximo" />
+        </property>
+        <bag name="requisitoXUsuarioTipos" table="requisito_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="requisito_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.RequisitoXUsuarioTipo" />
+        </bag>
+        <bag name="usuarioXRequisitos" table="usuario_x_requisito" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="requisito_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXRequisito" />
+        </bag>
+    </class>
+</hibernate-mapping>

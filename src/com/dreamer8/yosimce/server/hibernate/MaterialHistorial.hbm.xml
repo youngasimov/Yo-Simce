@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.MaterialHistorial" table="material_historial" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.MaterialHistorialId">
+            <key-property name="materialId" type="int">
+                <column name="material_id" />
+            </key-property>
+            <key-property name="fecha" type="timestamp">
+                <column name="fecha" length="29" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="lugarByDestinoId" class="com.dreamer8.yosimce.server.hibernate.Lugar" fetch="select">
+            <column name="destino_id" />
+        </many-to-one>
+        <many-to-one name="lugarByOrigenId" class="com.dreamer8.yosimce.server.hibernate.Lugar" fetch="select">
+            <column name="origen_id" />
+        </many-to-one>
+        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" fetch="select">
+            <column name="actividad_id" />
+        </many-to-one>
+        <many-to-one name="material" class="com.dreamer8.yosimce.server.hibernate.Material" update="false" insert="false" fetch="select">
+            <column name="material_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.Co" fetch="select">
+            <column name="centro_id" />
+        </many-to-one>
+        <many-to-one name="materialEstado" class="com.dreamer8.yosimce.server.hibernate.MaterialEstado" fetch="select">
+            <column name="material_estado_id" />
+        </many-to-one>
+        <property name="modificadorId" type="java.lang.Integer">
+            <column name="modificador_id" />
+        </property>
+    </class>
+</hibernate-mapping>

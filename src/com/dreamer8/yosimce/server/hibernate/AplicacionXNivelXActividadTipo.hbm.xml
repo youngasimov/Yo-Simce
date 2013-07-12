@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXActividadTipo" table="aplicacion_x_nivel_x_actividad_tipo" schema="public">
+        <comment>Obtener datos agregados por tipo de actividad y nivel para la postulaci&#195;&#179;n</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="aplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivel" fetch="select">
+            <column name="aplicacion_x_nivel_id" />
+        </many-to-one>
+        <many-to-one name="actividadTipo" class="com.dreamer8.yosimce.server.hibernate.ActividadTipo" fetch="select">
+            <column name="actividad_tipo_id" />
+        </many-to-one>
+        <property name="fechaInicio" type="date">
+            <column name="fecha_inicio" length="13" />
+        </property>
+        <property name="fechaTermino" type="date">
+            <column name="fecha_termino" length="13" />
+        </property>
+        <bag name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_x_actividad_tipo_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Actividad" />
+        </bag>
+        <bag name="rutas" table="ruta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Ruta" />
+        </bag>
+        <bag name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.SuplenteXCo" />
+        </bag>
+    </class>
+</hibernate-mapping>

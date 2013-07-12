@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.ActividadXDocumentoTipo" table="actividad_x_documento_tipo" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.ActividadXDocumentoTipoId">
+            <key-property name="actividadId" type="int">
+                <column name="actividad_id" />
+            </key-property>
+            <key-property name="documentoTipoId" type="int">
+                <column name="documento_tipo_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="documentoTipo" class="com.dreamer8.yosimce.server.hibernate.DocumentoTipo" update="false" insert="false" fetch="select">
+            <column name="documento_tipo_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" update="false" insert="false" fetch="select">
+            <column name="actividad_id" not-null="true" />
+        </many-to-one>
+        <property name="totalEntregados" type="java.lang.Integer">
+            <column name="total_entregados" />
+        </property>
+        <property name="totalRecibidos" type="java.lang.Integer">
+            <column name="total_recibidos" />
+        </property>
+    </class>
+</hibernate-mapping>

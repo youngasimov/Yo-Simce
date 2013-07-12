@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.TestPreguntaOpcion" table="test_pregunta_opcion" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="testPregunta" class="com.dreamer8.yosimce.server.hibernate.TestPregunta" fetch="select">
+            <column name="test_pregunta_id" />
+        </many-to-one>
+        <property name="NOpcion" type="string">
+            <column name="n_opcion" length="5" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+    </class>
+</hibernate-mapping>

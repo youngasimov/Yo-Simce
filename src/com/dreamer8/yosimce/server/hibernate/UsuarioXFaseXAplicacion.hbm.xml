@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXFaseXAplicacion" table="usuario_x_fase_x_aplicacion" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.UsuarioXFaseXAplicacionId">
+            <key-property name="usuarioId" type="int">
+                <column name="usuario_id" />
+            </key-property>
+            <key-property name="faseXAplicacionId" type="int">
+                <column name="fase_x_aplicacion_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" update="false" insert="false" fetch="select">
+            <column name="usuario_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="faseXAplicacion" class="com.dreamer8.yosimce.server.hibernate.FaseXAplicacion" update="false" insert="false" fetch="select">
+            <column name="fase_x_aplicacion_id" not-null="true" />
+        </many-to-one>
+        <property name="aprobado" type="java.lang.Boolean">
+            <column name="aprobado" />
+        </property>
+        <property name="fechaAprobacion" type="timestamp">
+            <column name="fecha_aprobacion" length="29" />
+        </property>
+        <property name="comentario" type="string">
+            <column name="comentario" />
+        </property>
+        <property name="evaluacion" type="big_decimal">
+            <column name="evaluacion" precision="131089" scale="0" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="29" />
+        </property>
+    </class>
+</hibernate-mapping>

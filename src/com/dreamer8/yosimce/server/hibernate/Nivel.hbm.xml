@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Nivel" table="nivel" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <bag name="aplicacionXNivels" table="aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivel" />
+        </bag>
+        <bag name="usuarios" table="usuario_x_nivel_inhabilitado" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="nivel_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Usuario">
+                <column name="usuario_id" not-null="true" />
+            </many-to-many>
+        </bag>
+        <bag name="faseXAplicacionXTestXNivelXTipoUsuarios" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.FaseXAplicacionXTestXNivelXTipoUsuario" />
+        </bag>
+        <bag name="cursos" table="curso" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Curso" />
+        </bag>
+    </class>
+</hibernate-mapping>

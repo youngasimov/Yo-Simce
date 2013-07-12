@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.TestPregunta" table="test_pregunta" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="test" class="com.dreamer8.yosimce.server.hibernate.Test" fetch="select">
+            <column name="test_id" />
+        </many-to-one>
+        <many-to-one name="testCompetencia" class="com.dreamer8.yosimce.server.hibernate.TestCompetencia" fetch="select">
+            <column name="test_competencia_id" />
+        </many-to-one>
+        <property name="NPregunta" type="java.lang.Integer">
+            <column name="n_pregunta" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="alternativaCorrecta" type="java.lang.Character">
+            <column name="alternativa_correcta" length="1" />
+        </property>
+        <property name="sentido" type="java.lang.Boolean">
+            <column name="sentido" />
+        </property>
+        <property name="imagen" type="string">
+            <column name="imagen" />
+        </property>
+        <bag name="testPreguntaOpcions" table="test_pregunta_opcion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_pregunta_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TestPreguntaOpcion" />
+        </bag>
+        <bag name="testPreguntaAlternativas" table="test_pregunta_alternativa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_pregunta_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TestPreguntaAlternativa" />
+        </bag>
+        <bag name="usuarioXTestRespuestas" table="usuario_x_test_respuesta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_pregunta_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXTestRespuesta" />
+        </bag>
+    </class>
+</hibernate-mapping>

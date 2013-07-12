@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXTestRespuesta" table="usuario_x_test_respuesta" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="testPregunta" class="com.dreamer8.yosimce.server.hibernate.TestPregunta" fetch="select">
+            <column name="test_pregunta_id" />
+        </many-to-one>
+        <many-to-one name="usuarioXTest" class="com.dreamer8.yosimce.server.hibernate.UsuarioXTest" fetch="select">
+            <column name="usuario_x_test_id" />
+        </many-to-one>
+        <property name="respuesta" type="java.lang.Character">
+            <column name="respuesta" length="1" />
+        </property>
+        <property name="correccion" type="java.lang.Integer">
+            <column name="correccion" />
+        </property>
+    </class>
+</hibernate-mapping>

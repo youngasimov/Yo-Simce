@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.CoXEstablecimiento" table="co_x_establecimiento" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.CoXEstablecimientoId">
+            <key-property name="coId" type="int">
+                <column name="co_id" />
+            </key-property>
+            <key-property name="establecimientoId" type="int">
+                <column name="establecimiento_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="establecimiento" class="com.dreamer8.yosimce.server.hibernate.Establecimiento" update="false" insert="false" fetch="select">
+            <column name="establecimiento_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.Co" update="false" insert="false" fetch="select">
+            <column name="co_id" not-null="true" />
+        </many-to-one>
+        <property name="trasladoTiempo" type="java.lang.Integer">
+            <column name="traslado_tiempo" />
+        </property>
+        <property name="trasladoDistancia" type="java.lang.Integer">
+            <column name="traslado_distancia" />
+        </property>
+    </class>
+</hibernate-mapping>

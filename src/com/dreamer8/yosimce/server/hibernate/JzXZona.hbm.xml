@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.JzXZona" table="jz_x_zona" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.JzXZonaId">
+            <key-property name="jzId" type="int">
+                <column name="jz_id" />
+            </key-property>
+            <key-property name="zonaId" type="int">
+                <column name="zona_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="zona" class="com.dreamer8.yosimce.server.hibernate.Zona" update="false" insert="false" fetch="select">
+            <column name="zona_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" update="false" insert="false" fetch="select">
+            <column name="jz_id" not-null="true" />
+        </many-to-one>
+        <property name="fechaActivacion" type="timestamp">
+            <column name="fecha_activacion" length="29" />
+        </property>
+        <property name="fechaTermino" type="timestamp">
+            <column name="fecha_termino" length="29" />
+        </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="activo" />
+        </property>
+    </class>
+</hibernate-mapping>

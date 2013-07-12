@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.EscalaItem" table="escala_item" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="escala" class="com.dreamer8.yosimce.server.hibernate.Escala" fetch="select">
+            <column name="escala_id" />
+        </many-to-one>
+        <property name="valor" type="java.lang.Integer">
+            <column name="valor" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+    </class>
+</hibernate-mapping>

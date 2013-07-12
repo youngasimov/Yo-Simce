@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXCo" table="usuario_x_co" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.UsuarioXCoId">
+            <key-property name="usuarioId" type="int">
+                <column name="usuario_id" />
+            </key-property>
+            <key-property name="coId" type="int">
+                <column name="co_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" update="false" insert="false" fetch="select">
+            <column name="usuario_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.Co" update="false" insert="false" fetch="select">
+            <column name="co_id" not-null="true" />
+        </many-to-one>
+        <property name="distancia" type="java.lang.Integer">
+            <column name="distancia" />
+        </property>
+        <property name="tiempo" type="java.lang.Integer">
+            <column name="tiempo" />
+        </property>
+        <property name="prioridad" type="java.lang.Integer">
+            <column name="prioridad" />
+        </property>
+    </class>
+</hibernate-mapping>

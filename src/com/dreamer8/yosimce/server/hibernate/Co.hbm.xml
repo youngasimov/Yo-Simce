@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Co" table="co" schema="public">
+        <comment>centro de operaciones</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="zona" class="com.dreamer8.yosimce.server.hibernate.Zona" fetch="select">
+            <column name="zona_id" />
+        </many-to-one>
+        <many-to-one name="comuna" class="com.dreamer8.yosimce.server.hibernate.Comuna" fetch="select">
+            <column name="comuna_id" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" />
+        </property>
+        <property name="direccionLatitud" type="big_decimal">
+            <column name="direccion_latitud" precision="131089" scale="0" />
+        </property>
+        <property name="direccionLongitud" type="big_decimal">
+            <column name="direccion_longitud" precision="131089" scale="0" />
+        </property>
+        <property name="propietarioNombre" type="string">
+            <column name="propietario_nombre" />
+        </property>
+        <property name="propietarioRut" type="string">
+            <column name="propietario_rut" />
+        </property>
+        <property name="propietarioEmail" type="string">
+            <column name="propietario_email" />
+        </property>
+        <property name="propietarioTelefono" type="string">
+            <column name="propietario_telefono" />
+        </property>
+        <property name="propietarioCelular" type="string">
+            <column name="propietario_celular" length="15" />
+        </property>
+        <property name="modificadorId" type="java.lang.Integer">
+            <column name="modificador_id" />
+        </property>
+        <bag name="coXEstablecimientos" table="co_x_establecimiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.CoXEstablecimiento" />
+        </bag>
+        <bag name="aplicacionXNivelXUsuarioTipoXCos" table="aplicacion_x_nivel_x_usuario_tipo_x_co" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipoXCo" />
+        </bag>
+        <bag name="usuarioPreseleccions" table="usuario_preseleccion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioPreseleccion" />
+        </bag>
+        <bag name="materials" table="material" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="centro_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Material" />
+        </bag>
+        <bag name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.SuplenteXCo" />
+        </bag>
+        <bag name="joXCos" table="jo_x_co" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.JoXCo" />
+        </bag>
+        <bag name="usuarioXCos" table="usuario_x_co" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXCo" />
+        </bag>
+        <bag name="materialHistorials" table="material_historial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="centro_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.MaterialHistorial" />
+        </bag>
+        <bag name="rutas" table="ruta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="co_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Ruta" />
+        </bag>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXAplicacionXNivel" table="usuario_x_aplicacion_x_nivel" schema="public">
+        <comment>postulacion</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+            <column name="usuario_id" />
+        </many-to-one>
+        <many-to-one name="aplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivel" fetch="select">
+            <column name="aplicacion_x_nivel_id" />
+        </many-to-one>
+        <bag name="usuarioSeleccions" table="usuario_seleccion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_x_aplicacion_x_nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioSeleccion" />
+        </bag>
+        <bag name="usuarioPreseleccions" table="usuario_preseleccion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_x_aplicacion_x_nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioPreseleccion" />
+        </bag>
+    </class>
+</hibernate-mapping>

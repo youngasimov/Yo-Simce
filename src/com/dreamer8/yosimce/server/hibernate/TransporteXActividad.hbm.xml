@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.TransporteXActividad" table="transporte_x_actividad" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="transporte" class="com.dreamer8.yosimce.server.hibernate.Transporte" fetch="select">
+            <column name="transporte_id" />
+        </many-to-one>
+        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" fetch="select">
+            <column name="actividad_id" />
+        </many-to-one>
+        <property name="montoPago" type="java.lang.Integer">
+            <column name="monto_pago" />
+        </property>
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="asistencia" />
+        </property>
+    </class>
+</hibernate-mapping>

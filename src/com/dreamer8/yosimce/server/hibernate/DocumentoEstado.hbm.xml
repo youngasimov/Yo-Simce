@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.DocumentoEstado" table="documento_estado" schema="public">
+        <comment>sincronizado, no sincroniza, roto, extraviado, no inicia, en blanco, incompleto, lleno</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <bag name="alumnoXActividadXDocumentos" table="alumno_x_actividad_x_documento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="documento_estado_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AlumnoXActividadXDocumento" />
+        </bag>
+    </class>
+</hibernate-mapping>

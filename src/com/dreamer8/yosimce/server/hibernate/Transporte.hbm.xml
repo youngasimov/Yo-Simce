@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Transporte" table="transporte" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+            <column name="usuario_id" />
+        </many-to-one>
+        <many-to-one name="transporteTipo" class="com.dreamer8.yosimce.server.hibernate.TransporteTipo" fetch="select">
+            <column name="transporte_tipo_id" />
+        </many-to-one>
+        <many-to-one name="comuna" class="com.dreamer8.yosimce.server.hibernate.Comuna" fetch="select">
+            <column name="comuna_id" />
+        </many-to-one>
+        <property name="patente" type="string">
+            <column name="patente" length="6" />
+        </property>
+        <property name="ano" type="java.lang.Integer">
+            <column name="ano" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" />
+        </property>
+        <property name="direccionLatitud" type="big_decimal">
+            <column name="direccion_latitud" precision="131089" scale="0" />
+        </property>
+        <property name="direccionLongitud" type="big_decimal">
+            <column name="direccion_longitud" precision="131089" scale="0" />
+        </property>
+        <property name="choferNombre" type="string">
+            <column name="chofer_nombre" />
+        </property>
+        <property name="choferCelular" type="java.lang.Integer">
+            <column name="chofer_celular" />
+        </property>
+        <bag name="transporteXActividads" table="transporte_x_actividad" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="transporte_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TransporteXActividad" />
+        </bag>
+        <bag name="transporteXAplicacionXNivels" table="transporte_x_aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="transporte_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TransporteXAplicacionXNivel" />
+        </bag>
+    </class>
+</hibernate-mapping>

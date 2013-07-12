@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXCcCapacitacion" table="usuario_x_cc_capacitacion" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.UsuarioXCcCapacitacionId">
+            <key-property name="usuarioId" type="int">
+                <column name="usuario_id" />
+            </key-property>
+            <key-property name="ccCapacitacionId" type="int">
+                <column name="cc_capacitacion_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" update="false" insert="false" fetch="select">
+            <column name="usuario_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="ccCapacitacion" class="com.dreamer8.yosimce.server.hibernate.CcCapacitacion" update="false" insert="false" fetch="select">
+            <column name="cc_capacitacion_id" not-null="true" />
+        </many-to-one>
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="asistencia" />
+        </property>
+        <property name="createdAt" type="timestamp">
+            <column name="created_at" length="29" />
+        </property>
+        <property name="horaAcceso" type="timestamp">
+            <column name="hora_acceso" length="29" />
+        </property>
+        <property name="puntaje" type="java.lang.Integer">
+            <column name="puntaje" />
+        </property>
+    </class>
+</hibernate-mapping>

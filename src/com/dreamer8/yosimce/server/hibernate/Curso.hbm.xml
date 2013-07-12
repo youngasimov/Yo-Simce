@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Curso" table="curso" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="nivel" class="com.dreamer8.yosimce.server.hibernate.Nivel" fetch="select">
+            <column name="nivel_id" />
+        </many-to-one>
+        <many-to-one name="establecimiento" class="com.dreamer8.yosimce.server.hibernate.Establecimiento" fetch="select">
+            <column name="establecimiento_id" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="10">
+                <comment>NIVELLETRA</comment>
+            </column>
+        </property>
+        <property name="codigo" type="string">
+            <column name="codigo" />
+        </property>
+        <property name="emergente" type="java.lang.Boolean">
+            <column name="emergente" />
+        </property>
+        <property name="nee" type="java.lang.Boolean">
+            <column name="nee" />
+        </property>
+        <bag name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="curso_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Actividad" />
+        </bag>
+    </class>
+</hibernate-mapping>

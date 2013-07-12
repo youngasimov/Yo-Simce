@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.AplicacionXNivel" table="aplicacion_x_nivel" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="aplicacion" class="com.dreamer8.yosimce.server.hibernate.Aplicacion" fetch="select">
+            <column name="aplicacion_id" />
+        </many-to-one>
+        <many-to-one name="nivel" class="com.dreamer8.yosimce.server.hibernate.Nivel" fetch="select">
+            <column name="nivel_id" />
+        </many-to-one>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="activo" />
+        </property>
+        <bag name="aplicacionXNivelXActividadTipos" table="aplicacion_x_nivel_x_actividad_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXActividadTipo" />
+        </bag>
+        <bag name="transporteXAplicacionXNivels" table="transporte_x_aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TransporteXAplicacionXNivel" />
+        </bag>
+        <bag name="aplicacionXNivelXUsuarioTipos" table="aplicacion_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipo" />
+        </bag>
+        <bag name="usuarioXAplicacionXNivels" table="usuario_x_aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXAplicacionXNivel" />
+        </bag>
+    </class>
+</hibernate-mapping>

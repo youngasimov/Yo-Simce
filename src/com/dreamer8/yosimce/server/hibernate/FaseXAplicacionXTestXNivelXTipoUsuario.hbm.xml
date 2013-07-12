@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.FaseXAplicacionXTestXNivelXTipoUsuario" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="faseXAplicacion" class="com.dreamer8.yosimce.server.hibernate.FaseXAplicacion" fetch="select">
+            <column name="fase_x_aplicacion_id" />
+        </many-to-one>
+        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.UsuarioTipo" fetch="select">
+            <column name="tipo_usuario_id" />
+        </many-to-one>
+        <many-to-one name="test" class="com.dreamer8.yosimce.server.hibernate.Test" fetch="select">
+            <column name="test_id" />
+        </many-to-one>
+        <many-to-one name="nivel" class="com.dreamer8.yosimce.server.hibernate.Nivel" fetch="select">
+            <column name="nivel_id" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

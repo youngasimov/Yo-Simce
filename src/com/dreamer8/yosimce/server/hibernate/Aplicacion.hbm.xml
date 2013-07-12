@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Aplicacion" table="aplicacion" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="tiempoDetencionEstablecimiento" type="java.lang.Integer">
+            <column name="tiempo_detencion_establecimiento" />
+        </property>
+        <bag name="centroRegionals" table="centro_regional" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.CentroRegional" />
+        </bag>
+        <bag name="aplicacionXNivels" table="aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivel" />
+        </bag>
+        <bag name="aplicacionXEstablecimientos" table="aplicacion_x_establecimiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXEstablecimiento" />
+        </bag>
+        <bag name="faseXAplicacions" table="fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.FaseXAplicacion" />
+        </bag>
+        <bag name="aplicacionXUsuarioTipos" table="aplicacion_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipo" />
+        </bag>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.JrXCentroRegional" table="jr_x_centro_regional" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.JrXCentroRegionalId">
+            <key-property name="jrId" type="int">
+                <column name="jr_id" />
+            </key-property>
+            <key-property name="centroRegionalId" type="int">
+                <column name="centro_regional_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" update="false" insert="false" fetch="select">
+            <column name="jr_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="centroRegional" class="com.dreamer8.yosimce.server.hibernate.CentroRegional" update="false" insert="false" fetch="select">
+            <column name="centro_regional_id" not-null="true" />
+        </many-to-one>
+        <property name="fechaActivacion" type="timestamp">
+            <column name="fecha_activacion" length="29" />
+        </property>
+        <property name="fechaTermino" type="timestamp">
+            <column name="fecha_termino" length="29" />
+        </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="activo" />
+        </property>
+    </class>
+</hibernate-mapping>

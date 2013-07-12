@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXTest" table="usuario_x_test" schema="public">
+        <comment>resultado de test</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+            <column name="usuario_id" />
+        </many-to-one>
+        <many-to-one name="test" class="com.dreamer8.yosimce.server.hibernate.Test" fetch="select">
+            <column name="test_id" />
+        </many-to-one>
+        <property name="intento" type="java.lang.Integer">
+            <column name="intento" />
+        </property>
+        <property name="fechaInicio" type="timestamp">
+            <column name="fecha_inicio" length="29" />
+        </property>
+        <property name="fechaTermino" type="timestamp">
+            <column name="fecha_termino" length="29" />
+        </property>
+        <property name="buenas" type="java.lang.Integer">
+            <column name="buenas" />
+        </property>
+        <property name="omitidas" type="java.lang.Integer">
+            <column name="omitidas" />
+        </property>
+        <property name="malas" type="java.lang.Integer">
+            <column name="malas" />
+        </property>
+        <property name="evaluacion" type="big_decimal">
+            <column name="evaluacion" precision="131089" scale="0" />
+        </property>
+        <bag name="usuarioXTestRespuestas" table="usuario_x_test_respuesta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_x_test_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXTestRespuesta" />
+        </bag>
+    </class>
+</hibernate-mapping>

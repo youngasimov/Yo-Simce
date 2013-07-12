@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Test" table="test" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="slug" type="string">
+            <column name="slug" />
+        </property>
+        <property name="intentos" type="java.lang.Integer">
+            <column name="intentos" />
+        </property>
+        <property name="duracion" type="java.lang.Integer">
+            <column name="duracion">
+                <comment>minutos</comment>
+            </column>
+        </property>
+        <property name="aprobacion" type="java.lang.Integer">
+            <column name="aprobacion" />
+        </property>
+        <property name="multipregunta" type="java.lang.Boolean">
+            <column name="multipregunta" />
+        </property>
+        <property name="instruccion" type="string">
+            <column name="instruccion" />
+        </property>
+        <property name="valorInvierteSentido" type="java.lang.Integer">
+            <column name="valor_invierte_sentido" />
+        </property>
+        <bag name="testPreguntas" table="test_pregunta" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TestPregunta" />
+        </bag>
+        <bag name="faseXAplicacionXTestXNivelXTipoUsuarios" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.FaseXAplicacionXTestXNivelXTipoUsuario" />
+        </bag>
+        <bag name="usuarioXTests" table="usuario_x_test" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXTest" />
+        </bag>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Ruta" table="ruta" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="trasladoModo" class="com.dreamer8.yosimce.server.hibernate.TrasladoModo" fetch="select">
+            <column name="traslado_modo_id" />
+        </many-to-one>
+        <many-to-one name="aplicacionXNivelXActividadTipo" class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXActividadTipo" fetch="select">
+            <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
+        </many-to-one>
+        <many-to-one name="color" class="com.dreamer8.yosimce.server.hibernate.Color" fetch="select">
+            <column name="color_id" />
+        </many-to-one>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+            <column name="modificador_id" />
+        </many-to-one>
+        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.Co" fetch="select">
+            <column name="co_id" />
+        </many-to-one>
+        <property name="ordenSalida" type="java.lang.Integer">
+            <column name="orden_salida" />
+        </property>
+        <property name="distanciaTotal" type="java.lang.Integer">
+            <column name="distancia_total" />
+        </property>
+        <property name="duracionEstimada" type="java.lang.Integer">
+            <column name="duracion_estimada" />
+        </property>
+        <property name="horaSalida" type="timestamp">
+            <column name="hora_salida" length="29" />
+        </property>
+        <property name="updatedAt" type="timestamp">
+            <column name="updated_at" length="29" />
+        </property>
+        <bag name="rutaXEstablecimientos" table="ruta_x_establecimiento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ruta_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.RutaXEstablecimiento" />
+        </bag>
+    </class>
+</hibernate-mapping>

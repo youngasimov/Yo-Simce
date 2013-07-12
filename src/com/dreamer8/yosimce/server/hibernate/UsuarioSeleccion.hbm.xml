@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioSeleccion" table="usuario_seleccion" schema="public">
+        <comment>verificar unicidad usuario_x_aplicacion_x_nivel_id. NO ELIMINAR usuario_tipo_id</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.UsuarioTipo" fetch="select">
+            <column name="usuario_tipo_id" />
+        </many-to-one>
+        <many-to-one name="usuarioXAplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.UsuarioXAplicacionXNivel" fetch="select">
+            <column name="usuario_x_aplicacion_x_nivel_id" />
+        </many-to-one>
+        <property name="montoPago" type="java.lang.Integer">
+            <column name="monto_pago" />
+        </property>
+        <property name="contratoFirmado" type="java.lang.Boolean">
+            <column name="contrato_firmado" />
+        </property>
+        <property name="fechaFirma" type="timestamp">
+            <column name="fecha_firma" length="29" />
+        </property>
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="asistencia" />
+        </property>
+        <bag name="usuarioXActividads" table="usuario_x_actividad" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_seleccion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXActividad" />
+        </bag>
+        <bag name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_seleccion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.SuplenteXCo" />
+        </bag>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.Material" table="material" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.Co" fetch="select">
+            <column name="centro_id" />
+        </many-to-one>
+        <property name="codigo" type="string">
+            <column name="codigo" />
+        </property>
+        <property name="contingencia" type="java.lang.Boolean">
+            <column name="contingencia" />
+        </property>
+        <bag name="actividads" table="material_x_actividad" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="material_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Actividad">
+                <column name="actividad_id" not-null="true" />
+            </many-to-many>
+        </bag>
+        <bag name="documentos" table="documento" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="material_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Documento" />
+        </bag>
+        <bag name="materialHistorials" table="material_historial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="material_id" not-null="true" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.MaterialHistorial" />
+        </bag>
+    </class>
+</hibernate-mapping>
