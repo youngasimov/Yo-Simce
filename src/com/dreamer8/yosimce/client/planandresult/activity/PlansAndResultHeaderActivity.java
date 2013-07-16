@@ -1,7 +1,7 @@
-package com.dreamer8.yosimce.client.activity;
+package com.dreamer8.yosimce.client.planandresult.activity;
 
 import com.dreamer8.yosimce.client.ClientFactory;
-import com.dreamer8.yosimce.client.ui.PlanAndResultHeaderView;
+import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultHeaderView;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;

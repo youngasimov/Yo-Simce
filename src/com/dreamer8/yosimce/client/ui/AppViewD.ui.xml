@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:DockLayoutPanel unit='PX'>
+		<g:north size='90'>
+        	<g:SimpleLayoutPanel ui:field="headerPanel"/> 
+    	</g:north>
+    	<g:center>
+        	<g:SplitLayoutPanel unit='PX'>
+        		<g:west size='150'>
+        			<g:SimpleLayoutPanel ui:field="sidebarPanel"/>
+        		</g:west>
+        		<g:center>
+        			<g:SimpleLayoutPanel ui:field="contentPanel"/>
+        		</g:center>
+        	</g:SplitLayoutPanel>
+    	</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

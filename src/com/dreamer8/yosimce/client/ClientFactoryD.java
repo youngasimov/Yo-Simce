@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.activity.SimcePlaceHistoryMapper;
+import com.dreamer8.yosimce.client.ui.AppView;
+import com.dreamer8.yosimce.client.ui.AppViewD;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.google.gwt.core.client.GWT;
@@ -16,6 +18,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final PlaceHistoryMapper placeHistoryMapper = GWT.create(SimcePlaceHistoryMapper.class);
 	
 	private final LoadView loadView = new LoadViewD();
+	private final AppView appView = new AppViewD();
 	
 	@Override
 	public EventBus getEventBus() {
@@ -35,6 +38,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public LoadView getLoadView() {
 		return loadView;
+	}
+
+	@Override
+	public AppView getAppView() {
+		return appView;
 	}
 
 }
