@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Requisito implements java.io.Serializable {
 	private String pregunta;
 	private Integer valorMinimo;
 	private Integer valorMaximo;
-	private List<RequisitoXUsuarioTipo> requisitoXUsuarioTipos = new ArrayList<RequisitoXUsuarioTipo>(0);
+	private List<RequisitoXAplicacionXUsuarioTipo> requisitoXAplicacionXUsuarioTipos = new ArrayList<RequisitoXAplicacionXUsuarioTipo>(0);
 	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(0);
 
 	public Requisito() {
@@ -28,14 +28,14 @@ public class Requisito implements java.io.Serializable {
 
 	public Requisito(Integer id, Escala escala, String nombre, String pregunta,
 			Integer valorMinimo, Integer valorMaximo,
-			List<RequisitoXUsuarioTipo> requisitoXUsuarioTipos, List<UsuarioXRequisito> usuarioXRequisitos) {
+			List<RequisitoXAplicacionXUsuarioTipo> requisitoXAplicacionXUsuarioTipos, List<UsuarioXRequisito> usuarioXRequisitos) {
 		this.id = id;
 		this.escala = escala;
 		this.nombre = nombre;
 		this.pregunta = pregunta;
 		this.valorMinimo = valorMinimo;
 		this.valorMaximo = valorMaximo;
-		this.requisitoXUsuarioTipos = requisitoXUsuarioTipos;
+		this.requisitoXAplicacionXUsuarioTipos = requisitoXAplicacionXUsuarioTipos;
 		this.usuarioXRequisitos = usuarioXRequisitos;
 	}
 
@@ -87,12 +87,13 @@ public class Requisito implements java.io.Serializable {
 		this.valorMaximo = valorMaximo;
 	}
 
-	public List<RequisitoXUsuarioTipo> getRequisitoXUsuarioTipos() {
-		return this.requisitoXUsuarioTipos;
+	public List<RequisitoXAplicacionXUsuarioTipo> getRequisitoXAplicacionXUsuarioTipos() {
+		return this.requisitoXAplicacionXUsuarioTipos;
 	}
 
-	public void setRequisitoXUsuarioTipos(List<RequisitoXUsuarioTipo> requisitoXUsuarioTipos) {
-		this.requisitoXUsuarioTipos = requisitoXUsuarioTipos;
+	public void setRequisitoXAplicacionXUsuarioTipos(
+			List<RequisitoXAplicacionXUsuarioTipo> requisitoXAplicacionXUsuarioTipos) {
+		this.requisitoXAplicacionXUsuarioTipos = requisitoXAplicacionXUsuarioTipos;
 	}
 
 	public List<UsuarioXRequisito> getUsuarioXRequisitos() {

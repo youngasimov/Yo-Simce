@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipo" table="aplicacion_x_usuario_tipo" schema="public">
         <id name="id" type="int">
@@ -28,23 +28,23 @@
         <property name="anoIngresoMaximo" type="java.lang.Integer">
             <column name="ano_ingreso_maximo" />
         </property>
+        <bag name="requisitoXAplicacionXUsuarioTipos" table="requisito_x_aplicacion_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_usuario_tipo_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.RequisitoXAplicacionXUsuarioTipo" />
+        </bag>
         <bag name="aplicacionXUsuarioTipoXPermisos" table="aplicacion_x_usuario_tipo_x_permiso" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="aplicacion_x_usuario_tipo_id" not-null="true" />
+                <column name="aplicacion_x_usuario_tipo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipoXPermiso" />
         </bag>
         <bag name="aplicacionXUsuarioTipoXCarreras" table="aplicacion_x_usuario_tipo_x_carrera" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="aplicacion_x_usuario_tipo_id" not-null="true" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipoXCarrera" />
-        </bag>
-        <bag name="requisitoXUsuarioTipos" table="requisito_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
-            <key>
                 <column name="aplicacion_x_usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.RequisitoXUsuarioTipo" />
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipoXCarrera" />
         </bag>
     </class>
 </hibernate-mapping>

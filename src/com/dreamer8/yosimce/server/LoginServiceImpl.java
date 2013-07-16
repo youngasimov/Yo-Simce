@@ -50,6 +50,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha encontrado el usuario especificado");
 				}
+				
+				udto = u.getUserDTO();
 
 				s.getTransaction().commit();
 			}

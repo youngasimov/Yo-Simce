@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,35 +37,26 @@ public class Usuario implements java.io.Serializable {
 	private Boolean aceptaConfidencialidad;
 	private Date fechaAceptacion;
 	private List<UsuarioXTest> usuarioXTests = new ArrayList<UsuarioXTest>(0);
-	private List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions = new ArrayList<UsuarioXFaseXAplicacion>(
-			0);
-	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(
-			0);
+	private List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions = new ArrayList<UsuarioXFaseXAplicacion>(0);
+	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(0);
 	private List<Nivel> nivels = new ArrayList<Nivel>(0);
 	private List<UsuarioXCo> usuarioXCos = new ArrayList<UsuarioXCo>(0);
-	private List<HistorialCambios> historialCambios = new ArrayList<HistorialCambios>(
-			0);
-	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(
-			0);
+	private List<HistorialCambios> historialCambios = new ArrayList<HistorialCambios>(0);
+	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(0);
 	private List<Transporte> transportes = new ArrayList<Transporte>(0);
 	private List<Actividad> actividads = new ArrayList<Actividad>(0);
-	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(
-			0);
+	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
-	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(
-			0);
+	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(0);
 	private List<Mensaje> mensajes = new ArrayList<Mensaje>(0);
 	private List<Sesion> sesions = new ArrayList<Sesion>(0);
-	private List<Comuna> comunas = new ArrayList<Comuna>(0);
-	private List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions = new ArrayList<UsuarioXCcCapacitacion>(
-			0);
+	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
+	private List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions = new ArrayList<UsuarioXCcCapacitacion>(0);
 	private List<JzXZona> jzXZonas = new ArrayList<JzXZona>(0);
-	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
-			0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
 	private List<Ruta> rutas = new ArrayList<Ruta>(0);
 	private List<JoXCo> joXCos = new ArrayList<JoXCo>(0);
-	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(
-			0);
+	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(0);
 
 	public Usuario() {
 	}
@@ -82,20 +73,13 @@ public class Usuario implements java.io.Serializable {
 			BigDecimal direccionLatitud, BigDecimal direccionLongitud,
 			Integer carreraAnoIngreso, Date fechaNacimiento,
 			Boolean aceptaConfidencialidad, Date fechaAceptacion,
-			List<UsuarioXTest> usuarioXTests,
-			List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions,
-			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels,
-			List<Nivel> nivels, List<UsuarioXCo> usuarioXCos,
-			List<HistorialCambios> historialCambios,
-			List<UsuarioXRequisito> usuarioXRequisitos,
-			List<Transporte> transportes, List<Actividad> actividads,
-			List<RutaXEstablecimiento> rutaXEstablecimientos,
-			List<SuplenteXCo> suplenteXCos,
-			List<JrXCentroRegional> jrXCentroRegionals, List<Mensaje> mensajes,
-			List<Sesion> sesions, List<Comuna> comunas,
-			List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions,
-			List<JzXZona> jzXZonas, List<UsuarioXActividad> usuarioXActividads,
-			List<Ruta> rutas, List<JoXCo> joXCos,
+			List<UsuarioXTest> usuarioXTests, List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions,
+			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels, List<Nivel> nivels, List<UsuarioXCo> usuarioXCos,
+			List<HistorialCambios> historialCambios, List<UsuarioXRequisito> usuarioXRequisitos, List<Transporte> transportes,
+			List<Actividad> actividads, List<RutaXEstablecimiento> rutaXEstablecimientos, List<SuplenteXCo> suplenteXCos,
+			List<JrXCentroRegional> jrXCentroRegionals, List<Mensaje> mensajes, List<Sesion> sesions,
+			List<UsuarioXComuna> usuarioXComunas, List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions, List<JzXZona> jzXZonas,
+			List<UsuarioXActividad> usuarioXActividads, List<Ruta> rutas, List<JoXCo> joXCos,
 			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.id = id;
 		this.companiaTelefono = companiaTelefono;
@@ -133,7 +117,7 @@ public class Usuario implements java.io.Serializable {
 		this.jrXCentroRegionals = jrXCentroRegionals;
 		this.mensajes = mensajes;
 		this.sesions = sesions;
-		this.comunas = comunas;
+		this.usuarioXComunas = usuarioXComunas;
 		this.usuarioXCcCapacitacions = usuarioXCcCapacitacions;
 		this.jzXZonas = jzXZonas;
 		this.usuarioXActividads = usuarioXActividads;
@@ -330,8 +314,7 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXFaseXAplicacions;
 	}
 
-	public void setUsuarioXFaseXAplicacions(
-			List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions) {
+	public void setUsuarioXFaseXAplicacions(List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions) {
 		this.usuarioXFaseXAplicacions = usuarioXFaseXAplicacions;
 	}
 
@@ -339,8 +322,7 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXAplicacionXNivels;
 	}
 
-	public void setUsuarioXAplicacionXNivels(
-			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
+	public void setUsuarioXAplicacionXNivels(List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 	}
 
@@ -364,7 +346,7 @@ public class Usuario implements java.io.Serializable {
 		return this.historialCambios;
 	}
 
-	public void setHistorialCambioses(List<HistorialCambios> historialCambios) {
+	public void setHistorialCambios(List<HistorialCambios> historialCambios) {
 		this.historialCambios = historialCambios;
 	}
 
@@ -396,8 +378,7 @@ public class Usuario implements java.io.Serializable {
 		return this.rutaXEstablecimientos;
 	}
 
-	public void setRutaXEstablecimientos(
-			List<RutaXEstablecimiento> rutaXEstablecimientos) {
+	public void setRutaXEstablecimientos(List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 
@@ -433,20 +414,19 @@ public class Usuario implements java.io.Serializable {
 		this.sesions = sesions;
 	}
 
-	public List<Comuna> getComunas() {
-		return this.comunas;
+	public List<UsuarioXComuna> getUsuarioXComunas() {
+		return this.usuarioXComunas;
 	}
 
-	public void setComunas(List<Comuna> comunas) {
-		this.comunas = comunas;
+	public void setUsuarioXComunas(List<UsuarioXComuna> usuarioXComunas) {
+		this.usuarioXComunas = usuarioXComunas;
 	}
 
 	public List<UsuarioXCcCapacitacion> getUsuarioXCcCapacitacions() {
 		return this.usuarioXCcCapacitacions;
 	}
 
-	public void setUsuarioXCcCapacitacions(
-			List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions) {
+	public void setUsuarioXCcCapacitacions(List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions) {
 		this.usuarioXCcCapacitacions = usuarioXCcCapacitacions;
 	}
 
@@ -486,11 +466,10 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXEstablecimientos;
 	}
 
-	public void setUsuarioXEstablecimientos(
-			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
+	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
-
+	
 	public UserDTO getUserDTO() {
 		UserDTO udto = new UserDTO();
 		udto.setId(id);

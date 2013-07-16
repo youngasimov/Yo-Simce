@@ -1,22 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipoXPermiso" table="aplicacion_x_usuario_tipo_x_permiso" schema="public">
-        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipoXPermisoId">
-            <key-property name="aplicacionXUsuarioTipoId" type="int">
-                <column name="aplicacion_x_usuario_tipo_id" />
-            </key-property>
-            <key-property name="permisoId" type="int">
-                <column name="permiso_id" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="aplicacionXUsuarioTipo" class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipo" update="false" insert="false" fetch="select">
-            <column name="aplicacion_x_usuario_tipo_id" not-null="true" />
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="aplicacionXUsuarioTipo" class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipo" fetch="select">
+            <column name="aplicacion_x_usuario_tipo_id" />
         </many-to-one>
-        <many-to-one name="permiso" class="com.dreamer8.yosimce.server.hibernate.Permiso" update="false" insert="false" fetch="select">
-            <column name="permiso_id" not-null="true" />
+        <many-to-one name="permiso" class="com.dreamer8.yosimce.server.hibernate.Permiso" fetch="select">
+            <column name="permiso_id" />
         </many-to-one>
         <property name="acceso" type="java.lang.Boolean">
             <column name="acceso" />

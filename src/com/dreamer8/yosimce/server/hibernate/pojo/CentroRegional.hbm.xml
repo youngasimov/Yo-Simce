@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.CentroRegional" table="centro_regional" schema="public">
         <id name="id" type="int">
@@ -22,7 +22,7 @@
         </bag>
         <bag name="jrXCentroRegionals" table="jr_x_centro_regional" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="centro_regional_id" not-null="true" />
+                <column name="centro_regional_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.JrXCentroRegional" />
         </bag>

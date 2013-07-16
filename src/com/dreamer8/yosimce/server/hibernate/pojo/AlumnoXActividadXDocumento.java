@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class AlumnoXActividadXDocumento implements java.io.Serializable {
 
-	private AlumnoXActividadXDocumentoId id;
+	private Integer id;
 	private Documento documento;
 	private DocumentoEstado documentoEstado;
 	private AlumnoXActividad alumnoXActividad;
@@ -21,17 +21,14 @@ public class AlumnoXActividadXDocumento implements java.io.Serializable {
 	public AlumnoXActividadXDocumento() {
 	}
 
-	public AlumnoXActividadXDocumento(AlumnoXActividadXDocumentoId id,
-			Documento documento, AlumnoXActividad alumnoXActividad) {
+	public AlumnoXActividadXDocumento(Integer id) {
 		this.id = id;
-		this.documento = documento;
-		this.alumnoXActividad = alumnoXActividad;
 	}
 
-	public AlumnoXActividadXDocumento(AlumnoXActividadXDocumentoId id,
-			Documento documento, DocumentoEstado documentoEstado,
-			AlumnoXActividad alumnoXActividad, Boolean entregado,
-			Boolean recibido, Date updatedAt, Integer modificadorId) {
+	public AlumnoXActividadXDocumento(Integer id, Documento documento,
+			DocumentoEstado documentoEstado, AlumnoXActividad alumnoXActividad,
+			Boolean entregado, Boolean recibido, Date updatedAt,
+			Integer modificadorId) {
 		this.id = id;
 		this.documento = documento;
 		this.documentoEstado = documentoEstado;
@@ -42,11 +39,11 @@ public class AlumnoXActividadXDocumento implements java.io.Serializable {
 		this.modificadorId = modificadorId;
 	}
 
-	public AlumnoXActividadXDocumentoId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(AlumnoXActividadXDocumentoId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

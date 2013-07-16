@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.Usuario" table="usuario" schema="public">
         <id name="id" type="int">
@@ -79,7 +79,7 @@
         </bag>
         <bag name="usuarioXFaseXAplicacions" table="usuario_x_fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="usuario_id" not-null="true" />
+                <column name="usuario_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXFaseXAplicacion" />
         </bag>
@@ -99,7 +99,7 @@
         </bag>
         <bag name="usuarioXCos" table="usuario_x_co" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="usuario_id" not-null="true" />
+                <column name="usuario_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXCo" />
         </bag>
@@ -111,7 +111,7 @@
         </bag>
         <bag name="usuarioXRequisitos" table="usuario_x_requisito" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="usuario_id" not-null="true" />
+                <column name="usuario_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXRequisito" />
         </bag>
@@ -141,7 +141,7 @@
         </bag>
         <bag name="jrXCentroRegionals" table="jr_x_centro_regional" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="jr_id" not-null="true" />
+                <column name="jr_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.JrXCentroRegional" />
         </bag>
@@ -157,23 +157,21 @@
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.Sesion" />
         </bag>
-        <bag name="comunas" table="usuario_x_comuna" inverse="false" lazy="true" fetch="select">
+        <bag name="usuarioXComunas" table="usuario_x_comuna" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="usuario_id" not-null="true" />
+                <column name="usuario_id" />
             </key>
-            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Comuna">
-                <column name="comuna_id" not-null="true" />
-            </many-to-many>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXComuna" />
         </bag>
         <bag name="usuarioXCcCapacitacions" table="usuario_x_cc_capacitacion" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="usuario_id" not-null="true" />
+                <column name="usuario_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXCcCapacitacion" />
         </bag>
         <bag name="jzXZonas" table="jz_x_zona" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="jz_id" not-null="true" />
+                <column name="jz_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.JzXZona" />
         </bag>
@@ -191,13 +189,13 @@
         </bag>
         <bag name="joXCos" table="jo_x_co" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="jo_id" not-null="true" />
+                <column name="jo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.JoXCo" />
         </bag>
         <bag name="usuarioXEstablecimientos" table="usuario_x_establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="usuario_id" not-null="true" />
+                <column name="usuario_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXEstablecimiento" />
         </bag>

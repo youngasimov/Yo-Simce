@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class UsuarioXCcCapacitacion implements java.io.Serializable {
 
-	private UsuarioXCcCapacitacionId id;
+	private Integer id;
 	private Usuario usuario;
 	private CcCapacitacion ccCapacitacion;
 	private Boolean asistencia;
@@ -20,14 +20,11 @@ public class UsuarioXCcCapacitacion implements java.io.Serializable {
 	public UsuarioXCcCapacitacion() {
 	}
 
-	public UsuarioXCcCapacitacion(UsuarioXCcCapacitacionId id, Usuario usuario,
-			CcCapacitacion ccCapacitacion) {
+	public UsuarioXCcCapacitacion(Integer id) {
 		this.id = id;
-		this.usuario = usuario;
-		this.ccCapacitacion = ccCapacitacion;
 	}
 
-	public UsuarioXCcCapacitacion(UsuarioXCcCapacitacionId id, Usuario usuario,
+	public UsuarioXCcCapacitacion(Integer id, Usuario usuario,
 			CcCapacitacion ccCapacitacion, Boolean asistencia, Date createdAt,
 			Date horaAcceso, Integer puntaje) {
 		this.id = id;
@@ -39,11 +36,11 @@ public class UsuarioXCcCapacitacion implements java.io.Serializable {
 		this.puntaje = puntaje;
 	}
 
-	public UsuarioXCcCapacitacionId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(UsuarioXCcCapacitacionId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

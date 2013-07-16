@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class JoXCo implements java.io.Serializable {
 
-	private JoXCoId id;
+	private Integer id;
 	private Usuario usuario;
 	private Co co;
 	private Date fechaActivacion;
@@ -19,13 +19,11 @@ public class JoXCo implements java.io.Serializable {
 	public JoXCo() {
 	}
 
-	public JoXCo(JoXCoId id, Usuario usuario, Co co) {
+	public JoXCo(Integer id) {
 		this.id = id;
-		this.usuario = usuario;
-		this.co = co;
 	}
 
-	public JoXCo(JoXCoId id, Usuario usuario, Co co, Date fechaActivacion,
+	public JoXCo(Integer id, Usuario usuario, Co co, Date fechaActivacion,
 			Date fechaTermino, Boolean activo) {
 		this.id = id;
 		this.usuario = usuario;
@@ -35,11 +33,11 @@ public class JoXCo implements java.io.Serializable {
 		this.activo = activo;
 	}
 
-	public JoXCoId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(JoXCoId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.RequisitoXAplicacionXUsuarioTipo" table="requisito_x_aplicacion_x_usuario_tipo" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="requisito" class="com.dreamer8.yosimce.server.hibernate.Requisito" fetch="select">
+            <column name="requisito_id" />
+        </many-to-one>
+        <many-to-one name="aplicacionXUsuarioTipo" class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipo" fetch="select">
+            <column name="aplicacion_x_usuario_tipo_id" />
+        </many-to-one>
+        <property name="parametro" type="java.lang.Integer">
+            <column name="parametro" />
+        </property>
+        <property name="obligatorio" type="java.lang.Boolean">
+            <column name="obligatorio" />
+        </property>
+        <property name="ordenAprobacion" type="java.lang.Boolean">
+            <column name="orden_aprobacion" />
+        </property>
+        <property name="factor" type="big_decimal">
+            <column name="factor" precision="131089" scale="0">
+                <comment>relevancia de puntaje</comment>
+            </column>
+        </property>
+        <bag name="requisitoXAplicacionXUsuarioTiposForRequisitoAlternativoId" table="requisito_alternativo" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="requisito_x_usuario_tipo_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.RequisitoXAplicacionXUsuarioTipo">
+                <column name="requisito_alternativo_id" not-null="true" />
+            </many-to-many>
+        </bag>
+        <bag name="requisitoXAplicacionXUsuarioTiposForRequisitoXUsuarioTipoId" table="requisito_alternativo" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="requisito_alternativo_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.RequisitoXAplicacionXUsuarioTipo">
+                <column name="requisito_x_usuario_tipo_id" not-null="true" />
+            </many-to-many>
+        </bag>
+    </class>
+</hibernate-mapping>

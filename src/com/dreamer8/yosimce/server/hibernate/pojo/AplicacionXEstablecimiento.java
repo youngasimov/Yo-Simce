@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class AplicacionXEstablecimiento implements java.io.Serializable {
 
-	private AplicacionXEstablecimientoId id;
+	private Integer id;
 	private Aplicacion aplicacion;
 	private EstablecimientoTipo establecimientoTipo;
 	private Establecimiento establecimiento;
@@ -20,15 +20,12 @@ public class AplicacionXEstablecimiento implements java.io.Serializable {
 	public AplicacionXEstablecimiento() {
 	}
 
-	public AplicacionXEstablecimiento(AplicacionXEstablecimientoId id,
-			Aplicacion aplicacion, Establecimiento establecimiento) {
+	public AplicacionXEstablecimiento(Integer id) {
 		this.id = id;
-		this.aplicacion = aplicacion;
-		this.establecimiento = establecimiento;
 	}
 
-	public AplicacionXEstablecimiento(AplicacionXEstablecimientoId id,
-			Aplicacion aplicacion, EstablecimientoTipo establecimientoTipo,
+	public AplicacionXEstablecimiento(Integer id, Aplicacion aplicacion,
+			EstablecimientoTipo establecimientoTipo,
 			Establecimiento establecimiento, String comentario, Date updatedAt,
 			Integer modificadorId) {
 		this.id = id;
@@ -40,11 +37,11 @@ public class AplicacionXEstablecimiento implements java.io.Serializable {
 		this.modificadorId = modificadorId;
 	}
 
-	public AplicacionXEstablecimientoId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(AplicacionXEstablecimientoId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

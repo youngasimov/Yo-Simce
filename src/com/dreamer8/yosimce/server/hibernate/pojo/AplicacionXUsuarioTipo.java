@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,9 @@ public class AplicacionXUsuarioTipo implements java.io.Serializable {
 	private CarreraEstado carreraEstado;
 	private Integer edadMinima;
 	private Integer anoIngresoMaximo;
+	private List<RequisitoXAplicacionXUsuarioTipo> requisitoXAplicacionXUsuarioTipos = new ArrayList<RequisitoXAplicacionXUsuarioTipo>(0);
 	private List<AplicacionXUsuarioTipoXPermiso> aplicacionXUsuarioTipoXPermisos = new ArrayList<AplicacionXUsuarioTipoXPermiso>(0);
 	private List<AplicacionXUsuarioTipoXCarrera> aplicacionXUsuarioTipoXCarreras = new ArrayList<AplicacionXUsuarioTipoXCarrera>(0);
-	private List<RequisitoXUsuarioTipo> requisitoXUsuarioTipos = new ArrayList<RequisitoXUsuarioTipo>(0);
 
 	public AplicacionXUsuarioTipo() {
 	}
@@ -31,8 +31,9 @@ public class AplicacionXUsuarioTipo implements java.io.Serializable {
 	public AplicacionXUsuarioTipo(Integer id, Aplicacion aplicacion,
 			UsuarioTipo usuarioTipo, Contrato contrato,
 			CarreraEstado carreraEstado, Integer edadMinima,
-			Integer anoIngresoMaximo, List<AplicacionXUsuarioTipoXPermiso> aplicacionXUsuarioTipoXPermisos,
-			List<AplicacionXUsuarioTipoXCarrera> aplicacionXUsuarioTipoXCarreras, List<RequisitoXUsuarioTipo> requisitoXUsuarioTipos) {
+			Integer anoIngresoMaximo, List<RequisitoXAplicacionXUsuarioTipo> requisitoXAplicacionXUsuarioTipos,
+			List<AplicacionXUsuarioTipoXPermiso> aplicacionXUsuarioTipoXPermisos,
+			List<AplicacionXUsuarioTipoXCarrera> aplicacionXUsuarioTipoXCarreras) {
 		this.id = id;
 		this.aplicacion = aplicacion;
 		this.usuarioTipo = usuarioTipo;
@@ -40,9 +41,9 @@ public class AplicacionXUsuarioTipo implements java.io.Serializable {
 		this.carreraEstado = carreraEstado;
 		this.edadMinima = edadMinima;
 		this.anoIngresoMaximo = anoIngresoMaximo;
+		this.requisitoXAplicacionXUsuarioTipos = requisitoXAplicacionXUsuarioTipos;
 		this.aplicacionXUsuarioTipoXPermisos = aplicacionXUsuarioTipoXPermisos;
 		this.aplicacionXUsuarioTipoXCarreras = aplicacionXUsuarioTipoXCarreras;
-		this.requisitoXUsuarioTipos = requisitoXUsuarioTipos;
 	}
 
 	public Integer getId() {
@@ -101,6 +102,15 @@ public class AplicacionXUsuarioTipo implements java.io.Serializable {
 		this.anoIngresoMaximo = anoIngresoMaximo;
 	}
 
+	public List<RequisitoXAplicacionXUsuarioTipo> getRequisitoXAplicacionXUsuarioTipos() {
+		return this.requisitoXAplicacionXUsuarioTipos;
+	}
+
+	public void setRequisitoXAplicacionXUsuarioTipos(
+			List<RequisitoXAplicacionXUsuarioTipo> requisitoXAplicacionXUsuarioTipos) {
+		this.requisitoXAplicacionXUsuarioTipos = requisitoXAplicacionXUsuarioTipos;
+	}
+
 	public List<AplicacionXUsuarioTipoXPermiso> getAplicacionXUsuarioTipoXPermisos() {
 		return this.aplicacionXUsuarioTipoXPermisos;
 	}
@@ -117,14 +127,6 @@ public class AplicacionXUsuarioTipo implements java.io.Serializable {
 	public void setAplicacionXUsuarioTipoXCarreras(
 			List<AplicacionXUsuarioTipoXCarrera> aplicacionXUsuarioTipoXCarreras) {
 		this.aplicacionXUsuarioTipoXCarreras = aplicacionXUsuarioTipoXCarreras;
-	}
-
-	public List<RequisitoXUsuarioTipo> getRequisitoXUsuarioTipos() {
-		return this.requisitoXUsuarioTipos;
-	}
-
-	public void setRequisitoXUsuarioTipos(List<RequisitoXUsuarioTipo> requisitoXUsuarioTipos) {
-		this.requisitoXUsuarioTipos = requisitoXUsuarioTipos;
 	}
 
 }

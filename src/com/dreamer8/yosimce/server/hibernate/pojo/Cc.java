@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class Cc implements java.io.Serializable {
 	private String responsableEmail;
 	private BigDecimal direccionLatitud;
 	private BigDecimal direccionLongitud;
-	private List<Comuna> comunas = new ArrayList<Comuna>(0);
+	private List<CcXComuna> ccXComunas = new ArrayList<CcXComuna>(0);
 	private List<CcSala> ccSalas = new ArrayList<CcSala>(0);
 
 	public Cc() {
@@ -33,7 +33,7 @@ public class Cc implements java.io.Serializable {
 	public Cc(Integer id, Comuna comuna, String nombre, String direccion,
 			String responsableRut, String responsableTelefono,
 			String responsableEmail, BigDecimal direccionLatitud,
-			BigDecimal direccionLongitud, List<Comuna> comunas, List<CcSala> ccSalas) {
+			BigDecimal direccionLongitud, List<CcXComuna> ccXComunas, List<CcSala> ccSalas) {
 		this.id = id;
 		this.comuna = comuna;
 		this.nombre = nombre;
@@ -43,7 +43,7 @@ public class Cc implements java.io.Serializable {
 		this.responsableEmail = responsableEmail;
 		this.direccionLatitud = direccionLatitud;
 		this.direccionLongitud = direccionLongitud;
-		this.comunas = comunas;
+		this.ccXComunas = ccXComunas;
 		this.ccSalas = ccSalas;
 	}
 
@@ -119,12 +119,12 @@ public class Cc implements java.io.Serializable {
 		this.direccionLongitud = direccionLongitud;
 	}
 
-	public List<Comuna> getComunas() {
-		return this.comunas;
+	public List<CcXComuna> getCcXComunas() {
+		return this.ccXComunas;
 	}
 
-	public void setComunas(List<Comuna> comunas) {
-		this.comunas = comunas;
+	public void setCcXComunas(List<CcXComuna> ccXComunas) {
+		this.ccXComunas = ccXComunas;
 	}
 
 	public List<CcSala> getCcSalas() {

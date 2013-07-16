@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,23 +9,23 @@ import java.util.Date;
  */
 public class ActividadHistorialId implements java.io.Serializable {
 
-	private Integer id;
+	private Integer actividadId;
 	private Date fecha;
 
 	public ActividadHistorialId() {
 	}
 
-	public ActividadHistorialId(Integer id, Date fecha) {
-		this.id = id;
+	public ActividadHistorialId(Integer actividadId, Date fecha) {
+		this.actividadId = actividadId;
 		this.fecha = fecha;
 	}
 
-	public Integer getId() {
-		return this.id;
+	public Integer getActividadId() {
+		return this.actividadId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setActividadId(Integer actividadId) {
+		this.actividadId = actividadId;
 	}
 
 	public Date getFecha() {
@@ -45,7 +45,7 @@ public class ActividadHistorialId implements java.io.Serializable {
 			return false;
 		ActividadHistorialId castOther = (ActividadHistorialId) other;
 
-		return (this.getId() == castOther.getId())
+		return (this.getActividadId() == castOther.getActividadId())
 				&& ((this.getFecha() == castOther.getFecha()) || (this
 						.getFecha() != null && castOther.getFecha() != null && this
 						.getFecha().equals(castOther.getFecha())));
@@ -54,7 +54,7 @@ public class ActividadHistorialId implements java.io.Serializable {
 	public int hashCode() {
 		Integer result = 17;
 
-		result = 37 * result + this.getId();
+		result = 37 * result + this.getActividadId();
 		result = 37 * result
 				+ (getFecha() == null ? 0 : this.getFecha().hashCode());
 		return result;

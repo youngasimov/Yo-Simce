@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ public class Actividad implements java.io.Serializable {
 	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
 	private List<Material> materials = new ArrayList<Material>(0);
 	private List<ActividadXDocumentoTipo> actividadXDocumentoTipos = new ArrayList<ActividadXDocumentoTipo>(0);
+	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(0);
 	private List<TransporteXActividad> transporteXActividads = new ArrayList<TransporteXActividad>(0);
 	private List<Documento> documentos = new ArrayList<Documento>(0);
 	private List<ActividadXIncidencia> actividadXIncidencias = new ArrayList<ActividadXIncidencia>(0);
-	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(0);
 
 	public Actividad() {
 	}
@@ -49,8 +49,8 @@ public class Actividad implements java.io.Serializable {
 			Date fechaTermino, String contactoNombre, String contactoTelefono,
 			String contactoEmail, List<AlumnoXActividad> alumnoXActividads,
 			List<UsuarioXActividad> usuarioXActividads, List<MaterialHistorial> materialHistorials, List<Material> materials,
-			List<ActividadXDocumentoTipo> actividadXDocumentoTipos, List<TransporteXActividad> transporteXActividads,
-			List<Documento> documentos, List<ActividadXIncidencia> actividadXIncidencias, List<ActividadHistorial> actividadHistorials) {
+			List<ActividadXDocumentoTipo> actividadXDocumentoTipos, List<ActividadHistorial> actividadHistorials,
+			List<TransporteXActividad> transporteXActividads, List<Documento> documentos, List<ActividadXIncidencia> actividadXIncidencias) {
 		this.id = id;
 		this.actividadEstado = actividadEstado;
 		this.curso = curso;
@@ -68,10 +68,10 @@ public class Actividad implements java.io.Serializable {
 		this.materialHistorials = materialHistorials;
 		this.materials = materials;
 		this.actividadXDocumentoTipos = actividadXDocumentoTipos;
+		this.actividadHistorials = actividadHistorials;
 		this.transporteXActividads = transporteXActividads;
 		this.documentos = documentos;
 		this.actividadXIncidencias = actividadXIncidencias;
-		this.actividadHistorials = actividadHistorials;
 	}
 
 	public Integer getId() {
@@ -211,6 +211,14 @@ public class Actividad implements java.io.Serializable {
 		this.actividadXDocumentoTipos = actividadXDocumentoTipos;
 	}
 
+	public List<ActividadHistorial> getActividadHistorials() {
+		return this.actividadHistorials;
+	}
+
+	public void setActividadHistorials(List<ActividadHistorial> actividadHistorials) {
+		this.actividadHistorials = actividadHistorials;
+	}
+
 	public List<TransporteXActividad> getTransporteXActividads() {
 		return this.transporteXActividads;
 	}
@@ -233,14 +241,6 @@ public class Actividad implements java.io.Serializable {
 
 	public void setActividadXIncidencias(List<ActividadXIncidencia> actividadXIncidencias) {
 		this.actividadXIncidencias = actividadXIncidencias;
-	}
-
-	public List<ActividadHistorial> getActividadHistorials() {
-		return this.actividadHistorials;
-	}
-
-	public void setActividadHistorials(List<ActividadHistorial> actividadHistorials) {
-		this.actividadHistorials = actividadHistorials;
 	}
 
 }
