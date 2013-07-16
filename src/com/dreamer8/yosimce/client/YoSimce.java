@@ -15,7 +15,6 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -26,13 +25,13 @@ import com.google.gwt.user.client.ui.SimplePanel;
 public class YoSimce implements EntryPoint {
 	
 	private static final String TOKEN_COOKIE = "yosimce";
-	private static final String MODULE_PLANS_AND_RESULT = "plansandresult";
 	
 	
 	private Place defaultPlace;
 	private UserDTO user;
 	private ClientFactory factory;
 	private LoadView loadView;
+	private SimplePanel panel = new SimplePanel();
 	
 
 	/**
@@ -43,6 +42,8 @@ public class YoSimce implements EntryPoint {
 		factory = GWT.create(ClientFactory.class);
 		
 		loadView = factory.getLoadView();
+		RootPanel.get().add(panel);
+		panel.setWidget(loadView);
 		
 		loadView.setMessage("Comprobando permisos de usuario...");
 		
@@ -99,7 +100,7 @@ public class YoSimce implements EntryPoint {
 	
 	private void load(){
 		
-		SimplePanel panel = new SimplePanel();
+		
 		
 		SimceActivityMapper simceActivityMapper = new SimceActivityMapper(factory, user);
 		ActivityManager simceActivityManager = new ActivityManager(simceActivityMapper,factory.getEventBus());
@@ -116,7 +117,6 @@ public class YoSimce implements EntryPoint {
 		ContentActivityMapper contentActivityMapper = new ContentActivityMapper(factory, user);
 		ActivityManager contentActivityManager  = new ActivityManager(contentActivityMapper, factory.getEventBus());
 		contentActivityManager.setDisplay(factory.getAppView().getContentPanel());
-		RootPanel.get().add(panel);
 		
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(factory.getPlaceHistoryMapper());
 		historyHandler.register(factory.getPlaceController(), factory.getEventBus(), defaultPlace);
