@@ -9,7 +9,7 @@
         	<g:SimpleLayoutPanel ui:field="headerPanel"/> 
     	</g:north>
     	<g:center>
-        	<g:SplitLayoutPanel unit='PX'>
+        	<g:SplitLayoutPanel>
         		<g:west size='150'>
         			<g:SimpleLayoutPanel ui:field="sidebarPanel"/>
         		</g:west>

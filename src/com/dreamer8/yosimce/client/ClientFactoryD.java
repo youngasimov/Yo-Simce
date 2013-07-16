@@ -5,6 +5,8 @@ import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
+import com.dreamer8.yosimce.client.ui.NotLoggedView;
+import com.dreamer8.yosimce.client.ui.NotLoggedViewD;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
@@ -19,6 +21,7 @@ public class ClientFactoryD implements ClientFactory {
 	
 	private final LoadView loadView = new LoadViewD();
 	private final AppView appView = new AppViewD();
+	private final NotLoggedView notLoggedView = new NotLoggedViewD();
 	
 	@Override
 	public EventBus getEventBus() {
@@ -43,6 +46,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public AppView getAppView() {
 		return appView;
+	}
+
+	@Override
+	public NotLoggedView getNotLoggedView() {
+		return notLoggedView;
 	}
 
 }
