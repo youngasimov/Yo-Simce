@@ -42,7 +42,12 @@ public class YoSimce implements EntryPoint {
 		factory = GWT.create(ClientFactory.class);
 		
 		loadView = factory.getLoadView();
+		
+		panel.setSize("100%", "100%");
+		
 		RootPanel.get().add(panel);
+		RootPanel.get().setWidgetPosition(panel, 0, 0);
+		
 		panel.setWidget(loadView);
 		
 		loadView.setMessage("Comprobando permisos de usuario...");

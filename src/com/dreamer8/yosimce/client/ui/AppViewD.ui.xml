@@ -7,10 +7,11 @@
 			float: left;
 			width: 100%;
 			height: 100%;
+			font-size: 12pt;
 		}
 	</ui:style>
-	<g:DockLayoutPanel unit='PX' addStyleNames='{style.content}'>
-		<g:north size='50'>
+	<g:DockLayoutPanel unit='EM' addStyleNames='{style.content}'>
+		<g:north size='2'>
         	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="headerPanel"/> 
     	</g:north>
     	<g:center>

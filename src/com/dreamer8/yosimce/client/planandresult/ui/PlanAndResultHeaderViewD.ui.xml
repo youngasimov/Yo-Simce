@@ -6,82 +6,71 @@
 		.all{
 			display:block;
 			width: 100%;
-			height: 50px;
+			height: 100%;
 			float: left;
 			background: rgb(253,147,8);
+		}
+		.leftbar{
+			float: left;
+			height: 100%;
+			list-style: none;
+			margin: 0px;
+			padding: 0px;
+		}
+		
+		.leftbar li{
+			display:inline-block;
+			float: left;
+			height: 100%;
+			padding-left: 20px;
+			padding-right: 20px;
+			list-style: none;
+			margin: 0px;
+			padding-top: 0px;
+			padding-bottom: 0px;
+			border-right: 1px solid gray;
 		}
 		.logo {
 			display: block;
 			width: 100px;
+			height: 100%;
 			text-align: center;
 			float: left;
-		}
-		.modules {
-			display: block;
-			width: 100px;
-			text-align: center;
-			float: left;
-			position: relative;
-			list-style: none;
-			margin: 0;
-			padding: 0px;
+			font-weight: bold;
+			font-size: 1.5em;
+			border-right: 1px solid black;
+			text-decoration: none;
+			color:black;
 		}
 		
-		.modules:HOVER ul{
-			visibility: visible;
+		.logo a{
+			color:black;
+			cursor: pointer;
+			text-decoration: none;
 		}
 		
-		.modules ul{
-			display:block;
-			width: 200px;
-			position: absolute;
-			visibility: collapse;
-			top:60px;
-			
-		}
-		
-		.modules li{
-			display:block;
-			float: left;
-			height: 30px;
-		}
-		
-		.modules li:HOVER{
-			background: gray;
-		}
-		.actions{
-			display:block;
-			float:left;
-			height: 60px;
-		}
 		.actividades{
 			float: right;
-			height: 60px;
+			height: 100%;
 		}
 		
 		.listbox{
 			float:left;
+			margin-top: 5px;
+			margin-right: 10px;
 		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames='{style.all}'>
-	    <div class='{style.logo}'>
-	        YoSimce
-	    </div>
-	    <div class='{style.modules}'>
-	    	PLanificación y Resultados
-	        <ul ui:field="modulesPanel">
-	        	<li><g:Anchor ui:field="yosimceLink"/></li>
-	        	<li><g:Hyperlink ui:field="planAndResultLink"/></li>
-	        </ul>
-	    </div>
-	    <div class='{style.actions}'>
-	        <g:Anchor ui:field="exportAction"/>
-	    </div>
-	    <div class='{style.actividades}'>
+	
+		<ul class='{style.leftbar}'>
+			<li class='{style.logo}'><a href='http://www.yosimce.cl'>YoSimce</a></li>
+			<li>Planificación y Resultados</li>
+			<li><g:Anchor ui:field="exportAction"/></li>
+		</ul>
+		<div class='{style.actividades}'>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="actividadBox"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="nivelBox"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="tipoBox"/>
-	    </div>
-	    
+	    </div>	    
 	</g:HTMLPanel>
 </ui:UiBinder> 
