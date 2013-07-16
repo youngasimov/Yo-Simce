@@ -111,10 +111,11 @@ public class YoSimce implements EntryPoint {
 		
 		SideBarActivityMapper sideBarActivityMapper = new SideBarActivityMapper(factory, user);
 		ActivityManager sideBarActivityManager = new ActivityManager(sideBarActivityMapper, factory.getEventBus());
+		sideBarActivityManager.setDisplay(factory.getAppView().getSideBarPanel());
 		
 		ContentActivityMapper contentActivityMapper = new ContentActivityMapper(factory, user);
 		ActivityManager contentActivityManager  = new ActivityManager(contentActivityMapper, factory.getEventBus());
-		
+		contentActivityManager.setDisplay(factory.getAppView().getContentPanel());
 		RootPanel.get().add(panel);
 		
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(factory.getPlaceHistoryMapper());
