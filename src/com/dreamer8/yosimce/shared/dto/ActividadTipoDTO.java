@@ -1,0 +1,22 @@
+/**
+ * 
+ */
+package com.dreamer8.yosimce.shared.dto;
+
+import java.io.Serializable;
+
+/**
+ * @author jorge
+ * 
+ */
+public class ActividadTipoDTO implements Serializable {
+	private Integer id;
+	private String nombre;
+
+	/**
+	 * 
+	 */
+	public ActividadTipoDTO() {
+		// TODO Auto-generated constructor stub
+	}
+}
