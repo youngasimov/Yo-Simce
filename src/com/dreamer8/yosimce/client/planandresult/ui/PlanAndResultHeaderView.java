@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client.planandresult.ui;
 
-public interface PlanAndResultHeaderView  {
+import com.google.gwt.user.client.ui.IsWidget;
+
+public interface PlanAndResultHeaderView extends IsWidget {
 
 	void setPresenter(Presenter p);
 	

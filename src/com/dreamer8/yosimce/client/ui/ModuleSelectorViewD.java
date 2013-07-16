@@ -22,7 +22,7 @@ public class ModuleSelectorViewD extends Composite implements ModuleSelectorView
 	
 	private ModuleSelectorPresenter presenter;
 
-	public ModuleSelectorViewD(String firstName) {
+	public ModuleSelectorViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
 		planAndResultButton.setText("Modulo de planificación y resultados");
 	}

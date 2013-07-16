@@ -1,10 +1,14 @@
 package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.activity.SimcePlaceHistoryMapper;
+import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultHeaderView;
+import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultHeaderViewD;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
+import com.dreamer8.yosimce.client.ui.ModuleSelectorView;
+import com.dreamer8.yosimce.client.ui.ModuleSelectorViewD;
 import com.dreamer8.yosimce.client.ui.NotLoggedView;
 import com.dreamer8.yosimce.client.ui.NotLoggedViewD;
 import com.google.gwt.core.client.GWT;
@@ -22,6 +26,8 @@ public class ClientFactoryD implements ClientFactory {
 	private final LoadView loadView = new LoadViewD();
 	private final AppView appView = new AppViewD();
 	private final NotLoggedView notLoggedView = new NotLoggedViewD();
+	private final ModuleSelectorView moduleSelectorView = new ModuleSelectorViewD();
+	private final PlanAndResultHeaderView planAndResultHeaderView = new PlanAndResultHeaderViewD();
 	
 	@Override
 	public EventBus getEventBus() {
@@ -51,6 +57,16 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public NotLoggedView getNotLoggedView() {
 		return notLoggedView;
+	}
+
+	@Override
+	public ModuleSelectorView getModuleSelectorView() {
+		return moduleSelectorView;
+	}
+
+	@Override
+	public PlanAndResultHeaderView getPlanAndResultHeaderView() {
+		return planAndResultHeaderView;
 	}
 
 }

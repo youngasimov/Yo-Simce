@@ -18,7 +18,7 @@ public class ModuleSelectorActivity extends AbstractActivity implements ModuleSe
 	public ModuleSelectorActivity(ClientFactory factory, UserDTO user){
 		this.factory = factory;
 		this.user = user;
-		
+		view = factory.getModuleSelectorView();
 		view.setPresenter(this);
 	}
 	

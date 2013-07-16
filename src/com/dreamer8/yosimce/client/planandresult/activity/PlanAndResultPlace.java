@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.planandresult.activity;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
+import com.google.gwt.place.shared.Prefix;
 
 public class PlanAndResultPlace extends Place {
 	
@@ -37,11 +38,14 @@ public class PlanAndResultPlace extends Place {
 	}
 
 
-
+	@Prefix("planificacion")
 	public static class Tokenizer implements PlaceTokenizer<PlanAndResultPlace>{
 
 		@Override
 		public PlanAndResultPlace getPlace(String token) {
+			if(!token.contains("?")){
+				return new PlanAndResultPlace();
+			}
 			String x[] = token.substring(token.indexOf("?")).split("&");
 			String filters = "";
 			String sTab = "";
@@ -83,8 +87,10 @@ public class PlanAndResultPlace extends Place {
 				token = token+"filters="+place.getFilters()+"&";
 			}
 			
-			token = token.substring(0,token.length()-2);
-			
+			token = token.substring(0,token.length()-1);
+			if(token.endsWith("?")){
+				token = token.substring(0,token.length()-1);
+			}
 			return token;
 		}
 		

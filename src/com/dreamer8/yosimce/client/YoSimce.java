@@ -60,7 +60,7 @@ public class YoSimce implements EntryPoint {
 				
 				@Override
 				public void onSuccess(UserDTO result) {
-					loadView.setMessage(result.getName()+",<br />Descargando aplicación...");
+					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Descargando aplicación...");
 					loadApp();
 				}
 				
@@ -78,7 +78,8 @@ public class YoSimce implements EntryPoint {
 	private void loadApp(){
 		
 		if(user == null){
-			defaultPlace = new NotLoggedPlace();
+			//defaultPlace = new NotLoggedPlace();
+			defaultPlace = new ModuleSelectorPlace();
 		}else{
 			defaultPlace = new ModuleSelectorPlace();
 		}
