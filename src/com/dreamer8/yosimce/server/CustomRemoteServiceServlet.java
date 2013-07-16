@@ -7,12 +7,14 @@ package com.dreamer8.yosimce.server;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.SesionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.*;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -25,8 +27,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.net.QCodec;
 import com.dreamer8.yosimce.server.hibernate.pojo.*;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
+import com.dreamer8.yosimce.shared.exceptions.DBException;
+
 import java.io.ByteArrayOutputStream;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 /**
@@ -35,6 +42,41 @@ import org.hibernate.Session;
  */
 public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 
+	/*
+
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getUser")) {
+
+				if ( == null) {
+					throw new NullPointerException(
+							"No se ha especificado un .");
+				}
+
+				s.beginTransaction();
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return;
+	 */
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
 	protected AccessControl getAccessControl() {
 		return new AccessControl(this.getThreadLocalRequest());
 	}

@@ -1,64 +1,50 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 12-07-2013 05:32:10 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.Comuna" table="comuna" schema="public">
-        <id name="id" type="int">
-            <column name="id" />
-            <generator class="assigned" />
-        </id>
-        <many-to-one name="provincia" class="com.dreamer8.yosimce.server.hibernate.Provincia" fetch="select">
-            <column name="provincia_id" />
-        </many-to-one>
-        <property name="nombre" type="string">
-            <column name="nombre" />
-        </property>
-        <bag name="ccs" table="cc" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Cc" />
-        </bag>
-        <bag name="establecimientos" table="establecimiento" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Establecimiento" />
-        </bag>
-        <bag name="cos" table="co" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Co" />
-        </bag>
-        <bag name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Usuario" />
-        </bag>
-        <bag name="usuarios_1" table="usuario_x_comuna" inverse="false" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" not-null="true" />
-            </key>
-            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Usuario">
-                <column name="usuario_id" not-null="true" />
-            </many-to-many>
-        </bag>
-        <bag name="transportes" table="transporte" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Transporte" />
-        </bag>
-        <bag name="ccs_1" table="cc_x_comuna" inverse="false" lazy="true" fetch="select">
-            <key>
-                <column name="comuna_id" not-null="true" />
-            </key>
-            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Cc">
-                <column name="cc_id" not-null="true" />
-            </many-to-many>
-        </bag>
-    </class>
+ <class name="com.dreamer8.yosimce.server.hibernate.Comuna"
+  schema="public" table="comuna">
+  <id name="id" type="int">
+   <column name="id"/>
+   <generator class="assigned"/>
+  </id>
+  <many-to-one class="com.dreamer8.yosimce.server.hibernate.Provincia"
+   fetch="select" name="provincia">
+   <column name="provincia_id"/>
+  </many-to-one>
+  <property generated="never" lazy="false" name="nombre" type="string">
+   <column name="nombre"/>
+  </property>
+  <bag fetch="select" inverse="true" lazy="true" name="ccs" table="cc">
+   <key>
+    <column name="comuna_id"/>
+   </key>
+   <one-to-many class="com.dreamer8.yosimce.server.hibernate.Cc"/>
+  </bag>
+  <bag fetch="select" inverse="true" lazy="true" name="establecimientos" table="establecimiento">
+   <key>
+    <column name="comuna_id"/>
+   </key>
+   <one-to-many class="com.dreamer8.yosimce.server.hibernate.Establecimiento"/>
+  </bag>
+  <bag fetch="select" inverse="true" lazy="true" name="cos" table="co">
+   <key>
+    <column name="comuna_id"/>
+   </key>
+   <one-to-many class="com.dreamer8.yosimce.server.hibernate.Co"/>
+  </bag>
+  <bag fetch="select" inverse="true" lazy="true" name="usuarios" table="usuario">
+   <key>
+    <column name="comuna_id"/>
+   </key>
+   <one-to-many class="com.dreamer8.yosimce.server.hibernate.Usuario"/>
+  </bag>
+  <bag fetch="select" inverse="true" lazy="true" name="transportes" table="transporte">
+   <key>
+    <column name="comuna_id"/>
+   </key>
+   <one-to-many class="com.dreamer8.yosimce.server.hibernate.Transporte"/>
+  </bag>
+ </class>
 </hibernate-mapping>

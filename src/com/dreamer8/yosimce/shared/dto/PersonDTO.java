@@ -5,21 +5,55 @@ import java.io.Serializable;
 public class PersonDTO implements Serializable {
 
 	private static final long serialVersionUID = 1215490872269957714L;
-	
-	private String name;
-	private String lastname;
-	
-	
-	public String getName() {
-		return name;
+
+	private Integer id;
+	private String email;
+	private String nombres;
+	private String apellidoPaterno;
+	private String apellidoMaterno;
+
+	public PersonDTO() {
+		super();
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public Integer getId() {
+		return id;
 	}
-	public String getLastname() {
-		return lastname;
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+
+	public String getEmail() {
+		return email;
 	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNombres() {
+		return nombres;
+	}
+
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
+	}
+
+	public String getApellidoPaterno() {
+		return apellidoPaterno;
+	}
+
+	public void setApellidoPaterno(String apellidoPaterno) {
+		this.apellidoPaterno = apellidoPaterno;
+	}
+
+	public String getApellidoMaterno() {
+		return apellidoMaterno;
+	}
+
+	public void setApellidoMaterno(String apellidoMaterno) {
+		this.apellidoMaterno = apellidoMaterno;
+	}
+
 }
