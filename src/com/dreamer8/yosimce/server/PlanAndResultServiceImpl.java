@@ -8,7 +8,7 @@ import org.hibernate.Session;
 
 
 
-import com.dreamer8.yosimce.client.activity.planandresult.PLanAndResultService;
+import com.dreamer8.yosimce.client.activity.planandresult.PlanAndResultService;
 import com.dreamer8.yosimce.server.hibernate.dao.AbstractHibernateDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
@@ -20,7 +20,7 @@ import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 
 public class PlanAndResultServiceImpl extends CustomRemoteServiceServlet
-		implements PLanAndResultService {
+		implements PlanAndResultService {
 
 	private String className = "PLanAndResultService";
 

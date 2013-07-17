@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
@@ -23,5 +24,9 @@ public interface LoginService extends RemoteService {
 
 	public ArrayList<ActividadTipoDTO> getActividadTipos(Integer idAplicacion,
 			Integer idNivel) throws NoAllowedException, NoLoggedException,
+			DBException;
+
+	public HashMap<String, ArrayList<String>> getUsuarioPermisos(
+			Integer idAplicacion) throws NoAllowedException, NoLoggedException,
 			DBException;
 }
