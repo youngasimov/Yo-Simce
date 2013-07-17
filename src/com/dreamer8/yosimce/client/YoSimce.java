@@ -3,7 +3,6 @@ package com.dreamer8.yosimce.client;
 import com.dreamer8.yosimce.client.activity.ContentActivityMapper;
 import com.dreamer8.yosimce.client.activity.HeaderActivityMapper;
 import com.dreamer8.yosimce.client.activity.ModuleSelectorPlace;
-import com.dreamer8.yosimce.client.activity.NotLoggedPlace;
 import com.dreamer8.yosimce.client.activity.SideBarActivityMapper;
 import com.dreamer8.yosimce.client.activity.SimceActivityMapper;
 import com.dreamer8.yosimce.client.ui.LoadView;

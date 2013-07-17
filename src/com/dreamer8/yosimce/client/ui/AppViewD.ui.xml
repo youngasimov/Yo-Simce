@@ -16,7 +16,7 @@
     	</g:north>
     	<g:center>
         	<g:SplitLayoutPanel addStyleNames='{style.content}'>
-        		<g:west size='150'>
+        		<g:west size='200'>
         			<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="sidebarPanel"/>
         		</g:west>
         		<g:center>

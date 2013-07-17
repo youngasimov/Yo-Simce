@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultContentView;
 import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultHeaderView;
+import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultSidebarView;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.ModuleSelectorView;
@@ -20,5 +22,8 @@ public interface ClientFactory {
 	NotLoggedView getNotLoggedView();
 	ModuleSelectorView getModuleSelectorView();
 	PlanAndResultHeaderView getPlanAndResultHeaderView();
+	PlanAndResultSidebarView getPlanAndResultSidebarView();
+	PlanAndResultContentView getPlanAndResultContentView();
+	
 	
 }

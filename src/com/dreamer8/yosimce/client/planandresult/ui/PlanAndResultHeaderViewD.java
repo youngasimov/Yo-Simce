@@ -1,7 +1,6 @@
 package com.dreamer8.yosimce.client.planandresult.ui;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
@@ -32,6 +31,9 @@ public class PlanAndResultHeaderViewD extends Composite implements PlanAndResult
 	@UiField ListBox tipoBox;
 	
 	private Presenter presenter;
+	private ArrayList<AplicacionDTO> aplicaciones;
+	private ArrayList<NivelDTO> niveles;
+	private ArrayList<ActividadTipoDTO> tipos;
 	
 	public PlanAndResultHeaderViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -51,59 +53,82 @@ public class PlanAndResultHeaderViewD extends Composite implements PlanAndResult
 	
 	@UiHandler("actividadBox")
 	void onActividadBoxChange(ChangeEvent event){
-		
+		int aplicacionId = Integer.parseInt(actividadBox.getValue(actividadBox.getSelectedIndex()));
+		for(AplicacionDTO aplicacion: aplicaciones){
+			if(aplicacion.getId() == aplicacionId){
+				presenter.onAplicacionChange(aplicacion);
+				return;
+			}
+		}
 	}
 	
 	@UiHandler("nivelBox")
 	void onNivelBoxChange(ChangeEvent event){
-		
+		int nivelId = Integer.parseInt(nivelBox.getValue(nivelBox.getSelectedIndex()));
+		for(NivelDTO nivel:niveles){
+			if(nivel.getId() == nivelId){
+				presenter.onNivelChange(nivel);
+				return;
+			}
+		}
 	}
 	
 	@UiHandler("tipoBox")
 	void onTipoBoxChange(ChangeEvent event){
-		
+		int tipoId = Integer.parseInt(tipoBox.getValue(tipoBox.getSelectedIndex()));
+		for(ActividadTipoDTO tipo:tipos){
+			if(tipo.getId() == tipoId){
+				presenter.onTipoChange(tipo);
+				return;
+			}
+		}
 	}
 
 	@Override
 	public void exportActionVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		exportAction.setVisible(visible);
 	}
 
 	@Override
 	public void actividadBoxVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		actividadBox.setVisible(visible);
 	}
 
 	@Override
 	public void nivelBoxVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		nivelBox.setVisible(visible);
 	}
 
 	@Override
 	public void tipoBoxVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		tipoBox.setVisible(visible);
 	}
 
 	@Override
 	public void setAplicacionList(ArrayList<AplicacionDTO> aplicaciones) {
-		// TODO Auto-generated method stub
-		
+		actividadBox.clear();
+		for(AplicacionDTO aplicacion:aplicaciones){
+			actividadBox.addItem(aplicacion.getNombre(), aplicacion.getId()+"");
+		}
+		this.aplicaciones = aplicaciones;
 	}
 
 	@Override
 	public void setNivelList(ArrayList<NivelDTO> niveles) {
-		// TODO Auto-generated method stub
-		
+		nivelBox.clear();
+		for(NivelDTO nivel:niveles){
+			nivelBox.addItem(nivel.getNombre(),nivel.getId()+"");
+		}
+		this.niveles = niveles;
 	}
 
 	@Override
 	public void setTipoList(ArrayList<ActividadTipoDTO> tipos) {
-		// TODO Auto-generated method stub
-		
+		tipoBox.clear();
+		for(ActividadTipoDTO tipo:tipos){
+			tipoBox.addItem(tipo.getNombre(), tipo.getId()+"");
+		}
+		this.tipos = tipos;
 	}
 
 }
