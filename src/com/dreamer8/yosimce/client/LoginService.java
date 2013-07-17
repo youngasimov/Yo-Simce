@@ -1,10 +1,27 @@
 package com.dreamer8.yosimce.client;
 
+import java.util.ArrayList;
+
+import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
+import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
+import com.dreamer8.yosimce.shared.dto.NivelDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.dreamer8.yosimce.shared.exceptions.DBException;
+import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
+import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 public interface LoginService extends RemoteService {
 
-	UserDTO getUser(String token);
-	
+	public UserDTO getUser(String token) throws NoLoggedException, DBException;
+
+	public ArrayList<AplicacionDTO> getAplicaciones()
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	public ArrayList<NivelDTO> getNiveles(Integer idAplicacion)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	public ArrayList<ActividadTipoDTO> getActividadTipos(Integer idAplicacion,
+			Integer idNivel) throws NoAllowedException, NoLoggedException,
+			DBException;
 }
