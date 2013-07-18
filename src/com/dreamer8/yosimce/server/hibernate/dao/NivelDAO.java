@@ -27,13 +27,12 @@ public class NivelDAO extends AbstractHibernateDAO<Nivel, Integer> {
 
 		List<Nivel> ns = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT n.* FROM USUARIO_SELECCION us"
-				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
-				+ SecurityFilter.escapeString(idUsuario)
-				+ ")"
-				+ " JOIN APLICACION_x_NIVEL axn ON uxaxn.aplicacion_x_nivel_id=axn.id"
-				+ " JOIN NIVEL n ON (axn.nivel_id=n.id AND axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion) + ")";
+		String query = "SELECT n.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn "
+				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + ")"
+				+ " JOIN NIVEL n ON axn.nivel_id=n.id "
+				+ " WHERE uxaxn.usuario_id="
+				+ SecurityFilter.escapeString(idUsuario) + ")";
 		Query q = s.createSQLQuery(query).addEntity(Nivel.class);
 		ns = q.list();
 		return ns;

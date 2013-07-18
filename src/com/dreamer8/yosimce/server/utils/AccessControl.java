@@ -19,103 +19,160 @@ import javax.servlet.http.HttpServletRequest;
 import org.hibernate.Session;
 
 /**
- *
+ * 
  * @author jorge
  */
 public class AccessControl {
 
-    public static final String TOKEN_COOKIE_NAME = "token";
-    private HttpSession session = null;
-    private HttpServletRequest request = null;
+	public static final String TOKEN_COOKIE_NAME = "token";
+	public static final String APLICACION_COOKIE_NAME = "a";
+	public static final String NIVEL_COOKIE_NAME = "n";
+	public static final String ACTIVIDAD_TIPO_COOKIE_NAME = "t";
+	private HttpSession session = null;
+	private HttpServletRequest request = null;
+	private Integer idAplicacion = null;
+	private Integer idNivel = null;
+	private Integer idActividadTipo = null;
 
-    public AccessControl(HttpServletRequest request) {
-	this.request = request;
-	this.session = request.getSession();
-    }
-
-    private HttpSession getSession() {
-	return this.session;
-    }
-
-    public boolean isLogged() throws NoLoggedException {
-	Usuario usuario = (Usuario) this.session.getAttribute("usuario");
-
-	if (usuario != null) {
-	    return true;
+	public AccessControl(HttpServletRequest request) {
+		this.request = request;
+		this.session = request.getSession();
 	}
 
-	Cookie cookie = null;
-	for (Cookie c : this.request.getCookies()) {
-	    if (c.getName().equals(TOKEN_COOKIE_NAME)) {
-		cookie = c;
-		break;
-	    }
-	}
-	if (cookie != null) {
-	    Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-	    s.beginTransaction();
-	    SesionDAO sdao = new SesionDAO();
-	    List<Sesion> ss = sdao.findBySessionValue(cookie.getValue());
-	    if (!ss.isEmpty()) {
-		usuario = ss.get(0).getUsuario();
-		this.session.setAttribute("usuario", usuario);
-	    }
-	    s.getTransaction().commit();
-	    if (usuario != null) {
-		return true;
-	    }
+	private HttpSession getSession() {
+		return this.session;
 	}
 
-	throw new NoLoggedException();
-    }
-    
-    public Integer getIdAplicacion() {
-    	return null;
-    }
-    
-    public Integer getIdNivel() {
-    	return null;
-    }
-    
-    public Integer getIdActividadTipo() {
-    	return null;
-    }
+	public boolean isLogged() throws NoLoggedException {
+		Usuario usuario = (Usuario) this.session.getAttribute("usuario");
 
-    public boolean isAllowed(String className, String methodName) throws NoAllowedException {
-	Usuario usuario = (Usuario) this.session.getAttribute("usuario");
-	/*
-	 * if (usuario != null && usuario.getPermiso(className, methodName) ==
-	 * 1) { return true; }
-	 *
-	 */
-	if (true) {
-	    return true;
-	}
-	throw new NoAllowedException("El usuario no está autorizado para ejecutar "
-	    + methodName + " en la clase " + className);
-    }
+		if (usuario != null) {
+			return true;
+		}
 
-    public boolean isAllowed(String methodName) throws NoAllowedException {
-	if (true) {
-	    return true;
-	}
-	throw new NoAllowedException("El usuario no está autorizado para ejecutar "
-	    + methodName);
-    }
+		Cookie cookie = null;
+		for (Cookie c : this.request.getCookies()) {
+			if (c.getName().equals(TOKEN_COOKIE_NAME)) {
+				cookie = c;
+				break;
+			}
+		}
+		if (cookie != null) {
+			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+			s.beginTransaction();
+			SesionDAO sdao = new SesionDAO();
+			List<Sesion> ss = sdao.findBySessionValue(cookie.getValue());
+			if (!ss.isEmpty()) {
+				usuario = ss.get(0).getUsuario();
+				this.session.setAttribute("usuario", usuario);
+			}
+			s.getTransaction().commit();
+			if (usuario != null) {
+				return true;
+			}
+		}
 
-    public static boolean isLoggedAndAllowed(HttpServletRequest request, String className, String methodName) throws NoLoggedException, NoAllowedException {
-	AccessControl ac = new AccessControl(request);
-	try {
-	    if (ac.isLogged() && ac.isAllowed(className, methodName)) {
-		return true;
-	    }
-	} catch (NoLoggedException e) {
-	    Logger.getLogger(className).log(Level.SEVERE, null, e);
-	    throw e;
-	} catch (NoAllowedException e) {
-	    Logger.getLogger(className).log(Level.SEVERE, null, e);
-	    throw e;
+		throw new NoLoggedException();
 	}
-	return false;
-    }
+
+	public Integer getIdAplicacion() {
+		if (idAplicacion == null) {
+			Cookie cookie = null;
+			for (Cookie c : this.request.getCookies()) {
+				if (c.getName().equals(APLICACION_COOKIE_NAME)) {
+					cookie = c;
+					break;
+				}
+			}
+			if (cookie != null) {
+				try {
+					idAplicacion = Integer.parseInt(cookie.getValue());
+				} catch (NumberFormatException ex) {
+					idAplicacion = null;
+				}
+			}
+		}
+		return idAplicacion;
+	}
+
+	public Integer getIdNivel() {
+		if (idNivel == null) {
+			Cookie cookie = null;
+			for (Cookie c : this.request.getCookies()) {
+				if (c.getName().equals(NIVEL_COOKIE_NAME)) {
+					cookie = c;
+					break;
+				}
+			}
+			if (cookie != null) {
+				try {
+					idNivel = Integer.parseInt(cookie.getValue());
+				} catch (NumberFormatException ex) {
+					idNivel = null;
+				}
+			}
+		}
+		return idNivel;
+	}
+
+	public Integer getIdActividadTipo() {
+		if (idActividadTipo == null) {
+			Cookie cookie = null;
+			for (Cookie c : this.request.getCookies()) {
+				if (c.getName().equals(ACTIVIDAD_TIPO_COOKIE_NAME)) {
+					cookie = c;
+					break;
+				}
+			}
+			if (cookie != null) {
+				try {
+					idActividadTipo = Integer.parseInt(cookie.getValue());
+				} catch (NumberFormatException ex) {
+					idActividadTipo = null;
+				}
+			}
+		}
+		return idActividadTipo;
+	}
+
+	public boolean isAllowed(String className, String methodName)
+			throws NoAllowedException {
+		Usuario usuario = (Usuario) this.session.getAttribute("usuario");
+		/*
+		 * if (usuario != null && usuario.getPermiso(className, methodName) ==
+		 * 1) { return true; }
+		 */
+		if (true) {
+			return true;
+		}
+		throw new NoAllowedException(
+				"El usuario no está autorizado para ejecutar " + methodName
+						+ " en la clase " + className);
+	}
+
+	public boolean isAllowed(String methodName) throws NoAllowedException {
+		if (true) {
+			return true;
+		}
+		throw new NoAllowedException(
+				"El usuario no está autorizado para ejecutar " + methodName);
+	}
+
+	public static boolean isLoggedAndAllowed(HttpServletRequest request,
+			String className, String methodName) throws NoLoggedException,
+			NoAllowedException {
+		AccessControl ac = new AccessControl(request);
+		try {
+			if (ac.isLogged() && ac.isAllowed(className, methodName)) {
+				return true;
+			}
+		} catch (NoLoggedException e) {
+			Logger.getLogger(className).log(Level.SEVERE, null, e);
+			throw e;
+		} catch (NoAllowedException e) {
+			Logger.getLogger(className).log(Level.SEVERE, null, e);
+			throw e;
+		}
+		return false;
+	}
 }
