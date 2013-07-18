@@ -10,8 +10,13 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.LoginService;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.NivelDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.PermisoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.SesionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion;
+import com.dreamer8.yosimce.server.hibernate.pojo.Nivel;
+import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Sesion;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.utils.AccessControl;
@@ -37,7 +42,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			AccessControl ac = getAccessControl();
-			if (ac.isLogged() && ac.isAllowed(className, "getUser")) {
+			if (ac.isLogged()) {
 
 				if (token == null) {
 					throw new NullPointerException(
@@ -88,12 +93,18 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			AccessControl ac = getAccessControl();
-			if (ac.isLogged() && ac.isAllowed(className, "getAplicaciones")) {
+			if (ac.isLogged()) {
 
 				s.beginTransaction();
 
 				Usuario u = getUsuarioActual();
 				AplicacionDAO adao = new AplicacionDAO();
+				List<Aplicacion> as = adao.findByIdUsuario(u.getId());
+				if (as != null && !as.isEmpty()) {
+					for (Aplicacion a : as) {
+						adtos.add(a.getAplicacionDTO());
+					}
+				}
 
 				s.getTransaction().commit();
 			}
@@ -115,18 +126,51 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getNiveles
 	 */
 	@Override
-	public ArrayList<NivelDTO> getNiveles(Integer idAplicacion)
+	public ArrayList<NivelDTO> getNiveles()
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+		
+
+		ArrayList<NivelDTO> ndtos = new ArrayList<NivelDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()) {
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				s.beginTransaction();
+				Usuario u = getUsuarioActual();
+				NivelDAO ndao = new NivelDAO();
+				List<Nivel> ns = ndao.findByIdAplicacionANDIdUsuario(idAplicacion,u.getId());
+				if (ns != null && !ns.isEmpty()) {
+					for (Nivel nivel : ns) {
+						ndtos.add(nivel.getNivelDTO());
+					}
+				}
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return ndtos;
 	}
 
 	/**
 	 * @permiso getActividadTipos
 	 */
 	@Override
-	public ArrayList<ActividadTipoDTO> getActividadTipos(Integer idAplicacion,
-			Integer idNivel) throws NoAllowedException, NoLoggedException,
+	public ArrayList<ActividadTipoDTO> getActividadTipos() throws NoAllowedException, NoLoggedException,
 			DBException {
 		// TODO Auto-generated method stub
 		return null;
@@ -136,22 +180,44 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getUsuarioPermisos
 	 */
 	@Override
-	public HashMap<String, ArrayList<String>> getUsuarioPermisos(
-			Integer idAplicacion) throws NoAllowedException, NoLoggedException,
-			DBException {
+	public HashMap<String, ArrayList<String>> getUsuarioPermisos() throws NoAllowedException,
+			NoLoggedException, DBException {
 
 		HashMap<String, ArrayList<String>> permisos = new HashMap<String, ArrayList<String>>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			AccessControl ac = getAccessControl();
-			if (ac.isLogged() && ac.isAllowed(className, "getUsuarioPermisos")) {
+			if (ac.isLogged()) {
+				
+				Integer idAplicacion = ac.getIdAplicacion();
+				Integer idNivel = ac.getIdNivel();
 
 				if (idAplicacion == null) {
 					throw new NullPointerException(
 							"No se ha especificado una aplicación.");
 				}
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
 				s.beginTransaction();
-
+				PermisoDAO pdao = new PermisoDAO();
+				List<Permiso> ps = pdao
+						.findByIdAplicacionANDIdNivelANDIdUsuario(idAplicacion,
+								idNivel, getUsuarioActual().getId());
+				ArrayList<String> metodos;
+				if (ps != null && !ps.isEmpty()) {
+					for (Permiso p : ps) {
+						if (permisos.containsKey(p.getClase())) {
+							metodos = permisos.get(p.getClase());
+							metodos.add(p.getMetodo());
+						} else {
+							metodos = new ArrayList<String>();
+							metodos.add(p.getMetodo());
+							permisos.put(p.getClase(), metodos);
+						}
+					}
+				}
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {

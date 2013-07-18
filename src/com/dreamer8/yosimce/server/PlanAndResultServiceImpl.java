@@ -29,7 +29,6 @@ public class PlanAndResultServiceImpl extends CustomRemoteServiceServlet
 	 */
 	@Override
 	public ArrayList<EstablecimientoDTO> getEstablecimientos(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer offset, Integer lenght, Map<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException {
 		
@@ -39,6 +38,10 @@ public class PlanAndResultServiceImpl extends CustomRemoteServiceServlet
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getEstablecimientos")) {
+				
+				Integer idAplicacion = ac.getIdAplicacion();
+				Integer idNivel = ac.getIdNivel();
+				Integer idActividadTipo = ac.getIdActividadTipo();
 
 				if (idAplicacion == null) {
 					throw new NullPointerException(

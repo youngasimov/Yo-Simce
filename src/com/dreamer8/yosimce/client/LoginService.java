@@ -19,14 +19,12 @@ public interface LoginService extends RemoteService {
 	public ArrayList<AplicacionDTO> getAplicaciones()
 			throws NoAllowedException, NoLoggedException, DBException;
 
-	public ArrayList<NivelDTO> getNiveles(Integer idAplicacion)
+	public ArrayList<NivelDTO> getNiveles() throws NoAllowedException,
+			NoLoggedException, DBException;
+
+	public ArrayList<ActividadTipoDTO> getActividadTipos()
 			throws NoAllowedException, NoLoggedException, DBException;
 
-	public ArrayList<ActividadTipoDTO> getActividadTipos(Integer idAplicacion,
-			Integer idNivel) throws NoAllowedException, NoLoggedException,
-			DBException;
-
-	public HashMap<String, ArrayList<String>> getUsuarioPermisos(
-			Integer idAplicacion) throws NoAllowedException, NoLoggedException,
-			DBException;
+	public HashMap<String, ArrayList<String>> getUsuarioPermisos()
+			throws NoAllowedException, NoLoggedException, DBException;
 }

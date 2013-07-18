@@ -8,8 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface PlanAndResultServiceAsync {
 
-	void getEstablecimientos(Integer idAplicacion, Integer idNivel,
-			Integer idActividadTipo, Integer offset, Integer lenght,
+	void getEstablecimientos(Integer offset, Integer lenght,
 			Map<String, String> filtros,
 			AsyncCallback<ArrayList<EstablecimientoDTO>> callback);
 

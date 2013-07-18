@@ -15,13 +15,11 @@ public interface LoginServiceAsync {
 
 	void getAplicaciones(AsyncCallback<ArrayList<AplicacionDTO>> callback);
 
-	void getNiveles(Integer idAplicacion,
-			AsyncCallback<ArrayList<NivelDTO>> callback);
+	void getNiveles(AsyncCallback<ArrayList<NivelDTO>> callback);
 
-	void getActividadTipos(Integer idAplicacion, Integer idNivel,
-			AsyncCallback<ArrayList<ActividadTipoDTO>> callback);
+	void getActividadTipos(AsyncCallback<ArrayList<ActividadTipoDTO>> callback);
 
-	void getUsuarioPermisos(Integer idAplicacion,
+	void getUsuarioPermisos(
 			AsyncCallback<HashMap<String, ArrayList<String>>> callback);
 
 }

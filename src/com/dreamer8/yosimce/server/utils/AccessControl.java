@@ -68,6 +68,18 @@ public class AccessControl {
 
 	throw new NoLoggedException();
     }
+    
+    public Integer getIdAplicacion() {
+    	return null;
+    }
+    
+    public Integer getIdNivel() {
+    	return null;
+    }
+    
+    public Integer getIdActividadTipo() {
+    	return null;
+    }
 
     public boolean isAllowed(String className, String methodName) throws NoAllowedException {
 	Usuario usuario = (Usuario) this.session.getAttribute("usuario");
