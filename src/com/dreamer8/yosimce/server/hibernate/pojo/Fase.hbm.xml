@@ -26,9 +26,6 @@
         <property name="final_" type="java.lang.Boolean">
             <column name="final" />
         </property>
-        <property name="aplicacionId" type="java.lang.Integer">
-            <column name="aplicacion_id" />
-        </property>
         <bag name="faseXAplicacions" table="fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="fase_id" />

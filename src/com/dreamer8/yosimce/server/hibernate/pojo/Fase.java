@@ -17,8 +17,8 @@ public class Fase implements java.io.Serializable {
 	private String descripcion;
 	private Boolean permitirPaso;
 	private Boolean final_;
-	private Integer aplicacionId;
-	private List<FaseXAplicacion> faseXAplicacions = new ArrayList<FaseXAplicacion>(0);
+	private List<FaseXAplicacion> faseXAplicacions = new ArrayList<FaseXAplicacion>(
+			0);
 
 	public Fase() {
 	}
@@ -29,7 +29,7 @@ public class Fase implements java.io.Serializable {
 
 	public Fase(Integer id, String nombre, Integer orden, String accion,
 			String descripcion, Boolean permitirPaso, Boolean final_,
-			Integer aplicacionId, List<FaseXAplicacion> faseXAplicacions) {
+			List<FaseXAplicacion> faseXAplicacions) {
 		this.id = id;
 		this.nombre = nombre;
 		this.orden = orden;
@@ -37,7 +37,6 @@ public class Fase implements java.io.Serializable {
 		this.descripcion = descripcion;
 		this.permitirPaso = permitirPaso;
 		this.final_ = final_;
-		this.aplicacionId = aplicacionId;
 		this.faseXAplicacions = faseXAplicacions;
 	}
 
@@ -95,14 +94,6 @@ public class Fase implements java.io.Serializable {
 
 	public void setFinal_(Boolean final_) {
 		this.final_ = final_;
-	}
-
-	public Integer getAplicacionId() {
-		return this.aplicacionId;
-	}
-
-	public void setAplicacionId(Integer aplicacionId) {
-		this.aplicacionId = aplicacionId;
 	}
 
 	public List<FaseXAplicacion> getFaseXAplicacions() {

@@ -10,6 +10,7 @@ public class UsuarioXComuna implements java.io.Serializable {
 	private Integer id;
 	private Usuario usuario;
 	private Comuna comuna;
+	private Integer prioridad;
 
 	public UsuarioXComuna() {
 	}
@@ -46,6 +47,14 @@ public class UsuarioXComuna implements java.io.Serializable {
 
 	public void setComuna(Comuna comuna) {
 		this.comuna = comuna;
+	}
+
+	public Integer getPrioridad() {
+		return prioridad;
+	}
+
+	public void setPrioridad(Integer prioridad) {
+		this.prioridad = prioridad;
 	}
 
 }

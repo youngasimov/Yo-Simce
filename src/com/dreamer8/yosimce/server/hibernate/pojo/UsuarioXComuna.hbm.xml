@@ -9,6 +9,9 @@
             <column name="id" />
             <generator class="assigned" />
         </id>
+        <property name="prioridad" type="java.lang.Integer">
+            <column name="prioridad" />
+        </property>
         <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
             <column name="usuario_id" />
         </many-to-one>
