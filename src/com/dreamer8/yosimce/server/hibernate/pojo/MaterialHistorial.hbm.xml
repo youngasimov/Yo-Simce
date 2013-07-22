@@ -21,6 +21,9 @@
         <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" fetch="select">
             <column name="actividad_id" />
         </many-to-one>
+        <many-to-one name="receptor" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+            <column name="receptor_id" />
+        </many-to-one>
         <many-to-one name="material" class="com.dreamer8.yosimce.server.hibernate.Material" update="false" insert="false" fetch="select">
             <column name="material_id" not-null="true" />
         </many-to-one>

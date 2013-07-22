@@ -15,6 +15,7 @@ public class MaterialHistorial implements java.io.Serializable {
 	private Co co;
 	private MaterialEstado materialEstado;
 	private Integer modificadorId;
+	private Usuario receptor;
 
 	public MaterialHistorial() {
 	}
@@ -99,6 +100,14 @@ public class MaterialHistorial implements java.io.Serializable {
 
 	public void setModificadorId(Integer modificadorId) {
 		this.modificadorId = modificadorId;
+	}
+
+	public Usuario getReceptor() {
+		return receptor;
+	}
+
+	public void setReceptor(Usuario receptor) {
+		this.receptor = receptor;
 	}
 
 }

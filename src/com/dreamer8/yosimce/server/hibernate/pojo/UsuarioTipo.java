@@ -10,16 +10,40 @@ import java.util.List;
  */
 public class UsuarioTipo implements java.io.Serializable {
 
+	public static final String ADMINISTRADOR = "Administrador";
+	public static final String MINISTERIO = "Ministerio";
+	public static final String MINISTERIO_TIC = "Ministerio TIC";
+	public static final String JEFE_PROYECTO = "Jefe de Proyecto";
+	public static final String JEFE_REGIONAL = "Jefe Regional";
+	public static final String JEFE_ZONAL = "Jefe Zonal";
+	public static final String LOGISTICA_Y_SOPORTE = "Encargado de Logística y Soporte Técnico";
+	public static final String JEFE_CO = "Jefe de Centro de Operaciones";
+	public static final String SUPERVISOR = "Supervisor";
+	public static final String EXAMINADOR = "Examinador";
+	public static final String EXAMINADOR_NEE = "Examinador NEE";
+	public static final String SUPLENTE = "Examinador Suplente";
+	public static final String SUPERVISOR_LISTA_ESPERA = "Supervisor Lista de Espera";
+	public static final String EXAMINADOR_LISTA_ESPERA = "Examinador Lista de Espera";
+	public static final String OPERADOR_CALLCENTER ="Operador Centro de Llamados";
+	public static final String CAPACITADOR = "Capacitador";
+	public static final String COORDINADOR_EMPRESA_COMP = "Coordinador Empresa Computación";
+
 	private Integer id;
 	private String nombre;
 	private Boolean firmaContrato;
 	private Integer ccCapacidad;
-	private List<CcCapacitacion> ccCapacitacions = new ArrayList<CcCapacitacion>(0);
-	private List<AplicacionXNivelXUsuarioTipo> aplicacionXNivelXUsuarioTipos = new ArrayList<AplicacionXNivelXUsuarioTipo>(0);
-	private List<FaseXAplicacionXTestXNivelXTipoUsuario> faseXAplicacionXTestXNivelXTipoUsuarios = new ArrayList<FaseXAplicacionXTestXNivelXTipoUsuario>(0);
-	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(0);
-	private List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos = new ArrayList<AplicacionXUsuarioTipo>(0);
-	private List<UsuarioSeleccion> usuarioSeleccions = new ArrayList<UsuarioSeleccion>(0);
+	private List<CcCapacitacion> ccCapacitacions = new ArrayList<CcCapacitacion>(
+			0);
+	private List<AplicacionXNivelXUsuarioTipo> aplicacionXNivelXUsuarioTipos = new ArrayList<AplicacionXNivelXUsuarioTipo>(
+			0);
+	private List<FaseXAplicacionXTestXNivelXTipoUsuario> faseXAplicacionXTestXNivelXTipoUsuarios = new ArrayList<FaseXAplicacionXTestXNivelXTipoUsuario>(
+			0);
+	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(
+			0);
+	private List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos = new ArrayList<AplicacionXUsuarioTipo>(
+			0);
+	private List<UsuarioSeleccion> usuarioSeleccions = new ArrayList<UsuarioSeleccion>(
+			0);
 
 	public UsuarioTipo() {
 	}
@@ -28,11 +52,16 @@ public class UsuarioTipo implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public UsuarioTipo(Integer id, String nombre, Boolean firmaContrato,
-			Integer ccCapacidad, List<CcCapacitacion> ccCapacitacions,
+	public UsuarioTipo(
+			Integer id,
+			String nombre,
+			Boolean firmaContrato,
+			Integer ccCapacidad,
+			List<CcCapacitacion> ccCapacitacions,
 			List<AplicacionXNivelXUsuarioTipo> aplicacionXNivelXUsuarioTipos,
 			List<FaseXAplicacionXTestXNivelXTipoUsuario> faseXAplicacionXTestXNivelXTipoUsuarios,
-			List<UsuarioPreseleccion> usuarioPreseleccions, List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos,
+			List<UsuarioPreseleccion> usuarioPreseleccions,
+			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos,
 			List<UsuarioSeleccion> usuarioSeleccions) {
 		this.id = id;
 		this.nombre = nombre;
@@ -108,7 +137,8 @@ public class UsuarioTipo implements java.io.Serializable {
 		return this.usuarioPreseleccions;
 	}
 
-	public void setUsuarioPreseleccions(List<UsuarioPreseleccion> usuarioPreseleccions) {
+	public void setUsuarioPreseleccions(
+			List<UsuarioPreseleccion> usuarioPreseleccions) {
 		this.usuarioPreseleccions = usuarioPreseleccions;
 	}
 
@@ -116,7 +146,8 @@ public class UsuarioTipo implements java.io.Serializable {
 		return this.aplicacionXUsuarioTipos;
 	}
 
-	public void setAplicacionXUsuarioTipos(List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos) {
+	public void setAplicacionXUsuarioTipos(
+			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos) {
 		this.aplicacionXUsuarioTipos = aplicacionXUsuarioTipos;
 	}
 

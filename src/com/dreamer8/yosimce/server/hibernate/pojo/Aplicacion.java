@@ -15,6 +15,7 @@ public class Aplicacion implements java.io.Serializable {
 	private Integer id;
 	private String nombre;
 	private Integer tiempoDetencionEstablecimiento;
+	private Integer diasPreviosSinMaterial;
 	private List<CentroRegional> centroRegionals = new ArrayList<CentroRegional>(
 			0);
 	private List<AplicacionXNivel> aplicacionXNivels = new ArrayList<AplicacionXNivel>(
@@ -115,6 +116,14 @@ public class Aplicacion implements java.io.Serializable {
 	public void setAplicacionXUsuarioTipos(
 			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos) {
 		this.aplicacionXUsuarioTipos = aplicacionXUsuarioTipos;
+	}
+
+	public Integer getDiasPreviosSinMaterial() {
+		return diasPreviosSinMaterial;
+	}
+
+	public void setDiasPreviosSinMaterial(Integer diasPreviosSinMaterial) {
+		this.diasPreviosSinMaterial = diasPreviosSinMaterial;
 	}
 
 	public AplicacionDTO getAplicacionDTO() {

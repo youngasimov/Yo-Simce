@@ -21,7 +21,8 @@ public class EstablecimientoDAO extends
 
 	public List<Establecimiento> findEstablecimientosByActividadWithFilters(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer offset, Integer lenght, Map<String, String> filtros) {
+			Integer idUsuario, String usuarioTipo, Integer offset,
+			Integer lenght, Map<String, String> filtros) {
 
 		List<Establecimiento> es = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
