@@ -12,5 +12,6 @@
   <property name="hibernate.default_entity_mode">pojo</property>
   <property name="hibernate.order_inserts">true</property>
   <property name="hibernate.order_updates">true</property>
+  <property name="hibernate.current_session_context_class">thread</property>
  </session-factory>
 </hibernate-configuration>
