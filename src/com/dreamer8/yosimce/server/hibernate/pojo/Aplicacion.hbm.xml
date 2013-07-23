@@ -14,6 +14,9 @@
         <property name="tiempoDetencionEstablecimiento" type="java.lang.Integer">
             <column name="tiempo_detencion_establecimiento" />
         </property>
+        <property name="diasPreviosSinMaterial" type="java.lang.Integer">
+            <column name="dias_previos_sin_material" />
+        </property>
         <bag name="centroRegionals" table="centro_regional" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />

@@ -15,10 +15,12 @@ public class UsuarioSeleccion implements java.io.Serializable {
 	private UsuarioTipo usuarioTipo;
 	private UsuarioXAplicacionXNivel usuarioXAplicacionXNivel;
 	private Integer montoPago;
+	private Boolean pagado;
 	private Boolean contratoFirmado;
 	private Date fechaFirma;
 	private Boolean asistencia;
-	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
+			0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
 
 	public UsuarioSeleccion() {
@@ -31,7 +33,8 @@ public class UsuarioSeleccion implements java.io.Serializable {
 	public UsuarioSeleccion(Integer id, UsuarioTipo usuarioTipo,
 			UsuarioXAplicacionXNivel usuarioXAplicacionXNivel,
 			Integer montoPago, Boolean contratoFirmado, Date fechaFirma,
-			Boolean asistencia, List<UsuarioXActividad> usuarioXActividads, List<SuplenteXCo> suplenteXCos) {
+			Boolean asistencia, List<UsuarioXActividad> usuarioXActividads,
+			List<SuplenteXCo> suplenteXCos) {
 		this.id = id;
 		this.usuarioTipo = usuarioTipo;
 		this.usuarioXAplicacionXNivel = usuarioXAplicacionXNivel;
@@ -74,6 +77,14 @@ public class UsuarioSeleccion implements java.io.Serializable {
 
 	public void setMontoPago(Integer montoPago) {
 		this.montoPago = montoPago;
+	}
+
+	public Boolean getPagado() {
+		return pagado;
+	}
+
+	public void setPagado(Boolean pagado) {
+		this.pagado = pagado;
 	}
 
 	public Boolean getContratoFirmado() {

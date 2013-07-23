@@ -18,6 +18,9 @@
         <property name="montoPago" type="java.lang.Integer">
             <column name="monto_pago" />
         </property>
+        <property name="pagado" type="java.lang.Boolean">
+            <column name="pagado" />
+        </property>
         <property name="contratoFirmado" type="java.lang.Boolean">
             <column name="contrato_firmado" />
         </property>

@@ -42,6 +42,9 @@
         <property name="contactoEmail" type="string">
             <column name="contacto_email" />
         </property>
+        <property name="sinMaterial" type="java.lang.Boolean">
+            <column name="sin_material" />
+        </property>
         <bag name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />

@@ -23,6 +23,7 @@ public class Actividad implements java.io.Serializable {
 	private String contactoNombre;
 	private String contactoTelefono;
 	private String contactoEmail;
+	private Boolean sinMaterial;
 	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(0);
 	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
 	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
@@ -169,6 +170,16 @@ public class Actividad implements java.io.Serializable {
 
 	public void setContactoEmail(String contactoEmail) {
 		this.contactoEmail = contactoEmail;
+	}
+	
+	
+
+	public Boolean getSinMaterial() {
+		return sinMaterial;
+	}
+
+	public void setSinMaterial(Boolean sinMaterial) {
+		this.sinMaterial = sinMaterial;
 	}
 
 	public List<AlumnoXActividad> getAlumnoXActividads() {
