@@ -49,6 +49,12 @@
 			text-decoration: none;
 		}
 		
+		.username{
+			font-weight: normal;
+			font-size: 1em;
+			height: 100%;
+		}
+		
 		.actividades{
 			float: right;
 			height: 100%;
@@ -64,8 +70,7 @@
 	
 		<ul class='{style.leftbar}'>
 			<li class='{style.logo}'><a href='http://www.yosimce.cl'>YoSimce</a></li>
-			<li>Planificación y Resultados</li>
-			<li><g:Anchor ui:field="exportAction"/></li>
+			<li class='{style.username}'><g:HTML ui:field="username"/></li>
 		</ul>
 		<div class='{style.actividades}'>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="actividadBox"/>

@@ -1,10 +1,5 @@
 package com.dreamer8.yosimce.client;
 
-import com.dreamer8.yosimce.client.activity.ContentActivityMapper;
-import com.dreamer8.yosimce.client.activity.HeaderActivityMapper;
-import com.dreamer8.yosimce.client.activity.ModuleSelectorPlace;
-import com.dreamer8.yosimce.client.activity.SideBarActivityMapper;
-import com.dreamer8.yosimce.client.activity.SimceActivityMapper;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.activity.shared.ActivityManager;
@@ -49,6 +44,10 @@ public class YoSimce implements EntryPoint {
 		
 		panel.setWidget(loadView);
 		
+		Cookies.removeCookie("a");
+		Cookies.removeCookie("n");
+		Cookies.removeCookie("t");
+		
 		loadView.setMessage("Comprobando permisos de usuario...");
 		
 		LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
@@ -81,11 +80,22 @@ public class YoSimce implements EntryPoint {
 	
 	private void loadApp(){
 		
+		//solo para testing
+		user = new UserDTO();
+		user.setNombres("camilo ignacio");
+		user.setApellidoPaterno("Vera");
+		user.setApellidoMaterno("Cortés");
+		user.setEmail("camilo.vera@live.com");
+		user.setUsername("16370885");
+		user.setId(5);
+		
+		
+		
+		
 		if(user == null){
-			//defaultPlace = new NotLoggedPlace();
-			defaultPlace = new ModuleSelectorPlace();
+			defaultPlace = new NotLoggedPlace();
 		}else{
-			defaultPlace = new ModuleSelectorPlace();
+			defaultPlace = new SimcePlace();
 		}
 		
 		GWT.runAsync(new RunAsyncCallback() {
@@ -105,21 +115,17 @@ public class YoSimce implements EntryPoint {
 	
 	private void load(){
 		
+		AppPresenter app = new AppPresenter(factory);
+		app.setDisplay(panel);
+		
+		HeaderPresenter header = new HeaderPresenter(factory, user);
+		header.setDisplay(factory.getAppView().getHeaderView());
+		
+		SidebarPresenter sidebar = new SidebarPresenter();
+		sidebar.setDisplay(factory.getAppView().getSideBarPanel());
 		
 		
-		SimceActivityMapper simceActivityMapper = new SimceActivityMapper(factory, user);
-		ActivityManager simceActivityManager = new ActivityManager(simceActivityMapper,factory.getEventBus());
-		simceActivityManager.setDisplay(panel);
-		
-		HeaderActivityMapper headerActivityMapper = new HeaderActivityMapper(factory, user);
-		ActivityManager headerActivityManager = new ActivityManager(headerActivityMapper, factory.getEventBus());
-		headerActivityManager.setDisplay(factory.getAppView().getHeaderView());
-		
-		SideBarActivityMapper sideBarActivityMapper = new SideBarActivityMapper(factory, user);
-		ActivityManager sideBarActivityManager = new ActivityManager(sideBarActivityMapper, factory.getEventBus());
-		sideBarActivityManager.setDisplay(factory.getAppView().getSideBarPanel());
-		
-		ContentActivityMapper contentActivityMapper = new ContentActivityMapper(factory, user);
+		ContentActivityMapper contentActivityMapper = new ContentActivityMapper(factory);
 		ActivityManager contentActivityManager  = new ActivityManager(contentActivityMapper, factory.getEventBus());
 		contentActivityManager.setDisplay(factory.getAppView().getContentPanel());
 		

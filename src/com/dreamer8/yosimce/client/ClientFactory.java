@@ -1,12 +1,9 @@
 package com.dreamer8.yosimce.client;
 
-import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultContentView;
-import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultHeaderView;
-import com.dreamer8.yosimce.client.planandresult.ui.PlanAndResultSidebarView;
+import com.dreamer8.yosimce.client.activity.planandresult.PlanAndResultServiceAsync;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.LoadView;
-import com.dreamer8.yosimce.client.ui.ModuleSelectorView;
-import com.dreamer8.yosimce.client.ui.NotLoggedView;
+import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.web.bindery.event.shared.EventBus;
@@ -19,11 +16,9 @@ public interface ClientFactory {
 	
 	AppView getAppView();
 	LoadView getLoadView();
-	NotLoggedView getNotLoggedView();
-	ModuleSelectorView getModuleSelectorView();
-	PlanAndResultHeaderView getPlanAndResultHeaderView();
-	PlanAndResultSidebarView getPlanAndResultSidebarView();
-	PlanAndResultContentView getPlanAndResultContentView();
+	LoginServiceAsync getLoginService();
+	PlanAndResultServiceAsync getPlanificacionService();
+	HeaderView getHeaderView();
 	
 	
 }

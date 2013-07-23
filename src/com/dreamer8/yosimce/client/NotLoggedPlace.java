@@ -1,4 +1,4 @@
-package com.dreamer8.yosimce.client.activity;
+package com.dreamer8.yosimce.client;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;

@@ -11,7 +11,7 @@ public interface AppView extends IsWidget {
 	SimpleLayoutPanel getContentPanel();
 	
 	
-	public interface AppPresenter{
+	public interface AppPresenter extends Presenter{
 		
 	}
 }

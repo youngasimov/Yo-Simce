@@ -1,10 +1,9 @@
 package com.dreamer8.yosimce.client.planandresult.activity;
 
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceTokenizer;
+import com.dreamer8.yosimce.client.SimcePlace;
 import com.google.gwt.place.shared.Prefix;
 
-public class PlanAndResultPlace extends Place {
+public class PlanAndResultPlace extends SimcePlace{
 	
 	private String filters;
 	private int tab;
@@ -12,18 +11,18 @@ public class PlanAndResultPlace extends Place {
 	
 	
 	public PlanAndResultPlace(){
+		super();
 		tab = -1;
 		selectedCourse = -1;
 		filters = "";
 	}
 	
-	public PlanAndResultPlace(int tab, int selectedCourse, String filters){
+	public PlanAndResultPlace(int tab, int selectedCourse,int aplicacionId, int nivelId, int tipoId, String filters){
+		super(aplicacionId,nivelId,tipoId);
 		this.tab = tab;
 		this.selectedCourse = selectedCourse;
 		this.filters = filters;
 	}
-	
-	
 	
 	public String getFilters() {
 		return filters;
@@ -39,19 +38,20 @@ public class PlanAndResultPlace extends Place {
 
 
 	@Prefix("planificacion")
-	public static class Tokenizer implements PlaceTokenizer<PlanAndResultPlace>{
+	public static class Tokenizer extends SimcePlace.Tokenizer<PlanAndResultPlace>{
 
 		@Override
 		public PlanAndResultPlace getPlace(String token) {
 			if(!token.contains("?")){
 				return new PlanAndResultPlace();
 			}
-			String x[] = token.substring(token.indexOf("?")).split("&");
+			String x[] = token.split("&");
 			String filters = "";
 			String sTab = "";
 			String sSelectedCourse = "";
 			int tab = -1;
 			int course = -1;
+			
 			for(String s:x){
 				if(s.startsWith("filters=")){
 					filters = s.substring(s.indexOf("="));
@@ -71,12 +71,13 @@ public class PlanAndResultPlace extends Place {
 			}catch(Exception e){
 				course = -1;
 			}
-			return new PlanAndResultPlace(tab,course,filters);
+			
+			return new PlanAndResultPlace(tab,course,getValueId(token, "a"),getValueId(token, "n"),getValueId(token, "t"),filters);
 		}
 
 		@Override
 		public String getToken(PlanAndResultPlace place) {
-			String token = "?";
+			String token = addValuesToToken(place.getAplicacionId(), place.getNivelId(), place.getTipoId())+"&";
 			if(place.getTab()>-1){
 				token = token+"tab="+place.getTab()+"&";
 			}
@@ -86,9 +87,7 @@ public class PlanAndResultPlace extends Place {
 			if(place.getFilters()!= null && !place.getFilters().equals("")){
 				token = token+"filters="+place.getFilters()+"&";
 			}
-			
-			token = token.substring(0,token.length()-1);
-			if(token.endsWith("?")){
+			if(token.endsWith("&")){
 				token = token.substring(0,token.length()-1);
 			}
 			return token;

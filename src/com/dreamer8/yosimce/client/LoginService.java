@@ -11,7 +11,9 @@ import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
+@RemoteServiceRelativePath("loginservice")
 public interface LoginService extends RemoteService {
 
 	public UserDTO getUser(String token) throws NoLoggedException, DBException;

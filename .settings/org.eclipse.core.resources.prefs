@@ -1,5 +1,4 @@
 eclipse.preferences.version=1
+encoding//src/com/dreamer8/yosimce/client/HeaderPresenter.java=UTF-8
 encoding//src/com/dreamer8/yosimce/client/YoSimce.java=UTF-8
-encoding//src/com/dreamer8/yosimce/client/activity/NotLoggedActivity.java=UTF-8
-encoding//src/com/dreamer8/yosimce/client/planandresult/ui/PlanAndResultHeaderViewD.java=UTF-8
-encoding//src/com/dreamer8/yosimce/client/ui/ModuleSelectorViewD.java=UTF-8
+encoding//src/com/dreamer8/yosimce/client/ui/HeaderViewD.java=UTF-8

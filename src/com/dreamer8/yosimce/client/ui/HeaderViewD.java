@@ -1,4 +1,4 @@
-package com.dreamer8.yosimce.client.planandresult.ui;
+package com.dreamer8.yosimce.client.ui;
 
 import java.util.ArrayList;
 
@@ -7,48 +7,40 @@ import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PlanAndResultHeaderViewD extends Composite implements PlanAndResultHeaderView  {
+public class HeaderViewD extends Composite implements HeaderView  {
 
-	private static PlanAndResultHeaderViewDUiBinder uiBinder = GWT
-			.create(PlanAndResultHeaderViewDUiBinder.class);
+	private static HeaderViewDUiBinder uiBinder = GWT
+			.create(HeaderViewDUiBinder.class);
 
-	interface PlanAndResultHeaderViewDUiBinder extends
-			UiBinder<Widget, PlanAndResultHeaderViewD> {
+	interface HeaderViewDUiBinder extends
+			UiBinder<Widget, HeaderViewD> {
 	}
 
-	@UiField Anchor exportAction;
 	@UiField ListBox actividadBox;
 	@UiField ListBox nivelBox;
 	@UiField ListBox tipoBox;
+	@UiField HTML username;
 	
-	private Presenter presenter;
+	private HeaderPresenter presenter;
 	private ArrayList<AplicacionDTO> aplicaciones;
 	private ArrayList<NivelDTO> niveles;
 	private ArrayList<ActividadTipoDTO> tipos;
 	
-	public PlanAndResultHeaderViewD() {
+	public HeaderViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
-		exportAction.setText("Exportar");
-		
-	}
-
-	@Override
-	public void setPresenter(Presenter p) {
-		this.presenter = p;
 	}
 	
-	@UiHandler("exportAction")
-	void onExportClick(ClickEvent event){
-		presenter.onExportClick();
+	@Override
+	public void setPresenter(HeaderPresenter p) {
+		this.presenter = p;		
 	}
 	
 	@UiHandler("actividadBox")
@@ -85,26 +77,6 @@ public class PlanAndResultHeaderViewD extends Composite implements PlanAndResult
 	}
 
 	@Override
-	public void exportActionVisivility(boolean visible) {
-		exportAction.setVisible(visible);
-	}
-
-	@Override
-	public void actividadBoxVisivility(boolean visible) {
-		actividadBox.setVisible(visible);
-	}
-
-	@Override
-	public void nivelBoxVisivility(boolean visible) {
-		nivelBox.setVisible(visible);
-	}
-
-	@Override
-	public void tipoBoxVisivility(boolean visible) {
-		tipoBox.setVisible(visible);
-	}
-
-	@Override
 	public void setAplicacionList(ArrayList<AplicacionDTO> aplicaciones) {
 		actividadBox.clear();
 		for(AplicacionDTO aplicacion:aplicaciones){
@@ -129,6 +101,64 @@ public class PlanAndResultHeaderViewD extends Composite implements PlanAndResult
 			tipoBox.addItem(tipo.getNombre(), tipo.getId()+"");
 		}
 		this.tipos = tipos;
+	}
+	
+
+
+	@Override
+	public void selectAplicacion(AplicacionDTO aplicacion) {
+		for(int i=0;i<actividadBox.getItemCount();i++){
+			if(actividadBox.getValue(i).equals(aplicacion.getId()+"")){
+				actividadBox.setSelectedIndex(i);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void selectNivel(NivelDTO nivel) {
+		for(int i=0;i<nivelBox.getItemCount();i++){
+			if(nivelBox.getValue(i).equals(nivel.getId()+"")){
+				nivelBox.setSelectedIndex(i);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void selectTipo(ActividadTipoDTO tipo) {
+		for(int i=0;i<tipoBox.getItemCount();i++){
+			if(tipoBox.getValue(i).equals(tipo.getId()+"")){
+				tipoBox.setSelectedIndex(i);
+				return;
+			}
+		}
+	}
+
+
+	@Override
+	public void setAplicacionBoxVisivility(boolean visible) {
+		actividadBox.setVisible(visible);
+	}
+
+	@Override
+	public void setNivelBoxVisivility(boolean visible) {
+		nivelBox.setVisible(visible);
+	}
+
+	@Override
+	public void setTipoBoxVisivility(boolean visible) {
+		tipoBox.setVisible(visible);
+	}
+
+	@Override
+	public void setUserName(String user) {
+		username.setText(user);
+	}
+
+	@Override
+	public void error(boolean visible) {
+		
 	}
 
 }
