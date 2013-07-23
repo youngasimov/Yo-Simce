@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.client;
 
-import com.dreamer8.yosimce.client.activity.planandresult.PlanAndResultServiceAsync;
+import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.HeaderView;
@@ -17,7 +17,7 @@ public interface ClientFactory {
 	AppView getAppView();
 	LoadView getLoadView();
 	LoginServiceAsync getLoginService();
-	PlanAndResultServiceAsync getPlanificacionService();
+	PlanificacionServiceAsync getPlanificacionService();
 	HeaderView getHeaderView();
 	
 	
