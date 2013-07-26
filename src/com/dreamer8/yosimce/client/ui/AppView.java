@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 
 public interface AppView extends IsWidget {
 
-	void setPresenter(AppPresenter presenter);
+	void setSidebarPanelState(boolean open);
 	SimpleLayoutPanel getHeaderView();
 	SimpleLayoutPanel getSideBarPanel();
 	SimpleLayoutPanel getContentPanel();

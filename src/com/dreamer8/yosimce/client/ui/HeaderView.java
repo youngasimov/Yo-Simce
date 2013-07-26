@@ -16,9 +16,9 @@ public interface HeaderView extends IsWidget {
 	void setNivelList(ArrayList<NivelDTO> niveles);
 	void setTipoList(ArrayList<ActividadTipoDTO> tipos);
 	
-	void selectAplicacion(AplicacionDTO aplicacion);
-	void selectNivel(NivelDTO nivel);
-	void selectTipo(ActividadTipoDTO tipo);
+	void selectAplicacion(int aplicacion);
+	void selectNivel(int nivel);
+	void selectTipo(int tipo);
 	
 	void setAplicacionBoxVisivility(boolean visible);
 	void setNivelBoxVisivility(boolean visible);
@@ -26,12 +26,13 @@ public interface HeaderView extends IsWidget {
 	
 	void setUserName(String user);
 	
-	void error(boolean visible);
+	void setLoginVisivibity(boolean visible);
 	
 	public interface HeaderPresenter extends Presenter{
-		void onAplicacionChange(AplicacionDTO aplicacion);
-		void onNivelChange(NivelDTO nivel);
-		void onTipoChange(ActividadTipoDTO tipo);
+		void onAplicacionChange(int aplicacion);
+		void onNivelChange(int nivel);
+		void onTipoChange(int tipo);
+		void onLoginClick();
 	}
 	
 	

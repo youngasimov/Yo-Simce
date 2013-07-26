@@ -1,138 +1,333 @@
 package com.dreamer8.yosimce.client.ui;
 
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
+import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
+import com.dreamer8.yosimce.client.planificacion.PlanificacionPlace;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Widget;
 
-public class SidebarViewD extends ResizeComposite implements SidebarView {
+public class SidebarViewD extends Composite implements SidebarView{
 
+	private static SidebarViewDUiBinder uiBinder = GWT
+			.create(SidebarViewDUiBinder.class);
+
+	interface SidebarViewDUiBinder extends UiBinder<Widget, SidebarViewD> {
+	}
+	
+	interface Style extends CssResource {
+	  String hide();
+	}
+	
+	@UiField Style style;
+	@UiField LIElement general;
+	@UiField LIElement agendamiento;
+	@UiField LIElement actividad;
+	@UiField LIElement material;
+	@UiField LIElement administracion;
+	@UiField Anchor generalButton;
+	@UiField Anchor agendamientoButton;
+	@UiField Anchor actividadButton;
+	@UiField Anchor materialButton;
+	@UiField Anchor administracionButton;
+	
+	@UiField Anchor detalleEstablecimientoViewItem;
+	@UiField Anchor historialCambiosEstablecimientoViewItem;
+	@UiField Anchor agendamientosViewItem;
+	@UiField Anchor detalleAgendaEstablecimientoViewItem;
+	@UiField Anchor agendarVisitaActionItem;
+	@UiField Anchor actividadesViewItem;
+	@UiField Anchor formularioActividadActionItem;
+	@UiField Anchor detalleActividadViewItem;
+	@UiField Anchor sincronizacionActionItem;
+	@UiField Anchor sincronizacionesViewItem;
+	@UiField Anchor aprobarSupervisoresActionItem;
+	@UiField Anchor ingresoMaterialActionItem;
+	@UiField Anchor salidaMaterialActionItem;
+	@UiField Anchor historialMovimientosViewItem;
+	@UiField Anchor movimientosMaterialViewItem;
+	@UiField Anchor administrarUsuariosActionItem;
+	@UiField Anchor administrarEventosActionItem;
+	
+	private SidebarPresenter presenter;
+	
+	public SidebarViewD() {
+		
+		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@UiHandler("generalButton")
+	void onGeneralButtonClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("agendamientoButton")
+	void onAgendamientoButtonClick(ClickEvent event){
+		presenter.goTo(new PlanificacionPlace());
+	}
+	
+	@UiHandler("actividadButton")
+	void onActividadButtonClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("materialButton")
+	void onMaterialButtonClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("administracionButton")
+	void onAdministracionButtonClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
 	
 	
+	@UiHandler("detalleEstablecimientoViewItem")
+	void onDetalleEstablecimientoViewItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
 	
+	@UiHandler("historialCambiosEstablecimientoViewItem")
+	void onHistorialCambiosEstablecimientoViewItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("agendamientosViewItem")
+	void onAgendamientosViewItemClick(ClickEvent event){
+		presenter.goTo(new AgendamientosPlace());
+	}
+	
+	@UiHandler("detalleAgendaEstablecimientoViewItem")
+	void onDetalleAgendaEstablecimientoViewItemClick(ClickEvent event){
+		presenter.goTo(new DetalleAgendaEstablecimientoPlace());
+	}
+	
+	@UiHandler("agendarVisitaActionItem")
+	void onAgendarVisitaActionItemClick(ClickEvent event){
+		presenter.goTo(new AgendarVisitaPlace());
+	}
+	
+	@UiHandler("actividadesViewItem")
+	void onActividadesViewItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("formularioActividadActionItem")
+	void onFormularioActividadActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("detalleActividadViewItem")
+	void onDetalleActividadViewItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("sincronizacionActionItem")
+	void onSincronizacionActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("aprobarSupervisoresActionItem")
+	void onAprobarSupervisoresActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("ingresoMaterialActionItem")
+	void onIngresoMaterialActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("salidaMaterialActionItem")
+	void onSalidaMaterialActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("historialMovimientosViewItem")
+	void onHistorialMovimientosViewItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("movimientosMaterialViewItem")
+	void onMovimientosMaterialViewItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("administrarUsuariosActionItem")
+	void onAdministrarUsuariosActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+	@UiHandler("administrarEventosActionItem")
+	void onAdministrarEventosActionItemClick(ClickEvent event){
+		//presenter.goTo(place);
+	}
+	
+
 	@Override
-	public void setOpcionesGeneralesVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setPresenter(SidebarPresenter presenter) {
+		this.presenter = presenter;
 	}
 
-	@Override
-	public void setInfoEstablecimientoMenuIntemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void setGeneralVisivility(boolean visible) {
+		if(visible){
+			general.removeClassName(style.hide());
+		}else{
+			general.addClassName(style.hide());
+		}
 	}
 
+
 	@Override
-	public void setHistorialCambiosEstablecimientoMenuIntemVisivility(
+	public void setDetalleEstablecimientoViewItemVisivility(boolean visible) {
+		detalleEstablecimientoViewItem.setVisible(visible);
+	}
+
+
+	@Override
+	public void setHistorialCambiosEstablecimientoViewItemVisivility(
 			boolean visible) {
-		// TODO Auto-generated method stub
-
+		historialCambiosEstablecimientoViewItem.setVisible(visible);
 	}
+
 
 	@Override
 	public void setAgendamientoVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+		if(visible){
+			agendamiento.removeClassName(style.hide());
+		}else{
+			agendamiento.addClassName(style.hide());
+		}
 	}
 
-	@Override
-	public void setAgendaEstablecimientosMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void setAgendamientosViewItemVisivility(boolean visible) {
+		agendamientosViewItem.setVisible(visible);
 	}
 
+
 	@Override
-	public void setDetalleAgendaEstablecimientoMenuItemVisivility(
+	public void setDetalleAgendaEstablecimientoViewItemVisivility(
 			boolean visible) {
-		// TODO Auto-generated method stub
-
+		detalleAgendaEstablecimientoViewItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setAgendarVisitaMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setAgendarVisitaActionItemVisivility(boolean visible) {
+		agendarVisitaActionItem.setVisible(visible);
 	}
+
 
 	@Override
 	public void setActividadVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+		if(visible){
+			actividad.removeClassName(style.hide());
+		}else{
+			actividad.addClassName(style.hide());
+		}
 	}
+
 
 	@Override
-	public void setActividadesMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setActividadesViewItemVisivility(boolean visible) {
+		actividadesViewItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setFormularioActividadMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setFormularioActividadActionItemVisivility(boolean visible) {
+		formularioActividadActionItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setDetallesActividadMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setDetalleActividadViewItemVisivility(boolean visible) {
+		detalleActividadViewItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setSincronizacionMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setSincronizacionActionItemVisivility(boolean visible) {
+		sincronizacionActionItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setEstadoSincronizacionesMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setSincronizacionesViewItemVisivility(boolean visible) {
+		sincronizacionesViewItem.setVisible(visible);
 	}
+
+
+	@Override
+	public void setAprobarSupervisoresActionVisivility(boolean visible) {
+		aprobarSupervisoresActionItem.setVisible(visible);
+	}
+
 
 	@Override
 	public void setMaterialVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+		if(visible){
+			material.removeClassName(style.hide());
+		}else{
+			material.addClassName(style.hide());
+		}
 	}
+
 
 	@Override
-	public void setIngresoMaterialMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setIngresoMaterialActionItemVisivility(boolean visible) {
+		ingresoMaterialActionItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setSalidaMaterialMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setSalidaMaterialActionItemVisivility(boolean visible) {
+		salidaMaterialActionItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setHistorialMovimientosMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setHistorialMovimientosViewItemVisivility(boolean visible) {
+		historialMovimientosViewItem.setVisible(visible);
 	}
+
 
 	@Override
-	public void setMovimientosMaterialMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+	public void setMovimientosMaterialViewItemVisivility(boolean visible) {
+		movimientosMaterialViewItem.setVisible(visible);
 	}
+
 
 	@Override
 	public void setAdministracionVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-
+		if(visible){
+			administracion.removeClassName(style.hide());
+		}else{
+			administracion.addClassName(style.hide());
+		}
 	}
 
-	@Override
-	public void setUsuariosMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void setdministrarUsuariosActionItemVisivility(boolean visible) {
+		administrarUsuariosActionItem.setVisible(visible);
 	}
 
-	@Override
-	public void setEventosMenuItemVisivility(boolean visible) {
-		// TODO Auto-generated method stub
 
+	@Override
+	public void setAdministrarEventosActionItemVisivility(boolean visible) {
+		administrarEventosActionItem.setVisible(visible);
 	}
 
 }

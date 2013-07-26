@@ -2,12 +2,18 @@ package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
+import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
+import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosViewD;
+import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionView;
+import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionViewD;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.HeaderViewD;
 import com.dreamer8.yosimce.client.ui.HeaderView;
+import com.dreamer8.yosimce.client.ui.SidebarView;
+import com.dreamer8.yosimce.client.ui.SidebarViewD;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
@@ -15,6 +21,8 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ClientFactoryD implements ClientFactory {
+	
+	private static final boolean TESTING = true;
 
 	private final EventBus eventBus = new SimpleEventBus();
 	private final PlaceController placeController = new PlaceController(eventBus);
@@ -26,6 +34,16 @@ public class ClientFactoryD implements ClientFactory {
 	private final LoadView loadView = new LoadViewD();
 	private final AppView appView = new AppViewD();
 	private final HeaderView headerView = new HeaderViewD();
+	private final SidebarView sidebarView = new SidebarViewD();
+	
+	private final PlanificacionView planificacionView = new PlanificacionViewD();
+	private final AgendamientosView agendamientosView = new AgendamientosViewD();
+	
+	
+	@Override
+	public boolean onTesting() {
+		return TESTING;
+	}
 	
 	@Override
 	public EventBus getEventBus() {
@@ -65,5 +83,20 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public HeaderView getHeaderView() {
 		return headerView;
+	}
+
+	@Override
+	public SidebarView getSidebarView() {
+		return sidebarView;
+	}
+
+	@Override
+	public PlanificacionView getPlanificacionView() {
+		return planificacionView;
+	}
+
+	@Override
+	public AgendamientosView getAgendamientosView() {
+		return agendamientosView;
 	}
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style field="style" type="com.dreamer8.yosimce.client.ui.SidebarViewD.Style">
+	  .hide {display:none;}
+	</ui:style>
+	<g:ScrollPanel>
+		<g:HTMLPanel>
+			<ul>
+				<li ui:field="general">
+					<g:Anchor ui:field="generalButton" text="General"/>
+					<ul>
+						<li><g:Anchor ui:field="detalleEstablecimientoViewItem" text="Detalle establecimiento"/></li>
+						<li><g:Anchor ui:field="historialCambiosEstablecimientoViewItem" text="Historial de cambios a establecimiento"/></li>
+					</ul>
+				</li>
+				<li ui:field="agendamiento">
+					<g:Anchor ui:field="agendamientoButton" text="Planificación"/>
+					<ul>
+						<li><g:Anchor ui:field="agendamientosViewItem" text="Lista de agendamientos"/></li>
+						<li><g:Anchor ui:field="detalleAgendaEstablecimientoViewItem" text="Detalles de agendamiento"/></li>
+						<li><g:Anchor ui:field="agendarVisitaActionItem" text="Agendar visita"/></li>
+					</ul>
+				</li>
+				<li ui:field="actividad">
+					<g:Anchor ui:field="actividadButton" text="Actividad"/>
+					<ul>
+						<li><g:Anchor ui:field="actividadesViewItem" text="Lista de actividades"/></li>
+						<li><g:Anchor ui:field="formularioActividadActionItem" text="Formulario de actividad"/></li>
+						<li><g:Anchor ui:field="detalleActividadViewItem" text="Detalle de actividad"/></li>
+						<li><g:Anchor ui:field="sincronizacionActionItem" text="Sincronización"/></li>
+						<li><g:Anchor ui:field="sincronizacionesViewItem" text="Lista de sincronización"/></li>
+						<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Aprobar supervisores"/></li>
+					</ul>
+				</li>
+				<li ui:field="material">
+					<g:Anchor ui:field="materialButton" text="Material"/>
+					<ul>
+						<li><g:Anchor ui:field="ingresoMaterialActionItem" text="Ingreso de material"/></li>
+						<li><g:Anchor ui:field="salidaMaterialActionItem" text="Salida de material"/></li>
+						<li><g:Anchor ui:field="historialMovimientosViewItem" text="Historial de movimientos"/></li>
+						<li><g:Anchor ui:field="movimientosMaterialViewItem" text="lista de movimientos"/></li>
+					</ul>
+				</li>
+				<li ui:field="administracion">
+					<g:Anchor ui:field="administracionButton" text="Administración"/>
+					<ul>
+						<li><g:Anchor ui:field="administrarUsuariosActionItem" text="Administrar usuarios"/></li>
+						<li><g:Anchor ui:field="administrarEventosActionItem" text="Administrar eventos"/></li>
+					</ul>
+				</li>
+			</ul>
+		</g:HTMLPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

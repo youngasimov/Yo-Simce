@@ -40,7 +40,7 @@
 	}
 	</ui:style>
 	<g:DockLayoutPanel unit='EM' addStyleNames='{style.content}' ui:field="appPanel">
-		<g:north size='2'>
+		<g:north size='3'>
         	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="headerPanel"/> 
     	</g:north>
     	<g:west size='3'>

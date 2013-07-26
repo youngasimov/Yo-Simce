@@ -6,15 +6,15 @@ import com.dreamer8.yosimce.client.SimcePlace;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
-public class DetalleAgendaEstablecimientoPlace extends SimcePlace {
+public class AgendarVisitaPlace extends SimcePlace {
 
 	private int establecimientoId;
 	
-	public DetalleAgendaEstablecimientoPlace(){
+	public AgendarVisitaPlace(){
 		super();
 	}
 	
-	public DetalleAgendaEstablecimientoPlace(int aplicacionId, int nivelId, int tipoId,int establecimientoId) {
+	public AgendarVisitaPlace(int aplicacionId, int nivelId, int tipoId,int establecimientoId) {
 		super(aplicacionId, nivelId, tipoId);
 		this.establecimientoId = establecimientoId;
 	}
@@ -27,13 +27,13 @@ public class DetalleAgendaEstablecimientoPlace extends SimcePlace {
 		this.establecimientoId = establecimientoId;
 	}
 	
-	@Prefix("detalleagenda")
-	public static class Tokenizer implements PlaceTokenizer<DetalleAgendaEstablecimientoPlace>{
+	@Prefix("agendarvisita")
+	public static class Tokenizer implements PlaceTokenizer<AgendarVisitaPlace>{
 
 		@Override
-		public DetalleAgendaEstablecimientoPlace getPlace(String token) {
+		public AgendarVisitaPlace getPlace(String token) {
 			HashMap<String, String> kvs = TokenUtils.getTokenValues(token);
-			DetalleAgendaEstablecimientoPlace pp = new DetalleAgendaEstablecimientoPlace();
+			AgendarVisitaPlace pp = new AgendarVisitaPlace();
 			pp.setAplicacionId((kvs.containsKey(APPID)) ? Integer.parseInt(kvs
 					.get(APPID)) : -1);
 			pp.setNivelId((kvs.containsKey(NIVELID)) ? Integer.parseInt(kvs
@@ -46,7 +46,7 @@ public class DetalleAgendaEstablecimientoPlace extends SimcePlace {
 		}
 
 		@Override
-		public String getToken(DetalleAgendaEstablecimientoPlace place) {
+		public String getToken(AgendarVisitaPlace place) {
 			HashMap<String, String> kvs = new HashMap<String, String>();
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");

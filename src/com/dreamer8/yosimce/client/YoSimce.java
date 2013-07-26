@@ -79,18 +79,15 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void loadApp(){
-		
-		//solo para testing
-		user = new UserDTO();
-		user.setNombres("camilo ignacio");
-		user.setApellidoPaterno("Vera");
-		user.setApellidoMaterno("Cortés");
-		user.setEmail("camilo.vera@live.com");
-		user.setUsername("16370885");
-		user.setId(5);
-		
-		
-		
+		if(factory.onTesting()){
+			user = new UserDTO();
+			user.setApellidoMaterno("Cortés");
+			user.setApellidoPaterno("Vera");
+			user.setNombres("Camilo Ignacio");
+			user.setEmail("camilo.vera@live.com");
+			user.setUsername("16370885");
+			user.setId(4875);
+		}
 		
 		if(user == null){
 			defaultPlace = new NotLoggedPlace();
@@ -121,7 +118,7 @@ public class YoSimce implements EntryPoint {
 		HeaderPresenter header = new HeaderPresenter(factory, user);
 		header.setDisplay(factory.getAppView().getHeaderView());
 		
-		SidebarPresenter sidebar = new SidebarPresenter();
+		SidebarPresenter sidebar = new SidebarPresenter(factory);
 		sidebar.setDisplay(factory.getAppView().getSideBarPanel());
 		
 		

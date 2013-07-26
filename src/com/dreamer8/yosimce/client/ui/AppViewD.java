@@ -28,17 +28,26 @@ public class AppViewD extends Composite implements AppView {
 	@UiField SimpleLayoutPanel sidebarPanel;
 	@UiField SimpleLayoutPanel contentPanel;
 	@UiField(provided=true) ToggleButton sidebarButton;
-	
-	private AppPresenter presenter;
 
 	public AppViewD() {
 		sidebarButton = new ToggleButton(new Image(SimceResources.INSTANCE.arrowRight()),new Image(SimceResources.INSTANCE.arrowLeft()));
 		initWidget(uiBinder.createAndBindUi(this));
+		sidebarPanel.setVisible(false);
 	}
-
+	
+	@UiHandler("sidebarButton")
+	public void onSidebarButtonChange(ValueChangeEvent<Boolean> event){
+		if(sidebarButton.getValue()){
+			appPanel.setWidgetSize(sidebarContainer, 20);
+		}else{
+			appPanel.setWidgetSize(sidebarContainer, 3);
+		}
+		sidebarPanel.setVisible(sidebarButton.getValue());
+	}
+	
 	@Override
-	public void setPresenter(AppPresenter presenter) {
-		this.presenter = presenter;
+	public void setSidebarPanelState(boolean open){
+		sidebarButton.setValue(open, true);
 	}
 
 	@Override
@@ -54,15 +63,5 @@ public class AppViewD extends Composite implements AppView {
 	@Override
 	public SimpleLayoutPanel getContentPanel() {
 		return contentPanel;
-	}
-	
-	@UiHandler("sidebarButton")
-	public void onSidebarButtonChange(ValueChangeEvent<Boolean> event){
-		if(sidebarButton.getValue()){
-			appPanel.setWidgetSize(sidebarContainer, 20);
-		}else{
-			appPanel.setWidgetSize(sidebarContainer, 3);
-		}
-		sidebarPanel.setVisible(sidebarButton.getValue());
 	}
 }
