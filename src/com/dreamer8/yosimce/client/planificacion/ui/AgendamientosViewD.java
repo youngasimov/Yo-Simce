@@ -2,33 +2,34 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 
 import java.util.Date;
 
+import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public class AgendamientosViewD extends Composite implements AgendamientosView {
@@ -55,40 +56,41 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	private SingleSelectionModel<AgendaPreviewDTO> selectionModel;
 	private AgendaPreviewDTO selectedItem;
 	
+	private DialogBox filtrosDialogBox;
+	private FiltroAgendamientosPanelViewD filtrosPanel;
+	
 	public AgendamientosViewD() {
 		dataGrid = new DataGrid<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
-		dataGrid.setWidth("100%");
 		pager = new SimplePager(TextLocation.CENTER, false, false);
 		initWidget(uiBinder.createAndBindUi(this));
+		filtrosDialogBox = new DialogBox(true, false);
+		filtrosPanel = new FiltroAgendamientosPanelViewD();
+		filtrosDialogBox.setWidget(filtrosPanel);
+		bind();
+	}
+	
+	@UiHandler("filtrosButton")
+	void onFiltrosClick(ClickEvent event){
+		filtrosDialogBox.showRelativeTo(filtrosButton);
+	}
+	
+	@UiHandler("modificarAgendaButton")
+	void onModificarAgendaClick(ClickEvent event){
+		AgendarVisitaPlace avp = new AgendarVisitaPlace();
+		if(selectedItem !=null)avp.setEstablecimientoId(selectedItem.getEstablecimientoId());
+		presenter.goTo(avp);
+	}
+	
+	@UiHandler("detallesButton")
+	void onDetallesClick(ClickEvent event){
+		DetalleAgendaEstablecimientoPlace daep = new DetalleAgendaEstablecimientoPlace();
+		if(selectedItem !=null)daep.setEstablecimientoId(selectedItem.getEstablecimientoId());
+		presenter.goTo(daep);
+	}
+	
+	@UiHandler("informacionButton")
+	void onInformacionClick(ClickEvent event){
 		
-		modificarAgendaButton.setVisible(false);
-		detallesButton.setVisible(false);
-		informacionButton.setVisible(false);
-		
-		pager.setDisplay(dataGrid);
-		buildGrid();
-		selectionModel = new SingleSelectionModel<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
-		dataGrid.setSelectionModel(selectionModel,new CellPreviewEvent.Handler<AgendaPreviewDTO>(){
-
-			@Override
-			public void onCellPreview(CellPreviewEvent<AgendaPreviewDTO> event) {
-				if(!event.getNativeEvent().getType().contains("click")){
-					return;
-				}
-				selectionModel.setSelected(event.getValue(), !selectionModel.isSelected(event.getValue()));
-			}});
-		//dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			
-			@Override
-			public void onSelectionChange(SelectionChangeEvent event) {
-				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
-						selectionModel.getSelectedObject().getEstablecimientoName()+" >":"");
-				modificarAgendaButton.setVisible(selectionModel.getSelectedObject()!=null);
-				detallesButton.setVisible(selectionModel.getSelectedObject()!=null);
-				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
-			}
-		});
 	}
 
 	@Override
@@ -114,6 +116,41 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@Override
 	public int getColumnIndex(Column<AgendaPreviewDTO,?> column) {
 		return dataGrid.getColumnIndex(column);
+	}
+	
+	private void bind(){
+		dataGrid.setWidth("100%");
+		buildGrid();		
+		modificarAgendaButton.setVisible(false);
+		detallesButton.setVisible(false);
+		informacionButton.setVisible(false);
+		
+		pager.setDisplay(dataGrid);
+		
+		selectionModel = new SingleSelectionModel<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
+		
+		dataGrid.setSelectionModel(selectionModel,new CellPreviewEvent.Handler<AgendaPreviewDTO>(){
+
+			@Override
+			public void onCellPreview(CellPreviewEvent<AgendaPreviewDTO> event) {
+				if(!event.getNativeEvent().getType().contains("click")){
+					return;
+				}
+				selectionModel.setSelected(event.getValue(), !selectionModel.isSelected(event.getValue()));
+			}});
+		
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
+						selectionModel.getSelectedObject().getEstablecimientoName()+" >":"");
+				modificarAgendaButton.setVisible(selectionModel.getSelectedObject()!=null);
+				detallesButton.setVisible(selectionModel.getSelectedObject()!=null);
+				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				selectedItem = selectionModel.getSelectedObject();
+			}
+		});
 	}
 
 	

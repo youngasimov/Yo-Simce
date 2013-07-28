@@ -16,6 +16,8 @@ public class AgendaPreviewDTO implements Serializable {
 		}
 	};
 	
+	
+	
 	private Integer establecimientoId;
 	private String establecimientoName;
 	private String rbd;

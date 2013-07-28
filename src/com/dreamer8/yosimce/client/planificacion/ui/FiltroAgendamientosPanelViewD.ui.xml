@@ -1,0 +1,59 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.datepicker.client">
+	<ui:style>
+	
+		.panel .title td{
+			font-weight: bold;
+			text-align: center;
+			border-top: 2px solid black;
+			border-bottom: 1px solid #AAAAAA;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<table class='{style.panel}'>
+			<tr class='{style.title}'>
+				<td colspan='2'>Estados</td>
+			</tr>
+			<tr>
+				<td colspan='2'><g:CheckBox ui:field="confirmadoBox" text="Confirmado"/></td>
+			</tr>
+			<tr>
+				<td colspan='2'><g:CheckBox ui:field="porConfirmarBox" text="Por confirmar"/></td>
+			</tr>
+			<tr>
+				<td colspan='2'><g:CheckBox ui:field="confirmadoConCambiosBox" text="Confirmado con cambios"/></td>
+			</tr>
+			<tr>
+				<td colspan='2'><g:CheckBox ui:field="anuladoBox" text="anulado"/></td>
+			</tr>
+			<tr class='{style.title}'>
+				<td colspan='2'>Fechas</td>
+			</tr>
+			<tr>
+				<td>Desde:</td>
+				<td><c:DateBox ui:field="desdeBox"/> </td>
+			</tr>
+			<tr>
+				<td>Hasta:</td>
+				<td><c:DateBox ui:field="hastaBox"/></td>
+			</tr>
+			<tr class='{style.title}'>
+				<td colspan='2'>Lugar</td>
+			</tr>
+			<tr>
+				<td>Región:</td>
+				<td><g:ListBox ui:field="regionBox"/></td>
+			</tr>
+			<tr>
+				<td>Comuna:</td>
+				<td><g:ListBox ui:field="comunaBox"/></td>
+			</tr>
+			<tr class='{style.title}'>
+				<td><g:Button ui:field="cancelarButton" text="Cancelar"/></td>
+				<td><g:Button ui:field="aplicarButton" text="Aplicar"/> </td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder> 
