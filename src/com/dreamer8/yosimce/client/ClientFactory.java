@@ -2,6 +2,8 @@ package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
+import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
+import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaEstablecimientoView;
 import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionView;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.LoadView;
@@ -28,6 +30,8 @@ public interface ClientFactory {
 	
 	PlanificacionView getPlanificacionView();
 	AgendamientosView getAgendamientosView();
+	AgendarVisitaView getAgendarVisitaView();
+	DetalleAgendaEstablecimientoView getDetalleAgendaEstablecimientoView();
 	
 	
 }

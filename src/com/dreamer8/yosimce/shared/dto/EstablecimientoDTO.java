@@ -14,6 +14,7 @@ public class EstablecimientoDTO implements Serializable{
 	};
 	
 	private Integer id;
+	private String rbd;
 	private String name;
 	private String estadoActividad;
 	private String estadoAgendamiento;
@@ -61,5 +62,13 @@ public class EstablecimientoDTO implements Serializable{
 
 	public void setEstadoMaterialSincronizado(String estadoMaterialSincronizado) {
 		this.estadoMaterialSincronizado = estadoMaterialSincronizado;
+	}
+
+	public String getRbd() {
+		return rbd;
+	}
+
+	public void setRbd(String rbd) {
+		this.rbd = rbd;
 	}
 }

@@ -14,7 +14,7 @@
 	}
 	
 	.sidebarButtonPanel{
-		background: #999999;
+		background: #EFEFEF;
 	}
 	
 	.sidebarButton{
@@ -31,6 +31,10 @@
 		float: left;
 	}
 	
+	.sidebarContainer{
+		border-right: 1px solid black;
+	}
+	
 	.content{
 		display:block;
 		float: left;
@@ -44,7 +48,7 @@
         	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="headerPanel"/> 
     	</g:north>
     	<g:west size='3'>
-    		<g:LayoutPanel ui:field="sidebarContainer">
+    		<g:LayoutPanel addStyleNames='{style.sidebarContainer}'  ui:field="sidebarContainer">
     			<g:layer left='0px' width='100%' top='0px' height='45px'>
     				<g:FlowPanel addStyleNames='{style.content} {style.sidebarButtonPanel}'> <g:ToggleButton addStyleNames='{style.sidebarButton}' ui:field="sidebarButton" /></g:FlowPanel>
     			</g:layer>

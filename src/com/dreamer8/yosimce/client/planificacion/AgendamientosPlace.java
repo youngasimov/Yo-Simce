@@ -52,7 +52,9 @@ public class AgendamientosPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			kvs.put("f", place.getFiltros());
+			if(place.getFiltros()!= null && !place.getFiltros().equals("")){
+				kvs.put("f", place.getFiltros());
+			}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 

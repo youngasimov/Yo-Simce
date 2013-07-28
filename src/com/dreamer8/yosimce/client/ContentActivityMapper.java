@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.planificacion.AgendamientosActivity;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
+import com.dreamer8.yosimce.client.planificacion.AgendarVisitaActivity;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoActivity;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionActivity;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionPlace;
@@ -38,9 +40,9 @@ public class ContentActivityMapper implements ActivityMapper {
 		}else if(place instanceof AgendamientosPlace){
 			return new AgendamientosActivity(factory, (AgendamientosPlace)place, permisos);
 		}else if(place instanceof AgendarVisitaPlace){
-			
+			return new AgendarVisitaActivity(factory, (AgendarVisitaPlace)place, permisos);
 		}else if(place instanceof DetalleAgendaEstablecimientoPlace){
-			
+			return new DetalleAgendaEstablecimientoActivity(factory, (DetalleAgendaEstablecimientoPlace)place, permisos);
 		}else if(place instanceof SimcePlace){
 			
 		}
