@@ -1,13 +1,161 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:d="urn:import:com.google.gwt.user.cellview.client">
 	<ui:style>
-		.important {
-			font-weight: bold;
-		}
+	.header{
+		display:block;
+		width: 100%;
+		height: 50px;
+		float: left;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		padding-left: 80px;
+		padding-top: 10px;
+		border-bottom: 1px solid black;
+	}
+	
+	.content{
+		display:block;
+		float: left;
+		width: 100%;
+		height: 100%;
+		position:absolute;
+		top: 50px;
+		bottom: 0px;
+		left: 0px;
+	}
+	
+	.title {
+		display:inline-block;
+		position: relative;
+		height: 50px;
+		float: left;
+		font-size: 26px;
+	}
+	.actions{
+		display:inline-block;
+		position: relative;
+		height: 50px;
+		float: left;
+		margin-left: 50px;
+	}
+	
+	.action{
+		margin: 5px;
+	}
+	
+	.leftPanel{
+		display:block;
+		float: left;
+		width: 400px;
+		height: 100%;
+	}
+	
+	.rightPanel{
+		display:block;
+		float: left;
+		width: 500px;
+		height: 100%;
+	}
+	
+	.panel{
+		display:block;
+		width: 300px;
+		margin-left:auto;
+		margin-right: auto;
+		margin-top: 50px;
+	}
+	
+	.form table{
+		width: 300px;
+		text-align: center;
+	}
+	
+	.form table .label{
+		font-size: 15px;
+		font-weight: bold;
+	}
+	
+	.form table .separador td{
+		padding-top: 30px;
+	}
+	
+	.agendaPanel{
+		display: block;
+		margin-top: 50px;
+		width: 95%;
+		margin-left:auto;
+		margin-right: auto;
+		height: 500px;
+	}
+	
+	.agendaList{
+		display: block;
+		float: left;
+		width: 100%;
+		height: 100%;
+	}
+	
+	.estName{
+		display: inline;
+		margin-left: 20px;
+	}
+	
 	</ui:style>
-	<g:HTMLPanel>
-		Hello,
-		<g:Button styleName="{style.important}" ui:field="button" />
-	</g:HTMLPanel>
+	<g:DockLayoutPanel unit="EM">
+		<g:north size="4">
+			<g:HTMLPanel addStyleNames='{style.header}'>
+				<div class='{style.title}'>Agenda de <g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> </div>
+				<div class='{style.actions}'>
+					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
+					<g:Button addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar"/>
+				</div>
+			</g:HTMLPanel>	
+		</g:north>
+		<g:center>
+			<g:HTMLPanel>
+			    <div class='{style.leftPanel}'>
+			    	<g:DecoratorPanel addStyleNames='{style.panel} {style.form}'>
+			    		<g:HTMLPanel>
+				    		<table>
+				    			<tr>
+				    				<td class='{style.label}'>Estado:</td>
+				    				<td><g:ListBox ui:field="estadoBox"/> </td>
+				    			</tr>
+				    			<tr class='{style.separador}'>
+				    				<td colspan='2' class='{style.label}'>Fecha</td>
+				    			</tr>
+				    			<tr>
+				    				<td colspan='2'><c:DatePicker ui:field="fechaPicker"/> </td>
+				    			</tr>
+				    			<tr>
+				    				<td colspan='2'><g:Label ui:field="fechaLabel"/> </td>
+				    			</tr>
+				    			<tr class='{style.separador}'>
+				    				<td colspan='2' class='{style.label}'>Comentario</td>
+				    			</tr>
+				    			<tr>
+				    				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
+				    			</tr>
+				    			<tr class='{style.separador}'>
+				    				<td></td>
+				    				<td><g:Button ui:field="modificarButton" text="Modificar agenda"/> </td>
+				    			</tr>
+				    		</table>
+			    		</g:HTMLPanel>
+			    	</g:DecoratorPanel>
+			    </div>
+			    <div class='{style.rightPanel}'>
+			    	<g:DecoratorPanel addStyleNames='{style.agendaPanel}'>
+			    		<g:ScrollPanel addStyleNames='{style.agendaList}'>
+			    			<d:CellList ui:field="agendaList"/>
+			    		</g:ScrollPanel>
+			    	</g:DecoratorPanel>
+			    </div>
+			</g:HTMLPanel>
+		</g:center>
+	</g:DockLayoutPanel>
 </ui:UiBinder> 

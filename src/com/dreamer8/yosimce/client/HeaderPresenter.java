@@ -125,10 +125,10 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 										adto.setNombre("Simce TIC");
 										adto.setId(3);
 										result.add(adto);
-										adto = new AplicacionDTO();
-										adto.setNombre("Simce");
-										adto.setId(5);
-										result.add(adto);
+										//adto = new AplicacionDTO();
+										//adto.setNombre("Simce");
+										//adto.setId(5);
+										//result.add(adto);
 										success(result);
 										
 									}
