@@ -25,6 +25,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	interface Style extends CssResource {
 	  String hide();
+	  String selected();
 	}
 	
 	@UiField Style style;
@@ -270,7 +271,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 
 
 	@Override
-	public void setAprobarSupervisoresActionVisivility(boolean visible) {
+	public void setAprobarSupervisoresActionItemVisivility(boolean visible) {
 		aprobarSupervisoresActionItem.setVisible(visible);
 	}
 
@@ -320,7 +321,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 
 
 	@Override
-	public void setdministrarUsuariosActionItemVisivility(boolean visible) {
+	public void setAdministrarUsuariosActionItemVisivility(boolean visible) {
 		administrarUsuariosActionItem.setVisible(visible);
 	}
 
@@ -328,6 +329,164 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@Override
 	public void setAdministrarEventosActionItemVisivility(boolean visible) {
 		administrarEventosActionItem.setVisible(visible);
+	}
+
+	@Override
+	public void setDetalleEstablecimientoViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			detalleEstablecimientoViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setHistorialCambiosEstablecimientoViewItemSelected(
+			boolean selected) {
+		removeSeleccion();
+		if(selected){
+			historialCambiosEstablecimientoViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setAgendamientosViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			agendamientosViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setDetalleAgendaEstablecimientoViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			detalleAgendaEstablecimientoViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setAgendarVisitaActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			agendarVisitaActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setActividadesViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			actividadesViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setFormularioActividadActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			formularioActividadActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setDetalleActividadViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			detalleActividadViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setSincronizacionActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			sincronizacionActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setSincronizacionesViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			sincronizacionesViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setAprobarSupervisoresActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			aprobarSupervisoresActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setIngresoMaterialActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			ingresoMaterialActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setSalidaMaterialActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			salidaMaterialActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setHistorialMovimientosViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			historialMovimientosViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setMovimientosMaterialViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			movimientosMaterialViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setAdministrarUsuariosActionItemItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			administrarUsuariosActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setAdministrarEventosActionItemItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			administrarEventosActionItem.addStyleName(style.selected());
+		}
+	}
+	
+	@Override
+	public void removeSeleccion(){
+		detalleEstablecimientoViewItem.removeStyleName(style.selected());
+		historialCambiosEstablecimientoViewItem.removeStyleName(style.selected());
+		agendamientosViewItem.removeStyleName(style.selected());
+		detalleAgendaEstablecimientoViewItem.removeStyleName(style.selected());
+		agendarVisitaActionItem.removeStyleName(style.selected());
+		actividadesViewItem.removeStyleName(style.selected());
+		formularioActividadActionItem.removeStyleName(style.selected());
+		detalleActividadViewItem.removeStyleName(style.selected());
+		sincronizacionActionItem.removeStyleName(style.selected());
+		sincronizacionesViewItem.removeStyleName(style.selected());
+		aprobarSupervisoresActionItem.removeStyleName(style.selected());
+		ingresoMaterialActionItem.removeStyleName(style.selected());
+		salidaMaterialActionItem.removeStyleName(style.selected());
+		historialMovimientosViewItem.removeStyleName(style.selected());
+		movimientosMaterialViewItem.removeStyleName(style.selected());
+		administrarUsuariosActionItem.removeStyleName(style.selected());
+		administrarEventosActionItem.removeStyleName(style.selected());
 	}
 
 }

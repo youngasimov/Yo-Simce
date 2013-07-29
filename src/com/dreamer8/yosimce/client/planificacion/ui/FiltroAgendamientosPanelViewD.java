@@ -27,6 +27,8 @@ public class FiltroAgendamientosPanelViewD extends Composite {
 	@UiField CheckBox anuladoBox;
 	@UiField DateBox desdeBox;
 	@UiField DateBox hastaBox;
+	@UiField Button aplicarButton;
+	@UiField Button cancelarButton;
 
 	public FiltroAgendamientosPanelViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
