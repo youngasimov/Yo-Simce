@@ -27,7 +27,7 @@ import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		implements PlanificacionService {
 
-	private String className = "PLanAndResultService";
+	private String className = "PlanificacionService";
 
 	/**
 	 * @permiso getEstablecimientos

@@ -9,12 +9,12 @@
 	<inherits name="com.google.gwt.uibinder.UiBinder" />
 	<inherits name="com.google.gwt.resources.Resources" />
 	<inherits name="com.google.gwt.place.Place" />
-	f
 	<inherits name="com.google.gwt.activity.Activity" />
 	<inherits name="com.google.gwt.i18n.I18N" />
 
+	<inherits name="com.summatech.gwt.GwtTimepicker" />
+	
 	<extend-property name="locale" values="es" />
-	<extend-property name="locale" values="en" />
 	<set-property-fallback name="locale" value="es" />
 
 	<replace-with class="com.dreamer8.yosimce.client.ClientFactoryD">

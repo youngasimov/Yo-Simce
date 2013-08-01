@@ -12,6 +12,8 @@ import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionView;
 import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionViewD;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
+import com.dreamer8.yosimce.client.ui.EstablecimientoSelectorView;
+import com.dreamer8.yosimce.client.ui.EstablecimientoSelectorViewD;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.HeaderViewD;
@@ -44,6 +46,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
 	private final DetalleAgendaEstablecimientoView detalleAgendaEstablecimientoView = new DetalleAgendaEstablecimientoViewD();
+	private final EstablecimientoSelectorView establecimientoSelectorView = new EstablecimientoSelectorViewD();
 	
 	
 	@Override
@@ -114,5 +117,10 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public DetalleAgendaEstablecimientoView getDetalleAgendaEstablecimientoView() {
 		return detalleAgendaEstablecimientoView;
+	}
+
+	@Override
+	public EstablecimientoSelectorView getEstablecimientoSelectorView() {
+		return establecimientoSelectorView;
 	}
 }

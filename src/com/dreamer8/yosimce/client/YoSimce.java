@@ -39,8 +39,10 @@ public class YoSimce implements EntryPoint {
 		
 		panel.setSize("100%", "100%");
 		
+		RootPanel.get().addStyleName("app");
 		RootPanel.get().add(panel);
 		RootPanel.get().setWidgetPosition(panel, 0, 0);
+		
 		
 		panel.setWidget(loadView);
 		

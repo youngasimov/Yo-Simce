@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.dialogbox {
+			width: 400px;
+		}
+		.panel {
+			display:block;
+			float: left;
+		}
+	</ui:style>
+	<g:DialogBox animationEnabled="true" autoHideEnabled="true" autoHideOnHistoryEventsEnabled="true" glassEnabled="true" modal="true"  ui:field="panel">
+		<g:HTMLPanel>
+			<table>
+				<tr>
+					<td>Rbd de establecimiento:</td>
+					<td><g:SuggestBox width="100px" ui:field="rbdBox"/></td>
+				</tr>
+				<tr>
+					<td colspan='2'><g:Label ui:field="errorLabel"/></td>
+				</tr>
+				<tr>
+					<td><g:Button ui:field="cancelBox" text="Cancelar"/></td>
+					<td><g:Button ui:field="confirmBox" text="Seleccionar"/></td>
+				</tr>
+			</table>
+		</g:HTMLPanel>
+	</g:DialogBox>
+</ui:UiBinder> 

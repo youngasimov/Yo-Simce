@@ -12,6 +12,7 @@ public class AgendarVisitaPlace extends SimcePlace {
 	
 	public AgendarVisitaPlace(){
 		super();
+		establecimientoId = -1;
 	}
 	
 	public AgendarVisitaPlace(int aplicacionId, int nivelId, int tipoId,int establecimientoId) {
@@ -51,7 +52,7 @@ public class AgendarVisitaPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			kvs.put("e", place.getEstablecimientoId() + "");
+			if(place.getEstablecimientoId()>=0){kvs.put("e", place.getEstablecimientoId() + "");}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		

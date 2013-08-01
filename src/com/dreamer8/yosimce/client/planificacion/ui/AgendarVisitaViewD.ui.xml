@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.datepicker.client"
-	xmlns:d="urn:import:com.google.gwt.user.cellview.client">
+	xmlns:d="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka">
 	<ui:style>
 	.header{
 		display:block;
@@ -69,17 +70,17 @@
 		margin-top: 50px;
 	}
 	
-	.form table{
+	.form{
 		width: 300px;
 		text-align: center;
 	}
 	
-	.form table .label{
+	.form .label{
 		font-size: 15px;
 		font-weight: bold;
 	}
 	
-	.form table .separador td{
+	.form .separador td{
 		padding-top: 30px;
 	}
 	
@@ -103,6 +104,17 @@
 		display: inline;
 		margin-left: 20px;
 	}
+	.timepicker{
+		display: block;
+		width: 80px;
+		height: 20px;
+		float: left;
+	}
+	
+	.fechaPicker table{
+		text-align: center;
+		width: 300px;
+	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
@@ -118,21 +130,23 @@
 		<g:center>
 			<g:HTMLPanel>
 			    <div class='{style.leftPanel}'>
-			    	<g:DecoratorPanel addStyleNames='{style.panel} {style.form}'>
+			    	<g:DecoratorPanel addStyleNames='{style.panel}'>
 			    		<g:HTMLPanel>
-				    		<table>
+				    		<table class='{style.form}'>
 				    			<tr>
 				    				<td class='{style.label}'>Estado:</td>
 				    				<td><g:ListBox ui:field="estadoBox"/> </td>
 				    			</tr>
 				    			<tr class='{style.separador}'>
-				    				<td colspan='2' class='{style.label}'>Fecha</td>
+				    				<td class='{style.label}'>Fecha</td>
+				    				<td class='{style.label}'><g:Label ui:field="fechaLabel"/> </td>
 				    			</tr>
 				    			<tr>
-				    				<td colspan='2'><c:DatePicker ui:field="fechaPicker"/> </td>
+				    				<td colspan='2' class='{style.fechaPicker}'><c:DatePicker ui:field="fechaPicker"/> </td>
 				    			</tr>
 				    			<tr>
-				    				<td colspan='2'><g:Label ui:field="fechaLabel"/> </td>
+				    				<td class='{style.label}'>Hora:</td>
+				    				<td><e:TimeBox ui:field="timeBox"/> </td>
 				    			</tr>
 				    			<tr class='{style.separador}'>
 				    				<td colspan='2' class='{style.label}'>Comentario</td>

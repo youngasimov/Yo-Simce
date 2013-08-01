@@ -12,6 +12,7 @@ public class DetalleAgendaEstablecimientoPlace extends SimcePlace {
 	
 	public DetalleAgendaEstablecimientoPlace(){
 		super();
+		establecimientoId = -1;
 	}
 	
 	public DetalleAgendaEstablecimientoPlace(int aplicacionId, int nivelId, int tipoId,int establecimientoId) {
@@ -51,7 +52,7 @@ public class DetalleAgendaEstablecimientoPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			kvs.put("e", place.getEstablecimientoId() + "");
+			if(place.getEstablecimientoId()>-1){kvs.put("e", place.getEstablecimientoId() + "");}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		

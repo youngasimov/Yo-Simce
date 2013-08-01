@@ -17,13 +17,15 @@ public class AgendaCell extends AbstractCell<AgendaItemDTO> {
 	private static AgendaUiRenderer renderer = GWT.create(AgendaUiRenderer.class);
 
 
-	private DateTimeFormat format;
+	private DateTimeFormat dateFormat;
+	private DateTimeFormat timeFormat;
 	public AgendaCell() {
-		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
+		dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL);
+		timeFormat = DateTimeFormat.getFormat(PredefinedFormat.TIME_SHORT);
 	}
 	@Override
 	public void render(com.google.gwt.cell.client.Cell.Context context,AgendaItemDTO value, SafeHtmlBuilder sb) {
-		renderer.render(sb,format.format(value.getFecha()), value.getEstado().getEstado(),
+		renderer.render(sb,dateFormat.format(value.getFecha())+" a las "+timeFormat.format(value.getFecha()), value.getEstado().getEstado(),
 				value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno(), value.getComentario());
 	}
 	
