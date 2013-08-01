@@ -69,6 +69,10 @@ public class AgendaPreviewDTO implements Serializable {
 	public void setAgendaItemActual(AgendaItemDTO agendaItemActual) {
 		this.agendaItemActual = agendaItemActual;
 	}
-	
-	
+	public String getCurso() {
+		return curso;
+	}
+	public void setCurso(String curso) {
+		this.curso = curso;
+	}
 }

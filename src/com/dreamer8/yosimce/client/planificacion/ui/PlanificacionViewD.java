@@ -2,7 +2,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
-import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,7 +22,7 @@ public class PlanificacionViewD extends Composite implements PlanificacionView {
 	}
 	
 	@UiField Button agendamientosViewButton;
-	@UiField Button detalleAgendaEstablecimientoViewButton;
+	@UiField Button detalleAgendaViewButton;
 	@UiField Button agendarVisitaActionButton;
 	
 	private PlanificacionPresenter presenter;
@@ -36,9 +36,9 @@ public class PlanificacionViewD extends Composite implements PlanificacionView {
 		presenter.goTo(new AgendamientosPlace());
 	}
 	
-	@UiHandler("detalleAgendaEstablecimientoViewButton")
-	void onDetalleAgendaEstablecimientoViewButtonClick(ClickEvent event){
-		presenter.goTo(new DetalleAgendaEstablecimientoPlace());
+	@UiHandler("detalleAgendaViewButton")
+	void onDetalleAgendaViewButtonClick(ClickEvent event){
+		presenter.goTo(new DetalleAgendaPlace());
 	}
 	
 	@UiHandler("agendarVisitaActionButton")
@@ -52,8 +52,8 @@ public class PlanificacionViewD extends Composite implements PlanificacionView {
 	}
 
 	@Override
-	public void setDetalleAgendaEstablecimientoVisivility(boolean visible) {
-		detalleAgendaEstablecimientoViewButton.setVisible(visible);
+	public void setDetalleAgendaVisivility(boolean visible) {
+		detalleAgendaViewButton.setVisible(visible);
 	}
 
 	@Override

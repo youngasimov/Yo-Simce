@@ -5,7 +5,7 @@ import com.dreamer8.yosimce.client.general.GeneralPlace;
 import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
-import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.LIElement;
@@ -111,7 +111,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("detalleAgendaEstablecimientoViewItem")
 	void onDetalleAgendaEstablecimientoViewItemClick(ClickEvent event){
-		presenter.goTo(new DetalleAgendaEstablecimientoPlace());
+		presenter.goTo(new DetalleAgendaPlace());
 	}
 	
 	@UiHandler("agendarVisitaActionItem")

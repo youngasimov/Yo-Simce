@@ -3,7 +3,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 import java.util.Date;
 
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
-import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
@@ -83,8 +83,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	@UiHandler("detallesButton")
 	void onDetallesClick(ClickEvent event){
-		DetalleAgendaEstablecimientoPlace daep = new DetalleAgendaEstablecimientoPlace();
-		if(selectedItem !=null)daep.setEstablecimientoId(selectedItem.getEstablecimientoId());
+		DetalleAgendaPlace daep = new DetalleAgendaPlace();
+		if(selectedItem !=null)daep.setCursoId(selectedItem.getEstablecimientoId());
 		presenter.goTo(daep);
 	}
 	
@@ -175,6 +175,16 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(establecimientoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Establecimiento")));
         dataGrid.setColumnWidth(establecimientoColumn, 170, Unit.PX);
         
+        Column<AgendaPreviewDTO, String> cursoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+                return object.getCurso();
+            }
+        };
+        cursoColumn.setSortable(false);
+        dataGrid.addColumn(cursoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Curso")));
+        dataGrid.setColumnWidth(cursoColumn, 80, Unit.PX);
+        
         Column<AgendaPreviewDTO, String> tipoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -184,6 +194,26 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         tipoColumn.setSortable(false);
         dataGrid.addColumn(tipoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Tipo")));
         dataGrid.setColumnWidth(tipoColumn, 70, Unit.PX);
+        
+        Column<AgendaPreviewDTO, String> estadoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+                return object.getAgendaItemActual().getEstado().getEstado();
+            }
+        };
+        estadoColumn.setSortable(false);
+        dataGrid.addColumn(estadoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Estado actual")));
+        dataGrid.setColumnWidth(estadoColumn, 140, Unit.PX);
+        
+        Column<AgendaPreviewDTO, Date> dateColumn =new Column<AgendaPreviewDTO, Date>(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM))) {
+            @Override
+            public Date getValue(AgendaPreviewDTO object) {
+                return object.getAgendaItemActual().getFecha();
+            }
+        };
+        dateColumn.setSortable(true);
+        dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
+        dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
         
         Column<AgendaPreviewDTO, String> regionColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
@@ -204,26 +234,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         comunaColumn.setSortable(false);
         dataGrid.addColumn(comunaColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Comuna")));
         dataGrid.setColumnWidth(comunaColumn, 120, Unit.PX);
-        
-        Column<AgendaPreviewDTO, String> estadoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
-            @Override
-            public String getValue(AgendaPreviewDTO object) {
-                return object.getAgendaItemActual().getEstado().getEstado();
-            }
-        };
-        estadoColumn.setSortable(false);
-        dataGrid.addColumn(estadoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Estado actual")));
-        dataGrid.setColumnWidth(estadoColumn, 140, Unit.PX);
-        
-        Column<AgendaPreviewDTO, Date> dateColumn =new Column<AgendaPreviewDTO, Date>(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG))) {
-            @Override
-            public Date getValue(AgendaPreviewDTO object) {
-                return object.getAgendaItemActual().getFecha();
-            }
-        };
-        dateColumn.setSortable(true);
-        dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
-        dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
         
         Column<AgendaPreviewDTO, String> comentarioColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override

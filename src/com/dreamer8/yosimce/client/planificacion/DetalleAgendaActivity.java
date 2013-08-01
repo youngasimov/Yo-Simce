@@ -7,8 +7,8 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.EstablecimientoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
-import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaEstablecimientoView;
-import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaEstablecimientoView.DetalleAgendaEstablecimientoPresenter;
+import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
+import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView.DetalleAgendaPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -16,15 +16,15 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
-public class DetalleAgendaEstablecimientoActivity extends SimceActivity
-		implements DetalleAgendaEstablecimientoPresenter {
+public class DetalleAgendaActivity extends SimceActivity
+		implements DetalleAgendaPresenter {
 
 	
-	private final DetalleAgendaEstablecimientoPlace place;
-	private final DetalleAgendaEstablecimientoView view;
+	private final DetalleAgendaPlace place;
+	private final DetalleAgendaView view;
 	private final EstablecimientoSelector selector;
 	
-	public DetalleAgendaEstablecimientoActivity(ClientFactory factory, DetalleAgendaEstablecimientoPlace place,HashMap<String, ArrayList<String>> permisos) {
+	public DetalleAgendaActivity(ClientFactory factory, DetalleAgendaPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, permisos);
 		this.place = place;
 		this.view = factory.getDetalleAgendaEstablecimientoView();
@@ -34,14 +34,14 @@ public class DetalleAgendaEstablecimientoActivity extends SimceActivity
 			
 			@Override
 			public void execute() {
-				DetalleAgendaEstablecimientoPlace avp = new DetalleAgendaEstablecimientoPlace(DetalleAgendaEstablecimientoActivity.this.place.getAplicacionId(),DetalleAgendaEstablecimientoActivity.this.place.getNivelId(),DetalleAgendaEstablecimientoActivity.this.place.getTipoId(),selector.getSelectedEstablecimiento().getId());
-				DetalleAgendaEstablecimientoActivity.this.getFactory().getPlaceController().goTo(avp);
+				DetalleAgendaPlace avp = new DetalleAgendaPlace(DetalleAgendaActivity.this.place.getAplicacionId(),DetalleAgendaActivity.this.place.getNivelId(),DetalleAgendaActivity.this.place.getTipoId(),selector.getSelectedEstablecimiento().getId());
+				DetalleAgendaActivity.this.getFactory().getPlaceController().goTo(avp);
 			}
 		});
 	}
 
 	@Override
-	public void onCambiarEstablecimientoClick() {
+	public void onCambiarCursoClick() {
 		selector.setCancelable(true);
 		selector.setGlassEnabled(false);
 		selector.showRelativeTo(view.getCambiarButton());
@@ -51,12 +51,12 @@ public class DetalleAgendaEstablecimientoActivity extends SimceActivity
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		
-		if(place.getEstablecimientoId()<0){
+		if(place.getCursoId()<0){
 			selector.setOnCancelAction(new Command() {
 				
 				@Override
 				public void execute() {
-					DetalleAgendaEstablecimientoActivity.this.getFactory().getPlaceController().goTo(new PlanificacionPlace(DetalleAgendaEstablecimientoActivity.this.place.getAplicacionId(),DetalleAgendaEstablecimientoActivity.this.place.getNivelId(),DetalleAgendaEstablecimientoActivity.this.place.getTipoId()));
+					DetalleAgendaActivity.this.getFactory().getPlaceController().goTo(new PlanificacionPlace(DetalleAgendaActivity.this.place.getAplicacionId(),DetalleAgendaActivity.this.place.getNivelId(),DetalleAgendaActivity.this.place.getTipoId()));
 				}
 			});
 			selector.setCancelable(true);

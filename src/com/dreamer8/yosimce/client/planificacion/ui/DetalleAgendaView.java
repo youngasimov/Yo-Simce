@@ -5,14 +5,14 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.view.client.HasData;
 
-public interface DetalleAgendaEstablecimientoView extends IsWidget {
+public interface DetalleAgendaView extends IsWidget {
 
 	HasData<AgendaItemDTO> getDataDisplay();
 	void setNombreEstablecimiento(String establecimiento);
 	UIObject getCambiarButton();
-	void setPresenter(DetalleAgendaEstablecimientoPresenter presenter);
+	void setPresenter(DetalleAgendaPresenter presenter);
 	
-	public interface DetalleAgendaEstablecimientoPresenter{
-		void onCambiarEstablecimientoClick();
+	public interface DetalleAgendaPresenter{
+		void onCambiarCursoClick();
 	}
 }

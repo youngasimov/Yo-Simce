@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface PlanificacionView extends IsWidget {
 
 	void setAgendamientosVisivility(boolean visible);
-	void setDetalleAgendaEstablecimientoVisivility(boolean visible);
+	void setDetalleAgendaVisivility(boolean visible);
 	void setAgendarVisitaVisivility(boolean visible);
 	void setPresenter(PlanificacionPresenter presenter);
 	

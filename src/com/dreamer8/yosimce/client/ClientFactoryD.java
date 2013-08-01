@@ -8,8 +8,8 @@ import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosViewD;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaViewD;
-import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaEstablecimientoView;
-import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaEstablecimientoViewD;
+import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
+import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaViewD;
 import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionView;
 import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionViewD;
 import com.dreamer8.yosimce.client.ui.AppView;
@@ -48,7 +48,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final PlanificacionView planificacionView = new PlanificacionViewD();
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
-	private final DetalleAgendaEstablecimientoView detalleAgendaEstablecimientoView = new DetalleAgendaEstablecimientoViewD();
+	private final DetalleAgendaView detalleAgendaEstablecimientoView = new DetalleAgendaViewD();
 	private final EstablecimientoSelectorView establecimientoSelectorView = new EstablecimientoSelectorViewD();
 	
 	
@@ -123,7 +123,7 @@ public class ClientFactoryD implements ClientFactory {
 	}
 
 	@Override
-	public DetalleAgendaEstablecimientoView getDetalleAgendaEstablecimientoView() {
+	public DetalleAgendaView getDetalleAgendaEstablecimientoView() {
 		return detalleAgendaEstablecimientoView;
 	}
 

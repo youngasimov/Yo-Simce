@@ -7,7 +7,7 @@ import com.dreamer8.yosimce.client.general.DetalleEstablecimientoPlace;
 import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
-import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
+import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.client.ui.SidebarView;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -72,7 +72,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setAgendamientosViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendarVisitaPlace){
 					view.setAgendarVisitaActionItemSelected(true);
-				}else if(event.getNewPlace() instanceof DetalleAgendaEstablecimientoPlace){
+				}else if(event.getNewPlace() instanceof DetalleAgendaPlace){
 					view.setDetalleAgendaEstablecimientoViewItemSelected(true);
 				}
 				

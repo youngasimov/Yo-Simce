@@ -14,13 +14,13 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 
-public class DetalleAgendaEstablecimientoViewD extends Composite implements DetalleAgendaEstablecimientoView{
+public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 
-	private static DetalleAgendaEstablecimientoViewDUiBinder uiBinder = GWT
-			.create(DetalleAgendaEstablecimientoViewDUiBinder.class);
+	private static DetalleAgendaViewDUiBinder uiBinder = GWT
+			.create(DetalleAgendaViewDUiBinder.class);
 
-	interface DetalleAgendaEstablecimientoViewDUiBinder extends
-			UiBinder<Widget, DetalleAgendaEstablecimientoViewD> {
+	interface DetalleAgendaViewDUiBinder extends
+			UiBinder<Widget, DetalleAgendaViewD> {
 	}
 
 	@UiField HTML establecimiento;
@@ -28,10 +28,10 @@ public class DetalleAgendaEstablecimientoViewD extends Composite implements Deta
 	@UiField Button cambiarButton;
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
-	private DetalleAgendaEstablecimientoPresenter presenter;
+	private DetalleAgendaPresenter presenter;
 	private AgendaCell cell;
 	
-	public DetalleAgendaEstablecimientoViewD() {
+	public DetalleAgendaViewD() {
 		cell = new AgendaCell();
 		agendaList = new CellList<AgendaItemDTO>(cell);
 		initWidget(uiBinder.createAndBindUi(this));
@@ -39,11 +39,11 @@ public class DetalleAgendaEstablecimientoViewD extends Composite implements Deta
 
 	@UiHandler("cambiarButton")
 	void onCambiarClick(ClickEvent event){
-		presenter.onCambiarEstablecimientoClick();
+		presenter.onCambiarCursoClick();
 	}
 	
 	@Override
-	public void setPresenter(DetalleAgendaEstablecimientoPresenter presenter) {
+	public void setPresenter(DetalleAgendaPresenter presenter) {
 		this.presenter = presenter;
 	}
 

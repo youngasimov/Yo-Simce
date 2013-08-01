@@ -19,7 +19,7 @@
 	</ui:style>
 	<g:HTMLPanel addStyleNames='{style.panel}'>
 		<g:Button addStyleNames="{style.button}" ui:field="agendamientosViewButton" text="Lista de agendamientos"/>
-		<g:Button addStyleNames="{style.button}" ui:field="detalleAgendaEstablecimientoViewButton" text="Detalles de agendamiento"/>
+		<g:Button addStyleNames="{style.button}" ui:field="detalleAgendaViewButton" text="Detalles de agendamiento"/>
 		<g:Button addStyleNames="{style.button}" ui:field="agendarVisitaActionButton" text="Agendar visita"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 
