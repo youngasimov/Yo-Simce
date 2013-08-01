@@ -16,6 +16,9 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.shared.dto.AgendaDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
@@ -182,6 +185,28 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	 */
 	@Override
 	public ContactoDTO getContacto(Integer idEstablecimiento)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset,
+			Integer length, Map<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;

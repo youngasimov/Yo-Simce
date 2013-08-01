@@ -3,6 +3,9 @@ package com.dreamer8.yosimce.client.planificacion;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.dreamer8.yosimce.shared.dto.AgendaDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
@@ -25,5 +28,16 @@ public interface PlanificacionServiceAsync {
 
 	void getContacto(Integer idEstablecimiento,
 			AsyncCallback<ContactoDTO> callback);
+
+	void getPreviewAgendamientos(Integer offset, Integer length,
+			Map<String, String> filtros,
+			AsyncCallback<ArrayList<AgendaPreviewDTO>> callback);
+
+	void getAgendaCurso(Integer idCurso, AsyncCallback<AgendaDTO> callback);
+
+	void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda,
+			AsyncCallback<Void> callback);
+
+	
 
 }

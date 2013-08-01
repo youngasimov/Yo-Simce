@@ -3,6 +3,9 @@ package com.dreamer8.yosimce.client.planificacion;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.dreamer8.yosimce.shared.dto.AgendaDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
@@ -14,6 +17,14 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("planificacionservice")
 public interface PlanificacionService extends RemoteService {
+	
+	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset, Integer length, Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
+	
+	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
+	
+	public Void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda) throws NoAllowedException, NoLoggedException, DBException;
+	
+	
 	public ArrayList<EstablecimientoDTO> getEstablecimientos(Integer offset,
 			Integer lenght, Map<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException;
