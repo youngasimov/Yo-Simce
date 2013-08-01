@@ -18,7 +18,7 @@
 		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames='{style.panel}'>
-		<g:Button addStyleNames="{style.button}" ui:field="detalleEstablecimientoViewButton" text="Detalles de establecimiento"/>
-		<g:Button addStyleNames="{style.button}" ui:field="historialCambiosEstablecimientoViewButton" text="Historial de cambios a establecimiento"/>
+		<g:Button addStyleNames="{style.button}" ui:field="detalleEstablecimientoViewButton" text="Detalles de curso"/>
+		<g:Button addStyleNames="{style.button}" ui:field="historialCambiosEstablecimientoViewButton" text="Historial de cambios a curso"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

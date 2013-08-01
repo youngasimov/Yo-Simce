@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
+import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
 import com.dreamer8.yosimce.client.general.ui.GeneralView;
 import com.dreamer8.yosimce.client.general.ui.GeneralViewD;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
@@ -14,8 +16,8 @@ import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionView;
 import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionViewD;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
-import com.dreamer8.yosimce.client.ui.EstablecimientoSelectorView;
-import com.dreamer8.yosimce.client.ui.EstablecimientoSelectorViewD;
+import com.dreamer8.yosimce.client.ui.CursoSelectorView;
+import com.dreamer8.yosimce.client.ui.CursoSelectorViewD;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.HeaderViewD;
@@ -45,11 +47,12 @@ public class ClientFactoryD implements ClientFactory {
 	private final SidebarView sidebarView = new SidebarViewD();
 	
 	private final GeneralView generalView = new GeneralViewD();
+	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
 	private final PlanificacionView planificacionView = new PlanificacionViewD();
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
-	private final DetalleAgendaView detalleAgendaEstablecimientoView = new DetalleAgendaViewD();
-	private final EstablecimientoSelectorView establecimientoSelectorView = new EstablecimientoSelectorViewD();
+	private final DetalleAgendaView detalleAgendaView = new DetalleAgendaViewD();
+	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
 	
 	
 	@Override
@@ -106,6 +109,11 @@ public class ClientFactoryD implements ClientFactory {
 	public GeneralView getGeneralView() {
 		return generalView;
 	}
+	
+	@Override
+	public DetalleCursoView getDetalleCursoView(){
+		return detalleCursoView;
+	}
 
 	@Override
 	public PlanificacionView getPlanificacionView() {
@@ -123,12 +131,12 @@ public class ClientFactoryD implements ClientFactory {
 	}
 
 	@Override
-	public DetalleAgendaView getDetalleAgendaEstablecimientoView() {
-		return detalleAgendaEstablecimientoView;
+	public DetalleAgendaView getDetalleAgendaView() {
+		return detalleAgendaView;
 	}
 
 	@Override
-	public EstablecimientoSelectorView getEstablecimientoSelectorView() {
-		return establecimientoSelectorView;
+	public CursoSelectorView getCursoSelectorView() {
+		return cursoSelectorView;
 	}
 }

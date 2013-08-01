@@ -13,13 +13,13 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class EstablecimientoSelectorViewD implements EstablecimientoSelectorView {
+public class CursoSelectorViewD implements CursoSelectorView {
 
-	private static EstablecimientoSelectorViewDUiBinder uiBinder = GWT
-			.create(EstablecimientoSelectorViewDUiBinder.class);
+	private static CursoSelectorViewDUiBinder uiBinder = GWT
+			.create(CursoSelectorViewDUiBinder.class);
 
-	interface EstablecimientoSelectorViewDUiBinder extends
-			UiBinder<Widget, EstablecimientoSelectorViewD> {
+	interface CursoSelectorViewDUiBinder extends
+			UiBinder<Widget, CursoSelectorViewD> {
 	}
 
 	@UiField DialogBox panel;
@@ -27,9 +27,9 @@ public class EstablecimientoSelectorViewD implements EstablecimientoSelectorView
 	@UiField Button confirmBox;
 	@UiField Button cancelBox;
 	
-	private EstablecimientoSelectorPresenter presenter;
+	private CursoSelectorPresenter presenter;
 	
-	public EstablecimientoSelectorViewD() {
+	public CursoSelectorViewD() {
 		uiBinder.createAndBindUi(this);
 	}
 	
@@ -47,7 +47,7 @@ public class EstablecimientoSelectorViewD implements EstablecimientoSelectorView
 	}
 
 	@Override
-	public void setPresenter(EstablecimientoSelectorPresenter presenter) {
+	public void setPresenter(CursoSelectorPresenter presenter) {
 		this.presenter = presenter;
 	}
 

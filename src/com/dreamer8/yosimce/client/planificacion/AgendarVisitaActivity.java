@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
-import com.dreamer8.yosimce.client.EstablecimientoSelector;
+import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView.AgendarVisitaPresenter;
@@ -21,14 +21,14 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	private final AgendarVisitaView view;
 	private final AgendarVisitaPlace place;
-	private final EstablecimientoSelector selector;
+	private final CursoSelector selector;
 	
 	public AgendarVisitaActivity(ClientFactory factory,AgendarVisitaPlace place, HashMap<String, ArrayList<String>> permisos) {
 		super(factory, permisos);
 		this.place = place;
 		this.view = factory.getAgendarVisitaView();
 		view.setPresenter(this);
-		selector = new EstablecimientoSelector(factory);
+		selector = new CursoSelector(factory);
 		selector.setOnEstablecimientoChangeAction(new Command() {
 			
 			@Override
@@ -48,6 +48,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
 		
 		if(place.getEstablecimientoId()<0){

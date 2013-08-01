@@ -26,8 +26,8 @@ public class GeneralActivity extends SimceActivity implements GeneralPresenter {
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
-		updatedPermisos();
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.dreamer8.yosimce.client.general.ui;
 
-import com.dreamer8.yosimce.client.general.DetalleEstablecimientoPlace;
-import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
+import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -30,12 +30,12 @@ public class GeneralViewD extends Composite implements GeneralView {
 	
 	@UiHandler("detalleEstablecimientoViewButton")
 	void onDetalleEstablecimientoViewButtonClick(ClickEvent event){
-		presenter.goTo(new DetalleEstablecimientoPlace());
+		presenter.goTo(new DetalleCursoPlace());
 	}
 	
 	@UiHandler("historialCambiosEstablecimientoViewButton")
 	void onHistorialCambiosEstablecimientoViewButtonClick(ClickEvent event){
-		presenter.goTo(new HistorialEstablecimientoPlace());
+		presenter.goTo(new HistorialCursoPlace());
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package com.dreamer8.yosimce.client.ui;
 
-import com.dreamer8.yosimce.client.general.DetalleEstablecimientoPlace;
+import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
+import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -43,10 +43,10 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor materialButton;
 	@UiField Anchor administracionButton;
 	
-	@UiField Anchor detalleEstablecimientoViewItem;
-	@UiField Anchor historialCambiosEstablecimientoViewItem;
+	@UiField Anchor detalleCursoViewItem;
+	@UiField Anchor historialCambiosCursoViewItem;
 	@UiField Anchor agendamientosViewItem;
-	@UiField Anchor detalleAgendaEstablecimientoViewItem;
+	@UiField Anchor detalleAgendaViewItem;
 	@UiField Anchor agendarVisitaActionItem;
 	@UiField Anchor actividadesViewItem;
 	@UiField Anchor formularioActividadActionItem;
@@ -94,14 +94,14 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 	
 	
-	@UiHandler("detalleEstablecimientoViewItem")
-	void onDetalleEstablecimientoViewItemClick(ClickEvent event){
-		presenter.goTo(new DetalleEstablecimientoPlace());
+	@UiHandler("detalleCursoViewItem")
+	void onDetalleCursoViewItemClick(ClickEvent event){
+		presenter.goTo(new DetalleCursoPlace());
 	}
 	
-	@UiHandler("historialCambiosEstablecimientoViewItem")
-	void onHistorialCambiosEstablecimientoViewItemClick(ClickEvent event){
-		presenter.goTo(new HistorialEstablecimientoPlace());
+	@UiHandler("historialCambiosCursoViewItem")
+	void onHistorialCambiosCursoViewItemClick(ClickEvent event){
+		presenter.goTo(new HistorialCursoPlace());
 	}
 	
 	@UiHandler("agendamientosViewItem")
@@ -109,8 +109,8 @@ public class SidebarViewD extends Composite implements SidebarView{
 		presenter.goTo(new AgendamientosPlace());
 	}
 	
-	@UiHandler("detalleAgendaEstablecimientoViewItem")
-	void onDetalleAgendaEstablecimientoViewItemClick(ClickEvent event){
+	@UiHandler("detalleAgendaViewItem")
+	void onDetalleAgendaViewItemClick(ClickEvent event){
 		presenter.goTo(new DetalleAgendaPlace());
 	}
 	
@@ -192,15 +192,15 @@ public class SidebarViewD extends Composite implements SidebarView{
 
 
 	@Override
-	public void setDetalleEstablecimientoViewItemVisivility(boolean visible) {
-		detalleEstablecimientoViewItem.setVisible(visible);
+	public void setDetalleCursoViewItemVisivility(boolean visible) {
+		detalleCursoViewItem.setVisible(visible);
 	}
 
 
 	@Override
-	public void setHistorialCambiosEstablecimientoViewItemVisivility(
+	public void setHistorialCambiosCursoViewItemVisivility(
 			boolean visible) {
-		historialCambiosEstablecimientoViewItem.setVisible(visible);
+		historialCambiosCursoViewItem.setVisible(visible);
 	}
 
 
@@ -221,9 +221,9 @@ public class SidebarViewD extends Composite implements SidebarView{
 
 
 	@Override
-	public void setDetalleAgendaEstablecimientoViewItemVisivility(
+	public void setDetalleAgendaViewItemVisivility(
 			boolean visible) {
-		detalleAgendaEstablecimientoViewItem.setVisible(visible);
+		detalleAgendaViewItem.setVisible(visible);
 	}
 
 
@@ -335,19 +335,19 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setDetalleEstablecimientoViewItemSelected(boolean selected) {
+	public void setDetalleCursoViewItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
-			detalleEstablecimientoViewItem.addStyleName(style.selected());
+			detalleCursoViewItem.addStyleName(style.selected());
 		}
 	}
 
 	@Override
-	public void setHistorialCambiosEstablecimientoViewItemSelected(
+	public void setHistorialCambiosCursoViewItemSelected(
 			boolean selected) {
 		removeSeleccion();
 		if(selected){
-			historialCambiosEstablecimientoViewItem.addStyleName(style.selected());
+			historialCambiosCursoViewItem.addStyleName(style.selected());
 		}
 	}
 
@@ -360,10 +360,10 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setDetalleAgendaEstablecimientoViewItemSelected(boolean selected) {
+	public void setDetalleAgendaViewItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
-			detalleAgendaEstablecimientoViewItem.addStyleName(style.selected());
+			detalleAgendaViewItem.addStyleName(style.selected());
 		}
 	}
 
@@ -473,10 +473,10 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@Override
 	public void removeSeleccion(){
-		detalleEstablecimientoViewItem.removeStyleName(style.selected());
-		historialCambiosEstablecimientoViewItem.removeStyleName(style.selected());
+		detalleCursoViewItem.removeStyleName(style.selected());
+		historialCambiosCursoViewItem.removeStyleName(style.selected());
 		agendamientosViewItem.removeStyleName(style.selected());
-		detalleAgendaEstablecimientoViewItem.removeStyleName(style.selected());
+		detalleAgendaViewItem.removeStyleName(style.selected());
 		agendarVisitaActionItem.removeStyleName(style.selected());
 		actividadesViewItem.removeStyleName(style.selected());
 		formularioActividadActionItem.removeStyleName(style.selected());

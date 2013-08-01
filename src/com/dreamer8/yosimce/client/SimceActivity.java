@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gwt.activity.shared.AbstractActivity;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
 public abstract class SimceActivity extends AbstractActivity {
@@ -16,7 +18,6 @@ public abstract class SimceActivity extends AbstractActivity {
 	public SimceActivity(ClientFactory factory,HashMap<String,ArrayList<String>> permisos){
 		this.factory = factory;
 		this.permisos = permisos;
-		bind();
 	}
 	
 	public void updatedPermisos(){}
@@ -30,22 +31,21 @@ public abstract class SimceActivity extends AbstractActivity {
 	}
 	
 	@Override
-	public String mayStop() {
-		permisosHandlerRegistration.removeHandler();
-		return super.mayStop();
-	}
-	
-	
-	
-	private void bind(){
-		permisosHandlerRegistration = this.factory.getEventBus().addHandler(PermisosEvent.TYPE, new PermisosEvent.PermisosHandler() {
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		permisosHandlerRegistration = eventBus.addHandler(PermisosEvent.TYPE, new PermisosEvent.PermisosHandler() {
 			
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
 				updatedPermisos();
 			}
-		});
+		});	
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		permisosHandlerRegistration.removeHandler();
 	}
 
 }

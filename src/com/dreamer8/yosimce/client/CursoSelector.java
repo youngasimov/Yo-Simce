@@ -2,31 +2,31 @@ package com.dreamer8.yosimce.client;
 
 import java.util.ArrayList;
 
-import com.dreamer8.yosimce.client.ui.EstablecimientoSelectorView;
-import com.dreamer8.yosimce.client.ui.EstablecimientoSelectorView.EstablecimientoSelectorPresenter;
+import com.dreamer8.yosimce.client.ui.CursoSelectorView;
+import com.dreamer8.yosimce.client.ui.CursoSelectorView.CursoSelectorPresenter;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.UIObject;
 
-public class EstablecimientoSelector implements
-		EstablecimientoSelectorPresenter {
+public class CursoSelector implements
+		CursoSelectorPresenter {
 
 	private final ClientFactory factory;
-	private EstablecimientoSelectorView view;
+	private CursoSelectorView view;
 	private Command cancelCommand;
 	private Command confirmCommand;
 	private EstablecimientoDTO currentEstablecimiento;
 	
-	public EstablecimientoSelector(ClientFactory factory){
+	public CursoSelector(ClientFactory factory){
 		this.factory = factory;
-		view = factory.getEstablecimientoSelectorView();
+		view = factory.getCursoSelectorView();
 		view.setPresenter(this);
 		
 	}
 	
 	
 	@Override
-	public ArrayList<EstablecimientoDTO> getEstablecimientos(String search) {
+	public ArrayList<EstablecimientoDTO> getCursos(String search) {
 		return null;
 	}
 	

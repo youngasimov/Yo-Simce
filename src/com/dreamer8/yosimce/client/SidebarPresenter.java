@@ -3,8 +3,8 @@ package com.dreamer8.yosimce.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.dreamer8.yosimce.client.general.DetalleEstablecimientoPlace;
-import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
+import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -64,16 +64,16 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setAdministracionVisivility(false);
 				}
 				
-				if(event.getNewPlace() instanceof DetalleEstablecimientoPlace){
-					view.setDetalleEstablecimientoViewItemSelected(true);
-				}else if(event.getNewPlace() instanceof HistorialEstablecimientoPlace){
-					view.setHistorialCambiosEstablecimientoViewItemSelected(true);
+				if(event.getNewPlace() instanceof DetalleCursoPlace){
+					view.setDetalleCursoViewItemSelected(true);
+				}else if(event.getNewPlace() instanceof HistorialCursoPlace){
+					view.setHistorialCambiosCursoViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendamientosPlace){
 					view.setAgendamientosViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendarVisitaPlace){
 					view.setAgendarVisitaActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof DetalleAgendaPlace){
-					view.setDetalleAgendaEstablecimientoViewItemSelected(true);
+					view.setDetalleAgendaViewItemSelected(true);
 				}
 				
 				else{

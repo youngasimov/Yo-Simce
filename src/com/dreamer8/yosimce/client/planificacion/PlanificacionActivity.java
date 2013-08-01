@@ -26,8 +26,8 @@ public class PlanificacionActivity extends SimceActivity implements
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		super.start(panel, eventBus);
 		panel.setWidget(view.asWidget());
-		updatedPermisos();
 	}
 
 	@Override

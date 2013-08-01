@@ -79,8 +79,42 @@
 							<td><g:Label ui:field="comunaLabel"/> </td>
 						</tr>
 						<tr>
-							<td>Cursos:</td>
-							<td><g:Label ui:field="cursosLabel"/> </td>
+							<td>Curso:</td>
+							<td><g:Label ui:field="cursoLabel"/> </td>
+						</tr>
+						<tr>
+							<td>Tipo:</td>
+							<td><g:Label ui:field="tipoLabel"/> </td>
+						</tr>
+						<tr>
+							<td colspan='2'>Personal</td>
+						</tr>
+						<tr>
+							<td>Supervisor:</td>
+							<td><g:Label ui:field="supervisorLabel"/> </td>
+						</tr>
+						<tr>
+							<td>Examinador:</td>
+							<td><g:Label ui:field="examinadorLabel"/> </td>
+						</tr>
+						<tr>
+							<td>Examinador 2:</td>
+							<td><g:Label ui:field="examinador2Label"/> </td>
+						</tr>
+						<tr>
+							<td colspan='2'>Contacto</td>
+						</tr>
+						<tr>
+							<td>Director:</td>
+							<td><g:Label ui:field="directorLabel"/> </td>
+						</tr>
+						<tr>
+							<td>Correo electrónico:</td>
+							<td><g:Label ui:field="correoLabel"/> </td>
+						</tr>
+						<tr>
+							<td>Teléfono:</td>
+							<td><g:Label ui:field="telefonoLabel"/> </td>
 						</tr>
 					</table>
 				</g:HTMLPanel>

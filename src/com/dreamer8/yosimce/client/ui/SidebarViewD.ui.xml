@@ -78,15 +78,15 @@
 				<li ui:field="general">
 					<g:Anchor ui:field="generalButton" text="General"/>
 					<ul>
-						<li><g:Anchor ui:field="detalleEstablecimientoViewItem" text="Detalle establecimiento"/></li>
-						<li><g:Anchor ui:field="historialCambiosEstablecimientoViewItem" text="Historial de cambios a establecimiento"/></li>
+						<li><g:Anchor ui:field="detalleCursoViewItem" text="Detalle curso"/></li>
+						<li><g:Anchor ui:field="historialCambiosCursoViewItem" text="Historial de cambios a curso"/></li>
 					</ul>
 				</li>
 				<li ui:field="agendamiento">
 					<g:Anchor ui:field="agendamientoButton" text="Planificación"/>
 					<ul>
 						<li><g:Anchor ui:field="agendamientosViewItem" text="Lista de agendamientos"/></li>
-						<li><g:Anchor ui:field="detalleAgendaEstablecimientoViewItem" text="Detalles de agendamiento"/></li>
+						<li><g:Anchor ui:field="detalleAgendaViewItem" text="Detalles de agendamiento"/></li>
 						<li><g:Anchor ui:field="agendarVisitaActionItem" text="Agendar visita"/></li>
 					</ul>
 				</li>

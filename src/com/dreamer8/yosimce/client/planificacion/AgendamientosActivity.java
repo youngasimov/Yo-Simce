@@ -31,6 +31,7 @@ public class AgendamientosActivity extends SimceActivity implements
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
 		
 		if(getFactory().onTesting()){
@@ -89,6 +90,13 @@ public class AgendamientosActivity extends SimceActivity implements
 		place.setNivelId(this.place.getNivelId());
 		place.setTipoId(this.place.getTipoId());
 		getFactory().getPlaceController().goTo(place);
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		view.getDataDisplay().setRowCount(0);
+		view.clearCursoSelection();
 	}
 
 }

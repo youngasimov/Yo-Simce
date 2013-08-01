@@ -245,5 +245,14 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(comentarioColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Comentario")));
         dataGrid.setColumnWidth(comentarioColumn, 300, Unit.PX);
 	}
+
+	@Override
+	public void clearCursoSelection() {
+		if(selectedItem !=null){
+			selectionModel.setSelected(selectedItem, false);
+			selectedItem = null;
+		}
+		
+	}
 	
 }

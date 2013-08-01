@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
-import com.dreamer8.yosimce.client.EstablecimientoSelector;
+import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView.DetalleAgendaPresenter;
@@ -22,14 +22,14 @@ public class DetalleAgendaActivity extends SimceActivity
 	
 	private final DetalleAgendaPlace place;
 	private final DetalleAgendaView view;
-	private final EstablecimientoSelector selector;
+	private final CursoSelector selector;
 	
 	public DetalleAgendaActivity(ClientFactory factory, DetalleAgendaPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, permisos);
 		this.place = place;
-		this.view = factory.getDetalleAgendaEstablecimientoView();
+		this.view = factory.getDetalleAgendaView();
 		this.view.setPresenter(this);
-		selector = new EstablecimientoSelector(factory);
+		selector = new CursoSelector(factory);
 		selector.setOnEstablecimientoChangeAction(new Command() {
 			
 			@Override
@@ -49,6 +49,7 @@ public class DetalleAgendaActivity extends SimceActivity
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		super.start(panel, eventBus);
 		panel.setWidget(view.asWidget());
 		
 		if(place.getCursoId()<0){

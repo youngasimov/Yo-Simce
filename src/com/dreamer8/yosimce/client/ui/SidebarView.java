@@ -6,17 +6,17 @@ import com.google.gwt.user.client.ui.IsWidget;
 public interface SidebarView extends IsWidget {
 	
 	void setGeneralVisivility(boolean visible);
-	void setDetalleEstablecimientoViewItemVisivility(boolean visible);
-	void setHistorialCambiosEstablecimientoViewItemVisivility(boolean visible);
-	void setDetalleEstablecimientoViewItemSelected(boolean selected);
-	void setHistorialCambiosEstablecimientoViewItemSelected(boolean selected);
+	void setDetalleCursoViewItemVisivility(boolean visible);
+	void setHistorialCambiosCursoViewItemVisivility(boolean visible);
+	void setDetalleCursoViewItemSelected(boolean selected);
+	void setHistorialCambiosCursoViewItemSelected(boolean selected);
 	
 	void setAgendamientoVisivility(boolean visible);
 	void setAgendamientosViewItemVisivility(boolean visible);
-	void setDetalleAgendaEstablecimientoViewItemVisivility(boolean visible);
+	void setDetalleAgendaViewItemVisivility(boolean visible);
 	void setAgendarVisitaActionItemVisivility(boolean visible);
 	void setAgendamientosViewItemSelected(boolean selected);
-	void setDetalleAgendaEstablecimientoViewItemSelected(boolean selected);
+	void setDetalleAgendaViewItemSelected(boolean selected);
 	void setAgendarVisitaActionItemSelected(boolean selected);
 	
 	void setActividadVisivility(boolean visible);

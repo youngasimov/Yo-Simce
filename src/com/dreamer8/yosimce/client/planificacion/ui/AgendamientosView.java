@@ -14,6 +14,7 @@ public interface AgendamientosView extends IsWidget {
     Column<AgendaPreviewDTO,?> getColumn(int index);
     int getColumnIndex(Column<AgendaPreviewDTO,?> column);
 	void setPresenter(AgendamientosPresenter presenter);
+	void clearCursoSelection();
 	
 	public interface AgendamientosPresenter{
 		void onColumnSort(int columnIndex);
