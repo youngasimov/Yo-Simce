@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
+import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface GeneralServiceAsync {
@@ -16,5 +17,10 @@ public interface GeneralServiceAsync {
 
 	void getCambios(Integer idEstablecimiento,
 			AsyncCallback<ArrayList<HistorialCambioItemDTO>> callback);
+
+	void getComunas(Integer sectorId,
+			AsyncCallback<ArrayList<SectorDTO>> callback);
+
+	void getRegiones(AsyncCallback<ArrayList<SectorDTO>> callback);
 
 }

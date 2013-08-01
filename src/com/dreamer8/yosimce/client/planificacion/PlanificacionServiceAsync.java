@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -37,6 +38,8 @@ public interface PlanificacionServiceAsync {
 
 	void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda,
 			AsyncCallback<Void> callback);
+
+	void getEstadosAgenda(AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
 
 	
 
