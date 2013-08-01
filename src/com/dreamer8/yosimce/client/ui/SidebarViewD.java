@@ -1,5 +1,8 @@
 package com.dreamer8.yosimce.client.ui;
 
+import com.dreamer8.yosimce.client.general.DetalleEstablecimientoPlace;
+import com.dreamer8.yosimce.client.general.GeneralPlace;
+import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
@@ -67,7 +70,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("generalButton")
 	void onGeneralButtonClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new GeneralPlace());
 	}
 	
 	@UiHandler("agendamientoButton")
@@ -93,12 +96,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("detalleEstablecimientoViewItem")
 	void onDetalleEstablecimientoViewItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new DetalleEstablecimientoPlace());
 	}
 	
 	@UiHandler("historialCambiosEstablecimientoViewItem")
 	void onHistorialCambiosEstablecimientoViewItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new HistorialEstablecimientoPlace());
 	}
 	
 	@UiHandler("agendamientosViewItem")

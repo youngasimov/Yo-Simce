@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.general.ui.GeneralView;
+import com.dreamer8.yosimce.client.general.ui.GeneralViewD;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
@@ -42,6 +44,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final HeaderView headerView = new HeaderViewD();
 	private final SidebarView sidebarView = new SidebarViewD();
 	
+	private final GeneralView generalView = new GeneralViewD();
 	private final PlanificacionView planificacionView = new PlanificacionViewD();
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
@@ -97,6 +100,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public SidebarView getSidebarView() {
 		return sidebarView;
+	}
+	
+	@Override
+	public GeneralView getGeneralView() {
+		return generalView;
 	}
 
 	@Override

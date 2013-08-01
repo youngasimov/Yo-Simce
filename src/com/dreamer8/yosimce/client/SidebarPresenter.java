@@ -3,6 +3,8 @@ package com.dreamer8.yosimce.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.dreamer8.yosimce.client.general.DetalleEstablecimientoPlace;
+import com.dreamer8.yosimce.client.general.HistorialEstablecimientoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaEstablecimientoPlace;
@@ -62,7 +64,11 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setAdministracionVisivility(false);
 				}
 				
-				if(event.getNewPlace() instanceof AgendamientosPlace){
+				if(event.getNewPlace() instanceof DetalleEstablecimientoPlace){
+					view.setDetalleEstablecimientoViewItemSelected(true);
+				}else if(event.getNewPlace() instanceof HistorialEstablecimientoPlace){
+					view.setHistorialCambiosEstablecimientoViewItemSelected(true);
+				}else if(event.getNewPlace() instanceof AgendamientosPlace){
 					view.setAgendamientosViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendarVisitaPlace){
 					view.setAgendarVisitaActionItemSelected(true);
