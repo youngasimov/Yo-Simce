@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 
@@ -12,27 +12,27 @@ import com.dreamer8.yosimce.shared.dto.SectorDTO;
  */
 public class Comuna implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private Provincia provincia;
 	private String nombre;
-	private List<Cc> ccs = new ArrayList<Cc>(0);
-	private List<Establecimiento> establecimientos = new ArrayList<Establecimiento>(0);
-	private List<Co> cos = new ArrayList<Co>(0);
-	private List<Usuario> usuarios = new ArrayList<Usuario>(0);
-	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
-	private List<Transporte> transportes = new ArrayList<Transporte>(0);
-	private List<CcXComuna> ccXComunas = new ArrayList<CcXComuna>(0);
+	private Set ccs = new HashSet(0);
+	private Set establecimientos = new HashSet(0);
+	private Set cos = new HashSet(0);
+	private Set usuarios = new HashSet(0);
+	private Set usuarioXComunas = new HashSet(0);
+	private Set transportes = new HashSet(0);
+	private Set ccXComunas = new HashSet(0);
 
 	public Comuna() {
 	}
 
-	public Comuna(Integer id) {
+	public Comuna(int id) {
 		this.id = id;
 	}
 
-	public Comuna(Integer id, Provincia provincia, String nombre, List<Cc> ccs,
-			List<Establecimiento> establecimientos, List<Co> cos, List<Usuario> usuarios, List<UsuarioXComuna> usuarioXComunas,
-			List<Transporte> transportes, List<CcXComuna> ccXComunas) {
+	public Comuna(int id, Provincia provincia, String nombre, Set ccs,
+			Set establecimientos, Set cos, Set usuarios, Set usuarioXComunas,
+			Set transportes, Set ccXComunas) {
 		this.id = id;
 		this.provincia = provincia;
 		this.nombre = nombre;
@@ -45,11 +45,11 @@ public class Comuna implements java.io.Serializable {
 		this.ccXComunas = ccXComunas;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -69,62 +69,62 @@ public class Comuna implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<Cc> getCcs() {
+	public Set getCcs() {
 		return this.ccs;
 	}
 
-	public void setCcs(List<Cc> ccs) {
+	public void setCcs(Set ccs) {
 		this.ccs = ccs;
 	}
 
-	public List<Establecimiento> getEstablecimientos() {
+	public Set getEstablecimientos() {
 		return this.establecimientos;
 	}
 
-	public void setEstablecimientos(List<Establecimiento> establecimientos) {
+	public void setEstablecimientos(Set establecimientos) {
 		this.establecimientos = establecimientos;
 	}
 
-	public List<Co> getCos() {
+	public Set getCos() {
 		return this.cos;
 	}
 
-	public void setCos(List<Co> cos) {
+	public void setCos(Set cos) {
 		this.cos = cos;
 	}
 
-	public List<Usuario> getUsuarios() {
+	public Set getUsuarios() {
 		return this.usuarios;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
+	public void setUsuarios(Set usuarios) {
 		this.usuarios = usuarios;
 	}
 
-	public List<UsuarioXComuna> getUsuarioXComunas() {
+	public Set getUsuarioXComunas() {
 		return this.usuarioXComunas;
 	}
 
-	public void setUsuarioXComunas(List<UsuarioXComuna> usuarioXComunas) {
+	public void setUsuarioXComunas(Set usuarioXComunas) {
 		this.usuarioXComunas = usuarioXComunas;
 	}
 
-	public List<Transporte> getTransportes() {
+	public Set getTransportes() {
 		return this.transportes;
 	}
 
-	public void setTransportes(List<Transporte> transportes) {
+	public void setTransportes(Set transportes) {
 		this.transportes = transportes;
 	}
 
-	public List<CcXComuna> getCcXComunas() {
+	public Set getCcXComunas() {
 		return this.ccXComunas;
 	}
 
-	public void setCcXComunas(List<CcXComuna> ccXComunas) {
+	public void setCcXComunas(Set ccXComunas) {
 		this.ccXComunas = ccXComunas;
 	}
-	
+
 	public SectorDTO getSectorDTO() {
 		SectorDTO sdto = new SectorDTO();
 		sdto.setIdSector(id);

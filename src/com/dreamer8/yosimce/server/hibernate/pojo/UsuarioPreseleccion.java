@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,24 +10,25 @@ import java.util.Date;
  */
 public class UsuarioPreseleccion implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private UsuarioTipo usuarioTipo;
 	private UsuarioXAplicacionXNivel usuarioXAplicacionXNivel;
 	private Co co;
 	private BigDecimal puntajeTotal;
-	private Boolean preseleccion;
+	private boolean preseleccion;
 	private Date fechaPreseleccion;
 
 	public UsuarioPreseleccion() {
 	}
 
-	public UsuarioPreseleccion(Integer id) {
+	public UsuarioPreseleccion(int id, boolean preseleccion) {
 		this.id = id;
+		this.preseleccion = preseleccion;
 	}
 
-	public UsuarioPreseleccion(Integer id, UsuarioTipo usuarioTipo,
+	public UsuarioPreseleccion(int id, UsuarioTipo usuarioTipo,
 			UsuarioXAplicacionXNivel usuarioXAplicacionXNivel, Co co,
-			BigDecimal puntajeTotal, Boolean preseleccion,
+			BigDecimal puntajeTotal, boolean preseleccion,
 			Date fechaPreseleccion) {
 		this.id = id;
 		this.usuarioTipo = usuarioTipo;
@@ -38,11 +39,11 @@ public class UsuarioPreseleccion implements java.io.Serializable {
 		this.fechaPreseleccion = fechaPreseleccion;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -79,11 +80,11 @@ public class UsuarioPreseleccion implements java.io.Serializable {
 		this.puntajeTotal = puntajeTotal;
 	}
 
-	public Boolean getPreseleccion() {
+	public boolean isPreseleccion() {
 		return this.preseleccion;
 	}
 
-	public void setPreseleccion(Boolean preseleccion) {
+	public void setPreseleccion(boolean preseleccion) {
 		this.preseleccion = preseleccion;
 	}
 

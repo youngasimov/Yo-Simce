@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.EscalaItem" table="escala_item" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.EscalaItem" table="escala_item" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="escala" class="com.dreamer8.yosimce.server.hibernate.Escala" fetch="select">
+        <many-to-one name="escala" class="com.dreamer8.yosimce.server.hibernate.pojo.Escala" fetch="select">
             <column name="escala_id" />
         </many-to-one>
         <property name="valor" type="java.lang.Integer">

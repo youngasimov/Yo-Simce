@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipoXCo" table="aplicacion_x_nivel_x_usuario_tipo_x_co" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXUsuarioTipoXCo" table="aplicacion_x_nivel_x_usuario_tipo_x_co" schema="public">
         <comment>Se guarda cantidad requerida de personal para preseleccion y seleccion</comment>
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="aplicacionXNivelXUsuarioTipo" class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipo" fetch="select">
+        <many-to-one name="aplicacionXNivelXUsuarioTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXUsuarioTipo" fetch="select">
             <column name="aplicacion_x_nivel_usuario_tipo_id" />
         </many-to-one>
-        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.Co" fetch="select">
+        <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.pojo.Co" fetch="select">
             <column name="co_id" />
         </many-to-one>
         <property name="preseleccion" type="java.lang.Integer">

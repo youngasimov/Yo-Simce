@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioXTest" table="usuario_x_test" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXTest" table="usuario_x_test" schema="public">
         <comment>resultado de test</comment>
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.pojo.Usuario" fetch="select">
             <column name="usuario_id" />
         </many-to-one>
-        <many-to-one name="test" class="com.dreamer8.yosimce.server.hibernate.Test" fetch="select">
+        <many-to-one name="test" class="com.dreamer8.yosimce.server.hibernate.pojo.Test" fetch="select">
             <column name="test_id" />
         </many-to-one>
         <property name="intento" type="java.lang.Integer">
@@ -36,11 +36,11 @@
         <property name="evaluacion" type="big_decimal">
             <column name="evaluacion" precision="131089" scale="0" />
         </property>
-        <bag name="usuarioXTestRespuestas" table="usuario_x_test_respuesta" inverse="true" lazy="true" fetch="select">
+        <set name="usuarioXTestRespuestas" table="usuario_x_test_respuesta" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_x_test_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXTestRespuesta" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXTestRespuesta" />
+        </set>
     </class>
 </hibernate-mapping>

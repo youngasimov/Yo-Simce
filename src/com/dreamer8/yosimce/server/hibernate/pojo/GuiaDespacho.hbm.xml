@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.GuiaDespacho" table="guia_despacho" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="codigo" type="string">
+            <column name="codigo" />
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="29" />
+        </property>
+        <property name="ruta" type="string">
+            <column name="ruta" />
+        </property>
+        <set name="materialXGuiaDespachos" table="material_x_guia_despacho" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="guia_despacho_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.MaterialXGuiaDespacho" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class HistorialCambios implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private Usuario usuario;
 	private Date fecha;
 	private String tabla;
@@ -19,11 +19,11 @@ public class HistorialCambios implements java.io.Serializable {
 	public HistorialCambios() {
 	}
 
-	public HistorialCambios(Integer id) {
+	public HistorialCambios(int id) {
 		this.id = id;
 	}
 
-	public HistorialCambios(Integer id, Usuario usuario, Date fecha, String tabla,
+	public HistorialCambios(int id, Usuario usuario, Date fecha, String tabla,
 			String campo, String valor) {
 		this.id = id;
 		this.usuario = usuario;
@@ -33,11 +33,11 @@ public class HistorialCambios implements java.io.Serializable {
 		this.valor = valor;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

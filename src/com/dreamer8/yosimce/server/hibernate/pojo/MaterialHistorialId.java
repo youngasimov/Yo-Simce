@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,22 +9,22 @@ import java.util.Date;
  */
 public class MaterialHistorialId implements java.io.Serializable {
 
-	private Integer materialId;
+	private int materialId;
 	private Date fecha;
 
 	public MaterialHistorialId() {
 	}
 
-	public MaterialHistorialId(Integer materialId, Date fecha) {
+	public MaterialHistorialId(int materialId, Date fecha) {
 		this.materialId = materialId;
 		this.fecha = fecha;
 	}
 
-	public Integer getMaterialId() {
+	public int getMaterialId() {
 		return this.materialId;
 	}
 
-	public void setMaterialId(Integer materialId) {
+	public void setMaterialId(int materialId) {
 		this.materialId = materialId;
 	}
 
@@ -52,7 +52,7 @@ public class MaterialHistorialId implements java.io.Serializable {
 	}
 
 	public int hashCode() {
-		Integer result = 17;
+		int result = 17;
 
 		result = 37 * result + this.getMaterialId();
 		result = 37 * result

@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class JrXCentroRegional implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private Usuario usuario;
 	private CentroRegional centroRegional;
 	private Date fechaActivacion;
@@ -19,11 +19,11 @@ public class JrXCentroRegional implements java.io.Serializable {
 	public JrXCentroRegional() {
 	}
 
-	public JrXCentroRegional(Integer id) {
+	public JrXCentroRegional(int id) {
 		this.id = id;
 	}
 
-	public JrXCentroRegional(Integer id, Usuario usuario,
+	public JrXCentroRegional(int id, Usuario usuario,
 			CentroRegional centroRegional, Date fechaActivacion,
 			Date fechaTermino, Boolean activo) {
 		this.id = id;
@@ -34,11 +34,11 @@ public class JrXCentroRegional implements java.io.Serializable {
 		this.activo = activo;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

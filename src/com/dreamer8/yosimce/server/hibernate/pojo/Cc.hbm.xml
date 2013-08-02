@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.Cc" table="cc" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Cc" table="cc" schema="public">
         <comment>centro de capacitacion</comment>
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="comuna" class="com.dreamer8.yosimce.server.hibernate.Comuna" fetch="select">
+        <many-to-one name="comuna" class="com.dreamer8.yosimce.server.hibernate.pojo.Comuna" fetch="select">
             <column name="comuna_id" />
         </many-to-one>
         <property name="nombre" type="string">
@@ -20,6 +20,9 @@
         </property>
         <property name="responsableRut" type="string">
             <column name="responsable_rut" length="15" />
+        </property>
+        <property name="responsableNombre" type="string">
+            <column name="responsable_nombre" />
         </property>
         <property name="responsableTelefono" type="string">
             <column name="responsable_telefono" />
@@ -33,17 +36,25 @@
         <property name="direccionLongitud" type="big_decimal">
             <column name="direccion_longitud" precision="131089" scale="0" />
         </property>
-        <bag name="ccXComunas" table="cc_x_comuna" inverse="true" lazy="true" fetch="select">
+        <set name="materials" table="material_x_cc" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="cc_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Material">
+                <column name="material_id" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="ccXComunas" table="cc_x_comuna" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="cc_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.CcXComuna" />
-        </bag>
-        <bag name="ccSalas" table="cc_sala" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcXComuna" />
+        </set>
+        <set name="ccSalas" table="cc_sala" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="cc_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.CcSala" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcSala" />
+        </set>
     </class>
 </hibernate-mapping>

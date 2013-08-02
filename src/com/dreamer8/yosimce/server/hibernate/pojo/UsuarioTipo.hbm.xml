@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.UsuarioTipo" table="usuario_tipo" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo" table="usuario_tipo" schema="public">
         <comment>considerar tipo temporal lista de espera (+nee). Usuario Capacitador</comment>
         <id name="id" type="int">
             <column name="id" />
@@ -12,49 +12,52 @@
         <property name="nombre" type="string">
             <column name="nombre" />
         </property>
-        <property name="firmaContrato" type="java.lang.Boolean">
-            <column name="firma_contrato" />
+        <property name="firmaContrato" type="boolean">
+            <column name="firma_contrato" not-null="true" />
         </property>
         <property name="ccCapacidad" type="java.lang.Integer">
             <column name="cc_capacidad">
                 <comment>maximo por capacitacion</comment>
             </column>
         </property>
-        <bag name="ccCapacitacions" table="cc_capacitacion" inverse="true" lazy="true" fetch="select">
+        <property name="rol" type="string">
+            <column name="rol" length="50" />
+        </property>
+        <set name="ccCapacitacions" table="cc_capacitacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.CcCapacitacion" />
-        </bag>
-        <bag name="aplicacionXNivelXUsuarioTipos" table="aplicacion_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcCapacitacion" />
+        </set>
+        <set name="aplicacionXNivelXUsuarioTipos" table="aplicacion_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipo" />
-        </bag>
-        <bag name="faseXAplicacionXTestXNivelXTipoUsuarios" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXUsuarioTipo" />
+        </set>
+        <set name="faseXAplicacionXTestXNivelXTipoUsuarios" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="tipo_usuario_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.FaseXAplicacionXTestXNivelXTipoUsuario" />
-        </bag>
-        <bag name="usuarioPreseleccions" table="usuario_preseleccion" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacionXTestXNivelXTipoUsuario" />
+        </set>
+        <set name="usuarioPreseleccions" table="usuario_preseleccion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioPreseleccion" />
-        </bag>
-        <bag name="aplicacionXUsuarioTipos" table="aplicacion_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioPreseleccion" />
+        </set>
+        <set name="aplicacionXUsuarioTipos" table="aplicacion_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipo" />
-        </bag>
-        <bag name="usuarioSeleccions" table="usuario_seleccion" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo" />
+        </set>
+        <set name="usuarioSeleccions" table="usuario_seleccion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioSeleccion" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion" />
+        </set>
     </class>
 </hibernate-mapping>

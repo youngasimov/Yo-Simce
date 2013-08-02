@@ -1,26 +1,26 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.Establecimiento" table="establecimiento" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento" table="establecimiento" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="areaGeografica" class="com.dreamer8.yosimce.server.hibernate.AreaGeografica" fetch="select">
+        <many-to-one name="areaGeografica" class="com.dreamer8.yosimce.server.hibernate.pojo.AreaGeografica" fetch="select">
             <column name="area_geografica_id" />
         </many-to-one>
-        <many-to-one name="comuna" class="com.dreamer8.yosimce.server.hibernate.Comuna" fetch="select">
+        <many-to-one name="comuna" class="com.dreamer8.yosimce.server.hibernate.pojo.Comuna" fetch="select">
             <column name="comuna_id" />
         </many-to-one>
-        <many-to-one name="establecimientoRegimen" class="com.dreamer8.yosimce.server.hibernate.EstablecimientoRegimen" fetch="select">
+        <many-to-one name="establecimientoRegimen" class="com.dreamer8.yosimce.server.hibernate.pojo.EstablecimientoRegimen" fetch="select">
             <column name="establecimiento_regimen_id" />
         </many-to-one>
-        <many-to-one name="establecimientoEstado" class="com.dreamer8.yosimce.server.hibernate.EstablecimientoEstado" fetch="select">
+        <many-to-one name="establecimientoEstado" class="com.dreamer8.yosimce.server.hibernate.pojo.EstablecimientoEstado" fetch="select">
             <column name="establecimiento_estado_id" />
         </many-to-one>
-        <many-to-one name="establecimientoDependencia" class="com.dreamer8.yosimce.server.hibernate.EstablecimientoDependencia" fetch="select">
+        <many-to-one name="establecimientoDependencia" class="com.dreamer8.yosimce.server.hibernate.pojo.EstablecimientoDependencia" fetch="select">
             <column name="establecimiento_dependencia_id" />
         </many-to-one>
         <property name="nombre" type="string">
@@ -44,35 +44,35 @@
         <property name="email" type="string">
             <column name="email" />
         </property>
-        <bag name="usuarioXEstablecimientos" table="usuario_x_establecimiento" inverse="true" lazy="true" fetch="select">
+        <set name="usuarioXEstablecimientos" table="usuario_x_establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="establecimiento_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXEstablecimiento" />
-        </bag>
-        <bag name="coXEstablecimientos" table="co_x_establecimiento" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXEstablecimiento" />
+        </set>
+        <set name="coXEstablecimientos" table="co_x_establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="establecimiento_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.CoXEstablecimiento" />
-        </bag>
-        <bag name="cursos" table="curso" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CoXEstablecimiento" />
+        </set>
+        <set name="cursos" table="curso" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="establecimiento_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.Curso" />
-        </bag>
-        <bag name="aplicacionXEstablecimientos" table="aplicacion_x_establecimiento" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Curso" />
+        </set>
+        <set name="aplicacionXEstablecimientos" table="aplicacion_x_establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="establecimiento_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXEstablecimiento" />
-        </bag>
-        <bag name="rutaXEstablecimientos" table="ruta_x_establecimiento" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXEstablecimiento" />
+        </set>
+        <set name="rutaXEstablecimientos" table="ruta_x_establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="establecimiento_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.RutaXEstablecimiento" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.RutaXEstablecimiento" />
+        </set>
     </class>
 </hibernate-mapping>

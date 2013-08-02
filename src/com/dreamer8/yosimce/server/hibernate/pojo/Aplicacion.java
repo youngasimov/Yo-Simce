@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 
@@ -12,50 +12,56 @@ import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
  */
 public class Aplicacion implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private String nombre;
+	private String slug;
 	private Integer tiempoDetencionEstablecimiento;
 	private Integer diasPreviosSinMaterial;
-	private List<CentroRegional> centroRegionals = new ArrayList<CentroRegional>(
-			0);
-	private List<AplicacionXNivel> aplicacionXNivels = new ArrayList<AplicacionXNivel>(
-			0);
-	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(
-			0);
-	private List<FaseXAplicacion> faseXAplicacions = new ArrayList<FaseXAplicacion>(
-			0);
-	private List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos = new ArrayList<AplicacionXUsuarioTipo>(
-			0);
+	private Set centroRegionals = new HashSet(0);
+	private Set aplicacionXNivels = new HashSet(0);
+	private Set lugars = new HashSet(0);
+	private Set aplicacionXEstablecimientos = new HashSet(0);
+	private Set faseXAplicacions = new HashSet(0);
+	private Set documentoTipos = new HashSet(0);
+	private Set ccCapacitacions = new HashSet(0);
+	private Set aplicacionXUsuarioTipos = new HashSet(0);
+	private Set documentoEstados = new HashSet(0);
 
 	public Aplicacion() {
 	}
 
-	public Aplicacion(Integer id) {
+	public Aplicacion(int id, String slug) {
 		this.id = id;
+		this.slug = slug;
 	}
 
-	public Aplicacion(Integer id, String nombre,
+	public Aplicacion(int id, String nombre, String slug,
 			Integer tiempoDetencionEstablecimiento,
-			List<CentroRegional> centroRegionals,
-			List<AplicacionXNivel> aplicacionXNivels,
-			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos,
-			List<FaseXAplicacion> faseXAplicacions,
-			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos) {
+			Integer diasPreviosSinMaterial, Set centroRegionals,
+			Set aplicacionXNivels, Set lugars, Set aplicacionXEstablecimientos,
+			Set faseXAplicacions, Set documentoTipos, Set ccCapacitacions,
+			Set aplicacionXUsuarioTipos, Set documentoEstados) {
 		this.id = id;
 		this.nombre = nombre;
+		this.slug = slug;
 		this.tiempoDetencionEstablecimiento = tiempoDetencionEstablecimiento;
+		this.diasPreviosSinMaterial = diasPreviosSinMaterial;
 		this.centroRegionals = centroRegionals;
 		this.aplicacionXNivels = aplicacionXNivels;
+		this.lugars = lugars;
 		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
 		this.faseXAplicacions = faseXAplicacions;
+		this.documentoTipos = documentoTipos;
+		this.ccCapacitacions = ccCapacitacions;
 		this.aplicacionXUsuarioTipos = aplicacionXUsuarioTipos;
+		this.documentoEstados = documentoEstados;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -67,6 +73,14 @@ public class Aplicacion implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
+	public String getSlug() {
+		return this.slug;
+	}
+
+	public void setSlug(String slug) {
+		this.slug = slug;
+	}
+
 	public Integer getTiempoDetencionEstablecimiento() {
 		return this.tiempoDetencionEstablecimiento;
 	}
@@ -76,54 +90,84 @@ public class Aplicacion implements java.io.Serializable {
 		this.tiempoDetencionEstablecimiento = tiempoDetencionEstablecimiento;
 	}
 
-	public List<CentroRegional> getCentroRegionals() {
-		return this.centroRegionals;
-	}
-
-	public void setCentroRegionals(List<CentroRegional> centroRegionals) {
-		this.centroRegionals = centroRegionals;
-	}
-
-	public List<AplicacionXNivel> getAplicacionXNivels() {
-		return this.aplicacionXNivels;
-	}
-
-	public void setAplicacionXNivels(List<AplicacionXNivel> aplicacionXNivels) {
-		this.aplicacionXNivels = aplicacionXNivels;
-	}
-
-	public List<AplicacionXEstablecimiento> getAplicacionXEstablecimientos() {
-		return this.aplicacionXEstablecimientos;
-	}
-
-	public void setAplicacionXEstablecimientos(
-			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
-		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
-	}
-
-	public List<FaseXAplicacion> getFaseXAplicacions() {
-		return this.faseXAplicacions;
-	}
-
-	public void setFaseXAplicacions(List<FaseXAplicacion> faseXAplicacions) {
-		this.faseXAplicacions = faseXAplicacions;
-	}
-
-	public List<AplicacionXUsuarioTipo> getAplicacionXUsuarioTipos() {
-		return this.aplicacionXUsuarioTipos;
-	}
-
-	public void setAplicacionXUsuarioTipos(
-			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos) {
-		this.aplicacionXUsuarioTipos = aplicacionXUsuarioTipos;
-	}
-
 	public Integer getDiasPreviosSinMaterial() {
-		return diasPreviosSinMaterial;
+		return this.diasPreviosSinMaterial;
 	}
 
 	public void setDiasPreviosSinMaterial(Integer diasPreviosSinMaterial) {
 		this.diasPreviosSinMaterial = diasPreviosSinMaterial;
+	}
+
+	public Set getCentroRegionals() {
+		return this.centroRegionals;
+	}
+
+	public void setCentroRegionals(Set centroRegionals) {
+		this.centroRegionals = centroRegionals;
+	}
+
+	public Set getAplicacionXNivels() {
+		return this.aplicacionXNivels;
+	}
+
+	public void setAplicacionXNivels(Set aplicacionXNivels) {
+		this.aplicacionXNivels = aplicacionXNivels;
+	}
+
+	public Set getLugars() {
+		return this.lugars;
+	}
+
+	public void setLugars(Set lugars) {
+		this.lugars = lugars;
+	}
+
+	public Set getAplicacionXEstablecimientos() {
+		return this.aplicacionXEstablecimientos;
+	}
+
+	public void setAplicacionXEstablecimientos(Set aplicacionXEstablecimientos) {
+		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
+	}
+
+	public Set getFaseXAplicacions() {
+		return this.faseXAplicacions;
+	}
+
+	public void setFaseXAplicacions(Set faseXAplicacions) {
+		this.faseXAplicacions = faseXAplicacions;
+	}
+
+	public Set getDocumentoTipos() {
+		return this.documentoTipos;
+	}
+
+	public void setDocumentoTipos(Set documentoTipos) {
+		this.documentoTipos = documentoTipos;
+	}
+
+	public Set getCcCapacitacions() {
+		return this.ccCapacitacions;
+	}
+
+	public void setCcCapacitacions(Set ccCapacitacions) {
+		this.ccCapacitacions = ccCapacitacions;
+	}
+
+	public Set getAplicacionXUsuarioTipos() {
+		return this.aplicacionXUsuarioTipos;
+	}
+
+	public void setAplicacionXUsuarioTipos(Set aplicacionXUsuarioTipos) {
+		this.aplicacionXUsuarioTipos = aplicacionXUsuarioTipos;
+	}
+
+	public Set getDocumentoEstados() {
+		return this.documentoEstados;
+	}
+
+	public void setDocumentoEstados(Set documentoEstados) {
+		this.documentoEstados = documentoEstados;
 	}
 
 	public AplicacionDTO getAplicacionDTO() {

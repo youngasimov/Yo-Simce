@@ -8,10 +8,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
-import com.dreamer8.yosimce.client.planificacion.SupervisorDTO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
@@ -23,6 +25,7 @@ import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
+import com.dreamer8.yosimce.shared.dto.SupervisorDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -84,7 +87,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), ut.getNombre(), offset, lenght,
 								filtros);
-				
+
 				if (es != null && !es.isEmpty()) {
 					for (Establecimiento establecimiento : es) {
 						edtos.add(establecimiento.getEstablecimientoDTO());
@@ -113,7 +116,6 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento)
 			throws NoAllowedException, NoLoggedException, DBException {
-		
 
 		EstablecimientoDTO edto = new EstablecimientoDTO();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -162,6 +164,47 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	}
 
 	/**
+	 * @permiso getPreviewAgendamientos
+	 */
+	@Override
+	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset,
+			Integer length, Map<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso getAgendaCurso
+	 */
+	@Override
+	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso AgendarVisita
+	 */
+	@Override
+	public Void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso getEstadosAgenda
+	 */
+	@Override
+	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
 	 * @permiso getExaminadores
 	 */
 	@Override
@@ -177,8 +220,55 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public SupervisorDTO getSupervisor(Integer idEstablecimiento)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		SupervisorDTO sdto = new SupervisorDTO();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getSupervisor")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				s.beginTransaction();
+
+				UsuarioDAO udao = new UsuarioDAO();
+				Usuario u = udao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDUsuarioTipo(
+								idAplicacion, idNivel, idActividadTipo,
+								idEstablecimiento, UsuarioTipo.SUPERVISOR);
+				if(u != null) {
+					sdto = u.getSupervisorDTO();
+				}
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return sdto;
 	}
 
 	/**
@@ -187,36 +277,54 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public ContactoDTO getContacto(Integer idEstablecimiento)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ContactoDTO cdto = new ContactoDTO();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getContacto")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				s.beginTransaction();
+
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipo(
+								idAplicacion, idNivel, idActividadTipo);
+				if (a != null) {
+					cdto = a.getContactoDTO();
+				}
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return cdto;
 	}
 
-	@Override
-	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset,
-			Integer length, Map<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
-			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
