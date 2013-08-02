@@ -25,7 +25,7 @@ public class DetalleAgendaActivity extends SimceActivity
 	private final CursoSelector selector;
 	
 	public DetalleAgendaActivity(ClientFactory factory, DetalleAgendaPlace place,HashMap<String, ArrayList<String>> permisos) {
-		super(factory, permisos);
+		super(factory, place,permisos);
 		this.place = place;
 		this.view = factory.getDetalleAgendaView();
 		this.view.setPresenter(this);
@@ -64,7 +64,7 @@ public class DetalleAgendaActivity extends SimceActivity
 			selector.setGlassEnabled(true);
 			selector.show();
 		}else{
-			
+			view.setIdCurso(place.getCursoId());
 			if(getFactory().onTesting()){
 				
 				view.setNombreEstablecimiento("Colegio Carmelitas Descalsas");

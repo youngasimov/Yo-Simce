@@ -1,4 +1,4 @@
-package com.dreamer8.yosimce.client.general;
+package com.dreamer8.yosimce.client.administracion;
 
 import java.util.HashMap;
 
@@ -6,23 +6,23 @@ import com.dreamer8.yosimce.client.SimcePlace;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
-public class GeneralPlace extends SimcePlace {
+public class AdminPlace extends SimcePlace {
 
-	public GeneralPlace(){
+	public AdminPlace(){
 		super();
 	}
 	
-	public GeneralPlace(int aplicacionId, int nivelId, int tipoId){
+	public AdminPlace(int aplicacionId, int nivelId, int tipoId){
 		super(aplicacionId, nivelId, tipoId);
 	}
 	
-	@Prefix("general")
-	public static class Tokenizer implements PlaceTokenizer<GeneralPlace>{
+	@Prefix("admin")
+	public static class Tokenizer implements PlaceTokenizer<AdminPlace>{
 
 		@Override
-		public GeneralPlace getPlace(String token) {
+		public AdminPlace getPlace(String token) {
 			HashMap<String, String> kvs = TokenUtils.getTokenValues(token);
-			GeneralPlace pp = new GeneralPlace();
+			AdminPlace pp = new AdminPlace();
 			pp.setAplicacionId((kvs.containsKey(APPID)) ? Integer.parseInt(kvs
 					.get(APPID)) : -1);
 			pp.setNivelId((kvs.containsKey(NIVELID)) ? Integer.parseInt(kvs
@@ -33,7 +33,7 @@ public class GeneralPlace extends SimcePlace {
 		}
 
 		@Override
-		public String getToken(GeneralPlace place) {
+		public String getToken(AdminPlace place) {
 			HashMap<String, String> kvs = new HashMap<String, String>();
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
@@ -42,5 +42,4 @@ public class GeneralPlace extends SimcePlace {
 		}
 		
 	}
-	
 }

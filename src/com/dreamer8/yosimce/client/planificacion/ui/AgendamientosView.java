@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.client.planificacion.ui;
 
-import com.dreamer8.yosimce.client.SimcePlace;
+import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
@@ -16,9 +16,7 @@ public interface AgendamientosView extends IsWidget {
 	void setPresenter(AgendamientosPresenter presenter);
 	void clearCursoSelection();
 	
-	public interface AgendamientosPresenter{
+	public interface AgendamientosPresenter extends SimcePresenter{
 		void onColumnSort(int columnIndex);
-		void goTo(SimcePlace place);
-	}
-	
+	}	
 }

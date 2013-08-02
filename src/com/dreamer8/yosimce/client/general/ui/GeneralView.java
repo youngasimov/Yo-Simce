@@ -1,7 +1,7 @@
 package com.dreamer8.yosimce.client.general.ui;
 
 import com.google.gwt.user.client.ui.IsWidget;
-import com.dreamer8.yosimce.client.SimcePlace;
+import com.dreamer8.yosimce.client.SimcePresenter;
 
 public interface GeneralView extends IsWidget {
 
@@ -10,7 +10,6 @@ public interface GeneralView extends IsWidget {
 	
 	void setPresenter(GeneralPresenter presenter);
 	
-	public interface GeneralPresenter{
-		void goTo(SimcePlace place);
+	public interface GeneralPresenter extends SimcePresenter{
 	}
 }

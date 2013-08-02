@@ -1,5 +1,8 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
+import com.dreamer8.yosimce.client.administracion.AdminPlace;
+import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
 import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
@@ -18,6 +21,9 @@ import com.google.gwt.place.shared.WithTokenizers;
 		DetalleAgendaPlace.Tokenizer.class,
 		GeneralPlace.Tokenizer.class,
 		DetalleCursoPlace.Tokenizer.class,
-		HistorialCursoPlace.Tokenizer.class})
+		HistorialCursoPlace.Tokenizer.class,
+		AdminPlace.Tokenizer.class,
+		AdminUsuariosPlace.Tokenizer.class,
+		AdminEventosPlace.Tokenizer.class})
 public interface SimcePlaceHistoryMapper extends PlaceHistoryMapper {
 }

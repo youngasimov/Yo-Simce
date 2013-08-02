@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
-import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
@@ -23,7 +22,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	private AgendamientosView view;
 	
 	public AgendamientosActivity(ClientFactory factory,AgendamientosPlace place,HashMap<String, ArrayList<String>> permisos) {
-		super(factory,permisos);
+		super(factory,place,permisos);
 		this.place = place;
 		view = factory.getAgendamientosView();
 		view.setPresenter(this);
@@ -82,14 +81,6 @@ public class AgendamientosActivity extends SimceActivity implements
 	@Override
 	public void onColumnSort(int columnIndex) {
 		
-	}
-
-	@Override
-	public void goTo(SimcePlace place) {
-		place.setAplicacionId(this.place.getAplicacionId());
-		place.setNivelId(this.place.getNivelId());
-		place.setTipoId(this.place.getTipoId());
-		getFactory().getPlaceController().goTo(place);
 	}
 	
 	@Override

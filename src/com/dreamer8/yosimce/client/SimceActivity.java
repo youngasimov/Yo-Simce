@@ -8,16 +8,18 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-public abstract class SimceActivity extends AbstractActivity {
+public abstract class SimceActivity extends AbstractActivity implements SimcePresenter{
 
 	private final ClientFactory factory;
+	private final SimcePlace place;
 	
 	private HashMap<String,ArrayList<String>> permisos;
 	private HandlerRegistration permisosHandlerRegistration;
 	
-	public SimceActivity(ClientFactory factory,HashMap<String,ArrayList<String>> permisos){
+	public SimceActivity(ClientFactory factory, SimcePlace place,HashMap<String,ArrayList<String>> permisos){
 		this.factory = factory;
 		this.permisos = permisos;
+		this.place = place;
 	}
 	
 	public void updatedPermisos(){}
@@ -28,6 +30,14 @@ public abstract class SimceActivity extends AbstractActivity {
 	
 	public HashMap<String,ArrayList<String>> getPermisos(){
 		return permisos;
+	}
+	
+	@Override
+	public void goTo(SimcePlace place) {
+		place.setAplicacionId(this.place.getAplicacionId());
+		place.setNivelId(this.place.getNivelId());
+		place.setTipoId(this.place.getTipoId());
+		factory.getPlaceController().goTo(place);
 	}
 	
 	@Override
@@ -47,5 +57,7 @@ public abstract class SimceActivity extends AbstractActivity {
 		super.onStop();
 		permisosHandlerRegistration.removeHandler();
 	}
+	
+	
 
 }

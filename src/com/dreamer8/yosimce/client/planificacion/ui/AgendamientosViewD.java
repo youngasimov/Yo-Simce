@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 
 import java.util.Date;
 
+import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
@@ -90,7 +91,9 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	@UiHandler("informacionButton")
 	void onInformacionClick(ClickEvent event){
-		
+		DetalleCursoPlace dcp = new DetalleCursoPlace();
+		if(selectedItem !=null)dcp.setCursoId(selectedItem.getEstablecimientoId());
+		presenter.goTo(dcp);
 	}
 
 	@Override

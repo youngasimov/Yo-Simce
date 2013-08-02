@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 
 import java.util.Date;
 
+import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
@@ -46,6 +47,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
 	
+	private int idCurso;
 	private AgendarVisitaPresenter presenter;
 	private AgendaCell cell;
 	private DateTimeFormat format;
@@ -56,7 +58,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		timeBox = new TimeBox(new Date(), TIME_PRECISION.MINUTE, false);
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
-		
+		idCurso = -1;
 	}
 	
 	@UiHandler("cambiarButton")
@@ -64,11 +66,22 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		presenter.onCambiarEstablecimientoClick();
 	}
 	
+	@UiHandler("informacionButton")
+	void onInformacionClick(ClickEvent event){
+		DetalleCursoPlace dcp = new DetalleCursoPlace();
+		dcp.setCursoId(idCurso);
+		presenter.goTo(dcp);
+	}
+	
 	@UiHandler("fechaPicker")
 	void onFechaChange(ValueChangeEvent<Date> event){
 		fechaLabel.setText(format.format(event.getValue()));
 	}
 
+	public void setIdCurso(int idCurso){
+		this.idCurso = idCurso;
+	}
+	
 	@Override
 	public void setPresenter(AgendarVisitaPresenter presenter) {
 		this.presenter = presenter;

@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.planificacion.ui;
 
+import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -28,6 +29,7 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 	@UiField Button cambiarButton;
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
+	private int idCurso;
 	private DetalleAgendaPresenter presenter;
 	private AgendaCell cell;
 	
@@ -35,11 +37,19 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 		cell = new AgendaCell();
 		agendaList = new CellList<AgendaItemDTO>(cell);
 		initWidget(uiBinder.createAndBindUi(this));
+		idCurso = -1;
 	}
 
 	@UiHandler("cambiarButton")
 	void onCambiarClick(ClickEvent event){
 		presenter.onCambiarCursoClick();
+	}
+	
+	@UiHandler("informacionButton")
+	void onInformacionClick(ClickEvent event){
+		DetalleCursoPlace dcp = new DetalleCursoPlace();
+		dcp.setCursoId(idCurso);
+		presenter.goTo(dcp);
 	}
 	
 	@Override
@@ -60,5 +70,10 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 	@Override
 	public UIObject getCambiarButton() {
 		return cambiarButton;
+	}
+
+	@Override
+	public void setIdCurso(int idCurso) {
+		this.idCurso = idCurso;
 	}
 }

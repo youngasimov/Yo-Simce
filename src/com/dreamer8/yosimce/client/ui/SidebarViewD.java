@@ -1,5 +1,8 @@
 package com.dreamer8.yosimce.client.ui;
 
+import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
+import com.dreamer8.yosimce.client.administracion.AdminPlace;
+import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
 import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
@@ -90,7 +93,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("administracionButton")
 	void onAdministracionButtonClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new AdminPlace());
 	}
 	
 	
@@ -166,12 +169,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("administrarUsuariosActionItem")
 	void onAdministrarUsuariosActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new AdminUsuariosPlace());
 	}
 	
 	@UiHandler("administrarEventosActionItem")
 	void onAdministrarEventosActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new AdminEventosPlace());
 	}
 	
 

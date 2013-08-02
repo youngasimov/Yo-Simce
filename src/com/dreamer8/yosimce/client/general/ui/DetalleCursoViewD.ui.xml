@@ -48,6 +48,43 @@
 		display: inline;
 		margin-left: 20px;
 	}
+	
+	.scroll{
+		width: 100%;
+		height: 100%;
+	}
+	
+	.decPanel{
+		display:block;
+		width:400px;
+		margin-left:auto;
+		margin-right: auto;
+		margin-top: 50px;
+	}
+	
+	.panel{
+		width: 400px;
+	}
+	
+	.panel td{
+		width: 20px;
+		padding: 10px;
+		text-align: left;
+	}
+	
+	.panel .subtitle td{
+		font-weight: bolder;
+		text-align: center;
+		border-top: 2px solid black;
+		border-bottom: 1px solid #AAAAAA;
+		font-size: 16px;
+	}
+	
+	.panel .label{
+		font-weight: bold;
+		font-size: 12px;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
@@ -60,64 +97,66 @@
 			</g:HTMLPanel>	
 		</g:north>
 		<g:center>
-			<g:ScrollPanel>
-				<g:HTMLPanel>
-					<table>
-						<tr>
-							<td colspan='2'>General</td>
-						</tr>
-						<tr>
-							<td>RBD:</td>
-							<td><g:Label ui:field="rbdLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Región:</td>
-							<td><g:Label ui:field="regionLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Comuna:</td>
-							<td><g:Label ui:field="comunaLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Curso:</td>
-							<td><g:Label ui:field="cursoLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Tipo:</td>
-							<td><g:Label ui:field="tipoLabel"/> </td>
-						</tr>
-						<tr>
-							<td colspan='2'>Personal</td>
-						</tr>
-						<tr>
-							<td>Supervisor:</td>
-							<td><g:Label ui:field="supervisorLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Examinador:</td>
-							<td><g:Label ui:field="examinadorLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Examinador 2:</td>
-							<td><g:Label ui:field="examinador2Label"/> </td>
-						</tr>
-						<tr>
-							<td colspan='2'>Contacto</td>
-						</tr>
-						<tr>
-							<td>Director:</td>
-							<td><g:Label ui:field="directorLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Correo electrónico:</td>
-							<td><g:Label ui:field="correoLabel"/> </td>
-						</tr>
-						<tr>
-							<td>Teléfono:</td>
-							<td><g:Label ui:field="telefonoLabel"/> </td>
-						</tr>
-					</table>
-				</g:HTMLPanel>
+			<g:ScrollPanel addStyleNames='{style.scroll}'>
+				<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+					<g:HTMLPanel>
+						<table class='{style.panel}'>
+							<tr class='{style.subtitle}'>
+								<td colspan='2'>General</td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>RBD:</td>
+								<td><g:Label ui:field="rbdLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Región:</td>
+								<td><g:Label ui:field="regionLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Comuna:</td>
+								<td><g:Label ui:field="comunaLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Curso:</td>
+								<td><g:Label ui:field="cursoLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Tipo:</td>
+								<td><g:Label ui:field="tipoLabel"/> </td>
+							</tr>
+							<tr class='{style.subtitle}'>
+								<td colspan='2'>Personal</td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Supervisor:</td>
+								<td><g:Label ui:field="supervisorLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Examinador:</td>
+								<td><g:Label ui:field="examinadorLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Examinador 2:</td>
+								<td><g:Label ui:field="examinador2Label"/> </td>
+							</tr>
+							<tr class='{style.subtitle}'>
+								<td colspan='2'>Contacto</td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Director:</td>
+								<td><g:Label ui:field="directorLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Correo electrónico:</td>
+								<td><g:Label ui:field="correoLabel"/> </td>
+							</tr>
+							<tr class='{style.label}'>
+								<td>Teléfono:</td>
+								<td><g:Label ui:field="telefonoLabel"/> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>

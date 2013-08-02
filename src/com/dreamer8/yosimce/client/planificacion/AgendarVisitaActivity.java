@@ -24,7 +24,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	private final CursoSelector selector;
 	
 	public AgendarVisitaActivity(ClientFactory factory,AgendarVisitaPlace place, HashMap<String, ArrayList<String>> permisos) {
-		super(factory, permisos);
+		super(factory, place,permisos);
 		this.place = place;
 		this.view = factory.getAgendarVisitaView();
 		view.setPresenter(this);

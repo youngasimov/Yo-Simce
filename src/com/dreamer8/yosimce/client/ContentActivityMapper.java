@@ -3,6 +3,10 @@ package com.dreamer8.yosimce.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.dreamer8.yosimce.client.administracion.AdminActivity;
+import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
+import com.dreamer8.yosimce.client.administracion.AdminPlace;
+import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralActivity;
@@ -54,6 +58,14 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new AgendarVisitaActivity(factory, (AgendarVisitaPlace)place, permisos);
 		}else if(place instanceof DetalleAgendaPlace){
 			return new DetalleAgendaActivity(factory, (DetalleAgendaPlace)place, permisos);
+		}
+		
+		else if(place instanceof AdminPlace){
+			return new AdminActivity(factory, (AdminPlace)place, permisos);
+		}else if(place instanceof AdminUsuariosPlace){
+			
+		}else if(place instanceof AdminEventosPlace){
+			
 		}else if(place instanceof SimcePlace){
 			
 		}
