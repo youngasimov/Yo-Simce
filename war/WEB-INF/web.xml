@@ -16,6 +16,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>generalservice</servlet-name>
+		<servlet-class>com.dreamer8.yosimce.server.GeneralServiceImpl
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>generalservice</servlet-name>
+		<url-pattern>/yosimce/generalservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>planificacionservice</servlet-name>
 		<servlet-class>com.dreamer8.yosimce.server.PlanificacionServiceImpl
 		</servlet-class>
@@ -23,6 +33,16 @@
 	<servlet-mapping>
 		<servlet-name>planificacionservice</servlet-name>
 		<url-pattern>/yosimce/planificacionservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>administracionservice</servlet-name>
+		<servlet-class>com.dreamer8.yosimce.server.AdministracionServiceImpl
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>administracionservice</servlet-name>
+		<url-pattern>/yosimce/administracionservice</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->

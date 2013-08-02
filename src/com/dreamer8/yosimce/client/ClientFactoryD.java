@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
+import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosViewD;
 import com.dreamer8.yosimce.client.administracion.ui.AdminView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminViewD;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
@@ -57,6 +59,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
 	
 	private final AdminView adminView = new AdminViewD();
+	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
 	
 	
 	@Override
@@ -147,5 +150,10 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public AdminView getAdminView() {
 		return adminView;
+	}
+
+	@Override
+	public AdminUsuariosView getAdminUsuariosView() {
+		return adminUsuariosView;
 	}
 }
