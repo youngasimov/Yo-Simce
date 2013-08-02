@@ -1,12 +1,13 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import com.dreamer8.yosimce.shared.dto.SupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 
 /**
@@ -14,7 +15,7 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
  */
 public class Usuario implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private CompaniaTelefono companiaTelefono;
 	private CarreraEstado carreraEstado;
 	private Carrera carrera;
@@ -28,59 +29,96 @@ public class Usuario implements java.io.Serializable {
 	private String apellidoMaterno;
 	private String email;
 	private String celular;
-	private Boolean smartphone;
+	private boolean smartphone;
 	private String direccion;
 	private BigDecimal direccionLatitud;
 	private BigDecimal direccionLongitud;
 	private Integer carreraAnoIngreso;
 	private Date fechaNacimiento;
-	private Boolean aceptaConfidencialidad;
+	private boolean aceptaConfidencialidad;
 	private Date fechaAceptacion;
-	private List<UsuarioXTest> usuarioXTests = new ArrayList<UsuarioXTest>(0);
-	private List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions = new ArrayList<UsuarioXFaseXAplicacion>(0);
-	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(0);
-	private List<Nivel> nivels = new ArrayList<Nivel>(0);
-	private List<UsuarioXCo> usuarioXCos = new ArrayList<UsuarioXCo>(0);
-	private List<HistorialCambios> historialCambios = new ArrayList<HistorialCambios>(0);
-	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(0);
-	private List<Transporte> transportes = new ArrayList<Transporte>(0);
-	private List<Actividad> actividads = new ArrayList<Actividad>(0);
-	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(0);
-	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
-	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(0);
-	private List<Mensaje> mensajes = new ArrayList<Mensaje>(0);
-	private List<Sesion> sesions = new ArrayList<Sesion>(0);
-	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
-	private List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions = new ArrayList<UsuarioXCcCapacitacion>(0);
-	private List<JzXZona> jzXZonas = new ArrayList<JzXZona>(0);
-	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
-	private List<Ruta> rutas = new ArrayList<Ruta>(0);
-	private List<JoXCo> joXCos = new ArrayList<JoXCo>(0);
-	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(0);
+	private String usernameCanonical;
+	private String emailCanonical;
+	private boolean enabled;
+	private Date lastLogin;
+	private boolean locked;
+	private boolean expired;
+	private Date expiresAt;
+	private String confirmationToken;
+	private Date passwordRequestedAt;
+	private String roles;
+	private boolean credentialsExpired;
+	private Date credentialsExpireAt;
+	private Set usuarioXTests = new HashSet(0);
+	private Set usuarioXFaseXAplicacions = new HashSet(0);
+	private Set usuarioXAplicacionXNivels = new HashSet(0);
+	private Set nivels = new HashSet(0);
+	private Set usuarioXCos = new HashSet(0);
+	private Set historialCambioses = new HashSet(0);
+	private Set avisos = new HashSet(0);
+	private Set usuarioXRequisitos = new HashSet(0);
+	private Set transportes = new HashSet(0);
+	private Set actividads = new HashSet(0);
+	private Set materialHistorials = new HashSet(0);
+	private Set rutaXEstablecimientos = new HashSet(0);
+	private Set suplenteXCos = new HashSet(0);
+	private Set jrXCentroRegionals = new HashSet(0);
+	private Set mensajes = new HashSet(0);
+	private Set sesions = new HashSet(0);
+	private Set usuarioXComunas = new HashSet(0);
+	private Set usuarioXCcCapacitacions = new HashSet(0);
+	private Set usuarioXActividads = new HashSet(0);
+	private Set jzXZonas = new HashSet(0);
+	private Set rutas = new HashSet(0);
+	private Set joXCos = new HashSet(0);
+	private Set usuarioXEstablecimientos = new HashSet(0);
 
 	public Usuario() {
 	}
 
-	public Usuario(Integer id) {
+	public Usuario(int id, String username, String salt, String password,
+			String email, String celular, boolean smartphone,
+			boolean aceptaConfidencialidad, String usernameCanonical,
+			String emailCanonical, boolean enabled, boolean locked,
+			boolean expired, String roles, boolean credentialsExpired) {
 		this.id = id;
+		this.username = username;
+		this.salt = salt;
+		this.password = password;
+		this.email = email;
+		this.celular = celular;
+		this.smartphone = smartphone;
+		this.aceptaConfidencialidad = aceptaConfidencialidad;
+		this.usernameCanonical = usernameCanonical;
+		this.emailCanonical = emailCanonical;
+		this.enabled = enabled;
+		this.locked = locked;
+		this.expired = expired;
+		this.roles = roles;
+		this.credentialsExpired = credentialsExpired;
 	}
 
-	public Usuario(Integer id, CompaniaTelefono companiaTelefono,
+	public Usuario(int id, CompaniaTelefono companiaTelefono,
 			CarreraEstado carreraEstado, Carrera carrera, Sexo sexo,
 			Comuna comuna, String username, String salt, String password,
 			String nombres, String apellidoPaterno, String apellidoMaterno,
-			String email, String celular, Boolean smartphone, String direccion,
+			String email, String celular, boolean smartphone, String direccion,
 			BigDecimal direccionLatitud, BigDecimal direccionLongitud,
 			Integer carreraAnoIngreso, Date fechaNacimiento,
-			Boolean aceptaConfidencialidad, Date fechaAceptacion,
-			List<UsuarioXTest> usuarioXTests, List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions,
-			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels, List<Nivel> nivels, List<UsuarioXCo> usuarioXCos,
-			List<HistorialCambios> historialCambios, List<UsuarioXRequisito> usuarioXRequisitos, List<Transporte> transportes,
-			List<Actividad> actividads, List<RutaXEstablecimiento> rutaXEstablecimientos, List<SuplenteXCo> suplenteXCos,
-			List<JrXCentroRegional> jrXCentroRegionals, List<Mensaje> mensajes, List<Sesion> sesions,
-			List<UsuarioXComuna> usuarioXComunas, List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions, List<JzXZona> jzXZonas,
-			List<UsuarioXActividad> usuarioXActividads, List<Ruta> rutas, List<JoXCo> joXCos,
-			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
+			boolean aceptaConfidencialidad, Date fechaAceptacion,
+			String usernameCanonical, String emailCanonical, boolean enabled,
+			Date lastLogin, boolean locked, boolean expired, Date expiresAt,
+			String confirmationToken, Date passwordRequestedAt, String roles,
+			boolean credentialsExpired, Date credentialsExpireAt,
+			Set usuarioXTests, Set usuarioXFaseXAplicacions,
+			Set usuarioXAplicacionXNivels, Set nivels, Set usuarioXCos,
+			Set historialCambioses, Set avisos, Set usuarioXRequisitos,
+			Set transportes, Set actividads, Set materialHistorials,
+			Set rutaXEstablecimientos, Set suplenteXCos,
+			Set jrXCentroRegionals, Set mensajes, Set sesions,
+			Set usuarioXComunas, Set usuarioXCcCapacitacions,
+			Set usuarioXActividads, Set jzXZonas, Set rutas, Set joXCos,
+			Set usuarioXEstablecimientos) {
 		this.id = id;
 		this.companiaTelefono = companiaTelefono;
 		this.carreraEstado = carreraEstado;
@@ -103,15 +141,29 @@ public class Usuario implements java.io.Serializable {
 		this.fechaNacimiento = fechaNacimiento;
 		this.aceptaConfidencialidad = aceptaConfidencialidad;
 		this.fechaAceptacion = fechaAceptacion;
+		this.usernameCanonical = usernameCanonical;
+		this.emailCanonical = emailCanonical;
+		this.enabled = enabled;
+		this.lastLogin = lastLogin;
+		this.locked = locked;
+		this.expired = expired;
+		this.expiresAt = expiresAt;
+		this.confirmationToken = confirmationToken;
+		this.passwordRequestedAt = passwordRequestedAt;
+		this.roles = roles;
+		this.credentialsExpired = credentialsExpired;
+		this.credentialsExpireAt = credentialsExpireAt;
 		this.usuarioXTests = usuarioXTests;
 		this.usuarioXFaseXAplicacions = usuarioXFaseXAplicacions;
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 		this.nivels = nivels;
 		this.usuarioXCos = usuarioXCos;
-		this.historialCambios = historialCambios;
+		this.historialCambioses = historialCambioses;
+		this.avisos = avisos;
 		this.usuarioXRequisitos = usuarioXRequisitos;
 		this.transportes = transportes;
 		this.actividads = actividads;
+		this.materialHistorials = materialHistorials;
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 		this.suplenteXCos = suplenteXCos;
 		this.jrXCentroRegionals = jrXCentroRegionals;
@@ -119,18 +171,18 @@ public class Usuario implements java.io.Serializable {
 		this.sesions = sesions;
 		this.usuarioXComunas = usuarioXComunas;
 		this.usuarioXCcCapacitacions = usuarioXCcCapacitacions;
-		this.jzXZonas = jzXZonas;
 		this.usuarioXActividads = usuarioXActividads;
+		this.jzXZonas = jzXZonas;
 		this.rutas = rutas;
 		this.joXCos = joXCos;
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -238,11 +290,11 @@ public class Usuario implements java.io.Serializable {
 		this.celular = celular;
 	}
 
-	public Boolean getSmartphone() {
+	public boolean isSmartphone() {
 		return this.smartphone;
 	}
 
-	public void setSmartphone(Boolean smartphone) {
+	public void setSmartphone(boolean smartphone) {
 		this.smartphone = smartphone;
 	}
 
@@ -286,11 +338,11 @@ public class Usuario implements java.io.Serializable {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Boolean getAceptaConfidencialidad() {
+	public boolean isAceptaConfidencialidad() {
 		return this.aceptaConfidencialidad;
 	}
 
-	public void setAceptaConfidencialidad(Boolean aceptaConfidencialidad) {
+	public void setAceptaConfidencialidad(boolean aceptaConfidencialidad) {
 		this.aceptaConfidencialidad = aceptaConfidencialidad;
 	}
 
@@ -302,174 +354,286 @@ public class Usuario implements java.io.Serializable {
 		this.fechaAceptacion = fechaAceptacion;
 	}
 
-	public List<UsuarioXTest> getUsuarioXTests() {
+	public String getUsernameCanonical() {
+		return this.usernameCanonical;
+	}
+
+	public void setUsernameCanonical(String usernameCanonical) {
+		this.usernameCanonical = usernameCanonical;
+	}
+
+	public String getEmailCanonical() {
+		return this.emailCanonical;
+	}
+
+	public void setEmailCanonical(String emailCanonical) {
+		this.emailCanonical = emailCanonical;
+	}
+
+	public boolean isEnabled() {
+		return this.enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Date getLastLogin() {
+		return this.lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public boolean isLocked() {
+		return this.locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+
+	public boolean isExpired() {
+		return this.expired;
+	}
+
+	public void setExpired(boolean expired) {
+		this.expired = expired;
+	}
+
+	public Date getExpiresAt() {
+		return this.expiresAt;
+	}
+
+	public void setExpiresAt(Date expiresAt) {
+		this.expiresAt = expiresAt;
+	}
+
+	public String getConfirmationToken() {
+		return this.confirmationToken;
+	}
+
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
+
+	public Date getPasswordRequestedAt() {
+		return this.passwordRequestedAt;
+	}
+
+	public void setPasswordRequestedAt(Date passwordRequestedAt) {
+		this.passwordRequestedAt = passwordRequestedAt;
+	}
+
+	public String getRoles() {
+		return this.roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+
+	public boolean isCredentialsExpired() {
+		return this.credentialsExpired;
+	}
+
+	public void setCredentialsExpired(boolean credentialsExpired) {
+		this.credentialsExpired = credentialsExpired;
+	}
+
+	public Date getCredentialsExpireAt() {
+		return this.credentialsExpireAt;
+	}
+
+	public void setCredentialsExpireAt(Date credentialsExpireAt) {
+		this.credentialsExpireAt = credentialsExpireAt;
+	}
+
+	public Set getUsuarioXTests() {
 		return this.usuarioXTests;
 	}
 
-	public void setUsuarioXTests(List<UsuarioXTest> usuarioXTests) {
+	public void setUsuarioXTests(Set usuarioXTests) {
 		this.usuarioXTests = usuarioXTests;
 	}
 
-	public List<UsuarioXFaseXAplicacion> getUsuarioXFaseXAplicacions() {
+	public Set getUsuarioXFaseXAplicacions() {
 		return this.usuarioXFaseXAplicacions;
 	}
 
-	public void setUsuarioXFaseXAplicacions(List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions) {
+	public void setUsuarioXFaseXAplicacions(Set usuarioXFaseXAplicacions) {
 		this.usuarioXFaseXAplicacions = usuarioXFaseXAplicacions;
 	}
 
-	public List<UsuarioXAplicacionXNivel> getUsuarioXAplicacionXNivels() {
+	public Set getUsuarioXAplicacionXNivels() {
 		return this.usuarioXAplicacionXNivels;
 	}
 
-	public void setUsuarioXAplicacionXNivels(List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
+	public void setUsuarioXAplicacionXNivels(Set usuarioXAplicacionXNivels) {
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 	}
 
-	public List<Nivel> getNivels() {
+	public Set getNivels() {
 		return this.nivels;
 	}
 
-	public void setNivels(List<Nivel> nivels) {
+	public void setNivels(Set nivels) {
 		this.nivels = nivels;
 	}
 
-	public List<UsuarioXCo> getUsuarioXCos() {
+	public Set getUsuarioXCos() {
 		return this.usuarioXCos;
 	}
 
-	public void setUsuarioXCos(List<UsuarioXCo> usuarioXCos) {
+	public void setUsuarioXCos(Set usuarioXCos) {
 		this.usuarioXCos = usuarioXCos;
 	}
 
-	public List<HistorialCambios> getHistorialCambios() {
-		return this.historialCambios;
+	public Set getHistorialCambioses() {
+		return this.historialCambioses;
 	}
 
-	public void setHistorialCambios(List<HistorialCambios> historialCambios) {
-		this.historialCambios = historialCambios;
+	public void setHistorialCambioses(Set historialCambioses) {
+		this.historialCambioses = historialCambioses;
 	}
 
-	public List<UsuarioXRequisito> getUsuarioXRequisitos() {
+	public Set getAvisos() {
+		return this.avisos;
+	}
+
+	public void setAvisos(Set avisos) {
+		this.avisos = avisos;
+	}
+
+	public Set getUsuarioXRequisitos() {
 		return this.usuarioXRequisitos;
 	}
 
-	public void setUsuarioXRequisitos(List<UsuarioXRequisito> usuarioXRequisitos) {
+	public void setUsuarioXRequisitos(Set usuarioXRequisitos) {
 		this.usuarioXRequisitos = usuarioXRequisitos;
 	}
 
-	public List<Transporte> getTransportes() {
+	public Set getTransportes() {
 		return this.transportes;
 	}
 
-	public void setTransportes(List<Transporte> transportes) {
+	public void setTransportes(Set transportes) {
 		this.transportes = transportes;
 	}
 
-	public List<Actividad> getActividads() {
+	public Set getActividads() {
 		return this.actividads;
 	}
 
-	public void setActividads(List<Actividad> actividads) {
+	public void setActividads(Set actividads) {
 		this.actividads = actividads;
 	}
 
-	public List<RutaXEstablecimiento> getRutaXEstablecimientos() {
+	public Set getMaterialHistorials() {
+		return this.materialHistorials;
+	}
+
+	public void setMaterialHistorials(Set materialHistorials) {
+		this.materialHistorials = materialHistorials;
+	}
+
+	public Set getRutaXEstablecimientos() {
 		return this.rutaXEstablecimientos;
 	}
 
-	public void setRutaXEstablecimientos(List<RutaXEstablecimiento> rutaXEstablecimientos) {
+	public void setRutaXEstablecimientos(Set rutaXEstablecimientos) {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 
-	public List<SuplenteXCo> getSuplenteXCos() {
+	public Set getSuplenteXCos() {
 		return this.suplenteXCos;
 	}
 
-	public void setSuplenteXCos(List<SuplenteXCo> suplenteXCos) {
+	public void setSuplenteXCos(Set suplenteXCos) {
 		this.suplenteXCos = suplenteXCos;
 	}
 
-	public List<JrXCentroRegional> getJrXCentroRegionals() {
+	public Set getJrXCentroRegionals() {
 		return this.jrXCentroRegionals;
 	}
 
-	public void setJrXCentroRegionals(List<JrXCentroRegional> jrXCentroRegionals) {
+	public void setJrXCentroRegionals(Set jrXCentroRegionals) {
 		this.jrXCentroRegionals = jrXCentroRegionals;
 	}
 
-	public List<Mensaje> getMensajes() {
+	public Set getMensajes() {
 		return this.mensajes;
 	}
 
-	public void setMensajes(List<Mensaje> mensajes) {
+	public void setMensajes(Set mensajes) {
 		this.mensajes = mensajes;
 	}
 
-	public List<Sesion> getSesions() {
+	public Set getSesions() {
 		return this.sesions;
 	}
 
-	public void setSesions(List<Sesion> sesions) {
+	public void setSesions(Set sesions) {
 		this.sesions = sesions;
 	}
 
-	public List<UsuarioXComuna> getUsuarioXComunas() {
+	public Set getUsuarioXComunas() {
 		return this.usuarioXComunas;
 	}
 
-	public void setUsuarioXComunas(List<UsuarioXComuna> usuarioXComunas) {
+	public void setUsuarioXComunas(Set usuarioXComunas) {
 		this.usuarioXComunas = usuarioXComunas;
 	}
 
-	public List<UsuarioXCcCapacitacion> getUsuarioXCcCapacitacions() {
+	public Set getUsuarioXCcCapacitacions() {
 		return this.usuarioXCcCapacitacions;
 	}
 
-	public void setUsuarioXCcCapacitacions(List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions) {
+	public void setUsuarioXCcCapacitacions(Set usuarioXCcCapacitacions) {
 		this.usuarioXCcCapacitacions = usuarioXCcCapacitacions;
 	}
 
-	public List<JzXZona> getJzXZonas() {
-		return this.jzXZonas;
-	}
-
-	public void setJzXZonas(List<JzXZona> jzXZonas) {
-		this.jzXZonas = jzXZonas;
-	}
-
-	public List<UsuarioXActividad> getUsuarioXActividads() {
+	public Set getUsuarioXActividads() {
 		return this.usuarioXActividads;
 	}
 
-	public void setUsuarioXActividads(List<UsuarioXActividad> usuarioXActividads) {
+	public void setUsuarioXActividads(Set usuarioXActividads) {
 		this.usuarioXActividads = usuarioXActividads;
 	}
 
-	public List<Ruta> getRutas() {
+	public Set getJzXZonas() {
+		return this.jzXZonas;
+	}
+
+	public void setJzXZonas(Set jzXZonas) {
+		this.jzXZonas = jzXZonas;
+	}
+
+	public Set getRutas() {
 		return this.rutas;
 	}
 
-	public void setRutas(List<Ruta> rutas) {
+	public void setRutas(Set rutas) {
 		this.rutas = rutas;
 	}
 
-	public List<JoXCo> getJoXCos() {
+	public Set getJoXCos() {
 		return this.joXCos;
 	}
 
-	public void setJoXCos(List<JoXCo> joXCos) {
+	public void setJoXCos(Set joXCos) {
 		this.joXCos = joXCos;
 	}
 
-	public List<UsuarioXEstablecimiento> getUsuarioXEstablecimientos() {
+	public Set getUsuarioXEstablecimientos() {
 		return this.usuarioXEstablecimientos;
 	}
 
-	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
+	public void setUsuarioXEstablecimientos(Set usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
-	
+
 	public UserDTO getUserDTO() {
 		UserDTO udto = new UserDTO();
 		udto.setId(id);
@@ -479,6 +643,19 @@ public class Usuario implements java.io.Serializable {
 		udto.setApellidoPaterno(apellidoPaterno);
 		udto.setApellidoMaterno(apellidoMaterno);
 		return udto;
+	}
+
+	/**
+	 * @return
+	 */
+	public SupervisorDTO getSupervisorDTO() {
+		SupervisorDTO sdto = new SupervisorDTO();
+		sdto.setId(id);
+		sdto.setEmail(email);
+		sdto.setNombres(nombres);
+		sdto.setApellidoPaterno(apellidoPaterno);
+		sdto.setApellidoMaterno(apellidoMaterno);
+		return sdto;
 	}
 
 }

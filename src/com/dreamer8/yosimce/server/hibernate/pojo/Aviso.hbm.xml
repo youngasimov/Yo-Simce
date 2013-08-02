@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Aviso" table="aviso" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.pojo.Usuario" fetch="select">
+            <column name="usuario_id" />
+        </many-to-one>
+        <property name="titulo" type="string">
+            <column name="titulo" />
+        </property>
+        <property name="texto" type="string">
+            <column name="texto" />
+        </property>
+        <property name="fechaPublicacion" type="timestamp">
+            <column name="fecha_publicacion" length="29" />
+        </property>
+        <property name="visible" type="boolean">
+            <column name="visible" not-null="true" />
+        </property>
+        <property name="general" type="boolean">
+            <column name="general" not-null="true" />
+        </property>
+        <set name="avisoXAplicacionXNivelXUsuarioTipos" table="aviso_x_aplicacion_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aviso_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AvisoXAplicacionXNivelXUsuarioTipo" />
+        </set>
+    </class>
+</hibernate-mapping>

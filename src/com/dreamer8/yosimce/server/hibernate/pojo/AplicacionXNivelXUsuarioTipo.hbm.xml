@@ -1,27 +1,39 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipo" table="aplicacion_x_nivel_x_usuario_tipo" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXUsuarioTipo" table="aplicacion_x_nivel_x_usuario_tipo" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.UsuarioTipo" fetch="select">
+        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo" fetch="select">
             <column name="usuario_tipo_id" />
         </many-to-one>
-        <many-to-one name="aplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivel" fetch="select">
+        <many-to-one name="aplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivel" fetch="select">
             <column name="aplicacion_x_nivel_id" />
         </many-to-one>
         <property name="montoPago" type="java.lang.Integer">
             <column name="monto_pago" />
         </property>
-        <bag name="aplicacionXNivelXUsuarioTipoXCos" table="aplicacion_x_nivel_x_usuario_tipo_x_co" inverse="true" lazy="true" fetch="select">
+        <set name="avisoXAplicacionXNivelXUsuarioTipos" table="aviso_x_aplicacion_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_x_usuario_tipo_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AvisoXAplicacionXNivelXUsuarioTipo" />
+        </set>
+        <set name="archvicoXAplicacionXNivelXUsuarioTipos" table="archvico_x_aplicacion_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="aplicacion_x_nivel_x_usuario_tipo_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.ArchvicoXAplicacionXNivelXUsuarioTipo" />
+        </set>
+        <set name="aplicacionXNivelXUsuarioTipoXCos" table="aplicacion_x_nivel_x_usuario_tipo_x_co" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_x_nivel_usuario_tipo_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXUsuarioTipoXCo" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXUsuarioTipoXCo" />
+        </set>
     </class>
 </hibernate-mapping>

@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 
@@ -12,31 +12,30 @@ import com.dreamer8.yosimce.shared.dto.SectorDTO;
  */
 public class Provincia implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private Region region;
 	private String nombre;
-	private List<Comuna> comunas = new ArrayList<Comuna>(0);
+	private Set comunas = new HashSet(0);
 
 	public Provincia() {
 	}
 
-	public Provincia(Integer id) {
+	public Provincia(int id) {
 		this.id = id;
 	}
 
-	public Provincia(Integer id, Region region, String nombre,
-			List<Comuna> comunas) {
+	public Provincia(int id, Region region, String nombre, Set comunas) {
 		this.id = id;
 		this.region = region;
 		this.nombre = nombre;
 		this.comunas = comunas;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -56,11 +55,11 @@ public class Provincia implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<Comuna> getComunas() {
+	public Set getComunas() {
 		return this.comunas;
 	}
 
-	public void setComunas(List<Comuna> comunas) {
+	public void setComunas(Set comunas) {
 		this.comunas = comunas;
 	}
 
@@ -71,4 +70,5 @@ public class Provincia implements java.io.Serializable {
 		sdto.setTipoSector(SectorDTO.TIPO_PROVINCIA);
 		return sdto;
 	}
+
 }

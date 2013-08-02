@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 
@@ -12,28 +12,28 @@ import com.dreamer8.yosimce.shared.dto.SectorDTO;
  */
 public class Region implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private String nombre;
-	private List<Provincia> provincias = new ArrayList<Provincia>(0);
+	private Set provincias = new HashSet(0);
 
 	public Region() {
 	}
 
-	public Region(Integer id) {
+	public Region(int id) {
 		this.id = id;
 	}
 
-	public Region(Integer id, String nombre, List<Provincia> provincias) {
+	public Region(int id, String nombre, Set provincias) {
 		this.id = id;
 		this.nombre = nombre;
 		this.provincias = provincias;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -45,11 +45,11 @@ public class Region implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<Provincia> getProvincias() {
+	public Set getProvincias() {
 		return this.provincias;
 	}
 
-	public void setProvincias(List<Provincia> provincias) {
+	public void setProvincias(Set provincias) {
 		this.provincias = provincias;
 	}
 
@@ -60,4 +60,5 @@ public class Region implements java.io.Serializable {
 		sdto.setTipoSector(SectorDTO.TIPO_REGION);
 		return sdto;
 	}
+
 }

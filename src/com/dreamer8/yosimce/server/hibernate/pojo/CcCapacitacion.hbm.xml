@@ -1,30 +1,33 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.CcCapacitacion" table="cc_capacitacion" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.CcCapacitacion" table="cc_capacitacion" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="ccSala" class="com.dreamer8.yosimce.server.hibernate.CcSala" fetch="select">
+        <many-to-one name="ccSala" class="com.dreamer8.yosimce.server.hibernate.pojo.CcSala" fetch="select">
             <column name="cc_sala_id" />
         </many-to-one>
-        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.UsuarioTipo" fetch="select">
+        <many-to-one name="aplicacion" class="com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion" fetch="select">
+            <column name="aplicacion_id" />
+        </many-to-one>
+        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo" fetch="select">
             <column name="usuario_tipo_id" />
         </many-to-one>
-        <many-to-one name="ccModulo" class="com.dreamer8.yosimce.server.hibernate.CcModulo" fetch="select">
+        <many-to-one name="ccModulo" class="com.dreamer8.yosimce.server.hibernate.pojo.CcModulo" fetch="select">
             <column name="cc_modulo_id" />
         </many-to-one>
         <property name="dia" type="date">
             <column name="dia" length="13" />
         </property>
-        <bag name="usuarioXCcCapacitacions" table="usuario_x_cc_capacitacion" inverse="true" lazy="true" fetch="select">
+        <set name="usuarioXCcCapacitacions" table="usuario_x_cc_capacitacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="cc_capacitacion_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXCcCapacitacion" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXCcCapacitacion" />
+        </set>
     </class>
 </hibernate-mapping>

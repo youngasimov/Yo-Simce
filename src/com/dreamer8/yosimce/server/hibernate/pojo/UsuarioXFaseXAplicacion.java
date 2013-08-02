@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,10 +10,10 @@ import java.util.Date;
  */
 public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private Usuario usuario;
 	private FaseXAplicacion faseXAplicacion;
-	private Boolean aprobado;
+	private boolean aprobado;
 	private Date fechaAprobacion;
 	private String comentario;
 	private BigDecimal evaluacion;
@@ -22,12 +22,13 @@ public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 	public UsuarioXFaseXAplicacion() {
 	}
 
-	public UsuarioXFaseXAplicacion(Integer id) {
+	public UsuarioXFaseXAplicacion(int id, boolean aprobado) {
 		this.id = id;
+		this.aprobado = aprobado;
 	}
 
-	public UsuarioXFaseXAplicacion(Integer id, Usuario usuario,
-			FaseXAplicacion faseXAplicacion, Boolean aprobado,
+	public UsuarioXFaseXAplicacion(int id, Usuario usuario,
+			FaseXAplicacion faseXAplicacion, boolean aprobado,
 			Date fechaAprobacion, String comentario, BigDecimal evaluacion,
 			Date updatedAt) {
 		this.id = id;
@@ -40,11 +41,11 @@ public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -64,11 +65,11 @@ public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 		this.faseXAplicacion = faseXAplicacion;
 	}
 
-	public Boolean getAprobado() {
+	public boolean isAprobado() {
 		return this.aprobado;
 	}
 
-	public void setAprobado(Boolean aprobado) {
+	public void setAprobado(boolean aprobado) {
 		this.aprobado = aprobado;
 	}
 

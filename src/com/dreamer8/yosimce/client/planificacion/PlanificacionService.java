@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
+import com.dreamer8.yosimce.shared.dto.SupervisorDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;

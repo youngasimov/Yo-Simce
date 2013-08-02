@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.ActividadXDocumentoTipo" table="actividad_x_documento_tipo" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoTipo" table="actividad_x_documento_tipo" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="documentoTipo" class="com.dreamer8.yosimce.server.hibernate.DocumentoTipo" fetch="select">
+        <many-to-one name="documentoTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo" fetch="select">
             <column name="documento_tipo_id" />
         </many-to-one>
-        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.Actividad" fetch="select">
+        <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" fetch="select">
             <column name="actividad_id" />
         </many-to-one>
         <property name="totalEntregados" type="java.lang.Integer">

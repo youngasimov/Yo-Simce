@@ -1,11 +1,10 @@
 /**
  * 
  */
-package com.dreamer8.yosimce.client.planificacion;
+package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
-import com.dreamer8.yosimce.shared.dto.PersonDTO;
 
 /**
  * @author jorge

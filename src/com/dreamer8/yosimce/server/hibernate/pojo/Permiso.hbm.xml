@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.Permiso" table="permiso" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Permiso" table="permiso" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
@@ -17,11 +17,11 @@
         <property name="descripcion" type="string">
             <column name="descripcion" />
         </property>
-        <bag name="aplicacionXUsuarioTipoXPermisos" table="aplicacion_x_usuario_tipo_x_permiso" inverse="true" lazy="true" fetch="select">
+        <set name="aplicacionXUsuarioTipoXPermisos" table="aplicacion_x_usuario_tipo_x_permiso" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="permiso_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AplicacionXUsuarioTipoXPermiso" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso" />
+        </set>
     </class>
 </hibernate-mapping>

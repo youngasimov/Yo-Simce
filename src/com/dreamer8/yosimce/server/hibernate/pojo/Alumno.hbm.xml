@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.Alumno" table="alumno" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Alumno" table="alumno" schema="public">
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="sexo" class="com.dreamer8.yosimce.server.hibernate.Sexo" fetch="select">
+        <many-to-one name="sexo" class="com.dreamer8.yosimce.server.hibernate.pojo.Sexo" fetch="select">
             <column name="sexo_id" />
         </many-to-one>
         <property name="rut" type="string">
@@ -26,14 +26,14 @@
         <property name="fechaNacimiento" type="timestamp">
             <column name="fecha_nacimiento" length="29" />
         </property>
-        <property name="nee" type="java.lang.Boolean">
-            <column name="nee" />
+        <property name="nee" type="boolean">
+            <column name="nee" not-null="true" />
         </property>
-        <bag name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
+        <set name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="alumno_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AlumnoXActividad" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividad" />
+        </set>
     </class>
 </hibernate-mapping>

@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-07-2013 11:03:57 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.dreamer8.yosimce.server.hibernate.Actividad" table="actividad" schema="public">
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" table="actividad" schema="public">
         <comment>Datos de actividad por dia</comment>
         <id name="id" type="int">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="actividadEstado" class="com.dreamer8.yosimce.server.hibernate.ActividadEstado" fetch="select">
+        <many-to-one name="actividadEstado" class="com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado" fetch="select">
             <column name="actividad_estado_id" />
         </many-to-one>
-        <many-to-one name="curso" class="com.dreamer8.yosimce.server.hibernate.Curso" fetch="select">
+        <many-to-one name="curso" class="com.dreamer8.yosimce.server.hibernate.pojo.Curso" fetch="select">
             <column name="curso_id" />
         </many-to-one>
-        <many-to-one name="contactoCargo" class="com.dreamer8.yosimce.server.hibernate.ContactoCargo" fetch="select">
+        <many-to-one name="contactoCargo" class="com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo" fetch="select">
             <column name="contacto_cargo_id" />
         </many-to-one>
-        <many-to-one name="aplicacionXNivelXActividadTipo" class="com.dreamer8.yosimce.server.hibernate.AplicacionXNivelXActividadTipo" fetch="select">
-            <column name="aplicacion_x_nivel_x_actividad_tipo_id" not-null="true" />
+        <many-to-one name="aplicacionXNivelXActividadTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo" fetch="select">
+            <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
         </many-to-one>
-        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.Usuario" fetch="select">
+        <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.pojo.Usuario" fetch="select">
             <column name="modificador_id" />
         </many-to-one>
         <property name="comentario" type="string">
@@ -33,6 +33,12 @@
         <property name="fechaTermino" type="timestamp">
             <column name="fecha_termino" length="29" />
         </property>
+        <property name="fechaInicioPrueba" type="timestamp">
+            <column name="fecha_inicio_prueba" length="29" />
+        </property>
+        <property name="fechaTerminoPrueba" type="timestamp">
+            <column name="fecha_termino_prueba" length="29" />
+        </property>
         <property name="contactoNombre" type="string">
             <column name="contacto_nombre" />
         </property>
@@ -42,66 +48,66 @@
         <property name="contactoEmail" type="string">
             <column name="contacto_email" />
         </property>
-        <property name="sinMaterial" type="java.lang.Boolean">
-            <column name="sin_material" />
+        <property name="sinMaterial" type="boolean">
+            <column name="sin_material" not-null="true" />
         </property>
-        <bag name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
+        <set name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.AlumnoXActividad" />
-        </bag>
-        <bag name="usuarioXActividads" table="usuario_x_actividad" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividad" />
+        </set>
+        <set name="usuarioXActividads" table="usuario_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.UsuarioXActividad" />
-        </bag>
-        <bag name="materialHistorials" table="material_historial" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad" />
+        </set>
+        <set name="materialHistorials" table="material_historial" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.MaterialHistorial" />
-        </bag>
-        <bag name="materials" table="material_x_actividad" inverse="false" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.MaterialHistorial" />
+        </set>
+        <set name="materials" table="material_x_actividad" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" not-null="true" />
             </key>
-            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Material">
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Material">
                 <column name="material_id" not-null="true" />
             </many-to-many>
-        </bag>
-        <bag name="actividadXDocumentoTipos" table="actividad_x_documento_tipo" inverse="true" lazy="true" fetch="select">
+        </set>
+        <set name="actividadXDocumentoTipos" table="actividad_x_documento_tipo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.ActividadXDocumentoTipo" />
-        </bag>
-        <bag name="actividadHistorials" table="actividad_historial" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoTipo" />
+        </set>
+        <set name="actividadHistorials" table="actividad_historial" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" not-null="true" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.ActividadHistorial" />
-        </bag>
-        <bag name="transporteXActividads" table="transporte_x_actividad" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.ActividadHistorial" />
+        </set>
+        <set name="transporteXActividads" table="transporte_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.TransporteXActividad" />
-        </bag>
-        <bag name="documentos" table="actividad_x_documento" inverse="false" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.TransporteXActividad" />
+        </set>
+        <set name="documentos" table="actividad_x_documento" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" not-null="true" />
             </key>
-            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.Documento">
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Documento">
                 <column name="documento_id" not-null="true" />
             </many-to-many>
-        </bag>
-        <bag name="actividadXIncidencias" table="actividad_x_incidencia" inverse="true" lazy="true" fetch="select">
+        </set>
+        <set name="actividadXIncidencias" table="actividad_x_incidencia" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
             </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.ActividadXIncidencia" />
-        </bag>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.ActividadXIncidencia" />
+        </set>
     </class>
 </hibernate-mapping>

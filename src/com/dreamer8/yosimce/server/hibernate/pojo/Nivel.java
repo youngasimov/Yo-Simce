@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 16-07-2013 11:03:56 PM by Hibernate Tools 3.4.0.CR1
+// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
 
@@ -12,29 +12,22 @@ import com.dreamer8.yosimce.shared.dto.NivelDTO;
  */
 public class Nivel implements java.io.Serializable {
 
-	private Integer id;
+	private int id;
 	private String nombre;
-	private List<AplicacionXNivel> aplicacionXNivels = new ArrayList<AplicacionXNivel>(
-			0);
-	private List<Usuario> usuarios = new ArrayList<Usuario>(0);
-	private List<FaseXAplicacionXTestXNivelXTipoUsuario> faseXAplicacionXTestXNivelXTipoUsuarios = new ArrayList<FaseXAplicacionXTestXNivelXTipoUsuario>(
-			0);
-	private List<Curso> cursos = new ArrayList<Curso>(0);
+	private Set aplicacionXNivels = new HashSet(0);
+	private Set usuarios = new HashSet(0);
+	private Set faseXAplicacionXTestXNivelXTipoUsuarios = new HashSet(0);
+	private Set cursos = new HashSet(0);
 
 	public Nivel() {
 	}
 
-	public Nivel(Integer id) {
+	public Nivel(int id) {
 		this.id = id;
 	}
 
-	public Nivel(
-			Integer id,
-			String nombre,
-			List<AplicacionXNivel> aplicacionXNivels,
-			List<Usuario> usuarios,
-			List<FaseXAplicacionXTestXNivelXTipoUsuario> faseXAplicacionXTestXNivelXTipoUsuarios,
-			List<Curso> cursos) {
+	public Nivel(int id, String nombre, Set aplicacionXNivels, Set usuarios,
+			Set faseXAplicacionXTestXNivelXTipoUsuarios, Set cursos) {
 		this.id = id;
 		this.nombre = nombre;
 		this.aplicacionXNivels = aplicacionXNivels;
@@ -43,11 +36,11 @@ public class Nivel implements java.io.Serializable {
 		this.cursos = cursos;
 	}
 
-	public Integer getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -59,42 +52,39 @@ public class Nivel implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<AplicacionXNivel> getAplicacionXNivels() {
+	public Set getAplicacionXNivels() {
 		return this.aplicacionXNivels;
 	}
 
-	public void setAplicacionXNivels(List<AplicacionXNivel> aplicacionXNivels) {
+	public void setAplicacionXNivels(Set aplicacionXNivels) {
 		this.aplicacionXNivels = aplicacionXNivels;
 	}
 
-	public List<Usuario> getUsuarios() {
+	public Set getUsuarios() {
 		return this.usuarios;
 	}
 
-	public void setUsuarios(List<Usuario> usuarios) {
+	public void setUsuarios(Set usuarios) {
 		this.usuarios = usuarios;
 	}
 
-	public List<FaseXAplicacionXTestXNivelXTipoUsuario> getFaseXAplicacionXTestXNivelXTipoUsuarios() {
+	public Set getFaseXAplicacionXTestXNivelXTipoUsuarios() {
 		return this.faseXAplicacionXTestXNivelXTipoUsuarios;
 	}
 
 	public void setFaseXAplicacionXTestXNivelXTipoUsuarios(
-			List<FaseXAplicacionXTestXNivelXTipoUsuario> faseXAplicacionXTestXNivelXTipoUsuarios) {
+			Set faseXAplicacionXTestXNivelXTipoUsuarios) {
 		this.faseXAplicacionXTestXNivelXTipoUsuarios = faseXAplicacionXTestXNivelXTipoUsuarios;
 	}
 
-	public List<Curso> getCursos() {
+	public Set getCursos() {
 		return this.cursos;
 	}
 
-	public void setCursos(List<Curso> cursos) {
+	public void setCursos(Set cursos) {
 		this.cursos = cursos;
 	}
 
-	/**
-	 * @return
-	 */
 	public NivelDTO getNivelDTO() {
 		NivelDTO ndto = new NivelDTO();
 		ndto.setId(id);
