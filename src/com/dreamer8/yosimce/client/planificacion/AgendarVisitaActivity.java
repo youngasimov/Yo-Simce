@@ -51,7 +51,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
 		
-		if(place.getEstablecimientoId()<0){
+		if(place.getCursoId()<0){
 			selector.setOnCancelAction(new Command() {
 				
 				@Override
@@ -64,7 +64,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			selector.show();
 		}else{
 			
-		
+		view.setIdCurso(place.getCursoId());
 		
 		if(getFactory().onTesting()){
 			

@@ -8,24 +8,24 @@ import com.google.gwt.place.shared.Prefix;
 
 public class AgendarVisitaPlace extends SimcePlace {
 
-	private int establecimientoId;
+	private int cursoId;
 	
 	public AgendarVisitaPlace(){
 		super();
-		establecimientoId = -1;
+		cursoId = -1;
 	}
 	
-	public AgendarVisitaPlace(int aplicacionId, int nivelId, int tipoId,int establecimientoId) {
+	public AgendarVisitaPlace(int aplicacionId, int nivelId, int tipoId,int cursoId) {
 		super(aplicacionId, nivelId, tipoId);
-		this.establecimientoId = establecimientoId;
+		this.cursoId = cursoId;
 	}
 
-	public int getEstablecimientoId() {
-		return establecimientoId;
+	public int getCursoId() {
+		return cursoId;
 	}
 
-	public void setEstablecimientoId(int establecimientoId) {
-		this.establecimientoId = establecimientoId;
+	public void setCursoId(int cursoId) {
+		this.cursoId = cursoId;
 	}
 	
 	@Prefix("agendarvisita")
@@ -41,8 +41,8 @@ public class AgendarVisitaPlace extends SimcePlace {
 					.get(NIVELID)) : -1);
 			pp.setTipoId((kvs.containsKey(TIPOID)) ? Integer.parseInt(kvs
 					.get(TIPOID)) : -1);
-			pp.setEstablecimientoId((kvs.containsKey("e")) ? Integer.parseInt(kvs
-					.get("e")) : -1);
+			pp.setCursoId((kvs.containsKey("c")) ? Integer.parseInt(kvs
+					.get("c")) : -1);
 			return pp;
 		}
 
@@ -52,7 +52,7 @@ public class AgendarVisitaPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			if(place.getEstablecimientoId()>=0){kvs.put("e", place.getEstablecimientoId() + "");}
+			if(place.getCursoId()>=0){kvs.put("c", place.getCursoId() + "");}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		

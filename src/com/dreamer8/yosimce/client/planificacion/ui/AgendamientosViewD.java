@@ -78,7 +78,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@UiHandler("modificarAgendaButton")
 	void onModificarAgendaClick(ClickEvent event){
 		AgendarVisitaPlace avp = new AgendarVisitaPlace();
-		if(selectedItem !=null)avp.setEstablecimientoId(selectedItem.getEstablecimientoId());
+		if(selectedItem !=null)avp.setCursoId(selectedItem.getEstablecimientoId());
 		presenter.goTo(avp);
 	}
 	
