@@ -19,6 +19,8 @@ public interface AdminUsuariosView extends IsWidget {
 	void setTiposUsuarios(ArrayList<TipoUsuarioDTO> tiposUsuario);
 	void setTipoEmplazamiento(TipoEmplazamientoDTO tipoEmplazamiento);
 	void setEmplazamientos(ArrayList<EmplazamientoDTO> emplazamientos);
+	void setResetPasswordVisivility(boolean visible);
+	void setUpdateUsuarioVisivility(boolean visible);
 	
 	
 	public interface AdminUsuariosPresenter extends SimcePresenter{

@@ -6,14 +6,15 @@
 	<ui:style>
 		.nombre{
 			display:block;
-			float: left;
-			width: 100%;
-			height: 3em;
-			font-size: 13px;
+			width: 95%;
+			padding-top: 1em;
+			padding-bottom: 1em;
+			padding-left: 5%;
+			font-size: 15px;
 			font-weight: bold;
 		}
 	</ui:style>
-	<div class='style.nombre'>
+	<div class='{style.nombre}'>
 	    <ui:text from='{nombre}' />
 	</div>
 </ui:UiBinder>

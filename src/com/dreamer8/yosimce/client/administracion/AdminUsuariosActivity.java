@@ -30,6 +30,27 @@ public class AdminUsuariosActivity extends SimceActivity implements
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
 		panel.setWidget(view.asWidget());
+		
+		ArrayList<UserDTO> users = new ArrayList<UserDTO>();
+		UserDTO u = new UserDTO();
+		u.setNombres("Camilo Ignacio");
+		u.setApellidoPaterno("Vera");
+		u.setApellidoMaterno("Cortés");
+		u.setId(324);
+		u.setUsername("sddfskjndf");
+		u.setEmail("email");
+		users.add(u);
+		
+		u = new UserDTO();
+		u.setNombres("Jorge");
+		u.setApellidoPaterno("Flores");
+		u.setApellidoMaterno("Ivelic");
+		u.setId(487);
+		u.setUsername("fkrnmvut");
+		u.setEmail("jorge@email.com");
+		users.add(u);
+		view.getDataDisplay().setRowData(0, users);
+		
 	}
 
 	@Override

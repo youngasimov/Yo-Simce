@@ -22,6 +22,8 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 
@@ -46,12 +48,22 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 	
 	private AdminUsuariosPresenter presenter;
 	private UsuarioCell cell;
-	
+	private SingleSelectionModel<UserDTO> selectionModel;
 	
 	public AdminUsuariosViewD() {
 		cell = new UsuarioCell();
 		usuariosList = new CellList<UserDTO>(cell);
 		initWidget(uiBinder.createAndBindUi(this));
+		selectionModel = new SingleSelectionModel<UserDTO>(UserDTO.KEY_PROVIDER);
+		usuariosList.setSelectionModel(selectionModel);
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				presenter.onSelectUser(selectionModel.getSelectedObject());
+			}
+		});
+		
 	}
 	
 	@UiHandler("reestablecerPassButton")
@@ -91,7 +103,7 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 
 	@Override
 	public HasData<UserDTO> getDataDisplay() {
-		return null;
+		return usuariosList;
 	}
 
 	@Override
@@ -118,6 +130,16 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 		for(EmplazamientoDTO emplazamiento:emplazamientos){
 			emplazamientoBox.addItem(emplazamiento.getNombre(),emplazamiento.getId()+"");
 		}
+	}
+
+	@Override
+	public void setResetPasswordVisivility(boolean visible) {
+		reestablecerPassButton.setVisible(visible);
+	}
+
+	@Override
+	public void setUpdateUsuarioVisivility(boolean visible) {
+		updateButton.setVisible(visible);
 	}
 
 }
