@@ -91,7 +91,6 @@
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'><g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> </div>
 				<div class='{style.actions}'>
-					<g:Button addStyleNames='{style.action}' ui:field="historialButton" text="Historial de cambios"/>
 					<g:Button addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar"/>
 				</div>
 			</g:HTMLPanel>	

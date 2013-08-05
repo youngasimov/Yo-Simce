@@ -79,7 +79,6 @@
 					<g:Anchor ui:field="generalButton" text="General"/>
 					<ul>
 						<li><g:Anchor ui:field="detalleCursoViewItem" text="Detalle curso"/></li>
-						<li><g:Anchor ui:field="historialCambiosCursoViewItem" text="Historial de cambios a curso"/></li>
 					</ul>
 				</li>
 				<li ui:field="agendamiento">

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.administracion.AdminActivity;
+import com.dreamer8.yosimce.client.administracion.AdminEventosActivity;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosActivity;
@@ -12,7 +13,6 @@ import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralActivity;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosActivity;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaActivity;
@@ -49,8 +49,6 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new GeneralActivity(factory, (GeneralPlace)place, permisos);
 		}else if(place instanceof DetalleCursoPlace){
 			return new DetalleCursoActivity(factory, (DetalleCursoPlace)place, permisos);
-		}else if(place instanceof HistorialCursoPlace){
-		
 		}else if(place instanceof PlanificacionPlace){
 			return new PlanificacionActivity(factory,(PlanificacionPlace)place, permisos);
 		}else if(place instanceof AgendamientosPlace){
@@ -66,7 +64,7 @@ public class ContentActivityMapper implements ActivityMapper {
 		}else if(place instanceof AdminUsuariosPlace){
 			return new AdminUsuariosActivity(factory, (AdminUsuariosPlace)place, permisos);
 		}else if(place instanceof AdminEventosPlace){
-			
+			return new AdminEventosActivity(factory, (AdminEventosPlace)place, permisos);
 		}else if(place instanceof SimcePlace){
 			
 		}

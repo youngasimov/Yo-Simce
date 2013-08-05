@@ -60,7 +60,6 @@ public class DetalleCursoActivity extends SimceActivity implements
 			selector.setGlassEnabled(true);
 			selector.show();
 		}else{
-			view.setIdCurso(place.getCursoId());
 		}
 	}
 	

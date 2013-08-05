@@ -1,6 +1,5 @@
 package com.dreamer8.yosimce.client.general.ui;
 
-import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -24,7 +23,6 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 
 	
 	@UiField HTML establecimiento;
-	@UiField Button historialButton;
 	@UiField Button cambiarButton;
 	@UiField Label rbdLabel;
 	@UiField Label regionLabel;
@@ -38,33 +36,20 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@UiField Label correoLabel;
 	@UiField Label telefonoLabel;
 	
-	private int idCurso;
 	private DetalleCursoPresenter presenter;
 	
 	public DetalleCursoViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
-		idCurso = -1;
 	}
 	
 	@UiHandler("cambiarButton")
 	void onCambiarButtonClick(ClickEvent event){
 		presenter.onCambiarCursoClick();
 	}
-	
-	@UiHandler("historialButton")
-	void onHistorialButtonClick(ClickEvent event){
-		HistorialCursoPlace hcp = new HistorialCursoPlace();
-		hcp.setCursoId(idCurso);
-		presenter.goTo(hcp);
-	}
 
 	@Override
 	public void setPresenter(DetalleCursoPresenter presenter) {
 		this.presenter = presenter;
-	}
-
-	public void setIdCurso(int idCurso){
-		this.idCurso = idCurso;
 	}
 	
 	@Override
@@ -134,7 +119,6 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 
 	@Override
 	public void clearAll() {
-		idCurso = -1;
 		establecimiento.setText("");
 		rbdLabel.setText("");
 		regionLabel.setText("");

@@ -5,7 +5,6 @@ import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -47,7 +46,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor administracionButton;
 	
 	@UiField Anchor detalleCursoViewItem;
-	@UiField Anchor historialCambiosCursoViewItem;
 	@UiField Anchor agendamientosViewItem;
 	@UiField Anchor detalleAgendaViewItem;
 	@UiField Anchor agendarVisitaActionItem;
@@ -100,11 +98,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiHandler("detalleCursoViewItem")
 	void onDetalleCursoViewItemClick(ClickEvent event){
 		presenter.goTo(new DetalleCursoPlace());
-	}
-	
-	@UiHandler("historialCambiosCursoViewItem")
-	void onHistorialCambiosCursoViewItemClick(ClickEvent event){
-		presenter.goTo(new HistorialCursoPlace());
 	}
 	
 	@UiHandler("agendamientosViewItem")
@@ -198,14 +191,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	public void setDetalleCursoViewItemVisivility(boolean visible) {
 		detalleCursoViewItem.setVisible(visible);
 	}
-
-
-	@Override
-	public void setHistorialCambiosCursoViewItemVisivility(
-			boolean visible) {
-		historialCambiosCursoViewItem.setVisible(visible);
-	}
-
 
 	@Override
 	public void setAgendamientoVisivility(boolean visible) {
@@ -346,15 +331,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setHistorialCambiosCursoViewItemSelected(
-			boolean selected) {
-		removeSeleccion();
-		if(selected){
-			historialCambiosCursoViewItem.addStyleName(style.selected());
-		}
-	}
-
-	@Override
 	public void setAgendamientosViewItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
@@ -477,7 +453,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@Override
 	public void removeSeleccion(){
 		detalleCursoViewItem.removeStyleName(style.selected());
-		historialCambiosCursoViewItem.removeStyleName(style.selected());
 		agendamientosViewItem.removeStyleName(style.selected());
 		detalleAgendaViewItem.removeStyleName(style.selected());
 		agendarVisitaActionItem.removeStyleName(style.selected());

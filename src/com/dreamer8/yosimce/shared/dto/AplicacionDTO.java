@@ -5,11 +5,22 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
+import com.google.gwt.view.client.ProvidesKey;
+
 /**
  * @author jorge
  * 
  */
 public class AplicacionDTO implements Serializable {
+	
+	public static final ProvidesKey<AplicacionDTO> KEY_PROVIDER = new ProvidesKey<AplicacionDTO>() {
+
+		@Override
+		public Object getKey(AplicacionDTO item) {
+			return (item == null) ? null : item.getId();
+		}
+	};
+	
 	private Integer id;
 	private String nombre;
 

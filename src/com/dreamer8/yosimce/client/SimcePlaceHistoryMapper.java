@@ -5,7 +5,6 @@ import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -21,7 +20,6 @@ import com.google.gwt.place.shared.WithTokenizers;
 		DetalleAgendaPlace.Tokenizer.class,
 		GeneralPlace.Tokenizer.class,
 		DetalleCursoPlace.Tokenizer.class,
-		HistorialCursoPlace.Tokenizer.class,
 		AdminPlace.Tokenizer.class,
 		AdminUsuariosPlace.Tokenizer.class,
 		AdminEventosPlace.Tokenizer.class})

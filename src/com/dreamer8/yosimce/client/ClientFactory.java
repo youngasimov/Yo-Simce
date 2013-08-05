@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
@@ -44,6 +45,7 @@ public interface ClientFactory {
 	
 	AdminView getAdminView();
 	AdminUsuariosView getAdminUsuariosView();
+	AdminEventosView getAdminEventosView();
 	
 	
 }

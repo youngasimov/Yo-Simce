@@ -7,9 +7,7 @@ public interface SidebarView extends IsWidget {
 	
 	void setGeneralVisivility(boolean visible);
 	void setDetalleCursoViewItemVisivility(boolean visible);
-	void setHistorialCambiosCursoViewItemVisivility(boolean visible);
 	void setDetalleCursoViewItemSelected(boolean selected);
-	void setHistorialCambiosCursoViewItemSelected(boolean selected);
 	
 	void setAgendamientoVisivility(boolean visible);
 	void setAgendamientosViewItemVisivility(boolean visible);

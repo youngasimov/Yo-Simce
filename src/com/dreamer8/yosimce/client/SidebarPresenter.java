@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
-import com.dreamer8.yosimce.client.general.HistorialCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -66,8 +65,6 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 				
 				if(event.getNewPlace() instanceof DetalleCursoPlace){
 					view.setDetalleCursoViewItemSelected(true);
-				}else if(event.getNewPlace() instanceof HistorialCursoPlace){
-					view.setHistorialCambiosCursoViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendamientosPlace){
 					view.setAgendamientosViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendarVisitaPlace){

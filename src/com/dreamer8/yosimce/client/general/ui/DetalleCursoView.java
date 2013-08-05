@@ -6,7 +6,6 @@ import com.google.gwt.user.client.ui.UIObject;
 
 public interface DetalleCursoView extends IsWidget {
 
-	void setIdCurso(int idCurso);
 	void setNombreEstablecimiento(String nombre);
 	void setRbd(String rbd);
 	void setRegion(String region);
