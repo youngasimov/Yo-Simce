@@ -1,11 +1,11 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.SupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -15,7 +15,7 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
  */
 public class Usuario implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private CompaniaTelefono companiaTelefono;
 	private CarreraEstado carreraEstado;
 	private Carrera carrera;
@@ -49,34 +49,34 @@ public class Usuario implements java.io.Serializable {
 	private String roles;
 	private boolean credentialsExpired;
 	private Date credentialsExpireAt;
-	private Set usuarioXTests = new HashSet(0);
-	private Set usuarioXFaseXAplicacions = new HashSet(0);
-	private Set usuarioXAplicacionXNivels = new HashSet(0);
-	private Set nivels = new HashSet(0);
-	private Set usuarioXCos = new HashSet(0);
-	private Set historialCambioses = new HashSet(0);
-	private Set avisos = new HashSet(0);
-	private Set usuarioXRequisitos = new HashSet(0);
-	private Set transportes = new HashSet(0);
-	private Set actividads = new HashSet(0);
-	private Set materialHistorials = new HashSet(0);
-	private Set rutaXEstablecimientos = new HashSet(0);
-	private Set suplenteXCos = new HashSet(0);
-	private Set jrXCentroRegionals = new HashSet(0);
-	private Set mensajes = new HashSet(0);
-	private Set sesions = new HashSet(0);
-	private Set usuarioXComunas = new HashSet(0);
-	private Set usuarioXCcCapacitacions = new HashSet(0);
-	private Set usuarioXActividads = new HashSet(0);
-	private Set jzXZonas = new HashSet(0);
-	private Set rutas = new HashSet(0);
-	private Set joXCos = new HashSet(0);
-	private Set usuarioXEstablecimientos = new HashSet(0);
+	private List<UsuarioXTest> usuarioXTests = new ArrayList<UsuarioXTest>(0);
+	private List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions = new ArrayList<UsuarioXFaseXAplicacion>(0);
+	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(0);
+	private List<Nivel> nivels = new ArrayList<Nivel>(0);
+	private List<UsuarioXCo> usuarioXCos = new ArrayList<UsuarioXCo>(0);
+	private List<HistorialCambios> historialCambios = new ArrayList<HistorialCambios>(0);
+	private List<Aviso> avisos = new ArrayList<Aviso>(0);
+	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(0);
+	private List<Transporte> transportes = new ArrayList<Transporte>(0);
+	private List<Actividad> actividads = new ArrayList<Actividad>(0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
+	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(0);
+	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
+	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(0);
+	private List<Mensaje> mensajes = new ArrayList<Mensaje>(0);
+	private List<Sesion> sesions = new ArrayList<Sesion>(0);
+	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
+	private List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions = new ArrayList<UsuarioXCcCapacitacion>(0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
+	private List<JzXZona> jzXZonas = new ArrayList<JzXZona>(0);
+	private List<Ruta> rutas = new ArrayList<Ruta>(0);
+	private List<JoXCo> joXCos = new ArrayList<JoXCo>(0);
+	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(0);
 
 	public Usuario() {
 	}
 
-	public Usuario(int id, String username, String salt, String password,
+	public Usuario(Integer id, String username, String salt, String password,
 			String email, String celular, boolean smartphone,
 			boolean aceptaConfidencialidad, String usernameCanonical,
 			String emailCanonical, boolean enabled, boolean locked,
@@ -98,7 +98,7 @@ public class Usuario implements java.io.Serializable {
 		this.credentialsExpired = credentialsExpired;
 	}
 
-	public Usuario(int id, CompaniaTelefono companiaTelefono,
+	public Usuario(Integer id, CompaniaTelefono companiaTelefono,
 			CarreraEstado carreraEstado, Carrera carrera, Sexo sexo,
 			Comuna comuna, String username, String salt, String password,
 			String nombres, String apellidoPaterno, String apellidoMaterno,
@@ -110,15 +110,15 @@ public class Usuario implements java.io.Serializable {
 			Date lastLogin, boolean locked, boolean expired, Date expiresAt,
 			String confirmationToken, Date passwordRequestedAt, String roles,
 			boolean credentialsExpired, Date credentialsExpireAt,
-			Set usuarioXTests, Set usuarioXFaseXAplicacions,
-			Set usuarioXAplicacionXNivels, Set nivels, Set usuarioXCos,
-			Set historialCambioses, Set avisos, Set usuarioXRequisitos,
-			Set transportes, Set actividads, Set materialHistorials,
-			Set rutaXEstablecimientos, Set suplenteXCos,
-			Set jrXCentroRegionals, Set mensajes, Set sesions,
-			Set usuarioXComunas, Set usuarioXCcCapacitacions,
-			Set usuarioXActividads, Set jzXZonas, Set rutas, Set joXCos,
-			Set usuarioXEstablecimientos) {
+			List<UsuarioXTest> usuarioXTests, List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions,
+			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels, List<Nivel> nivels, List<UsuarioXCo> usuarioXCos,
+			List<HistorialCambios> historialCambios, List<Aviso> avisos, List<UsuarioXRequisito> usuarioXRequisitos,
+			List<Transporte> transportes, List<Actividad> actividads, List<MaterialHistorial> materialHistorials,
+			List<RutaXEstablecimiento> rutaXEstablecimientos, List<SuplenteXCo> suplenteXCos,
+			List<JrXCentroRegional> jrXCentroRegionals, List<Mensaje> mensajes, List<Sesion> sesions,
+			List<UsuarioXComuna> usuarioXComunas, List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions,
+			List<UsuarioXActividad> usuarioXActividads, List<JzXZona> jzXZonas, List<Ruta> rutas, List<JoXCo> joXCos,
+			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.id = id;
 		this.companiaTelefono = companiaTelefono;
 		this.carreraEstado = carreraEstado;
@@ -158,7 +158,7 @@ public class Usuario implements java.io.Serializable {
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 		this.nivels = nivels;
 		this.usuarioXCos = usuarioXCos;
-		this.historialCambioses = historialCambioses;
+		this.historialCambios = historialCambios;
 		this.avisos = avisos;
 		this.usuarioXRequisitos = usuarioXRequisitos;
 		this.transportes = transportes;
@@ -178,11 +178,11 @@ public class Usuario implements java.io.Serializable {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -450,189 +450,190 @@ public class Usuario implements java.io.Serializable {
 		this.credentialsExpireAt = credentialsExpireAt;
 	}
 
-	public Set getUsuarioXTests() {
+	public List<UsuarioXTest> getUsuarioXTests() {
 		return this.usuarioXTests;
 	}
 
-	public void setUsuarioXTests(Set usuarioXTests) {
+	public void setUsuarioXTests(List<UsuarioXTest> usuarioXTests) {
 		this.usuarioXTests = usuarioXTests;
 	}
 
-	public Set getUsuarioXFaseXAplicacions() {
+	public List<UsuarioXFaseXAplicacion> getUsuarioXFaseXAplicacions() {
 		return this.usuarioXFaseXAplicacions;
 	}
 
-	public void setUsuarioXFaseXAplicacions(Set usuarioXFaseXAplicacions) {
+	public void setUsuarioXFaseXAplicacions(List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions) {
 		this.usuarioXFaseXAplicacions = usuarioXFaseXAplicacions;
 	}
 
-	public Set getUsuarioXAplicacionXNivels() {
+	public List<UsuarioXAplicacionXNivel> getUsuarioXAplicacionXNivels() {
 		return this.usuarioXAplicacionXNivels;
 	}
 
-	public void setUsuarioXAplicacionXNivels(Set usuarioXAplicacionXNivels) {
+	public void setUsuarioXAplicacionXNivels(List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 	}
 
-	public Set getNivels() {
+	public List<Nivel> getNivels() {
 		return this.nivels;
 	}
 
-	public void setNivels(Set nivels) {
+	public void setNivels(List<Nivel> nivels) {
 		this.nivels = nivels;
 	}
 
-	public Set getUsuarioXCos() {
+	public List<UsuarioXCo> getUsuarioXCos() {
 		return this.usuarioXCos;
 	}
 
-	public void setUsuarioXCos(Set usuarioXCos) {
+	public void setUsuarioXCos(List<UsuarioXCo> usuarioXCos) {
 		this.usuarioXCos = usuarioXCos;
 	}
 
-	public Set getHistorialCambioses() {
-		return this.historialCambioses;
+	public List<HistorialCambios> getHistorialCambios() {
+		return this.historialCambios;
 	}
 
-	public void setHistorialCambioses(Set historialCambioses) {
-		this.historialCambioses = historialCambioses;
+	public void setHistorialCambios(List<HistorialCambios> historialCambios) {
+		this.historialCambios = historialCambios;
 	}
 
-	public Set getAvisos() {
+	public List<Aviso> getAvisos() {
 		return this.avisos;
 	}
 
-	public void setAvisos(Set avisos) {
+	public void setAvisos(List<Aviso> avisos) {
 		this.avisos = avisos;
 	}
 
-	public Set getUsuarioXRequisitos() {
+	public List<UsuarioXRequisito> getUsuarioXRequisitos() {
 		return this.usuarioXRequisitos;
 	}
 
-	public void setUsuarioXRequisitos(Set usuarioXRequisitos) {
+	public void setUsuarioXRequisitos(List<UsuarioXRequisito> usuarioXRequisitos) {
 		this.usuarioXRequisitos = usuarioXRequisitos;
 	}
 
-	public Set getTransportes() {
+	public List<Transporte> getTransportes() {
 		return this.transportes;
 	}
 
-	public void setTransportes(Set transportes) {
+	public void setTransportes(List<Transporte> transportes) {
 		this.transportes = transportes;
 	}
 
-	public Set getActividads() {
+	public List<Actividad> getActividads() {
 		return this.actividads;
 	}
 
-	public void setActividads(Set actividads) {
+	public void setActividads(List<Actividad> actividads) {
 		this.actividads = actividads;
 	}
 
-	public Set getMaterialHistorials() {
+	public List<MaterialHistorial> getMaterialHistorials() {
 		return this.materialHistorials;
 	}
 
-	public void setMaterialHistorials(Set materialHistorials) {
+	public void setMaterialHistorials(List<MaterialHistorial> materialHistorials) {
 		this.materialHistorials = materialHistorials;
 	}
 
-	public Set getRutaXEstablecimientos() {
+	public List<RutaXEstablecimiento> getRutaXEstablecimientos() {
 		return this.rutaXEstablecimientos;
 	}
 
-	public void setRutaXEstablecimientos(Set rutaXEstablecimientos) {
+	public void setRutaXEstablecimientos(List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 
-	public Set getSuplenteXCos() {
+	public List<SuplenteXCo> getSuplenteXCos() {
 		return this.suplenteXCos;
 	}
 
-	public void setSuplenteXCos(Set suplenteXCos) {
+	public void setSuplenteXCos(List<SuplenteXCo> suplenteXCos) {
 		this.suplenteXCos = suplenteXCos;
 	}
 
-	public Set getJrXCentroRegionals() {
+	public List<JrXCentroRegional> getJrXCentroRegionals() {
 		return this.jrXCentroRegionals;
 	}
 
-	public void setJrXCentroRegionals(Set jrXCentroRegionals) {
+	public void setJrXCentroRegionals(List<JrXCentroRegional> jrXCentroRegionals) {
 		this.jrXCentroRegionals = jrXCentroRegionals;
 	}
 
-	public Set getMensajes() {
+	public List<Mensaje> getMensajes() {
 		return this.mensajes;
 	}
 
-	public void setMensajes(Set mensajes) {
+	public void setMensajes(List<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
 
-	public Set getSesions() {
+	public List<Sesion> getSesions() {
 		return this.sesions;
 	}
 
-	public void setSesions(Set sesions) {
+	public void setSesions(List<Sesion> sesions) {
 		this.sesions = sesions;
 	}
 
-	public Set getUsuarioXComunas() {
+	public List<UsuarioXComuna> getUsuarioXComunas() {
 		return this.usuarioXComunas;
 	}
 
-	public void setUsuarioXComunas(Set usuarioXComunas) {
+	public void setUsuarioXComunas(List<UsuarioXComuna> usuarioXComunas) {
 		this.usuarioXComunas = usuarioXComunas;
 	}
 
-	public Set getUsuarioXCcCapacitacions() {
+	public List<UsuarioXCcCapacitacion> getUsuarioXCcCapacitacions() {
 		return this.usuarioXCcCapacitacions;
 	}
 
-	public void setUsuarioXCcCapacitacions(Set usuarioXCcCapacitacions) {
+	public void setUsuarioXCcCapacitacions(List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions) {
 		this.usuarioXCcCapacitacions = usuarioXCcCapacitacions;
 	}
 
-	public Set getUsuarioXActividads() {
+	public List<UsuarioXActividad> getUsuarioXActividads() {
 		return this.usuarioXActividads;
 	}
 
-	public void setUsuarioXActividads(Set usuarioXActividads) {
+	public void setUsuarioXActividads(List<UsuarioXActividad> usuarioXActividads) {
 		this.usuarioXActividads = usuarioXActividads;
 	}
 
-	public Set getJzXZonas() {
+	public List<JzXZona> getJzXZonas() {
 		return this.jzXZonas;
 	}
 
-	public void setJzXZonas(Set jzXZonas) {
+	public void setJzXZonas(List<JzXZona> jzXZonas) {
 		this.jzXZonas = jzXZonas;
 	}
 
-	public Set getRutas() {
+	public List<Ruta> getRutas() {
 		return this.rutas;
 	}
 
-	public void setRutas(Set rutas) {
+	public void setRutas(List<Ruta> rutas) {
 		this.rutas = rutas;
 	}
 
-	public Set getJoXCos() {
+	public List<JoXCo> getJoXCos() {
 		return this.joXCos;
 	}
 
-	public void setJoXCos(Set joXCos) {
+	public void setJoXCos(List<JoXCo> joXCos) {
 		this.joXCos = joXCos;
 	}
 
-	public Set getUsuarioXEstablecimientos() {
+	public List<UsuarioXEstablecimiento> getUsuarioXEstablecimientos() {
 		return this.usuarioXEstablecimientos;
 	}
 
-	public void setUsuarioXEstablecimientos(Set usuarioXEstablecimientos) {
+	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
+
 
 	public UserDTO getUserDTO() {
 		UserDTO udto = new UserDTO();
@@ -645,9 +646,6 @@ public class Usuario implements java.io.Serializable {
 		return udto;
 	}
 
-	/**
-	 * @return
-	 */
 	public SupervisorDTO getSupervisorDTO() {
 		SupervisorDTO sdto = new SupervisorDTO();
 		sdto.setId(id);

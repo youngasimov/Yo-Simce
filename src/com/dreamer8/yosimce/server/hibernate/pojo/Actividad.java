@@ -1,10 +1,10 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 
@@ -13,7 +13,7 @@ import com.dreamer8.yosimce.shared.dto.ContactoDTO;
  */
 public class Actividad implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private ActividadEstado actividadEstado;
 	private Curso curso;
 	private ContactoCargo contactoCargo;
@@ -28,34 +28,34 @@ public class Actividad implements java.io.Serializable {
 	private String contactoTelefono;
 	private String contactoEmail;
 	private boolean sinMaterial;
-	private Set alumnoXActividads = new HashSet(0);
-	private Set usuarioXActividads = new HashSet(0);
-	private Set materialHistorials = new HashSet(0);
-	private Set materials = new HashSet(0);
-	private Set actividadXDocumentoTipos = new HashSet(0);
-	private Set actividadHistorials = new HashSet(0);
-	private Set transporteXActividads = new HashSet(0);
-	private Set documentos = new HashSet(0);
-	private Set actividadXIncidencias = new HashSet(0);
+	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
+	private List<Material> materials = new ArrayList<Material>(0);
+	private List<ActividadXDocumentoTipo> actividadXDocumentoTipos = new ArrayList<ActividadXDocumentoTipo>(0);
+	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(0);
+	private List<TransporteXActividad> transporteXActividads = new ArrayList<TransporteXActividad>(0);
+	private List<Documento> documentos = new ArrayList<Documento>(0);
+	private List<ActividadXIncidencia> actividadXIncidencias = new ArrayList<ActividadXIncidencia>(0);
 
 	public Actividad() {
 	}
 
-	public Actividad(int id, boolean sinMaterial) {
+	public Actividad(Integer id, boolean sinMaterial) {
 		this.id = id;
 		this.sinMaterial = sinMaterial;
 	}
 
-	public Actividad(int id, ActividadEstado actividadEstado, Curso curso,
+	public Actividad(Integer id, ActividadEstado actividadEstado, Curso curso,
 			ContactoCargo contactoCargo,
 			AplicacionXNivelXActividadTipo aplicacionXNivelXActividadTipo,
 			Usuario usuario, String comentario, Date fechaInicio,
 			Date fechaTermino, Date fechaInicioPrueba, Date fechaTerminoPrueba,
 			String contactoNombre, String contactoTelefono,
-			String contactoEmail, boolean sinMaterial, Set alumnoXActividads,
-			Set usuarioXActividads, Set materialHistorials, Set materials,
-			Set actividadXDocumentoTipos, Set actividadHistorials,
-			Set transporteXActividads, Set documentos, Set actividadXIncidencias) {
+			String contactoEmail, boolean sinMaterial, List<AlumnoXActividad> alumnoXActividads,
+			List<UsuarioXActividad> usuarioXActividads, List<MaterialHistorial> materialHistorials, List<Material> materials,
+			List<ActividadXDocumentoTipo> actividadXDocumentoTipos, List<ActividadHistorial> actividadHistorials,
+			List<TransporteXActividad> transporteXActividads, List<Documento> documentos, List<ActividadXIncidencia> actividadXIncidencias) {
 		this.id = id;
 		this.actividadEstado = actividadEstado;
 		this.curso = curso;
@@ -82,11 +82,11 @@ public class Actividad implements java.io.Serializable {
 		this.actividadXIncidencias = actividadXIncidencias;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -203,75 +203,75 @@ public class Actividad implements java.io.Serializable {
 		this.sinMaterial = sinMaterial;
 	}
 
-	public Set getAlumnoXActividads() {
+	public List<AlumnoXActividad> getAlumnoXActividads() {
 		return this.alumnoXActividads;
 	}
 
-	public void setAlumnoXActividads(Set alumnoXActividads) {
+	public void setAlumnoXActividads(List<AlumnoXActividad> alumnoXActividads) {
 		this.alumnoXActividads = alumnoXActividads;
 	}
 
-	public Set getUsuarioXActividads() {
+	public List<UsuarioXActividad> getUsuarioXActividads() {
 		return this.usuarioXActividads;
 	}
 
-	public void setUsuarioXActividads(Set usuarioXActividads) {
+	public void setUsuarioXActividads(List<UsuarioXActividad> usuarioXActividads) {
 		this.usuarioXActividads = usuarioXActividads;
 	}
 
-	public Set getMaterialHistorials() {
+	public List<MaterialHistorial> getMaterialHistorials() {
 		return this.materialHistorials;
 	}
 
-	public void setMaterialHistorials(Set materialHistorials) {
+	public void setMaterialHistorials(List<MaterialHistorial> materialHistorials) {
 		this.materialHistorials = materialHistorials;
 	}
 
-	public Set getMaterials() {
+	public List<Material> getMaterials() {
 		return this.materials;
 	}
 
-	public void setMaterials(Set materials) {
+	public void setMaterials(List<Material> materials) {
 		this.materials = materials;
 	}
 
-	public Set getActividadXDocumentoTipos() {
+	public List<ActividadXDocumentoTipo> getActividadXDocumentoTipos() {
 		return this.actividadXDocumentoTipos;
 	}
 
-	public void setActividadXDocumentoTipos(Set actividadXDocumentoTipos) {
+	public void setActividadXDocumentoTipos(List<ActividadXDocumentoTipo> actividadXDocumentoTipos) {
 		this.actividadXDocumentoTipos = actividadXDocumentoTipos;
 	}
 
-	public Set getActividadHistorials() {
+	public List<ActividadHistorial> getActividadHistorials() {
 		return this.actividadHistorials;
 	}
 
-	public void setActividadHistorials(Set actividadHistorials) {
+	public void setActividadHistorials(List<ActividadHistorial> actividadHistorials) {
 		this.actividadHistorials = actividadHistorials;
 	}
 
-	public Set getTransporteXActividads() {
+	public List<TransporteXActividad> getTransporteXActividads() {
 		return this.transporteXActividads;
 	}
 
-	public void setTransporteXActividads(Set transporteXActividads) {
+	public void setTransporteXActividads(List<TransporteXActividad> transporteXActividads) {
 		this.transporteXActividads = transporteXActividads;
 	}
 
-	public Set getDocumentos() {
+	public List<Documento> getDocumentos() {
 		return this.documentos;
 	}
 
-	public void setDocumentos(Set documentos) {
+	public void setDocumentos(List<Documento> documentos) {
 		this.documentos = documentos;
 	}
 
-	public Set getActividadXIncidencias() {
+	public List<ActividadXIncidencia> getActividadXIncidencias() {
 		return this.actividadXIncidencias;
 	}
 
-	public void setActividadXIncidencias(Set actividadXIncidencias) {
+	public void setActividadXIncidencias(List<ActividadXIncidencia> actividadXIncidencias) {
 		this.actividadXIncidencias = actividadXIncidencias;
 	}
 
@@ -282,5 +282,4 @@ public class Actividad implements java.io.Serializable {
 		cdto.setContactoTelefono(contactoTelefono);
 		return cdto;
 	}
-
 }

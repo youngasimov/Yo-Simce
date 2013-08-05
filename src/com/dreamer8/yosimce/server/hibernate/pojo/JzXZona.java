@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class JzXZona implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Zona zona;
 	private Usuario usuario;
 	private Date fechaActivacion;
@@ -19,11 +19,11 @@ public class JzXZona implements java.io.Serializable {
 	public JzXZona() {
 	}
 
-	public JzXZona(int id) {
+	public JzXZona(Integer id) {
 		this.id = id;
 	}
 
-	public JzXZona(int id, Zona zona, Usuario usuario, Date fechaActivacion,
+	public JzXZona(Integer id, Zona zona, Usuario usuario, Date fechaActivacion,
 			Date fechaTermino, Boolean activo) {
 		this.id = id;
 		this.zona = zona;
@@ -33,11 +33,11 @@ public class JzXZona implements java.io.Serializable {
 		this.activo = activo;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

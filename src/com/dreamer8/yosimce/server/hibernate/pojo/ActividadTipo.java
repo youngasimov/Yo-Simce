@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 
@@ -12,29 +12,29 @@ import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
  */
 public class ActividadTipo implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private String nombre;
-	private Set aplicacionXNivelXActividadTipos = new HashSet(0);
+	private List<AplicacionXNivelXActividadTipo> aplicacionXNivelXActividadTipos = new ArrayList<AplicacionXNivelXActividadTipo>(0);
 
 	public ActividadTipo() {
 	}
 
-	public ActividadTipo(int id) {
+	public ActividadTipo(Integer id) {
 		this.id = id;
 	}
 
-	public ActividadTipo(int id, String nombre,
-			Set aplicacionXNivelXActividadTipos) {
+	public ActividadTipo(Integer id, String nombre,
+			List<AplicacionXNivelXActividadTipo> aplicacionXNivelXActividadTipos) {
 		this.id = id;
 		this.nombre = nombre;
 		this.aplicacionXNivelXActividadTipos = aplicacionXNivelXActividadTipos;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -46,12 +46,12 @@ public class ActividadTipo implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set getAplicacionXNivelXActividadTipos() {
+	public List<AplicacionXNivelXActividadTipo> getAplicacionXNivelXActividadTipos() {
 		return this.aplicacionXNivelXActividadTipos;
 	}
 
 	public void setAplicacionXNivelXActividadTipos(
-			Set aplicacionXNivelXActividadTipos) {
+			List<AplicacionXNivelXActividadTipo> aplicacionXNivelXActividadTipos) {
 		this.aplicacionXNivelXActividadTipos = aplicacionXNivelXActividadTipos;
 	}
 
@@ -61,5 +61,4 @@ public class ActividadTipo implements java.io.Serializable {
 		atdto.setNombre(nombre);
 		return atdto;
 	}
-
 }

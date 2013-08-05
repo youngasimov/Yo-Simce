@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class RutaXEstablecimiento implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Usuario usuario;
 	private Ruta ruta;
 	private Establecimiento establecimiento;
@@ -22,11 +22,11 @@ public class RutaXEstablecimiento implements java.io.Serializable {
 	public RutaXEstablecimiento() {
 	}
 
-	public RutaXEstablecimiento(int id) {
+	public RutaXEstablecimiento(Integer id) {
 		this.id = id;
 	}
 
-	public RutaXEstablecimiento(int id, Usuario usuario, Ruta ruta,
+	public RutaXEstablecimiento(Integer id, Usuario usuario, Ruta ruta,
 			Establecimiento establecimiento, Integer orden,
 			Integer tramoTiempo, Integer tramoDistancia, Date horaLlegada,
 			Date updatedAt) {
@@ -41,11 +41,11 @@ public class RutaXEstablecimiento implements java.io.Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

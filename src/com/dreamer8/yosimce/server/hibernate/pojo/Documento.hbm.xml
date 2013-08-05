@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Documento" table="documento" schema="public">
         <id name="id" type="int">
@@ -10,6 +10,9 @@
         </id>
         <many-to-one name="documentoTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo" fetch="select">
             <column name="documento_tipo_id" />
+        </many-to-one>
+        <many-to-one name="archivo" class="com.dreamer8.yosimce.server.hibernate.pojo.Archivo" fetch="select">
+            <column name="archivo_id" />
         </many-to-one>
         <many-to-one name="material" class="com.dreamer8.yosimce.server.hibernate.pojo.Material" fetch="select">
             <column name="material_id" />
@@ -22,22 +25,19 @@
         <property name="contingencia" type="boolean">
             <column name="contingencia" not-null="true" />
         </property>
-        <property name="rutaDocumento" type="string">
-            <column name="ruta_documento" />
-        </property>
-        <set name="alumnoXActividadXDocumentos" table="alumno_x_actividad_x_documento" inverse="true" lazy="true" fetch="select">
+        <bag name="alumnoXActividadXDocumentos" table="alumno_x_actividad_x_documento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="documento_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividadXDocumento" />
-        </set>
-        <set name="actividads" table="actividad_x_documento" inverse="false" lazy="true" fetch="select">
+        </bag>
+        <bag name="actividads" table="actividad_x_documento" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="documento_id" not-null="true" />
             </key>
             <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Actividad">
                 <column name="actividad_id" not-null="true" />
             </many-to-many>
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

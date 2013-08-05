@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo" table="aplicacion_x_nivel_x_actividad_tipo" schema="public">
         <comment>Obtener datos agregados por tipo de actividad y nivel para la postulaci&#195;&#179;n</comment>
@@ -21,23 +21,23 @@
         <property name="fechaTermino" type="date">
             <column name="fecha_termino" length="13" />
         </property>
-        <set name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
+        <bag name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" />
-        </set>
-        <set name="rutas" table="ruta" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="rutas" table="ruta" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Ruta" />
-        </set>
-        <set name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_x_nivel_x_actividad_tipo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.SuplenteXCo" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

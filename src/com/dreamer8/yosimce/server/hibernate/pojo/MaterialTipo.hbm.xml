@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.MaterialTipo" table="material_tipo" schema="public">
         <comment>complementario, capacitaci&#195;&#179;n, Nee, caja-curso-dia, contingencia, pendrive</comment>
@@ -12,11 +12,11 @@
         <property name="nombre" type="string">
             <column name="nombre" />
         </property>
-        <set name="materials" table="material" inverse="true" lazy="true" fetch="select">
+        <bag name="materials" table="material" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="material_tipo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Material" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Test" table="test" schema="public">
         <id name="id" type="int">
@@ -34,23 +34,23 @@
         <property name="valorInvierteSentido" type="java.lang.Integer">
             <column name="valor_invierte_sentido" />
         </property>
-        <set name="testPreguntas" table="test_pregunta" inverse="true" lazy="true" fetch="select">
+        <bag name="faseXAplicacionXTestXNivelXUsuarioTipos" table="fase_x_aplicacion_x_test_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="test_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacionXTestXNivelXUsuarioTipo" />
+        </bag>
+        <bag name="testPreguntas" table="test_pregunta" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="test_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.TestPregunta" />
-        </set>
-        <set name="faseXAplicacionXTestXNivelXTipoUsuarios" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="test_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacionXTestXNivelXTipoUsuario" />
-        </set>
-        <set name="usuarioXTests" table="usuario_x_test" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="usuarioXTests" table="usuario_x_test" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="test_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXTest" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

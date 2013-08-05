@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.TransporteTipo" table="transporte_tipo" schema="public">
         <id name="id" type="int">
@@ -11,19 +11,17 @@
         <property name="nombre" type="string">
             <column name="nombre" />
         </property>
-        <set name="trasladoModos" table="traslado_modo_x_transporte_tipo" inverse="false" lazy="true" fetch="select">
+        <bag name="trasladoModoXTransporteTipos" table="traslado_modo_x_transporte_tipo" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="transporte_tipo_id" not-null="true" />
+                <column name="transporte_tipo_id" />
             </key>
-            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.TrasladoModo">
-                <column name="traslado_modo_id" not-null="true" />
-            </many-to-many>
-        </set>
-        <set name="transportes" table="transporte" inverse="true" lazy="true" fetch="select">
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.TrasladoModoXTransporteTipo" />
+        </bag>
+        <bag name="transportes" table="transporte" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="transporte_tipo_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Transporte" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

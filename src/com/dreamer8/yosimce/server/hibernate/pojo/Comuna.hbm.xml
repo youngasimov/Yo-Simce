@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Comuna" table="comuna" schema="public">
         <id name="id" type="int">
@@ -14,47 +14,47 @@
         <property name="nombre" type="string">
             <column name="nombre" />
         </property>
-        <set name="ccs" table="cc" inverse="true" lazy="true" fetch="select">
+        <bag name="ccs" table="cc" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Cc" />
-        </set>
-        <set name="establecimientos" table="establecimiento" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="establecimientos" table="establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento" />
-        </set>
-        <set name="cos" table="co" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="cos" table="co" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Co" />
-        </set>
-        <set name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Usuario" />
-        </set>
-        <set name="usuarioXComunas" table="usuario_x_comuna" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="usuarioXComunas" table="usuario_x_comuna" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXComuna" />
-        </set>
-        <set name="transportes" table="transporte" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="transportes" table="transporte" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Transporte" />
-        </set>
-        <set name="ccXComunas" table="cc_x_comuna" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="ccXComunas" table="cc_x_comuna" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcXComuna" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

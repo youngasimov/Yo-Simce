@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacion" table="fase_x_aplicacion" schema="public">
         <id name="id" type="int">
@@ -14,20 +14,23 @@
         <many-to-one name="aplicacion" class="com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion" fetch="select">
             <column name="aplicacion_id" />
         </many-to-one>
+        <property name="orden" type="java.lang.Integer">
+            <column name="orden" />
+        </property>
         <property name="fechaResultado" type="timestamp">
             <column name="fecha_resultado" length="29" />
         </property>
-        <set name="usuarioXFaseXAplicacions" table="usuario_x_fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
+        <bag name="faseXAplicacionXTestXNivelXUsuarioTipos" table="fase_x_aplicacion_x_test_x_nivel_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="fase_x_aplicacion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacionXTestXNivelXUsuarioTipo" />
+        </bag>
+        <bag name="usuarioXFaseXAplicacions" table="usuario_x_fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="fase_x_aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXFaseXAplicacion" />
-        </set>
-        <set name="faseXAplicacionXTestXNivelXTipoUsuarios" table="fase_x_aplicacion_x_test_x_nivel_x_tipo_usuario" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="fase_x_aplicacion_id" />
-            </key>
-            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacionXTestXNivelXTipoUsuario" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

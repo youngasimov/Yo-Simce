@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Cc" table="cc" schema="public">
         <comment>centro de capacitacion</comment>
@@ -36,25 +36,25 @@
         <property name="direccionLongitud" type="big_decimal">
             <column name="direccion_longitud" precision="131089" scale="0" />
         </property>
-        <set name="materials" table="material_x_cc" inverse="false" lazy="true" fetch="select">
+        <bag name="materials" table="material_x_cc" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="cc_id" not-null="true" />
             </key>
             <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Material">
                 <column name="material_id" not-null="true" />
             </many-to-many>
-        </set>
-        <set name="ccXComunas" table="cc_x_comuna" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="ccXComunas" table="cc_x_comuna" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="cc_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcXComuna" />
-        </set>
-        <set name="ccSalas" table="cc_sala" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="ccSalas" table="cc_sala" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="cc_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcSala" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>
