@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Curso" table="curso" schema="public">
         <id name="id" type="int">
@@ -28,11 +28,14 @@
         <property name="nee" type="boolean">
             <column name="nee" not-null="true" />
         </property>
-        <set name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
+        <property name="cantidadAlumnos" type="java.lang.Integer">
+            <column name="cantidad_alumnos" />
+        </property>
+        <bag name="actividads" table="actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="curso_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

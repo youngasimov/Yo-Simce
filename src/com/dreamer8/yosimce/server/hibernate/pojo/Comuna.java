@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 
@@ -12,27 +12,27 @@ import com.dreamer8.yosimce.shared.dto.SectorDTO;
  */
 public class Comuna implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Provincia provincia;
 	private String nombre;
-	private Set ccs = new HashSet(0);
-	private Set establecimientos = new HashSet(0);
-	private Set cos = new HashSet(0);
-	private Set usuarios = new HashSet(0);
-	private Set usuarioXComunas = new HashSet(0);
-	private Set transportes = new HashSet(0);
-	private Set ccXComunas = new HashSet(0);
+	private List<Cc> ccs = new ArrayList<Cc>(0);
+	private List<Establecimiento> establecimientos = new ArrayList<Establecimiento>(0);
+	private List<Co> cos = new ArrayList<Co>(0);
+	private List<Usuario> usuarios = new ArrayList<Usuario>(0);
+	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
+	private List<Transporte> transportes = new ArrayList<Transporte>(0);
+	private List<CcXComuna> ccXComunas = new ArrayList<CcXComuna>(0);
 
 	public Comuna() {
 	}
 
-	public Comuna(int id) {
+	public Comuna(Integer id) {
 		this.id = id;
 	}
 
-	public Comuna(int id, Provincia provincia, String nombre, Set ccs,
-			Set establecimientos, Set cos, Set usuarios, Set usuarioXComunas,
-			Set transportes, Set ccXComunas) {
+	public Comuna(Integer id, Provincia provincia, String nombre, List<Cc> ccs,
+			List<Establecimiento> establecimientos, List<Co> cos, List<Usuario> usuarios, List<UsuarioXComuna> usuarioXComunas,
+			List<Transporte> transportes, List<CcXComuna> ccXComunas) {
 		this.id = id;
 		this.provincia = provincia;
 		this.nombre = nombre;
@@ -45,11 +45,11 @@ public class Comuna implements java.io.Serializable {
 		this.ccXComunas = ccXComunas;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -69,59 +69,59 @@ public class Comuna implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set getCcs() {
+	public List<Cc> getCcs() {
 		return this.ccs;
 	}
 
-	public void setCcs(Set ccs) {
+	public void setCcs(List<Cc> ccs) {
 		this.ccs = ccs;
 	}
 
-	public Set getEstablecimientos() {
+	public List<Establecimiento> getEstablecimientos() {
 		return this.establecimientos;
 	}
 
-	public void setEstablecimientos(Set establecimientos) {
+	public void setEstablecimientos(List<Establecimiento> establecimientos) {
 		this.establecimientos = establecimientos;
 	}
 
-	public Set getCos() {
+	public List<Co> getCos() {
 		return this.cos;
 	}
 
-	public void setCos(Set cos) {
+	public void setCos(List<Co> cos) {
 		this.cos = cos;
 	}
 
-	public Set getUsuarios() {
+	public List<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 
-	public void setUsuarios(Set usuarios) {
+	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
 	}
 
-	public Set getUsuarioXComunas() {
+	public List<UsuarioXComuna> getUsuarioXComunas() {
 		return this.usuarioXComunas;
 	}
 
-	public void setUsuarioXComunas(Set usuarioXComunas) {
+	public void setUsuarioXComunas(List<UsuarioXComuna> usuarioXComunas) {
 		this.usuarioXComunas = usuarioXComunas;
 	}
 
-	public Set getTransportes() {
+	public List<Transporte> getTransportes() {
 		return this.transportes;
 	}
 
-	public void setTransportes(Set transportes) {
+	public void setTransportes(List<Transporte> transportes) {
 		this.transportes = transportes;
 	}
 
-	public Set getCcXComunas() {
+	public List<CcXComuna> getCcXComunas() {
 		return this.ccXComunas;
 	}
 
-	public void setCcXComunas(Set ccXComunas) {
+	public void setCcXComunas(List<CcXComuna> ccXComunas) {
 		this.ccXComunas = ccXComunas;
 	}
 

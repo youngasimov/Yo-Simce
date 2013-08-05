@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Usuario usuario;
 	private FaseXAplicacion faseXAplicacion;
 	private boolean aprobado;
@@ -22,12 +22,12 @@ public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 	public UsuarioXFaseXAplicacion() {
 	}
 
-	public UsuarioXFaseXAplicacion(int id, boolean aprobado) {
+	public UsuarioXFaseXAplicacion(Integer id, boolean aprobado) {
 		this.id = id;
 		this.aprobado = aprobado;
 	}
 
-	public UsuarioXFaseXAplicacion(int id, Usuario usuario,
+	public UsuarioXFaseXAplicacion(Integer id, Usuario usuario,
 			FaseXAplicacion faseXAplicacion, boolean aprobado,
 			Date fechaAprobacion, String comentario, BigDecimal evaluacion,
 			Date updatedAt) {
@@ -41,11 +41,11 @@ public class UsuarioXFaseXAplicacion implements java.io.Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

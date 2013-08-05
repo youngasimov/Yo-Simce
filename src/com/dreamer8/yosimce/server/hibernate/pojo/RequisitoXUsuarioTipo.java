@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  */
 public class RequisitoXUsuarioTipo implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Integer requisitoId;
 	private Integer aplicacionXUsuarioTipoId;
 	private Integer parametro;
@@ -20,11 +20,11 @@ public class RequisitoXUsuarioTipo implements java.io.Serializable {
 	public RequisitoXUsuarioTipo() {
 	}
 
-	public RequisitoXUsuarioTipo(int id) {
+	public RequisitoXUsuarioTipo(Integer id) {
 		this.id = id;
 	}
 
-	public RequisitoXUsuarioTipo(int id, Integer requisitoId,
+	public RequisitoXUsuarioTipo(Integer id, Integer requisitoId,
 			Integer aplicacionXUsuarioTipoId, Integer parametro,
 			Boolean obligatorio, Boolean ordenAprobacion, BigDecimal factor) {
 		this.id = id;
@@ -36,11 +36,11 @@ public class RequisitoXUsuarioTipo implements java.io.Serializable {
 		this.factor = factor;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

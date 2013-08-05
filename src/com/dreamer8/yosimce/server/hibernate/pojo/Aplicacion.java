@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 
@@ -12,35 +12,35 @@ import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
  */
 public class Aplicacion implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private String nombre;
 	private String slug;
 	private Integer tiempoDetencionEstablecimiento;
 	private Integer diasPreviosSinMaterial;
-	private Set centroRegionals = new HashSet(0);
-	private Set aplicacionXNivels = new HashSet(0);
-	private Set lugars = new HashSet(0);
-	private Set aplicacionXEstablecimientos = new HashSet(0);
-	private Set faseXAplicacions = new HashSet(0);
-	private Set documentoTipos = new HashSet(0);
-	private Set ccCapacitacions = new HashSet(0);
-	private Set aplicacionXUsuarioTipos = new HashSet(0);
-	private Set documentoEstados = new HashSet(0);
+	private List<CentroRegional> centroRegionals = new ArrayList<CentroRegional>(0);
+	private List<AplicacionXNivel> aplicacionXNivels = new ArrayList<AplicacionXNivel>(0);
+	private List<Lugar> lugars = new ArrayList<Lugar>(0);
+	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(0);
+	private List<FaseXAplicacion> faseXAplicacions = new ArrayList<FaseXAplicacion>(0);
+	private List<DocumentoTipo> documentoTipos = new ArrayList<DocumentoTipo>(0);
+	private List<CcCapacitacion> ccCapacitacions = new ArrayList<CcCapacitacion>(0);
+	private List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos = new ArrayList<AplicacionXUsuarioTipo>(0);
+	private List<DocumentoEstado> documentoEstados = new ArrayList<DocumentoEstado>(0);
 
 	public Aplicacion() {
 	}
 
-	public Aplicacion(int id, String slug) {
+	public Aplicacion(Integer id, String slug) {
 		this.id = id;
 		this.slug = slug;
 	}
 
-	public Aplicacion(int id, String nombre, String slug,
+	public Aplicacion(Integer id, String nombre, String slug,
 			Integer tiempoDetencionEstablecimiento,
-			Integer diasPreviosSinMaterial, Set centroRegionals,
-			Set aplicacionXNivels, Set lugars, Set aplicacionXEstablecimientos,
-			Set faseXAplicacions, Set documentoTipos, Set ccCapacitacions,
-			Set aplicacionXUsuarioTipos, Set documentoEstados) {
+			Integer diasPreviosSinMaterial, List<CentroRegional> centroRegionals,
+			List<AplicacionXNivel> aplicacionXNivels, List<Lugar> lugars, List<AplicacionXEstablecimiento> aplicacionXEstablecimientos,
+			List<FaseXAplicacion> faseXAplicacions, List<DocumentoTipo> documentoTipos, List<CcCapacitacion> ccCapacitacions,
+			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos, List<DocumentoEstado> documentoEstados) {
 		this.id = id;
 		this.nombre = nombre;
 		this.slug = slug;
@@ -57,11 +57,11 @@ public class Aplicacion implements java.io.Serializable {
 		this.documentoEstados = documentoEstados;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -98,75 +98,75 @@ public class Aplicacion implements java.io.Serializable {
 		this.diasPreviosSinMaterial = diasPreviosSinMaterial;
 	}
 
-	public Set getCentroRegionals() {
+	public List<CentroRegional> getCentroRegionals() {
 		return this.centroRegionals;
 	}
 
-	public void setCentroRegionals(Set centroRegionals) {
+	public void setCentroRegionals(List<CentroRegional> centroRegionals) {
 		this.centroRegionals = centroRegionals;
 	}
 
-	public Set getAplicacionXNivels() {
+	public List<AplicacionXNivel> getAplicacionXNivels() {
 		return this.aplicacionXNivels;
 	}
 
-	public void setAplicacionXNivels(Set aplicacionXNivels) {
+	public void setAplicacionXNivels(List<AplicacionXNivel> aplicacionXNivels) {
 		this.aplicacionXNivels = aplicacionXNivels;
 	}
 
-	public Set getLugars() {
+	public List<Lugar> getLugars() {
 		return this.lugars;
 	}
 
-	public void setLugars(Set lugars) {
+	public void setLugars(List<Lugar> lugars) {
 		this.lugars = lugars;
 	}
 
-	public Set getAplicacionXEstablecimientos() {
+	public List<AplicacionXEstablecimiento> getAplicacionXEstablecimientos() {
 		return this.aplicacionXEstablecimientos;
 	}
 
-	public void setAplicacionXEstablecimientos(Set aplicacionXEstablecimientos) {
+	public void setAplicacionXEstablecimientos(List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
 		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
 	}
 
-	public Set getFaseXAplicacions() {
+	public List<FaseXAplicacion> getFaseXAplicacions() {
 		return this.faseXAplicacions;
 	}
 
-	public void setFaseXAplicacions(Set faseXAplicacions) {
+	public void setFaseXAplicacions(List<FaseXAplicacion> faseXAplicacions) {
 		this.faseXAplicacions = faseXAplicacions;
 	}
 
-	public Set getDocumentoTipos() {
+	public List<DocumentoTipo> getDocumentoTipos() {
 		return this.documentoTipos;
 	}
 
-	public void setDocumentoTipos(Set documentoTipos) {
+	public void setDocumentoTipos(List<DocumentoTipo> documentoTipos) {
 		this.documentoTipos = documentoTipos;
 	}
 
-	public Set getCcCapacitacions() {
+	public List<CcCapacitacion> getCcCapacitacions() {
 		return this.ccCapacitacions;
 	}
 
-	public void setCcCapacitacions(Set ccCapacitacions) {
+	public void setCcCapacitacions(List<CcCapacitacion> ccCapacitacions) {
 		this.ccCapacitacions = ccCapacitacions;
 	}
 
-	public Set getAplicacionXUsuarioTipos() {
+	public List<AplicacionXUsuarioTipo> getAplicacionXUsuarioTipos() {
 		return this.aplicacionXUsuarioTipos;
 	}
 
-	public void setAplicacionXUsuarioTipos(Set aplicacionXUsuarioTipos) {
+	public void setAplicacionXUsuarioTipos(List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos) {
 		this.aplicacionXUsuarioTipos = aplicacionXUsuarioTipos;
 	}
 
-	public Set getDocumentoEstados() {
+	public List<DocumentoEstado> getDocumentoEstados() {
 		return this.documentoEstados;
 	}
 
-	public void setDocumentoEstados(Set documentoEstados) {
+	public void setDocumentoEstados(List<DocumentoEstado> documentoEstados) {
 		this.documentoEstados = documentoEstados;
 	}
 

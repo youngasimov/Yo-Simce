@@ -1,10 +1,10 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 
@@ -13,7 +13,7 @@ import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
  */
 public class Establecimiento implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private AreaGeografica areaGeografica;
 	private Comuna comuna;
 	private EstablecimientoRegimen establecimientoRegimen;
@@ -26,28 +26,28 @@ public class Establecimiento implements java.io.Serializable {
 	private BigDecimal direccionLongitud;
 	private String directorNombre;
 	private String email;
-	private Set usuarioXEstablecimientos = new HashSet(0);
-	private Set coXEstablecimientos = new HashSet(0);
-	private Set cursos = new HashSet(0);
-	private Set aplicacionXEstablecimientos = new HashSet(0);
-	private Set rutaXEstablecimientos = new HashSet(0);
+	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(0);
+	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(0);
+	private List<Curso> cursos = new ArrayList<Curso>(0);
+	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(0);
+	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(0);
 
 	public Establecimiento() {
 	}
 
-	public Establecimiento(int id) {
+	public Establecimiento(Integer id) {
 		this.id = id;
 	}
 
-	public Establecimiento(int id, AreaGeografica areaGeografica,
+	public Establecimiento(Integer id, AreaGeografica areaGeografica,
 			Comuna comuna, EstablecimientoRegimen establecimientoRegimen,
 			EstablecimientoEstado establecimientoEstado,
 			EstablecimientoDependencia establecimientoDependencia,
 			String nombre, String telefono, String direccion,
 			BigDecimal direccionLatitud, BigDecimal direccionLongitud,
-			String directorNombre, String email, Set usuarioXEstablecimientos,
-			Set coXEstablecimientos, Set cursos,
-			Set aplicacionXEstablecimientos, Set rutaXEstablecimientos) {
+			String directorNombre, String email, List<UsuarioXEstablecimiento> usuarioXEstablecimientos,
+			List<CoXEstablecimiento> coXEstablecimientos, List<Curso> cursos,
+			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos, List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.id = id;
 		this.areaGeografica = areaGeografica;
 		this.comuna = comuna;
@@ -68,11 +68,11 @@ public class Establecimiento implements java.io.Serializable {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -175,43 +175,43 @@ public class Establecimiento implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public Set getUsuarioXEstablecimientos() {
+	public List<UsuarioXEstablecimiento> getUsuarioXEstablecimientos() {
 		return this.usuarioXEstablecimientos;
 	}
 
-	public void setUsuarioXEstablecimientos(Set usuarioXEstablecimientos) {
+	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
 
-	public Set getCoXEstablecimientos() {
+	public List<CoXEstablecimiento> getCoXEstablecimientos() {
 		return this.coXEstablecimientos;
 	}
 
-	public void setCoXEstablecimientos(Set coXEstablecimientos) {
+	public void setCoXEstablecimientos(List<CoXEstablecimiento> coXEstablecimientos) {
 		this.coXEstablecimientos = coXEstablecimientos;
 	}
 
-	public Set getCursos() {
+	public List<Curso> getCursos() {
 		return this.cursos;
 	}
 
-	public void setCursos(Set cursos) {
+	public void setCursos(List<Curso> cursos) {
 		this.cursos = cursos;
 	}
 
-	public Set getAplicacionXEstablecimientos() {
+	public List<AplicacionXEstablecimiento> getAplicacionXEstablecimientos() {
 		return this.aplicacionXEstablecimientos;
 	}
 
-	public void setAplicacionXEstablecimientos(Set aplicacionXEstablecimientos) {
+	public void setAplicacionXEstablecimientos(List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
 		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
 	}
 
-	public Set getRutaXEstablecimientos() {
+	public List<RutaXEstablecimiento> getRutaXEstablecimientos() {
 		return this.rutaXEstablecimientos;
 	}
 
-	public void setRutaXEstablecimientos(Set rutaXEstablecimientos) {
+	public void setRutaXEstablecimientos(List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 

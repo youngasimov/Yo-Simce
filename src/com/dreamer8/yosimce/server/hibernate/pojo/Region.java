@@ -1,9 +1,9 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 
@@ -12,28 +12,28 @@ import com.dreamer8.yosimce.shared.dto.SectorDTO;
  */
 public class Region implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private String nombre;
-	private Set provincias = new HashSet(0);
+	private List<Provincia> provincias = new ArrayList<Provincia>(0);
 
 	public Region() {
 	}
 
-	public Region(int id) {
+	public Region(Integer id) {
 		this.id = id;
 	}
 
-	public Region(int id, String nombre, Set provincias) {
+	public Region(Integer id, String nombre, List<Provincia> provincias) {
 		this.id = id;
 		this.nombre = nombre;
 		this.provincias = provincias;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -45,11 +45,11 @@ public class Region implements java.io.Serializable {
 		this.nombre = nombre;
 	}
 
-	public Set getProvincias() {
+	public List<Provincia> getProvincias() {
 		return this.provincias;
 	}
 
-	public void setProvincias(Set provincias) {
+	public void setProvincias(List<Provincia> provincias) {
 		this.provincias = provincias;
 	}
 

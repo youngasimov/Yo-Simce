@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion" table="aplicacion" schema="public">
         <id name="id" type="int">
@@ -20,63 +20,63 @@
         <property name="diasPreviosSinMaterial" type="java.lang.Integer">
             <column name="dias_previos_sin_material" />
         </property>
-        <set name="centroRegionals" table="centro_regional" inverse="true" lazy="true" fetch="select">
+        <bag name="centroRegionals" table="centro_regional" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CentroRegional" />
-        </set>
-        <set name="aplicacionXNivels" table="aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="aplicacionXNivels" table="aplicacion_x_nivel" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivel" />
-        </set>
-        <set name="lugars" table="lugar" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="lugars" table="lugar" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Lugar" />
-        </set>
-        <set name="aplicacionXEstablecimientos" table="aplicacion_x_establecimiento" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="aplicacionXEstablecimientos" table="aplicacion_x_establecimiento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXEstablecimiento" />
-        </set>
-        <set name="faseXAplicacions" table="fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="faseXAplicacions" table="fase_x_aplicacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.FaseXAplicacion" />
-        </set>
-        <set name="documentoTipos" table="aplicacion_x_documento_tipo" inverse="false" lazy="true" fetch="select">
+        </bag>
+        <bag name="documentoTipos" table="aplicacion_x_documento_tipo" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" not-null="true" />
             </key>
             <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo">
                 <column name="documento_tipo_id" not-null="true" />
             </many-to-many>
-        </set>
-        <set name="ccCapacitacions" table="cc_capacitacion" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="ccCapacitacions" table="cc_capacitacion" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.CcCapacitacion" />
-        </set>
-        <set name="aplicacionXUsuarioTipos" table="aplicacion_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="aplicacionXUsuarioTipos" table="aplicacion_x_usuario_tipo" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo" />
-        </set>
-        <set name="documentoEstados" table="aplicacion_x_documento_estado" inverse="false" lazy="true" fetch="select">
+        </bag>
+        <bag name="documentoEstados" table="aplicacion_x_documento_estado" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="aplicacion_id" not-null="true" />
             </key>
             <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado">
                 <column name="documento_estado_id" not-null="true" />
             </many-to-many>
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

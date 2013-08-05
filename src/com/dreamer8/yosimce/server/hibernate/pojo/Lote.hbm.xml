@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.Lote" table="lote" schema="public">
+        <comment>Para agrupar varias cajas que ser&#195;&#161;n entregadas a la misma persona el d&#195;&#173;a de la prueba</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="fechaCreacion" type="timestamp">
+            <column name="fecha_creacion" length="29" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" />
+        </property>
+        <property name="comentario" type="string">
+            <column name="comentario" />
+        </property>
+        <bag name="materials" table="material_x_lote" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="lote_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Material">
+                <column name="material_id" not-null="true" />
+            </many-to-many>
+        </bag>
+    </class>
+</hibernate-mapping>

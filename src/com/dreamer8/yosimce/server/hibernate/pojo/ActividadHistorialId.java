@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,22 +9,22 @@ import java.util.Date;
  */
 public class ActividadHistorialId implements java.io.Serializable {
 
-	private int actividadId;
+	private Integer actividadId;
 	private Date fecha;
 
 	public ActividadHistorialId() {
 	}
 
-	public ActividadHistorialId(int actividadId, Date fecha) {
+	public ActividadHistorialId(Integer actividadId, Date fecha) {
 		this.actividadId = actividadId;
 		this.fecha = fecha;
 	}
 
-	public int getActividadId() {
+	public Integer getActividadId() {
 		return this.actividadId;
 	}
 
-	public void setActividadId(int actividadId) {
+	public void setActividadId(Integer actividadId) {
 		this.actividadId = actividadId;
 	}
 
@@ -52,7 +52,7 @@ public class ActividadHistorialId implements java.io.Serializable {
 	}
 
 	public int hashCode() {
-		int result = 17;
+		Integer result = 17;
 
 		result = 37 * result + this.getActividadId();
 		result = 37 * result

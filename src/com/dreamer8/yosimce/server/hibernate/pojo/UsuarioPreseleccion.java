@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1
+// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class UsuarioPreseleccion implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private UsuarioTipo usuarioTipo;
 	private UsuarioXAplicacionXNivel usuarioXAplicacionXNivel;
 	private Co co;
@@ -21,12 +21,12 @@ public class UsuarioPreseleccion implements java.io.Serializable {
 	public UsuarioPreseleccion() {
 	}
 
-	public UsuarioPreseleccion(int id, boolean preseleccion) {
+	public UsuarioPreseleccion(Integer id, boolean preseleccion) {
 		this.id = id;
 		this.preseleccion = preseleccion;
 	}
 
-	public UsuarioPreseleccion(int id, UsuarioTipo usuarioTipo,
+	public UsuarioPreseleccion(Integer id, UsuarioTipo usuarioTipo,
 			UsuarioXAplicacionXNivel usuarioXAplicacionXNivel, Co co,
 			BigDecimal puntajeTotal, boolean preseleccion,
 			Date fechaPreseleccion) {
@@ -39,11 +39,11 @@ public class UsuarioPreseleccion implements java.io.Serializable {
 		this.fechaPreseleccion = fechaPreseleccion;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

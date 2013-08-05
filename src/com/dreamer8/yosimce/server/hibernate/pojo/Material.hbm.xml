@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Material" table="material" schema="public">
         <id name="id" type="int">
@@ -17,39 +17,47 @@
         <property name="codigo" type="string">
             <column name="codigo" />
         </property>
-        <set name="ccs" table="material_x_cc" inverse="false" lazy="true" fetch="select">
+        <bag name="ccs" table="material_x_cc" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="material_id" not-null="true" />
             </key>
             <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Cc">
                 <column name="cc_id" not-null="true" />
             </many-to-many>
-        </set>
-        <set name="actividads" table="material_x_actividad" inverse="false" lazy="true" fetch="select">
+        </bag>
+        <bag name="lotes" table="material_x_lote" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="material_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Lote">
+                <column name="lote_id" not-null="true" />
+            </many-to-many>
+        </bag>
+        <bag name="actividads" table="material_x_actividad" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="material_id" not-null="true" />
             </key>
             <many-to-many entity-name="com.dreamer8.yosimce.server.hibernate.pojo.Actividad">
                 <column name="actividad_id" not-null="true" />
             </many-to-many>
-        </set>
-        <set name="documentos" table="documento" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="documentos" table="documento" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="material_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Documento" />
-        </set>
-        <set name="materialHistorials" table="material_historial" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="materialHistorials" table="material_historial" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="material_id" not-null="true" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.MaterialHistorial" />
-        </set>
-        <set name="materialXGuiaDespachos" table="material_x_guia_despacho" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="materialXGuiaDespachos" table="material_x_guia_despacho" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="material_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.MaterialXGuiaDespacho" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>

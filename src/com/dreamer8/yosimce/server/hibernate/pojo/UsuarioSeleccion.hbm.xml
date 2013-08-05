@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 01-08-2013 04:51:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion" table="usuario_seleccion" schema="public">
         <comment>verificar unicidad usuario_x_aplicacion_x_nivel_id. NO ELIMINAR usuario_tipo_id</comment>
@@ -30,17 +30,17 @@
         <property name="asistencia" type="boolean">
             <column name="asistencia" not-null="true" />
         </property>
-        <set name="usuarioXActividads" table="usuario_x_actividad" inverse="true" lazy="true" fetch="select">
+        <bag name="usuarioXActividads" table="usuario_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_seleccion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad" />
-        </set>
-        <set name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
+        </bag>
+        <bag name="suplenteXCos" table="suplente_x_co" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_seleccion_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.SuplenteXCo" />
-        </set>
+        </bag>
     </class>
 </hibernate-mapping>
