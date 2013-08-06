@@ -8,6 +8,14 @@ public class EstadoAgendaDTO implements Serializable {
 	
 	private Integer id;
 	private String estado;
+	
+	
+	/**
+	 * 
+	 */
+	public EstadoAgendaDTO() {
+		super();
+	}
 	public Integer getId() {
 		return id;
 	}

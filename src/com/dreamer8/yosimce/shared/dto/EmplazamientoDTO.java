@@ -4,9 +4,21 @@ import java.io.Serializable;
 
 public class EmplazamientoDTO implements Serializable {
 
+	public static final String CENTRO_OPERACIONAL = "Centro Operacional";
+	public static final String ZONA = "Zona";
+	public static final String CENTRO_REGIONAL = "Centro Regional";
+	public static final String CENTRO_CAPACITACION = "Centro de Capacitación";
+
 	private Integer id;
 	private String nombre;
-	private TipoEmplazamientoDTO tipoEmplazamiento;
+	private String tipoEmplazamiento;
+
+	/**
+	 * 
+	 */
+	public EmplazamientoDTO() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public Integer getId() {
 		return id;
@@ -24,11 +36,11 @@ public class EmplazamientoDTO implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public TipoEmplazamientoDTO getTipoEmplazamiento() {
+	public String getTipoEmplazamiento() {
 		return tipoEmplazamiento;
 	}
 
-	public void setTipoEmplazamiento(TipoEmplazamientoDTO tipoEmplazamiento) {
+	public void setTipoEmplazamiento(String tipoEmplazamiento) {
 		this.tipoEmplazamiento = tipoEmplazamiento;
 	}
 }

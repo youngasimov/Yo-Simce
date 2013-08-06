@@ -26,8 +26,6 @@ public interface AdministracionService extends RemoteService {
 			Integer idTipoEmplazamiento) throws NoAllowedException,
 			NoLoggedException, DBException;
 
-	public TipoEmplazamientoDTO getTipoEmplazamiento(Integer idTipoUsuario)
-			throws NoAllowedException, NoLoggedException, DBException;
 
 	public Boolean setPerfilUsuario(Integer idUsuario, Integer idTipoUsuario,
 			EmplazamientoDTO emplazamiento) throws ConsistencyException,

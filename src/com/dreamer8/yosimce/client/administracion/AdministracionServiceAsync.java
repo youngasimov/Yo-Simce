@@ -18,9 +18,6 @@ public interface AdministracionServiceAsync {
 	void getEmplazamientos(Integer idTipoEmplazamiento,
 			AsyncCallback<ArrayList<EmplazamientoDTO>> callback);
 
-	void getTipoEmplazamiento(Integer idTipoUsuario,
-			AsyncCallback<TipoEmplazamientoDTO> callback);
-
 	void reiniciarPassword(Integer idUsuario, AsyncCallback<Boolean> callback);
 
 	void setPerfilUsuario(Integer idUsuario, Integer idTipoUsuario,

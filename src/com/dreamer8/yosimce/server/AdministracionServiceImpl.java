@@ -90,8 +90,58 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public ArrayList<TipoUsuarioDTO> getTiposUsuario()
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<TipoUsuarioDTO> tudtos = new ArrayList<TipoUsuarioDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getTiposUsuario")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				s.beginTransaction();
+				Integer idUsuarioTipo = ac.getIdUsuarioTipo();
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				List<UsuarioTipo> uts = utdao
+						.findByIdAplicacionANDIdTipoUsuarioSuperior(
+								idAplicacion, idUsuarioTipo);
+				
+				if (uts != null && !uts.isEmpty()) {
+					for (UsuarioTipo ut : uts) {
+						tudtos.add(ut.getTipoUsuarioDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return tudtos;
 	}
 
 	/**
@@ -105,15 +155,6 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		return null;
 	}
 
-	/**
-	 * @permiso getTipoEmplazamiento
-	 */
-	@Override
-	public TipoEmplazamientoDTO getTipoEmplazamiento(Integer idTipoUsuario)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * @permiso setPerfilUsuario
