@@ -3,7 +3,6 @@ package com.dreamer8.yosimce.client.administracion;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
-import com.dreamer8.yosimce.shared.dto.TipoEmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;

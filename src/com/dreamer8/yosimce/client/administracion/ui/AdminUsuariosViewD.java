@@ -3,7 +3,6 @@ package com.dreamer8.yosimce.client.administracion.ui;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
-import com.dreamer8.yosimce.shared.dto.TipoEmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.core.client.GWT;
@@ -16,6 +15,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -40,11 +40,10 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 	@UiField TextBox searchBox;
 	@UiField Button clearButton;
 	@UiField(provided=true) CellList<UserDTO> usuariosList;
-	@UiField Label nombreLabel;
-	@UiField Label rutLabel;
 	@UiField ListBox tipoBox;
 	@UiField Label emplazamientoLabel;
 	@UiField ListBox emplazamientoBox;
+	@UiField DecoratorPanel formPanel;
 	
 	private AdminUsuariosPresenter presenter;
 	private UsuarioCell cell;
@@ -120,11 +119,6 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 	}
 
 	@Override
-	public void setTipoEmplazamiento(TipoEmplazamientoDTO tipoEmplazamiento) {
-		emplazamientoLabel.setText(tipoEmplazamiento.getTipoEmplazamiento());
-	}
-
-	@Override
 	public void setEmplazamientos(ArrayList<EmplazamientoDTO> emplazamientos) {
 		emplazamientoBox.clear();
 		for(EmplazamientoDTO emplazamiento:emplazamientos){
@@ -140,6 +134,32 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 	@Override
 	public void setUpdateUsuarioVisivility(boolean visible) {
 		updateButton.setVisible(visible);
+	}
+
+	@Override
+	public void selectTipoUsuario(TipoUsuarioDTO tipoUsuario) {
+		for(int i=0; i<tipoBox.getItemCount();i++){
+			if(Integer.parseInt(tipoBox.getValue(i)) == tipoUsuario.getId()){
+				tipoBox.setItemSelected(i, true);
+				return;
+			}
+		}
+	}
+
+	@Override
+	public void setPanelVisivility(boolean visible) {
+		formPanel.setVisible(visible);
+	}
+
+	@Override
+	public void setTiposUsuarioBoxVisivility(boolean visible) {
+		
+	}
+
+	@Override
+	public void setEmplazamientoBoxVisivility(boolean visible) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

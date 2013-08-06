@@ -2,19 +2,36 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
     
     <ui:with field='nombre' type='java.lang.String'/>
+    <ui:with field='rut' type='java.lang.String'/>
     
 	<ui:style>
-		.nombre{
+		.usuario{
 			display:block;
 			width: 95%;
-			padding-top: 1em;
-			padding-bottom: 1em;
+			padding-top: 0.5em;
+			padding-bottom: 0.5em;
 			padding-left: 5%;
+		}
+		.nombre{
+			display:block;
+			width: 100%;
 			font-size: 15px;
 			font-weight: bold;
 		}
+		.rut{
+			display:block;
+			width: 100%;
+			font-size: 14px;
+			font-weight: normal;
+			color: #AAAAAA;
+		}
 	</ui:style>
-	<div class='{style.nombre}'>
-	    <ui:text from='{nombre}' />
+	<div class='{style.usuario}'>
+		<div class='{style.nombre}'>
+		    <ui:text from='{nombre}' />
+		</div>
+		<div class='{style.rut}'>
+		    <ui:text from='{rut}' />
+		</div>
 	</div>
 </ui:UiBinder>

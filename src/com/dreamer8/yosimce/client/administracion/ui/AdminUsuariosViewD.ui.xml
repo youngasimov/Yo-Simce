@@ -125,17 +125,9 @@
 		</g:west>
 		<g:center>
 			<g:HTMLPanel>
-				<g:DecoratorPanel addStyleNames='{style.userForm}'>
+				<g:DecoratorPanel ui:field="formPanel" addStyleNames='{style.userForm}'>
 					<g:HTMLPanel>
 						<table style='width: 350px'>
-							<tr>
-								<td class='{style.label}'>Nombre:</td>
-								<td><g:Label ui:field="nombreLabel"/> </td>
-							</tr>
-							<tr>
-								<td class='{style.label}'>Rut:</td>
-								<td><g:Label ui:field="rutLabel"/> </td>
-							</tr>
 							<tr>
 								<td class='{style.label}'>Tipo:</td>
 								<td><g:ListBox ui:field="tipoBox" /> </td>

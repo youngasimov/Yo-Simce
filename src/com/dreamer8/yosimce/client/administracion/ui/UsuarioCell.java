@@ -9,14 +9,14 @@ import com.google.gwt.uibinder.client.UiRenderer;
 public class UsuarioCell extends AbstractCell<UserDTO> {
 
 	interface UsuarioUiRenderer extends UiRenderer {
-		void render(SafeHtmlBuilder sb, String nombre);
+		void render(SafeHtmlBuilder sb, String nombre,String rut);
 	}
 	
 	private static UsuarioUiRenderer renderer = GWT.create(UsuarioUiRenderer.class);
 
 	@Override
 	public void render(com.google.gwt.cell.client.Cell.Context context, UserDTO value, SafeHtmlBuilder sb) {
-		renderer.render(sb, value.getNombres()+" "+value.getApellidoPaterno()+" "+value.getApellidoMaterno());
+		renderer.render(sb, value.getNombres()+" "+value.getApellidoPaterno()+" "+value.getApellidoMaterno(), value.getRut());
 	}
 
 }

@@ -5,11 +5,14 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
+import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView.AdminUsuariosPresenter;
+import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.view.client.RangeChangeEvent;
 
 public class AdminUsuariosActivity extends SimceActivity implements
 		AdminUsuariosPresenter {
@@ -17,6 +20,12 @@ public class AdminUsuariosActivity extends SimceActivity implements
 	
 	private AdminUsuariosView view;
 	private AdminUsuariosPlace place;
+	private String filtro;
+	private int offset;
+	private int length;
+	private EventBus eventBus;
+	private UserDTO user;
+	private ArrayList<TipoUsuarioDTO> tiposUsuario;
 	
 	public AdminUsuariosActivity(ClientFactory factory, AdminUsuariosPlace place,
 			HashMap<String, ArrayList<String>> permisos) {
@@ -24,43 +33,54 @@ public class AdminUsuariosActivity extends SimceActivity implements
 		this.place = place;
 		this.view = getFactory().getAdminUsuariosView();
 		this.view.setPresenter(this);
+		length = 20;
+		filtro = "";
+		offset = 0;
 	}
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
+		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		
-		ArrayList<UserDTO> users = new ArrayList<UserDTO>();
-		UserDTO u = new UserDTO();
-		u.setNombres("Camilo Ignacio");
-		u.setApellidoPaterno("Vera");
-		u.setApellidoMaterno("Cortés");
-		u.setId(324);
-		u.setUsername("sddfskjndf");
-		u.setEmail("email");
-		users.add(u);
+		view.setResetPasswordVisivility(false);
+		view.setUpdateUsuarioVisivility(false);
 		
-		u = new UserDTO();
-		u.setNombres("Jorge");
-		u.setApellidoPaterno("Flores");
-		u.setApellidoMaterno("Ivelic");
-		u.setId(487);
-		u.setUsername("fkrnmvut");
-		u.setEmail("jorge@email.com");
-		users.add(u);
-		view.getDataDisplay().setRowData(0, users);
-		
+		this.view.getDataDisplay().addRangeChangeHandler(new RangeChangeEvent.Handler() {
+			
+			@Override
+			public void onRangeChange(RangeChangeEvent event) {
+				offset = event.getNewRange().getStart();
+				length = event.getNewRange().getLength();
+				updateUsuarios();
+			}
+		});
+		updateUsuarios();
 	}
 
 	@Override
 	public void onSelectUser(UserDTO user) {
+		this.user = user;
+		view.setNombre(user.getNombres()+" "+user.getApellidoPaterno()+" "+user.getApellidoMaterno());
+		view.setResetPasswordVisivility(true);
+		view.setUpdateUsuarioVisivility(true);
 		
+		getFactory().getAdministracionService().getTiposUsuario(new SimceCallback<ArrayList<TipoUsuarioDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<TipoUsuarioDTO> result) {
+				tiposUsuario = result;
+				view.setTiposUsuarios(tiposUsuario);
+			}
+		});
 	}
 
 	@Override
 	public void onSearchValueChange(String search) {
-		
+		filtro = search;
+		offset = 0;
+		updateUsuarios();
 	}
 
 	@Override
@@ -86,6 +106,16 @@ public class AdminUsuariosActivity extends SimceActivity implements
 	@Override
 	public void onEmplazamientoChange(Integer emplazamientoId) {
 		
+	}
+	
+	private void updateUsuarios(){
+		getFactory().getAdministracionService().getUsuarios(filtro, offset, length, new SimceCallback<ArrayList<UserDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<UserDTO> result) {
+				view.getDataDisplay().setRowData(offset, result);
+			}
+		});
 	}
 
 }

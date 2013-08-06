@@ -9,6 +9,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -35,9 +36,13 @@ public class YoSimce implements EntryPoint {
 
 		factory = GWT.create(ClientFactory.class);
 		
+		defaultPlace = new SimcePlace();
+		
 		loadView = factory.getLoadView();
 		
 		panel.setSize("100%", "100%");
+		
+		
 		
 		RootPanel.get().addStyleName("app");
 		RootPanel.get().add(panel);
@@ -92,9 +97,8 @@ public class YoSimce implements EntryPoint {
 		}
 		
 		if(user == null){
-			defaultPlace = new NotLoggedPlace();
-		}else{
-			defaultPlace = new SimcePlace();
+			Window.open("http://www.yosimce.cl", "_self", "");
+			return;
 		}
 		
 		GWT.runAsync(new RunAsyncCallback() {

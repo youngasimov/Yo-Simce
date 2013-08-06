@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.administracion.AdministracionService;
+import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosViewD;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
@@ -45,6 +47,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final PlaceHistoryMapper placeHistoryMapper = GWT.create(SimcePlaceHistoryMapper.class);
 	private final LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
 	private final PlanificacionServiceAsync planificacionService = (PlanificacionServiceAsync)GWT.create(PlanificacionService.class);
+	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync)GWT.create(AdministracionService.class);
 	
 	
 	private final LoadView loadView = new LoadViewD();
@@ -93,6 +96,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public PlanificacionServiceAsync getPlanificacionService() {
 		return planificacionService;
+	}
+	
+	@Override
+	public AdministracionServiceAsync getAdministracionService() {
+		return administracionService;
 	}
 
 	@Override
