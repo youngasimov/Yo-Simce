@@ -7,15 +7,20 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
+import com.dreamer8.yosimce.server.hibernate.dao.CentroRegionalDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ZonaDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.CentroRegional;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.Zona;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
+import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
@@ -183,13 +188,32 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				s.beginTransaction();
-				
-				if(tipoEmplazamiento.equals(EmplazamientoDTO.CENTRO_OPERACIONAL)){
+
+				if (tipoEmplazamiento
+						.equals(EmplazamientoDTO.CENTRO_OPERACIONAL)) {
 					CoDAO codao = new CoDAO();
 					List<Co> cos = codao.findByIdAplicacion(idAplicacion);
 					if (cos != null && !cos.isEmpty()) {
 						for (Co co : cos) {
 							edtos.add(co.getEmplazamientoDTO());
+						}
+					}
+				} else if (tipoEmplazamiento.equals(EmplazamientoDTO.ZONA)) {
+					ZonaDAO zdao = new ZonaDAO();
+					List<Zona> zs = zdao.findByIdAplicacion(idAplicacion);
+					if (zs != null && !zs.isEmpty()) {
+						for (Zona z : zs) {
+							edtos.add(z.getEmplazamientoDTO());
+						}
+					}
+				} else if (tipoEmplazamiento
+						.equals(EmplazamientoDTO.CENTRO_REGIONAL)) {
+					CentroRegionalDAO crdao = new CentroRegionalDAO();
+					List<CentroRegional> crs = crdao
+							.findByIdAplicacion(idAplicacion);
+					if (crs != null && !crs.isEmpty()) {
+						for (CentroRegional cr : crs) {
+							edtos.add(cr.getEmplazamientoDTO());
 						}
 					}
 				}
@@ -226,6 +250,26 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 	 */
 	@Override
 	public Boolean reiniciarPassword(Integer idUsuario)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso getPermisos
+	 */
+	@Override
+	public ArrayList<PermisoDTO> getPermisos() throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso setPermisos
+	 */
+	@Override
+	public Boolean setPermisos(ArrayList<PermisoDTO> permisos)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;

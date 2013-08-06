@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.administracion;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
+import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -21,5 +22,11 @@ public interface AdministracionServiceAsync {
 
 	void getEmplazamientos(String tipoEmplazamiento,
 			AsyncCallback<ArrayList<EmplazamientoDTO>> callback);
+
+	void getPermisos(AsyncCallback<ArrayList<PermisoDTO>> callback);
+
+	void setPermisos(ArrayList<PermisoDTO> permisos,
+			AsyncCallback<Boolean> callback);
+
 
 }
