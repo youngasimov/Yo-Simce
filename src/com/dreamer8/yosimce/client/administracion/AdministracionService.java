@@ -21,10 +21,7 @@ public interface AdministracionService extends RemoteService {
 	public ArrayList<TipoUsuarioDTO> getTiposUsuario()
 			throws NoAllowedException, NoLoggedException, DBException;
 
-	public ArrayList<EmplazamientoDTO> getEmplazamientos(
-			Integer idTipoEmplazamiento) throws NoAllowedException,
-			NoLoggedException, DBException;
-
+	public ArrayList<EmplazamientoDTO> getEmplazamientos(String tipoEmplazamiento);
 
 	public Boolean setPerfilUsuario(Integer idUsuario, Integer idTipoUsuario,
 			EmplazamientoDTO emplazamiento) throws ConsistencyException,

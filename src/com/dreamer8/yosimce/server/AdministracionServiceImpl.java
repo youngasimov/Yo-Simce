@@ -7,9 +7,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
+import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
@@ -120,7 +122,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				List<UsuarioTipo> uts = utdao
 						.findByIdAplicacionANDIdTipoUsuarioSuperior(
 								idAplicacion, idUsuarioTipo);
-				
+
 				if (uts != null && !uts.isEmpty()) {
 					for (UsuarioTipo ut : uts) {
 						tudtos.add(ut.getTipoUsuarioDTO());
@@ -148,12 +150,65 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 	 */
 	@Override
 	public ArrayList<EmplazamientoDTO> getEmplazamientos(
-			Integer idTipoEmplazamiento) throws NoAllowedException,
+			String tipoEmplazamiento) throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+		ArrayList<EmplazamientoDTO> edtos = new ArrayList<EmplazamientoDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getEmplazamientos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (tipoEmplazamiento == null || tipoEmplazamiento.equals("")) {
+					throw new NullPointerException(
+							"No se ha especificado un tipo de emplazamiento");
+				}
+
+				s.beginTransaction();
+				
+				if(tipoEmplazamiento.equals(EmplazamientoDTO.CENTRO_OPERACIONAL)){
+					CoDAO codao = new CoDAO();
+					List<Co> cos = codao.findByIdAplicacion(idAplicacion);
+					if (cos != null && !cos.isEmpty()) {
+						for (Co co : cos) {
+							edtos.add(co.getEmplazamientoDTO());
+						}
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return edtos;
+	}
 
 	/**
 	 * @permiso setPerfilUsuario

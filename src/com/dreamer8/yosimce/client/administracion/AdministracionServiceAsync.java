@@ -14,12 +14,12 @@ public interface AdministracionServiceAsync {
 
 	void getTiposUsuario(AsyncCallback<ArrayList<TipoUsuarioDTO>> callback);
 
-	void getEmplazamientos(Integer idTipoEmplazamiento,
-			AsyncCallback<ArrayList<EmplazamientoDTO>> callback);
-
 	void reiniciarPassword(Integer idUsuario, AsyncCallback<Boolean> callback);
 
 	void setPerfilUsuario(Integer idUsuario, Integer idTipoUsuario,
 			EmplazamientoDTO emplazamiento, AsyncCallback<Boolean> callback);
+
+	void getEmplazamientos(String tipoEmplazamiento,
+			AsyncCallback<ArrayList<EmplazamientoDTO>> callback);
 
 }
