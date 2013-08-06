@@ -6,16 +6,24 @@ package com.dreamer8.yosimce.server.utils;
 
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.SesionDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Sesion;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpSession;
+
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
+
 import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+
 import org.hibernate.Session;
 
 /**
@@ -33,6 +41,7 @@ public class AccessControl {
 	private Integer idAplicacion = null;
 	private Integer idNivel = null;
 	private Integer idActividadTipo = null;
+	private Integer idUsuarioTipo = null;
 
 	public AccessControl(HttpServletRequest request) {
 		this.request = request;
@@ -133,6 +142,19 @@ public class AccessControl {
 			}
 		}
 		return idActividadTipo;
+	}
+
+	public Integer getIdUsuarioTipo() {
+		if (idUsuarioTipo == null) {
+			Usuario usuario = (Usuario) this.session.getAttribute("usuario");
+			UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+			UsuarioTipo ut = utdao.findByIdAplicacionANDIdNivelANDIdUsuario(
+					idAplicacion, idNivel, usuario.getId());
+			if (ut != null) {
+				idUsuarioTipo = ut.getId();
+			}
+		}
+		return idUsuarioTipo;
 	}
 
 	public boolean isAllowed(String className, String methodName)
