@@ -20,7 +20,15 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("planificacionservice")
 public interface PlanificacionService extends RemoteService {
 	
+	public static final String FKEY_ESTADOS="es";
+	public static final String FKEY_DESDE="dts";
+	public static final String FKEY_HASTA="hts";
+	public static final String FKEY_REGION="rid";
+	public static final String FKEY_COMUNA="cid";
+	
 	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset, Integer length, Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
+	
+	public Integer getTotalPreviewAgendamientos(Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
 	
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	

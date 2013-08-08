@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.planificacion;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.SimcePlace;
@@ -7,27 +8,74 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class AgendamientosPlace extends SimcePlace {
-
-	private String filtros;
+	
+	private ArrayList<Integer> estadosSeleccionados;
+	
+	private long desdeTimestamp;
+	private long hastaTimestamp;
+	
+	private Integer regionId;
+	private Integer comunaId;
 
 	public AgendamientosPlace() {
 		super();
-		filtros = "";
+		estadosSeleccionados = new ArrayList<Integer>();
+		desdeTimestamp = -1;
+		hastaTimestamp = -1;
+		regionId = -1;
+		comunaId = -1;
+		
 	}
 
-	public AgendamientosPlace(int aplicacionId, int nivelId, int tipoId,
-			String filtros) {
+	public AgendamientosPlace(int aplicacionId, int nivelId, int tipoId) {
 		super(aplicacionId, nivelId, tipoId);
-		this.filtros = filtros;
+		estadosSeleccionados = new ArrayList<Integer>();
+		desdeTimestamp = -1;
+		hastaTimestamp = -1;
+		regionId = -1;
+		comunaId = -1;
 	}
 
-	public String getFiltros() {
-		return filtros;
+	public ArrayList<Integer> getEstadosSeleccionados() {
+		return estadosSeleccionados;
 	}
 
-	public void setFiltros(String filtros) {
-		this.filtros = filtros;
+	public void setEstadosSeleccionados(ArrayList<Integer> estadosSeleccionados) {
+		this.estadosSeleccionados = estadosSeleccionados;
 	}
+
+	public long getDesdeTimestamp() {
+		return desdeTimestamp;
+	}
+
+	public void setDesdeTimestamp(long desdeTimestamp) {
+		this.desdeTimestamp = desdeTimestamp;
+	}
+
+	public long getHastaTimestamp() {
+		return hastaTimestamp;
+	}
+
+	public void setHastaTimestamp(long hastaTimestamp) {
+		this.hastaTimestamp = hastaTimestamp;
+	}
+
+	public Integer getRegionId() {
+		return regionId;
+	}
+
+	public void setRegionId(Integer regionId) {
+		this.regionId = regionId;
+	}
+
+	public Integer getComunaId() {
+		return comunaId;
+	}
+
+	public void setComunaId(Integer comunaId) {
+		this.comunaId = comunaId;
+	}
+
 
 	@Prefix("agendamientos")
 	public static class Tokenizer implements PlaceTokenizer<AgendamientosPlace> {
@@ -42,7 +90,23 @@ public class AgendamientosPlace extends SimcePlace {
 					.get(NIVELID)) : -1);
 			pp.setTipoId((kvs.containsKey(TIPOID)) ? Integer.parseInt(kvs
 					.get(TIPOID)) : -1);
-			pp.setFiltros((kvs.containsKey("f"))?kvs.get("f"):"");
+			pp.setRegionId((kvs.containsKey("rid")) ? Integer.parseInt(kvs
+					.get("rid")) : -1);
+			pp.setComunaId((kvs.containsKey("rid") && kvs.containsKey("cid")) ? Integer.parseInt(kvs
+					.get("cid")) : -1);
+			pp.setDesdeTimestamp((kvs.containsKey("dts")) ? Integer.parseInt(kvs
+					.get("dts")) : -1);
+			pp.setHastaTimestamp((kvs.containsKey("hts")) ? Integer.parseInt(kvs
+					.get("hts")) : -1);
+			
+			if(kvs.containsKey("es")){
+				String[] estados = kvs.get("dts").split("|");
+				ArrayList<Integer> e = new ArrayList<Integer>();
+				for(String s:estados){
+					e.add(Integer.parseInt(s));
+				}
+				pp.setEstadosSeleccionados(e);
+			}
 			return pp;
 		}
 
@@ -52,8 +116,18 @@ public class AgendamientosPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			if(place.getFiltros()!= null && !place.getFiltros().equals("")){
-				kvs.put("f", place.getFiltros());
+			if(place.getDesdeTimestamp()!=-1){ kvs.put("dts", place.getDesdeTimestamp()+""); }
+			if(place.getHastaTimestamp()!=-1){ kvs.put("hts", place.getHastaTimestamp()+""); }
+			if(place.getRegionId()!=-1){ kvs.put("rid", place.getRegionId()+""); }
+			if(place.getComunaId()!=-1){ kvs.put("cid", place.getComunaId()+""); }
+			if(place.getEstadosSeleccionados().size()>0){	
+				StringBuilder estados = new StringBuilder();
+				for(Integer i:place.getEstadosSeleccionados()){
+					estados.append(i);
+					estados.append("|");
+				}
+				estados.deleteCharAt(estados.length());
+				kvs.put("es", estados.toString());
 			}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}

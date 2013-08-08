@@ -6,81 +6,150 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
+import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
-import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
-import com.dreamer8.yosimce.shared.dto.TipoEstablecimientoDTO;
+import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.view.client.Range;
 
 public class AgendamientosActivity extends SimceActivity implements
 		AgendamientosPresenter {
 
 	private final AgendamientosPlace place;
 	private AgendamientosView view;
+	private EventBus eventBus;
+	private HashMap<String,String> filtros;
+	
+	private ArrayList<SectorDTO> regiones;
+	private HashMap<Integer,ArrayList<SectorDTO>> comunas;
+	private ArrayList<EstadoAgendaDTO> estados;
+	
+	private boolean estadosReady;
+	private boolean regionesReady;
+	
+	private Range range;
 	
 	public AgendamientosActivity(ClientFactory factory,AgendamientosPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory,place,permisos);
 		this.place = place;
 		view = factory.getAgendamientosView();
 		view.setPresenter(this);
+		filtros = new HashMap<String, String>();
+		regiones = new ArrayList<SectorDTO>();
+		comunas = new HashMap<Integer, ArrayList<SectorDTO>>();
+		estados = new ArrayList<EstadoAgendaDTO>();
+		estadosReady = false;
+		regionesReady = false;
+		range = view.getDataDisplay().getVisibleRange();
+	}
+	
+	@Override
+	public void onColumnSort(int columnIndex) {
+		
+	}
+	
+	@Override
+	public void onExportarClick() {
+		
+	}
+	
+	@Override
+	public void onCancelarFiltroClick() {
+		updateFiltros();
+	}
+	
+	@Override
+	public void onRangeChange(Range r) {
+		this.range = r;
+		getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<AgendaPreviewDTO> result) {
+				view.getDataDisplay().setRowData(range.getStart(), result);
+			}
+		});
+	}
+
+	@Override
+	public void onRegionChange(final int regionId) {
+		if(!comunas.containsKey(regionId)){
+			getFactory().getGeneralService().getComunas(regionId, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+	
+				@Override
+				public void success(ArrayList<SectorDTO> result) {
+					comunas.put(regionId, result);
+					view.setComunas(result);
+					if(place.getComunaId()!=-1){
+						view.setSelectedComuna(place.getComunaId());
+					}
+				}
+			});
+		}else{
+			view.setComunas(comunas.get(regionId));
+			if(place.getComunaId()!=-1){
+				view.setSelectedComuna(place.getComunaId());
+			}
+		}
 	}
 
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
+		this.eventBus = eventBus;
 		
-		if(getFactory().onTesting()){
-			ArrayList<AgendaPreviewDTO> agendas = new ArrayList<AgendaPreviewDTO>();
-			AgendaPreviewDTO ap = new AgendaPreviewDTO();
-			ap.setEstablecimientoId(2);
-			ap.setRegionName("RegionMetropolitana");
-			ap.setComunaName("Providencia");
-			ap.setEstablecimientoName("Carmilitas Descalsas");
-			ap.setRbd("3895");
-			TipoEstablecimientoDTO tipo = new TipoEstablecimientoDTO();
-			tipo.setId(10);
-			tipo.setTipo("Seleccionado");
-			ap.setTipoEstablecimiento(tipo);
-			AgendaItemDTO ai = new AgendaItemDTO();
-			ai.setFecha(new Date());
-			ai.setComentario("Quiere la boca exhausta vid, kiwi, piña y fugaz jamón. Fabio me exige, sin tapuj");
-			EstadoAgendaDTO eai = new EstadoAgendaDTO();
-			eai.setEstado("Por confirmar");
-			eai.setId(3);			
-			ai.setEstado(eai);
-			ap.setAgendaItemActual(ai);
-			agendas.add(ap);
-			
-			ap = new AgendaPreviewDTO();
-			ap.setEstablecimientoId(5);
-			ap.setRegionName("Region Metropolitana");
-			ap.setComunaName("Providencia");
-			ap.setEstablecimientoName("Liceo 34 de hombres");
-			ap.setRbd("94854");
-			tipo = new TipoEstablecimientoDTO();
-			tipo.setId(11);
-			tipo.setTipo("Reemplazo seleccionado");
-			ap.setTipoEstablecimiento(tipo);
-			ai = new AgendaItemDTO();
-			ai.setFecha(new Date());
-			ai.setComentario("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.");
-			eai = new EstadoAgendaDTO();
-			eai.setEstado("Por confirmar");
-			eai.setId(6);			
-			ai.setEstado(eai);
-			ap.setAgendaItemActual(ai);
-			agendas.add(ap);
-			view.getDataDisplay().setRowData(0, agendas);
-		}
-	}
+		regiones.clear();
+		comunas.clear();
+		estados.clear();
+		estadosReady = false;
+		regionesReady = false;
+		
+		
+		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
 
-	@Override
-	public void onColumnSort(int columnIndex) {
+			@Override
+			public void success(ArrayList<SectorDTO> result) {
+				regiones.addAll(result);
+				view.setRegiones(regiones);
+				regionesReady = true;
+				if(estadosReady){
+					updateFiltros();
+				}
+			}
+		});
 		
+		getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<EstadoAgendaDTO> result) {
+				estados.addAll(result);
+				view.setEstados(estados);
+				estadosReady = true;
+				if(regionesReady){
+					updateFiltros();
+				}
+			}
+		});
+		
+		getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus) {
+
+			@Override
+			public void success(Integer result) {
+				view.getDataDisplay().setRowCount(result,true);
+			}
+		});
+		
+		getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<AgendaPreviewDTO> result) {
+				view.getDataDisplay().setRowData(range.getStart(), result);
+			}
+		});
 	}
 	
 	@Override
@@ -89,5 +158,38 @@ public class AgendamientosActivity extends SimceActivity implements
 		view.getDataDisplay().setRowCount(0);
 		view.clearCursoSelection();
 	}
-
+	
+	private void updateFiltros(){
+		filtros.clear();
+		if(place.getDesdeTimestamp()!=-1){
+			filtros.put(PlanificacionService.FKEY_DESDE, place.getDesdeTimestamp()+"");
+			view.setDesde(new Date(place.getDesdeTimestamp()));
+		}else{
+			view.setDesde(null);
+		}
+		if(place.getHastaTimestamp()!=-1){
+			filtros.put(PlanificacionService.FKEY_HASTA, place.getHastaTimestamp()+"");
+			view.setHasta(new Date(place.getHastaTimestamp()));
+		}else{
+			view.setDesde(null);
+		}
+		if(place.getRegionId()!=-1){
+			filtros.put(PlanificacionService.FKEY_REGION, place.getRegionId()+"");
+			view.setSelectedRegion(place.getRegionId());
+		}
+		if(place.getComunaId()!=-1){
+			filtros.put(PlanificacionService.FKEY_COMUNA, place.getComunaId()+"");
+			view.setSelectedComuna(place.getComunaId());
+		}
+		if(place.getEstadosSeleccionados().size()>0){
+			view.setSelectedEstados(place.getEstadosSeleccionados());
+			StringBuilder b = new StringBuilder();
+			for(Integer id:place.getEstadosSeleccionados()){
+				b.append(id);
+				b.append("|");
+			}
+			b.deleteCharAt(b.length());
+			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());
+		}
+	}
 }

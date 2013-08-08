@@ -1,16 +1,23 @@
 package com.dreamer8.yosimce.client.planificacion.ui;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -24,12 +31,14 @@ import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
@@ -52,6 +61,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@UiField(provided = true) DataGrid<AgendaPreviewDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
 	
+	private HashMap<Integer,CheckBox> estadoCheckBoxs;
 	
 	private AgendamientosPresenter presenter;
 	private SingleSelectionModel<AgendaPreviewDTO> selectionModel;
@@ -67,12 +77,18 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
 		filtrosDialogBox.setWidget(filtrosPanel);
+		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
 		bind();
 	}
 	
 	@UiHandler("filtrosButton")
 	void onFiltrosClick(ClickEvent event){
 		filtrosDialogBox.showRelativeTo(filtrosButton);
+	}
+	
+	@UiHandler("exportarButton")
+	void onExportarClick(ClickEvent event){
+		presenter.onExportarClick();
 	}
 	
 	@UiHandler("modificarAgendaButton")
@@ -121,6 +137,87 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		return dataGrid.getColumnIndex(column);
 	}
 	
+	@Override
+	public void clearCursoSelection() {
+		if(selectedItem !=null){
+			selectionModel.setSelected(selectedItem, false);
+			selectedItem = null;
+		}
+		
+	}
+
+	@Override
+	public void setEstados(ArrayList<EstadoAgendaDTO> estados) {
+		estadoCheckBoxs.clear();
+		filtrosPanel.estadosPanel.clear();
+		for(EstadoAgendaDTO ea:estados){
+			CheckBox cb = new CheckBox(ea.getEstado());
+			estadoCheckBoxs.put(ea.getId(), cb);
+			filtrosPanel.estadosPanel.add(cb);
+		}
+	}
+
+	@Override
+	public void setRegiones(ArrayList<SectorDTO> regiones) {
+		filtrosPanel.regionBox.setVisible(true);
+		filtrosPanel.regionBox.clear();
+		filtrosPanel.regionBox.addItem("todas",-1+"");
+		filtrosPanel.comunaBox.setVisible(false);
+		for(SectorDTO s:regiones){
+			filtrosPanel.regionBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
+	}
+
+	@Override
+	public void setComunas(ArrayList<SectorDTO> comunas) {
+		filtrosPanel.comunaBox.setVisible(true);
+		filtrosPanel.comunaBox.clear();
+		filtrosPanel.comunaBox.addItem("todas","-1");
+		for(SectorDTO s:comunas){
+			filtrosPanel.comunaBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
+	}
+
+	@Override
+	public void setDesde(Date date) {
+		filtrosPanel.desdeBox.setValue(date);
+	}
+
+	@Override
+	public void setHasta(Date date) {
+		filtrosPanel.hastaBox.setValue(date);
+	}
+
+	@Override
+	public void setSelectedEstados(ArrayList<Integer> estados) {
+		for(Entry<Integer,CheckBox> e:estadoCheckBoxs.entrySet()){
+			e.getValue().setValue(false);
+		}
+		for(Integer id:estados){
+			if(estadoCheckBoxs.containsKey(id)){
+				estadoCheckBoxs.get(id).setValue(true);
+			}
+		}
+	}
+
+	@Override
+	public void setSelectedRegion(int regionId) {
+		for(int i=0;i<filtrosPanel.regionBox.getItemCount();i++){
+			if(Integer.parseInt(filtrosPanel.regionBox.getValue(i)) == regionId){
+				filtrosPanel.regionBox.setItemSelected(i, true);
+			}
+		}
+	}
+
+	@Override
+	public void setSelectedComuna(int comunaId) {
+		for(int i=0;i<filtrosPanel.comunaBox.getItemCount();i++){
+			if(Integer.parseInt(filtrosPanel.comunaBox.getValue(i)) == comunaId){
+				filtrosPanel.comunaBox.setItemSelected(i, true);
+			}
+		}
+	}
+	
 	private void bind(){
 		dataGrid.setWidth("100%");
 		buildGrid();		
@@ -154,6 +251,54 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				selectedItem = selectionModel.getSelectedObject();
 			}
 		});
+		
+		dataGrid.addRangeChangeHandler(new RangeChangeEvent.Handler() {
+			
+			@Override
+			public void onRangeChange(RangeChangeEvent event) {
+				presenter.onRangeChange(event.getNewRange());
+			}
+		});
+		
+		filtrosPanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				presenter.onCancelarFiltroClick();
+				filtrosDialogBox.hide();
+			}
+		});
+		
+		filtrosPanel.aplicarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				AgendamientosPlace p = new AgendamientosPlace();
+				if(filtrosPanel.desdeBox.getValue()!=null){
+					p.setDesdeTimestamp(filtrosPanel.desdeBox.getValue().getTime());
+				}
+				if(filtrosPanel.hastaBox.getValue()!=null){
+					p.setDesdeTimestamp(filtrosPanel.hastaBox.getValue().getTime());
+				}
+				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
+					p.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
+				}
+				if(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())!="-1"){
+					p.setComunaId(Integer.parseInt(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())));
+				}
+				ArrayList<Integer> es = new ArrayList<Integer>();
+				for(Entry<Integer,CheckBox> e:estadoCheckBoxs.entrySet()){
+					if(e.getValue().getValue()){
+						es.add(e.getKey());
+					}
+				}
+				if(es.size()>0){
+					p.setEstadosSeleccionados(es);
+				}
+				filtrosDialogBox.hide();
+				presenter.goTo(p);
+			}
+		});
 	}
 
 	
@@ -167,7 +312,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         rbdColumn.setSortable(false);
         dataGrid.addColumn(rbdColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("RBD")));
         dataGrid.setColumnWidth(rbdColumn, 60, Unit.PX);
-        
         Column<AgendaPreviewDTO, String> establecimientoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -248,14 +392,4 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(comentarioColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Comentario")));
         dataGrid.setColumnWidth(comentarioColumn, 300, Unit.PX);
 	}
-
-	@Override
-	public void clearCursoSelection() {
-		if(selectedItem !=null){
-			selectionModel.setSelected(selectedItem, false);
-			selectedItem = null;
-		}
-		
-	}
-	
 }

@@ -327,4 +327,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		return cdto;
 	}
 
+	@Override
+	public Integer getTotalPreviewAgendamientos(Map<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

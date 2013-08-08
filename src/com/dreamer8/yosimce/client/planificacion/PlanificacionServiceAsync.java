@@ -42,6 +42,8 @@ public interface PlanificacionServiceAsync {
 
 	void getEstadosAgenda(AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
 
+	void getTotalPreviewAgendamientos(Map<String, String> filtros, AsyncCallback<Integer> callback);
+
 	
 
 }

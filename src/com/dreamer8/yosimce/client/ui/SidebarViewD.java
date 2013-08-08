@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.ui;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
+import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -61,6 +62,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor movimientosMaterialViewItem;
 	@UiField Anchor administrarUsuariosActionItem;
 	@UiField Anchor administrarEventosActionItem;
+	@UiField Anchor administrarPermisosActionItem;
 	
 	private SidebarPresenter presenter;
 	
@@ -168,6 +170,11 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiHandler("administrarEventosActionItem")
 	void onAdministrarEventosActionItemClick(ClickEvent event){
 		presenter.goTo(new AdminEventosPlace());
+	}
+	
+	@UiHandler("administrarPermisosActionItem")
+	void onAdministrarPermisosActionItemClick(ClickEvent event){
+		presenter.goTo(new PermisosPlace());
 	}
 	
 
@@ -468,6 +475,20 @@ public class SidebarViewD extends Composite implements SidebarView{
 		movimientosMaterialViewItem.removeStyleName(style.selected());
 		administrarUsuariosActionItem.removeStyleName(style.selected());
 		administrarEventosActionItem.removeStyleName(style.selected());
+		administrarPermisosActionItem.removeStyleName(style.selected());
+	}
+
+	@Override
+	public void setAdministrarPermisosActionItemVisivility(boolean visible) {
+		administrarPermisosActionItem.setVisible(visible);
+	}
+
+	@Override
+	public void setAdministrarPermisosActionItemItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			administrarPermisosActionItem.addStyleName(style.selected());
+		}
 	}
 
 }

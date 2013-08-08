@@ -8,6 +8,10 @@ import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosViewD;
 import com.dreamer8.yosimce.client.administracion.ui.AdminView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminViewD;
+import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
+import com.dreamer8.yosimce.client.administracion.ui.PermisosViewD;
+import com.dreamer8.yosimce.client.general.GeneralService;
+import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
 import com.dreamer8.yosimce.client.general.ui.GeneralView;
@@ -46,6 +50,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final PlaceController placeController = new PlaceController(eventBus);
 	private final PlaceHistoryMapper placeHistoryMapper = GWT.create(SimcePlaceHistoryMapper.class);
 	private final LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
+	private final GeneralServiceAsync generalService = (GeneralServiceAsync)GWT.create(GeneralService.class);
 	private final PlanificacionServiceAsync planificacionService = (PlanificacionServiceAsync)GWT.create(PlanificacionService.class);
 	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync)GWT.create(AdministracionService.class);
 	
@@ -66,6 +71,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final AdminView adminView = new AdminViewD();
 	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
 	private final AdminEventosView adminEventosView = new AdminEventosViewD();
+	private final PermisosView permisosView = new PermisosViewD();
 	
 	
 	@Override
@@ -91,6 +97,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public LoginServiceAsync getLoginService() {
 		return loginService;
+	}
+	
+	@Override
+	public GeneralServiceAsync getGeneralService() {
+		return generalService;
 	}
 
 	@Override
@@ -171,5 +182,10 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public AdminEventosView getAdminEventosView() {
 		return adminEventosView;
+	}
+
+	@Override
+	public PermisosView getPermisosView() {
+		return permisosView;
 	}
 }

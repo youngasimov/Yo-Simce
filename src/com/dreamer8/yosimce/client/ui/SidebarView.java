@@ -44,8 +44,10 @@ public interface SidebarView extends IsWidget {
 	void setAdministracionVisivility(boolean visible);
 	void setAdministrarUsuariosActionItemVisivility(boolean visible);
 	void setAdministrarEventosActionItemVisivility(boolean visible);
+	void setAdministrarPermisosActionItemVisivility(boolean visible);
 	void setAdministrarUsuariosActionItemItemSelected(boolean selected);
 	void setAdministrarEventosActionItemItemSelected(boolean selected);
+	void setAdministrarPermisosActionItemItemSelected(boolean selected);
 	
 	void removeSeleccion();
 	

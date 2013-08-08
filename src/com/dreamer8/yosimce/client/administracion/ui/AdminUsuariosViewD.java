@@ -153,13 +153,12 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 
 	@Override
 	public void setTiposUsuarioBoxVisivility(boolean visible) {
-		
+		tipoBox.setVisible(visible);
 	}
 
 	@Override
 	public void setEmplazamientoBoxVisivility(boolean visible) {
-		// TODO Auto-generated method stub
-		
+		emplazamientoBox.setVisible(visible);
 	}
 
 }

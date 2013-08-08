@@ -2,12 +2,12 @@ package com.dreamer8.yosimce.client.administracion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView.AdminUsuariosPresenter;
+import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
@@ -26,6 +26,9 @@ public class AdminUsuariosActivity extends SimceActivity implements
 	private EventBus eventBus;
 	private UserDTO user;
 	private ArrayList<TipoUsuarioDTO> tiposUsuario;
+	private ArrayList<EmplazamientoDTO> emplazamientos;
+	private int tipoUsuarioSelected;
+	private EmplazamientoDTO emplazamientoSelected;
 	
 	public AdminUsuariosActivity(ClientFactory factory, AdminUsuariosPlace place,
 			HashMap<String, ArrayList<String>> permisos) {
@@ -46,7 +49,7 @@ public class AdminUsuariosActivity extends SimceActivity implements
 		
 		view.setResetPasswordVisivility(false);
 		view.setUpdateUsuarioVisivility(false);
-		
+		view.setPanelVisivility(false);
 		this.view.getDataDisplay().addRangeChangeHandler(new RangeChangeEvent.Handler() {
 			
 			@Override
@@ -71,6 +74,7 @@ public class AdminUsuariosActivity extends SimceActivity implements
 			@Override
 			public void success(ArrayList<TipoUsuarioDTO> result) {
 				tiposUsuario = result;
+				view.setPanelVisivility(true);
 				view.setTiposUsuarios(tiposUsuario);
 			}
 		});
@@ -85,27 +89,65 @@ public class AdminUsuariosActivity extends SimceActivity implements
 
 	@Override
 	public void onClearSearchClick() {
-		
+		filtro = "";
+		offset = 0;
+		updateUsuarios();
 	}
 
 	@Override
 	public void onResetPasswordClick() {
-		
+		if(user==null){return;}
+		getFactory().getAdministracionService().reiniciarPassword(user.getId(), new SimceCallback<Boolean>(eventBus) {
+
+			@Override
+			public void success(Boolean result) {
+				
+			}
+		});
 	}
 
 	@Override
 	public void onUpdateUsuario() {
-		
+		if(user!=null && tipoUsuarioSelected!=user.getTipo().getId() && emplazamientoSelected!=null){
+			getFactory().getAdministracionService().setPerfilUsuario(user.getId(), tipoUsuarioSelected, emplazamientoSelected, new SimceCallback<Boolean>(eventBus) {
+
+				@Override
+				public void success(Boolean result) {
+					
+				}
+			});
+		}
 	}
 
 	@Override
 	public void onTipoUsuarioChange(Integer tipousuarioId) {
+		tipoUsuarioSelected = tipousuarioId;
+		for (TipoUsuarioDTO t: tiposUsuario) {
+			if(t.getId() == tipoUsuarioSelected){
+				getFactory().getAdministracionService().getEmplazamientos(t.getTipoEmplazamientoAsociado(), new SimceCallback<ArrayList<EmplazamientoDTO>>(eventBus) {
+
+					@Override
+					public void success(ArrayList<EmplazamientoDTO> result) {
+						emplazamientos = result;
+						view.setEmplazamientos(result);
+					}
+				});
+				return;
+			}
+		}
+		
+		
 		
 	}
 
 	@Override
 	public void onEmplazamientoChange(Integer emplazamientoId) {
-		
+		for(EmplazamientoDTO e:emplazamientos){
+			if(e.getId() == emplazamientoId){
+				emplazamientoSelected = e;
+				return;
+			}
+		}
 	}
 	
 	private void updateUsuarios(){

@@ -8,6 +8,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -21,12 +23,11 @@ public class FiltroAgendamientosPanelViewD extends Composite {
 	}
 	
 	
-	@UiField CheckBox confirmadoBox;
-	@UiField CheckBox porConfirmarBox;
-	@UiField CheckBox confirmadoConCambiosBox;
-	@UiField CheckBox anuladoBox;
+	@UiField VerticalPanel estadosPanel;
 	@UiField DateBox desdeBox;
 	@UiField DateBox hastaBox;
+	@UiField ListBox regionBox;
+	@UiField ListBox comunaBox;
 	@UiField Button aplicarButton;
 	@UiField Button cancelarButton;
 
@@ -34,9 +35,5 @@ public class FiltroAgendamientosPanelViewD extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		desdeBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG)));
 		hastaBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG)));
-		confirmadoBox.setValue(true);
-		porConfirmarBox.setValue(true);
-		confirmadoConCambiosBox.setValue(true);
-		anuladoBox.setValue(true);
 	}
 }

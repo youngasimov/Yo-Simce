@@ -4,6 +4,8 @@ import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminView;
+import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
+import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.GeneralView;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
@@ -30,6 +32,7 @@ public interface ClientFactory {
 	
 
 	LoginServiceAsync getLoginService();
+	GeneralServiceAsync getGeneralService();
 	PlanificacionServiceAsync getPlanificacionService();
 	AdministracionServiceAsync getAdministracionService();
 	
@@ -50,6 +53,7 @@ public interface ClientFactory {
 	AdminView getAdminView();
 	AdminUsuariosView getAdminUsuariosView();
 	AdminEventosView getAdminEventosView();
+	PermisosView getPermisosView();
 	
 	
 }

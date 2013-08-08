@@ -114,6 +114,7 @@
 					<ul>
 						<li><g:Anchor ui:field="administrarUsuariosActionItem" text="Administrar usuarios"/></li>
 						<li><g:Anchor ui:field="administrarEventosActionItem" text="Administrar eventos"/></li>
+						<li><g:Anchor ui:field="administrarPermisosActionItem" text="Administrar permisos"/></li>
 					</ul>
 				</li>
 			</ul>

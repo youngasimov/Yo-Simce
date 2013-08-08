@@ -6,11 +6,22 @@ package com.dreamer8.yosimce.shared.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import com.google.gwt.view.client.ProvidesKey;
+
 /**
  * @author jorge
  * 
  */
 public class PermisoDTO implements Serializable {
+	
+	public static final ProvidesKey<PermisoDTO> KEY_PROVIDER = new ProvidesKey<PermisoDTO>() {
+
+		@Override
+		public Object getKey(PermisoDTO item) {
+			return (item == null) ? null : item.getIdPermiso();
+		}
+	};
+	
 	private Integer idPermiso;
 	private String clase;
 	private String metodo;

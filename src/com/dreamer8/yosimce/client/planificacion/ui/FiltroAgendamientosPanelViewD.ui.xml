@@ -17,16 +17,7 @@
 				<td colspan='2'>Estados</td>
 			</tr>
 			<tr>
-				<td colspan='2'><g:CheckBox ui:field="confirmadoBox" text="Confirmado"/></td>
-			</tr>
-			<tr>
-				<td colspan='2'><g:CheckBox ui:field="porConfirmarBox" text="Por confirmar"/></td>
-			</tr>
-			<tr>
-				<td colspan='2'><g:CheckBox ui:field="confirmadoConCambiosBox" text="Confirmado con cambios"/></td>
-			</tr>
-			<tr>
-				<td colspan='2'><g:CheckBox ui:field="anuladoBox" text="anulado"/></td>
+				<td colspan='2'> <g:VerticalPanel ui:field="estadosPanel"/> </td>
 			</tr>
 			<tr class='{style.title}'>
 				<td colspan='2'>Fechas</td>
