@@ -188,7 +188,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	 * @permiso AgendarVisita
 	 */
 	@Override
-	public Void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
+	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;

@@ -115,24 +115,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 									selectAplicacion();
 									
 								}
-								
-								@Override
-								public void failure(Throwable caught) {
-									super.failure(caught);
-									if(factory.onTesting()){
-										ArrayList<AplicacionDTO> result = new ArrayList<AplicacionDTO>();
-										AplicacionDTO adto = new AplicacionDTO();
-										adto.setNombre("Simce TIC");
-										adto.setId(3);
-										result.add(adto);
-										//adto = new AplicacionDTO();
-										//adto.setNombre("Simce");
-										//adto.setId(5);
-										//result.add(adto);
-										success(result);
-										
-									}
-								};
 							});
 						}else{
 							//si ya esta descargada, la selecciona de ser nesesario
@@ -186,27 +168,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 						niveles.put(aplicacionId, result);
 						selectNivel();
 					}
-					
-					@Override
-					public void failure(Throwable caught) {
-						super.failure(caught);
-						if(factory.onTesting()){
-							ArrayList<NivelDTO> result = new ArrayList<NivelDTO>();
-							NivelDTO ndto = new NivelDTO();
-							ndto.setNombre("5 básico");
-							ndto.setId(7);
-							result.add(ndto);
-							ndto = new NivelDTO();
-							ndto.setNombre("2 básico");
-							ndto.setId(20);
-							result.add(ndto);
-							ndto = new NivelDTO();
-							ndto.setNombre("2 medio");
-							ndto.setId(34);
-							result.add(ndto);
-							success(result);
-						}
-					}
 				});
 			}
 		}
@@ -249,27 +210,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 						tipos.put(nivelId, result);
 						selectTipo();
 					}
-					
-					@Override
-					public void failure(Throwable caught) {
-						super.failure(caught);
-						if(factory.onTesting()){
-							ArrayList<ActividadTipoDTO> result = new ArrayList<ActividadTipoDTO>();
-							ActividadTipoDTO atdto = new ActividadTipoDTO();
-							atdto.setNombre("visita previa");
-							atdto.setId(8);
-							result.add(atdto);
-							atdto = new ActividadTipoDTO();
-							atdto.setNombre("Prueba");
-							atdto.setId(9);
-							result.add(atdto);
-							atdto = new ActividadTipoDTO();
-							atdto.setNombre("Prueba 2");
-							atdto.setId(10);
-							result.add(atdto);
-							success(result);
-						}
-					}
 				});
 			}
 		}
@@ -311,14 +251,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 					public void success(HashMap<String, ArrayList<String>> result) {
 						permisos.put(tipoId, result);
 						factory.getEventBus().fireEvent(new PermisosEvent(result));
-					}
-					
-					@Override
-					public void failure(Throwable caught) {
-						super.failure(caught);
-						if(factory.onTesting()){
-							success(new HashMap<String, ArrayList<String>>());
-						}
 					}
 				});
 			}

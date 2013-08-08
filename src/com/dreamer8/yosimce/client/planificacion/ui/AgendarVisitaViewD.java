@@ -1,11 +1,13 @@
 package com.dreamer8.yosimce.client.planificacion.ui;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -61,6 +63,11 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		idCurso = -1;
 	}
 	
+	@UiHandler("modificarButton")
+	void onModificarAgendaClick(ClickEvent event){
+		presenter.onModificarAgendaClick();
+	}
+	
 	@UiHandler("cambiarButton")
 	void onCambiarClick(ClickEvent event){
 		presenter.onCambiarEstablecimientoClick();
@@ -100,5 +107,28 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public UIObject getCambiarButton() {
 		return cambiarButton;
+	}
+
+	@Override
+	public void setEstadosAgenda(ArrayList<EstadoAgendaDTO> estados) {
+		 estadoBox.clear();
+		 for(EstadoAgendaDTO ea:estados){
+			 estadoBox.addItem(ea.getEstado(),ea.getId()+"");
+		 }
+	}
+
+	@Override
+	public int getIdEstadoAgendaSeleccionado() {
+		return Integer.parseInt(estadoBox.getValue(estadoBox.getSelectedIndex()));
+	}
+
+	@Override
+	public Date getFechaHoraSeleccionada() {
+		return new Date(fechaPicker.getValue().getTime()+timeBox.getValue());
+	}
+
+	@Override
+	public String getComentario() {
+		return comentarioBox.getText();
 	}
 }

@@ -32,7 +32,7 @@ public interface PlanificacionService extends RemoteService {
 	
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
-	public Void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda) throws NoAllowedException, NoLoggedException, DBException;
+	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda) throws NoAllowedException, NoLoggedException, DBException;
 	
 	public ArrayList<EstadoAgendaDTO> getEstadosAgenda() throws NoAllowedException, NoLoggedException, DBException;
 	
