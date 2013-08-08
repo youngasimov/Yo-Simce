@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 	<ui:style>
 		.dialogbox {
 			width: 400px;
@@ -14,15 +15,17 @@
 		<g:HTMLPanel>
 			<table>
 				<tr>
-					<td>Rbd de establecimiento:</td>
-					<td><g:SuggestBox width="100px" ui:field="rbdBox"/></td>
+					<td colspan='2'>Buscar establecimiento</td>
 				</tr>
 				<tr>
-					<td colspan='2'><g:Label ui:field="errorLabel"/></td>
+					<td><g:SuggestBox width="80px" ui:field="rbdBox"/></td>
+					<td> <g:Button ui:field="searchButton" text="Buscar"/> </td>
+				</tr>
+				<tr>
+					<td colspan='2'> <c:CellList ui:field="cursosList"/> </td>
 				</tr>
 				<tr>
 					<td><g:Button ui:field="cancelBox" text="Cancelar"/></td>
-					<td><g:Button ui:field="confirmBox" text="Seleccionar"/></td>
 				</tr>
 			</table>
 		</g:HTMLPanel>

@@ -1,11 +1,13 @@
 package com.dreamer8.yosimce.client.ui;
 
+import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -24,7 +26,7 @@ public class CursoSelectorViewD implements CursoSelectorView {
 
 	@UiField DialogBox panel;
 	@UiField SuggestBox rbdBox;
-	@UiField Button confirmBox;
+	@UiField CellList<CursoDTO> cursosList;
 	@UiField Button cancelBox;
 	
 	private CursoSelectorPresenter presenter;
@@ -80,5 +82,4 @@ public class CursoSelectorViewD implements CursoSelectorView {
 	public void setGlassEnabled(boolean enabled) {
 		panel.setGlassEnabled(enabled);
 	}
-
 }
