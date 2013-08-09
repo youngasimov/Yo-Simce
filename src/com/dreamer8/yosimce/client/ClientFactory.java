@@ -30,7 +30,6 @@ public interface ClientFactory {
 	PlaceController getPlaceController();
 	PlaceHistoryMapper getPlaceHistoryMapper();
 	
-
 	LoginServiceAsync getLoginService();
 	GeneralServiceAsync getGeneralService();
 	PlanificacionServiceAsync getPlanificacionService();

@@ -13,7 +13,7 @@ import com.dreamer8.yosimce.client.planificacion.PlanificacionPlace;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.place.shared.WithTokenizers;
 
-@WithTokenizers({ NotLoggedPlace.Tokenizer.class,
+@WithTokenizers({
 		SimcePlace.Tokenizer.class,
 		PlanificacionPlace.Tokenizer.class,
 		AgendamientosPlace.Tokenizer.class,

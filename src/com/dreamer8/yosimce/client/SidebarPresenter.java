@@ -55,7 +55,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 			public void onPlaceChange(PlaceChangeEvent event) {
 				if(event.getNewPlace() instanceof SimcePlace){
 					place = (SimcePlace)event.getNewPlace();
-				}else if(event.getNewPlace() instanceof NotLoggedPlace){
+				}else{
 					view.setGeneralVisivility(false);
 					view.setAgendamientoVisivility(false);
 					view.setActividadVisivility(false);

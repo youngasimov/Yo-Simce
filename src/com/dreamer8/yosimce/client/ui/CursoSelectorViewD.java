@@ -26,7 +26,7 @@ public class CursoSelectorViewD implements CursoSelectorView {
 
 	@UiField DialogBox panel;
 	@UiField SuggestBox rbdBox;
-	@UiField CellList<CursoDTO> cursosList;
+	@UiField(provided=true) CellList<CursoDTO> cursosList;
 	@UiField Button cancelBox;
 	
 	private CursoSelectorPresenter presenter;

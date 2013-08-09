@@ -22,4 +22,6 @@ public interface LoginServiceAsync {
 	void getUsuarioPermisos(
 			AsyncCallback<HashMap<String, ArrayList<String>>> callback);
 
+	void getUserToken(String username, AsyncCallback<String> callback);
+
 }

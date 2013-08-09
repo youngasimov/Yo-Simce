@@ -17,6 +17,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface LoginService extends RemoteService {
 
 	public UserDTO getUser(String token) throws NoLoggedException, DBException;
+	
+	public String getUserToken(String username) throws DBException;
 
 	public ArrayList<AplicacionDTO> getAplicaciones()
 			throws NoAllowedException, NoLoggedException, DBException;

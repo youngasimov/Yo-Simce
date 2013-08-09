@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.ui.LoadView;
+import com.dreamer8.yosimce.client.ui.LoadViewD;
+import com.dreamer8.yosimce.client.ui.LoginView;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;
@@ -26,19 +28,19 @@ public class YoSimce implements EntryPoint {
 	private UserDTO user;
 	private ClientFactory factory;
 	private LoadView loadView;
-	private SimplePanel panel = new SimplePanel();
+	private SimplePanel panel;
+	private LoginServiceAsync loginService ;
 	
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-
-		factory = GWT.create(ClientFactory.class);
 		
 		defaultPlace = new SimcePlace();
-		
-		loadView = factory.getLoadView();
+		loginService = (LoginServiceAsync)GWT.create(LoginService.class);
+		panel = new SimplePanel();
+		loadView = new LoadViewD();
 		
 		panel.setSize("100%", "100%");
 		
@@ -56,8 +58,6 @@ public class YoSimce implements EntryPoint {
 		Cookies.removeCookie("t");
 		
 		loadView.setMessage("Comprobando permisos de usuario...");
-		
-		LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
 		
 		String token = Cookies.getCookie(TOKEN_COOKIE);
 		
@@ -86,18 +86,11 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void loadApp(){
-		if(factory.onTesting()){
-			user = new UserDTO();
-			user.setApellidoMaterno("Cortés");
-			user.setApellidoPaterno("Vera");
-			user.setNombres("Camilo Ignacio");
-			user.setEmail("camilo.vera@live.com");
-			user.setUsername("16370885");
-			user.setId(4875);
-		}
 		
 		if(user == null){
-			Window.open("http://www.yosimce.cl", "_self", "");
+			//Window.open("http://www.yosimce.cl", "_self", "");
+			//return;
+			notLogged();
 			return;
 		}
 		
@@ -118,6 +111,8 @@ public class YoSimce implements EntryPoint {
 	
 	private void load(){
 		
+		factory = GWT.create(ClientFactory.class);
+		
 		AppPresenter app = new AppPresenter(factory);
 		app.setDisplay(panel);
 		
@@ -135,5 +130,28 @@ public class YoSimce implements EntryPoint {
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(factory.getPlaceHistoryMapper());
 		historyHandler.register(factory.getPlaceController(), factory.getEventBus(), defaultPlace);
 		historyHandler.handleCurrentHistory();
+	}
+	
+	private void notLogged(){
+		LoginView login = new LoginView();
+		login.setPresenter(new LoginView.LoginPresenter() {
+			
+			@Override
+			public void onLogin(String username) {
+				loginService.getUserToken(username, new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						Cookies.setCookie(TOKEN_COOKIE, result);
+						Window.Location.reload();
+					}
+				});
+			}
+		});
 	}
 }

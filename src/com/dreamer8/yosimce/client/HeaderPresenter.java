@@ -120,7 +120,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 							//si ya esta descargada, la selecciona de ser nesesario
 							selectAplicacion();
 						}
-					}else if(event.getNewPlace() instanceof NotLoggedPlace){
+					}else{
 						view.setUserName("No registrado");
 						view.setAplicacionBoxVisivility(false);
 						view.setNivelBoxVisivility(false);

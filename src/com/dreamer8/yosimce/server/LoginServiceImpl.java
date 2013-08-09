@@ -280,4 +280,10 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		return permisos;
 	}
 
+	@Override
+	public String getUserToken(String username) throws DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
