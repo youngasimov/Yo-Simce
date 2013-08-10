@@ -4,7 +4,7 @@
 	<ui:style>
 		.panel{
 			display:block;
-			width: 400px;
+			width: 250px;
 			margin-left: auto;
 			margin-right: auto;
 			margin-top: 200px; 

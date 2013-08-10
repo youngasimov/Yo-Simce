@@ -153,5 +153,6 @@ public class YoSimce implements EntryPoint {
 				});
 			}
 		});
+		panel.setWidget(login);
 	}
 }

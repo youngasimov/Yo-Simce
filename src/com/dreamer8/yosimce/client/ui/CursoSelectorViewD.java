@@ -1,9 +1,11 @@
 package com.dreamer8.yosimce.client.ui;
 
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -23,6 +25,16 @@ public class CursoSelectorViewD implements CursoSelectorView {
 	interface CursoSelectorViewDUiBinder extends
 			UiBinder<Widget, CursoSelectorViewD> {
 	}
+	
+	class CursoCell extends AbstractCell<CursoDTO>{
+
+		@Override
+		public void render(com.google.gwt.cell.client.Cell.Context context,
+				CursoDTO value, SafeHtmlBuilder sb) {
+			
+		}
+		
+	}
 
 	@UiField DialogBox panel;
 	@UiField SuggestBox rbdBox;
@@ -32,6 +44,7 @@ public class CursoSelectorViewD implements CursoSelectorView {
 	private CursoSelectorPresenter presenter;
 	
 	public CursoSelectorViewD() {
+		cursosList = new CellList<CursoDTO>(new CursoCell());
 		uiBinder.createAndBindUi(this);
 	}
 	
