@@ -1,9 +1,8 @@
 package com.dreamer8.yosimce.client.ui;
 
-import java.util.ArrayList;
-
-import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
+import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.google.gwt.user.client.ui.UIObject;
+import com.google.gwt.view.client.HasData;
 
 public interface CursoSelectorView {
 
@@ -13,10 +12,14 @@ public interface CursoSelectorView {
 	void hide();
 	void setCancelable(boolean cancelable);
 	void setGlassEnabled(boolean enabled);
+	void setOkButtonEnabled(boolean enabled);
+	
+	HasData<CursoDTO> getDataDisplay();
 	
 	public interface CursoSelectorPresenter{
-		ArrayList<EstablecimientoDTO> getCursos(String search);
+		void onSearchBoxChange(String search);
 		void onCancel();
 		void onConfirm();
+		void onCursoSelected(CursoDTO curso);
 	}
 }

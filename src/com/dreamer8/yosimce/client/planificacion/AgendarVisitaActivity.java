@@ -23,7 +23,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	private final AgendarVisitaView view;
 	private final AgendarVisitaPlace place;
-	private final CursoSelector selector;
+	private CursoSelector selector;
 	private EventBus eventBus;
 	private AgendaDTO agenda;
 	
@@ -35,22 +35,13 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		this.place = place;
 		this.view = factory.getAgendarVisitaView();
 		view.setPresenter(this);
-		selector = new CursoSelector(factory);
-		selector.setOnEstablecimientoChangeAction(new Command() {
-			
-			@Override
-			public void execute() {
-				AgendarVisitaPlace avp = new AgendarVisitaPlace(AgendarVisitaActivity.this.place.getAplicacionId(),AgendarVisitaActivity.this.place.getNivelId(),AgendarVisitaActivity.this.place.getTipoId(),selector.getSelectedEstablecimiento().getId());
-				AgendarVisitaActivity.this.getFactory().getPlaceController().goTo(avp);
-			}
-		});
 	}
 	
 	@Override
 	public void onCambiarEstablecimientoClick() {
 		selector.setCancelable(true);
-		selector.setGlassEnabled(false);
-		selector.showRelativeTo(view.getCambiarButton());
+		selector.setGlassEnabled(true);
+		selector.show();
 	}
 	
 	@Override
@@ -80,6 +71,17 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		
+		selector = new CursoSelector(getFactory(),eventBus);
+		selector.setOnCursoChangeAction(new Command() {
+			
+			@Override
+			public void execute() {
+				AgendarVisitaPlace avp = new AgendarVisitaPlace(AgendarVisitaActivity.this.place.getAplicacionId(),AgendarVisitaActivity.this.place.getNivelId(),AgendarVisitaActivity.this.place.getTipoId(),selector.getSelectedCurso().getId());
+				AgendarVisitaActivity.this.getFactory().getPlaceController().goTo(avp);
+			}
+		});
+		
 		if(place.getCursoId()<0){
 			selector.setOnCancelAction(new Command() {
 				

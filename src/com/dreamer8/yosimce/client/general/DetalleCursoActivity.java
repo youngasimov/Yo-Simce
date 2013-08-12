@@ -17,36 +17,38 @@ public class DetalleCursoActivity extends SimceActivity implements
 
 	private final DetalleCursoPlace place;
 	private final DetalleCursoView view;
-	private final CursoSelector selector;
+	private CursoSelector selector;
 	
 	public DetalleCursoActivity(ClientFactory factory, DetalleCursoPlace place, HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place,permisos);
 		this.place = place;
 		this.view = getFactory().getDetalleCursoView();
 		this.view.setPresenter(this);
-		selector = new CursoSelector(getFactory());
-		selector.setOnEstablecimientoChangeAction(new Command() {
-			
-			@Override
-			public void execute() {
-				DetalleCursoPlace dcp = new DetalleCursoPlace(DetalleCursoActivity.this.place.getAplicacionId(),DetalleCursoActivity.this.place.getNivelId(),DetalleCursoActivity.this.place.getTipoId(),DetalleCursoActivity.this.place.getCursoId());
-				DetalleCursoActivity.this.getFactory().getPlaceController().goTo(dcp);
-			}
-		});
 	}
 
 
 	@Override
 	public void onCambiarCursoClick() {
 		selector.setCancelable(true);
-		selector.setGlassEnabled(false);
-		selector.showRelativeTo(view.getCambiarButton());
+		selector.setGlassEnabled(true);
+		selector.show();
 	}
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel,eventBus);
 		panel.setWidget(view.asWidget());
+		
+		selector = new CursoSelector(getFactory(),eventBus);
+		selector.setOnCursoChangeAction(new Command() {
+			
+			@Override
+			public void execute() {
+				selector.hide();
+				DetalleCursoPlace dcp = new DetalleCursoPlace(DetalleCursoActivity.this.place.getAplicacionId(),DetalleCursoActivity.this.place.getNivelId(),DetalleCursoActivity.this.place.getTipoId(),selector.getSelectedCurso().getId());
+				DetalleCursoActivity.this.getFactory().getPlaceController().goTo(dcp);
+			}
+		});
 		
 		if(place.getCursoId()<0){
 			selector.setOnCancelAction(new Command() {

@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.general;
 
 import java.util.ArrayList;
 
+import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -21,5 +22,7 @@ public interface GeneralService extends RemoteService {
 
 	public ArrayList<SectorDTO> getRegiones();
 	public ArrayList<SectorDTO> getComunas(Integer sectorId);
+	
+	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
 	
 }
