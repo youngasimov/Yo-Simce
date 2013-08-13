@@ -95,7 +95,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getComunas
 	 */
 	@Override
-	public ArrayList<SectorDTO> getComunas(Integer sectorId) {
+	public ArrayList<SectorDTO> getComunas(SectorDTO sector) {
 
 		ArrayList<SectorDTO> sdtos = new ArrayList<SectorDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();

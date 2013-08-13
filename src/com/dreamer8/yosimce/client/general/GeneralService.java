@@ -21,7 +21,7 @@ public interface GeneralService extends RemoteService {
 	public ArrayList<HistorialCambioItemDTO> getCambios(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
 
 	public ArrayList<SectorDTO> getRegiones();
-	public ArrayList<SectorDTO> getComunas(Integer sectorId);
+	public ArrayList<SectorDTO> getComunas(SectorDTO parent);
 	
 	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
 	

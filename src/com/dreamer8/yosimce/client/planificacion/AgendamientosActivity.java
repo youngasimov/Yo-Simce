@@ -77,7 +77,14 @@ public class AgendamientosActivity extends SimceActivity implements
 	@Override
 	public void onRegionChange(final int regionId) {
 		if(!comunas.containsKey(regionId)){
-			getFactory().getGeneralService().getComunas(regionId, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+			SectorDTO region = null;
+			for(SectorDTO r:regiones){
+				if(r.getIdSector() == regionId){
+					region = r;
+					break;
+				}
+			}
+			getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
 	
 				@Override
 				public void success(ArrayList<SectorDTO> result) {

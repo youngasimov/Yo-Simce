@@ -19,7 +19,7 @@ public interface GeneralServiceAsync {
 	void getCambios(Integer idEstablecimiento,
 			AsyncCallback<ArrayList<HistorialCambioItemDTO>> callback);
 
-	void getComunas(Integer sectorId,
+	void getComunas(SectorDTO parent,
 			AsyncCallback<ArrayList<SectorDTO>> callback);
 
 	void getRegiones(AsyncCallback<ArrayList<SectorDTO>> callback);
