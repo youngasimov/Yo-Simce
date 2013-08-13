@@ -1,5 +1,11 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.actividad.ActividadPlace;
+import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
+import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
+import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
@@ -21,6 +27,12 @@ import com.google.gwt.place.shared.WithTokenizers;
 		DetalleAgendaPlace.Tokenizer.class,
 		GeneralPlace.Tokenizer.class,
 		DetalleCursoPlace.Tokenizer.class,
+		ActividadPlace.Tokenizer.class,
+		ActividadesPlace.Tokenizer.class,
+		FormActividadPlace.Tokenizer.class,
+		SincronizacionesPlace.Tokenizer.class,
+		SincronizacionPlace.Tokenizer.class,
+		AprobarSupervisoresPlace.Tokenizer.class,
 		AdminPlace.Tokenizer.class,
 		AdminUsuariosPlace.Tokenizer.class,
 		AdminEventosPlace.Tokenizer.class,

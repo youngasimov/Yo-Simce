@@ -6,8 +6,10 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
+import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView.DetalleCursoPresenter;
+import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -62,6 +64,18 @@ public class DetalleCursoActivity extends SimceActivity implements
 			selector.setGlassEnabled(true);
 			selector.show();
 		}else{
+			
+			getFactory().getGeneralService().getEstablecimiento(place.getCursoId(), new SimceCallback<EstablecimientoDTO>(eventBus) {
+
+				@Override
+				public void success(EstablecimientoDTO result) {
+					
+					
+					
+					
+				}
+			});
+			
 		}
 	}
 	

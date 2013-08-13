@@ -1,5 +1,12 @@
 package com.dreamer8.yosimce.client.ui;
 
+import com.dreamer8.yosimce.client.actividad.ActividadPlace;
+import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
+import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
+import com.dreamer8.yosimce.client.actividad.DetalleActividadPlace;
+import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
@@ -50,16 +57,19 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor agendamientosViewItem;
 	@UiField Anchor detalleAgendaViewItem;
 	@UiField Anchor agendarVisitaActionItem;
+	
 	@UiField Anchor actividadesViewItem;
 	@UiField Anchor formularioActividadActionItem;
 	@UiField Anchor detalleActividadViewItem;
 	@UiField Anchor sincronizacionActionItem;
 	@UiField Anchor sincronizacionesViewItem;
 	@UiField Anchor aprobarSupervisoresActionItem;
+	
 	@UiField Anchor ingresoMaterialActionItem;
 	@UiField Anchor salidaMaterialActionItem;
 	@UiField Anchor historialMovimientosViewItem;
 	@UiField Anchor movimientosMaterialViewItem;
+	
 	@UiField Anchor administrarUsuariosActionItem;
 	@UiField Anchor administrarEventosActionItem;
 	@UiField Anchor administrarPermisosActionItem;
@@ -83,7 +93,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("actividadButton")
 	void onActividadButtonClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new ActividadPlace());
 	}
 	
 	@UiHandler("materialButton")
@@ -119,27 +129,32 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("actividadesViewItem")
 	void onActividadesViewItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new ActividadesPlace());
 	}
 	
 	@UiHandler("formularioActividadActionItem")
 	void onFormularioActividadActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new FormActividadPlace());
 	}
 	
 	@UiHandler("detalleActividadViewItem")
 	void onDetalleActividadViewItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new DetalleActividadPlace());
 	}
 	
 	@UiHandler("sincronizacionActionItem")
 	void onSincronizacionActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new SincronizacionPlace());
+	}
+	
+	@UiHandler("sincronizacionesViewItem")
+	void onSincronizacionesActionItemClick(ClickEvent event){
+		presenter.goTo(new SincronizacionesPlace());
 	}
 	
 	@UiHandler("aprobarSupervisoresActionItem")
 	void onAprobarSupervisoresActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new AprobarSupervisoresPlace());
 	}
 	
 	@UiHandler("ingresoMaterialActionItem")

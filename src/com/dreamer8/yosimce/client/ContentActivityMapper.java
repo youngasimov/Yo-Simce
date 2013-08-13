@@ -3,6 +3,13 @@ package com.dreamer8.yosimce.client;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.dreamer8.yosimce.client.actividad.ActividadActivity;
+import com.dreamer8.yosimce.client.actividad.ActividadPlace;
+import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
+import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
+import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.dreamer8.yosimce.client.administracion.AdminActivity;
 import com.dreamer8.yosimce.client.administracion.AdminEventosActivity;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
@@ -59,6 +66,18 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new AgendarVisitaActivity(factory, (AgendarVisitaPlace)place, permisos);
 		}else if(place instanceof DetalleAgendaPlace){
 			return new DetalleAgendaActivity(factory, (DetalleAgendaPlace)place, permisos);
+		}else if(place instanceof ActividadPlace){
+			return new ActividadActivity(factory, (ActividadPlace)place, permisos);
+		}else if(place instanceof ActividadesPlace){
+			//return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
+		}else if(place instanceof FormActividadPlace){
+			//return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
+		}else if(place instanceof SincronizacionesPlace){
+			//return new SincronizacionesActivity(factory, (SincronizacionesPlace)place, permisos);
+		}else if(place instanceof SincronizacionPlace){
+			//return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
+		}else if(place instanceof AprobarSupervisoresPlace){
+			//return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 		}
 		
 		else if(place instanceof AdminPlace){

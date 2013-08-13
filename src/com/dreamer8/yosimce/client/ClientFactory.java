@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.actividad.ActividadServiceAsync;
+import com.dreamer8.yosimce.client.actividad.ui.ActividadView;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
@@ -33,6 +35,7 @@ public interface ClientFactory {
 	LoginServiceAsync getLoginService();
 	GeneralServiceAsync getGeneralService();
 	PlanificacionServiceAsync getPlanificacionService();
+	ActividadServiceAsync getActividadService();
 	AdministracionServiceAsync getAdministracionService();
 	
 	AppView getAppView();
@@ -48,6 +51,8 @@ public interface ClientFactory {
 	AgendarVisitaView getAgendarVisitaView();
 	DetalleAgendaView getDetalleAgendaView();
 	CursoSelectorView getCursoSelectorView();
+	
+	ActividadView getActividadView();
 	
 	AdminView getAdminView();
 	AdminUsuariosView getAdminUsuariosView();

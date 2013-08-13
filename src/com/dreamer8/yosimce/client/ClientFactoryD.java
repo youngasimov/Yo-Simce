@@ -1,5 +1,9 @@
 package com.dreamer8.yosimce.client;
 
+import com.dreamer8.yosimce.client.actividad.ActividadService;
+import com.dreamer8.yosimce.client.actividad.ActividadServiceAsync;
+import com.dreamer8.yosimce.client.actividad.ui.ActividadView;
+import com.dreamer8.yosimce.client.actividad.ui.ActividadViewD;
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
@@ -52,6 +56,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
 	private final GeneralServiceAsync generalService = (GeneralServiceAsync)GWT.create(GeneralService.class);
 	private final PlanificacionServiceAsync planificacionService = (PlanificacionServiceAsync)GWT.create(PlanificacionService.class);
+	private final ActividadServiceAsync actividadService = (ActividadServiceAsync)GWT.create(ActividadService.class);
 	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync)GWT.create(AdministracionService.class);
 	
 	
@@ -59,14 +64,17 @@ public class ClientFactoryD implements ClientFactory {
 	private final AppView appView = new AppViewD();
 	private final HeaderView headerView = new HeaderViewD();
 	private final SidebarView sidebarView = new SidebarViewD();
+	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
 	
 	private final GeneralView generalView = new GeneralViewD();
 	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
+	
 	private final PlanificacionView planificacionView = new PlanificacionViewD();
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
 	private final DetalleAgendaView detalleAgendaView = new DetalleAgendaViewD();
-	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
+	
+	private final ActividadView actividadView = new ActividadViewD();
 	
 	private final AdminView adminView = new AdminViewD();
 	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
@@ -110,6 +118,11 @@ public class ClientFactoryD implements ClientFactory {
 	}
 	
 	@Override
+	public ActividadServiceAsync getActividadService() {
+		return actividadService;
+	}
+	
+	@Override
 	public AdministracionServiceAsync getAdministracionService() {
 		return administracionService;
 	}
@@ -132,6 +145,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public SidebarView getSidebarView() {
 		return sidebarView;
+	}
+	
+	@Override
+	public CursoSelectorView getCursoSelectorView() {
+		return cursoSelectorView;
 	}
 	
 	@Override
@@ -163,11 +181,12 @@ public class ClientFactoryD implements ClientFactory {
 	public DetalleAgendaView getDetalleAgendaView() {
 		return detalleAgendaView;
 	}
-
+	
 	@Override
-	public CursoSelectorView getCursoSelectorView() {
-		return cursoSelectorView;
+	public ActividadView getActividadView() {
+		return actividadView;
 	}
+	
 
 	@Override
 	public AdminView getAdminView() {

@@ -36,6 +36,16 @@
 	</servlet-mapping>
 	
 	<servlet>
+		<servlet-name>actividadservice</servlet-name>
+		<servlet-class>com.dreamer8.yosimce.server.ActividadServiceImpl
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>actividadservice</servlet-name>
+		<url-pattern>/yosimce/actividadservice</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
 		<servlet-name>administracionservice</servlet-name>
 		<servlet-class>com.dreamer8.yosimce.server.AdministracionServiceImpl
 		</servlet-class>
