@@ -24,7 +24,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.id_nivel="
 				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axna.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
@@ -100,5 +100,16 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			udtos.add(udto);
 		}
 		return udtos;
+	}
+
+	public Usuario findbyUsername(String username) {
+
+		Usuario u = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT u.* FROM USUARIO u" + " WHERE u.username='"
+				+ SecurityFilter.escapeString(username) + "'";
+		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
+		u = ((Usuario) q.uniqueResult());
+		return u;
 	}
 }

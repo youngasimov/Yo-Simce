@@ -7,12 +7,17 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
+import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoXPermisoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CentroRegionalDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.PermisoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ZonaDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.CentroRegional;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
@@ -57,12 +62,6 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				if (idNivel == null) {
 					throw new NullPointerException(
 							"No se ha especificado un nivel.");
-				}
-
-				Integer idActividadTipo = ac.getIdActividadTipo();
-				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
 				}
 
 				s.beginTransaction();
@@ -115,12 +114,6 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 							"No se ha especificado un nivel.");
 				}
 
-				Integer idActividadTipo = ac.getIdActividadTipo();
-				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
-				}
-
 				s.beginTransaction();
 				Integer idUsuarioTipo = ac.getIdUsuarioTipo();
 				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
@@ -168,18 +161,6 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				if (idAplicacion == null) {
 					throw new NullPointerException(
 							"No se ha especificado una aplicación.");
-				}
-
-				Integer idNivel = ac.getIdNivel();
-				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
-				}
-
-				Integer idActividadTipo = ac.getIdActividadTipo();
-				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
 				}
 
 				if (tipoEmplazamiento == null || tipoEmplazamiento.equals("")) {
@@ -261,8 +242,39 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public ArrayList<PermisoDTO> getPermisos() throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<PermisoDTO> pdtos = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getPermisos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				s.beginTransaction();
+
+				PermisoDAO pdao = new PermisoDAO();
+				pdtos = (ArrayList<PermisoDTO>) pdao
+						.findByIdAplicacion(idAplicacion);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return pdtos;
 	}
 
 	/**
@@ -271,8 +283,49 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public Boolean setPermisos(ArrayList<PermisoDTO> permisos)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean resutl = true;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "setPermisos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				if (permisos != null && !permisos.isEmpty()) {
+					throw new NullPointerException(
+							"No se especificó ningún cambio en los permisos");
+				}
+
+				s.beginTransaction();
+				AplicacionXUsuarioTipoDAO axutdao = new AplicacionXUsuarioTipoDAO();
+				List<AplicacionXUsuarioTipo> axuts = axutdao
+						.findByIdAplicacionSortedByIdUsuarioTipo(idAplicacion);
+
+				AplicacionXUsuarioTipoXPermisoDAO axutxpdao = new AplicacionXUsuarioTipoXPermisoDAO();
+				List<AplicacionXUsuarioTipoXPermiso> axutxps = axutxpdao
+						.findByIdAplicacionSortedByIdPermiso(idAplicacion);
+				
+				//Recorrer listas y actualizar los pojos correspondientes con los permisos adecuados
+				
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return resutl;
 	}
 
 }

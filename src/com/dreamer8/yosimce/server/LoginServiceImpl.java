@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -282,8 +283,35 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 
 	@Override
 	public String getUserToken(String username) throws DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		String token = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			s.beginTransaction();
+			UsuarioDAO udao = new UsuarioDAO();
+			Usuario u = udao.findbyUsername(username);
+
+			SesionDAO sdao = new SesionDAO();
+			Sesion sesion = new Sesion();
+			sesion.setUsuario(u);
+			Random r = new Random();
+			token = Integer.toString(r.nextInt());
+			sesion.setSessionValue(token);
+			sdao.save(sesion);
+
+			s.getTransaction().commit();
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return token;
 	}
 
 }
