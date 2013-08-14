@@ -2,6 +2,10 @@ package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.actividad.ActividadServiceAsync;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadView;
+import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
+import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
+import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
+import com.dreamer8.yosimce.client.actividad.ui.SincronizacionesView;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
@@ -10,6 +14,7 @@ import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.GeneralView;
+import com.dreamer8.yosimce.client.material.ui.MaterialView;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
@@ -53,6 +58,12 @@ public interface ClientFactory {
 	CursoSelectorView getCursoSelectorView();
 	
 	ActividadView getActividadView();
+	ActividadesView getActividadesView();
+	FormActividadView getFormActividadView();
+	SincronizacionesView getSincronizacionesView();
+	SincronizacionView getSincronizacionView();
+	
+	MaterialView getMaterialView();
 	
 	AdminView getAdminView();
 	AdminUsuariosView getAdminUsuariosView();

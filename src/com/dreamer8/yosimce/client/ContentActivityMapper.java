@@ -5,10 +5,14 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.actividad.ActividadActivity;
 import com.dreamer8.yosimce.client.actividad.ActividadPlace;
+import com.dreamer8.yosimce.client.actividad.ActividadesActivity;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
+import com.dreamer8.yosimce.client.actividad.FormActividadActivity;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionActivity;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionesActivity;
 import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.dreamer8.yosimce.client.administracion.AdminActivity;
 import com.dreamer8.yosimce.client.administracion.AdminEventosActivity;
@@ -22,6 +26,11 @@ import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralActivity;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
+import com.dreamer8.yosimce.client.material.IngresoMaterialPlace;
+import com.dreamer8.yosimce.client.material.MaterialActivity;
+import com.dreamer8.yosimce.client.material.MaterialPlace;
+import com.dreamer8.yosimce.client.material.MovimientosMaterialPlace;
+import com.dreamer8.yosimce.client.material.SalidaMaterialPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosActivity;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaActivity;
@@ -69,18 +78,24 @@ public class ContentActivityMapper implements ActivityMapper {
 		}else if(place instanceof ActividadPlace){
 			return new ActividadActivity(factory, (ActividadPlace)place, permisos);
 		}else if(place instanceof ActividadesPlace){
-			//return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
+			return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
 		}else if(place instanceof FormActividadPlace){
-			//return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
+			return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
 		}else if(place instanceof SincronizacionesPlace){
-			//return new SincronizacionesActivity(factory, (SincronizacionesPlace)place, permisos);
+			return new SincronizacionesActivity(factory, (SincronizacionesPlace)place, permisos);
 		}else if(place instanceof SincronizacionPlace){
-			//return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
+			return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
 		}else if(place instanceof AprobarSupervisoresPlace){
 			//return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
-		}
-		
-		else if(place instanceof AdminPlace){
+		}else if(place instanceof MaterialPlace){
+			return new MaterialActivity(factory, (MaterialPlace)place, permisos);
+		}else if(place instanceof IngresoMaterialPlace){
+			//return new IngresoMaterialActivity(factory, (IngresoMaterialPlace)place, permisos);
+		}else if(place instanceof SalidaMaterialPlace){
+			//return new SalidaMaterialActivity(factory, (SalidaMaterialPlace)place, permisos);
+		}else if(place instanceof MovimientosMaterialPlace){
+			//return new MovimientosMaterialActivity(factory, (MovimientosMaterialPlace)place, permisos);
+		}else if(place instanceof AdminPlace){
 			return new AdminActivity(factory, (AdminPlace)place, permisos);
 		}else if(place instanceof AdminUsuariosPlace){
 			return new AdminUsuariosActivity(factory, (AdminUsuariosPlace)place, permisos);

@@ -4,6 +4,14 @@ import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.client.actividad.ActividadServiceAsync;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadViewD;
+import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
+import com.dreamer8.yosimce.client.actividad.ui.ActividadesViewD;
+import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
+import com.dreamer8.yosimce.client.actividad.ui.FormActividadViewD;
+import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
+import com.dreamer8.yosimce.client.actividad.ui.SincronizacionViewD;
+import com.dreamer8.yosimce.client.actividad.ui.SincronizacionesView;
+import com.dreamer8.yosimce.client.actividad.ui.SincronizacionesViewD;
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
@@ -20,6 +28,8 @@ import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
 import com.dreamer8.yosimce.client.general.ui.GeneralView;
 import com.dreamer8.yosimce.client.general.ui.GeneralViewD;
+import com.dreamer8.yosimce.client.material.ui.MaterialView;
+import com.dreamer8.yosimce.client.material.ui.MaterialViewD;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
@@ -75,6 +85,12 @@ public class ClientFactoryD implements ClientFactory {
 	private final DetalleAgendaView detalleAgendaView = new DetalleAgendaViewD();
 	
 	private final ActividadView actividadView = new ActividadViewD();
+	private final ActividadesView actividadesView = new ActividadesViewD();
+	private final FormActividadView formActividadView = new FormActividadViewD();
+	private final SincronizacionesView sincronizacionesView = new SincronizacionesViewD();
+	private final SincronizacionView sincronizacionView = new SincronizacionViewD();
+	
+	private final MaterialView materialView = new MaterialViewD(); 
 	
 	private final AdminView adminView = new AdminViewD();
 	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
@@ -187,7 +203,26 @@ public class ClientFactoryD implements ClientFactory {
 		return actividadView;
 	}
 	
+	@Override
+	public ActividadesView getActividadesView() {
+		return actividadesView;
+	}
+	
+	@Override
+	public FormActividadView getFormActividadView() {
+		return formActividadView;
+	}
 
+	@Override
+	public SincronizacionesView getSincronizacionesView() {
+		return sincronizacionesView;
+	}
+	
+	@Override
+	public SincronizacionView getSincronizacionView() {
+		return sincronizacionView;
+	}
+	
 	@Override
 	public AdminView getAdminView() {
 		return adminView;
@@ -206,5 +241,10 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public PermisosView getPermisosView() {
 		return permisosView;
+	}
+
+	@Override
+	public MaterialView getMaterialView() {
+		return materialView;
 	}
 }

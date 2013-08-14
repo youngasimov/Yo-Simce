@@ -13,6 +13,10 @@ import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
+import com.dreamer8.yosimce.client.material.IngresoMaterialPlace;
+import com.dreamer8.yosimce.client.material.MaterialPlace;
+import com.dreamer8.yosimce.client.material.MovimientosMaterialPlace;
+import com.dreamer8.yosimce.client.material.SalidaMaterialPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -98,7 +102,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("materialButton")
 	void onMaterialButtonClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new MaterialPlace());
 	}
 	
 	@UiHandler("administracionButton")
@@ -159,12 +163,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("ingresoMaterialActionItem")
 	void onIngresoMaterialActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new IngresoMaterialPlace());
 	}
 	
 	@UiHandler("salidaMaterialActionItem")
 	void onSalidaMaterialActionItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new SalidaMaterialPlace());
 	}
 	
 	@UiHandler("historialMovimientosViewItem")
@@ -174,7 +178,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("movimientosMaterialViewItem")
 	void onMovimientosMaterialViewItemClick(ClickEvent event){
-		//presenter.goTo(place);
+		presenter.goTo(new MovimientosMaterialPlace());
 	}
 	
 	@UiHandler("administrarUsuariosActionItem")
