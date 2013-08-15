@@ -1,6 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui"
+	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka">
 	<ui:style>
 	.header{
 		display:block;
@@ -50,11 +52,21 @@
 		height: 100%;
 	}
 	
-	.formPanel{
+	.important{
+		font-weight: bolder;
+	}
+	
+	.panel1{
+		display:block;
 		width: 500px;
-		margin-top:50px;
+		margin-top:40px;
 		margin-left: auto;
 		margin-right: auto;
+	}
+	
+	.formPanel{
+		width: 100%;
+		margin-top:10px;
 	}
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
@@ -62,19 +74,229 @@
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'>Formulario de Actividad | <g:HTML ui:field="establecimientoSeleccionado"/></div>
 				<div class='{style.actions}'>
-					<g:Button addStyleNames='{style.action}' ui:field="filtrosButton" text="Guardar"/>
+					<g:Button addStyleNames='{style.action}' ui:field="saveButton" text="Guardar"/>
 				</div>
 			</g:HTMLPanel>	
 		</g:north>
 		<g:center>
 			<g:ScrollPanel addStyleNames='{style.full}'>
+				<g:FlowPanel addStyleNames='{style.panel1}'>
+				
 				<g:DecoratorPanel addStyleNames='{style.formPanel}'>
 					<g:HTMLPanel addStyleNames='{style.full}'>
 						<table class='{style.full}'>
-						
+							<th>
+								<td colspan='2'> Información basica</td>
+							</th>
+							<tr>
+								<td>Nombre Establecimiento:</td>
+								<td> <g:Label ui:field="nombreEstablecimientoLabel"/> </td>
+							</tr>
+							<tr>
+								<td>RBD:</td>
+								<td> <g:Label ui:field="rbdLabel"/> </td>
+							</tr>
+							<tr>
+								<td>Curso:</td>
+								<td> <g:Label ui:field="cursoLabel"/> </td>
+							</tr>
+							<tr>
+								<td>Tipo curso:</td>
+								<td> <g:Label ui:field="tipoLabel"/> </td>
+							</tr>
+							<tr>
+								<td>Región:</td>
+								<td> <g:Label ui:field="regionLabel"/> </td>
+							</tr>
+							<tr>
+								<td>Comuna:</td>
+								<td> <g:Label ui:field="comunaLabel"/> </td>
+							</tr>
 						</table>
 					</g:HTMLPanel>
 				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="estadoAplicacionPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='2'>Estado de la aplicación</td>
+							</th>
+							<tr>
+								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la aplicación' /> </td>
+								<td> <g:ListBox ui:field="estadoBox" /> </td>
+							</tr>
+							<tr >
+								<td> <my:HelperLabel text='Motivo:'  help='Ingrese el motivo de su selección de estado'/></td>
+								<td> <g:TextBox ui:field="motivoEstadoBox" /> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='3'> Datos de examinador </td>
+							</th>
+							<tr>
+								<td> Nombre:</td>
+								<td> <g:Label ui:field="nombreExaminadorLabel" /> </td>
+								<td rowspan='2' > <g:Button ui:field="changeExaminadorButton" /> </td>
+							</tr>
+							<tr>
+								<td> Rut:</td>
+								<td> <g:Label ui:field="rutExaminadorLabel" /> </td>
+							</tr>
+							<tr>
+								<td> <my:HelperLabel text='Presentación Personal:' help='Evalue la presentación personal del examinador en una escala de 0 a 5, donde 0 es muy mal presentado, y 5 es una presentación destacable'/></td>
+								<td colspan='2'> <my:ScoreSelector ui:field="presentacionPersonalScoreSelector" /> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Puntualidad:' help='Evalue la puntualidad del examinador en una escala de 0 a 5, donde 0 es muy atrasado, y 5 es a buen tiempo'/></td>
+								<td colspan='2'> <my:ScoreSelector ui:field="puntualidadScoreSelector" /> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Formulario:' help='Evalue el correcto llenado del formulario por parte del examinador en una escala de 0 a 5, donde 0 es muy mal llenado, y 5 es un llenado perfecto'/></td>
+								<td colspan='2'> <my:ScoreSelector ui:field="llenadoFormularioScoreSelector" /> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Desempeño general:' help='Evalue el desempeño general del examinador en una escala de 0 a 5, donde 0 es un pesimo desempeño, y 5 es un desempeño excelente'/></td>
+								<td colspan='2'> <my:ScoreSelector ui:field="desempenoScoreSelector" /> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="horasActividadPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='2'> Horas de la actividad</td>
+							</th>
+							<tr>
+								<td><my:HelperLabel text='Inicio de actividad:' help='Indique la hora en que se inició la actividad'/></td>
+								<td> <e:TimeBox ui:field="inicioActividadBox" /> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Inicio de prueba:' help='Indique la hora en que el primer alumno inició la prueba'/></td>
+								<td> <e:TimeBox ui:field="inicioPruebaBox" /> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Termino de prueba:' help='Indique la hora en que el último alumno entregó la prueba'/></td>
+								<td> <e:TimeBox ui:field="terminoPruebaBox" /> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="participacionPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='2'> Alumnos </td>
+							</th>
+							<tr>
+								<td><my:HelperLabel text='Total:' help='Indique la cantidad de alumnos en sala'/></td>
+								<td> <g:IntegerBox ui:field="totalAlumnosBox"/> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Titulares:' help='Indique la cantidad de alumnos titulares que rindieron la prueba'/></td>
+								<td> <g:IntegerBox ui:field="alumnosTitularesBox"/> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Suplentes:' help='Indique la cantidad de alumnos suplentes que rindieron la prueba'/></td>
+								<td> <g:IntegerBox ui:field="alumnosSuplentesBox"/> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Agregados:' help='Indique la cantidad de alumnos agregados a la lista de curso que rindieron la prueba'/></td>
+								<td> <g:IntegerBox ui:field="alumnosAgregadosBox"/> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Agregados sin rendición:' help='Indique la cantidad de alumnos agregados a la lista de curso que NO rindieron la prueba'/></td>
+								<td> <g:IntegerBox ui:field="alumnosAgregadosNoParticipantesBox"/> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Nee:' help='Indique la cantidad de alumnos NEE'/></td>
+								<td> <g:IntegerBox ui:field="alumnosNeeBox"/> </td>
+							</tr>
+							
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="cuestionariosPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='2'> Cuestionario para padres y apoderados </td>
+							</th>
+							<tr>
+								<td><my:HelperLabel text='Total:' help='Indique la cantidad de cuestionarios para padres y apoderados TOTALES'/></td>
+								<td><g:IntegerBox ui:field="cuestionariosTotalesBox"/></td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Entregados:' help='Indique la cantidad de cuestionarios para padres y apoderados ENTREGADOS'/></td>
+								<td><g:IntegerBox ui:field="cuestionariosEntregadosBox"/></td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Devueltos:' help='Indique la cantidad de cuestionarios para padres y apoderados DEVUELTOS'/></td>
+								<td><g:IntegerBox ui:field="cuestionariosDevueltosBox"/></td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="contingenciasPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='2'> Contingencias y eventualidades </td>
+							</th>
+							
+							<tr>
+								<td><my:HelperLabel text='Uso de material de contingencia:' help='Seleccione este cuadro si utilizó material de contingencia de cualquier forma'/></td>
+								<td> <g:CheckBox ui:field="usoMaterialBox" /> </td>
+							</tr>
+							
+							<tr>
+								<td><my:HelperLabel text='Detalles:' help='Describa porque utilizó material de contingencia, y cuanto'/></td>
+								<td> <g:TextBox ui:field="detallesUsoBox" /> </td>
+							</tr>
+							
+							<tr>
+								<td><my:HelperLabel text='Contiengencia:' help='Describa las contingencias, problemas o eventualidades que se presentaron durante la aplicación, y como estas fueron solucionadas'/></td>
+								<td> <g:TextArea ui:field="contingenciaBox" /> </td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Realización de prueba:' help='Seleccione ese cuadro si a causa de las contingencias, problemas o eventualidades descritas, no pudo realizar la prueba'/></td>
+								<td> <g:CheckBox ui:field="afectaEnPruebaBox" /> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				<g:DecoratorPanel ui:field="evaluacionPanel" addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.full}'>
+						<table class='{style.full}'>
+							<th>
+								<td colspan='2'> Evaluación y control</td>
+							</th>
+							
+							<tr>
+								<td><my:HelperLabel text='Procedimientos:' help='Evalue los procedimientos, procesos y formas estandar de operar en una escala de 0 a 5, donde 0 indica procedimiento y procesos inutiles y obstructivos, y 5 procedimientos y procesos muy útiles y significativos para la correcta aplicación de la prueba '/></td>
+								<td> <my:ScoreSelector ui:field="procedimientoScoreSelector" /></td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Formulario de control:' help='Adjunte el formulario de control utilizado para llenar los datos anteriores'/></td>
+								<td> <g:FileUpload ui:field="formularioControlFile" /> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
+				</g:FlowPanel>
 			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>
