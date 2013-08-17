@@ -20,9 +20,21 @@ public interface SimceResources extends ClientBundle {
 	@Source("images/load.gif")
 	public ImageResource load();
 	
+	@Source("images/update.gif")
+	public ImageResource update();
+	
 	@Source("images/arrow_left.png")
 	public ImageResource arrowLeft();
 	
 	@Source("images/arrow_right.png")
 	public ImageResource arrowRight();
+	
+	@Source("images/error.png")
+	public ImageResource error();
+	
+	@Source("images/ok.png")
+	public ImageResource ok();
+	
+	@Source("images/popup.png")
+	public ImageResource popup();
 }
