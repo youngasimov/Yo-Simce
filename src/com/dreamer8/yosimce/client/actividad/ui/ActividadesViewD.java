@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.actividad.ui;
 
 
 import com.dreamer8.yosimce.client.actividad.DetalleActividadPlace;
+import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.google.gwt.core.client.GWT;
@@ -34,7 +35,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	@UiField Button filtrosButton;
 	@UiField Button exportarButton;
-	@UiField Button detallesButton;
+	@UiField Button sincronizacionButton;
 	@UiField Button informacionButton;
 	@UiField  HTML establecimientoSeleccionado;
 	@UiField(provided = true) DataGrid<ActividadPreviewDTO> dataGrid;
@@ -61,11 +62,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		presenter.onExportarClick();
 	}
 	
-	@UiHandler("detallesButton")
+	@UiHandler("sincronizacionButton")
 	void onDetallesClick(ClickEvent event){
-		DetalleActividadPlace daep = new DetalleActividadPlace();
-		if(selectedItem !=null)daep.setIdActividad(selectedItem.getActividadId());
-		presenter.goTo(daep);
+		SincronizacionPlace place = new SincronizacionPlace();
+		place.setIdSincronizacion(selectedItem.getCursoId());
+		presenter.goTo(place);
 	}
 	
 	@UiHandler("informacionButton")
@@ -106,7 +107,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	private void bind(){
 		dataGrid.setWidth("100%");
 		buildGrid();
-		detallesButton.setVisible(false);
+		sincronizacionButton.setVisible(false);
 		informacionButton.setVisible(false);
 		
 		pager.setDisplay(dataGrid);
@@ -128,7 +129,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				//establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?selectionModel.getSelectedObject().getEstablecimientoName()+" >":"");
-				detallesButton.setVisible(selectionModel.getSelectedObject()!=null);
+				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
 				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
 				selectedItem = selectionModel.getSelectedObject();
 			}

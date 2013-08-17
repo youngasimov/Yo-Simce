@@ -4,7 +4,6 @@ import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -24,7 +23,6 @@ public class ActividadViewD extends Composite implements ActividadView {
 	
 	@UiField Button actividadesViewButton;
 	@UiField Button formularioActividadActionButton;
-	@UiField Button sincronizacionesViewButton;
 	@UiField Button sincronizacionActionButton;
 	@UiField Button aprobarSupervisoresActionButton;
 
@@ -42,11 +40,6 @@ public class ActividadViewD extends Composite implements ActividadView {
 	@UiHandler("formularioActividadActionButton")
 	void onFormularioActividadClick(ClickEvent event){
 		presenter.goTo(new FormActividadPlace());
-	}
-	
-	@UiHandler("sincronizacionesViewButton")
-	void onSincronizacionesClick(ClickEvent event){
-		presenter.goTo(new SincronizacionesPlace());
 	}
 	
 	@UiHandler("sincronizacionActionButton")
@@ -67,11 +60,6 @@ public class ActividadViewD extends Composite implements ActividadView {
 	@Override
 	public void setFormActividadVisivility(boolean visible) {
 		formularioActividadActionButton.setVisible(visible);
-	}
-
-	@Override
-	public void setSincronizacionesVisivility(boolean visible) {
-		sincronizacionesViewButton.setVisible(visible);
 	}
 
 	@Override

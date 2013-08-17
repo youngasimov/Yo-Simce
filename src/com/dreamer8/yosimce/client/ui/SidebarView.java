@@ -22,13 +22,11 @@ public interface SidebarView extends IsWidget {
 	void setFormularioActividadActionItemVisivility(boolean visible);
 	void setDetalleActividadViewItemVisivility(boolean visible);
 	void setSincronizacionActionItemVisivility(boolean visible);
-	void setSincronizacionesViewItemVisivility(boolean visible);
 	void setAprobarSupervisoresActionItemVisivility(boolean visible);
 	void setActividadesViewItemSelected(boolean selected);
 	void setFormularioActividadActionItemSelected(boolean selected);
 	void setDetalleActividadViewItemSelected(boolean selected);
 	void setSincronizacionActionItemSelected(boolean selected);
-	void setSincronizacionesViewItemSelected(boolean selected);
 	void setAprobarSupervisoresActionItemSelected(boolean selected);
 	
 	void setMaterialVisivility(boolean visible);

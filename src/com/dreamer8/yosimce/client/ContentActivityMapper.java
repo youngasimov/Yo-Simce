@@ -12,8 +12,6 @@ import com.dreamer8.yosimce.client.actividad.FormActividadActivity;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionActivity;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.actividad.SincronizacionesActivity;
-import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.dreamer8.yosimce.client.administracion.AdminActivity;
 import com.dreamer8.yosimce.client.administracion.AdminEventosActivity;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
@@ -81,8 +79,6 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
 		}else if(place instanceof FormActividadPlace){
 			return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
-		}else if(place instanceof SincronizacionesPlace){
-			return new SincronizacionesActivity(factory, (SincronizacionesPlace)place, permisos);
 		}else if(place instanceof SincronizacionPlace){
 			return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
 		}else if(place instanceof AprobarSupervisoresPlace){

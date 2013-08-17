@@ -10,8 +10,6 @@ import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadViewD;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionViewD;
-import com.dreamer8.yosimce.client.actividad.ui.SincronizacionesView;
-import com.dreamer8.yosimce.client.actividad.ui.SincronizacionesViewD;
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
@@ -87,7 +85,6 @@ public class ClientFactoryD implements ClientFactory {
 	private final ActividadView actividadView = new ActividadViewD();
 	private final ActividadesView actividadesView = new ActividadesViewD();
 	private final FormActividadView formActividadView = new FormActividadViewD();
-	private final SincronizacionesView sincronizacionesView = new SincronizacionesViewD();
 	private final SincronizacionView sincronizacionView = new SincronizacionViewD();
 	
 	private final MaterialView materialView = new MaterialViewD(); 
@@ -211,11 +208,6 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public FormActividadView getFormActividadView() {
 		return formActividadView;
-	}
-
-	@Override
-	public SincronizacionesView getSincronizacionesView() {
-		return sincronizacionesView;
 	}
 	
 	@Override

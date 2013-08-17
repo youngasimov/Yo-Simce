@@ -6,7 +6,6 @@ import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.DetalleActividadPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.actividad.SincronizacionesPlace;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
@@ -66,7 +65,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor formularioActividadActionItem;
 	@UiField Anchor detalleActividadViewItem;
 	@UiField Anchor sincronizacionActionItem;
-	@UiField Anchor sincronizacionesViewItem;
 	@UiField Anchor aprobarSupervisoresActionItem;
 	
 	@UiField Anchor ingresoMaterialActionItem;
@@ -149,11 +147,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiHandler("sincronizacionActionItem")
 	void onSincronizacionActionItemClick(ClickEvent event){
 		presenter.goTo(new SincronizacionPlace());
-	}
-	
-	@UiHandler("sincronizacionesViewItem")
-	void onSincronizacionesActionItemClick(ClickEvent event){
-		presenter.goTo(new SincronizacionesPlace());
 	}
 	
 	@UiHandler("aprobarSupervisoresActionItem")
@@ -279,13 +272,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	public void setSincronizacionActionItemVisivility(boolean visible) {
 		sincronizacionActionItem.setVisible(visible);
 	}
-
-
-	@Override
-	public void setSincronizacionesViewItemVisivility(boolean visible) {
-		sincronizacionesViewItem.setVisible(visible);
-	}
-
 
 	@Override
 	public void setAprobarSupervisoresActionItemVisivility(boolean visible) {
@@ -413,14 +399,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setSincronizacionesViewItemSelected(boolean selected) {
-		removeSeleccion();
-		if(selected){
-			sincronizacionesViewItem.addStyleName(style.selected());
-		}
-	}
-
-	@Override
 	public void setAprobarSupervisoresActionItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
@@ -486,7 +464,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 		formularioActividadActionItem.removeStyleName(style.selected());
 		detalleActividadViewItem.removeStyleName(style.selected());
 		sincronizacionActionItem.removeStyleName(style.selected());
-		sincronizacionesViewItem.removeStyleName(style.selected());
 		aprobarSupervisoresActionItem.removeStyleName(style.selected());
 		ingresoMaterialActionItem.removeStyleName(style.selected());
 		salidaMaterialActionItem.removeStyleName(style.selected());

@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
-import com.dreamer8.yosimce.shared.dto.SincronizacionPreviewDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
@@ -18,9 +17,6 @@ public interface ActividadService extends RemoteService {
 	ArrayList<ActividadPreviewDTO> getPreviewActividades(Integer offset, Integer length, HashMap<String,String> filtros) throws NoAllowedException, NoLoggedException, DBException;
 	
 	Integer getTotalPreviewActividades(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
-	
-	
-	ArrayList<SincronizacionPreviewDTO> getPreviewSincronizaciones(Integer offset, Integer length, HashMap<String,String> filtros) throws NoAllowedException, NoLoggedException, DBException;
 	
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	

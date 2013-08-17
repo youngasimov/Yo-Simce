@@ -10,24 +10,33 @@ public class ActividadPreviewDTO implements Serializable{
 
 		@Override
 		public Object getKey(ActividadPreviewDTO item) {
-			return (item == null) ? null : item.getActividadId();
+			return (item == null) ? null : item.getCursoId();
 		}
 	};
 	
-	private Integer actividadId;
-	
 	private Integer cursoId;
+	private String nombreEstablecimiento;
+	private String rbd;
+	private String tipoEstablecimiento;
+	private String curso;
+	private String region;
+	private String comuna;
+	private Integer cuestionariosPadresApoderadosEntregados;
+	private Integer cuestionariosPadresApoderadosRecibidos;
+	private Integer alumnosTotales;
+	private Integer alumnosEvaluados;
+	private Integer alumnosSincronizados;
+	private Integer materialDefectuoso;
+	private Boolean contingencia;
+	/**
+	 * indica si la toma de la prueba esta en riesgo en base a la contingencia detectada
+	 * en visita previa
+	 */
+	private Boolean contingenciaLimitante;
 	
 	
 	public ActividadPreviewDTO(){}
 
-	public Integer getActividadId() {
-		return actividadId;
-	}
-
-	public void setActividadId(Integer actividadId) {
-		this.actividadId = actividadId;
-	}
 
 	public Integer getCursoId() {
 		return cursoId;
@@ -36,6 +45,7 @@ public class ActividadPreviewDTO implements Serializable{
 	public void setCursoId(Integer cursoId) {
 		this.cursoId = cursoId;
 	}
+	
 	
 	
 }

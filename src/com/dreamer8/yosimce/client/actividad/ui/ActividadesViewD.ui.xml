@@ -59,7 +59,7 @@
 					<g:Button addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros"/>
 					<g:Button addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar"/>
 					|<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
-					<g:Button addStyleNames='{style.action}' ui:field="detallesButton" text="Detalles"/>
+					<g:Button addStyleNames='{style.action}' ui:field="sincronizacionButton" text="Sincronización"/>
 					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
 				</div>
 			</g:HTMLPanel>	

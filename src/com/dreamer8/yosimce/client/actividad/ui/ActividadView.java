@@ -7,7 +7,6 @@ public interface ActividadView extends IsWidget {
 
 	void setActividadesVisivility(boolean visible);
 	void setFormActividadVisivility(boolean visible);
-	void setSincronizacionesVisivility(boolean visible);
 	void setSincronizacionVisivility(boolean visible);
 	void setAprobarSupervisoresVisivility(boolean visible);
 	
