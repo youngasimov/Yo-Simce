@@ -66,13 +66,24 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				Integer idTipoUsuario = ac.getIdUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
 
 				UsuarioDAO udao = new UsuarioDAO();
-				udtos = (ArrayList<UserDTO>) udao
-						.findByIdAplicacionANDIdNivelANDIdTipoUsuarioSuperiorANDFiltro(
-								idAplicacion, idNivel, idTipoUsuario, offset,
-								length, filtro);
+				if (usuarioTipo.getNombre().equals(UsuarioTipo.ADMINISTRADOR)) {
+					udtos = (ArrayList<UserDTO>) udao
+							.findByIdAplicacionANDIdNivelANDFiltro(
+									idAplicacion, idNivel, offset, length,
+									filtro);
+				} else {
+					udtos = (ArrayList<UserDTO>) udao
+							.findByIdAplicacionANDIdNivelANDIdTipoUsuarioSuperiorANDFiltro(
+									idAplicacion, idNivel, usuarioTipo.getId(),
+									offset, length, filtro);
+				}
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
@@ -115,11 +126,22 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				s.beginTransaction();
-				Integer idUsuarioTipo = ac.getIdUsuarioTipo();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
 				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
-				List<UsuarioTipo> uts = utdao
-						.findByIdAplicacionANDIdTipoUsuarioSuperior(
-								idAplicacion, idUsuarioTipo);
+				List<UsuarioTipo> uts = null;
+
+				if (usuarioTipo.getNombre().equals(UsuarioTipo.ADMINISTRADOR)) {
+					uts = utdao.findByIdAplicacion(idAplicacion);
+				} else {
+					uts = utdao.findByIdAplicacionANDIdTipoUsuarioSuperior(
+							idAplicacion, usuarioTipo.getId());
+				}
 
 				if (uts != null && !uts.isEmpty()) {
 					for (UsuarioTipo ut : uts) {
@@ -309,9 +331,10 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				AplicacionXUsuarioTipoXPermisoDAO axutxpdao = new AplicacionXUsuarioTipoXPermisoDAO();
 				List<AplicacionXUsuarioTipoXPermiso> axutxps = axutxpdao
 						.findByIdAplicacionSortedByIdPermiso(idAplicacion);
-				
-				//Recorrer listas y actualizar los pojos correspondientes con los permisos adecuados
-				
+
+				// Recorrer listas y actualizar los pojos correspondientes con
+				// los permisos adecuados
+
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {

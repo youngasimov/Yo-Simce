@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioCapacitacion" table="usuario_capacitacion" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioCapacitacionId">
+            <key-property name="id" type="java.lang.Integer">
+                <column name="id" />
+            </key-property>
+            <key-property name="sexoId" type="java.lang.Integer">
+                <column name="sexo_id" />
+            </key-property>
+            <key-property name="username" type="string">
+                <column name="username" />
+            </key-property>
+            <key-property name="nombres" type="string">
+                <column name="nombres" />
+            </key-property>
+            <key-property name="apellidoPaterno" type="string">
+                <column name="apellido_paterno" />
+            </key-property>
+            <key-property name="apellidoMaterno" type="string">
+                <column name="apellido_materno" />
+            </key-property>
+            <key-property name="email" type="string">
+                <column name="email" />
+            </key-property>
+            <key-property name="usuarioTipoId" type="java.lang.Integer">
+                <column name="usuario_tipo_id" />
+            </key-property>
+            <key-property name="celular" type="string">
+                <column name="celular" />
+            </key-property>
+            <key-property name="companiaTelefonoId" type="java.lang.Integer">
+                <column name="compania_telefono_id" />
+            </key-property>
+            <key-property name="smartphone" type="java.lang.Boolean">
+                <column name="smartphone" />
+            </key-property>
+            <key-property name="direccion" type="string">
+                <column name="direccion" />
+            </key-property>
+            <key-property name="direccionLatitud" type="big_decimal">
+                <column name="direccion_latitud" precision="131089" scale="0" />
+            </key-property>
+            <key-property name="direccionLongitud" type="big_decimal">
+                <column name="direccion_longitud" precision="131089" scale="0" />
+            </key-property>
+            <key-property name="comunaId" type="java.lang.Integer">
+                <column name="comuna_id" />
+            </key-property>
+            <key-property name="fechaNacimiento" type="timestamp">
+                <column name="fecha_nacimiento" length="29" />
+            </key-property>
+            <key-property name="usernameCanonical" type="string">
+                <column name="username_canonical" />
+            </key-property>
+            <key-property name="emailCanonical" type="string">
+                <column name="email_canonical" />
+            </key-property>
+            <key-property name="enabled" type="java.lang.Boolean">
+                <column name="enabled" />
+            </key-property>
+            <key-property name="lastLogin" type="timestamp">
+                <column name="last_login" length="29" />
+            </key-property>
+            <key-property name="locked" type="java.lang.Boolean">
+                <column name="locked" />
+            </key-property>
+            <key-property name="expired" type="java.lang.Boolean">
+                <column name="expired" />
+            </key-property>
+            <key-property name="expiresAt" type="timestamp">
+                <column name="expires_at" length="29" />
+            </key-property>
+            <key-property name="roles" type="string">
+                <column name="roles" />
+            </key-property>
+            <key-property name="credentialsExpired" type="java.lang.Boolean">
+                <column name="credentials_expired" />
+            </key-property>
+            <key-property name="credentialsExpireAt" type="timestamp">
+                <column name="credentials_expire_at" length="29" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

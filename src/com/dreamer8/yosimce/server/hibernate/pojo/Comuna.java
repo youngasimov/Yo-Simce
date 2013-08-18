@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ public class Comuna implements java.io.Serializable {
 	private List<Establecimiento> establecimientos = new ArrayList<Establecimiento>(0);
 	private List<Co> cos = new ArrayList<Co>(0);
 	private List<Usuario> usuarios = new ArrayList<Usuario>(0);
+	private List<AplicacionXNivelXUsuarioTipoXComuna> aplicacionXNivelXUsuarioTipoXComunas = new ArrayList<AplicacionXNivelXUsuarioTipoXComuna>(0);
 	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
 	private List<Transporte> transportes = new ArrayList<Transporte>(0);
 	private List<CcXComuna> ccXComunas = new ArrayList<CcXComuna>(0);
@@ -31,7 +32,8 @@ public class Comuna implements java.io.Serializable {
 	}
 
 	public Comuna(Integer id, Provincia provincia, String nombre, List<Cc> ccs,
-			List<Establecimiento> establecimientos, List<Co> cos, List<Usuario> usuarios, List<UsuarioXComuna> usuarioXComunas,
+			List<Establecimiento> establecimientos, List<Co> cos, List<Usuario> usuarios,
+			List<AplicacionXNivelXUsuarioTipoXComuna> aplicacionXNivelXUsuarioTipoXComunas, List<UsuarioXComuna> usuarioXComunas,
 			List<Transporte> transportes, List<CcXComuna> ccXComunas) {
 		this.id = id;
 		this.provincia = provincia;
@@ -40,6 +42,7 @@ public class Comuna implements java.io.Serializable {
 		this.establecimientos = establecimientos;
 		this.cos = cos;
 		this.usuarios = usuarios;
+		this.aplicacionXNivelXUsuarioTipoXComunas = aplicacionXNivelXUsuarioTipoXComunas;
 		this.usuarioXComunas = usuarioXComunas;
 		this.transportes = transportes;
 		this.ccXComunas = ccXComunas;
@@ -99,6 +102,15 @@ public class Comuna implements java.io.Serializable {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public List<AplicacionXNivelXUsuarioTipoXComuna> getAplicacionXNivelXUsuarioTipoXComunas() {
+		return this.aplicacionXNivelXUsuarioTipoXComunas;
+	}
+
+	public void setAplicacionXNivelXUsuarioTipoXComunas(
+			List<AplicacionXNivelXUsuarioTipoXComuna> aplicacionXNivelXUsuarioTipoXComunas) {
+		this.aplicacionXNivelXUsuarioTipoXComunas = aplicacionXNivelXUsuarioTipoXComunas;
 	}
 
 	public List<UsuarioXComuna> getUsuarioXComunas() {

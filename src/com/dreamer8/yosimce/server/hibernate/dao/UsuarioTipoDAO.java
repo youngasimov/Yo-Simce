@@ -43,6 +43,18 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 		return ut;
 	}
 
+	public List<UsuarioTipo> findByIdAplicacion(Integer idAplicacion) {
+
+		List<UsuarioTipo> uts = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT ut,* FROM APLICACION_x_USUARIO_TIPO axut"
+				+ " JOIN USUARIO_TIPO ut ON (axut.usuario_tipo_id=ut.id AND axut.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + ")";
+		Query q = s.createSQLQuery(query).addEntity(UsuarioTipo.class);
+		uts = q.list();
+		return uts;
+	}
+
 	public List<UsuarioTipo> findByIdAplicacionANDIdTipoUsuarioSuperior(
 			Integer idAplicacion, Integer idUsuarioTipoSuperior) {
 

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioDisponibilidad" table="usuario_disponibilidad" schema="public">
+        <comment>registra los dias que puede aplicar</comment>
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usuarioXAplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXAplicacionXNivel" fetch="select">
+            <column name="usuario_x_aplicacion_x_nivel_id" not-null="true" />
+        </many-to-one>
+        <property name="fecha" type="date">
+            <column name="fecha" length="13" not-null="true" />
+        </property>
+        <property name="disponible" type="boolean">
+            <column name="disponible" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

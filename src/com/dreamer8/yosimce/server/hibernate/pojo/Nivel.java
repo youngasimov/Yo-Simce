@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ public class Nivel implements java.io.Serializable {
 	private List<FaseXAplicacionXTestXNivelXUsuarioTipo> faseXAplicacionXTestXNivelXUsuarioTipos = new ArrayList<FaseXAplicacionXTestXNivelXUsuarioTipo>(0);
 	private List<AplicacionXNivel> aplicacionXNivels = new ArrayList<AplicacionXNivel>(0);
 	private List<Usuario> usuarios = new ArrayList<Usuario>(0);
-	private List<Curso> cursos = new ArrayList<Curso>(0);
 
 	public Nivel() {
 	}
@@ -28,13 +27,12 @@ public class Nivel implements java.io.Serializable {
 
 	public Nivel(Integer id, String nombre,
 			List<FaseXAplicacionXTestXNivelXUsuarioTipo> faseXAplicacionXTestXNivelXUsuarioTipos, List<AplicacionXNivel> aplicacionXNivels,
-			List<Usuario> usuarios, List<Curso> cursos) {
+			List<Usuario> usuarios) {
 		this.id = id;
 		this.nombre = nombre;
 		this.faseXAplicacionXTestXNivelXUsuarioTipos = faseXAplicacionXTestXNivelXUsuarioTipos;
 		this.aplicacionXNivels = aplicacionXNivels;
 		this.usuarios = usuarios;
-		this.cursos = cursos;
 	}
 
 	public Integer getId() {
@@ -78,18 +76,11 @@ public class Nivel implements java.io.Serializable {
 		this.usuarios = usuarios;
 	}
 
-	public List<Curso> getCursos() {
-		return this.cursos;
-	}
-
-	public void setCursos(List<Curso> cursos) {
-		this.cursos = cursos;
-	}
-
 	public NivelDTO getNivelDTO() {
 		NivelDTO ndto = new NivelDTO();
 		ndto.setId(id);
 		ndto.setNombre(nombre);
 		return ndto;
 	}
+
 }

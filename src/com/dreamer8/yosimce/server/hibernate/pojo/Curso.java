@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 public class Curso implements java.io.Serializable {
 
 	private Integer id;
-	private Nivel nivel;
+	private AplicacionXNivel aplicacionXNivel;
 	private Establecimiento establecimiento;
 	private String nombre;
 	private String codigo;
@@ -29,11 +29,12 @@ public class Curso implements java.io.Serializable {
 		this.nee = nee;
 	}
 
-	public Curso(Integer id, Nivel nivel, Establecimiento establecimiento,
-			String nombre, String codigo, boolean emergente, boolean nee,
-			Integer cantidadAlumnos, List<Actividad> actividads) {
+	public Curso(Integer id, AplicacionXNivel aplicacionXNivel,
+			Establecimiento establecimiento, String nombre, String codigo,
+			boolean emergente, boolean nee, Integer cantidadAlumnos,
+			List<Actividad> actividads) {
 		this.id = id;
-		this.nivel = nivel;
+		this.aplicacionXNivel = aplicacionXNivel;
 		this.establecimiento = establecimiento;
 		this.nombre = nombre;
 		this.codigo = codigo;
@@ -51,12 +52,12 @@ public class Curso implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Nivel getNivel() {
-		return this.nivel;
+	public AplicacionXNivel getAplicacionXNivel() {
+		return this.aplicacionXNivel;
 	}
 
-	public void setNivel(Nivel nivel) {
-		this.nivel = nivel;
+	public void setAplicacionXNivel(AplicacionXNivel aplicacionXNivel) {
+		this.aplicacionXNivel = aplicacionXNivel;
 	}
 
 	public Establecimiento getEstablecimiento() {

@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -633,7 +633,6 @@ public class Usuario implements java.io.Serializable {
 	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
-
 
 	public UserDTO getUserDTO() {
 		UserDTO udto = new UserDTO();

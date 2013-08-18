@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Comuna" table="comuna" schema="public">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <many-to-one name="provincia" class="com.dreamer8.yosimce.server.hibernate.pojo.Provincia" fetch="select">
             <column name="provincia_id" />
@@ -37,6 +37,12 @@
                 <column name="comuna_id" />
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.Usuario" />
+        </bag>
+        <bag name="aplicacionXNivelXUsuarioTipoXComunas" table="aplicacion_x_nivel_x_usuario_tipo_x_comuna" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="comuna_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXUsuarioTipoXComuna" />
         </bag>
         <bag name="usuarioXComunas" table="usuario_x_comuna" inverse="true" lazy="true" fetch="select">
             <key>

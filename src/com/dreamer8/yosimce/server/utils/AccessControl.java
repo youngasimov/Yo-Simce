@@ -41,7 +41,7 @@ public class AccessControl {
 	private Integer idAplicacion = null;
 	private Integer idNivel = null;
 	private Integer idActividadTipo = null;
-	private Integer idUsuarioTipo = null;
+	private UsuarioTipo usuarioTipo = null;
 
 	public AccessControl(HttpServletRequest request) {
 		this.request = request;
@@ -144,17 +144,17 @@ public class AccessControl {
 		return idActividadTipo;
 	}
 
-	public Integer getIdUsuarioTipo() {
-		if (idUsuarioTipo == null) {
+	public UsuarioTipo getUsuarioTipo() {
+		if (usuarioTipo == null) {
 			Usuario usuario = (Usuario) this.session.getAttribute("usuario");
 			UsuarioTipoDAO utdao = new UsuarioTipoDAO();
 			UsuarioTipo ut = utdao.findByIdAplicacionANDIdNivelANDIdUsuario(
 					idAplicacion, idNivel, usuario.getId());
 			if (ut != null) {
-				idUsuarioTipo = ut.getId();
+				usuarioTipo = ut;
 			}
 		}
-		return idUsuarioTipo;
+		return usuarioTipo;
 	}
 
 	public boolean isAllowed(String className, String methodName)
