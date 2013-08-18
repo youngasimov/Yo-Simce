@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,7 @@ public class CentroRegional implements java.io.Serializable {
 	private Aplicacion aplicacion;
 	private String nombre;
 	private List<Zona> zonas = new ArrayList<Zona>(0);
-	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(
-			0);
+	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(0);
 
 	public CentroRegional() {
 	}

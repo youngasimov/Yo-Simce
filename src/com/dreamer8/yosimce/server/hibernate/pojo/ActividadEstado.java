@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,17 @@ import java.util.List;
  */
 public class ActividadEstado implements java.io.Serializable {
 
+	public static final String SIN_INFORMACION = "Sin Información";
+	public static final String POR_CONFIRMAR = "Por Confirmar";
+	public static final String CONFIRMADO = "Confirmado";
+	public static final String REALIZADA = "Realizada";
+	public static final String ANULADA = "Anulada";
+
 	private Integer id;
 	private String nombre;
 	private List<Actividad> actividads = new ArrayList<Actividad>(0);
-	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(0);
+	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(
+			0);
 
 	public ActividadEstado() {
 	}
@@ -22,7 +29,8 @@ public class ActividadEstado implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public ActividadEstado(Integer id, String nombre, List<Actividad> actividads,
+	public ActividadEstado(Integer id, String nombre,
+			List<Actividad> actividads,
 			List<ActividadHistorial> actividadHistorials) {
 		this.id = id;
 		this.nombre = nombre;
@@ -58,7 +66,8 @@ public class ActividadEstado implements java.io.Serializable {
 		return this.actividadHistorials;
 	}
 
-	public void setActividadHistorials(List<ActividadHistorial> actividadHistorials) {
+	public void setActividadHistorials(
+			List<ActividadHistorial> actividadHistorials) {
 		this.actividadHistorials = actividadHistorials;
 	}
 

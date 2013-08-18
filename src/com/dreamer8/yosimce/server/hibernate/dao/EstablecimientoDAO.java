@@ -60,6 +60,7 @@ public class EstablecimientoDAO extends
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
+				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
@@ -114,6 +115,7 @@ public class EstablecimientoDAO extends
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
+				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {

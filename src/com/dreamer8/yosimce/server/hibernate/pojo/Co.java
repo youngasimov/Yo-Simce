@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,18 +26,14 @@ public class Co implements java.io.Serializable {
 	private String propietarioTelefono;
 	private String propietarioCelular;
 	private Integer modificadorId;
-	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(
-			0);
-	private List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos = new ArrayList<AplicacionXNivelXUsuarioTipoXCo>(
-			0);
-	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(
-			0);
+	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(0);
+	private List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos = new ArrayList<AplicacionXNivelXUsuarioTipoXCo>(0);
+	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(0);
 	private List<Material> materials = new ArrayList<Material>(0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
 	private List<JoXCo> joXCos = new ArrayList<JoXCo>(0);
 	private List<UsuarioXCo> usuarioXCos = new ArrayList<UsuarioXCo>(0);
-	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(
-			0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
 	private List<Ruta> rutas = new ArrayList<Ruta>(0);
 
 	public Co() {
@@ -47,25 +43,14 @@ public class Co implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Co(
-			Integer id,
-			Zona zona,
-			Comuna comuna,
-			String nombre,
-			String direccion,
-			BigDecimal direccionLatitud,
-			BigDecimal direccionLongitud,
-			String propietarioNombre,
-			String propietarioRut,
-			String propietarioEmail,
-			String propietarioTelefono,
-			String propietarioCelular,
-			Integer modificadorId,
-			List<CoXEstablecimiento> coXEstablecimientos,
-			List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos,
-			List<UsuarioPreseleccion> usuarioPreseleccions,
-			List<Material> materials, List<SuplenteXCo> suplenteXCos,
-			List<JoXCo> joXCos, List<UsuarioXCo> usuarioXCos,
+	public Co(Integer id, Zona zona, Comuna comuna, String nombre,
+			String direccion, BigDecimal direccionLatitud,
+			BigDecimal direccionLongitud, String propietarioNombre,
+			String propietarioRut, String propietarioEmail,
+			String propietarioTelefono, String propietarioCelular,
+			Integer modificadorId, List<CoXEstablecimiento> coXEstablecimientos,
+			List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos, List<UsuarioPreseleccion> usuarioPreseleccions,
+			List<Material> materials, List<SuplenteXCo> suplenteXCos, List<JoXCo> joXCos, List<UsuarioXCo> usuarioXCos,
 			List<MaterialHistorial> materialHistorials, List<Ruta> rutas) {
 		this.id = id;
 		this.zona = zona;
@@ -199,8 +184,7 @@ public class Co implements java.io.Serializable {
 		return this.coXEstablecimientos;
 	}
 
-	public void setCoXEstablecimientos(
-			List<CoXEstablecimiento> coXEstablecimientos) {
+	public void setCoXEstablecimientos(List<CoXEstablecimiento> coXEstablecimientos) {
 		this.coXEstablecimientos = coXEstablecimientos;
 	}
 
@@ -217,8 +201,7 @@ public class Co implements java.io.Serializable {
 		return this.usuarioPreseleccions;
 	}
 
-	public void setUsuarioPreseleccions(
-			List<UsuarioPreseleccion> usuarioPreseleccions) {
+	public void setUsuarioPreseleccions(List<UsuarioPreseleccion> usuarioPreseleccions) {
 		this.usuarioPreseleccions = usuarioPreseleccions;
 	}
 
@@ -270,9 +253,6 @@ public class Co implements java.io.Serializable {
 		this.rutas = rutas;
 	}
 
-	/**
-	 * @return
-	 */
 	public EmplazamientoDTO getEmplazamientoDTO() {
 		EmplazamientoDTO edto = new EmplazamientoDTO();
 		edto.setId(id);

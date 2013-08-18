@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ public class UsuarioXAplicacionXNivel implements java.io.Serializable {
 	private Integer id;
 	private Usuario usuario;
 	private AplicacionXNivel aplicacionXNivel;
+	private List<UsuarioDisponibilidad> usuarioDisponibilidads = new ArrayList<UsuarioDisponibilidad>(0);
 	private List<UsuarioSeleccion> usuarioSeleccions = new ArrayList<UsuarioSeleccion>(0);
 	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(0);
 
@@ -24,11 +25,12 @@ public class UsuarioXAplicacionXNivel implements java.io.Serializable {
 	}
 
 	public UsuarioXAplicacionXNivel(Integer id, Usuario usuario,
-			AplicacionXNivel aplicacionXNivel, List<UsuarioSeleccion> usuarioSeleccions,
-			List<UsuarioPreseleccion> usuarioPreseleccions) {
+			AplicacionXNivel aplicacionXNivel, List<UsuarioDisponibilidad> usuarioDisponibilidads,
+			List<UsuarioSeleccion> usuarioSeleccions, List<UsuarioPreseleccion> usuarioPreseleccions) {
 		this.id = id;
 		this.usuario = usuario;
 		this.aplicacionXNivel = aplicacionXNivel;
+		this.usuarioDisponibilidads = usuarioDisponibilidads;
 		this.usuarioSeleccions = usuarioSeleccions;
 		this.usuarioPreseleccions = usuarioPreseleccions;
 	}
@@ -55,6 +57,14 @@ public class UsuarioXAplicacionXNivel implements java.io.Serializable {
 
 	public void setAplicacionXNivel(AplicacionXNivel aplicacionXNivel) {
 		this.aplicacionXNivel = aplicacionXNivel;
+	}
+
+	public List<UsuarioDisponibilidad> getUsuarioDisponibilidads() {
+		return this.usuarioDisponibilidads;
+	}
+
+	public void setUsuarioDisponibilidads(List<UsuarioDisponibilidad> usuarioDisponibilidads) {
+		this.usuarioDisponibilidads = usuarioDisponibilidads;
 	}
 
 	public List<UsuarioSeleccion> getUsuarioSeleccions() {

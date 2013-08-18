@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,7 @@ public class Aplicacion implements java.io.Serializable {
 	private String slug;
 	private Integer tiempoDetencionEstablecimiento;
 	private Integer diasPreviosSinMaterial;
+	private boolean disponibilidadDiaria;
 	private List<CentroRegional> centroRegionals = new ArrayList<CentroRegional>(0);
 	private List<AplicacionXNivel> aplicacionXNivels = new ArrayList<AplicacionXNivel>(0);
 	private List<Lugar> lugars = new ArrayList<Lugar>(0);
@@ -30,22 +31,25 @@ public class Aplicacion implements java.io.Serializable {
 	public Aplicacion() {
 	}
 
-	public Aplicacion(Integer id, String slug) {
+	public Aplicacion(Integer id, String slug, boolean disponibilidadDiaria) {
 		this.id = id;
 		this.slug = slug;
+		this.disponibilidadDiaria = disponibilidadDiaria;
 	}
 
 	public Aplicacion(Integer id, String nombre, String slug,
 			Integer tiempoDetencionEstablecimiento,
-			Integer diasPreviosSinMaterial, List<CentroRegional> centroRegionals,
-			List<AplicacionXNivel> aplicacionXNivels, List<Lugar> lugars, List<AplicacionXEstablecimiento> aplicacionXEstablecimientos,
-			List<FaseXAplicacion> faseXAplicacions, List<DocumentoTipo> documentoTipos, List<CcCapacitacion> ccCapacitacions,
+			Integer diasPreviosSinMaterial, boolean disponibilidadDiaria,
+			List<CentroRegional> centroRegionals, List<AplicacionXNivel> aplicacionXNivels, List<Lugar> lugars,
+			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos, List<FaseXAplicacion> faseXAplicacions,
+			List<DocumentoTipo> documentoTipos, List<CcCapacitacion> ccCapacitacions,
 			List<AplicacionXUsuarioTipo> aplicacionXUsuarioTipos, List<DocumentoEstado> documentoEstados) {
 		this.id = id;
 		this.nombre = nombre;
 		this.slug = slug;
 		this.tiempoDetencionEstablecimiento = tiempoDetencionEstablecimiento;
 		this.diasPreviosSinMaterial = diasPreviosSinMaterial;
+		this.disponibilidadDiaria = disponibilidadDiaria;
 		this.centroRegionals = centroRegionals;
 		this.aplicacionXNivels = aplicacionXNivels;
 		this.lugars = lugars;
@@ -96,6 +100,14 @@ public class Aplicacion implements java.io.Serializable {
 
 	public void setDiasPreviosSinMaterial(Integer diasPreviosSinMaterial) {
 		this.diasPreviosSinMaterial = diasPreviosSinMaterial;
+	}
+
+	public boolean isDisponibilidadDiaria() {
+		return this.disponibilidadDiaria;
+	}
+
+	public void setDisponibilidadDiaria(boolean disponibilidadDiaria) {
+		this.disponibilidadDiaria = disponibilidadDiaria;
 	}
 
 	public List<CentroRegional> getCentroRegionals() {

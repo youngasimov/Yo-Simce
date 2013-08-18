@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ public class AplicacionXNivel implements java.io.Serializable {
 	private Boolean activo;
 	private List<AplicacionXNivelXActividadTipo> aplicacionXNivelXActividadTipos = new ArrayList<AplicacionXNivelXActividadTipo>(0);
 	private List<TransporteXAplicacionXNivel> transporteXAplicacionXNivels = new ArrayList<TransporteXAplicacionXNivel>(0);
+	private List<Curso> cursos = new ArrayList<Curso>(0);
 	private List<AplicacionXNivelXUsuarioTipo> aplicacionXNivelXUsuarioTipos = new ArrayList<AplicacionXNivelXUsuarioTipo>(0);
 	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(0);
 
@@ -28,7 +29,7 @@ public class AplicacionXNivel implements java.io.Serializable {
 
 	public AplicacionXNivel(Integer id, Aplicacion aplicacion, Nivel nivel,
 			Boolean activo, List<AplicacionXNivelXActividadTipo> aplicacionXNivelXActividadTipos,
-			List<TransporteXAplicacionXNivel> transporteXAplicacionXNivels,
+			List<TransporteXAplicacionXNivel> transporteXAplicacionXNivels, List<Curso> cursos,
 			List<AplicacionXNivelXUsuarioTipo> aplicacionXNivelXUsuarioTipos, List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
 		this.id = id;
 		this.aplicacion = aplicacion;
@@ -36,6 +37,7 @@ public class AplicacionXNivel implements java.io.Serializable {
 		this.activo = activo;
 		this.aplicacionXNivelXActividadTipos = aplicacionXNivelXActividadTipos;
 		this.transporteXAplicacionXNivels = transporteXAplicacionXNivels;
+		this.cursos = cursos;
 		this.aplicacionXNivelXUsuarioTipos = aplicacionXNivelXUsuarioTipos;
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 	}
@@ -87,6 +89,14 @@ public class AplicacionXNivel implements java.io.Serializable {
 
 	public void setTransporteXAplicacionXNivels(List<TransporteXAplicacionXNivel> transporteXAplicacionXNivels) {
 		this.transporteXAplicacionXNivels = transporteXAplicacionXNivels;
+	}
+
+	public List<Curso> getCursos() {
+		return this.cursos;
+	}
+
+	public void setCursos(List<Curso> cursos) {
+		this.cursos = cursos;
 	}
 
 	public List<AplicacionXNivelXUsuarioTipo> getAplicacionXNivelXUsuarioTipos() {

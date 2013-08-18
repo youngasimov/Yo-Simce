@@ -1,6 +1,6 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
-// Generated 05-08-2013 03:58:39 AM by Hibernate Tools 3.4.0.CR1
+// Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ public class AplicacionXNivelXUsuarioTipo implements java.io.Serializable {
 	private AplicacionXNivel aplicacionXNivel;
 	private Integer montoPago;
 	private List<AvisoXAplicacionXNivelXUsuarioTipo> avisoXAplicacionXNivelXUsuarioTipos = new ArrayList<AvisoXAplicacionXNivelXUsuarioTipo>(0);
+	private List<AplicacionXNivelXUsuarioTipoXComuna> aplicacionXNivelXUsuarioTipoXComunas = new ArrayList<AplicacionXNivelXUsuarioTipoXComuna>(0);
 	private List<ArchvicoXAplicacionXNivelXUsuarioTipo> archvicoXAplicacionXNivelXUsuarioTipos = new ArrayList<ArchvicoXAplicacionXNivelXUsuarioTipo>(0);
 	private List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos = new ArrayList<AplicacionXNivelXUsuarioTipoXCo>(0);
 
@@ -28,6 +29,7 @@ public class AplicacionXNivelXUsuarioTipo implements java.io.Serializable {
 	public AplicacionXNivelXUsuarioTipo(Integer id, UsuarioTipo usuarioTipo,
 			AplicacionXNivel aplicacionXNivel, Integer montoPago,
 			List<AvisoXAplicacionXNivelXUsuarioTipo> avisoXAplicacionXNivelXUsuarioTipos,
+			List<AplicacionXNivelXUsuarioTipoXComuna> aplicacionXNivelXUsuarioTipoXComunas,
 			List<ArchvicoXAplicacionXNivelXUsuarioTipo> archvicoXAplicacionXNivelXUsuarioTipos,
 			List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos) {
 		this.id = id;
@@ -35,6 +37,7 @@ public class AplicacionXNivelXUsuarioTipo implements java.io.Serializable {
 		this.aplicacionXNivel = aplicacionXNivel;
 		this.montoPago = montoPago;
 		this.avisoXAplicacionXNivelXUsuarioTipos = avisoXAplicacionXNivelXUsuarioTipos;
+		this.aplicacionXNivelXUsuarioTipoXComunas = aplicacionXNivelXUsuarioTipoXComunas;
 		this.archvicoXAplicacionXNivelXUsuarioTipos = archvicoXAplicacionXNivelXUsuarioTipos;
 		this.aplicacionXNivelXUsuarioTipoXCos = aplicacionXNivelXUsuarioTipoXCos;
 	}
@@ -78,6 +81,15 @@ public class AplicacionXNivelXUsuarioTipo implements java.io.Serializable {
 	public void setAvisoXAplicacionXNivelXUsuarioTipos(
 			List<AvisoXAplicacionXNivelXUsuarioTipo> avisoXAplicacionXNivelXUsuarioTipos) {
 		this.avisoXAplicacionXNivelXUsuarioTipos = avisoXAplicacionXNivelXUsuarioTipos;
+	}
+
+	public List<AplicacionXNivelXUsuarioTipoXComuna> getAplicacionXNivelXUsuarioTipoXComunas() {
+		return this.aplicacionXNivelXUsuarioTipoXComunas;
+	}
+
+	public void setAplicacionXNivelXUsuarioTipoXComunas(
+			List<AplicacionXNivelXUsuarioTipoXComuna> aplicacionXNivelXUsuarioTipoXComunas) {
+		this.aplicacionXNivelXUsuarioTipoXComunas = aplicacionXNivelXUsuarioTipoXComunas;
 	}
 
 	public List<ArchvicoXAplicacionXNivelXUsuarioTipo> getArchvicoXAplicacionXNivelXUsuarioTipos() {

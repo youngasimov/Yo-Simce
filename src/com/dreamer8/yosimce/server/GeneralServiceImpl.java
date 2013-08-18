@@ -62,13 +62,21 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de la actividad.");
 				}
 
+				Usuario u = getUsuarioActual();
+
 				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
 
 				RegionDAO rdao = new RegionDAO();
 				List<Region> rs = rdao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipo(
-								idAplicacion, idNivel, idActividadTipo);
-
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
+								idAplicacion, idNivel, idActividadTipo,
+								u.getId(), usuarioTipo.getNombre());
 				if (rs != null && !rs.isEmpty()) {
 					for (Region r : rs) {
 						sdtos.add(r.getSectorDTO());
@@ -120,12 +128,39 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado el tipo de la actividad.");
 				}
+
+				Usuario u = getUsuarioActual();
+
 				s.beginTransaction();
 
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
 				ComunaDAO cdao = new ComunaDAO();
-				List<Comuna> cs = cdao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipo(
-								idAplicacion, idNivel, idActividadTipo);
+				List<Comuna> cs = null;
+
+				if (sector == null || sector.getIdSector() == null) {
+					cs = cdao
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDusuarioTipo(
+									idAplicacion, idNivel, idActividadTipo,
+									u.getId(), usuarioTipo.getNombre());
+				} else if (sector.getTipoSector().equals(
+						SectorDTO.TIPO_PROVINCIA)) {
+					cs = cdao
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdProvinciaANDIdUsuarioANDusuarioTipo(
+									idAplicacion, idNivel, idActividadTipo,
+									sector.getIdSector(), u.getId(),
+									usuarioTipo.getNombre());
+				} else {
+					cs = cdao
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdRegionANDIdUsuarioANDusuarioTipo(
+									idAplicacion, idNivel, idActividadTipo,
+									sector.getIdSector(), u.getId(),
+									usuarioTipo.getNombre());
+				}
 				if (cs != null && !cs.isEmpty()) {
 					for (Comuna c : cs) {
 						sdtos.add(c.getSectorDTO());
@@ -184,23 +219,21 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un RBD.");
 				}
 
+				Usuario u = getUsuarioActual();
+
 				s.beginTransaction();
 
-				Integer idUsuarioTipo = ac.getIdUsuarioTipo();
-				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
-				UsuarioTipo ut = utdao.getById(idUsuarioTipo);
-				if (ut == null) {
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
-
-				Usuario u = getUsuarioActual();
 
 				EstablecimientoDAO edao = new EstablecimientoDAO();
 				List<Establecimiento> es = edao
 						.findEstablecimientosByActividadANDRbd(idAplicacion,
 								idNivel, idActividadTipo, u.getId(),
-								ut.getNombre(), rbdSeach);
+								usuarioTipo.getNombre(), rbdSeach);
 
 				if (es != null && !es.isEmpty()) {
 					for (Establecimiento e : es) {
