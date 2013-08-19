@@ -54,7 +54,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 				SesionDAO sdao = new SesionDAO();
-				List<Sesion> ss = sdao.findBySessionValue(token);
+				List<Sesion> ss = sdao.findBySessionId(token);
 				if (ss == null || ss.isEmpty()) {
 					throw new NullPointerException(
 							"No se ha encontrado el usuario especificado");
@@ -284,20 +284,31 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public String getUserToken(String username) throws DBException {
 
-		String token = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			s.beginTransaction();
 			UsuarioDAO udao = new UsuarioDAO();
 			Usuario u = udao.findbyUsername(username);
-
+			if(u == null){
+				throw new NullPointerException("No se encontró el usuario");
+			}
 			SesionDAO sdao = new SesionDAO();
-			Sesion sesion = new Sesion();
+			List<Sesion> ss = sdao.findBySessionId(username);
+
+			Sesion sesion = null;
+			if (ss != null && !ss.isEmpty()) {
+				sesion = ss.get(0);
+			}
+			if (sesion == null) {
+				sesion = new Sesion();
+				sesion.setSessionId(username);
+				sesion.setSessionValue(username);
+			}
 			sesion.setUsuario(u);
-			Random r = new Random();
-			token = Integer.toString(r.nextInt());
-			sesion.setSessionValue(token);
-			sdao.save(sesion);
+			sdao.saveOrUpdate(sesion);
+
+			this.getThreadLocalRequest().getSession()
+					.setAttribute("usuario", u);
 
 			s.getTransaction().commit();
 		} catch (HibernateException ex) {
@@ -311,7 +322,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
 		}
-		return token;
+		return username;
 	}
 
 }
