@@ -45,6 +45,10 @@
 	.action{
 		margin: 5px;
 	}
+
+	.data{
+		font-size: 10px;
+	}
 	
 	
 	</ui:style>
@@ -59,7 +63,7 @@
 			</g:HTMLPanel>	
 		</g:north>
 		<g:center>
-			<c:DataGrid ui:field='dataGrid' />
+			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}' />
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

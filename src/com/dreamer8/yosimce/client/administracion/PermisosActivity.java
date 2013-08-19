@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
+import com.dreamer8.yosimce.client.PermisosEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
@@ -11,8 +12,11 @@ import com.dreamer8.yosimce.client.administracion.ui.PermisosView.PermisosPresen
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.CellPreviewEvent;
+import com.google.gwt.view.client.Range;
 
 public class PermisosActivity extends SimceActivity implements
 		PermisosPresenter {
@@ -30,6 +34,12 @@ public class PermisosActivity extends SimceActivity implements
 	}
 	
 	@Override
+	public void onPermisosActualizados() {
+		
+		updateTable();
+	}
+	
+	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		super.start(panel, eventBus);
 		this.eventBus = eventBus;
@@ -39,6 +49,9 @@ public class PermisosActivity extends SimceActivity implements
 
 			@Override
 			public void onCellPreview(CellPreviewEvent<PermisoDTO> event) {
+				if(Event.getTypeInt(event.getNativeEvent().getType()) != Event.ONCLICK){
+					return;
+				}
 				if(event.getColumn()>2){
 					int userPermiso = view.getColumnUserId(event.getColumn());
 					if(event.getValue().getIdTiposUsuariosPermitidos().contains(userPermiso)){
@@ -52,7 +65,6 @@ public class PermisosActivity extends SimceActivity implements
 				}
 			}
 		});
-		updateTable();
 	}
 
 	@Override
@@ -72,15 +84,19 @@ public class PermisosActivity extends SimceActivity implements
 	}
 	
 	private void updateTable(){
+		
 		getFactory().getAdministracionService().getTiposUsuario(new SimceCallback<ArrayList<TipoUsuarioDTO>>(this.eventBus) {
-
+			
 			@Override
 			public void success(ArrayList<TipoUsuarioDTO> result) {
+				permisosModificados.clear();
 				view.setTiposUsuarios(result);
 				getFactory().getAdministracionService().getPermisos(new SimceCallback<ArrayList<PermisoDTO>>(PermisosActivity.this.eventBus) {
 
 					@Override
 					public void success(ArrayList<PermisoDTO> result) {
+						view.getDataDisplay().setRowCount(result.size());
+						view.getDataDisplay().setVisibleRange(0,result.size());
 						view.getDataDisplay().setRowData(0, result);
 					}
 				});

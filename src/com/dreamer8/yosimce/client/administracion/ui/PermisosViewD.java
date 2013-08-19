@@ -37,11 +37,16 @@ public class PermisosViewD extends Composite implements PermisosView {
 	
 	private PermisosPresenter presenter;
 	
+	private Column<PermisoDTO, String> moduloColumn;
+	private Column<PermisoDTO, String> permisoColumn;
+	private ArrayList<PermisoColumn> columns;
+	
 	public PermisosViewD() {
 		dataGrid = new DataGrid<PermisoDTO>(PermisoDTO.KEY_PROVIDER);
 		dataGrid.setPageSize(500);
 		initWidget(uiBinder.createAndBindUi(this));
-		buildStaticColumns();
+		columns = new ArrayList<PermisosViewD.PermisoColumn>();
+		//buildStaticColumns();
 	}
 	
 	@UiHandler("updateButton")
@@ -57,9 +62,13 @@ public class PermisosViewD extends Composite implements PermisosView {
 	@Override
 	public void setTiposUsuarios(ArrayList<TipoUsuarioDTO> tiposUsuario) {
 		dataGrid.setRowData(new ArrayList<PermisoDTO>());
-		for(int i=0; i <dataGrid.getColumnCount(); i++){
-			dataGrid.removeColumn(i);
+		dataGrid.setRowCount(0);
+		if(moduloColumn!=null){dataGrid.removeColumn(moduloColumn);}
+		if(permisoColumn!=null){dataGrid.removeColumn(permisoColumn);}
+		for(PermisoColumn c:columns){
+			dataGrid.removeColumn(c);
 		}
+		columns.clear();
 		buildStaticColumns();
 		Collections.sort(tiposUsuario, new Comparator<TipoUsuarioDTO>(){
 			@Override
@@ -70,13 +79,15 @@ public class PermisosViewD extends Composite implements PermisosView {
 		PermisoColumn hasPermisoColumn;
 		for(int i = 0; i<tiposUsuario.size();i++){
 			hasPermisoColumn =new PermisoColumn(new CheckboxCell(), tiposUsuario.get(i).getId());
+			columns.add(hasPermisoColumn);
 			dataGrid.addColumn(hasPermisoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(tiposUsuario.get(i).getTipoUsuario())));
 	        dataGrid.setColumnWidth(hasPermisoColumn, 150, Unit.PX);
 		}
+		dataGrid.redraw();
 	}
 	
 	private void buildStaticColumns(){
-		Column<PermisoDTO, String> moduloColumn =new Column<PermisoDTO, String>(new TextCell()) {
+		moduloColumn =new Column<PermisoDTO, String>(new TextCell()) {
             @Override
             public String getValue(PermisoDTO object) {
                 return object.getClase();
@@ -86,10 +97,11 @@ public class PermisosViewD extends Composite implements PermisosView {
         dataGrid.addColumn(moduloColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Modulo")));
         dataGrid.setColumnWidth(moduloColumn, 200, Unit.PX);
         
-        Column<PermisoDTO, String> permisoColumn =new Column<PermisoDTO, String>(new TextCell()) {
+        
+        permisoColumn =new Column<PermisoDTO, String>(new TextCell()) {
             @Override
             public String getValue(PermisoDTO object) {
-                return object.getClase();
+                return object.getMetodo();
             }
         };
         permisoColumn.setSortable(false);

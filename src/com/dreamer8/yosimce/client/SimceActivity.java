@@ -22,7 +22,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 		this.place = place;
 	}
 	
-	public void updatedPermisos(){}
+	public void onPermisosActualizados(){}
 	
 	public ClientFactory getFactory(){
 		return factory;
@@ -47,7 +47,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
-				updatedPermisos();
+				onPermisosActualizados();
 			}
 		});	
 	}
