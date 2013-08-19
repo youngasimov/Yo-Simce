@@ -289,7 +289,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet implem
 					throw new NullPointerException("No se ha especificado una aplicación.");
 				}
 
-				if (permisos != null && !permisos.isEmpty()) {
+				if (permisos == null || permisos.isEmpty()) {
 					throw new NullPointerException("No se especificó ningún cambio en los permisos");
 				}
 
