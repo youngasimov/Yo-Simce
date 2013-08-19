@@ -8,8 +8,8 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Sesion;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
 
 public class SesionDAO extends AbstractHibernateDAO<Sesion, String> {
-	public List<Sesion> findBySessionValue(String sessionValue) {
-		return findByCriteria(Restrictions.eq("sessionValue",
-				SecurityFilter.escapeString(sessionValue)));
+	public List<Sesion> findBySessionId(String sessionid) {
+		return findByCriteria(Restrictions.eq("sessionid",
+				SecurityFilter.escapeString(sessionid)));
 	}
 }
