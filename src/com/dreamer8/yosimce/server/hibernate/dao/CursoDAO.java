@@ -15,8 +15,8 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 
 		List<Curso> ca = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT c.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.id_actividad="
-				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.id_nivel=" + SecurityFilter.escapeString(idNivel)
+		String query = "SELECT DISTINCT c.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id" + " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";

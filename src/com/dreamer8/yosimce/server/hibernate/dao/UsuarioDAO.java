@@ -20,9 +20,9 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 		Usuario u = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT u.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.id_actividad="
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.id_nivel="
+				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
@@ -63,9 +63,9 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND us.usuario_tipo_id > "
 				+ SecurityFilter.escapeString(idTipoUsuarioSuperior)
 				+ ")"
-				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel.id=axn.id AND axn.id_actividad="
+				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel.id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.id_nivel="
+				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
@@ -111,9 +111,9 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 		String query = "SELECT u.id,u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
-				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel.id=axn.id AND axn.id_actividad="
+				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel.id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.id_nivel="
+				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
