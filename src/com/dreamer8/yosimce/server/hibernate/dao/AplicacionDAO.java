@@ -21,7 +21,7 @@ public class AplicacionDAO extends AbstractHibernateDAO<Aplicacion, Integer> {
 
 		List<Aplicacion> as = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT a.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn" 
+		String query = "SELECT DISTINCT a.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn" 
 				+ " JOIN APLICACION_x_NIVEL axn ON uxaxn.aplicacion_x_nivel_id=axn.id"
 				+ " JOIN APLICACION a ON axn.aplicacion_id=a.id" +
 				" WHERE uxaxn.usuario_id="
