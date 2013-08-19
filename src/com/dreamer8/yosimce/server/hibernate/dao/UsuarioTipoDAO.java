@@ -28,7 +28,7 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 
 		UsuarioTipo ut = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT ut,* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn"
+		String query = "SELECT ut.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn"
 				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -47,7 +47,7 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 
 		List<UsuarioTipo> uts = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT ut,* FROM APLICACION_x_USUARIO_TIPO axut"
+		String query = "SELECT ut.* FROM APLICACION_x_USUARIO_TIPO axut"
 				+ " JOIN USUARIO_TIPO ut ON (axut.usuario_tipo_id=ut.id AND axut.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")";
 		Query q = s.createSQLQuery(query).addEntity(UsuarioTipo.class);
@@ -60,7 +60,7 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 
 		List<UsuarioTipo> uts = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT ut,* FROM APLICACION_x_USUARIO_TIPO axut"
+		String query = "SELECT ut.* FROM APLICACION_x_USUARIO_TIPO axut"
 				+ " JOIN USUARIO_TIPO ut ON (axut.usuario_tipo_id=ut.id AND axut.usuario_tipo_id > "
 				+ SecurityFilter.escapeString(idUsuarioTipoSuperior)
 				+ " AND axut.aplicacion_id="
