@@ -1,12 +1,16 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
 
-import com.dreamer8.yosimce.client.actividad.DetalleActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.google.gwt.cell.client.ImageCell;
+import com.google.gwt.cell.client.NumberCell;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -128,7 +132,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				//establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?selectionModel.getSelectedObject().getEstablecimientoName()+" >":"");
+				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?selectionModel.getSelectedObject().getNombreEstablecimiento()+" >":"");
 				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
 				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
 				selectedItem = selectionModel.getSelectedObject();
@@ -146,6 +150,148 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	
 	private void buildGrid(){
+		
+		Column<ActividadPreviewDTO,String> rbdColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getRbd();
+			}
+		};
+		rbdColumn.setSortable(false);
+		dataGrid.addColumn(rbdColumn,"RBD");
+		dataGrid.setColumnWidth(rbdColumn, "50px");
+		
+		Column<ActividadPreviewDTO,String> nombreColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				if(o.getNombreEstablecimiento().length()>20){
+					return o.getNombreEstablecimiento().substring(0,20)+"...";
+				}else{
+					return o.getNombreEstablecimiento();
+				}
+			}
+		};
+		nombreColumn.setSortable(false);
+		dataGrid.addColumn(nombreColumn,"Establecimiento");
+		dataGrid.setColumnWidth(nombreColumn, "200px");
+		
+		Column<ActividadPreviewDTO,String> cursoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getCurso();
+			}
+		};
+		cursoColumn.setSortable(false);
+		dataGrid.addColumn(cursoColumn,"Curso");
+		dataGrid.setColumnWidth(cursoColumn, "50px");
+		
+		Column<ActividadPreviewDTO,String> tipoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getTipoEstablecimiento();
+			}
+		};
+		tipoColumn.setSortable(false);
+		dataGrid.addColumn(tipoColumn,"Tipo");
+		dataGrid.setColumnWidth(tipoColumn, "100px");
+		
+		Column<ActividadPreviewDTO,Number> cuestionarioColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				float value =100 * ((float)o.getCuestionariosPadresApoderadosRecibidos())/((float)o.getCuestionariosPadresApoderadosEntregados());
+				return value;
+			}
+		};
+		SafeHtmlBuilder b = new SafeHtmlBuilder();
+		b.appendHtmlConstant("Cuestionarios<br />Recibidos vs Entregados");
+		cuestionarioColumn.setSortable(false);
+		dataGrid.addColumn(cuestionarioColumn,b.toSafeHtml());
+		dataGrid.setColumnWidth(cuestionarioColumn, "150px");
+		
+		Column<ActividadPreviewDTO,Number> asistenciaColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				float value =100 * ((float)o.getAlumnosEvaluados())/((float)o.getAlumnosTotales());
+				return value;
+			}
+		};
+		b = new SafeHtmlBuilder();
+		b.appendHtmlConstant("Asistencia<br />Evaluados vs Total");
+		asistenciaColumn.setSortable(false);
+		dataGrid.addColumn(asistenciaColumn,b.toSafeHtml());
+		dataGrid.setColumnWidth(asistenciaColumn, "150px");
+		
+		Column<ActividadPreviewDTO,Number> sincronizacionColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				float value = 100 * ((float)o.getAlumnosSincronizados())/((float)o.getAlumnosEvaluados());
+				return value;
+			}
+		};
+		b = new SafeHtmlBuilder();
+		b.appendHtmlConstant("Sinc<br />Sincronizados vs Evaluados");
+		sincronizacionColumn.setSortable(false);
+		dataGrid.addColumn(sincronizacionColumn,b.toSafeHtml());
+		dataGrid.setColumnWidth(sincronizacionColumn, "150px");
+		
+		Column<ActividadPreviewDTO,String> contingenciaColumn = new Column<ActividadPreviewDTO, String>(new ImageCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				if(o.getContingencia()){
+					return SimceResources.INSTANCE.ok().getSafeUri().asString();
+				}else{
+					return "";
+				}
+			}
+		};
+		contingenciaColumn.setSortable(false);
+		dataGrid.addColumn(contingenciaColumn,"Contingencia");
+		dataGrid.setColumnWidth(contingenciaColumn, "150px");
+		
+		Column<ActividadPreviewDTO,String> contingenciaLimitanteColumn = new Column<ActividadPreviewDTO, String>(new ImageCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				if(o.getContingenciaLimitante()){
+					return SimceResources.INSTANCE.ok().getSafeUri().asString();
+				}else{
+					return "";
+				}
+			}
+		};
+		contingenciaLimitanteColumn.setSortable(false);
+		dataGrid.addColumn(contingenciaLimitanteColumn,"Limitante");
+		dataGrid.setColumnWidth(contingenciaLimitanteColumn, "150px");
+		
+		Column<ActividadPreviewDTO,String> regionColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getRegion();
+			}
+		};
+		regionColumn.setSortable(false);
+		dataGrid.addColumn(regionColumn,"Región");
+		dataGrid.setColumnWidth(regionColumn, "150px");
+		
+		Column<ActividadPreviewDTO,String> comunaColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getComuna();
+			}
+		};
+		comunaColumn.setSortable(false);
+		dataGrid.addColumn(comunaColumn,"Región");
+		dataGrid.setColumnWidth(comunaColumn, "150px");
 		
 	}
 }

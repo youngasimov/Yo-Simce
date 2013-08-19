@@ -45,7 +45,146 @@ public class ActividadPreviewDTO implements Serializable{
 	public void setCursoId(Integer cursoId) {
 		this.cursoId = cursoId;
 	}
-	
-	
-	
+
+
+	public String getNombreEstablecimiento() {
+		return nombreEstablecimiento;
+	}
+
+
+	public void setNombreEstablecimiento(String nombreEstablecimiento) {
+		this.nombreEstablecimiento = nombreEstablecimiento;
+	}
+
+
+	public String getRbd() {
+		return rbd;
+	}
+
+
+	public void setRbd(String rbd) {
+		this.rbd = rbd;
+	}
+
+
+	public String getTipoEstablecimiento() {
+		return tipoEstablecimiento;
+	}
+
+
+	public void setTipoEstablecimiento(String tipoEstablecimiento) {
+		this.tipoEstablecimiento = tipoEstablecimiento;
+	}
+
+
+	public String getCurso() {
+		return curso;
+	}
+
+
+	public void setCurso(String curso) {
+		this.curso = curso;
+	}
+
+
+	public String getRegion() {
+		return region;
+	}
+
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+
+	public String getComuna() {
+		return comuna;
+	}
+
+
+	public void setComuna(String comuna) {
+		this.comuna = comuna;
+	}
+
+
+	public Integer getCuestionariosPadresApoderadosEntregados() {
+		return cuestionariosPadresApoderadosEntregados;
+	}
+
+
+	public void setCuestionariosPadresApoderadosEntregados(
+			Integer cuestionariosPadresApoderadosEntregados) {
+		this.cuestionariosPadresApoderadosEntregados = cuestionariosPadresApoderadosEntregados;
+	}
+
+
+	public Integer getCuestionariosPadresApoderadosRecibidos() {
+		return cuestionariosPadresApoderadosRecibidos;
+	}
+
+
+	public void setCuestionariosPadresApoderadosRecibidos(
+			Integer cuestionariosPadresApoderadosRecibidos) {
+		this.cuestionariosPadresApoderadosRecibidos = cuestionariosPadresApoderadosRecibidos;
+	}
+
+
+	public Integer getAlumnosTotales() {
+		return alumnosTotales;
+	}
+
+
+	public void setAlumnosTotales(Integer alumnosTotales) {
+		this.alumnosTotales = alumnosTotales;
+	}
+
+
+	public Integer getAlumnosEvaluados() {
+		return alumnosEvaluados;
+	}
+
+
+	public void setAlumnosEvaluados(Integer alumnosEvaluados) {
+		this.alumnosEvaluados = alumnosEvaluados;
+	}
+
+
+	public Integer getAlumnosSincronizados() {
+		return alumnosSincronizados;
+	}
+
+
+	public void setAlumnosSincronizados(Integer alumnosSincronizados) {
+		this.alumnosSincronizados = alumnosSincronizados;
+	}
+
+
+	public Integer getMaterialDefectuoso() {
+		return materialDefectuoso;
+	}
+
+
+	public void setMaterialDefectuoso(Integer materialDefectuoso) {
+		this.materialDefectuoso = materialDefectuoso;
+	}
+
+
+	public Boolean getContingencia() {
+		return contingencia;
+	}
+
+
+	public void setContingencia(Boolean contingencia) {
+		this.contingencia = contingencia;
+	}
+
+
+	public Boolean getContingenciaLimitante() {
+		return contingenciaLimitante;
+	}
+
+
+	public void setContingenciaLimitante(Boolean contingenciaLimitante) {
+		this.contingenciaLimitante = contingenciaLimitante;
+	}
 }
