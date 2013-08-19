@@ -70,6 +70,7 @@ public class YoSimce implements EntryPoint {
 				
 				@Override
 				public void onSuccess(UserDTO result) {
+					user = result;
 					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Descargando aplicación...");
 					loadApp();
 				}

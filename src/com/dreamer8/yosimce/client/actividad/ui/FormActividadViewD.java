@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import java.util.Date;
+
 import com.dreamer8.yosimce.client.ui.ScoreSelector;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.google.gwt.core.client.GWT;
@@ -48,9 +50,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField ScoreSelector llenadoFormularioScoreSelector;
 	@UiField ScoreSelector desempenoScoreSelector;
 	@UiField DecoratorPanel horasActividadPanel;
-	@UiField TimeBox inicioActividadBox;
-	@UiField TimeBox inicioPruebaBox;
-	@UiField TimeBox terminoPruebaBox;
+	@UiField(provided=true) TimeBox inicioActividadBox;
+	@UiField(provided=true) TimeBox inicioPruebaBox;
+	@UiField(provided=true) TimeBox terminoPruebaBox;
 	@UiField DecoratorPanel participacionPanel;
 	@UiField IntegerBox totalAlumnosBox;
 	@UiField IntegerBox alumnosTitularesBox;
@@ -74,6 +76,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private FormActividadPresenter presenter;
 	
 	public FormActividadViewD() {
+		inicioActividadBox = new TimeBox(new Date(0),false);
+		inicioPruebaBox = new TimeBox(new Date(0),false);
+		terminoPruebaBox = new TimeBox(new Date(0),false);
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
