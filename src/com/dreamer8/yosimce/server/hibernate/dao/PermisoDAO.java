@@ -41,7 +41,7 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 				+ " JOIN APLICACION_x_USUARIO_TIPO_x_PERMISO axutxp ON (axutxp.aplicacion_x_usuario_tipo_id=axut.id AND axutxp.acceso=TRUE)"
 				+ " JOIN PERMISO p ON axutxp.permiso_id=p.id"
 				+ " WHERE uxaxn.usuario_id="
-				+ SecurityFilter.escapeString(idUsuario) + ")";
+				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(Permiso.class);
 		ps = q.list();
 		return ps;
