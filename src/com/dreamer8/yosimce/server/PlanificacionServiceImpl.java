@@ -3,17 +3,19 @@ package com.dreamer8.yosimce.server;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-	
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
@@ -141,6 +143,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"No se ha especificado el tipo de la actividad.");
 				}
 
+				if (idEstablecimiento == null) {
+					throw new NullPointerException(
+							"No se ha especificado el establecimiento.");
+				}
+
 				s.beginTransaction();
 
 				EstablecimientoDAO edao = new EstablecimientoDAO();
@@ -180,8 +187,68 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+		AgendaDTO adto = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getAgendaCurso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (a == null || a.getId() == null) {
+					throw new NullPointerException(
+							"La actividad especificada no existe.");
+				}
+				
+				adto = a.getAgendaDTO();
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return adto;
 	}
 
 	/**
@@ -200,8 +267,61 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getEstadosAgenda")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				List<ActividadEstado> aes = aedao.findAllByAgendamiento();
+				for (ActividadEstado actividadEstado : aes) {
+					eadtos.add(actividadEstado.getEstadoAgendaDTO());
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return eadtos;
 	}
 
 	/**
@@ -252,7 +372,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDUsuarioTipo(
 								idAplicacion, idNivel, idActividadTipo,
 								idEstablecimiento, UsuarioTipo.SUPERVISOR);
-				if(u != null) {
+				if (u != null) {
 					sdto = u.getSupervisorDTO();
 				}
 				s.getTransaction().commit();
@@ -306,8 +426,9 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				ActividadDAO adao = new ActividadDAO();
 				Actividad a = adao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipo(
-								idAplicacion, idNivel, idActividadTipo);
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimient(
+								idAplicacion, idNivel, idActividadTipo,
+								idEstablecimiento);
 				if (a != null) {
 					cdto = a.getContactoDTO();
 				}

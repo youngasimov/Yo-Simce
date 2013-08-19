@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoTipoDAO;
+import com.dreamer8.yosimce.shared.dto.AgendaDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 
 /**
@@ -28,15 +32,22 @@ public class Actividad implements java.io.Serializable {
 	private String contactoTelefono;
 	private String contactoEmail;
 	private boolean sinMaterial;
-	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(0);
-	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
-	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
+	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(
+			0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
+			0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(
+			0);
 	private List<Material> materials = new ArrayList<Material>(0);
-	private List<ActividadXDocumentoTipo> actividadXDocumentoTipos = new ArrayList<ActividadXDocumentoTipo>(0);
-	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(0);
-	private List<TransporteXActividad> transporteXActividads = new ArrayList<TransporteXActividad>(0);
+	private List<ActividadXDocumentoTipo> actividadXDocumentoTipos = new ArrayList<ActividadXDocumentoTipo>(
+			0);
+	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(
+			0);
+	private List<TransporteXActividad> transporteXActividads = new ArrayList<TransporteXActividad>(
+			0);
 	private List<Documento> documentos = new ArrayList<Documento>(0);
-	private List<ActividadXIncidencia> actividadXIncidencias = new ArrayList<ActividadXIncidencia>(0);
+	private List<ActividadXIncidencia> actividadXIncidencias = new ArrayList<ActividadXIncidencia>(
+			0);
 
 	public Actividad() {
 	}
@@ -52,10 +63,16 @@ public class Actividad implements java.io.Serializable {
 			Usuario usuario, String comentario, Date fechaInicio,
 			Date fechaTermino, Date fechaInicioPrueba, Date fechaTerminoPrueba,
 			String contactoNombre, String contactoTelefono,
-			String contactoEmail, boolean sinMaterial, List<AlumnoXActividad> alumnoXActividads,
-			List<UsuarioXActividad> usuarioXActividads, List<MaterialHistorial> materialHistorials, List<Material> materials,
-			List<ActividadXDocumentoTipo> actividadXDocumentoTipos, List<ActividadHistorial> actividadHistorials,
-			List<TransporteXActividad> transporteXActividads, List<Documento> documentos, List<ActividadXIncidencia> actividadXIncidencias) {
+			String contactoEmail, boolean sinMaterial,
+			List<AlumnoXActividad> alumnoXActividads,
+			List<UsuarioXActividad> usuarioXActividads,
+			List<MaterialHistorial> materialHistorials,
+			List<Material> materials,
+			List<ActividadXDocumentoTipo> actividadXDocumentoTipos,
+			List<ActividadHistorial> actividadHistorials,
+			List<TransporteXActividad> transporteXActividads,
+			List<Documento> documentos,
+			List<ActividadXIncidencia> actividadXIncidencias) {
 		this.id = id;
 		this.actividadEstado = actividadEstado;
 		this.curso = curso;
@@ -239,7 +256,8 @@ public class Actividad implements java.io.Serializable {
 		return this.actividadXDocumentoTipos;
 	}
 
-	public void setActividadXDocumentoTipos(List<ActividadXDocumentoTipo> actividadXDocumentoTipos) {
+	public void setActividadXDocumentoTipos(
+			List<ActividadXDocumentoTipo> actividadXDocumentoTipos) {
 		this.actividadXDocumentoTipos = actividadXDocumentoTipos;
 	}
 
@@ -247,7 +265,8 @@ public class Actividad implements java.io.Serializable {
 		return this.actividadHistorials;
 	}
 
-	public void setActividadHistorials(List<ActividadHistorial> actividadHistorials) {
+	public void setActividadHistorials(
+			List<ActividadHistorial> actividadHistorials) {
 		this.actividadHistorials = actividadHistorials;
 	}
 
@@ -255,7 +274,8 @@ public class Actividad implements java.io.Serializable {
 		return this.transporteXActividads;
 	}
 
-	public void setTransporteXActividads(List<TransporteXActividad> transporteXActividads) {
+	public void setTransporteXActividads(
+			List<TransporteXActividad> transporteXActividads) {
 		this.transporteXActividads = transporteXActividads;
 	}
 
@@ -271,7 +291,8 @@ public class Actividad implements java.io.Serializable {
 		return this.actividadXIncidencias;
 	}
 
-	public void setActividadXIncidencias(List<ActividadXIncidencia> actividadXIncidencias) {
+	public void setActividadXIncidencias(
+			List<ActividadXIncidencia> actividadXIncidencias) {
 		this.actividadXIncidencias = actividadXIncidencias;
 	}
 
@@ -283,4 +304,49 @@ public class Actividad implements java.io.Serializable {
 		return cdto;
 	}
 
+	public AgendaPreviewDTO getAgendaPreviewDTO(Integer idAplicacion) {
+		AgendaPreviewDTO apdto = new AgendaPreviewDTO();
+		apdto.setCurso(curso.getNombre());
+		apdto.setEstablecimientoId(curso.getEstablecimiento().getId());
+		apdto.setEstablecimientoName(curso.getEstablecimiento().getNombre());
+		apdto.setRbd(Integer.toString(apdto.getEstablecimientoId()));
+		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
+		EstablecimientoTipo et = etdao.findByIdAplicacionANDIdEstablecimiento(
+				idAplicacion, apdto.getEstablecimientoId());
+		if (et != null) {
+			apdto.setTipoEstablecimiento(et.getTipoEstablecimientoDTO());
+		}
+		apdto.setComunaName(curso.getEstablecimiento().getComuna().getNombre());
+		apdto.setRegionName(curso.getEstablecimiento().getComuna()
+				.getProvincia().getRegion().getNombre());
+		apdto.setAgendaItemActual(getAgendaItemDTO());
+		return apdto;
+	}
+
+	public AgendaItemDTO getAgendaItemDTO() {
+		AgendaItemDTO aidto = new AgendaItemDTO();
+		aidto.setEstado(actividadEstado.getEstadoAgendaDTO());
+		aidto.setComentario(comentario);
+		aidto.setFecha(fechaInicio);
+		if (usuario != null) {
+			aidto.setCreador(usuario.getUserDTO());
+		}
+		return aidto;
+	}
+
+	/**
+	 * @return
+	 */
+	public AgendaDTO getAgendaDTO() {
+		AgendaDTO adto = new AgendaDTO();
+		adto.setCurso(curso.getNombre());
+		adto.setEstablecimiento(curso.getEstablecimiento().getNombre());
+		adto.setRbd(Integer.toString(curso.getEstablecimiento().getId()));
+		ArrayList<AgendaItemDTO> aidtos = new ArrayList<AgendaItemDTO>();
+		for (ActividadHistorial ah : actividadHistorials) {
+			aidtos.add(ah.getAgendaItemDTO());
+		}
+		adto.setItems(aidtos);
+		return adto;
+	}
 }

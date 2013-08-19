@@ -12,24 +12,44 @@ import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelXActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.NivelDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioSeleccionDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXAplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivel;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
+import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXAplicacionXNivel;
 
 public class YoSimceSetup {
 
 	public static void main(String[] args) {
-		createActividad();
-
+		// createActividad();
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(2);
+		ids.add(4);
+		ids.add(6);
+		ids.add(8);
+		ids.add(10);
+		asignarUsuario(16361209, 1, ids, 1);
+		asignarUsuario(16370885, 1, ids, 1);
+		ids = new ArrayList<Integer>();
+		ids.add(10);
+		asignarUsuario(16361209, 2, ids, 1);
+		asignarUsuario(16370885, 2, ids, 1);
 	}
 
 	public static void createActividad() {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			s.beginTransaction();
-			
+
 			AplicacionXNivelXActividadTipoDAO axnxatdao = new AplicacionXNivelXActividadTipoDAO();
 			List<AplicacionXNivelXActividadTipo> axnxats = axnxatdao.findAll();
 			if (axnxats != null && !axnxats.isEmpty()) {
@@ -66,6 +86,48 @@ public class YoSimceSetup {
 			HibernateUtil.rollback(s);
 
 		}
+	}
 
+	public static void asignarUsuario(Integer idUsuario, Integer idAplicacion,
+			List<Integer> idNiveles, Integer idTipoUsuario) {
+
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			s.beginTransaction();
+			AplicacionXNivelDAO axndao = new AplicacionXNivelDAO();
+			AplicacionXNivel axn = null;
+			UsuarioXAplicacionXNivelDAO uxaxndao = new UsuarioXAplicacionXNivelDAO();
+			UsuarioXAplicacionXNivel uxaxn = null;
+			UsuarioDAO udao = new UsuarioDAO();
+			Usuario u = udao.getById(idUsuario);
+			UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+			UsuarioTipo ut = utdao.getById(idTipoUsuario);
+			UsuarioSeleccionDAO usdao = new UsuarioSeleccionDAO();
+			UsuarioSeleccion us = null;
+			for (Integer idNivel : idNiveles) {
+				uxaxn = uxaxndao.findByIdUsuarioANDIdAplicacionANDIdNivel(
+						idUsuario, idAplicacion, idNivel);
+				if (uxaxn == null) {
+					uxaxn = new UsuarioXAplicacionXNivel();
+					uxaxn.setUsuario(u);
+					axn = axndao.findByIdAplicacionANDIdNivel(idAplicacion,
+							idNivel);
+					uxaxn.setAplicacionXNivel(axn);
+					uxaxndao.save(uxaxn);
+				}
+				us = usdao.findBYIdUsuarioXAplicacionXNivel(uxaxn.getId());
+				if (us == null) {
+					us = new UsuarioSeleccion();
+					us.setUsuarioXAplicacionXNivel(uxaxn);
+				}
+				us.setUsuarioTipo(ut);
+				usdao.saveOrUpdate(us);
+			}
+			s.getTransaction().commit();
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+
+		}
 	}
 }

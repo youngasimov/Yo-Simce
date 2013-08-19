@@ -8,11 +8,13 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.general.GeneralService;
 import com.dreamer8.yosimce.server.hibernate.dao.ComunaDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.RegionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Comuna;
+import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Region;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
@@ -27,8 +29,7 @@ import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 
-public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
-		GeneralService {
+public class GeneralServiceImpl extends CustomRemoteServiceServlet implements GeneralService {
 
 	private String className = "GeneralService";
 
@@ -46,20 +47,17 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				Integer idAplicacion = ac.getIdAplicacion();
 				if (idAplicacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado una aplicación.");
+					throw new NullPointerException("No se ha especificado una aplicación.");
 				}
 
 				Integer idNivel = ac.getIdNivel();
 				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
+					throw new NullPointerException("No se ha especificado un nivel.");
 				}
 
 				Integer idActividadTipo = ac.getIdActividadTipo();
 				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
 				}
 
 				Usuario u = getUsuarioActual();
@@ -68,15 +66,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
 				if (usuarioTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de usuario.");
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
 				}
 
 				RegionDAO rdao = new RegionDAO();
-				List<Region> rs = rdao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
-								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre());
+				List<Region> rs = rdao.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(idAplicacion, idNivel,
+						idActividadTipo, u.getId(), usuarioTipo.getNombre());
 				if (rs != null && !rs.isEmpty()) {
 					for (Region r : rs) {
 						sdtos.add(r.getSectorDTO());
@@ -113,20 +108,17 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				Integer idAplicacion = ac.getIdAplicacion();
 				if (idAplicacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado una aplicación.");
+					throw new NullPointerException("No se ha especificado una aplicación.");
 				}
 
 				Integer idNivel = ac.getIdNivel();
 				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
+					throw new NullPointerException("No se ha especificado un nivel.");
 				}
 
 				Integer idActividadTipo = ac.getIdActividadTipo();
 				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
 				}
 
 				Usuario u = getUsuarioActual();
@@ -135,31 +127,21 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
 				if (usuarioTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de usuario.");
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
 				}
 
 				ComunaDAO cdao = new ComunaDAO();
 				List<Comuna> cs = null;
 
 				if (sector == null || sector.getIdSector() == null) {
-					cs = cdao
-							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDusuarioTipo(
-									idAplicacion, idNivel, idActividadTipo,
-									u.getId(), usuarioTipo.getNombre());
-				} else if (sector.getTipoSector().equals(
-						SectorDTO.TIPO_PROVINCIA)) {
-					cs = cdao
-							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdProvinciaANDIdUsuarioANDusuarioTipo(
-									idAplicacion, idNivel, idActividadTipo,
-									sector.getIdSector(), u.getId(),
-									usuarioTipo.getNombre());
+					cs = cdao.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDusuarioTipo(idAplicacion, idNivel, idActividadTipo,
+							u.getId(), usuarioTipo.getNombre());
+				} else if (sector.getTipoSector().equals(SectorDTO.TIPO_PROVINCIA)) {
+					cs = cdao.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdProvinciaANDIdUsuarioANDusuarioTipo(idAplicacion, idNivel,
+							idActividadTipo, sector.getIdSector(), u.getId(), usuarioTipo.getNombre());
 				} else {
-					cs = cdao
-							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdRegionANDIdUsuarioANDusuarioTipo(
-									idAplicacion, idNivel, idActividadTipo,
-									sector.getIdSector(), u.getId(),
-									usuarioTipo.getNombre());
+					cs = cdao.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdRegionANDIdUsuarioANDusuarioTipo(idAplicacion, idNivel,
+							idActividadTipo, sector.getIdSector(), u.getId(), usuarioTipo.getNombre());
 				}
 				if (cs != null && !cs.isEmpty()) {
 					for (Comuna c : cs) {
@@ -187,8 +169,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getEstablecimientos
 	 */
 	@Override
-	public ArrayList<EstablecimientoDTO> getEstablecimientos(String rbdSeach)
-			throws NoAllowedException, NoLoggedException, DBException {
+	public ArrayList<EstablecimientoDTO> getEstablecimientos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<EstablecimientoDTO> edtos = new ArrayList<EstablecimientoDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -198,25 +179,21 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				Integer idAplicacion = ac.getIdAplicacion();
 				if (idAplicacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado una aplicación.");
+					throw new NullPointerException("No se ha especificado una aplicación.");
 				}
 
 				Integer idNivel = ac.getIdNivel();
 				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
+					throw new NullPointerException("No se ha especificado un nivel.");
 				}
 
 				Integer idActividadTipo = ac.getIdActividadTipo();
 				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
 				}
 
 				if (rbdSeach == null || rbdSeach.equals("")) {
-					throw new NullPointerException(
-							"No se ha especificado un RBD.");
+					throw new NullPointerException("No se ha especificado un RBD.");
 				}
 
 				Usuario u = getUsuarioActual();
@@ -225,15 +202,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
 				if (usuarioTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de usuario.");
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
 				}
 
 				EstablecimientoDAO edao = new EstablecimientoDAO();
-				List<Establecimiento> es = edao
-						.findEstablecimientosByActividadANDRbd(idAplicacion,
-								idNivel, idActividadTipo, u.getId(),
-								usuarioTipo.getNombre(), rbdSeach);
+				List<Establecimiento> es = edao.findEstablecimientosByActividadANDRbd(idAplicacion, idNivel, idActividadTipo, u.getId(),
+						usuarioTipo.getNombre(), rbdSeach);
 
 				if (es != null && !es.isEmpty()) {
 					for (Establecimiento e : es) {
@@ -261,8 +235,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getEstablecimiento
 	 */
 	@Override
-	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento)
-			throws NoAllowedException, NoLoggedException, DBException {
+	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException {
 
 		EstablecimientoDTO edto = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -272,25 +245,21 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				Integer idAplicacion = ac.getIdAplicacion();
 				if (idAplicacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado una aplicación.");
+					throw new NullPointerException("No se ha especificado una aplicación.");
 				}
 
 				Integer idNivel = ac.getIdNivel();
 				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
+					throw new NullPointerException("No se ha especificado un nivel.");
 				}
 
 				Integer idActividadTipo = ac.getIdActividadTipo();
 				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
 				}
 
 				if (idEstablecimiento == null) {
-					throw new NullPointerException(
-							"No se ha especificado el establecimiento.");
+					throw new NullPointerException("No se ha especificado el establecimiento.");
 				}
 
 				s.beginTransaction();
@@ -298,8 +267,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 				EstablecimientoDAO edao = new EstablecimientoDAO();
 				Establecimiento e = edao.getById(idEstablecimiento);
 				if (e == null) {
-					throw new NullPointerException(
-							"El establecimiento especificado no existe.");
+					throw new NullPointerException("El establecimiento especificado no existe.");
 				}
 
 				edto = e.getEstablecimientoDTO();
@@ -324,9 +292,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getCambios
 	 */
 	@Override
-	public ArrayList<HistorialCambioItemDTO> getCambios(
-			Integer idEstablecimiento) throws NoAllowedException,
-			NoLoggedException, DBException {
+	public ArrayList<HistorialCambioItemDTO> getCambios(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -335,10 +301,60 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getCursos
 	 */
 	@Override
-	public ArrayList<CursoDTO> getCursos(String rbdSeach)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException {
+
+		ArrayList<CursoDTO> cdtos = new ArrayList<CursoDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getCursos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException("No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException("No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
+				}
+
+				CursoDAO cdao = new CursoDAO();
+				List<Curso> cs = cdao.findByByActividadANDRbd(idAplicacion, idNivel, idActividadTipo, u.getId(), usuarioTipo.getNombre(), rbdSeach);
+				if (cs != null && !cs.isEmpty()) {
+					for (Curso curso : cs) {
+						cdtos.add(curso.getCursoDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return cdtos;
 	}
 
 }
