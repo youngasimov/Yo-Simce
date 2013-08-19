@@ -232,7 +232,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					throw new NullPointerException(
 							"La actividad especificada no existe.");
 				}
-				
+
 				adto = a.getAgendaDTO();
 
 				s.getTransaction().commit();
@@ -257,8 +257,89 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	@Override
 	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "AgendarVisita")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado un curso");
+				}
+
+				if (itemAgenda == null || itemAgenda.getFecha() == null
+						|| itemAgenda.getEstado() == null
+						|| itemAgenda.getEstado().getId() == null) {
+					throw new NullPointerException(
+							"Faltan datos para realizar el agendamiento");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (a == null) {
+					throw new NullPointerException(
+							"No existe una actividad para este curso en el nivel seleccionado");
+				}
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadEstado ae = aedao.getById(itemAgenda.getEstado()
+						.getId());
+				if (ae == null) {
+					throw new NullPointerException(
+							"El estado especificado no existe");
+				}
+				a.setFechaInicio(itemAgenda.getFecha());
+				a.setUsuario(u);
+				a.setComentario(itemAgenda.getComentario());
+				a.setActividadEstado(ae);
+				adao.update(a);
+
+				itemAgenda.setCreador(u.getUserDTO());
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return itemAgenda;
 	}
 
 	/**
