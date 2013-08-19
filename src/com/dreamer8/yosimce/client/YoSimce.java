@@ -78,7 +78,8 @@ public class YoSimce implements EntryPoint {
 				public void onFailure(Throwable caught) {
 					loadView.setMessage("Ocurrio un problema al comprobar los permisos de usuario<br />Error: "+caught.getMessage());
 					user = null;
-					loadApp();
+					Cookies.removeCookie(TOKEN_COOKIE);
+					//loadApp();
 				}
 			});
 		}
