@@ -15,6 +15,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	
 	private String className = "ActividadService";
 
+	/**
+	 * @permiso getPreviewActividades
+	 */
 	@Override
 	public ArrayList<ActividadPreviewDTO> getPreviewActividades(Integer offset,
 			Integer length, HashMap<String, String> filtros)
@@ -23,6 +26,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getTotalPreviewActividades
+	 */
 	@Override
 	public Integer getTotalPreviewActividades(HashMap<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException {
@@ -30,6 +36,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getSincronizacionesCurso
+	 */
 	@Override
 	public ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
@@ -37,12 +46,16 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso updateSincronizacionAlumno
+	 */
 	@Override
 	public Boolean updateSincronizacionAlumno(SincAlumnoDTO sinc)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 	
 
