@@ -84,7 +84,7 @@
 				
 				<g:DecoratorPanel addStyleNames='{style.formPanel}'>
 					<g:HTMLPanel addStyleNames='{style.full}'>
-						<table class='{style.full}'>
+						<table>
 							<th>
 								<td colspan='2'> Información basica</td>
 							</th>
