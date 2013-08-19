@@ -142,12 +142,12 @@
 							</th>
 							<tr>
 								<td> Nombre:</td>
-								<td> <g:Label ui:field="nombreExaminadorLabel" /> </td>
-								<td rowspan='2' > <g:Button ui:field="changeExaminadorButton" /> </td>
+								<td> Camilo Vera Cortés  <g:Label ui:field="nombreExaminadorLabel" /> </td>
+								<td rowspan='2' > <g:Button ui:field="changeExaminadorButton" text="Cambiar"/> </td>
 							</tr>
 							<tr>
 								<td> Rut:</td>
-								<td> <g:Label ui:field="rutExaminadorLabel" /> </td>
+								<td> 16370885-k <g:Label ui:field="rutExaminadorLabel" /> </td>
 							</tr>
 							<tr>
 								<td> <my:HelperLabel text='Presentación Personal:' help='Evalue la presentación personal del examinador en una escala de 0 a 5, donde 0 es muy mal presentado, y 5 es una presentación destacable'/></td>
