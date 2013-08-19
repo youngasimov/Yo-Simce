@@ -51,10 +51,10 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 
 		List<PermisoDTO> pdtos = new ArrayList<PermisoDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT p.id,p.clase,p.metodo,axut.usuario_tipo_id FROM APLICACION_x_USUARIO_TIPO axut"
+		String query = "SELECT p.id,p.clase,p.metodo,axut.usuario_tipo_id,axutxp.acceso FROM APLICACION_x_USUARIO_TIPO axut"
 				+ " JOIN APLICACION_x_USUARIO_TIPO_x_PERMISO axutxp ON (axutxp.aplicacion_x_usuario_tipo_id=axut.id AND axut.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axutxp.acceso=TRUE)"
+				+ ")"
 				+ " JOIN PERMISO p ON axutxp.permiso_id=p.id"
 				+ " ORDER BY p.id,axut.usuario_tipo_id";
 		Query q = s.createSQLQuery(query);
@@ -75,7 +75,9 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 				pdto.setIdTiposUsuariosPermitidos(tipos);
 				pdtos.add(pdto);
 			}
-			tipos.add((Integer) o[3]);
+			if ((Boolean) o[4]) {
+				tipos.add((Integer) o[3]);
+			}
 		}
 		return pdtos;
 	}
