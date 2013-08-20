@@ -11,6 +11,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -80,7 +81,14 @@ public class YoSimce implements EntryPoint {
 					loadView.setMessage("Ocurrio un problema al comprobar los permisos de usuario<br />Error: "+caught.getMessage());
 					user = null;
 					Cookies.removeCookie(TOKEN_COOKIE);
-					//loadApp();
+					Timer t = new Timer(){
+
+						@Override
+						public void run() {
+							notLogged();
+						}
+					};
+					t.schedule(3000);
 				}
 			});
 		}
@@ -90,8 +98,7 @@ public class YoSimce implements EntryPoint {
 	private void loadApp(){
 		
 		if(user == null){
-			//Window.open("http://www.yosimce.cl", "_self", "");
-			//return;
+			
 			notLogged();
 			return;
 		}
@@ -106,7 +113,6 @@ public class YoSimce implements EntryPoint {
 			@Override
 			public void onFailure(Throwable reason) {
 				loadView.setMessage("Ocurrio un problema al descargar los datos de la aplicación<br />Error: "+reason.getMessage());
-				user = null;
 			}
 		});
 	}
@@ -135,6 +141,10 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void notLogged(){
+		
+		//Window.open("http://www.yosimce.cl", "_self", "");
+		//return;
+		
 		LoginView login = new LoginView();
 		login.setPresenter(new LoginView.LoginPresenter() {
 			

@@ -323,7 +323,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         rbdColumn.setSortable(false);
         dataGrid.addColumn(rbdColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("RBD")));
-        dataGrid.setColumnWidth(rbdColumn, 60, Unit.PX);
+        //dataGrid.setColumnWidth(rbdColumn, 60, Unit.PX);
+        
         Column<AgendaPreviewDTO, String> establecimientoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -332,7 +333,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         establecimientoColumn.setSortable(true);
         dataGrid.addColumn(establecimientoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Establecimiento")));
-        dataGrid.setColumnWidth(establecimientoColumn, 170, Unit.PX);
+        dataGrid.setColumnWidth(establecimientoColumn, 200, Unit.PX);
         
         Column<AgendaPreviewDTO, String> cursoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
@@ -342,7 +343,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         cursoColumn.setSortable(false);
         dataGrid.addColumn(cursoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Curso")));
-        dataGrid.setColumnWidth(cursoColumn, 80, Unit.PX);
+        //dataGrid.setColumnWidth(cursoColumn, 80, Unit.PX);
         
         Column<AgendaPreviewDTO, String> tipoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
@@ -352,7 +353,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         tipoColumn.setSortable(false);
         dataGrid.addColumn(tipoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Tipo")));
-        dataGrid.setColumnWidth(tipoColumn, 70, Unit.PX);
+        //dataGrid.setColumnWidth(tipoColumn, 70, Unit.PX);
         
         Column<AgendaPreviewDTO, String> estadoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
@@ -362,7 +363,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         estadoColumn.setSortable(false);
         dataGrid.addColumn(estadoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Estado actual")));
-        dataGrid.setColumnWidth(estadoColumn, 140, Unit.PX);
+        //dataGrid.setColumnWidth(estadoColumn, 140, Unit.PX);
         
         Column<AgendaPreviewDTO, Date> dateColumn =new Column<AgendaPreviewDTO, Date>(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM))) {
             @Override
@@ -372,11 +373,14 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         dateColumn.setSortable(true);
         dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
-        dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
+        //dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
         
         Column<AgendaPreviewDTO, String> regionColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
+            	if(object.getRegionName().startsWith("Región")){
+            		return object.getRegionName().substring(6);
+            	}
                 return object.getRegionName();
             }
         };
@@ -397,7 +401,11 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         Column<AgendaPreviewDTO, String> comentarioColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
-                return (object.getAgendaItemActual().getComentario().length()<60)?object.getAgendaItemActual().getComentario():object.getAgendaItemActual().getComentario().substring(0,56)+"...";
+            	if(object.getAgendaItemActual().getComentario()!=null){
+            		return (object.getAgendaItemActual().getComentario().length()<60)?object.getAgendaItemActual().getComentario():object.getAgendaItemActual().getComentario().substring(0,56)+"...";
+            	}else{
+            		return "";
+            	}
             }
         };
         comentarioColumn.setSortable(false);

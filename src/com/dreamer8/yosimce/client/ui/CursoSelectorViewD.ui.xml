@@ -5,7 +5,6 @@
 	<ui:style>
 		.dialogbox {
 			width: 300px;
-			height: 400px;
 		}
 		.panel {
 			display:block;
@@ -16,24 +15,38 @@
 		
 		.button{
 			display:inline-block;
+			float:right;
+			margin: 5px;
+		}
+		
+		.buscar{
+			width: 90%;
+		}
+		
+		.list{
+			width: 290px;
+			margin-left: auto;
+			margin-right: auto;
+			height: 350px;
 		}
 	</ui:style>
 	<g:DialogBox animationEnabled="true" autoHideEnabled="true" autoHideOnHistoryEventsEnabled="true" glassEnabled="true" modal="true"  ui:field="panel">
 		<g:HTMLPanel addStyleNames='{style.dialogbox}'>
 			<table class='{style.panel}'>
 				<tr>
-					<td>Buscar establecimiento</td>
+					<th colspan='2'>Selector de curso</th>
 				</tr>
 				<tr>
-					<td><g:TextBox width="80px" ui:field="rbdBox"/></td>
+					<td>Buscar:</td>
+					<td><g:TextBox ui:field="rbdBox" addStyleNames='{style.buscar}'/></td>
 				</tr>
 				<tr>
-					<td> <c:CellList ui:field="cursosList"/> </td>
+					<td colspan='2'> <c:CellList ui:field="cursosList" addStyleNames='{style.list}'/> </td>
 				</tr>
 				<tr>
-					<td>
-						<g:Button addStyleNames='{style.button}' ui:field="cancelBox" text="Cancelar"/>
+					<td colspan='2'>
 						<g:Button addStyleNames='{style.button}' ui:field="seleccionarBox" text="Seleccionar"/>
+						<g:Button addStyleNames='{style.button}' ui:field="cancelBox" text="Cancelar"/>
 					</td>
 				</tr>
 			</table>
