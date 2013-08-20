@@ -94,13 +94,14 @@ public class AgendamientosPlace extends SimcePlace {
 					.get("rid")) : -1);
 			pp.setComunaId((kvs.containsKey("rid") && kvs.containsKey("cid")) ? Integer.parseInt(kvs
 					.get("cid")) : -1);
-			pp.setDesdeTimestamp((kvs.containsKey("dts")) ? Integer.parseInt(kvs
+			pp.setDesdeTimestamp((kvs.containsKey("dts")) ? Long.parseLong(kvs
 					.get("dts")) : -1);
-			pp.setHastaTimestamp((kvs.containsKey("hts")) ? Integer.parseInt(kvs
+			pp.setHastaTimestamp((kvs.containsKey("hts")) ? Long.parseLong(kvs
 					.get("hts")) : -1);
 			
 			if(kvs.containsKey("es")){
-				String[] estados = kvs.get("dts").split("|");
+				
+				String[] estados = kvs.get("es").split(":");
 				ArrayList<Integer> e = new ArrayList<Integer>();
 				for(String s:estados){
 					e.add(Integer.parseInt(s));
@@ -124,9 +125,9 @@ public class AgendamientosPlace extends SimcePlace {
 				StringBuilder estados = new StringBuilder();
 				for(Integer i:place.getEstadosSeleccionados()){
 					estados.append(i);
-					estados.append("|");
+					estados.append(":");
 				}
-				estados.deleteCharAt(estados.length());
+				estados.deleteCharAt(estados.length()-1);
 				kvs.put("es", estados.toString());
 			}
 			return TokenUtils.createKeyValuesToken(kvs);

@@ -4,6 +4,7 @@ import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -76,6 +77,11 @@ public class CursoSelectorViewD implements CursoSelectorView {
 	@UiHandler("seleccionarBox")
 	void onSeleccionarBoxClick(ClickEvent event){
 		presenter.onConfirm();
+	}
+	
+	@UiHandler("rbdBox")
+	void onBuscadorKeyUp(KeyUpEvent event){
+		presenter.onSearchBoxChange(rbdBox.getText());
 	}
 	
 	@UiHandler("panel")

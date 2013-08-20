@@ -78,7 +78,7 @@ public class CursoSelector implements
 	@Override
 	public void onSearchBoxChange(String search) {
 		view.setOkButtonEnabled(false);
-		if(search!=null && !search.equals("")){
+		if(search!=null && search.length()>2){
 			factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus) {
 
 				@Override

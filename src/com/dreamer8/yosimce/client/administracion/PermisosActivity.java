@@ -35,10 +35,10 @@ public class PermisosActivity extends SimceActivity implements
 	
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel, eventBus);
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		permisosModificados = new ArrayList<PermisoDTO>();
+		super.start(panel, eventBus);
 	}
 
 	@Override
