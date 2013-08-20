@@ -58,23 +58,19 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT u.id,u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
+		String query = "SELECT u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND us.usuario_tipo_id > "
 				+ SecurityFilter.escapeString(idTipoUsuarioSuperior)
 				+ ")"
-				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel.id=axn.id AND axn.aplicacion_id="
+				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (u.id ILIKE '%"
-				+ SecurityFilter.escapeLikeString(StringUtils.stripRut(filtro),
-						"~")
-				+ "%' ESCAPE '~'"
-				+ " OR u.username ILIKE '%"
-				+ SecurityFilter.escapeLikeString(filtro, "~")
+				+ " WHERE (u.username ILIKE '%"
+				+ SecurityFilter.escapeLikeString(StringUtils.formatRut(filtro), "~")
 				+ "%' ESCAPE '~'"
 				+ " OR u.nombres || ' ' || u.apellido_paterno || ' ' || u.apellido_materno ILIKE '%"
 				+ SecurityFilter.escapeLikeString(filtro, "~")
@@ -108,21 +104,17 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT u.id,u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
+		String query = "SELECT u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
-				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel.id=axn.id AND axn.aplicacion_id="
+				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (u.id ILIKE '%"
-				+ SecurityFilter.escapeLikeString(StringUtils.stripRut(filtro),
-						"~")
-				+ "%' ESCAPE '~'"
-				+ " OR u.username ILIKE '%"
-				+ SecurityFilter.escapeLikeString(filtro, "~")
+				+ " WHERE (u.username ILIKE '%"
+				+ SecurityFilter.escapeLikeString(StringUtils.formatRut(filtro), "~")
 				+ "%' ESCAPE '~'"
 				+ " OR u.nombres || ' ' || u.apellido_paterno || ' ' || u.apellido_materno ILIKE '%"
 				+ SecurityFilter.escapeLikeString(filtro, "~")

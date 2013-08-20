@@ -72,11 +72,12 @@ public class ActividadEstado implements java.io.Serializable {
 	public EstadoAgendaDTO getEstadoAgendaDTO() {
 		EstadoAgendaDTO eadto = new EstadoAgendaDTO();
 		eadto.setId(id);
-		if (nombre.equals(ANULADA) || nombre.equals(REALIZADA)) {
-			eadto.setEstado(CONFIRMADO);
-		} else {
-			eadto.setEstado(nombre);
-		}
+//		if (nombre.equals(ANULADA) || nombre.equals(REALIZADA)) {
+//			eadto.setEstado(CONFIRMADO);
+//		} else {
+//			eadto.setEstado(nombre);
+//		}
+		eadto.setEstado(nombre);
 
 		return eadto;
 	}

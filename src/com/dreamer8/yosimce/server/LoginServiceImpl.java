@@ -23,6 +23,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Sesion;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
@@ -288,7 +289,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		try {
 			s.beginTransaction();
 			UsuarioDAO udao = new UsuarioDAO();
-			Usuario u = udao.findbyUsername(username);
+			Usuario u = udao.findbyUsername(StringUtils.formatRut(username));
 			if(u == null){
 				throw new NullPointerException("No se encontró el usuario");
 			}
