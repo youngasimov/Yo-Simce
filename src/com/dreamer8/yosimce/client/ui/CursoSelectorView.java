@@ -1,25 +1,24 @@
 package com.dreamer8.yosimce.client.ui;
 
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 public interface CursoSelectorView {
-
-	void setPresenter(CursoSelectorPresenter presenter);
-	void show();
-	void showRelativeTo(UIObject object);
-	void hide();
-	void setCancelable(boolean cancelable);
-	void setGlassEnabled(boolean enabled);
-	void setOkButtonEnabled(boolean enabled);
 	
+	void show();
+	void hide();
+	void setOkButtonEnabled(boolean enabled);
+	void setSearchValue(String search);
+	void setPresenter(CursoSelectorPresenter presenter);
+	
+	SingleSelectionModel<CursoDTO> getSelectionModel();
 	HasData<CursoDTO> getDataDisplay();
 	
 	public interface CursoSelectorPresenter{
 		void onSearchBoxChange(String search);
 		void onCancel();
 		void onConfirm();
-		void onCursoSelected(CursoDTO curso);
+		void cursoSelected(CursoDTO curso);
 	}
 }

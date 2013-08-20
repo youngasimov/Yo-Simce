@@ -4,7 +4,7 @@
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 	<ui:style>
 		.dialogbox {
-			width: 300px;
+			width: 320px;
 		}
 		.panel {
 			display:block;
@@ -24,10 +24,11 @@
 		}
 		
 		.list{
-			width: 290px;
+			width: 310px;
 			margin-left: auto;
 			margin-right: auto;
-			height: 350px;
+			min-height:200px;
+			max-height: 300px;
 		}
 	</ui:style>
 	<g:DialogBox animationEnabled="true" autoHideEnabled="true" autoHideOnHistoryEventsEnabled="true" glassEnabled="true" modal="true"  ui:field="panel">

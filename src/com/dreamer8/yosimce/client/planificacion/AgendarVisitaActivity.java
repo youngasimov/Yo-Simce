@@ -39,8 +39,6 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	@Override
 	public void onCambiarEstablecimientoClick() {
-		selector.setCancelable(true);
-		selector.setGlassEnabled(true);
 		selector.show();
 	}
 	
@@ -65,19 +63,16 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			}
 		});
 	}
-
+	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel,eventBus);
-		panel.setWidget(view.asWidget());
-		this.eventBus = eventBus;
-		
+	public void onPermisosActualizados() {
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
 			@Override
 			public void execute() {
 				AgendarVisitaPlace avp = new AgendarVisitaPlace(AgendarVisitaActivity.this.place.getAplicacionId(),AgendarVisitaActivity.this.place.getNivelId(),AgendarVisitaActivity.this.place.getTipoId(),selector.getSelectedCurso().getId());
+				selector.hide();
 				AgendarVisitaActivity.this.getFactory().getPlaceController().goTo(avp);
 			}
 		});
@@ -90,10 +85,9 @@ public class AgendarVisitaActivity extends SimceActivity implements
 					AgendarVisitaActivity.this.getFactory().getPlaceController().goTo(new PlanificacionPlace(AgendarVisitaActivity.this.place.getAplicacionId(),AgendarVisitaActivity.this.place.getNivelId(),AgendarVisitaActivity.this.place.getTipoId()));
 				}
 			});
-			selector.setCancelable(true);
-			selector.setGlassEnabled(true);
 			selector.show();
 		}else{
+			
 			view.setIdCurso(place.getCursoId());
 			
 			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
@@ -125,7 +119,14 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				}
 			});
 			
-		}		
+		}
+	}
+
+	@Override
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		panel.setWidget(view.asWidget());
+		this.eventBus = eventBus;
+		super.start(panel,eventBus);
 	}
 	
 	@Override
@@ -133,6 +134,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		super.onStop();
 		view.getDataDisplay().setRowCount(0);
 		view.setNombreEstablecimiento("");
+		selector.hide();
 		agenda = null;
 	}
 }

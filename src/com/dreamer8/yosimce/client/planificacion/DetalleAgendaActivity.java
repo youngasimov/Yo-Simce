@@ -33,8 +33,6 @@ public class DetalleAgendaActivity extends SimceActivity
 
 	@Override
 	public void onCambiarCursoClick() {
-		selector.setCancelable(true);
-		selector.setGlassEnabled(false);
 		selector.show();
 	}
 	
@@ -49,6 +47,7 @@ public class DetalleAgendaActivity extends SimceActivity
 			@Override
 			public void execute() {
 				DetalleAgendaPlace avp = new DetalleAgendaPlace(DetalleAgendaActivity.this.place.getAplicacionId(),DetalleAgendaActivity.this.place.getNivelId(),DetalleAgendaActivity.this.place.getTipoId(),selector.getSelectedCurso().getId());
+				selector.hide();
 				DetalleAgendaActivity.this.getFactory().getPlaceController().goTo(avp);
 			}
 		});
@@ -61,8 +60,6 @@ public class DetalleAgendaActivity extends SimceActivity
 					DetalleAgendaActivity.this.getFactory().getPlaceController().goTo(new PlanificacionPlace(DetalleAgendaActivity.this.place.getAplicacionId(),DetalleAgendaActivity.this.place.getNivelId(),DetalleAgendaActivity.this.place.getTipoId()));
 				}
 			});
-			selector.setCancelable(true);
-			selector.setGlassEnabled(true);
 			selector.show();
 		}else{
 			view.setIdCurso(place.getCursoId());

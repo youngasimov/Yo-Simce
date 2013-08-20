@@ -25,8 +25,37 @@ public class CursoSelector implements
 		view = factory.getCursoSelectorView();
 		view.setPresenter(this);
 		view.setOkButtonEnabled(false);
+		view.getDataDisplay().setVisibleRange(0, 20);
 	}
 	
+	@Override
+	public void onSearchBoxChange(String search) {
+		if(search!=null && search.length()>2){
+			factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus) {
+
+				@Override
+				public void success(ArrayList<CursoDTO> result) {
+					view.getDataDisplay().setRowCount(result.size());
+					view.getDataDisplay().setRowData(0, result);
+					view.setOkButtonEnabled(false);
+					view.getSelectionModel().clear();
+					currentCurso = null;
+				}
+				
+			});
+		}else{
+			view.getDataDisplay().setRowCount(0);
+			view.setOkButtonEnabled(false);
+			view.getSelectionModel().clear();
+			currentCurso = null;
+		}	
+	}
+
+	@Override
+	public void cursoSelected(CursoDTO curso) {
+		currentCurso = curso;
+		view.setOkButtonEnabled(true);
+	}
 
 	@Override
 	public void onConfirm() {
@@ -37,6 +66,7 @@ public class CursoSelector implements
 	
 	@Override
 	public void onCancel() {
+		hide();
 		if(cancelCommand!=null){
 			cancelCommand.execute();
 		}
@@ -46,16 +76,17 @@ public class CursoSelector implements
 		view.show();
 	}
 	
+	public void hide(){
+		currentCurso = null;
+		view.setOkButtonEnabled(false);
+		view.getDataDisplay().setRowCount(0);
+		view.getDataDisplay().setRowData(0, new ArrayList<CursoDTO>());
+		view.setSearchValue("");
+		view.hide();
+	}
+	
 	public CursoDTO getSelectedCurso(){
 		return currentCurso;
-	}
-	
-	public void setCancelable(boolean cancelable){
-		view.setCancelable(cancelable);
-	}
-	
-	public void setGlassEnabled(boolean enabled){
-		view.setGlassEnabled(enabled);
 	}
 	
 	public void setOnCancelAction(Command c){
@@ -64,40 +95,5 @@ public class CursoSelector implements
 	
 	public void setOnCursoChangeAction(Command c){
 		this.confirmCommand = c;
-	}
-	
-	public void hide(){
-		currentCurso = null;
-		view.setOkButtonEnabled(false);
-		view.getDataDisplay().setRowCount(0);
-		view.getDataDisplay().setVisibleRange(0, 20);
-		view.getDataDisplay().setRowData(0, new ArrayList<CursoDTO>());
-		view.hide();
-	}
-
-	@Override
-	public void onSearchBoxChange(String search) {
-		view.setOkButtonEnabled(false);
-		if(search!=null && search.length()>2){
-			factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus) {
-
-				@Override
-				public void success(ArrayList<CursoDTO> result) {
-					view.getDataDisplay().setRowCount(result.size());
-					view.getDataDisplay().setVisibleRange(0, result.size());
-					view.getDataDisplay().setRowData(0, result);
-				}
-				
-			});
-		}
-		
-		
-	}
-
-
-	@Override
-	public void onCursoSelected(CursoDTO curso) {
-		currentCurso = curso;
-		view.setOkButtonEnabled(true);
 	}
 }

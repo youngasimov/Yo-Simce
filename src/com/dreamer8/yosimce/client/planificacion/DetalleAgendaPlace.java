@@ -42,7 +42,7 @@ public class DetalleAgendaPlace extends SimcePlace {
 			pp.setTipoId((kvs.containsKey(TIPOID)) ? Integer.parseInt(kvs
 					.get(TIPOID)) : -1);
 			pp.setCursoId((kvs.containsKey("c")) ? Integer.parseInt(kvs
-					.get("e")) : -1);
+					.get("c")) : -1);
 			return pp;
 		}
 

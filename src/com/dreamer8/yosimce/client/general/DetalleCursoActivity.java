@@ -20,6 +20,7 @@ public class DetalleCursoActivity extends SimceActivity implements
 	private final DetalleCursoPlace place;
 	private final DetalleCursoView view;
 	private CursoSelector selector;
+	private EventBus eventBus;
 	
 	public DetalleCursoActivity(ClientFactory factory, DetalleCursoPlace place, HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place,permisos);
@@ -31,23 +32,18 @@ public class DetalleCursoActivity extends SimceActivity implements
 
 	@Override
 	public void onCambiarCursoClick() {
-		selector.setCancelable(true);
-		selector.setGlassEnabled(true);
 		selector.show();
 	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel,eventBus);
-		panel.setWidget(view.asWidget());
-		
+	public void onPermisosActualizados() {
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
 			@Override
 			public void execute() {
-				selector.hide();
 				DetalleCursoPlace dcp = new DetalleCursoPlace(DetalleCursoActivity.this.place.getAplicacionId(),DetalleCursoActivity.this.place.getNivelId(),DetalleCursoActivity.this.place.getTipoId(),selector.getSelectedCurso().getId());
+				selector.hide();
 				DetalleCursoActivity.this.getFactory().getPlaceController().goTo(dcp);
 			}
 		});
@@ -60,8 +56,6 @@ public class DetalleCursoActivity extends SimceActivity implements
 					DetalleCursoActivity.this.getFactory().getPlaceController().goTo(new GeneralPlace(DetalleCursoActivity.this.place.getAplicacionId(), DetalleCursoActivity.this.place.getNivelId(), DetalleCursoActivity.this.place.getTipoId()));
 				}
 			});
-			selector.setCancelable(true);
-			selector.setGlassEnabled(true);
 			selector.show();
 		}else{
 			
@@ -75,8 +69,14 @@ public class DetalleCursoActivity extends SimceActivity implements
 					
 				}
 			});
-			
 		}
+	}
+	
+	@Override
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		panel.setWidget(view.asWidget());
+		this.eventBus =eventBus;  
+		super.start(panel,eventBus);
 	}
 	
 	@Override
