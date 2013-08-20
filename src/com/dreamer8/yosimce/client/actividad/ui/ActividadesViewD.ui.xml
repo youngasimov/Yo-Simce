@@ -55,6 +55,10 @@
 		display: inline;
 		margin-left: 20px;
 	}
+	
+	.data{
+		font-size: 10px;
+	}
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
@@ -70,7 +74,7 @@
 			</g:HTMLPanel>	
 		</g:north>
 		<g:center>
-			<c:DataGrid ui:field='dataGrid' />
+			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
 		</g:center>
     	<g:south size="3">
 	     	<g:HTMLPanel>
