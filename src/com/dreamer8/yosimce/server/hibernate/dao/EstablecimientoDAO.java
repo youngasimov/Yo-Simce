@@ -124,8 +124,7 @@ public class EstablecimientoDAO extends
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
-		query += " WHERE e.id ILIKE '%"
-				+ SecurityFilter.escapeLikeString(rbd, "~") + "%' ESCAPE '~'";
+		query += " WHERE e.id=" + SecurityFilter.escapeString(rbd);
 		Query q = s.createSQLQuery(query).addEntity(Establecimiento.class);
 		es = q.list();
 		return es;

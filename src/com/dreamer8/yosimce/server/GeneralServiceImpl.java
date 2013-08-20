@@ -20,6 +20,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Region;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
@@ -197,6 +198,10 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements Ge
 				}
 
 				Usuario u = getUsuarioActual();
+				
+				if(rbdSeach == null || !StringUtils.isInt(rbdSeach)){
+					throw new NullPointerException("No se ha especificado un RBD válido.");
+				}
 
 				s.beginTransaction();
 
@@ -325,6 +330,10 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements Ge
 				}
 
 				Usuario u = getUsuarioActual();
+				
+				if(rbdSeach == null || !StringUtils.isInt(rbdSeach)){
+					throw new NullPointerException("No se ha especificado un RBD válido.");
+				}
 
 				s.beginTransaction();
 

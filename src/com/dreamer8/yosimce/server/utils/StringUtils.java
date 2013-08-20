@@ -73,4 +73,8 @@ public class StringUtils {
         }
         return rut;
     }
+    
+    public static Boolean isInt(String str){
+        return str.matches("^[0-9]+$");
+    }
 }
