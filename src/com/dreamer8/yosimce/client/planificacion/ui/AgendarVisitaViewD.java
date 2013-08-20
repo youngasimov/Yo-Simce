@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.core.client.GWT;
@@ -14,6 +16,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
@@ -39,7 +42,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	@UiField HTML establecimiento;
 	@UiField Button informacionButton;
-	@UiField Button cambiarButton;
+	@UiField ImageButton cambiarButton;
 	@UiField ListBox estadoBox;
 	@UiField DatePicker fechaPicker;
 	@UiField Label fechaLabel;
@@ -83,6 +86,11 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiHandler("fechaPicker")
 	void onFechaChange(ValueChangeEvent<Date> event){
 		fechaLabel.setText(format.format(event.getValue()));
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 	public void setIdCurso(int idCurso){

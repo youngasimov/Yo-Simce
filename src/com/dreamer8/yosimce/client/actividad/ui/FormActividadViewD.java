@@ -2,10 +2,13 @@ package com.dreamer8.yosimce.client.actividad.ui;
 
 import java.util.Date;
 
+import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ScoreSelector;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -31,7 +34,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	
 	@UiField HTML establecimientoSeleccionado;
-	@UiField Button saveButton;
+	@UiField ImageButton saveButton;
+	@UiField ImageButton save2Button;
 	@UiField Label nombreEstablecimientoLabel;
 	@UiField Label rbdLabel;
 	@UiField Label cursoLabel;
@@ -80,6 +84,12 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		inicioPruebaBox = new TimeBox(new Date(0),false);
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 

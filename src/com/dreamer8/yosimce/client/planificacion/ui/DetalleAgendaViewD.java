@@ -1,10 +1,13 @@
 package com.dreamer8.yosimce.client.planificacion.ui;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
@@ -26,7 +29,7 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 
 	@UiField HTML establecimiento;
 	@UiField Button informacionButton;
-	@UiField Button cambiarButton;
+	@UiField ImageButton cambiarButton;
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
 	private int idCurso;
@@ -50,6 +53,11 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 		DetalleCursoPlace dcp = new DetalleCursoPlace();
 		dcp.setCursoId(idCurso);
 		presenter.goTo(dcp);
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 	
 	@Override

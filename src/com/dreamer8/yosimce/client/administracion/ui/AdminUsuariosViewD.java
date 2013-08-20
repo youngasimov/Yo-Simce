@@ -2,6 +2,8 @@ package com.dreamer8.yosimce.client.administracion.ui;
 
 import java.util.ArrayList;
 
+import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -10,6 +12,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
@@ -35,8 +38,8 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 	}
 
 	@UiField HTML usuarioSeleccionado;
-	@UiField Button reestablecerPassButton;
-	@UiField Button updateButton;
+	@UiField ImageButton reestablecerPassButton;
+	@UiField ImageButton updateButton;
 	@UiField TextBox searchBox;
 	@UiField Button clearButton;
 	@UiField(provided=true) CellList<UserDTO> usuariosList;
@@ -93,6 +96,11 @@ public class AdminUsuariosViewD extends Composite implements AdminUsuariosView{
 	@UiHandler("searchBox")
 	void onChangeSearchString(KeyUpEvent event){
 		presenter.onSearchValueChange(searchBox.getText());
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 	@Override

@@ -1,11 +1,13 @@
 package com.dreamer8.yosimce.client.general.ui;
 
+import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -23,7 +25,7 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 
 	
 	@UiField HTML establecimiento;
-	@UiField Button cambiarButton;
+	@UiField ImageButton cambiarButton;
 	@UiField Label rbdLabel;
 	@UiField Label regionLabel;
 	@UiField Label comunaLabel;
@@ -45,6 +47,11 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@UiHandler("cambiarButton")
 	void onCambiarButtonClick(ClickEvent event){
 		presenter.onCambiarCursoClick();
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 	@Override

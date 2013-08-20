@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
-import com.dreamer8.yosimce.client.PermisosEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
@@ -12,11 +11,7 @@ import com.dreamer8.yosimce.client.administracion.ui.PermisosView.PermisosPresen
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.view.client.CellPreviewEvent;
-import com.google.gwt.view.client.Range;
 
 public class PermisosActivity extends SimceActivity implements
 		PermisosPresenter {
@@ -35,7 +30,6 @@ public class PermisosActivity extends SimceActivity implements
 	
 	@Override
 	public void onPermisosActualizados() {
-		
 		updateTable();
 	}
 	
@@ -45,26 +39,6 @@ public class PermisosActivity extends SimceActivity implements
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		permisosModificados = new ArrayList<PermisoDTO>();
-		view.getDataDisplay().addCellPreviewHandler(new CellPreviewEvent.Handler<PermisoDTO>(){
-
-			@Override
-			public void onCellPreview(CellPreviewEvent<PermisoDTO> event) {
-				if(Event.getTypeInt(event.getNativeEvent().getType()) != Event.ONCLICK){
-					return;
-				}
-				if(event.getColumn()>2){
-					int userPermiso = view.getColumnUserId(event.getColumn());
-					if(event.getValue().getIdTiposUsuariosPermitidos().contains(userPermiso)){
-						event.getValue().getIdTiposUsuariosPermitidos().remove(userPermiso);
-					}else{
-						event.getValue().getIdTiposUsuariosPermitidos().add(userPermiso);
-					}
-				}
-				if(!permisosModificados.contains(event.getValue())){
-					permisosModificados.add(event.getValue());
-				}
-			}
-		});
 	}
 
 	@Override
@@ -102,6 +76,13 @@ public class PermisosActivity extends SimceActivity implements
 				});
 			}
 		});
+	}
+
+	@Override
+	public void permisoActualizado(PermisoDTO permiso) {
+		if(!permisosModificados.contains(permiso)){
+			permisosModificados.add(permiso);
+		}
 	}
 
 }

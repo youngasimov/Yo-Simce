@@ -23,5 +23,6 @@ public interface PermisosView extends IsWidget {
 	public interface PermisosPresenter extends SimcePresenter{
 		void onUpdatePermisosClick();
 		void onUpdateTablaClick();
+		void permisoActualizado(PermisoDTO permiso);
 	}
 }

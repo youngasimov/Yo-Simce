@@ -1,7 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	
+	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	<ui:style>
 	.header{
 		display:block;
@@ -57,8 +60,8 @@
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'>Permisos</div>
 				<div class='{style.actions}'>
-					<g:Button addStyleNames='{style.action}' ui:field="updateButton" text="Actualizar permisos"/>
-					<g:Button addStyleNames='{style.action}' ui:field="updateViewButton" text="Actualizar tabla"/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="updateButton" text="Actualizar permisos" resource='{res.gear}' />
+					<my:ImageButton addStyleNames='{style.action}' ui:field="updateViewButton" text="Actualizar tabla" resource='{res.gear}' />
 				</div>
 			</g:HTMLPanel>	
 		</g:north>

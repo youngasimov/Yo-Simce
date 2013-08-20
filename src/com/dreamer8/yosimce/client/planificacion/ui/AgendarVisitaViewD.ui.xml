@@ -3,7 +3,11 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:d="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka">
+	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	
+    <ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
+    
 	<ui:style>
 	.header{
 		display:block;
@@ -123,7 +127,7 @@
 				<div class='{style.title}'>Agenda de <g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> </div>
 				<div class='{style.actions}'>
 					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
-					<g:Button addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar"/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar" resource='{res.popup}'/>
 				</div>
 			</g:HTMLPanel>	
 		</g:north>

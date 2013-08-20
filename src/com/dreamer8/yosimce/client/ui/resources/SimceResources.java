@@ -37,4 +37,7 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/popup.png")
 	public ImageResource popup();
+	
+	@Source("images/gear.png")
+	public ImageResource gear();
 }

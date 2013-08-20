@@ -4,21 +4,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
@@ -31,8 +34,8 @@ public class PermisosViewD extends Composite implements PermisosView {
 	interface PermisosViewDUiBinder extends UiBinder<Widget, PermisosViewD> {
 	}
 
-	@UiField Button updateButton;
-	@UiField Button updateViewButton;
+	@UiField ImageButton updateButton;
+	@UiField ImageButton updateViewButton;
 	@UiField(provided = true) DataGrid<PermisoDTO> dataGrid;
 	
 	private PermisosPresenter presenter;
@@ -58,6 +61,11 @@ public class PermisosViewD extends Composite implements PermisosView {
 	void onUpdateViewClick(ClickEvent event){
 		presenter.onUpdateTablaClick();
 	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
+	}
 
 	@Override
 	public void setTiposUsuarios(ArrayList<TipoUsuarioDTO> tiposUsuario) {
@@ -78,7 +86,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 		});
 		PermisoColumn hasPermisoColumn;
 		for(int i = 0; i<tiposUsuario.size();i++){
-			hasPermisoColumn =new PermisoColumn(new CheckboxCell(), tiposUsuario.get(i).getId());
+			hasPermisoColumn =new PermisoColumn(new CheckboxCell(), tiposUsuario.get(i).getId(),presenter);
 			columns.add(hasPermisoColumn);
 			dataGrid.addColumn(hasPermisoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(tiposUsuario.get(i).getTipoUsuario())));
 	        dataGrid.setColumnWidth(hasPermisoColumn, 150, Unit.PX);
@@ -112,10 +120,25 @@ public class PermisosViewD extends Composite implements PermisosView {
 	public class PermisoColumn extends Column<PermisoDTO, Boolean>{
 
 		private int idTipoUsuario;
+		private PermisosPresenter presenter; 
 		
-		public PermisoColumn(CheckboxCell cell, int tipoUsuarioId) {
+		public PermisoColumn(CheckboxCell cell, int tipoUsuarioId, PermisosPresenter presenter) {
 			super(cell);
 			idTipoUsuario = tipoUsuarioId;
+			this.presenter = presenter;
+			setFieldUpdater(new FieldUpdater<PermisoDTO, Boolean>() {
+
+				@Override
+				public void update(int index, PermisoDTO object, Boolean value) {
+					if(value && !object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
+						object.getIdTiposUsuariosPermitidos().add(idTipoUsuario);
+						PermisoColumn.this.presenter.permisoActualizado(object);
+					}else if(!value && object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
+						object.getIdTiposUsuariosPermitidos().remove(object.getIdTiposUsuariosPermitidos().indexOf(idTipoUsuario));
+						PermisoColumn.this.presenter.permisoActualizado(object);
+					}
+				}
+			});
 		}
 
 		@Override

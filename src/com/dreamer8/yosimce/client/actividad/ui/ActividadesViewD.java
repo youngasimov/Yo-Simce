@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.actividad.ui;
 
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.google.gwt.cell.client.ImageCell;
@@ -12,6 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
@@ -37,8 +39,8 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			UiBinder<Widget, ActividadesViewD> {
 	}
 
-	@UiField Button filtrosButton;
-	@UiField Button exportarButton;
+	@UiField ImageButton filtrosButton;
+	@UiField ImageButton exportarButton;
 	@UiField Button sincronizacionButton;
 	@UiField Button informacionButton;
 	@UiField  HTML establecimientoSeleccionado;
@@ -78,6 +80,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		DetalleCursoPlace dcp = new DetalleCursoPlace();
 		if(selectedItem !=null)dcp.setCursoId(selectedItem.getCursoId());
 		presenter.goTo(dcp);
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 	@Override

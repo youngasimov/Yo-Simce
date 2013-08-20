@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
@@ -59,19 +60,11 @@
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'>Sincronización <g:HTML ui:field="establecimientoSeleccionado"/></div>
 				<div class='{style.actions}'>
-					<g:PushButton  enabled='true' addStyleNames='{style.action}' ui:field="cambiarButton">
-						<g:upFace image='{res.popup}'>
-					    	<b>Cambiar</b>
-					   	</g:upFace>
-					</g:PushButton>
-					<!-- 
-					<g:PushButton  enabled='true' addStyleNames='{style.action}' ui:field="agregarButton">
-						<g:upFace image='{res.popup}'>
-					    	<b>Agregar alumno</b>
-					   	</g:upFace>
-					</g:PushButton>
+					<my:ImageButton addStyleNames='{style.action}' text='Cambiar' resource='{res.popup}' ui:field="cambiarButton"/>
+					<!--
+					<my:ImageButton addStyleNames='{style.action}' text='Agregar alumno' resource='{res.popup}' ui:field="agregarButton"/>
 					 -->
-					 <g:Button addStyleNames='{style.action}' ui:field="guardarButton" text="Guardar"/>
+					 <my:ImageButton addStyleNames='{style.action}' ui:field="guardarButton" text="Guardar" resource='{res.gear}' />
 					<g:Button addStyleNames='{style.action}' ui:field="conProblemasButton" text="Material defectuoso"/>
 				</div>
 			</g:HTMLPanel>	

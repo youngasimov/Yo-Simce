@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
+import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -22,7 +23,6 @@ import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSe
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 
@@ -37,9 +37,9 @@ public class SincronizacionViewD extends Composite implements
 	}
 
 	@UiField HTML establecimientoSeleccionado;
-	@UiField PushButton cambiarButton;
-	//@UiField PushButton agregarButton;
-	@UiField Button guardarButton;
+	@UiField ImageButton cambiarButton;
+	//@UiField ImageButton agregarButton;
+	@UiField ImageButton guardarButton;
 	@UiField Button conProblemasButton;
 	@UiField(provided = true) DataGrid<SincAlumnoDTO> dataGrid;
 	@UiField HTML alumnosHtml;

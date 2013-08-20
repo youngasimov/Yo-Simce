@@ -1,11 +1,15 @@
 package com.dreamer8.yosimce.client.administracion.ui;
 
 import java.util.ArrayList;
+
+import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -21,12 +25,12 @@ public class AdminEventosViewD extends Composite implements AdminEventosView{
 			UiBinder<Widget, AdminEventosViewD> {
 	}
 
-	@UiField Button nuevaAplicacionButton;
-	@UiField Button editarAplicacionButton;
-	@UiField Button nuevoNivelButton;
-	@UiField Button editarNivelButton;
-	@UiField Button nuevoTipoButton;
-	@UiField Button editarTipoButton;
+	@UiField ImageButton nuevaAplicacionButton;
+	@UiField ImageButton editarAplicacionButton;
+	@UiField ImageButton nuevoNivelButton;
+	@UiField ImageButton editarNivelButton;
+	@UiField ImageButton nuevoTipoButton;
+	@UiField ImageButton editarTipoButton;
 	@UiField ListBox aplicacionBox;
 	@UiField ListBox nivelBox;
 	@UiField ListBox tipoBox;
@@ -36,6 +40,11 @@ public class AdminEventosViewD extends Composite implements AdminEventosView{
 	
 	public AdminEventosViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 	@Override

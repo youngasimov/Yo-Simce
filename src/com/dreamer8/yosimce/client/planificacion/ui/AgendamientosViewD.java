@@ -9,6 +9,8 @@ import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
+import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -22,6 +24,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
@@ -52,8 +55,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	}
 	
 	
-	@UiField Button filtrosButton;
-	@UiField Button exportarButton;
+	@UiField ImageButton filtrosButton;
+	@UiField ImageButton exportarButton;
 	@UiField Button modificarAgendaButton;
 	@UiField Button detallesButton;
 	@UiField Button informacionButton;
@@ -110,6 +113,11 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		DetalleCursoPlace dcp = new DetalleCursoPlace();
 		if(selectedItem !=null)dcp.setCursoId(selectedItem.getEstablecimientoId());
 		presenter.goTo(dcp);
+	}
+	
+	@UiFactory
+	public static SimceResources getResources() {
+		return SimceResources.INSTANCE;
 	}
 
 	@Override
