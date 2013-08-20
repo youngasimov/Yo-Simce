@@ -11,11 +11,11 @@ public class AgendaPreviewDTO implements Serializable {
 
 		@Override
 		public Object getKey(AgendaPreviewDTO item) {
-			return (item == null) ? null : item.getEstablecimientoId();
+			return (item == null) ? null : item.getCursoId();
 		}
 	};
 
-	private Integer establecimientoId;
+	private Integer cursoId;
 	private String establecimientoName;
 	private String rbd;
 	private String curso;
@@ -31,12 +31,12 @@ public class AgendaPreviewDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getEstablecimientoId() {
-		return establecimientoId;
+	public Integer getCursoId() {
+		return cursoId;
 	}
 
-	public void setEstablecimientoId(Integer establecimientoId) {
-		this.establecimientoId = establecimientoId;
+	public void setCursoId(Integer cursoId) {
+		this.cursoId = cursoId;
 	}
 
 	public String getEstablecimientoName() {

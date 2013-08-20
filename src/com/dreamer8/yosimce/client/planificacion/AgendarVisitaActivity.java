@@ -52,6 +52,9 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				break;
 			}
 		}
+		aidto.setFecha(view.getFechaHoraSeleccionada());
+		
+		aidto.setComentario(view.getComentario());
 		
 		getFactory().getPlanificacionService().AgendarVisita(place.getCursoId(), aidto,new SimceCallback<AgendaItemDTO>(eventBus) {
 
@@ -100,11 +103,15 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			});
 			
 			getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus) {
-
+				
 				@Override
 				public void success(AgendaDTO result) {
 					agenda = result;
-					view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+					if(result.getEstablecimiento().length()>25){
+						view.setNombreEstablecimiento(result.getEstablecimiento().substring(0,12)+"..."+result.getEstablecimiento().substring(result.getEstablecimiento().length()-12)+"-"+result.getCurso());
+					}else{
+						view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+					}
 					view.getDataDisplay().setRowCount(result.getItems().size());
 					
 					Collections.sort(result.getItems(), new Comparator<AgendaItemDTO>(){
@@ -114,10 +121,13 @@ public class AgendarVisitaActivity extends SimceActivity implements
 							return arg1.getFecha().compareTo(arg0.getFecha());
 						}
 					});
-					view.getDataDisplay().setRowData(0, result.getItems());
+
 					view.getDataDisplay().setVisibleRange(0,result.getItems().size());
+					view.getDataDisplay().setRowData(0, result.getItems());
 				}
 			});
+			
+			
 			
 		}
 	}
@@ -134,7 +144,6 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		super.onStop();
 		view.getDataDisplay().setRowCount(0);
 		view.setNombreEstablecimiento("");
-		selector.hide();
 		agenda = null;
 	}
 }

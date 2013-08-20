@@ -86,6 +86,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiHandler("fechaPicker")
 	void onFechaChange(ValueChangeEvent<Date> event){
 		fechaLabel.setText(format.format(event.getValue()));
+		timeBox.setValue(event.getValue().getTime());
 	}
 	
 	@UiFactory
@@ -132,7 +133,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 
 	@Override
 	public Date getFechaHoraSeleccionada() {
-		return new Date(fechaPicker.getValue().getTime()+timeBox.getValue());
+		return new Date(timeBox.getValue());
 	}
 
 	@Override

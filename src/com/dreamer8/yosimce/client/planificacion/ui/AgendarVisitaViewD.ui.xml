@@ -106,7 +106,6 @@
 	
 	.estName{
 		display: inline;
-		margin-left: 20px;
 	}
 	.timepicker{
 		display: block;
