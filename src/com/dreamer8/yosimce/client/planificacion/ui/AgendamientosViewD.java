@@ -18,6 +18,8 @@ import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -28,7 +30,6 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -128,11 +129,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@Override
 	public HasData<AgendaPreviewDTO> getDataDisplay() {
 		return dataGrid;
-	}
-
-	@Override
-	public ColumnSortList getColumnSortList() {
-		return dataGrid.getColumnSortList();
 	}
 
 	@Override
@@ -268,6 +264,14 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			}
 		});
 		
+		filtrosPanel.regionBox.addChangeHandler(new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				presenter.onRegionChange(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
+			}
+		});
+		
 		filtrosPanel.cancelarButton.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -286,7 +290,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 					p.setDesdeTimestamp(filtrosPanel.desdeBox.getValue().getTime());
 				}
 				if(filtrosPanel.hastaBox.getValue()!=null){
-					p.setDesdeTimestamp(filtrosPanel.hastaBox.getValue().getTime());
+					p.setHastaTimestamp(filtrosPanel.hastaBox.getValue().getTime());
 				}
 				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
 					p.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));

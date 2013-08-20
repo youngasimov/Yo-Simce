@@ -50,6 +50,10 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 				onPermisosActualizados();
 			}
 		});	
+		
+		if(permisos != null){
+			onPermisosActualizados();
+		}
 	}
 	
 	@Override

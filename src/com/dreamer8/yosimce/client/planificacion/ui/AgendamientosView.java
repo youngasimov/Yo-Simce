@@ -8,7 +8,6 @@ import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
@@ -16,7 +15,6 @@ import com.google.gwt.view.client.Range;
 public interface AgendamientosView extends IsWidget {
 
 	HasData<AgendaPreviewDTO> getDataDisplay();
-	ColumnSortList getColumnSortList();
     Column<AgendaPreviewDTO,?> getColumn(int index);
     int getColumnIndex(Column<AgendaPreviewDTO,?> column);
 	void setPresenter(AgendamientosPresenter presenter);
@@ -31,7 +29,6 @@ public interface AgendamientosView extends IsWidget {
 	void setSelectedComuna(int comunaId);
 	
 	public interface AgendamientosPresenter extends SimcePresenter{
-		void onColumnSort(int columnIndex);
 		void onExportarClick();
 		void onRegionChange(int regionId);
 		void onCancelarFiltroClick();

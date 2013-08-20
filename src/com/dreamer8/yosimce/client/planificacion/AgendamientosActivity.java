@@ -45,11 +45,7 @@ public class AgendamientosActivity extends SimceActivity implements
 		estadosReady = false;
 		regionesReady = false;
 		range = view.getDataDisplay().getVisibleRange();
-	}
-	
-	@Override
-	public void onColumnSort(int columnIndex) {
-		
+		view.getDataDisplay().setRowCount(0,true);
 	}
 	
 	@Override
@@ -102,13 +98,9 @@ public class AgendamientosActivity extends SimceActivity implements
 			}
 		}
 	}
-
+	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel,eventBus);
-		panel.setWidget(view.asWidget());
-		this.eventBus = eventBus;
-		
+	public void onPermisosActualizados() {
 		regiones.clear();
 		comunas.clear();
 		estados.clear();
@@ -141,22 +133,13 @@ public class AgendamientosActivity extends SimceActivity implements
 				}
 			}
 		});
-		
-		getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus) {
+	}
 
-			@Override
-			public void success(Integer result) {
-				view.getDataDisplay().setRowCount(result,true);
-			}
-		});
-		
-		getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<AgendaPreviewDTO> result) {
-				view.getDataDisplay().setRowData(range.getStart(), result);
-			}
-		});
+	@Override
+	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+		panel.setWidget(view.asWidget());
+		this.eventBus = eventBus;
+		super.start(panel,eventBus);
 	}
 	
 	@Override
@@ -178,25 +161,38 @@ public class AgendamientosActivity extends SimceActivity implements
 			filtros.put(PlanificacionService.FKEY_HASTA, place.getHastaTimestamp()+"");
 			view.setHasta(new Date(place.getHastaTimestamp()));
 		}else{
-			view.setDesde(null);
+			view.setHasta(null);
 		}
 		if(place.getRegionId()!=-1){
 			filtros.put(PlanificacionService.FKEY_REGION, place.getRegionId()+"");
 			view.setSelectedRegion(place.getRegionId());
-		}
-		if(place.getComunaId()!=-1){
-			filtros.put(PlanificacionService.FKEY_COMUNA, place.getComunaId()+"");
-			view.setSelectedComuna(place.getComunaId());
+			onRegionChange(place.getRegionId());
 		}
 		if(place.getEstadosSeleccionados().size()>0){
 			view.setSelectedEstados(place.getEstadosSeleccionados());
 			StringBuilder b = new StringBuilder();
 			for(Integer id:place.getEstadosSeleccionados()){
 				b.append(id);
-				b.append("|");
+				b.append(":");
 			}
-			b.deleteCharAt(b.length());
+			b.deleteCharAt(b.length()-1);
 			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());
 		}
+		getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus) {
+
+			@Override
+			public void success(Integer result) {
+				view.getDataDisplay().setRowCount(result,true);
+			}
+		});
+		
+		getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<AgendaPreviewDTO> result) {
+				view.getDataDisplay().setRowData(range.getStart(), result);
+			}
+		});
+		
 	}
 }
