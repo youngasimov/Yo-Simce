@@ -307,12 +307,13 @@ public class Actividad implements java.io.Serializable {
 	public AgendaPreviewDTO getAgendaPreviewDTO(Integer idAplicacion) {
 		AgendaPreviewDTO apdto = new AgendaPreviewDTO();
 		apdto.setCurso(curso.getNombre());
-		apdto.setEstablecimientoId(curso.getEstablecimiento().getId());
+		apdto.setCursoId(curso.getId());
 		apdto.setEstablecimientoName(curso.getEstablecimiento().getNombre());
-		apdto.setRbd(Integer.toString(apdto.getEstablecimientoId()));
+		Integer idEstablecimiento = curso.getEstablecimiento().getId();
+		apdto.setRbd(Integer.toString(idEstablecimiento));
 		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
 		EstablecimientoTipo et = etdao.findByIdAplicacionANDIdEstablecimiento(
-				idAplicacion, apdto.getEstablecimientoId());
+				idAplicacion, idEstablecimiento);
 		if (et != null) {
 			apdto.setTipoEstablecimiento(et.getTipoEstablecimientoDTO());
 		}

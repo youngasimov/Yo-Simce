@@ -5,9 +5,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class AgendaPreviewDTO implements Serializable {
 
-
-
-	private Integer establecimientoId;
+	private Integer cursoId;
 	private String establecimientoName;
 	private String rbd;
 	private String curso;
@@ -23,12 +21,19 @@ public class AgendaPreviewDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getEstablecimientoId() {
-		return establecimientoId;
+	/**
+	 * @return the cursoId
+	 */
+	public Integer getCursoId() {
+		return cursoId;
 	}
 
-	public void setEstablecimientoId(Integer establecimientoId) {
-		this.establecimientoId = establecimientoId;
+	/**
+	 * @param cursoId
+	 *            the cursoId to set
+	 */
+	public void setCursoId(Integer cursoId) {
+		this.cursoId = cursoId;
 	}
 
 	public String getEstablecimientoName() {
