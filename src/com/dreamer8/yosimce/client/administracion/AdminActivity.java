@@ -24,8 +24,7 @@ public class AdminActivity extends SimceActivity implements AdminPresenter {
 	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel, eventBus);
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 	}
 }

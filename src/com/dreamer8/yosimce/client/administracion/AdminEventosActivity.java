@@ -35,13 +35,11 @@ public class AdminEventosActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel, eventBus);
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
-		
 		view.setNuevaAplicacionVisibility(true);
-		view.setAplicacionesBoxVisivility(true);
 		
+		view.setAplicacionesBoxVisivility(false);
 		view.setNivelesBoxVisivility(false);
 		view.setTiposBoxVisivility(false);
 		view.setNuevoNivelVisibility(false);
@@ -49,17 +47,6 @@ public class AdminEventosActivity extends SimceActivity implements
 		view.setEditarAplicacionVisivility(false);
 		view.setEditarNivelVisivility(false);
 		view.setEditarTipoVisivility(false);
-		
-		AplicacionDTO a = new AplicacionDTO();
-		a.setId(0);
-		a.setNombre("Simce TIC");
-		aplicaciones.add(a);
-		
-		a = new AplicacionDTO();
-		a.setId(1);
-		a.setNombre("Simce");
-		aplicaciones.add(a);
-		view.setAplicaciones(aplicaciones);
 	}
 
 	@Override

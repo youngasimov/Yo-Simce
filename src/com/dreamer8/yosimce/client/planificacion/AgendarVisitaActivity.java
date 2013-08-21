@@ -2,7 +2,6 @@ package com.dreamer8.yosimce.client.planificacion;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
@@ -38,37 +37,9 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void onCambiarEstablecimientoClick() {
-		selector.show();
-	}
-	
-	@Override
-	public void onModificarAgendaClick() {
-		AgendaItemDTO aidto = new AgendaItemDTO();
-		
-		for(EstadoAgendaDTO eadto:estados){
-			if(eadto.getId() == view.getIdEstadoAgendaSeleccionado()){
-				aidto.setEstado(eadto);
-				break;
-			}
-		}
-		aidto.setFecha(view.getFechaHoraSeleccionada());
-		
-		aidto.setComentario(view.getComentario());
-		
-		getFactory().getPlanificacionService().AgendarVisita(place.getCursoId(), aidto,new SimceCallback<AgendaItemDTO>(eventBus) {
-
-			@Override
-			public void success(AgendaItemDTO result) {
-				agenda.getItems().add(0, result);
-				view.getDataDisplay().setRowData(0, agenda.getItems());
-				view.getDataDisplay().setVisibleRange(0,agenda.getItems().size());
-			}
-		});
-	}
-	
-	@Override
-	public void onPermisosActualizados() {
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
+		panel.setWidget(view.asWidget());
+		this.eventBus = eventBus;
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
@@ -85,7 +56,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					AgendarVisitaActivity.this.getFactory().getPlaceController().goTo(new PlanificacionPlace(AgendarVisitaActivity.this.place.getAplicacionId(),AgendarVisitaActivity.this.place.getNivelId(),AgendarVisitaActivity.this.place.getTipoId()));
+					goTo(new PlanificacionPlace());
 				}
 			});
 			selector.show();
@@ -114,29 +85,44 @@ public class AgendarVisitaActivity extends SimceActivity implements
 					}
 					view.getDataDisplay().setRowCount(result.getItems().size());
 					
-					Collections.sort(result.getItems(), new Comparator<AgendaItemDTO>(){
-
-						@Override
-						public int compare(AgendaItemDTO arg0,AgendaItemDTO arg1) {
-							return arg1.getFecha().compareTo(arg0.getFecha());
-						}
-					});
+					Collections.reverse(agenda.getItems());
 
 					view.getDataDisplay().setVisibleRange(0,result.getItems().size());
 					view.getDataDisplay().setRowData(0, result.getItems());
 				}
-			});
-			
-			
-			
+			});	
 		}
 	}
-
+	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		panel.setWidget(view.asWidget());
-		this.eventBus = eventBus;
-		super.start(panel,eventBus);
+	public void onCambiarEstablecimientoClick() {
+		selector.show();
+	}
+	
+	@Override
+	public void onModificarAgendaClick() {
+		AgendaItemDTO aidto = new AgendaItemDTO();
+		
+		for(EstadoAgendaDTO eadto:estados){
+			if(eadto.getId() == view.getIdEstadoAgendaSeleccionado()){
+				aidto.setEstado(eadto);
+				break;
+			}
+		}
+		aidto.setFecha(view.getFechaHoraSeleccionada());
+		
+		aidto.setComentario(view.getComentario());
+		
+		getFactory().getPlanificacionService().AgendarVisita(place.getCursoId(), aidto,new SimceCallback<AgendaItemDTO>(eventBus) {
+
+			@Override
+			public void success(AgendaItemDTO result) {
+				agenda.getItems().add(0, result);
+				view.getDataDisplay().setRowCount(agenda.getItems().size());
+				view.getDataDisplay().setVisibleRange(0,agenda.getItems().size());
+				view.getDataDisplay().setRowData(0, agenda.getItems());
+			}
+		});
 	}
 	
 	@Override

@@ -13,8 +13,6 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.IncrementalCommand;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class SincronizacionActivity extends SimceActivity implements
@@ -35,8 +33,7 @@ public class SincronizacionActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel, eventBus);
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		

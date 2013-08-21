@@ -62,7 +62,7 @@
 	.rightPanel{
 		display:block;
 		float: left;
-		width: 500px;
+		width: 450px;
 		height: 100%;
 	}
 	
@@ -91,17 +91,14 @@
 	.agendaPanel{
 		display: block;
 		margin-top: 50px;
-		width: 95%;
 		margin-left:auto;
 		margin-right: auto;
-		height: 500px;
 	}
 	
 	.agendaList{
 		display: block;
 		float: left;
-		width: 100%;
-		height: 100%;
+		width: 440px;
 	}
 	
 	.estName{
@@ -131,48 +128,48 @@
 			</g:HTMLPanel>	
 		</g:north>
 		<g:center>
-			<g:HTMLPanel>
-			    <div class='{style.leftPanel}'>
-			    	<g:DecoratorPanel addStyleNames='{style.panel}'>
-			    		<g:HTMLPanel>
-				    		<table class='{style.form}'>
-				    			<tr>
-				    				<td class='{style.label}'>Estado:</td>
-				    				<td><g:ListBox ui:field="estadoBox"/> </td>
-				    			</tr>
-				    			<tr class='{style.separador}'>
-				    				<td class='{style.label}'>Fecha</td>
-				    				<td class='{style.label}'><g:Label ui:field="fechaLabel"/> </td>
-				    			</tr>
-				    			<tr>
-				    				<td colspan='2' class='{style.fechaPicker}'><c:DatePicker ui:field="fechaPicker"/> </td>
-				    			</tr>
-				    			<tr>
-				    				<td class='{style.label}'>Hora:</td>
-				    				<td><e:TimeBox ui:field="timeBox"/> </td>
-				    			</tr>
-				    			<tr class='{style.separador}'>
-				    				<td colspan='2' class='{style.label}'>Comentario</td>
-				    			</tr>
-				    			<tr>
-				    				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
-				    			</tr>
-				    			<tr class='{style.separador}'>
-				    				<td></td>
-				    				<td><g:Button ui:field="modificarButton" text="Modificar agenda"/> </td>
-				    			</tr>
-				    		</table>
-			    		</g:HTMLPanel>
-			    	</g:DecoratorPanel>
-			    </div>
-			    <div class='{style.rightPanel}'>
-			    	<g:DecoratorPanel addStyleNames='{style.agendaPanel}'>
-			    		<g:ScrollPanel addStyleNames='{style.agendaList}'>
-			    			<d:CellList ui:field="agendaList"/>
-			    		</g:ScrollPanel>
-			    	</g:DecoratorPanel>
-			    </div>
-			</g:HTMLPanel>
+			<g:ScrollPanel>
+				<g:HTMLPanel>
+				    <div class='{style.leftPanel}'>
+				    	<g:DecoratorPanel addStyleNames='{style.panel}'>
+				    		<g:HTMLPanel>
+					    		<table class='{style.form}'>
+					    			<tr>
+					    				<td class='{style.label}'>Estado:</td>
+					    				<td><g:ListBox ui:field="estadoBox"/> </td>
+					    			</tr>
+					    			<tr class='{style.separador}'>
+					    				<td class='{style.label}'>Fecha</td>
+					    				<td class='{style.label}'><g:Label ui:field="fechaLabel"/> </td>
+					    			</tr>
+					    			<tr>
+					    				<td colspan='2' class='{style.fechaPicker}'><c:DatePicker ui:field="fechaPicker"/> </td>
+					    			</tr>
+					    			<tr>
+					    				<td class='{style.label}'>Hora:</td>
+					    				<td><e:TimeBox ui:field="timeBox"/> </td>
+					    			</tr>
+					    			<tr class='{style.separador}'>
+					    				<td colspan='2' class='{style.label}'>Comentario</td>
+					    			</tr>
+					    			<tr>
+					    				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
+					    			</tr>
+					    			<tr class='{style.separador}'>
+					    				<td></td>
+					    				<td><g:Button ui:field="modificarButton" text="Modificar agenda"/> </td>
+					    			</tr>
+					    		</table>
+				    		</g:HTMLPanel>
+				    	</g:DecoratorPanel>
+				    </div>
+				    <div class='{style.rightPanel}'>
+				    	<g:DecoratorPanel addStyleNames='{style.agendaPanel}'>
+				    		<d:CellList ui:field="agendaList" addStyleNames='{style.agendaList}'/>
+				    	</g:DecoratorPanel>
+				    </div>
+				</g:HTMLPanel>
+			</g:ScrollPanel>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

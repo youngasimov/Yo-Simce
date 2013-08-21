@@ -20,7 +20,6 @@ public class DetalleCursoActivity extends SimceActivity implements
 	private final DetalleCursoPlace place;
 	private final DetalleCursoView view;
 	private CursoSelector selector;
-	private EventBus eventBus;
 	
 	public DetalleCursoActivity(ClientFactory factory, DetalleCursoPlace place, HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place,permisos);
@@ -28,15 +27,10 @@ public class DetalleCursoActivity extends SimceActivity implements
 		this.view = getFactory().getDetalleCursoView();
 		this.view.setPresenter(this);
 	}
-
-
-	@Override
-	public void onCambiarCursoClick() {
-		selector.show();
-	}
 	
 	@Override
-	public void onPermisosActualizados() {
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
+		panel.setWidget(view.asWidget());
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
@@ -71,12 +65,10 @@ public class DetalleCursoActivity extends SimceActivity implements
 			});
 		}
 	}
-	
+
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		panel.setWidget(view.asWidget());
-		this.eventBus =eventBus;  
-		super.start(panel,eventBus);
+	public void onCambiarCursoClick() {
+		selector.show();
 	}
 	
 	@Override

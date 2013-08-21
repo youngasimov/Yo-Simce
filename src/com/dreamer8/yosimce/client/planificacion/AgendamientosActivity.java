@@ -49,6 +49,44 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 	
 	@Override
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
+		panel.setWidget(view.asWidget());
+		this.eventBus = eventBus;
+		regiones.clear();
+		comunas.clear();
+		estados.clear();
+		estadosReady = false;
+		regionesReady = false;
+		
+		
+		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<SectorDTO> result) {
+				regiones.addAll(result);
+				view.setRegiones(regiones);
+				regionesReady = true;
+				if(estadosReady){
+					updateFiltros();
+				}
+			}
+		});
+		
+		getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<EstadoAgendaDTO> result) {
+				estados.addAll(result);
+				view.setEstados(estados);
+				estadosReady = true;
+				if(regionesReady){
+					updateFiltros();
+				}
+			}
+		});
+	}
+	
+	@Override
 	public void onExportarClick() {
 		
 	}
@@ -97,49 +135,6 @@ public class AgendamientosActivity extends SimceActivity implements
 				view.setSelectedComuna(place.getComunaId());
 			}
 		}
-	}
-	
-	@Override
-	public void onPermisosActualizados() {
-		regiones.clear();
-		comunas.clear();
-		estados.clear();
-		estadosReady = false;
-		regionesReady = false;
-		
-		
-		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<SectorDTO> result) {
-				regiones.addAll(result);
-				view.setRegiones(regiones);
-				regionesReady = true;
-				if(estadosReady){
-					updateFiltros();
-				}
-			}
-		});
-		
-		getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<EstadoAgendaDTO> result) {
-				estados.addAll(result);
-				view.setEstados(estados);
-				estadosReady = true;
-				if(regionesReady){
-					updateFiltros();
-				}
-			}
-		});
-	}
-
-	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		panel.setWidget(view.asWidget());
-		this.eventBus = eventBus;
-		super.start(panel,eventBus);
 	}
 	
 	@Override

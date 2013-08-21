@@ -16,13 +16,16 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	private HashMap<String,ArrayList<String>> permisos;
 	private HandlerRegistration permisosHandlerRegistration;
 	
+	private boolean init;
+	
 	public SimceActivity(ClientFactory factory, SimcePlace place,HashMap<String,ArrayList<String>> permisos){
 		this.factory = factory;
 		this.permisos = permisos;
 		this.place = place;
+		init = false;
 	}
 	
-	public void onPermisosActualizados(){}
+	public abstract void init(AcceptsOneWidget panel,EventBus eventBus);
 	
 	public ClientFactory getFactory(){
 		return factory;
@@ -41,18 +44,22 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		permisosHandlerRegistration = eventBus.addHandler(PermisosEvent.TYPE, new PermisosEvent.PermisosHandler() {
 			
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
-				onPermisosActualizados();
+				if(!init){
+					init = true;
+					init(panel,eventBus);
+				}
 			}
 		});	
 		
-		if(permisos != null){
-			onPermisosActualizados();
+		if(permisos != null && !init){
+			init = true;
+			init(panel,eventBus);
 		}
 	}
 	
@@ -60,6 +67,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	public void onStop() {
 		super.onStop();
 		permisosHandlerRegistration.removeHandler();
+		init = false;
 	}
 	
 	

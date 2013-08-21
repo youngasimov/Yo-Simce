@@ -30,28 +30,9 @@ public class ActividadesActivity extends SimceActivity implements
 		view.setPresenter(this);
 		range = view.getDataDisplay().getVisibleRange();
 	}
-
-	@Override
-	public void onExportarClick() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onRangeChange(Range r) {
-		this.range = r;
-		getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<ActividadPreviewDTO> result) {
-				view.getDataDisplay().setRowData(range.getStart(), result);
-			}
-		});
-	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel, eventBus);
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		
@@ -63,6 +44,24 @@ public class ActividadesActivity extends SimceActivity implements
 			}
 		});
 		
+		getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus) {
+
+			@Override
+			public void success(ArrayList<ActividadPreviewDTO> result) {
+				view.getDataDisplay().setRowData(range.getStart(), result);
+			}
+		});
+	}
+
+	@Override
+	public void onExportarClick() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onRangeChange(Range r) {
+		this.range = r;
 		getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus) {
 
 			@Override

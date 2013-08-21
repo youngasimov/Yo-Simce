@@ -29,16 +29,11 @@ public class PermisosActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void onPermisosActualizados() {
-		updateTable();
-	}
-	
-	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		permisosModificados = new ArrayList<PermisoDTO>();
-		super.start(panel, eventBus);
+		updateTable();
 	}
 
 	@Override

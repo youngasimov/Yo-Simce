@@ -1,17 +1,16 @@
 package com.dreamer8.yosimce.client.planificacion;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
+import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView.DetalleAgendaPresenter;
-import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
-import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
-import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -23,6 +22,7 @@ public class DetalleAgendaActivity extends SimceActivity
 	private final DetalleAgendaPlace place;
 	private final DetalleAgendaView view;
 	private CursoSelector selector;
+	private AgendaDTO agenda;
 	
 	public DetalleAgendaActivity(ClientFactory factory, DetalleAgendaPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place,permisos);
@@ -30,17 +30,10 @@ public class DetalleAgendaActivity extends SimceActivity
 		this.view = factory.getDetalleAgendaView();
 		this.view.setPresenter(this);
 	}
-
-	@Override
-	public void onCambiarCursoClick() {
-		selector.show();
-	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		super.start(panel, eventBus);
+	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
-		
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
@@ -57,71 +50,37 @@ public class DetalleAgendaActivity extends SimceActivity
 				
 				@Override
 				public void execute() {
-					DetalleAgendaActivity.this.getFactory().getPlaceController().goTo(new PlanificacionPlace(DetalleAgendaActivity.this.place.getAplicacionId(),DetalleAgendaActivity.this.place.getNivelId(),DetalleAgendaActivity.this.place.getTipoId()));
+					goTo(new PlanificacionPlace());
 				}
 			});
 			selector.show();
 		}else{
 			view.setIdCurso(place.getCursoId());
-			if(getFactory().onTesting()){
+			
+			getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus) {
 				
-				view.setNombreEstablecimiento("Colegio Carmelitas Descalsas");
-				
-				ArrayList<AgendaItemDTO> items = new ArrayList<AgendaItemDTO>();
-				AgendaItemDTO ai = new AgendaItemDTO();
-				UserDTO u = new UserDTO();
-				u.setNombres("Camilo");
-				u.setApellidoPaterno("Vera");
-				ai.setCreador(u);
-				ai.setFecha(new Date());
-				EstadoAgendaDTO ea = new EstadoAgendaDTO();
-				ea.setEstado("Realizado");
-				ea.setId(345);
-				ai.setEstado(ea);
-				ai.setComentario("");
-				items.add(ai);
-				
-				ai = new AgendaItemDTO();
-				u = new UserDTO();
-				u.setNombres("Camilo");
-				u.setApellidoPaterno("Vera");
-				ai.setCreador(u);
-				ai.setFecha(new Date());
-				ea = new EstadoAgendaDTO();
-				ea.setEstado("Confirmado con cambios");
-				ea.setId(6457);
-				ai.setEstado(ea);
-				ai.setComentario("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.");
-				items.add(ai);
-				
-				ai = new AgendaItemDTO();
-				u = new UserDTO();
-				u.setNombres("Camilo");
-				u.setApellidoPaterno("Vera");
-				ai.setCreador(u);
-				ai.setFecha(new Date());
-				ea = new EstadoAgendaDTO();
-				ea.setEstado("Confirmado");
-				ea.setId(947);
-				ai.setEstado(ea);
-				ai.setComentario("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.");
-				items.add(ai);
-				
-				ai = new AgendaItemDTO();
-				u = new UserDTO();
-				u.setNombres("Camilo");
-				u.setApellidoPaterno("Vera");
-				ai.setCreador(u);
-				ai.setFecha(new Date());
-				ea = new EstadoAgendaDTO();
-				ea.setEstado("Por confirmar");
-				ea.setId(764);
-				ai.setEstado(ea);
-				ai.setComentario("Quiere la boca exhausta vid, kiwi, piña y fugaz jamón. Fabio me exige, sin tapuj");
-				items.add(ai);
-				view.getDataDisplay().setRowData(0, items);
-			}
+				@Override
+				public void success(AgendaDTO result) {
+					agenda = result;
+					if(result.getEstablecimiento().length()>25){
+						view.setNombreEstablecimiento(result.getEstablecimiento().substring(0,12)+"..."+result.getEstablecimiento().substring(result.getEstablecimiento().length()-12)+"-"+result.getCurso());
+					}else{
+						view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+					}
+					view.getDataDisplay().setRowCount(result.getItems().size());
+					
+					Collections.reverse(agenda.getItems());
+
+					view.getDataDisplay().setVisibleRange(0,result.getItems().size());
+					view.getDataDisplay().setRowData(0, result.getItems());
+				}
+			});	
 		}
+	}
+
+	@Override
+	public void onCambiarCursoClick() {
+		selector.show();
 	}
 	
 	@Override
@@ -129,6 +88,6 @@ public class DetalleAgendaActivity extends SimceActivity
 		super.onStop();
 		view.getDataDisplay().setRowCount(0);
 		view.setNombreEstablecimiento("");
+		agenda = null;
 	}
-
 }
