@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
@@ -61,7 +62,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@UiField Button modificarAgendaButton;
 	@UiField Button detallesButton;
 	@UiField Button informacionButton;
-	@UiField  HTML establecimientoSeleccionado;
+	@UiField HTML establecimientoSeleccionado;
 	@UiField(provided = true) DataGrid<AgendaPreviewDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
 	
@@ -247,8 +248,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
-						selectionModel.getSelectedObject().getEstablecimientoName()+" >":"");
+				establecimientoSeleccionado.setText((selectionModel.getSelectedObject()!=null)?
+						ViewUtils.limitarString(selectionModel.getSelectedObject().getEstablecimientoName(),30)+" >":"");
 				modificarAgendaButton.setVisible(selectionModel.getSelectedObject()!=null);
 				detallesButton.setVisible(selectionModel.getSelectedObject()!=null);
 				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);

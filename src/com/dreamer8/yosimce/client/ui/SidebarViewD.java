@@ -3,8 +3,8 @@ package com.dreamer8.yosimce.client.ui;
 import com.dreamer8.yosimce.client.actividad.ActividadPlace;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
-import com.dreamer8.yosimce.client.actividad.DetalleActividadPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
@@ -63,13 +63,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiField Anchor actividadesViewItem;
 	@UiField Anchor formularioActividadActionItem;
-	@UiField Anchor detalleActividadViewItem;
 	@UiField Anchor sincronizacionActionItem;
+	@UiField Anchor materialDefectuosoActionItem;
 	@UiField Anchor aprobarSupervisoresActionItem;
 	
 	@UiField Anchor ingresoMaterialActionItem;
 	@UiField Anchor salidaMaterialActionItem;
-	@UiField Anchor historialMovimientosViewItem;
 	@UiField Anchor movimientosMaterialViewItem;
 	
 	@UiField Anchor administrarUsuariosActionItem;
@@ -139,14 +138,14 @@ public class SidebarViewD extends Composite implements SidebarView{
 		presenter.goTo(new FormActividadPlace());
 	}
 	
-	@UiHandler("detalleActividadViewItem")
-	void onDetalleActividadViewItemClick(ClickEvent event){
-		presenter.goTo(new DetalleActividadPlace());
-	}
-	
 	@UiHandler("sincronizacionActionItem")
 	void onSincronizacionActionItemClick(ClickEvent event){
 		presenter.goTo(new SincronizacionPlace());
+	}
+	
+	@UiHandler("materialDefectuosoActionItem")
+	void onMaterialDefectousoActionItemClick(ClickEvent event){
+		presenter.goTo(new MaterialDefectuosoPlace());
 	}
 	
 	@UiHandler("aprobarSupervisoresActionItem")
@@ -162,11 +161,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiHandler("salidaMaterialActionItem")
 	void onSalidaMaterialActionItemClick(ClickEvent event){
 		presenter.goTo(new SalidaMaterialPlace());
-	}
-	
-	@UiHandler("historialMovimientosViewItem")
-	void onHistorialMovimientosViewItemClick(ClickEvent event){
-		//presenter.goTo(place);
 	}
 	
 	@UiHandler("movimientosMaterialViewItem")
@@ -261,23 +255,20 @@ public class SidebarViewD extends Composite implements SidebarView{
 		formularioActividadActionItem.setVisible(visible);
 	}
 
-
-	@Override
-	public void setDetalleActividadViewItemVisivility(boolean visible) {
-		detalleActividadViewItem.setVisible(visible);
-	}
-
-
 	@Override
 	public void setSincronizacionActionItemVisivility(boolean visible) {
 		sincronizacionActionItem.setVisible(visible);
+	}
+	
+	@Override
+	public void setMaterialDefectuosoActionItemVisivility(boolean visible) {
+		materialDefectuosoActionItem.setVisible(visible);
 	}
 
 	@Override
 	public void setAprobarSupervisoresActionItemVisivility(boolean visible) {
 		aprobarSupervisoresActionItem.setVisible(visible);
 	}
-
 
 	@Override
 	public void setMaterialVisivility(boolean visible) {
@@ -288,30 +279,20 @@ public class SidebarViewD extends Composite implements SidebarView{
 		}
 	}
 
-
 	@Override
 	public void setIngresoMaterialActionItemVisivility(boolean visible) {
 		ingresoMaterialActionItem.setVisible(visible);
 	}
-
 
 	@Override
 	public void setSalidaMaterialActionItemVisivility(boolean visible) {
 		salidaMaterialActionItem.setVisible(visible);
 	}
 
-
-	@Override
-	public void setHistorialMovimientosViewItemVisivility(boolean visible) {
-		historialMovimientosViewItem.setVisible(visible);
-	}
-
-
 	@Override
 	public void setMovimientosMaterialViewItemVisivility(boolean visible) {
 		movimientosMaterialViewItem.setVisible(visible);
 	}
-
 
 	@Override
 	public void setAdministracionVisivility(boolean visible) {
@@ -321,7 +302,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 			administracion.addClassName(style.hide());
 		}
 	}
-
 
 	@Override
 	public void setAdministrarUsuariosActionItemVisivility(boolean visible) {
@@ -383,18 +363,18 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setDetalleActividadViewItemSelected(boolean selected) {
-		removeSeleccion();
-		if(selected){
-			detalleActividadViewItem.addStyleName(style.selected());
-		}
-	}
-
-	@Override
 	public void setSincronizacionActionItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
 			sincronizacionActionItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setMaterialDefectuosoActionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			materialDefectuosoActionItem.addStyleName(style.selected());
 		}
 	}
 
@@ -419,14 +399,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 		removeSeleccion();
 		if(selected){
 			salidaMaterialActionItem.addStyleName(style.selected());
-		}
-	}
-
-	@Override
-	public void setHistorialMovimientosViewItemSelected(boolean selected) {
-		removeSeleccion();
-		if(selected){
-			historialMovimientosViewItem.addStyleName(style.selected());
 		}
 	}
 
@@ -462,12 +434,11 @@ public class SidebarViewD extends Composite implements SidebarView{
 		agendarVisitaActionItem.removeStyleName(style.selected());
 		actividadesViewItem.removeStyleName(style.selected());
 		formularioActividadActionItem.removeStyleName(style.selected());
-		detalleActividadViewItem.removeStyleName(style.selected());
 		sincronizacionActionItem.removeStyleName(style.selected());
+		materialDefectuosoActionItem.removeStyleName(style.selected());
 		aprobarSupervisoresActionItem.removeStyleName(style.selected());
 		ingresoMaterialActionItem.removeStyleName(style.selected());
 		salidaMaterialActionItem.removeStyleName(style.selected());
-		historialMovimientosViewItem.removeStyleName(style.selected());
 		movimientosMaterialViewItem.removeStyleName(style.selected());
 		administrarUsuariosActionItem.removeStyleName(style.selected());
 		administrarEventosActionItem.removeStyleName(style.selected());
@@ -486,5 +457,4 @@ public class SidebarViewD extends Composite implements SidebarView{
 			administrarPermisosActionItem.addStyleName(style.selected());
 		}
 	}
-
 }

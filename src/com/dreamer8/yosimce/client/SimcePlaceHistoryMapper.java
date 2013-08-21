@@ -4,6 +4,7 @@ import com.dreamer8.yosimce.client.actividad.ActividadPlace;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminPlace;
@@ -34,6 +35,7 @@ import com.google.gwt.place.shared.WithTokenizers;
 		ActividadesPlace.Tokenizer.class,
 		FormActividadPlace.Tokenizer.class,
 		SincronizacionPlace.Tokenizer.class,
+		MaterialDefectuosoPlace.Tokenizer.class,
 		AprobarSupervisoresPlace.Tokenizer.class,
 		MaterialPlace.Tokenizer.class,
 		IngresoMaterialPlace.Tokenizer.class,

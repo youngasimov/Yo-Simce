@@ -8,23 +8,24 @@ import com.google.gwt.place.shared.Prefix;
 
 public class FormActividadPlace extends SimcePlace {
 
-	private int idActividad;
+	private int idCurso;
 	
 	public FormActividadPlace(){
 		super();
+		idCurso = -1;
 	}
 	
 	public FormActividadPlace(int aplicacionId, int nivelId, int tipoId, int idActividad){
 		super(aplicacionId, nivelId, tipoId);
-		this.idActividad = idActividad;
+		this.idCurso = idActividad;
 	}
 	
-	public int getIdActividad() {
-		return idActividad;
+	public int getIdCurso() {
+		return idCurso;
 	}
 
-	public void setIdActividad(int idActividad) {
-		this.idActividad = idActividad;
+	public void setIdCurso(int idCurso) {
+		this.idCurso = idCurso;
 	}
 
 	@Prefix("formularioactividad")
@@ -40,8 +41,8 @@ public class FormActividadPlace extends SimcePlace {
 					.get(NIVELID)) : -1);
 			fap.setTipoId((kvs.containsKey(TIPOID)) ? Integer.parseInt(kvs
 					.get(TIPOID)) : -1);
-			fap.setIdActividad((kvs.containsKey("act")) ? Integer.parseInt(kvs
-					.get("act")) : -1);
+			fap.setIdCurso((kvs.containsKey("c")) ? Integer.parseInt(kvs
+					.get("c")) : -1);
 			return fap;
 		}
 
@@ -51,7 +52,7 @@ public class FormActividadPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			if(place.getIdActividad() != -1){kvs.put("act", place.getIdActividad() + "");}
+			if(place.getIdCurso() != -1){kvs.put("c", place.getIdCurso() + "");}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		

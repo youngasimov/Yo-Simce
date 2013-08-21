@@ -20,5 +20,6 @@
 	<g:HTMLPanel addStyleNames='{style.panel}'>
 		<g:Button addStyleNames="{style.button}" ui:field="adminUsersViewButton" text="Administrar usuarios"/>
 		<g:Button addStyleNames="{style.button}" ui:field="adminEventsViewButton" text="Administrar eventos"/>
+		<g:Button addStyleNames="{style.button}" ui:field="adminPermisosViewButton" text="Administrar permisos"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

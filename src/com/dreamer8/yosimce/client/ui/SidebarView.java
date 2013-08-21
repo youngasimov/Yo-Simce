@@ -20,23 +20,21 @@ public interface SidebarView extends IsWidget {
 	void setActividadVisivility(boolean visible);
 	void setActividadesViewItemVisivility(boolean visible);
 	void setFormularioActividadActionItemVisivility(boolean visible);
-	void setDetalleActividadViewItemVisivility(boolean visible);
 	void setSincronizacionActionItemVisivility(boolean visible);
+	void setMaterialDefectuosoActionItemVisivility(boolean visible);	
 	void setAprobarSupervisoresActionItemVisivility(boolean visible);
 	void setActividadesViewItemSelected(boolean selected);
 	void setFormularioActividadActionItemSelected(boolean selected);
-	void setDetalleActividadViewItemSelected(boolean selected);
 	void setSincronizacionActionItemSelected(boolean selected);
+	void setMaterialDefectuosoActionItemSelected(boolean selected);
 	void setAprobarSupervisoresActionItemSelected(boolean selected);
 	
 	void setMaterialVisivility(boolean visible);
 	void setIngresoMaterialActionItemVisivility(boolean visible);
 	void setSalidaMaterialActionItemVisivility(boolean visible);
-	void setHistorialMovimientosViewItemVisivility(boolean visible);
 	void setMovimientosMaterialViewItemVisivility(boolean visible);
 	void setIngresoMaterialActionItemSelected(boolean selected);
 	void setSalidaMaterialActionItemSelected(boolean selected);
-	void setHistorialMovimientosViewItemSelected(boolean selected);
 	void setMovimientosMaterialViewItemSelected(boolean selected);
 	
 	void setAdministracionVisivility(boolean visible);

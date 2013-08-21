@@ -4,12 +4,16 @@ import java.util.Date;
 
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ScoreSelector;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
+import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -59,15 +63,14 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField(provided=true) TimeBox terminoPruebaBox;
 	@UiField DecoratorPanel participacionPanel;
 	@UiField IntegerBox totalAlumnosBox;
-	@UiField IntegerBox alumnosTitularesBox;
-	@UiField IntegerBox alumnosSuplentesBox;
-	@UiField IntegerBox alumnosAgregadosBox;
-	@UiField IntegerBox alumnosAgregadosNoParticipantesBox;
-	@UiField IntegerBox alumnosNeeBox;
+	@UiField IntegerBox alumnosAusentesBox;
+	@UiField IntegerBox alumnosDsBox;
 	@UiField DecoratorPanel cuestionariosPanel;
 	@UiField IntegerBox cuestionariosTotalesBox;
 	@UiField IntegerBox cuestionariosEntregadosBox;
-	@UiField IntegerBox cuestionariosDevueltosBox;
+	@UiField IntegerBox cuestionariosNoEntregadosBox;
+	@UiField IntegerBox cuestionariosRespondidosBox;
+	@UiField IntegerBox cuestionariosSinResponderBox;
 	@UiField DecoratorPanel contingenciasPanel;
 	@UiField CheckBox usoMaterialBox;
 	@UiField TextBox detallesUsoBox;
@@ -78,6 +81,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField FileUpload formularioControlFile;
 	
 	private FormActividadPresenter presenter;
+	private UserDTO examinador;
 	
 	public FormActividadViewD() {
 		inicioActividadBox = new TimeBox(new Date(0),false);
@@ -91,11 +95,84 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
 	}
+	
+	@UiHandler("saveButton")
+	void onSaveClick(ClickEvent event){
+		presenter.guardarFormulario();
+	}
+	
+	@UiHandler("save2Button")
+	void onSave2Click(ClickEvent event){
+		presenter.guardarFormulario();
+	}
 
 
 
 	@Override
 	public void setPresenter(FormActividadPresenter presenter) {
 		this.presenter = presenter;
+	}
+
+
+	@Override
+	public void setNombreEstablecimiento(String establecimiento) {
+		this.establecimientoSeleccionado.setHTML(ViewUtils.limitarString(establecimiento,35));
+		nombreEstablecimientoLabel.setText(establecimiento);
+	}
+
+
+	@Override
+	public void setRbd(String rbd) {
+		rbdLabel.setText(rbd);
+	}
+
+
+	@Override
+	public void setCurso(String curso) {
+		cursoLabel.setText(curso);
+	}
+	
+	public void setTipoCurso(String tipo){
+		tipoLabel.setText(tipo);
+	}
+
+
+	@Override
+	public void setRegion(String region) {
+		regionLabel.setText(region);
+	}
+
+
+	@Override
+	public void setComuna(String comuna) {
+		comunaLabel.setText(comuna);
+	}
+
+
+	@Override
+	public void setMotivoEstado(String motivo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public String getMotivoEstado() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setExaminador(UserDTO user) {
+		this.examinador = user;
+		this.nombreExaminadorLabel.setText(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
+		this.rutExaminadorLabel.setText(examinador.getRut());
+	}
+
+
+	@Override
+	public UserDTO getExaminador() {
+		return examinador;
 	}
 }

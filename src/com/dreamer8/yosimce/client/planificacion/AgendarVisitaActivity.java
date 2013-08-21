@@ -78,11 +78,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				@Override
 				public void success(AgendaDTO result) {
 					agenda = result;
-					if(result.getEstablecimiento().length()>25){
-						view.setNombreEstablecimiento(result.getEstablecimiento().substring(0,12)+"..."+result.getEstablecimiento().substring(result.getEstablecimiento().length()-12)+"-"+result.getCurso());
-					}else{
-						view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
-					}
+					view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
 					view.getDataDisplay().setRowCount(result.getItems().size());
 					
 					Collections.reverse(agenda.getItems());
@@ -95,7 +91,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void onCambiarEstablecimientoClick() {
+	public void onCambiarCursoClick() {
 		selector.show();
 	}
 	

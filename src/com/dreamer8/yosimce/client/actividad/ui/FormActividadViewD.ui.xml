@@ -8,16 +8,13 @@
 	
 	<ui:style>
 	.header{
-		display:block;
-		width: 100%;
-		height: 50px;
+		display:inline-block;
 		float: left;
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		padding-left: 80px;
-		padding-top: 10px;
-		border-bottom: 1px solid black;
+		padding-left: 10px;
+		min-width: 800px;
 	}
 	
 	.content{
@@ -29,6 +26,12 @@
 		top: 50px;
 		bottom: 0px;
 		left: 0px;
+	}
+	
+	.scroll{
+		width: 100%;
+		height: 98%;
+		border-bottom: 1px solid black;
 	}
 	
 	.title {
@@ -43,7 +46,7 @@
 		position: relative;
 		height: 50px;
 		float: left;
-		margin-left: 50px;
+		margin-left: 10px;
 	}
 	
 	.action{
@@ -85,15 +88,23 @@
 		height: 100%;
 	}
 	
+	.estName{
+		display: inline;
+		margin-left: 10px;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
+			<g:ScrollPanel addStyleNames='{style.scroll}'>
 			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Formulario de Actividad | <g:HTML ui:field="establecimientoSeleccionado"/></div>
+				<div class='{style.title}'>Formulario de Actividad</div>
 				<div class='{style.actions}'>
+					| <g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="saveButton" text="Guardar" resource='{res.gear}' />
 				</div>
-			</g:HTMLPanel>	
+			</g:HTMLPanel>
+			</g:ScrollPanel>	
 		</g:north>
 		<g:center>
 			<g:ScrollPanel addStyleNames='{style.full}'>
@@ -159,12 +170,12 @@
 							</tr>
 							<tr>
 								<td> Nombre:</td>
-								<td> Camilo Vera Cortés  <g:Label ui:field="nombreExaminadorLabel" /> </td>
+								<td> <g:Label ui:field="nombreExaminadorLabel" /> </td>
 								<td rowspan='2' > <g:Button ui:field="changeExaminadorButton" text="Cambiar"/> </td>
 							</tr>
 							<tr>
 								<td> Rut:</td>
-								<td> 16370885-k <g:Label ui:field="rutExaminadorLabel" /> </td>
+								<td> <g:Label ui:field="rutExaminadorLabel" /> </td>
 							</tr>
 							<tr>
 								<td> <my:HelperLabel text='Presentación Personal:' help='Evalue la presentación personal del examinador en una escala de 0 a 5, donde 0 es muy mal presentado, y 5 es una presentación destacable'/></td>
@@ -219,24 +230,12 @@
 								<td> <g:IntegerBox ui:field="totalAlumnosBox"/> </td>
 							</tr>
 							<tr>
-								<td><my:HelperLabel text='Titulares:' help='Indique la cantidad de alumnos titulares que rindieron la prueba'/></td>
-								<td> <g:IntegerBox ui:field="alumnosTitularesBox"/> </td>
+								<td><my:HelperLabel text='Ausentes:' help='Indique la cantidad de alumnos ausentes o que no rindieron la prueba por cualquier motivo'/></td>
+								<td> <g:IntegerBox ui:field="alumnosAusentesBox"/> </td>
 							</tr>
 							<tr>
-								<td><my:HelperLabel text='Suplentes:' help='Indique la cantidad de alumnos suplentes que rindieron la prueba'/></td>
-								<td> <g:IntegerBox ui:field="alumnosSuplentesBox"/> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Agregados:' help='Indique la cantidad de alumnos agregados a la lista de curso que rindieron la prueba'/></td>
-								<td> <g:IntegerBox ui:field="alumnosAgregadosBox"/> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Agregados sin rendición:' help='Indique la cantidad de alumnos agregados a la lista de curso que NO rindieron la prueba'/></td>
-								<td> <g:IntegerBox ui:field="alumnosAgregadosNoParticipantesBox"/> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Nee:' help='Indique la cantidad de alumnos NEE'/></td>
-								<td> <g:IntegerBox ui:field="alumnosNeeBox"/> </td>
+								<td><my:HelperLabel text='Alumnos DS:' help='Indique la cantidad de alumnos Ds'/></td>
+								<td> <g:IntegerBox ui:field="alumnosDsBox"/> </td>
 							</tr>
 							
 						</table>
@@ -258,8 +257,16 @@
 								<td><g:IntegerBox ui:field="cuestionariosEntregadosBox"/></td>
 							</tr>
 							<tr>
-								<td><my:HelperLabel text='Devueltos:' help='Indique la cantidad de cuestionarios para padres y apoderados DEVUELTOS'/></td>
-								<td><g:IntegerBox ui:field="cuestionariosDevueltosBox"/></td>
+								<td><my:HelperLabel text='No Entregados:' help='Indique la cantidad de cuestionarios para padres y apoderados NO entregados'/></td>
+								<td><g:IntegerBox ui:field="cuestionariosNoEntregadosBox"/></td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Respondidos:' help='Indique la cantidad de cuestionarios para padres y apoderados DEVUELTOS y RESPONDIDOS'/></td>
+								<td><g:IntegerBox ui:field="cuestionariosRespondidosBox"/></td>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Sin responder:' help='Indique la cantidad de cuestionarios para padres y apoderados NO DEVUELTOS, o SIN RESPONDER'/></td>
+								<td><g:IntegerBox ui:field="cuestionariosSinResponderBox"/></td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

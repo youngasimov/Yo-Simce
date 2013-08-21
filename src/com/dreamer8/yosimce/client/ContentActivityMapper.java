@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadActivity;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionActivity;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.administracion.AdminActivity;
@@ -81,6 +82,8 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
 		}else if(place instanceof SincronizacionPlace){
 			return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
+		}else if(place instanceof MaterialDefectuosoPlace){
+			//return new MaterialDefectuosoActivity(factory, (MaterialDefectuosoPlace)place, permisos);
 		}else if(place instanceof AprobarSupervisoresPlace){
 			//return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 		}else if(place instanceof MaterialPlace){

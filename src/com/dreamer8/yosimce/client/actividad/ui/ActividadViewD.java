@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.actividad.ui;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
+import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -24,6 +25,7 @@ public class ActividadViewD extends Composite implements ActividadView {
 	@UiField Button actividadesViewButton;
 	@UiField Button formularioActividadActionButton;
 	@UiField Button sincronizacionActionButton;
+	@UiField Button materialDefectuosoActionButton;
 	@UiField Button aprobarSupervisoresActionButton;
 
 	private ActividadPresenter presenter;
@@ -47,6 +49,11 @@ public class ActividadViewD extends Composite implements ActividadView {
 		presenter.goTo(new SincronizacionPlace());
 	}
 	
+	@UiHandler("sincronizacionActionButton")
+	void onMaterialDefectuosoClick(ClickEvent event){
+		presenter.goTo(new MaterialDefectuosoPlace());
+	}
+	
 	@UiHandler("aprobarSupervisoresActionButton")
 	void onAprobarSupervisoresClick(ClickEvent event){
 		presenter.goTo(new AprobarSupervisoresPlace());
@@ -65,6 +72,11 @@ public class ActividadViewD extends Composite implements ActividadView {
 	@Override
 	public void setSincronizacionVisivility(boolean visible) {
 		sincronizacionActionButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setMaterialDefectuosoVisivility(boolean visible){
+		materialDefectuosoActionButton.setVisible(visible);
 	}
 
 	@Override

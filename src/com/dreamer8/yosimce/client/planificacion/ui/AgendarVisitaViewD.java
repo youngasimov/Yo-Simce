@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
@@ -26,7 +27,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.HasData;
@@ -73,7 +73,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	@UiHandler("cambiarButton")
 	void onCambiarClick(ClickEvent event){
-		presenter.onCambiarEstablecimientoClick();
+		presenter.onCambiarCursoClick();
 	}
 	
 	@UiHandler("informacionButton")
@@ -110,12 +110,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 
 	@Override
 	public void setNombreEstablecimiento(String establecimiento) {
-		this.establecimiento.setHTML(establecimiento);
-	}
-
-	@Override
-	public UIObject getCambiarButton() {
-		return cambiarButton;
+		this.establecimiento.setHTML(ViewUtils.limitarString(establecimiento,35));
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.google.gwt.core.client.GWT;
@@ -72,7 +73,7 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 
 	@Override
 	public void setNombreEstablecimiento(String establecimiento) {
-		this.establecimiento.setHTML(establecimiento);
+		this.establecimiento.setHTML(ViewUtils.limitarString(establecimiento,35));
 	}
 
 	@Override

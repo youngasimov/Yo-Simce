@@ -1,9 +1,11 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
 
+import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.google.gwt.cell.client.ImageCell;
@@ -43,6 +45,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	@UiField ImageButton exportarButton;
 	@UiField Button sincronizacionButton;
 	@UiField Button informacionButton;
+	@UiField Button formularioButton;
 	@UiField  HTML establecimientoSeleccionado;
 	@UiField(provided = true) DataGrid<ActividadPreviewDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
@@ -80,6 +83,13 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		DetalleCursoPlace dcp = new DetalleCursoPlace();
 		if(selectedItem !=null)dcp.setCursoId(selectedItem.getCursoId());
 		presenter.goTo(dcp);
+	}
+	
+	@UiHandler("formularioButton")
+	void onFormularioClick(ClickEvent event){
+		FormActividadPlace fap = new FormActividadPlace();
+		if(selectedItem !=null)fap.setIdCurso(selectedItem.getCursoId());
+		presenter.goTo(fap);
 	}
 	
 	@UiFactory
@@ -120,6 +130,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		buildGrid();
 		sincronizacionButton.setVisible(false);
 		informacionButton.setVisible(false);
+		formularioButton.setVisible(false);
 		
 		pager.setDisplay(dataGrid);
 		
@@ -139,9 +150,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?selectionModel.getSelectedObject().getNombreEstablecimiento()+" >":"");
-				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
-				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
+						ViewUtils.limitarString(selectionModel.getSelectedObject().getNombreEstablecimiento(),27)+" >":"");
+				//sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				//informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				formularioButton.setVisible(selectionModel.getSelectedObject()!=null);
 				selectedItem = selectionModel.getSelectedObject();
 			}
 		});
@@ -167,22 +180,18 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		rbdColumn.setSortable(false);
 		dataGrid.addColumn(rbdColumn,"RBD");
-		dataGrid.setColumnWidth(rbdColumn, "50px");
+		dataGrid.setColumnWidth(rbdColumn, "60px");
 		
 		Column<ActividadPreviewDTO,String> nombreColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
-				if(o.getNombreEstablecimiento().length()>20){
-					return o.getNombreEstablecimiento().substring(0,20)+"...";
-				}else{
-					return o.getNombreEstablecimiento();
-				}
+				return o.getNombreEstablecimiento();
 			}
 		};
 		nombreColumn.setSortable(false);
 		dataGrid.addColumn(nombreColumn,"Establecimiento");
-		dataGrid.setColumnWidth(nombreColumn, "200px");
+		dataGrid.setColumnWidth(nombreColumn, "220px");
 		
 		Column<ActividadPreviewDTO,String> cursoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
 
@@ -253,7 +262,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
 				if(o.getContingencia()){
-					return SimceResources.INSTANCE.ok().getSafeUri().asString();
+					return "/images/warning.png";
 				}else{
 					return "";
 				}
@@ -261,14 +270,14 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		contingenciaColumn.setSortable(false);
 		dataGrid.addColumn(contingenciaColumn,"Contingencia");
-		dataGrid.setColumnWidth(contingenciaColumn, "150px");
+		dataGrid.setColumnWidth(contingenciaColumn, "100px");
 		
 		Column<ActividadPreviewDTO,String> contingenciaLimitanteColumn = new Column<ActividadPreviewDTO, String>(new ImageCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
 				if(o.getContingenciaLimitante()){
-					return SimceResources.INSTANCE.ok().getSafeUri().asString();
+					return "/images/warning.png";
 				}else{
 					return "";
 				}
@@ -276,7 +285,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		contingenciaLimitanteColumn.setSortable(false);
 		dataGrid.addColumn(contingenciaLimitanteColumn,"Limitante");
-		dataGrid.setColumnWidth(contingenciaLimitanteColumn, "150px");
+		dataGrid.setColumnWidth(contingenciaLimitanteColumn, "100px");
 		
 		Column<ActividadPreviewDTO,String> regionColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
 
@@ -297,7 +306,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		comunaColumn.setSortable(false);
-		dataGrid.addColumn(comunaColumn,"Región");
+		dataGrid.addColumn(comunaColumn,"Comuna");
 		dataGrid.setColumnWidth(comunaColumn, "150px");
 		
 	}

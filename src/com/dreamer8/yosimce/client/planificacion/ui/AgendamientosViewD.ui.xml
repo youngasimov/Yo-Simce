@@ -8,16 +8,13 @@
     
 	<ui:style>
 	.header{
-		display:block;
-		width: 100%;
-		height: 50px;
+		display:inline-block;
 		float: left;
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		padding-left: 80px;
-		padding-top: 10px;
-		border-bottom: 1px solid black;
+		padding-left: 10px;
+		min-width: 950px;
 	}
 	
 	.content{
@@ -29,6 +26,12 @@
 		top: 50px;
 		bottom: 0px;
 		left: 0px;
+	}
+
+	.scroll{
+		width: 100%;
+		height: 100%;
+		border-bottom: 1px solid black;
 	}
 	
 	.title {
@@ -43,7 +46,7 @@
 		position: relative;
 		height: 50px;
 		float: left;
-		margin-left: 50px;
+		margin-left: 10px;
 	}
 	
 	.action{
@@ -52,7 +55,7 @@
 	
 	.estName{
 		display: inline;
-		margin-left: 20px;
+		margin-left: 10px;
 	}
 	
 	.data{
@@ -62,17 +65,19 @@
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
+		    <g:ScrollPanel addStyleNames='{style.scroll}'>
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'>Agenda</div>
 				<div class='{style.actions}'>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros" resource='{res.popup}'/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar" resource='{res.gear}'/>
-					|<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
+					| <g:HTML addStyleNames='{style.estName}' ui:field="establecimientoSeleccionado"/>
 					<g:Button addStyleNames='{style.action}' ui:field="modificarAgendaButton" text="Modificar"/>
 					<g:Button addStyleNames='{style.action}' ui:field="detallesButton" text="Detalles"/>
 					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
 				</div>
-			</g:HTMLPanel>	
+			</g:HTMLPanel>
+			</g:ScrollPanel>
 		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>

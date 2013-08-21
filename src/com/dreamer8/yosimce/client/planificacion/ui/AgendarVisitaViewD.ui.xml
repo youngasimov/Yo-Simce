@@ -10,16 +10,13 @@
     
 	<ui:style>
 	.header{
-		display:block;
-		width: 100%;
-		height: 50px;
+		display:inline-block;
 		float: left;
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		padding-left: 80px;
-		padding-top: 10px;
-		border-bottom: 1px solid black;
+		padding-left: 10px;
+		min-width: 800px;
 	}
 	
 	.content{
@@ -31,6 +28,12 @@
 		top: 50px;
 		bottom: 0px;
 		left: 0px;
+	}
+	
+	.scroll{
+		width: 100%;
+		height: 100%;
+		border-bottom: 1px solid black;
 	}
 	
 	.title {
@@ -45,7 +48,7 @@
 		position: relative;
 		height: 50px;
 		float: left;
-		margin-left: 50px;
+		margin-left: 10px;
 	}
 	
 	.action{
@@ -103,6 +106,7 @@
 	
 	.estName{
 		display: inline;
+		margin-left: 10px;
 	}
 	.timepicker{
 		display: block;
@@ -119,13 +123,16 @@
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
+			<g:ScrollPanel addStyleNames='{style.scroll}'>
 			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Agenda de <g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> </div>
+				<div class='{style.title}'>Agenda de </div>
 				<div class='{style.actions}'>
+					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> 
 					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar" resource='{res.popup}'/>
 				</div>
-			</g:HTMLPanel>	
+			</g:HTMLPanel>
+			</g:ScrollPanel>	
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>

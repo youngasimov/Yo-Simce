@@ -94,9 +94,8 @@
 					<ul>
 						<li><g:Anchor ui:field="actividadesViewItem" text="Lista de actividades"/></li>
 						<li><g:Anchor ui:field="formularioActividadActionItem" text="Formulario de actividad"/></li>
-						<li><g:Anchor ui:field="detalleActividadViewItem" text="Detalle de actividad"/></li>
 						<li><g:Anchor ui:field="sincronizacionActionItem" text="Sincronización"/></li>
-						<li><g:Anchor ui:field="sincronizacionesViewItem" text="Lista de sincronización"/></li>
+						<li><g:Anchor ui:field="materialDefectuosoActionItem" text="Material defectuoso"/></li>
 						<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Aprobar supervisores"/></li>
 					</ul>
 				</li>
@@ -105,7 +104,6 @@
 					<ul>
 						<li><g:Anchor ui:field="ingresoMaterialActionItem" text="Ingreso de material"/></li>
 						<li><g:Anchor ui:field="salidaMaterialActionItem" text="Salida de material"/></li>
-						<li><g:Anchor ui:field="historialMovimientosViewItem" text="Historial de movimientos"/></li>
 						<li><g:Anchor ui:field="movimientosMaterialViewItem" text="lista de movimientos"/></li>
 					</ul>
 				</li>

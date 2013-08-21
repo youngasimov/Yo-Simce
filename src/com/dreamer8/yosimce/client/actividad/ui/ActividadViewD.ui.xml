@@ -20,8 +20,8 @@
 	<g:HTMLPanel addStyleNames='{style.panel}'>
 		<g:Button addStyleNames="{style.button}" ui:field="actividadesViewButton" text="Actividades"/>
 		<g:Button addStyleNames="{style.button}" ui:field="formularioActividadActionButton" text="Formulario actividad"/>
-		<g:Button addStyleNames="{style.button}" ui:field="sincronizacionesViewButton" text="Sincronizaciones"/>
-		<g:Button addStyleNames="{style.button}" ui:field="sincronizacionActionButton" text="Sincronizar"/>
+		<g:Button addStyleNames="{style.button}" ui:field="sincronizacionActionButton" text="Sincronización"/>
+		<g:Button addStyleNames="{style.button}" ui:field="materialDefectuosoActionButton" text="Material defectuoso"/>
 		<g:Button addStyleNames="{style.button}" ui:field="aprobarSupervisoresActionButton" text="Aprobar supervisores"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

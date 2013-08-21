@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.administracion.ui;
 
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
+import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,6 +22,7 @@ public class AdminViewD extends Composite implements AdminView {
 
 	@UiField Button adminUsersViewButton;
 	@UiField Button adminEventsViewButton;
+	@UiField Button adminPermisosViewButton;
 	
 	private AdminPresenter presenter;
 	
@@ -36,6 +38,11 @@ public class AdminViewD extends Composite implements AdminView {
 	@UiHandler("adminEventsViewButton")
 	void onAdminEventsViewButtonClick(ClickEvent event){
 		presenter.goTo(new AdminEventosPlace());
+	}
+	
+	@UiHandler("adminPermisosViewButton")
+	void onAdminPermisosViewButtonClick(ClickEvent event){
+		presenter.goTo(new PermisosPlace());
 	}
 
 	@Override
