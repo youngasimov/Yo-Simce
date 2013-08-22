@@ -14,7 +14,7 @@
 		top: 0px;
 		left: 0px;
 		padding-left: 10px;
-		min-width: 800px;
+		min-width: 900px;
 	}
 	
 	.content{
@@ -102,6 +102,7 @@
 				<div class='{style.actions}'>
 					| <g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="saveButton" text="Guardar" resource='{res.gear}' />
+					<my:ImageButton addStyleNames='{style.action}' ui:field="changeButton" text="Cambiar" resource='{res.popup}' />
 				</div>
 			</g:HTMLPanel>
 			</g:ScrollPanel>	

@@ -38,6 +38,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	
 	@UiField HTML establecimientoSeleccionado;
+	@UiField ImageButton changeButton;
 	@UiField ImageButton saveButton;
 	@UiField ImageButton save2Button;
 	@UiField Label nombreEstablecimientoLabel;
@@ -94,6 +95,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiFactory
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
+	}
+	
+	@UiHandler("changeButton")
+	void onChangeActividadClick(ClickEvent event){
+		presenter.onCambiarCursoClick();
 	}
 	
 	@UiHandler("saveButton")

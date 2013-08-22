@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
+import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
@@ -29,4 +30,12 @@ public interface ActividadService extends RemoteService {
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
 	Boolean updateSincronizacionAlumno(SincAlumnoDTO sinc) throws NoAllowedException, NoLoggedException, DBException;
+	
+	UserDTO getExaminadorPrincipal(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
+	
+	ArrayList<UserDTO> getExaminadores(String search) throws NoAllowedException, NoLoggedException, DBException;
+	
+	Boolean cambiarExaminadorPrincipal(Integer idCurso, Integer idNuevoExaminador) throws NoAllowedException, NoLoggedException, DBException;
+	
+	
 }

@@ -8,7 +8,6 @@ import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadPresenter;
-import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -34,7 +33,7 @@ public class FormActividadActivity extends SimceActivity implements
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		selector = new CursoSelector(getFactory(),eventBus);
-		
+		clear();
 		selector.setOnCursoChangeAction(new Command() {
 			
 			@Override
@@ -58,20 +57,6 @@ public class FormActividadActivity extends SimceActivity implements
 		}else{
 			
 			
-			view.setNombreEstablecimiento("COLEGIO CARMELITAS DESCALZAS DE ROSARIO");
-			view.setRbd("2425");
-			view.setCurso("2A");
-			view.setTipoCurso("Seleccionado");
-			view.setRegion("Valparaiso");
-			view.setComuna("Viña del mar");
-			
-			UserDTO u = new UserDTO();
-			u.setNombres("Juan Daniel");
-			u.setApellidoPaterno("Perez");
-			u.setApellidoMaterno("Gonzalez");
-			u.setRut("11.111.111-1");
-			view.setExaminador(u);
-			
 			
 		}
 		
@@ -91,6 +76,16 @@ public class FormActividadActivity extends SimceActivity implements
 	@Override
 	public void guardarFormulario() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void onStop() {
+		clear();
+		super.onStop();
+	}
+	
+	private void clear(){
 		
 	}
 
