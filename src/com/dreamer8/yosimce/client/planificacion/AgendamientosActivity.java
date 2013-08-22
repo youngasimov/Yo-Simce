@@ -163,12 +163,15 @@ public class AgendamientosActivity extends SimceActivity implements
 			view.setSelectedRegion(place.getRegionId());
 			onRegionChange(place.getRegionId());
 		}
+		if(place.getComunaId()!=-1){
+			filtros.put(PlanificacionService.FKEY_COMUNA, place.getComunaId()+"");
+		}
 		if(place.getEstadosSeleccionados().size()>0){
 			view.setSelectedEstados(place.getEstadosSeleccionados());
 			StringBuilder b = new StringBuilder();
 			for(Integer id:place.getEstadosSeleccionados()){
 				b.append(id);
-				b.append(":");
+				b.append(PlanificacionService.SEPARATOR);
 			}
 			b.deleteCharAt(b.length()-1);
 			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());

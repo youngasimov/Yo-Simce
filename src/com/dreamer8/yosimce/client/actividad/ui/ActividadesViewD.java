@@ -1,6 +1,9 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
 
+import java.util.ArrayList;
+
+import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
@@ -8,11 +11,15 @@ import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -24,6 +31,7 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -54,16 +62,22 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	private ActividadPreviewDTO selectedItem;
 	private ActividadesPresenter presenter;
 	
+	private DialogBox filtrosDialogBox;
+	private FiltroActividadesPanelViewD filtrosPanel;
+	
 	public ActividadesViewD() {
 		dataGrid = new DataGrid<ActividadPreviewDTO>(ActividadPreviewDTO.KEY_PROVIDER);
 		pager = new SimplePager(TextLocation.CENTER, false, false);
 		initWidget(uiBinder.createAndBindUi(this));
+		filtrosPanel = new FiltroActividadesPanelViewD();
+		filtrosDialogBox = new DialogBox(true, false);
+		filtrosDialogBox.setWidget(filtrosPanel);
 		bind();
 	}
 	
 	@UiHandler("filtrosButton")
 	void onFiltrosClick(ClickEvent event){
-		
+		filtrosDialogBox.showRelativeTo(filtrosButton);
 	}
 	
 	@UiHandler("exportarButton")
@@ -125,6 +139,65 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		this.presenter = presenter;
 	}
 	
+	@Override
+	public void setActividadesNoIniciadas(boolean value) {
+		filtrosPanel.noIniciadasBox.setValue(value);
+	}
+
+	@Override
+	public void setActividadesTerminadas(boolean value) {
+		filtrosPanel.terminadasBox.setValue(value);
+	}
+
+	@Override
+	public void setActividadesContingencia(boolean value) {
+		filtrosPanel.contingenciaBox.setValue(value);
+	}
+
+	@Override
+	public void setActividadesProblema(boolean value) {
+		filtrosPanel.problemasBox.setValue(value);
+	}
+
+	@Override
+	public void setRegiones(ArrayList<SectorDTO> regiones) {
+		filtrosPanel.regionBox.setVisible(true);
+		filtrosPanel.regionBox.clear();
+		filtrosPanel.regionBox.addItem("todas",-1+"");
+		filtrosPanel.comunaBox.setVisible(false);
+		for(SectorDTO s:regiones){
+			filtrosPanel.regionBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
+	}
+
+	@Override
+	public void setComunas(ArrayList<SectorDTO> comunas) {
+		filtrosPanel.comunaBox.setVisible(true);
+		filtrosPanel.comunaBox.clear();
+		filtrosPanel.comunaBox.addItem("todas","-1");
+		for(SectorDTO s:comunas){
+			filtrosPanel.comunaBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
+	}
+
+	@Override
+	public void setSelectedRegion(int regionId) {
+		for(int i=0;i<filtrosPanel.regionBox.getItemCount();i++){
+			if(Integer.parseInt(filtrosPanel.regionBox.getValue(i)) == regionId){
+				filtrosPanel.regionBox.setItemSelected(i, true);
+			}
+		}
+	}
+
+	@Override
+	public void setSelectedComuna(int comunaId) {
+		for(int i=0;i<filtrosPanel.comunaBox.getItemCount();i++){
+			if(Integer.parseInt(filtrosPanel.comunaBox.getValue(i)) == comunaId){
+				filtrosPanel.comunaBox.setItemSelected(i, true);
+			}
+		}
+	}
+	
 	private void bind(){
 		dataGrid.setWidth("100%");
 		buildGrid();
@@ -152,8 +225,8 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
 						ViewUtils.limitarString(selectionModel.getSelectedObject().getNombreEstablecimiento(),27)+" >":"");
-				//sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
-				//informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
 				formularioButton.setVisible(selectionModel.getSelectedObject()!=null);
 				selectedItem = selectionModel.getSelectedObject();
 			}
@@ -164,6 +237,43 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public void onRangeChange(RangeChangeEvent event) {
 				presenter.onRangeChange(event.getNewRange());
+			}
+		});
+		
+		filtrosPanel.regionBox.addChangeHandler(new ChangeHandler(){
+
+			@Override
+			public void onChange(ChangeEvent event) {
+				presenter.onRegionChange(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
+			}
+		});
+		
+		filtrosPanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				presenter.onCancelarFiltroClick();
+				filtrosDialogBox.hide();
+			}
+		});
+		
+		filtrosPanel.aplicarButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				ActividadesPlace ap = new ActividadesPlace();
+				ap.setShowActividadesNoInciadas(filtrosPanel.noIniciadasBox.getValue());
+				ap.setShowActividadesTerminadas(filtrosPanel.terminadasBox.getValue());
+				ap.setShowActividadesContingencia(filtrosPanel.contingenciaBox.getValue());
+				ap.setShowActividadesProblema(filtrosPanel.problemasBox.getValue());
+				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
+					ap.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
+				}
+				if(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())!="-1"){
+					ap.setComunaId(Integer.parseInt(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())));
+				}
+				filtrosDialogBox.hide();
+				presenter.goTo(ap);
 			}
 		});
 	}

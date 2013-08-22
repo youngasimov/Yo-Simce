@@ -1,0 +1,55 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.panel .title td{
+			font-weight: bold;
+			text-align: center;
+			border-top: 2px solid black;
+			border-bottom: 1px solid #AAAAAA;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+		<table class='{style.panel}'>
+			<tr class='{style.title}'>
+				<td colspan='2'>Opciones</td>
+			</tr>
+			<tr>
+				<td>No iniciadas o en proceso:</td>
+				<td><g:CheckBox ui:field="noIniciadasBox"/> </td>
+			</tr>
+			<tr>
+				<td>Terminadas:</td>
+				<td><g:CheckBox ui:field="terminadasBox"/> </td>
+			</tr>
+			<tr>
+				<td>Usó material contingencia:</td>
+				<td><g:CheckBox ui:field="contingenciaBox"/> </td>
+			</tr>
+			<tr>
+				<td>Parcial o totalmente sincronizadas:</td>
+				<td><g:CheckBox ui:field="sincronizadasBox"/> </td>
+			</tr>
+			<tr>
+				<td>Con problemas o contingencia:</td>
+				<td><g:CheckBox ui:field="problemasBox"/> </td>
+			</tr>
+			
+			<tr class='{style.title}'>
+				<td colspan='2'>Lugar</td>
+			</tr>
+			<tr>
+				<td>Región:</td>
+				<td><g:ListBox ui:field="regionBox"/></td>
+			</tr>
+			<tr>
+				<td>Comuna:</td>
+				<td><g:ListBox ui:field="comunaBox"/></td>
+			</tr>
+			<tr class='{style.title}'>
+				<td><g:Button ui:field="cancelarButton" text="Cancelar"/></td>
+				<td><g:Button ui:field="aplicarButton" text="Aplicar"/> </td>
+			</tr>
+		</table>
+	</g:HTMLPanel>
+</ui:UiBinder> 
