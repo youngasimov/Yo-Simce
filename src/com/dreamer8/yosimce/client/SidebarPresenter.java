@@ -122,14 +122,6 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setActividadVisivility(true);
 					view.setMaterialVisivility(true);
 					view.setAdministracionVisivility(true);
-					
-					view.setGeneralVisivility(false);
-					view.setAgendamientoVisivility(false);
-					view.setMaterialVisivility(false);
-					view.setAdministracionVisivility(false);
-					view.setSincronizacionActionItemVisivility(false);
-					view.setAprobarSupervisoresActionItemVisivility(false);
-					view.setMaterialDefectuosoActionItemVisivility(false);
 				}
 			}
 		});

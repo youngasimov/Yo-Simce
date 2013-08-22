@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView.DetalleCursoPresenter;
+import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
@@ -36,9 +37,10 @@ public class DetalleCursoActivity extends SimceActivity implements
 			
 			@Override
 			public void execute() {
-				DetalleCursoPlace dcp = new DetalleCursoPlace(DetalleCursoActivity.this.place.getAplicacionId(),DetalleCursoActivity.this.place.getNivelId(),DetalleCursoActivity.this.place.getTipoId(),selector.getSelectedCurso().getId());
+				DetalleCursoPlace dcp = new DetalleCursoPlace();
+				dcp.setCursoId(place.getCursoId());
 				selector.hide();
-				DetalleCursoActivity.this.getFactory().getPlaceController().goTo(dcp);
+				goTo(dcp);
 			}
 		});
 		
@@ -47,25 +49,41 @@ public class DetalleCursoActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					DetalleCursoActivity.this.getFactory().getPlaceController().goTo(new GeneralPlace(DetalleCursoActivity.this.place.getAplicacionId(), DetalleCursoActivity.this.place.getNivelId(), DetalleCursoActivity.this.place.getTipoId()));
+					GeneralPlace p =new GeneralPlace();
+					goTo(p);
 				}
 			});
 			selector.show();
 		}else{
-			
-			getFactory().getGeneralService().getEstablecimiento(place.getCursoId(), new SimceCallback<EstablecimientoDTO>(eventBus) {
+			getFactory().getGeneralService().getDetalleCurso(place.getCursoId(), new SimceCallback<DetalleCursoDTO>(eventBus) {
 
 				@Override
-				public void success(EstablecimientoDTO result) {
+				public void success(DetalleCursoDTO r) {
+					view.setNombreEstablecimiento(r.getEstablecimiento());
+					view.setRbd(r.getRbd());
+					view.setRegion(r.getRegion());
+					view.setComuna(r.getComuna());
+					view.setCurso(r.getCurso());
+					view.setTipo(r.getTipoEstablecimiento());
+					if(r.getSupervisor()!=null){
+						view.setSupervisor(r.getSupervisor().getNombres()+" "+r.getSupervisor().getApellidoPaterno()+" "+r.getSupervisor().getApellidoMaterno());
+					}
+					if(r.getExaminador()!=null){
+						view.setExaminador(r.getExaminador().getNombres()+" "+r.getExaminador().getApellidoPaterno()+" "+r.getExaminador().getApellidoMaterno());
+					}
+					if(r.getExaminador2()!=null){
+						view.setExaminador2(r.getExaminador2().getNombres()+" "+r.getExaminador2().getApellidoPaterno()+" "+r.getExaminador2().getApellidoMaterno());
+					}
 					
-					
-					
-					
+					view.setDirector(r.getNombreContacto());
+					view.setEmailContacto(r.getEmailContacto());
+					view.setTelefonoContacto(r.getTelefonoContacto());
 				}
+				
 			});
 		}
 	}
-
+	
 	@Override
 	public void onCambiarCursoClick() {
 		selector.show();
@@ -73,7 +91,7 @@ public class DetalleCursoActivity extends SimceActivity implements
 	
 	@Override
 	public void onStop() {
-		super.onStop();
 		view.clearAll();
+		super.onStop();
 	}
 }

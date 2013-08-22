@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.general;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
+import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -15,14 +16,17 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("generalservice")
 public interface GeneralService extends RemoteService {
 	
-	public ArrayList<EstablecimientoDTO> getEstablecimientos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
-	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public ArrayList<HistorialCambioItemDTO> getCambios(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
+	public DetalleCursoDTO getDetalleCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 
 	public ArrayList<SectorDTO> getRegiones();
 	public ArrayList<SectorDTO> getComunas(SectorDTO parent);
 	
 	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
+	
+	
+	//No se usan, se pueden borrar
+	public ArrayList<HistorialCambioItemDTO> getCambios(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
+	public ArrayList<EstablecimientoDTO> getEstablecimientos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
+	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
 	
 }
