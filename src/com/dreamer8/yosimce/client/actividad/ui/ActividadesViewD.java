@@ -158,6 +158,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	public void setActividadesProblema(boolean value) {
 		filtrosPanel.problemasBox.setValue(value);
 	}
+	
+	@Override
+	public void setActividadesSincronizadas(boolean value){
+		filtrosPanel.sincronizadasBox.setValue(value);
+	}
 
 	@Override
 	public void setRegiones(ArrayList<SectorDTO> regiones) {
@@ -266,6 +271,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 				ap.setShowActividadesTerminadas(filtrosPanel.terminadasBox.getValue());
 				ap.setShowActividadesContingencia(filtrosPanel.contingenciaBox.getValue());
 				ap.setShowActividadesProblema(filtrosPanel.problemasBox.getValue());
+				ap.setShowActividadesSincronizadas(filtrosPanel.sincronizadasBox.getValue());
 				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
 					ap.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
 				}

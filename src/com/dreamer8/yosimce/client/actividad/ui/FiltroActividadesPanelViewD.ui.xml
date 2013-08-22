@@ -27,12 +27,12 @@
 				<td><g:CheckBox ui:field="contingenciaBox"/> </td>
 			</tr>
 			<tr>
-				<td>Parcial o totalmente sincronizadas:</td>
-				<td><g:CheckBox ui:field="sincronizadasBox"/> </td>
-			</tr>
-			<tr>
 				<td>Con problemas o contingencia:</td>
 				<td><g:CheckBox ui:field="problemasBox"/> </td>
+			</tr>
+			<tr>
+				<td>Parcial o totalmente sincronizadas:</td>
+				<td><g:CheckBox ui:field="sincronizadasBox"/> </td>
 			</tr>
 			
 			<tr class='{style.title}'>

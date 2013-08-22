@@ -21,6 +21,7 @@ public interface ActividadesView extends IsWidget {
 	void setActividadesTerminadas(boolean value);
 	void setActividadesContingencia(boolean value);
 	void setActividadesProblema(boolean value);
+	void setActividadesSincronizadas(boolean value);
 	void setRegiones(ArrayList<SectorDTO> regiones);
 	void setComunas(ArrayList<SectorDTO> comunas);
 	void setSelectedRegion(int regionId);

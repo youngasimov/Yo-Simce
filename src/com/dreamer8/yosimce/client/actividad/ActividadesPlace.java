@@ -12,6 +12,7 @@ public class ActividadesPlace extends SimcePlace {
 	private boolean showActividadesTerminadas;
 	private boolean showActividadesContingencia;
 	private boolean showActividadesProblema;
+	private boolean showActividadesSincronizadas;
 	
 	private Integer regionId;
 	private Integer comunaId;
@@ -22,6 +23,7 @@ public class ActividadesPlace extends SimcePlace {
 		showActividadesTerminadas = true;
 		showActividadesContingencia = true;
 		showActividadesProblema = true;
+		showActividadesSincronizadas = true;
 		regionId = -1;
 		comunaId = -1;
 	}
@@ -32,6 +34,7 @@ public class ActividadesPlace extends SimcePlace {
 		showActividadesTerminadas = true;
 		showActividadesContingencia = true;
 		showActividadesProblema = true;
+		showActividadesSincronizadas = true;
 		regionId = -1;
 		comunaId = -1;
 	}
@@ -70,6 +73,14 @@ public class ActividadesPlace extends SimcePlace {
 		this.showActividadesProblema = showActividadesProblema;
 	}
 
+	public boolean isShowActividadesSincronizadas() {
+		return showActividadesSincronizadas;
+	}
+
+	public void setShowActividadesSincronizadas(boolean showActividadesSincronizadas) {
+		this.showActividadesSincronizadas = showActividadesSincronizadas;
+	}
+
 	public Integer getRegionId() {
 		return regionId;
 	}
@@ -105,6 +116,7 @@ public class ActividadesPlace extends SimcePlace {
 			aup.setShowActividadesTerminadas((kvs.containsKey("sat") &&  kvs.get("sat").equals("0"))?false:true);
 			aup.setShowActividadesContingencia((kvs.containsKey("sac") &&  kvs.get("sac").equals("0"))?false:true);
 			aup.setShowActividadesProblema((kvs.containsKey("sap") &&  kvs.get("sap").equals("0"))?false:true);
+			aup.setShowActividadesSincronizadas((kvs.containsKey("sas") &&  kvs.get("sas").equals("0"))?false:true);
 			aup.setRegionId((kvs.containsKey("rid")) ? Integer.parseInt(kvs
 					.get("rid")) : -1);
 			aup.setComunaId((kvs.containsKey("rid") && kvs.containsKey("cid")) ? Integer.parseInt(kvs
@@ -122,6 +134,7 @@ public class ActividadesPlace extends SimcePlace {
 			if(!place.isShowActividadesTerminadas()){kvs.put("sat", "0");}
 			if(!place.isShowActividadesContingencia()){kvs.put("sac", "0");}
 			if(!place.isShowActividadesProblema()){kvs.put("sap", "0");}
+			if(!place.isShowActividadesSincronizadas()){kvs.put("sas", "0");}
 			if(place.getRegionId()!=-1){ kvs.put("rid", place.getRegionId()+""); }
 			if(place.getComunaId()!=-1){ kvs.put("cid", place.getComunaId()+""); }
 			return TokenUtils.createKeyValuesToken(kvs);

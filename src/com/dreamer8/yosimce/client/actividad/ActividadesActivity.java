@@ -126,9 +126,15 @@ public class ActividadesActivity extends SimceActivity implements
 		
 		filtros.clear();
 		filtros.put(ActividadService.FKEY_ACTIVIDADES_NO_INICIADAS, (place.isShowActividadesNoInciadas())?"1":"0");
+		view.setActividadesNoIniciadas(place.isShowActividadesNoInciadas());
 		filtros.put(ActividadService.FKEY_ACTIVIDADES_TERMINADAS, (place.isShowActividadesTerminadas())?"1":"0");
+		view.setActividadesTerminadas(place.isShowActividadesTerminadas());
 		filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA, (place.isShowActividadesContingencia())?"1":"0");
+		view.setActividadesContingencia(place.isShowActividadesContingencia());
 		filtros.put(ActividadService.FKEY_ACTIVIDADES_PROBLEMA, (place.isShowActividadesProblema())?"1":"0");
+		view.setActividadesProblema(place.isShowActividadesProblema());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS, (place.isShowActividadesSincronizadas())?"1":"0");
+		view.setActividadesSincronizadas(place.isShowActividadesSincronizadas());
 		if(place.getRegionId()!=-1){
 			filtros.put(ActividadService.FKEY_REGION, place.getRegionId()+"");
 			view.setSelectedRegion(place.getRegionId());

@@ -18,6 +18,7 @@ public interface ActividadService extends RemoteService {
 	public static final String FKEY_ACTIVIDADES_TERMINADAS="at";
 	public static final String FKEY_ACTIVIDADES_CONTINGENCIA="ac";
 	public static final String FKEY_ACTIVIDADES_PROBLEMA="ap";
+	public static final String FKEY_ACTIVIDADES_SINCRONIZADAS="as";
 	public static final String FKEY_REGION="rid";
 	public static final String FKEY_COMUNA="cid";
 
