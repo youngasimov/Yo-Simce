@@ -10,7 +10,6 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView.DetalleCursoPresenter;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
-import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;

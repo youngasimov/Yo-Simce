@@ -22,6 +22,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
+import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -364,6 +365,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements Ge
 			throw ex;
 		}
 		return cdtos;
+	}
+
+	@Override
+	public DetalleCursoDTO getDetalleCurso(Integer idCurso)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
