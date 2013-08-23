@@ -189,8 +189,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
 								where += "a.actividad_estado_id="
-										+ SecurityFilter.escapeString(filtros
-												.get(key));
+										+ SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -331,8 +330,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
 								where += "a.actividad_estado_id="
-										+ SecurityFilter.escapeString(filtros
-												.get(key));
+										+ SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
