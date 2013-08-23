@@ -50,6 +50,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiField(provided=true) TimeBox timeBox;
 	@UiField TextArea comentarioBox;
 	@UiField Button modificarButton;
+	
+	@UiField Label nombreContactoLabel;
+	
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
 	

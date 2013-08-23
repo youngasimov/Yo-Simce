@@ -6,6 +6,7 @@ import java.util.Map;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
@@ -54,4 +55,6 @@ public interface PlanificacionService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException;
 	
 	public Boolean editarContacto(ContactoDTO contacto) throws NoAllowedException, NoLoggedException, DBException;
+	
+	public ArrayList<CargoDTO> getCargos() throws NoAllowedException, NoLoggedException, DBException;
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
@@ -45,6 +46,8 @@ public interface PlanificacionServiceAsync {
 	void getTotalPreviewAgendamientos(Map<String, String> filtros, AsyncCallback<Integer> callback);
 
 	void editarContacto(ContactoDTO contacto, AsyncCallback<Boolean> callback);
+
+	void getCargos(AsyncCallback<ArrayList<CargoDTO>> callback);
 
 	
 
