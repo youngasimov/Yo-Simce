@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
@@ -93,6 +94,10 @@
 		margin-left: 10px;
 	}
 	
+	.contingenciaTable{
+		width: 98%;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
@@ -155,9 +160,11 @@
 								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la aplicación' /> </td>
 								<td> <g:ListBox ui:field="estadoBox" /> </td>
 							</tr>
-							<tr >
-								<td> <my:HelperLabel text='Motivo:'  help='Ingrese el motivo de su selección de estado'/></td>
-								<td> <g:TextBox ui:field="motivoEstadoBox" /> </td>
+							<tr>
+								<td colspan='2'> <g:Button ui:field="contingenciaButton" text="Agregar contingencia o problema presentado durante la actividad"/> </td>
+							</tr>
+							<tr>
+								<td colspan='2'><c:DataGrid ui:field="contingenciasTable" addStyleNames='{style.contingenciaTable}'/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>
@@ -258,16 +265,8 @@
 								<td><g:IntegerBox ui:field="cuestionariosEntregadosBox"/></td>
 							</tr>
 							<tr>
-								<td><my:HelperLabel text='No Entregados:' help='Indique la cantidad de cuestionarios para padres y apoderados NO entregados'/></td>
+								<td><my:HelperLabel text='Recibidos:' help='Indique la cantidad de cuestionarios para padres y apoderados RECIBIDOS'/></td>
 								<td><g:IntegerBox ui:field="cuestionariosNoEntregadosBox"/></td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Respondidos:' help='Indique la cantidad de cuestionarios para padres y apoderados DEVUELTOS y RESPONDIDOS'/></td>
-								<td><g:IntegerBox ui:field="cuestionariosRespondidosBox"/></td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Sin responder:' help='Indique la cantidad de cuestionarios para padres y apoderados NO DEVUELTOS, o SIN RESPONDER'/></td>
-								<td><g:IntegerBox ui:field="cuestionariosSinResponderBox"/></td>
 							</tr>
 						</table>
 					</g:HTMLPanel>
@@ -288,15 +287,6 @@
 							<tr>
 								<td><my:HelperLabel text='Detalles:' help='Describa porque utilizó material de contingencia, y cuanto'/></td>
 								<td> <g:TextBox ui:field="detallesUsoBox" /> </td>
-							</tr>
-							
-							<tr>
-								<td><my:HelperLabel text='Contiengencia:' help='Describa las contingencias, problemas o eventualidades que se presentaron durante la aplicación, y como estas fueron solucionadas'/></td>
-								<td> <g:TextArea ui:field="contingenciaBox" /> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Realización de prueba:' help='Seleccione ese cuadro si a causa de las contingencias, problemas o eventualidades descritas, no pudo realizar la prueba'/></td>
-								<td> <g:CheckBox ui:field="afectaEnPruebaBox" /> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

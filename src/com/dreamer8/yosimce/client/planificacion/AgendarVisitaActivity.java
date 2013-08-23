@@ -116,7 +116,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	@Override
 	public void onEditarContacto(final ContactoDTO contacto) {
-		getFactory().getPlanificacionService().editarContacto(contacto,new SimceCallback<Boolean>(eventBus) {
+		getFactory().getPlanificacionService().editarContacto(place.getCursoId(),contacto,new SimceCallback<Boolean>(eventBus) {
 
 			@Override
 			public void success(Boolean result) {

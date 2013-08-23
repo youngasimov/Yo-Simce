@@ -106,6 +106,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 					}
 				}
 				presenter.onEditarContacto(c);
+				editarContactoDialog.hide();
 			}
 		});
 		editarContactoPanel.cancelarButton.addClickHandler(new ClickHandler() {
@@ -143,7 +144,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 			
 			if(contacto.getCargo()!=null){
 				for(int i = 0; i < editarContactoPanel.cargoBox.getItemCount(); i++){
-					if(contacto.getCargo().getId() == Integer.parseInt(editarContactoPanel.cargoBox.getItemText(i))){
+					if(contacto.getCargo().getId() == Integer.parseInt(editarContactoPanel.cargoBox.getValue(i))){
 						editarContactoPanel.cargoBox.setItemSelected(i, true);
 						break;
 					}
