@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.HasData;
@@ -20,6 +21,8 @@ public interface AgendarVisitaView extends IsWidget {
 	void setEstadosAgenda(ArrayList<EstadoAgendaDTO> estados);
 	
 	void setPresenter(AgendarVisitaPresenter presenter);
+	
+	void setContacto(ContactoDTO contacto);
 	
 	int getIdEstadoAgendaSeleccionado();
 	

@@ -155,14 +155,16 @@ public class AgendamientosActivity extends SimceActivity implements
 	private void updateFiltros(){
 		filtros.clear();
 		if(place.getDesdeTimestamp()!=-1){
-			filtros.put(PlanificacionService.FKEY_DESDE, place.getDesdeTimestamp()+"");
-			view.setDesde(new Date(place.getDesdeTimestamp()));
+			Date d = new Date(place.getDesdeTimestamp());
+			filtros.put(PlanificacionService.FKEY_DESDE, d.toString());
+			view.setDesde(d);
 		}else{
 			view.setDesde(null);
 		}
 		if(place.getHastaTimestamp()!=-1){
-			filtros.put(PlanificacionService.FKEY_HASTA, place.getHastaTimestamp()+"");
-			view.setHasta(new Date(place.getHastaTimestamp()));
+			Date d = new Date(place.getHastaTimestamp());
+			filtros.put(PlanificacionService.FKEY_HASTA, d.toString());
+			view.setHasta(d);
 		}else{
 			view.setHasta(null);
 		}

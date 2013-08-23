@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -52,6 +53,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiField Button modificarButton;
 	
 	@UiField Label nombreContactoLabel;
+	@UiField Label fonoContactoLabel;
+	@UiField Label emailContactoLabel;
+	@UiField Label cargoContactoLabel;
 	
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
@@ -138,5 +142,15 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public String getComentario() {
 		return comentarioBox.getText();
+	}
+
+	@Override
+	public void setContacto(ContactoDTO contacto) {
+		nombreContactoLabel.setText(contacto.getContactoNombre());
+		fonoContactoLabel.setText(contacto.getContactoTelefono());
+		emailContactoLabel.setText(contacto.getContactoEmail());
+		if(contacto.getCargo()!=null){
+			cargoContactoLabel.setText(contacto.getCargo().getCargo());
+		}
 	}
 }
