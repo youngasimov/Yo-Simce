@@ -20,24 +20,30 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("planificacionservice")
 public interface PlanificacionService extends RemoteService {
-	
-	public static final String FKEY_ESTADOS="es";
-	public static final String SEPARATOR=":";
-	public static final String FKEY_DESDE="dts";
-	public static final String FKEY_HASTA="hts";
-	public static final String FKEY_REGION="rid";
-	public static final String FKEY_COMUNA="cid";
-	
-	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset, Integer length, Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public Integer getTotalPreviewAgendamientos(Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public ArrayList<EstadoAgendaDTO> getEstadosAgenda() throws NoAllowedException, NoLoggedException, DBException;
-	
+
+	public static final String FKEY_ESTADOS = "es";
+	public static final String SEPARATOR = ":";
+	public static final String FKEY_DESDE = "dts";
+	public static final String FKEY_HASTA = "hts";
+	public static final String FKEY_REGION = "rid";
+	public static final String FKEY_COMUNA = "cid";
+
+	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset,
+			Integer length, Map<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	public Integer getTotalPreviewAgendamientos(Map<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException;
+
+	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
+			throws NoAllowedException, NoLoggedException, DBException;
+
 	public ArrayList<EstablecimientoDTO> getEstablecimientos(Integer offset,
 			Integer lenght, Map<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -53,8 +59,10 @@ public interface PlanificacionService extends RemoteService {
 
 	public ContactoDTO getContacto(Integer idEstablecimiento)
 			throws NoAllowedException, NoLoggedException, DBException;
-	
-	public Boolean editarContacto(ContactoDTO contacto) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public ArrayList<CargoDTO> getCargos() throws NoAllowedException, NoLoggedException, DBException;
+
+	public Boolean editarContacto(Integer idCurso, ContactoDTO contacto)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	public ArrayList<CargoDTO> getCargos() throws NoAllowedException,
+			NoLoggedException, DBException;
 }

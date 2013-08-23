@@ -10,12 +10,14 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ContactoCargoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
@@ -220,7 +222,6 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), usuarioTipo.getNombre(), offset,
 								length, filtros);
-				
 
 				s.getTransaction().commit();
 			}
@@ -650,17 +651,157 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		return result;
 	}
 
+	/**
+	 * @permiso editarContacto
+	 */
 	@Override
-	public Boolean editarContacto(ContactoDTO contacto)
+	public Boolean editarContacto(Integer idCurso, ContactoDTO contacto)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean resutl = true;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "editarContacto")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+
+				if (contacto == null || contacto.getContactoNombre().equals("")
+						|| contacto.getContactoTelefono().equals("")) {
+					throw new NullPointerException(
+							"No se han especificado los datos del contacto.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (a == null) {
+					throw new NullPointerException(
+							"No se ha encontrado una actividad para el curso especificado.");
+				}
+				a.setContactoNombre(contacto.getContactoNombre());
+				a.setContactoTelefono(contacto.getContactoTelefono());
+				a.setContactoEmail(contacto.getContactoEmail());
+				if (contacto.getCargo() != null
+						&& contacto.getCargo().getId() != null) {
+					ContactoCargoDAO ccdao = new ContactoCargoDAO();
+					ContactoCargo cc = ccdao.getById(contacto.getCargo()
+							.getId());
+					a.setContactoCargo(cc);
+				}
+				adao.update(a);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return resutl;
 	}
 
+	/**
+	 * @permiso getCargos
+	 */
 	@Override
 	public ArrayList<CargoDTO> getCargos() throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<CargoDTO> cdtos = new ArrayList<CargoDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getCargos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ContactoCargoDAO ccdao = new ContactoCargoDAO();
+				List<ContactoCargo> ccs = ccdao.findAll();
+				if (ccs != null && !ccs.isEmpty()) {
+					for (ContactoCargo contactoCargo : ccs) {
+						cdtos.add(contactoCargo.getCargoDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return cdtos;
 	}
+
 }

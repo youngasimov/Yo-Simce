@@ -13,6 +13,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelXActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoXPermisoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ContactoCargoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.NivelDAO;
@@ -28,7 +29,9 @@ import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivel;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso;
+import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
+import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion;
@@ -70,6 +73,9 @@ public class YoSimceSetup {
 				ActividadEstado ae = aedao
 						.findByNombre(ActividadEstado.SIN_INFORMACION);
 				List<Actividad> as = null;
+				Establecimiento e = null;
+				ContactoCargoDAO ccdao = new ContactoCargoDAO();
+				ContactoCargo cc = ccdao.findByName(ContactoCargo.DIRECTOR);
 				for (AplicacionXNivelXActividadTipo axnxat : axnxats) {
 					as = new ArrayList<Actividad>();
 					cs = axnxat.getAplicacionXNivel().getCursos();
@@ -79,6 +85,13 @@ public class YoSimceSetup {
 							a.setCurso(curso);
 							a.setAplicacionXNivelXActividadTipo(axnxat);
 							a.setActividadEstado(ae);
+							e = curso.getEstablecimiento();
+							a.setContactoNombre(e.getDirectorNombre());
+							a.setContactoEmail(e.getEmail());
+							a.setContactoTelefono(e.getTelefono());
+							a.setContactoCargo(cc);
+							a.setFechaInicio(axnxat.getFechaInicio());
+							a.setFechaTermino(axnxat.getFechaTermino());
 							as.add(a);
 						}
 					}

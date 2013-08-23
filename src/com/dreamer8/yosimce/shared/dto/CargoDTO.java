@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class CargoDTO implements Serializable {
 
-	private int id;
+	private Integer id;
 	private String cargo;
 	
 	public CargoDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
