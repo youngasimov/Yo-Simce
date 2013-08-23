@@ -12,6 +12,8 @@ import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView.AgendarVisitaPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
+import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
@@ -27,6 +29,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	private AgendaDTO agenda;
 	
 	private ArrayList<EstadoAgendaDTO> estados;
+	
 	
 	
 	public AgendarVisitaActivity(ClientFactory factory,AgendarVisitaPlace place, HashMap<String, ArrayList<String>> permisos) {
@@ -64,6 +67,22 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			
 			view.setIdCurso(place.getCursoId());
 			
+			getFactory().getPlanificacionService().getContacto(place.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
+
+				@Override
+				public void success(ContactoDTO result) {
+					view.setContacto(result);
+				}
+			});
+			
+			getFactory().getPlanificacionService().getCargos(new SimceCallback<ArrayList<CargoDTO>>(eventBus) {
+
+				@Override
+				public void success(ArrayList<CargoDTO> result) {
+					view.setCargos(result);
+				}
+			});
+			
 			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
 
 				@Override
@@ -93,6 +112,17 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	@Override
 	public void onCambiarCursoClick() {
 		selector.show();
+	}
+	
+	@Override
+	public void onEditarContacto(final ContactoDTO contacto) {
+		getFactory().getPlanificacionService().editarContacto(contacto,new SimceCallback<Boolean>(eventBus) {
+
+			@Override
+			public void success(Boolean result) {
+				view.setContacto(contacto);
+			}
+		});
 	}
 	
 	@Override

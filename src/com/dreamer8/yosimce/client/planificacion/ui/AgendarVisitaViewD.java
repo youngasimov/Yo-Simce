@@ -10,10 +10,12 @@ import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -24,6 +26,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -64,6 +67,10 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	private AgendarVisitaPresenter presenter;
 	private AgendaCell cell;
 	private DateTimeFormat format;
+	private DialogBox editarContactoDialog;
+	private EditarContactoViewD editarContactoPanel;
+	private ContactoDTO contacto;
+	private ArrayList<CargoDTO> cargos;
 	
 	public AgendarVisitaViewD() {
 		cell = new AgendaCell();
@@ -72,6 +79,42 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
 		idCurso = -1;
+		editarContactoPanel = new EditarContactoViewD();
+		editarContactoDialog = new DialogBox();
+		editarContactoDialog.setAnimationEnabled(true);
+		editarContactoDialog.setAutoHideEnabled(true);
+		editarContactoDialog.setAutoHideOnHistoryEventsEnabled(true);
+		editarContactoDialog.setGlassEnabled(true);
+		editarContactoDialog.setModal(true);
+		editarContactoDialog.setWidget(editarContactoPanel);
+		editarContactoPanel.editarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				ContactoDTO c = new ContactoDTO();
+				c.setContactoNombre(editarContactoPanel.nombreBox.getText());
+				c.setContactoTelefono(editarContactoPanel.fonoBox.getText());
+				c.setContactoEmail(editarContactoPanel.emailBox.getText());
+				if(contacto!=null){
+					c.setCargo(contacto.getCargo());
+				}
+				int id = Integer.parseInt(editarContactoPanel.cargoBox.getValue(editarContactoPanel.cargoBox.getSelectedIndex()));
+				for(CargoDTO cargo:cargos){
+					if(cargo.getId() == id){
+						c.setCargo(cargo);
+						break;
+					}
+				}
+				presenter.onEditarContacto(c);
+			}
+		});
+		editarContactoPanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				editarContactoDialog.hide();
+			}
+		});
 	}
 	
 	@UiHandler("modificarButton")
@@ -89,6 +132,25 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		DetalleCursoPlace dcp = new DetalleCursoPlace();
 		dcp.setCursoId(idCurso);
 		presenter.goTo(dcp);
+	}
+	
+	@UiHandler("editarContactoButton")
+	void onEditarContactoClick(ClickEvent event){
+		if(contacto != null){
+			editarContactoPanel.nombreBox.setText(contacto.getContactoNombre());
+			editarContactoPanel.fonoBox.setText(contacto.getContactoTelefono());
+			editarContactoPanel.emailBox.setText(contacto.getContactoEmail());
+			
+			if(contacto.getCargo()!=null){
+				for(int i = 0; i < editarContactoPanel.cargoBox.getItemCount(); i++){
+					if(contacto.getCargo().getId() == Integer.parseInt(editarContactoPanel.cargoBox.getItemText(i))){
+						editarContactoPanel.cargoBox.setItemSelected(i, true);
+						break;
+					}
+				}
+			}
+		}
+		editarContactoDialog.center();
 	}
 	
 	@UiHandler("fechaPicker")
@@ -146,11 +208,21 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 
 	@Override
 	public void setContacto(ContactoDTO contacto) {
+		this.contacto = contacto;
 		nombreContactoLabel.setText(contacto.getContactoNombre());
 		fonoContactoLabel.setText(contacto.getContactoTelefono());
 		emailContactoLabel.setText(contacto.getContactoEmail());
 		if(contacto.getCargo()!=null){
 			cargoContactoLabel.setText(contacto.getCargo().getCargo());
+		}
+	}
+
+	@Override
+	public void setCargos(ArrayList<CargoDTO> cargos) {
+		this.cargos = cargos;
+		editarContactoPanel.cargoBox.clear();
+		for(CargoDTO cargo:cargos){
+			editarContactoPanel.cargoBox.addItem(cargo.getCargo(),cargo.getId()+"");
 		}
 	}
 }

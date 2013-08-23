@@ -189,16 +189,16 @@
 				    		<g:HTMLPanel>
 				    			<table class='{style.tablaContacto}'>
 				    				<tr>
-				    					<th> Camilo Ignacio Vera Cortés <g:Label ui:field="nombreContactoLabel"/> </th>
+				    					<th><g:Label ui:field="nombreContactoLabel"/> </th>
 				    				</tr>
 				    				<tr>
-				    					<th> +56 9 74980994 <g:Label ui:field="fonoContactoLabel"/> </th>
+				    					<th> <g:Label ui:field="fonoContactoLabel"/> </th>
 				    				</tr>
 				    				<tr>
-				    					<th> camilo.vera@dreamer8.com<g:Label ui:field="emailContactoLabel"/> </th>
+				    					<th><g:Label ui:field="emailContactoLabel"/> </th>
 				    				</tr>
 				    				<tr>
-				    					<th> Director <g:Label ui:field="cargoContactoLabel"/> </th>
+				    					<th><g:Label ui:field="cargoContactoLabel"/> </th>
 				    				</tr>
 				    			</table>
 				    		</g:HTMLPanel>
