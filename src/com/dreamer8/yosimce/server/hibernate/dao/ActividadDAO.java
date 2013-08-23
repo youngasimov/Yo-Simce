@@ -4,6 +4,7 @@
 package com.dreamer8.yosimce.server.hibernate.dao;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -173,7 +174,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 								+ SecurityFilter.escapeString(filtros.get(key))
 								+ "'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio >='"
+						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
 								+ "'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
@@ -203,7 +204,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				query += " WHERE " + where;
 			}
 		}
-		query += " ORDER BY COMUNA.id, e.id,c.id";
+		query += " ORDER BY COMUNA.id,e.id,c.id";
 		Query q = s.createSQLQuery(query);
 		if (offset != null) {
 			q.setFirstResult(offset);
@@ -304,6 +305,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		}
 		if (filtros != null && !filtros.isEmpty()) {
 			String where = "";
+			Date fecha = null;
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
 					if (!where.equals("")) {
@@ -314,7 +316,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 								+ SecurityFilter.escapeString(filtros.get(key))
 								+ "'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio >='"
+						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
 								+ "'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
