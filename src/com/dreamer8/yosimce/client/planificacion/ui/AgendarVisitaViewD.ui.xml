@@ -32,7 +32,7 @@
 	
 	.scroll{
 		width: 100%;
-		height: 100%;
+		height: 98%;
 		border-bottom: 1px solid black;
 	}
 	
@@ -89,11 +89,12 @@
 	
 	.form .separador td{
 		padding-top: 30px;
+		border-bottom: 1px solid black;
 	}
 	
 	.agendaPanel{
 		display: block;
-		margin-top: 50px;
+		margin-top: 10px;
 		margin-left:auto;
 		margin-right: auto;
 	}
@@ -120,6 +121,18 @@
 		width: 300px;
 	}
 	
+	.panelContacto{
+		display: block;
+		margin-top: 10px;
+		margin-left:auto;
+		margin-right: auto;
+	}
+	
+	.tablaContacto{
+		width: 440px;
+		float: left;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
@@ -127,9 +140,10 @@
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'>Agenda de </div>
 				<div class='{style.actions}'>
-					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> 
+					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="editarContactoButton" text="Editar contacto" resource='{res.popup}'/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar curso" resource='{res.popup}'/>
 					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar" resource='{res.popup}'/>
 				</div>
 			</g:HTMLPanel>
 			</g:ScrollPanel>	
@@ -171,6 +185,24 @@
 				    	</g:DecoratorPanel>
 				    </div>
 				    <div class='{style.rightPanel}'>
+				    	<g:DecoratorPanel addStyleNames='{style.panelContacto}'>
+				    		<g:HTMLPanel>
+				    			<table class='{style.tablaContacto}'>
+				    				<tr>
+				    					<th> Camilo Ignacio Vera Cortés <g:Label ui:field="nombreContactoLabel"/> </th>
+				    				</tr>
+				    				<tr>
+				    					<th> +56 9 74980994 <g:Label ui:field="fonoContactoLabel"/> </th>
+				    				</tr>
+				    				<tr>
+				    					<th> camilo.vera@dreamer8.com<g:Label ui:field="emailContactoLabel"/> </th>
+				    				</tr>
+				    				<tr>
+				    					<th> Director <g:Label ui:field="cargoContactoLabel"/> </th>
+				    				</tr>
+				    			</table>
+				    		</g:HTMLPanel>
+				    	</g:DecoratorPanel>
 				    	<g:DecoratorPanel addStyleNames='{style.agendaPanel}'>
 				    		<d:CellList ui:field="agendaList" addStyleNames='{style.agendaList}'/>
 				    	</g:DecoratorPanel>

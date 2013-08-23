@@ -121,7 +121,7 @@ public class AgendamientosPlace extends SimcePlace {
 			if(place.getHastaTimestamp()!=-1){ kvs.put("hts", place.getHastaTimestamp()+""); }
 			if(place.getRegionId()!=-1){ kvs.put("rid", place.getRegionId()+""); }
 			if(place.getComunaId()!=-1){ kvs.put("cid", place.getComunaId()+""); }
-			if(place.getEstadosSeleccionados().size()>0){	
+			if(!place.getEstadosSeleccionados().isEmpty()){	
 				StringBuilder estados = new StringBuilder();
 				for(Integer i:place.getEstadosSeleccionados()){
 					estados.append(i);

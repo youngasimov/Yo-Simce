@@ -76,8 +76,16 @@ public class AgendamientosActivity extends SimceActivity implements
 
 			@Override
 			public void success(ArrayList<EstadoAgendaDTO> result) {
-				estados.addAll(result);
+				estados = result;
 				view.setEstados(estados);
+				if(place.getEstadosSeleccionados().isEmpty()){
+					ArrayList<Integer> x = new ArrayList<Integer>();
+					for(EstadoAgendaDTO eadto:result){
+						x.add(eadto.getId());
+					}
+					place.setEstadosSeleccionados(x);
+				}
+				
 				estadosReady = true;
 				if(regionesReady){
 					updateFiltros();
