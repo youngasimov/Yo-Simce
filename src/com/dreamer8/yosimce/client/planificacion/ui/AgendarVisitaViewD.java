@@ -43,6 +43,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiField HTML establecimiento;
 	@UiField Button informacionButton;
 	@UiField ImageButton cambiarButton;
+	@UiField ImageButton editarContactoButton;
 	@UiField ListBox estadoBox;
 	@UiField DatePicker fechaPicker;
 	@UiField Label fechaLabel;

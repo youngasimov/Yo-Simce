@@ -648,4 +648,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		}
 		return result;
 	}
+
+	@Override
+	public Boolean editarContacto(ContactoDTO contacto)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

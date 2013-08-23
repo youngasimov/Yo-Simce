@@ -44,6 +44,8 @@ public interface PlanificacionServiceAsync {
 
 	void getTotalPreviewAgendamientos(Map<String, String> filtros, AsyncCallback<Integer> callback);
 
+	void editarContacto(ContactoDTO contacto, AsyncCallback<Boolean> callback);
+
 	
 
 }
