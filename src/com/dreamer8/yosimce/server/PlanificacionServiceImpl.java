@@ -178,7 +178,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			Integer length, Map<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException {
 
-		ArrayList<AgendaPreviewDTO> apdtos = new ArrayList<AgendaPreviewDTO>();
+		ArrayList<AgendaPreviewDTO> apdtos = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			AccessControl ac = getAccessControl();
@@ -214,16 +214,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				ActividadDAO adao = new ActividadDAO();
-				List<Actividad> as = adao
+				apdtos = (ArrayList<AgendaPreviewDTO>) adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), usuarioTipo.getNombre(), offset,
 								length, filtros);
-				if (as != null && !as.isEmpty()) {
-					for (Actividad actividad : as) {
-						apdtos.add(actividad.getAgendaPreviewDTO(idAplicacion));
-					}
-				}
+				
 
 				s.getTransaction().commit();
 			}
