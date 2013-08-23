@@ -188,7 +188,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.estado_id="
+								where += "a.actividad_estado_id="
 										+ SecurityFilter.escapeString(filtros
 												.get(key));
 								if (i < estados.length - 1) {
@@ -303,7 +303,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
-		if (filtros != null && filtros.isEmpty()) {
+		if (filtros != null && !filtros.isEmpty()) {
 			String where = "";
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
@@ -330,7 +330,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.estado_id="
+								where += "a.actividad_estado_id="
 										+ SecurityFilter.escapeString(filtros
 												.get(key));
 								if (i < estados.length - 1) {
