@@ -161,7 +161,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
-		if (filtros != null && filtros.isEmpty()) {
+		if (filtros != null && !filtros.isEmpty()) {
 			String where = "";
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
