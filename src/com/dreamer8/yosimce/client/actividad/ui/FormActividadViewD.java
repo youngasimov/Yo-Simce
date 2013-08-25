@@ -8,12 +8,13 @@ import com.dreamer8.yosimce.client.ui.ScoreSelector;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
-import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
-import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -28,6 +29,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -56,6 +58,10 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField Label comunaLabel;
 	@UiField DecoratorPanel estadoAplicacionPanel;
 	@UiField ListBox estadoBox;
+	@UiField ListBox tipoContingenciaBox;
+	@UiField TextBox detalleContingenciaBox;
+	@UiField CheckBox inhabilitaContingenciaBox;
+	@UiField  Button contingenciaButton;
 	@UiField(provided=true) DataGrid<ContingenciaDTO> contingenciasTable;
 	@UiField DecoratorPanel datosExaminadorPanel;
 	@UiField Label nombreExaminadorLabel;
@@ -66,6 +72,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField ScoreSelector llenadoFormularioScoreSelector;
 	@UiField ScoreSelector desempenoScoreSelector;
 	@UiField DecoratorPanel horasActividadPanel;
+	@UiField HTMLPanel formPanel;
 	@UiField(provided=true) TimeBox inicioActividadBox;
 	@UiField(provided=true) TimeBox inicioPruebaBox;
 	@UiField(provided=true) TimeBox terminoPruebaBox;
@@ -86,9 +93,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	
 	private FormActividadPresenter presenter;
 	private UserDTO examinador;
-	
-	private ArrayList<ContingenciaDTO> contingencias;
-	
+	private ArrayList<TipoContingenciaDTO> tiposContingencia;
 	
 	public FormActividadViewD() {
 		inicioActividadBox = new TimeBox(new Date(0),false);
@@ -96,6 +101,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		estadoBox.addItem("seleccione estado actividad","0");
+		estadoBox.addItem("Realizado","1");
+		estadoBox.addItem("Anulado", "2");
+		
 		buildTable();
 	}
 	
@@ -118,6 +128,21 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiHandler("save2Button")
 	void onSave2Click(ClickEvent event){
 		presenter.guardarFormulario();
+	}
+	
+	@UiHandler("contingenciaButton")
+	void onAgregarContingenciaClick(ClickEvent event){
+		ContingenciaDTO c = new ContingenciaDTO();
+		c.setDetalleContingencia(detalleContingenciaBox.getText());
+		c.setInabilitante(inhabilitaContingenciaBox.getValue());
+		int id = Integer.parseInt(tipoContingenciaBox.getValue(tipoContingenciaBox.getSelectedIndex()));
+		for(TipoContingenciaDTO tipo:tiposContingencia){
+			if(tipo.getId() == id){
+				c.setTipoContingencia(tipo);
+				break;
+			}
+		}
+		presenter.onAgregarContingencia(c);
 	}
 
 
@@ -161,19 +186,23 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	public void setComuna(String comuna) {
 		comunaLabel.setText(comuna);
 	}
-
-
+	
 	@Override
-	public void setMotivoEstado(String motivo) {
-		// TODO Auto-generated method stub
+	public void setTiposContingencia(ArrayList<TipoContingenciaDTO> tipos) {
+		tiposContingencia = tipos;
+		tipoContingenciaBox.clear();
+		for(TipoContingenciaDTO tipo:tipos){
+			tipoContingenciaBox.addItem(tipo.getContingencia(),tipo.getId()+"");
+		}
 		
 	}
 
 
 	@Override
-	public String getMotivoEstado() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setContingencias(ArrayList<ContingenciaDTO> contingencias) {
+		contingenciasTable.setRowCount(contingencias.size());
+		contingenciasTable.setRowData(contingencias);
+		contingenciasTable.setVisibleRange(0, contingencias.size());
 	}
 
 
@@ -202,7 +231,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		contingenciasTable.addColumn(contingenciaColumn,"Contingencia");
 		contingenciasTable.setColumnWidth(contingenciaColumn, "150px");
 		
-		Column<ContingenciaDTO,String> detalleColumn = new Column<ContingenciaDTO, String>(new TextInputCell()) {
+		Column<ContingenciaDTO,String> detalleColumn = new Column<ContingenciaDTO, String>(new TextCell()) {
 
 			@Override
 			public String getValue(ContingenciaDTO o) {
@@ -213,15 +242,39 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		contingenciasTable.addColumn(detalleColumn,"Detalle");
 		contingenciasTable.setColumnWidth(detalleColumn, "150px");
 		
-		Column<ContingenciaDTO,Boolean> inhabilitaColumn = new Column<ContingenciaDTO, Boolean>(new CheckboxCell()) {
+		Column<ContingenciaDTO,String> inhabilitaColumn = new Column<ContingenciaDTO, String>(new ImageCell()) {
 
 			@Override
-			public Boolean getValue(ContingenciaDTO o) {
-				return o.getInabilitante();
+			public String getValue(ContingenciaDTO o) {
+				if(o.getInabilitante()){
+					return "/images/warning.png";
+				}else{
+					return "";
+				}
 			}
 		};
 		inhabilitaColumn.setSortable(false);
-		contingenciasTable.addColumn(inhabilitaColumn,"Inhabilita establ.");
-		contingenciasTable.setColumnWidth(inhabilitaColumn, "150px");
+		contingenciasTable.addColumn(inhabilitaColumn,"Inhabilita");
+		contingenciasTable.setColumnWidth(inhabilitaColumn, "100px");
+		
+		Column<ContingenciaDTO,String> deleteColumn = new Column<ContingenciaDTO,String>(new ButtonCell()){
+
+			@Override
+			public String getValue(ContingenciaDTO object) {
+				return "Eliminar";
+			}
+		};
+		
+		deleteColumn.setSortable(false);
+		deleteColumn.setFieldUpdater(new FieldUpdater<ContingenciaDTO, String>() {
+			
+			@Override
+			public void update(int index, ContingenciaDTO object, String value) {
+				presenter.onRemoveContingecia(object);
+			}
+		});
+		contingenciasTable.addColumn(deleteColumn,"Inhabilita");
+		contingenciasTable.setColumnWidth(deleteColumn, "100px");
+		
 	}
 }

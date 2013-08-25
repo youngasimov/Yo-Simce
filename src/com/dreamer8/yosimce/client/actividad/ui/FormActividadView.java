@@ -1,12 +1,14 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import java.util.ArrayList;
+
 import com.dreamer8.yosimce.client.SimcePresenter;
+import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.client.ui.IsWidget;
 
 public interface FormActividadView extends IsWidget {
-	
-	//void setEstadosAplicacion();
 	
 	void setNombreEstablecimiento(String establecimiento);
 	void setRbd(String rbd);
@@ -15,8 +17,8 @@ public interface FormActividadView extends IsWidget {
 	void setRegion(String region);
 	void setComuna(String comuna);
 	
-	void setMotivoEstado(String motivo);
-	String getMotivoEstado();
+	void setTiposContingencia(ArrayList<TipoContingenciaDTO> tipos);
+	void setContingencias(ArrayList<ContingenciaDTO> contingencias);
 	
 	void setExaminador(UserDTO user);
 	UserDTO getExaminador();
@@ -31,5 +33,9 @@ public interface FormActividadView extends IsWidget {
 		void onCambiarCursoClick();
 		void onCambiarExaminadorClick();
 		void guardarFormulario();
+		void onAgregarContingencia(ContingenciaDTO contingencia);
+		void onRemoveContingecia(ContingenciaDTO contingencia);
+		void onEstadoCompletadoSelected();
+		void onEstadoAnuladoSelected();
 	}
 }

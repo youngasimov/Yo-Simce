@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
+import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -84,6 +85,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	public Boolean cambiarExaminadorPrincipal(Integer idCurso,
 			Integer idNuevoExaminador) throws NoAllowedException,
 			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso)
+			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}

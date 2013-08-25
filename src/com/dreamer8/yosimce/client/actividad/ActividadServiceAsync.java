@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
+import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -31,6 +32,9 @@ public interface ActividadServiceAsync {
 
 	void cambiarExaminadorPrincipal(Integer idCurso, Integer idNuevoExaminador,
 			AsyncCallback<Boolean> callback);
+
+	void getTiposContingencia(Integer idCurso,
+			AsyncCallback<ArrayList<TipoContingenciaDTO>> callback);
 
 	
 }

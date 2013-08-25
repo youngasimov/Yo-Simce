@@ -158,18 +158,26 @@
 							</tr>
 							<tr>
 								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la aplicación' /> </td>
-								<td> <g:ListBox ui:field="estadoBox" /> </td>
+								<td colspan='3'> <g:ListBox ui:field="estadoBox" /> </td>
 							</tr>
 							<tr>
-								<td colspan='2'> <g:Button ui:field="contingenciaButton" text="Agregar contingencia o problema presentado durante la actividad"/> </td>
+								<th>Tipo contingencia</th>
+								<th>Detalle</th>
+								<th><my:HelperLabel text='Inhabilita' help='impide la realización de esta o una futura actividad en este establecimiento' /></th>
 							</tr>
 							<tr>
-								<td colspan='2'><c:DataGrid ui:field="contingenciasTable" addStyleNames='{style.contingenciaTable}'/> </td>
+								<td> <g:ListBox ui:field='tipoContingenciaBox'/> </td>
+								<td> <g:TextBox ui:field='detalleContingenciaBox'/> </td>
+								<td> <g:CheckBox ui:field='inhabilitaContingenciaBox'/> </td>
+								<td> <g:Button ui:field="contingenciaButton" text="Agregar"/> </td>
+							</tr>
+							<tr>
+								<td colspan='4'><c:DataGrid ui:field="contingenciasTable" addStyleNames='{style.contingenciaTable}'/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>
 				</g:DecoratorPanel>
-				
+				<g:HTMLPanel ui:field="formPanel" >
 				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>
@@ -310,7 +318,7 @@
 						</table>
 					</g:HTMLPanel>
 				</g:DecoratorPanel>
-				
+				</g:HTMLPanel>
 				<g:DecoratorPanel ui:field="savePanel" addStyleNames='{style.formPanel}'>
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>

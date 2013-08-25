@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
+import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -37,5 +39,6 @@ public interface ActividadService extends RemoteService {
 	
 	Boolean cambiarExaminadorPrincipal(Integer idCurso, Integer idNuevoExaminador) throws NoAllowedException, NoLoggedException, DBException;
 	
+	ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
 }
