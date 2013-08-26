@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -15,7 +16,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DetalleCursoViewD extends Composite implements DetalleCursoView{
@@ -92,50 +92,59 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	
 	@Override
 	public void setSupervisor(UserDTO supervisor) {
-		// TODO Auto-generated method stub
+		personasTable.setWidget(1, 0, new HTML("Supervisor"));
+		personasTable.setWidget(1, 1, new HTML(supervisor.getNombres()+" "+supervisor.getApellidoPaterno()+" "+supervisor.getApellidoMaterno()));
+		personasTable.setWidget(1, 2, new HTML(supervisor.getTelefono()));
+		personasTable.setWidget(1, 3, new HTML(supervisor.getEmail()));
 		
 	}
 
 	@Override
 	public void setExaminadores(ArrayList<UserDTO> examinadores) {
-		// TODO Auto-generated method stub
-		
+		int i = 2;
+		for(UserDTO examinador:examinadores){
+			personasTable.setWidget(i, 0, new HTML("Examinador"));
+			personasTable.setWidget(i, 1, new HTML(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno()));
+			personasTable.setWidget(i, 2, new HTML(examinador.getTelefono()));
+			personasTable.setWidget(i, 3, new HTML(examinador.getEmail()));
+			i++;
+		}
 	}
 
 	@Override
 	public void setDirector(String director) {
-		// TODO Auto-generated method stub
-		
+		contactosTable.setWidget(1, 0, new HTML("Director"));
+		contactosTable.setWidget(1, 1, new HTML(director));
 	}
 
 	@Override
 	public void setEmailDirector(String email) {
-		// TODO Auto-generated method stub
-		
+		contactosTable.setWidget(1, 3, new HTML(email));
 	}
 
 	@Override
 	public void setTelefonoDirector(String telefono) {
-		// TODO Auto-generated method stub
-		
+		contactosTable.setWidget(1, 2, new HTML(telefono));
 	}
 
 	@Override
 	public void setContacto(String director) {
-		// TODO Auto-generated method stub
-		
+		contactosTable.setWidget(2, 1, new HTML(director));
+	}
+	
+	@Override
+	public void setCargoContacto(String cargo){
+		contactosTable.setWidget(2, 0, new HTML(cargo));
 	}
 
 	@Override
 	public void setEmailContacto(String email) {
-		// TODO Auto-generated method stub
-		
+		contactosTable.setWidget(2, 3, new HTML(email));
 	}
 
 	@Override
 	public void setTelefonoContacto(String telefono) {
-		// TODO Auto-generated method stub
-		
+		contactosTable.setWidget(2, 2, new HTML(telefono));
 	}
 
 	@Override
@@ -148,6 +157,16 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 		tipoLabel.setText("");
 		personasTable.clear();
 		contactosTable.clear();
+		personasTable.setHTML(0, 0, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Cargo</div>"));
+		personasTable.setHTML(0, 1, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Nombre</div>"));
+		personasTable.setHTML(0, 2, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Teléfono</div>"));
+		personasTable.setHTML(0, 3, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Email</div>"));
+		
+		contactosTable.setHTML(0, 0, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Cargo</div>"));
+		contactosTable.setHTML(0, 1, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Nombre</div>"));
+		contactosTable.setHTML(0, 2, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Teléfono</div>"));
+		contactosTable.setHTML(0, 3, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Email</div>"));
+		
 	}
 
 	

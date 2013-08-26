@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.UIObject;
 
 public interface DetalleCursoView extends IsWidget {
 
@@ -21,6 +20,7 @@ public interface DetalleCursoView extends IsWidget {
 	void setEmailDirector(String email);
 	void setTelefonoDirector(String telefono);
 	void setContacto(String director);
+	void setCargoContacto(String cargo);
 	void setEmailContacto(String email);
 	void setTelefonoContacto(String telefono);
 	

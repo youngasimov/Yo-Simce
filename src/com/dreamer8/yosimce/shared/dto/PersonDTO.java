@@ -12,6 +12,7 @@ public class PersonDTO implements Serializable {
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private String rut;
+	private String telefono;
 
 	public PersonDTO() {
 		super();
@@ -63,5 +64,13 @@ public class PersonDTO implements Serializable {
 
 	public void setRut(String rut) {
 		this.rut = rut;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 }
