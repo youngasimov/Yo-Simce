@@ -129,27 +129,27 @@
 							</tr>
 							<tr>
 								<td>Nombre Establecimiento:</td>
-								<td> <g:Label ui:field="nombreEstablecimientoLabel"/> </td>
+								<td><g:Label ui:field="nombreEstablecimientoLabel"/> </td>
 							</tr>
 							<tr>
 								<td>RBD:</td>
-								<td> <g:Label ui:field="rbdLabel"/> </td>
+								<td><g:Label ui:field="rbdLabel"/> </td>
 							</tr>
 							<tr>
 								<td>Curso:</td>
-								<td> <g:Label ui:field="cursoLabel"/> </td>
+								<td><g:Label ui:field="cursoLabel"/> </td>
 							</tr>
 							<tr>
 								<td>Tipo curso:</td>
-								<td> <g:Label ui:field="tipoLabel"/> </td>
+								<td><g:Label ui:field="tipoLabel"/> </td>
 							</tr>
 							<tr>
 								<td>Región:</td>
-								<td> <g:Label ui:field="regionLabel"/> </td>
+								<td><g:Label ui:field="regionLabel"/> </td>
 							</tr>
 							<tr>
 								<td>Comuna:</td>
-								<td> <g:Label ui:field="comunaLabel"/> </td>
+								<td><g:Label ui:field="comunaLabel"/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

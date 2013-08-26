@@ -70,6 +70,7 @@ public class FormActividadActivity extends SimceActivity implements
 			});
 			selector.show();
 		}else{
+			
 			if(!getPermisos().get("ActividadService").contains("getTiposContingencia")){
 				view.enableAddContingencia(false);
 			}else{
@@ -111,6 +112,8 @@ public class FormActividadActivity extends SimceActivity implements
 	
 	@Override
 	public void onCambiarExaminador(final UserDTO nuevoExaminador) {
+		
+		
 		if(!getPermisos().get("ActividadService").contains("cambiarExaminadorPrincipal")){
 			return;
 		}
@@ -121,11 +124,11 @@ public class FormActividadActivity extends SimceActivity implements
 				view.setExaminador(nuevoExaminador);
 			}
 		});
-		
 	}
 
 	@Override
 	public void getExaminadoresSuplentes(String search) {
+
 		if(!getPermisos().get("ActividadService").contains("getExaminadores")){
 			return;
 		}
