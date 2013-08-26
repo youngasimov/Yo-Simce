@@ -65,7 +65,7 @@
 	
 	.panel1{
 		display:block;
-		width: 500px;
+		width: 520px;
 		margin-top:40px;
 		margin-bottom:40px;
 		margin-left: auto;
@@ -78,7 +78,7 @@
 	}
 	
 	.panel2{
-		width: 450px;
+		width: 500px;
 		margin-left:auto;
 		margin-right:auto;
 	}
@@ -96,6 +96,11 @@
 	
 	.contingenciaTable{
 		width: 98%;
+		height: 150px;
+	}
+	
+	.numberBox{
+		width: 4em;
 	}
 	
 	</ui:style>
@@ -243,15 +248,15 @@
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Total:' help='Indique la cantidad de alumnos en sala'/></td>
-								<td> <g:IntegerBox ui:field="totalAlumnosBox"/> </td>
+								<td> <e:ValueTextBox ui:field="totalAlumnosBox" addStyleNames='{style.numberBox}'/> </td>
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Ausentes:' help='Indique la cantidad de alumnos ausentes o que no rindieron la prueba por cualquier motivo'/></td>
-								<td> <g:IntegerBox ui:field="alumnosAusentesBox"/> </td>
+								<td> <e:ValueTextBox ui:field="alumnosAusentesBox" addStyleNames='{style.numberBox}'/> </td>
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Alumnos DS:' help='Indique la cantidad de alumnos Ds'/></td>
-								<td> <g:IntegerBox ui:field="alumnosDsBox"/> </td>
+								<td> <e:ValueTextBox ui:field="alumnosDsBox" addStyleNames='{style.numberBox}'/> </td>
 							</tr>
 							
 						</table>
@@ -266,15 +271,15 @@
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Total:' help='Indique la cantidad de cuestionarios para padres y apoderados TOTALES'/></td>
-								<td><g:IntegerBox ui:field="cuestionariosTotalesBox"/></td>
+								<td><e:ValueTextBox ui:field="cuestionariosTotalesBox" addStyleNames='{style.numberBox}'/></td>
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Entregados:' help='Indique la cantidad de cuestionarios para padres y apoderados ENTREGADOS'/></td>
-								<td><g:IntegerBox ui:field="cuestionariosEntregadosBox"/></td>
+								<td><e:ValueTextBox ui:field="cuestionariosEntregadosBox" addStyleNames='{style.numberBox}'/></td>
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Recibidos:' help='Indique la cantidad de cuestionarios para padres y apoderados RECIBIDOS'/></td>
-								<td><g:IntegerBox ui:field="cuestionariosNoEntregadosBox"/></td>
+								<td><e:ValueTextBox ui:field="cuestionariosNoEntregadosBox" addStyleNames='{style.numberBox}'/></td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

@@ -21,21 +21,25 @@ public interface FormActividadView extends IsWidget {
 	void setContingencias(ArrayList<ContingenciaDTO> contingencias);
 	
 	void setExaminador(UserDTO user);
+	void setExaminadoresSuplentes(ArrayList<UserDTO> examinadores);
 	UserDTO getExaminador();
 	
 	
 	
 	
-	
+	void enableAddContingencia(boolean enable);
+	void showSeccionExaminador(boolean show);
+	void showForm(boolean show);
 	void setPresenter(FormActividadPresenter presenter);
 	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
-		void onCambiarExaminadorClick();
+		void onCambiarExaminador(UserDTO nuevoExaminador);
 		void guardarFormulario();
 		void onAgregarContingencia(ContingenciaDTO contingencia);
 		void onRemoveContingecia(ContingenciaDTO contingencia);
 		void onEstadoCompletadoSelected();
 		void onEstadoAnuladoSelected();
+		void getExaminadoresSuplentes(String Search);
 	}
 }

@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ScoreSelector;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
+import com.dreamer8.yosimce.client.ui.eureka.ValueTextBox;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -16,6 +17,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -30,7 +32,6 @@ import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -77,13 +78,13 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField(provided=true) TimeBox inicioPruebaBox;
 	@UiField(provided=true) TimeBox terminoPruebaBox;
 	@UiField DecoratorPanel participacionPanel;
-	@UiField IntegerBox totalAlumnosBox;
-	@UiField IntegerBox alumnosAusentesBox;
-	@UiField IntegerBox alumnosDsBox;
+	@UiField ValueTextBox totalAlumnosBox;
+	@UiField ValueTextBox alumnosAusentesBox;
+	@UiField ValueTextBox alumnosDsBox;
 	@UiField DecoratorPanel cuestionariosPanel;
-	@UiField IntegerBox cuestionariosTotalesBox;
-	@UiField IntegerBox cuestionariosEntregadosBox;
-	@UiField IntegerBox cuestionariosNoEntregadosBox;
+	@UiField ValueTextBox cuestionariosTotalesBox;
+	@UiField ValueTextBox cuestionariosEntregadosBox;
+	@UiField ValueTextBox cuestionariosNoEntregadosBox;
 	@UiField DecoratorPanel contingenciasPanel;
 	@UiField CheckBox usoMaterialBox;
 	@UiField TextBox detallesUsoBox;
@@ -94,6 +95,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private FormActividadPresenter presenter;
 	private UserDTO examinador;
 	private ArrayList<TipoContingenciaDTO> tiposContingencia;
+	private ExaminadorSelectorViewD examinadorSelector;
 	
 	public FormActividadViewD() {
 		inicioActividadBox = new TimeBox(new Date(0),false);
@@ -101,18 +103,32 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		examinadorSelector = new ExaminadorSelectorViewD();
 		estadoBox.addItem("seleccione estado actividad","0");
 		estadoBox.addItem("Realizado","1");
 		estadoBox.addItem("Anulado", "2");
 		
+		
+		
 		buildTable();
+		contingenciasTable.setRowCount(0);
 	}
 	
 	
 	@UiFactory
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
+	}
+	
+	@UiHandler("estadoBox")
+	void onEstadoChange(ChangeEvent event){
+		String selected = estadoBox.getValue(estadoBox.getSelectedIndex());
+		if(selected.equals("1")){
+			presenter.onEstadoCompletadoSelected();
+		}
+		if(selected.equals("2")){
+			presenter.onEstadoAnuladoSelected();
+		}
 	}
 	
 	@UiHandler("changeButton")
@@ -132,6 +148,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	
 	@UiHandler("contingenciaButton")
 	void onAgregarContingenciaClick(ClickEvent event){
+		if(tiposContingencia == null || tiposContingencia.isEmpty()){
+			return;
+		}
 		ContingenciaDTO c = new ContingenciaDTO();
 		c.setDetalleContingencia(detalleContingenciaBox.getText());
 		c.setInabilitante(inhabilitaContingenciaBox.getValue());
@@ -142,7 +161,14 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 				break;
 			}
 		}
+		detalleContingenciaBox.setValue("");
+		inhabilitaContingenciaBox.setValue(false);
 		presenter.onAgregarContingencia(c);
+	}
+	
+	@UiHandler("changeExaminadorButton")
+	void onChangeExaminadorClick(ClickEvent event){
+		examinadorSelector.show();
 	}
 
 
@@ -150,6 +176,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setPresenter(FormActividadPresenter presenter) {
 		this.presenter = presenter;
+		examinadorSelector.setPresenter(presenter);
 	}
 
 
@@ -211,12 +238,35 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		this.examinador = user;
 		this.nombreExaminadorLabel.setText(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
 		this.rutExaminadorLabel.setText(examinador.getRut());
+		examinadorSelector.hide();
 	}
 
 
 	@Override
 	public UserDTO getExaminador() {
 		return examinador;
+	}
+	
+	@Override
+	public void setExaminadoresSuplentes(ArrayList<UserDTO> examinadores) {
+		examinadorSelector.setExaminadores(examinadores);
+	}
+	
+
+	@Override
+	public void enableAddContingencia(boolean enable) {
+		contingenciaButton.setEnabled(true);
+	}
+	
+	@Override
+	public void showSeccionExaminador(boolean show) {
+		datosExaminadorPanel.setVisible(show);
+	}
+
+
+	@Override
+	public void showForm(boolean show) {
+		formPanel.setVisible(show);
 	}
 	
 	private void buildTable(){
@@ -255,7 +305,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		};
 		inhabilitaColumn.setSortable(false);
 		contingenciasTable.addColumn(inhabilitaColumn,"Inhabilita");
-		contingenciasTable.setColumnWidth(inhabilitaColumn, "100px");
+		contingenciasTable.setColumnWidth(inhabilitaColumn, "90px");
 		
 		Column<ContingenciaDTO,String> deleteColumn = new Column<ContingenciaDTO,String>(new ButtonCell()){
 
@@ -273,8 +323,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 				presenter.onRemoveContingecia(object);
 			}
 		});
-		contingenciasTable.addColumn(deleteColumn,"Inhabilita");
-		contingenciasTable.setColumnWidth(deleteColumn, "100px");
+		contingenciasTable.addColumn(deleteColumn,"");
+		contingenciasTable.setColumnWidth(deleteColumn, "90px");
 		
 	}
 }
