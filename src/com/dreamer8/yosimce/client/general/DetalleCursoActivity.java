@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView.DetalleCursoPresenter;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
+import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -67,11 +68,16 @@ public class DetalleCursoActivity extends SimceActivity implements
 					if(r.getSupervisor()!=null){
 						view.setSupervisor(r.getSupervisor().getNombres()+" "+r.getSupervisor().getApellidoPaterno()+" "+r.getSupervisor().getApellidoMaterno());
 					}
-					if(r.getExaminador()!=null){
-						view.setExaminador(r.getExaminador().getNombres()+" "+r.getExaminador().getApellidoPaterno()+" "+r.getExaminador().getApellidoMaterno());
-					}
-					if(r.getExaminador2()!=null){
-						view.setExaminador2(r.getExaminador2().getNombres()+" "+r.getExaminador2().getApellidoPaterno()+" "+r.getExaminador2().getApellidoMaterno());
+					if (r.getExaminadores() != null && !r.getExaminadores().isEmpty()) {
+						int ex = 0;
+						for (UserDTO examinador : r.getExaminadores()) {
+							if(ex == 0){
+								view.setExaminador(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
+								ex++;
+							}else{
+								view.setExaminador2(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
+							}
+						}
 					}
 					
 					view.setDirector(r.getNombreContacto());

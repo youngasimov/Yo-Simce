@@ -32,6 +32,10 @@ public class Actividad implements java.io.Serializable {
 	private String contactoTelefono;
 	private String contactoEmail;
 	private boolean sinMaterial;
+	private Integer notaProceso;
+	private Integer dia;
+	private Integer totalAlumnosPresentes;
+	private Integer totalAlumnosAusentes;
 	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(
 			0);
 	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
@@ -218,6 +222,66 @@ public class Actividad implements java.io.Serializable {
 
 	public void setSinMaterial(boolean sinMaterial) {
 		this.sinMaterial = sinMaterial;
+	}
+
+	/**
+	 * @return the notaProceso
+	 */
+	public Integer getNotaProceso() {
+		return notaProceso;
+	}
+
+	/**
+	 * @param notaProceso
+	 *            the notaProceso to set
+	 */
+	public void setNotaProceso(Integer notaProceso) {
+		this.notaProceso = notaProceso;
+	}
+
+	/**
+	 * @return the dia
+	 */
+	public Integer getDia() {
+		return dia;
+	}
+
+	/**
+	 * @param dia
+	 *            the dia to set
+	 */
+	public void setDia(Integer dia) {
+		this.dia = dia;
+	}
+
+	/**
+	 * @return the totalAlumnosPresentes
+	 */
+	public Integer getTotalAlumnosPresentes() {
+		return totalAlumnosPresentes;
+	}
+
+	/**
+	 * @param totalAlumnosPresentes
+	 *            the totalAlumnosPresentes to set
+	 */
+	public void setTotalAlumnosPresentes(Integer totalAlumnosPresentes) {
+		this.totalAlumnosPresentes = totalAlumnosPresentes;
+	}
+
+	/**
+	 * @return the totalAlumnosAusentes
+	 */
+	public Integer getTotalAlumnosAusentes() {
+		return totalAlumnosAusentes;
+	}
+
+	/**
+	 * @param totalAlumnosAusentes
+	 *            the totalAlumnosAusentes to set
+	 */
+	public void setTotalAlumnosAusentes(Integer totalAlumnosAusentes) {
+		this.totalAlumnosAusentes = totalAlumnosAusentes;
 	}
 
 	public List<AlumnoXActividad> getAlumnoXActividads() {

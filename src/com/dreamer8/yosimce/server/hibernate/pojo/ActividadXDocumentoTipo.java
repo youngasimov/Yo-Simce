@@ -12,6 +12,7 @@ public class ActividadXDocumentoTipo implements java.io.Serializable {
 	private Actividad actividad;
 	private Integer totalEntregados;
 	private Integer totalRecibidos;
+	private Integer total;
 
 	public ActividadXDocumentoTipo() {
 	}
@@ -67,6 +68,21 @@ public class ActividadXDocumentoTipo implements java.io.Serializable {
 
 	public void setTotalRecibidos(Integer totalRecibidos) {
 		this.totalRecibidos = totalRecibidos;
+	}
+
+	/**
+	 * @return the total
+	 */
+	public Integer getTotal() {
+		return total;
+	}
+
+	/**
+	 * @param total
+	 *            the total to set
+	 */
+	public void setTotal(Integer total) {
+		this.total = total;
 	}
 
 }
