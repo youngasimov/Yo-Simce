@@ -88,7 +88,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	@UiHandler("sincronizacionButton")
 	void onDetallesClick(ClickEvent event){
 		SincronizacionPlace place = new SincronizacionPlace();
-		place.setIdSincronizacion(selectedItem.getCursoId());
+		place.setIdCurso(selectedItem.getCursoId());
 		presenter.goTo(place);
 	}
 	

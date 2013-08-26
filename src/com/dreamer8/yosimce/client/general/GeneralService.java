@@ -23,6 +23,7 @@ public interface GeneralService extends RemoteService {
 	
 	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
 	
+	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
 	//No se usan, se pueden borrar
 	public ArrayList<HistorialCambioItemDTO> getCambios(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;

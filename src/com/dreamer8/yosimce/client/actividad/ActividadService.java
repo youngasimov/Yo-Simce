@@ -33,6 +33,8 @@ public interface ActividadService extends RemoteService {
 	
 	Boolean updateSincronizacionAlumno(SincAlumnoDTO sinc) throws NoAllowedException, NoLoggedException, DBException;
 	
+	
+	
 	UserDTO getExaminadorPrincipal(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
 	ArrayList<UserDTO> getExaminadores(String search) throws NoAllowedException, NoLoggedException, DBException;

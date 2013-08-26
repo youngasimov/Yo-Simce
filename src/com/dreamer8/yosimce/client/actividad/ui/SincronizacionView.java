@@ -17,7 +17,7 @@ public interface SincronizacionView extends IsWidget {
 	void setTotalALumnos(int total);
 	void setCurso(CursoDTO curso);
 	void setPresenter(SincronizacionPresenter presenter);
-	
+	void clear();
 	void setGuardarButtonEnabled(boolean enabled);
 	
 	public interface SincronizacionPresenter extends SimcePresenter{

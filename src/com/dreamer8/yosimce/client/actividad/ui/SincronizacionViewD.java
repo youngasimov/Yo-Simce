@@ -226,4 +226,10 @@ public class SincronizacionViewD extends Composite implements
 		};
 		dataGrid.addColumn(comentarioColumn, "Comentario");
 	}
+
+	@Override
+	public void clear() {
+		establecimientoSeleccionado.setText("");
+		dataGrid.setRowCount(0);
+	}
 }

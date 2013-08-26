@@ -30,4 +30,6 @@ public interface GeneralServiceAsync {
 	void getDetalleCurso(Integer idCurso,
 			AsyncCallback<DetalleCursoDTO> callback);
 
+	void getCurso(Integer idCurso, AsyncCallback<CursoDTO> callback);
+
 }
