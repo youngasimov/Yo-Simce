@@ -66,20 +66,15 @@ public class DetalleCursoActivity extends SimceActivity implements
 					view.setCurso(r.getCurso());
 					view.setTipo(r.getTipoEstablecimiento());
 					if(r.getSupervisor()!=null){
-						view.setSupervisor(r.getSupervisor().getNombres()+" "+r.getSupervisor().getApellidoPaterno()+" "+r.getSupervisor().getApellidoMaterno());
+						view.setSupervisor(r.getSupervisor());
 					}
 					if (r.getExaminadores() != null && !r.getExaminadores().isEmpty()) {
-						int ex = 0;
-						for (UserDTO examinador : r.getExaminadores()) {
-							if(ex == 0){
-								view.setExaminador(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
-								ex++;
-							}else{
-								view.setExaminador2(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
-							}
-						}
+						view.setExaminadores(r.getExaminadores());
 					}
 					
+					view.setDirector(r.getNombreContacto());
+					view.setEmailDirector(r.getEmailDirector());
+					view.setTelefonoDirector(r.getTelefonoContacto());
 					view.setDirector(r.getNombreContacto());
 					view.setEmailContacto(r.getEmailContacto());
 					view.setTelefonoContacto(r.getTelefonoContacto());

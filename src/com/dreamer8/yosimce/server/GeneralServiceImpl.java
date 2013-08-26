@@ -503,4 +503,11 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return dcdto;
 	}
 
+	@Override
+	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -129,34 +129,16 @@
 								<td><g:Label ui:field="tipoLabel"/> </td>
 							</tr>
 							<tr class='{style.subtitle}'>
-								<td colspan='2'>Personal</td>
+								<td colspan='2'>Personas</td>
 							</tr>
 							<tr>
-								<td class='{style.label}'>Supervisor:</td>
-								<td><g:Label ui:field="supervisorLabel"/> </td>
-							</tr>
-							<tr>
-								<td class='{style.label}'>Examinador:</td>
-								<td><g:Label ui:field="examinadorLabel"/> </td>
-							</tr>
-							<tr>
-								<td class='{style.label}'>Examinador 2:</td>
-								<td><g:Label ui:field="examinador2Label"/> </td>
+								<td colspan='2'> <g:FlexTable ui:field='personasTable'/> </td>
 							</tr>
 							<tr class='{style.subtitle}'>
-								<td colspan='2'>Contacto</td>
+								<td colspan='2'>Contactos</td>
 							</tr>
 							<tr>
-								<td class='{style.label}'>Director:</td>
-								<td><g:Label ui:field="directorLabel"/> </td>
-							</tr>
-							<tr>
-								<td class='{style.label}'>Correo electrónico:</td>
-								<td><g:Label ui:field="correoLabel"/> </td>
-							</tr>
-							<tr class='{style.label}'>
-								<td>Teléfono:</td>
-								<td><g:Label ui:field="telefonoLabel"/> </td>
+								<td colspan='2'> <g:FlexTable ui:field='contactosTable'/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>
