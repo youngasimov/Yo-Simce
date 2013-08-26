@@ -106,6 +106,10 @@ public class ValueTextBox extends TextBox {
 		}
 	};
 
+	public ValueTextBox() {
+		this(0, 0, 100);
+	}
+	
 	public ValueTextBox(int value) {
 		this(value, 0, 100);
 	}

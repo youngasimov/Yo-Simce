@@ -38,7 +38,7 @@ public class DetalleCursoActivity extends SimceActivity implements
 			@Override
 			public void execute() {
 				DetalleCursoPlace dcp = new DetalleCursoPlace();
-				dcp.setCursoId(place.getCursoId());
+				dcp.setCursoId(selector.getSelectedCurso().getId());
 				selector.hide();
 				goTo(dcp);
 			}
