@@ -20,5 +20,8 @@
         <property name="totalRecibidos" type="java.lang.Integer">
             <column name="total_recibidos" />
         </property>
+        <property name="total" type="java.lang.Integer">
+            <column name="total" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
+import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 
 public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 	public List<Curso> findByByActividadANDRbd(Integer idAplicacion,
@@ -62,5 +63,52 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 		Query q = s.createSQLQuery(query).addEntity(Curso.class);
 		ca = q.list();
 		return ca;
+	}
+
+	public DetalleCursoDTO findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idCurso) {
+
+		DetalleCursoDTO dcdto = new DetalleCursoDTO();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT c.id as curso_id,c.nombre as curso_nombre,e.id as est_id,e.nombre as est_nombre,"
+				+ "r.nombre as region_nombre, COMUNA.nombre as comuna_nombre,et.nombre as est_tipo,"
+				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email  FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
+				+ SecurityFilter.escapeString(idCurso)
+				+ ")"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ ")"
+				+ " LEFT JOIN ESTABLECIMIENTO_TIPO et ON axe.establecimiento_tipo_id=et.id"
+				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
+				+ " JOIN REGION r ON p.region_id=r.id";
+
+		Query q = s.createSQLQuery(query);
+		List<Object[]> os = q.list();
+		for (Object[] o : os) {
+			dcdto.setId((Integer) o[0]);
+			dcdto.setCurso((String) o[1]);
+			dcdto.setRbd(Integer.toString((Integer) o[2]));
+			dcdto.setEstablecimiento((String) o[3]);
+			dcdto.setRbd((String) o[4]);
+			dcdto.setComuna((String) o[5]);
+			dcdto.setTipoEstablecimiento((String) o[6]);
+			dcdto.setNombreContacto((String) o[7]);
+			dcdto.setTelefonoContacto((String) o[8]);
+			dcdto.setEmailContacto((String) o[9]);
+			break;
+		}
+		return dcdto;
 	}
 }

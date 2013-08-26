@@ -14,7 +14,7 @@ import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 
 public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		ActividadService {
-	
+
 	private String className = "ActividadService";
 
 	/**
@@ -89,14 +89,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getTiposContingencia
+	 */
 	@Override
 	public ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
-	
 
 }

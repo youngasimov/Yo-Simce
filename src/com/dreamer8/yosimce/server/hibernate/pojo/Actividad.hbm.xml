@@ -51,6 +51,18 @@
         <property name="sinMaterial" type="boolean">
             <column name="sin_material" not-null="true" />
         </property>
+        <property name="notaProceso" type="java.lang.Integer">
+            <column name="nota_proceso" />
+        </property>
+        <property name="dia" type="java.lang.Integer">
+            <column name="dia" />
+        </property>
+        <property name="totalAlumnosPresentes" type="java.lang.Integer">
+            <column name="total_alumnos_presentes" />
+        </property>
+        <property name="totalAlumnosAusentes" type="java.lang.Integer">
+            <column name="total_alumnos_ausentes" />
+        </property>
         <bag name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />
