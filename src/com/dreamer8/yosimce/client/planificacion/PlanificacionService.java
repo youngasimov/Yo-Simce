@@ -8,10 +8,7 @@ import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
-import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
-import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
-import com.dreamer8.yosimce.shared.dto.SupervisorDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
@@ -42,19 +39,6 @@ public interface PlanificacionService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException;
 
 	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
-			throws NoAllowedException, NoLoggedException, DBException;
-
-	public ArrayList<EstablecimientoDTO> getEstablecimientos(Integer offset,
-			Integer lenght, Map<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException;
-
-	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento)
-			throws NoAllowedException, NoLoggedException, DBException;
-
-	public ArrayList<ExaminadorDTO> getExaminadores(Integer idEstablecimiento)
-			throws NoAllowedException, NoLoggedException, DBException;
-
-	public SupervisorDTO getSupervisor(Integer idEstablecimiento)
 			throws NoAllowedException, NoLoggedException, DBException;
 
 	public ContactoDTO getContacto(Integer idEstablecimiento)

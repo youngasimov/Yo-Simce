@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
-import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
-import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -24,10 +22,5 @@ public interface GeneralService extends RemoteService {
 	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
 	
 	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
-	
-	//No se usan, se pueden borrar
-	public ArrayList<HistorialCambioItemDTO> getCambios(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
-	public ArrayList<EstablecimientoDTO> getEstablecimientos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
-	public EstablecimientoDTO getEstablecimiento(Integer idEstablecimiento) throws NoAllowedException, NoLoggedException, DBException;
 	
 }
