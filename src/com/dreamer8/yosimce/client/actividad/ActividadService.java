@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -52,7 +53,9 @@ public interface ActividadService extends RemoteService {
 	
 	ActividadDTO getActividad(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
-	Boolean actualizarActividad(ActividadDTO actividad) throws NoAllowedException, NoLoggedException, DBException; 
+	Boolean actualizarActividad(ActividadDTO actividad) throws NoAllowedException, NoLoggedException, DBException;
+	
+	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException, NoLoggedException, DBException;
 	
 	
 	

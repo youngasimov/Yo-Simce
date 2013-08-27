@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -54,6 +55,8 @@ public interface ActividadServiceAsync {
 
 	void getEvaluacionExaminador(Integer idNuevoExaminador,
 			AsyncCallback<EvaluacionUsuarioDTO> callback);
+
+	void getEstadosActividad(AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
 
 	
 }

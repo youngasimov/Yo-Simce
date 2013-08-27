@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -139,6 +140,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 	@Override
 	public Boolean actualizarActividad(ActividadDTO actividad)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<EstadoAgendaDTO> getEstadosActividad()
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
