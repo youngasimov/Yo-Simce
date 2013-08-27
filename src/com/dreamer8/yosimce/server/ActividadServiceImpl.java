@@ -131,6 +131,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getEvaluacionExaminadores
+	 */
 	@Override
 	public ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(
 			Integer idCurso) throws NoAllowedException, NoLoggedException,
@@ -139,6 +142,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso updateEvaluacionExaminadores
+	 */
 	@Override
 	public Boolean updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones)
@@ -146,5 +152,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }

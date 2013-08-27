@@ -255,15 +255,13 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 								idNivel, getUsuarioActual().getId());
 				ArrayList<String> metodos;
 				if (ps != null && !ps.isEmpty()) {
+					List<String> clases = pdao.getClases();
+					for (String clase : clases) {
+						permisos.put(clase, new ArrayList<String>());
+					}
 					for (Permiso p : ps) {
-						if (permisos.containsKey(p.getClase())) {
-							metodos = permisos.get(p.getClase());
-							metodos.add(p.getMetodo());
-						} else {
-							metodos = new ArrayList<String>();
-							metodos.add(p.getMetodo());
-							permisos.put(p.getClase(), metodos);
-						}
+						metodos = permisos.get(p.getClase());
+						metodos.add(p.getMetodo());
 					}
 				}
 				s.getTransaction().commit();
@@ -290,7 +288,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			s.beginTransaction();
 			UsuarioDAO udao = new UsuarioDAO();
 			Usuario u = udao.findbyUsername(StringUtils.formatRut(username));
-			if(u == null){
+			if (u == null) {
 				throw new NullPointerException("No se encontró el usuario");
 			}
 			SesionDAO sdao = new SesionDAO();
