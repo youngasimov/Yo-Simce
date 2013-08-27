@@ -141,22 +141,51 @@ public class FormActividadActivity extends SimceActivity implements
 
 	@Override
 	public void guardarFormulario() {
+		a.setInicioActividad(view.getInicioActividad());
+		a.setInicioPrueba(view.getInicioPrueba());
+		a.setTerminoPrueba(view.getTerminoPrueba());
+		a.setAlumnosTotal(view.getTotalAlumnos());
+		a.setAlumnosAusentes(view.getAlumnosAusentes());
+		a.setAlumnosDs(view.getAlumnosDS());
+		a.setTotalCuestionarios(view.getCuestionariosTotales());
+		a.setCuestionariosEntregados(view.getCuestionariosEntregados());
+		a.setCuestionariosRecibidos(view.getCuestionariosRecibidos());
+		a.setMaterialContingencia(view.getUsoMaterialContingencia());
+		a.setDetalleUsoMaterialContingencia(view.getDetalleUsoMaterialContingencia());
+		a.setEvaluacionProcedimientos(view.getEvaluacionGeneral());
+		a.setContingencias(contingencias);
 		
+		if(getPermisos().get("ActividadService").contains("actualizarActividad")){
+			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus) {
+	
+				@Override
+				public void success(Boolean result) {
+					
+				}
+			});
+		}
+		getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),view.getExaminadores(), new SimceCallback<Boolean>(eventBus) {
+
+			@Override
+			public void success(Boolean result) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@Override
 	public void getExaminadoresSuplentes(String search) {
 
-		if(!getPermisos().get("ActividadService").contains("getExaminadores")){
-			return;
+		if(getPermisos().get("ActividadService").contains("getExaminadores")){
+			getFactory().getActividadService().getExaminadores(search, new SimceCallback<ArrayList<UserDTO>>(eventBus) {
+	
+				@Override
+				public void success(ArrayList<UserDTO> result) {
+					view.setExaminadoresSuplentes(result);
+				}
+			});
 		}
-		getFactory().getActividadService().getExaminadores(search, new SimceCallback<ArrayList<UserDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<UserDTO> result) {
-				view.setExaminadoresSuplentes(result);
-			}
-		});
 	}
 	
 	@Override
@@ -195,6 +224,7 @@ public class FormActividadActivity extends SimceActivity implements
 				break;
 			}
 		}
+		a.setEstadoAplicacion(selected);
 		view.showForm(selected.getEstado().contains(EstadoAgendaDTO.REALIZADA));
 	}
 	

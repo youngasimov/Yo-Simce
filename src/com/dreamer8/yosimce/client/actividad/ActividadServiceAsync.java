@@ -50,7 +50,7 @@ public interface ActividadServiceAsync {
 	void getEvaluacionExaminadores(Integer idCurso,
 			AsyncCallback<ArrayList<EvaluacionUsuarioDTO>> callback);
 
-	void CreateOrUpdateEvaluacionExaminadores(
+	void updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones,
 			AsyncCallback<Boolean> callback);
 

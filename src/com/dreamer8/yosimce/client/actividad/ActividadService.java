@@ -64,7 +64,7 @@ public interface ActividadService extends RemoteService {
 
 	ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
-	Boolean CreateOrUpdateEvaluacionExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluaciones)
+	Boolean updateEvaluacionExaminadores(Integer idCurso, ArrayList<EvaluacionUsuarioDTO> evaluaciones)
 			throws NoAllowedException, NoLoggedException, DBException;
 
 }

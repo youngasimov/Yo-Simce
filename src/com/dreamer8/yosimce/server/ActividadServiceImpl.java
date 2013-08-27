@@ -140,7 +140,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	@Override
-	public Boolean CreateOrUpdateEvaluacionExaminadores(
+	public Boolean updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
