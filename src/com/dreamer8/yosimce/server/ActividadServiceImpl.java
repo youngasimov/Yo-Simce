@@ -163,6 +163,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
-	
+	/**
+	 * @permiso getExaminadores
+	 */
+	@Override
+	public ArrayList<UserDTO> getExaminadores(Integer idCurso)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
