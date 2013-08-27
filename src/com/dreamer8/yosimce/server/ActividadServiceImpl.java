@@ -62,10 +62,20 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	/**
-	 * @permiso getExaminadorPrincipal
+	 * @permiso getEvaluacionSupervisores
 	 */
 	@Override
-	public UserDTO getExaminadorPrincipal(Integer idCurso)
+	public ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso updateEvaluacionSupervisor
+	 */
+	@Override
+	public Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
@@ -93,6 +103,27 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	/**
+	 * @permiso getEvaluacionExaminador
+	 */
+	@Override
+	public EvaluacionUsuarioDTO getEvaluacionExaminador(
+			Integer idNuevoExaminador) throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso EvaluarExaminador
+	 */
+	@Override
+	public Boolean EvaluarExaminador(EvaluacionUsuarioDTO evaluacion)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
 	 * @permiso getTiposContingencia
 	 */
 	@Override
@@ -102,35 +133,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
-	@Override
-	public ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public EvaluacionUsuarioDTO getEvaluacionExaminador(
-			Integer idNuevoExaminador) throws NoAllowedException,
-			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Boolean EvaluarExaminador(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * @permiso getActividad
+	 */
 	@Override
 	public ActividadDTO getActividad(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
@@ -138,6 +143,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso actualizarActividad
+	 */
 	@Override
 	public Boolean actualizarActividad(ActividadDTO actividad)
 			throws NoAllowedException, NoLoggedException, DBException {
@@ -145,8 +153,21 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getEstadosActividad
+	 */
 	@Override
 	public ArrayList<EstadoAgendaDTO> getEstadosActividad()
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso getExaminadores
+	 */
+	@Override
+	public ArrayList<UserDTO> getExaminadores(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;

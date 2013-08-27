@@ -36,6 +36,7 @@ public class Actividad implements java.io.Serializable {
 	private Integer dia;
 	private Integer totalAlumnosPresentes;
 	private Integer totalAlumnosAusentes;
+	private Actividad actividadBase;
 	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(
 			0);
 	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
@@ -222,6 +223,21 @@ public class Actividad implements java.io.Serializable {
 
 	public void setSinMaterial(boolean sinMaterial) {
 		this.sinMaterial = sinMaterial;
+	}
+
+	/**
+	 * @return the actividadBase
+	 */
+	public Actividad getActividadBase() {
+		return actividadBase;
+	}
+
+	/**
+	 * @param actividadBase
+	 *            the actividadBase to set
+	 */
+	public void setActividadBase(Actividad actividadBase) {
+		this.actividadBase = actividadBase;
 	}
 
 	/**

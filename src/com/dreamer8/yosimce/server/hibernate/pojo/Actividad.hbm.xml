@@ -63,6 +63,9 @@
         <property name="totalAlumnosAusentes" type="java.lang.Integer">
             <column name="total_alumnos_ausentes" />
         </property>
+        <many-to-one name="actividadBase" class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" fetch="select">
+            <column name="actividad_base_id" />
+        </many-to-one>
         <bag name="alumnoXActividads" table="alumno_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="actividad_id" />

@@ -8,6 +8,7 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelXActividadTipoDAO;
@@ -24,6 +25,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXAplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivel;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo;
@@ -41,20 +43,20 @@ import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXAplicacionXNivel;
 public class YoSimceSetup {
 
 	public static void main(String[] args) {
-		// createActividad();
-		// List<Integer> ids = new ArrayList<Integer>();
-		// ids.add(2);
-		// ids.add(4);
-		// ids.add(6);
-		// ids.add(8);
-		// ids.add(10);
-		// asignarUsuario(16361209, 1, ids, 1);
-		// asignarUsuario(16370885, 1, ids, 1);
-		// ids = new ArrayList<Integer>();
-		// ids.add(10);
-		// asignarUsuario(16361209, 2, ids, 1);
-		// asignarUsuario(16370885, 2, ids, 1);
-		initPermisos();
+		createActividad();
+		List<Integer> ids = new ArrayList<Integer>();
+		ids.add(2);
+		ids.add(4);
+		ids.add(6);
+		ids.add(8);
+		ids.add(10);
+		asignarUsuario(16361209, 1, ids, 1);
+		asignarUsuario(16370885, 1, ids, 1);
+		ids = new ArrayList<Integer>();
+		ids.add(10);
+		asignarUsuario(16361209, 2, ids, 1);
+		asignarUsuario(16370885, 2, ids, 1);
+		// initPermisos();
 	}
 
 	public static void createActividad() {
@@ -69,15 +71,17 @@ public class YoSimceSetup {
 				List<Curso> cs = null;
 				ActividadDAO adao = new ActividadDAO();
 				Actividad a = null;
+				Actividad actividadBase = null;
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipo dia1 = atdao
+						.finByNombre(ActividadTipo.APLICACION_DIA_1);
 				ActividadEstado ae = aedao
 						.findByNombre(ActividadEstado.SIN_INFORMACION);
-				List<Actividad> as = null;
 				Establecimiento e = null;
 				ContactoCargoDAO ccdao = new ContactoCargoDAO();
 				ContactoCargo cc = ccdao.findByName(ContactoCargo.DIRECTOR);
 				for (AplicacionXNivelXActividadTipo axnxat : axnxats) {
-					as = new ArrayList<Actividad>();
 					cs = axnxat.getAplicacionXNivel().getCursos();
 					if (cs != null && !cs.isEmpty()) {
 						for (Curso curso : cs) {
@@ -92,11 +96,24 @@ public class YoSimceSetup {
 							a.setContactoCargo(cc);
 							a.setFechaInicio(axnxat.getFechaInicio());
 							a.setFechaTermino(axnxat.getFechaTermino());
-							as.add(a);
+							if (axnxat.getActividadTipo().equals(
+									ActividadTipo.APLICACION_DIA_1)) {
+								a.setDia(1);
+							} else if (axnxat.getActividadTipo().equals(
+									ActividadTipo.APLICACION_DIA_1)) {
+								actividadBase = adao
+										.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+												axnxat.getAplicacionXNivel()
+														.getAplicacion()
+														.getId(), axnxat
+														.getAplicacionXNivel()
+														.getNivel().getId(),
+												dia1.getId(), curso.getId());
+								a.setDia(2);
+								a.setActividadBase(actividadBase);
+							}
+							adao.save(a);
 						}
-					}
-					for (Actividad actividad : as) {
-						adao.save(actividad);
 					}
 					s.flush();
 				}
