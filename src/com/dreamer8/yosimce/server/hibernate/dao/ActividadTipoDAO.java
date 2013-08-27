@@ -44,4 +44,16 @@ public class ActividadTipoDAO extends
 		return ats;
 	}
 
+	public ActividadTipo finByNombre(String nombre) {
+
+		ActividadTipo at = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT at.* FROM ACTIVIDAD_TIPO at"
+				+ " WHERE at.nombre='" + SecurityFilter.escapeString(nombre)
+				+ "'";
+		Query q = s.createSQLQuery(query).addEntity(ActividadTipo.class);
+		at = ((ActividadTipo) q.uniqueResult());
+		return at;
+	}
+
 }

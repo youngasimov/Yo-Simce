@@ -28,8 +28,6 @@ public interface ActividadServiceAsync {
 	void updateSincronizacionAlumno(SincAlumnoDTO sinc,
 			AsyncCallback<Boolean> callback);
 
-	void getExaminadorPrincipal(Integer idCurso, AsyncCallback<UserDTO> callback);
-
 	void getExaminadores(String search,
 			AsyncCallback<ArrayList<UserDTO>> callback);
 
@@ -57,6 +55,9 @@ public interface ActividadServiceAsync {
 			AsyncCallback<EvaluacionUsuarioDTO> callback);
 
 	void getEstadosActividad(AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
+
+	void getExaminadores(Integer idCurso,
+			AsyncCallback<ArrayList<UserDTO>> callback);
 
 	
 }
