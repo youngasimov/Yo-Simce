@@ -3,7 +3,9 @@ package com.dreamer8.yosimce.client.actividad;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -32,7 +34,9 @@ public interface ActividadService extends RemoteService {
 	
 	Boolean updateSincronizacionAlumno(SincAlumnoDTO sinc) throws NoAllowedException, NoLoggedException, DBException;
 	
+	ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores() throws NoAllowedException, NoLoggedException, DBException;
 	
+	Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion) throws NoAllowedException, NoLoggedException, DBException;
 	
 	UserDTO getExaminadorPrincipal(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 	
@@ -40,7 +44,15 @@ public interface ActividadService extends RemoteService {
 	
 	Boolean cambiarExaminadorPrincipal(Integer idCurso, Integer idNuevoExaminador) throws NoAllowedException, NoLoggedException, DBException;
 	
+	EvaluacionUsuarioDTO getEvaluacionExaminador(Integer idNuevoExaminador) throws NoAllowedException, NoLoggedException, DBException;
+	
+	Boolean EvaluarExaminador(EvaluacionUsuarioDTO evaluacion) throws NoAllowedException, NoLoggedException, DBException;
+	
 	ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
+	
+	ActividadDTO getActividad(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
+	
+	Boolean actualizarActividad(ActividadDTO actividad) throws NoAllowedException, NoLoggedException, DBException; 
 	
 	
 	

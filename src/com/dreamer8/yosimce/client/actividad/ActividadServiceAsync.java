@@ -3,7 +3,9 @@ package com.dreamer8.yosimce.client.actividad;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -35,6 +37,23 @@ public interface ActividadServiceAsync {
 
 	void getTiposContingencia(Integer idCurso,
 			AsyncCallback<ArrayList<TipoContingenciaDTO>> callback);
+
+	void EvaluarExaminador(EvaluacionUsuarioDTO evaluacion,
+			AsyncCallback<Boolean> callback);
+
+	void actualizarActividad(ActividadDTO actividad,
+			AsyncCallback<Boolean> callback);
+
+	void getActividad(Integer idCurso, AsyncCallback<ActividadDTO> callback);
+
+	void getEvaluacionSupervisores(
+			AsyncCallback<ArrayList<EvaluacionUsuarioDTO>> callback);
+
+	void updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion,
+			AsyncCallback<Boolean> callback);
+
+	void getEvaluacionExaminador(Integer idNuevoExaminador,
+			AsyncCallback<EvaluacionUsuarioDTO> callback);
 
 	
 }
