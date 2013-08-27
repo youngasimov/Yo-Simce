@@ -185,38 +185,7 @@
 				</g:DecoratorPanel>
 				<g:HTMLPanel ui:field="formPanel" >
 				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
-					<g:HTMLPanel addStyleNames='{style.panel2}'>
-						<table class='{style.full}'>
-							<tr>
-								<th colspan='3'> Datos de examinador </th>
-							</tr>
-							<tr>
-								<td> Nombre:</td>
-								<td> <g:Label ui:field="nombreExaminadorLabel" /> </td>
-								<td rowspan='2' > <g:Button ui:field="changeExaminadorButton" text="Cambiar"/> </td>
-							</tr>
-							<tr>
-								<td> Rut:</td>
-								<td> <g:Label ui:field="rutExaminadorLabel" /> </td>
-							</tr>
-							<tr>
-								<td> <my:HelperLabel text='Presentación Personal:' help='Evalue la presentación personal del examinador en una escala de 0 a 5, donde 0 es muy mal presentado, y 5 es una presentación destacable'/></td>
-								<td colspan='2'> <my:ScoreSelector ui:field="presentacionPersonalScoreSelector" /> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Puntualidad:' help='Evalue la puntualidad del examinador en una escala de 0 a 5, donde 0 es muy atrasado, y 5 es a buen tiempo'/></td>
-								<td colspan='2'> <my:ScoreSelector ui:field="puntualidadScoreSelector" /> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Formulario:' help='Evalue el correcto llenado del formulario por parte del examinador en una escala de 0 a 5, donde 0 es muy mal llenado, y 5 es un llenado perfecto'/></td>
-								<td colspan='2'> <my:ScoreSelector ui:field="llenadoFormularioScoreSelector" /> </td>
-							</tr>
-							<tr>
-								<td><my:HelperLabel text='Desempeño general:' help='Evalue el desempeño general del examinador en una escala de 0 a 5, donde 0 es un pesimo desempeño, y 5 es un desempeño excelente'/></td>
-								<td colspan='2'> <my:ScoreSelector ui:field="desempenoScoreSelector" /> </td>
-							</tr>
-						</table>
-					</g:HTMLPanel>
+					<g:FlowPanel addStyleNames='{style.panel2}' ui:field="examinadoresPanel" />
 				</g:DecoratorPanel>
 				
 				<g:DecoratorPanel ui:field="horasActividadPanel" addStyleNames='{style.formPanel}'>

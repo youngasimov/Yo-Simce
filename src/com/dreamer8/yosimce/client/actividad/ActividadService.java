@@ -49,15 +49,6 @@ public interface ActividadService extends RemoteService {
 	ArrayList<UserDTO> getExaminadores(String search)
 			throws NoAllowedException, NoLoggedException, DBException;
 
-	Boolean cambiarExaminadorPrincipal(Integer idCurso,
-			Integer idNuevoExaminador) throws NoAllowedException,
-			NoLoggedException, DBException;
-
-	EvaluacionUsuarioDTO getEvaluacionExaminador(Integer idNuevoExaminador)
-			throws NoAllowedException, NoLoggedException, DBException;
-
-	Boolean EvaluarExaminador(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException;
 
 	ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -71,7 +62,9 @@ public interface ActividadService extends RemoteService {
 	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException,
 			NoLoggedException, DBException;
 
-	ArrayList<UserDTO> getExaminadores(Integer idCurso)
+	ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
+	
+	Boolean CreateOrUpdateEvaluacionExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluaciones)
 			throws NoAllowedException, NoLoggedException, DBException;
 
 }

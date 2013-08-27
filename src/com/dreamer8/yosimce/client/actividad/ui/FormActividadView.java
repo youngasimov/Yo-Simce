@@ -6,6 +6,7 @@ import java.util.Date;
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -25,9 +26,9 @@ public interface FormActividadView extends IsWidget {
 	void setTiposContingencia(ArrayList<TipoContingenciaDTO> tipos);
 	void setContingencias(ArrayList<ContingenciaDTO> contingencias);
 	
-	void setExaminador(UserDTO user);
+	void setExaminadores(ArrayList<EvaluacionUsuarioDTO> user);
+	ArrayList<EvaluacionUsuarioDTO> getExaminadores();
 	void setExaminadoresSuplentes(ArrayList<UserDTO> examinadores);
-	UserDTO getExaminador();
 	
 	void setInicioActividad(Date hora);
 	Date getInicioActividad();
@@ -58,10 +59,7 @@ public interface FormActividadView extends IsWidget {
 	void setEvaluacionGeneral(Integer evaluacion);
 	Integer getEvaluacionGeneral();
 	
-	
-	
-	
-	
+	boolean isUploading();
 	
 	void enableAddContingencia(boolean enable);
 	void showSeccionExaminador(boolean show);
@@ -70,11 +68,11 @@ public interface FormActividadView extends IsWidget {
 	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
-		void onCambiarExaminador(UserDTO nuevoExaminador);
 		void guardarFormulario();
 		void onAgregarContingencia(ContingenciaDTO contingencia);
 		void onRemoveContingecia(ContingenciaDTO contingencia);
 		void onEstadoChange(Integer estadoId);
 		void getExaminadoresSuplentes(String Search);
+		void onUploadFile(String file);
 	}
 }

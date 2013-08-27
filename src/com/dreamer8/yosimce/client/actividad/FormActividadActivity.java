@@ -12,6 +12,7 @@ import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadP
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
@@ -89,13 +90,14 @@ public class FormActividadActivity extends SimceActivity implements
 					}
 				});
 			}
-			if(getPermisos().get("ActividadService").contains("getExaminadorPrincipal")){
-				getFactory().getActividadService().getExaminadorPrincipal(place.getIdCurso(), new SimceCallback<UserDTO>(eventBus) {
+			if(getPermisos().get("ActividadService").contains("getEvaluacionExaminadores")){
+				getFactory().getActividadService().getEvaluacionExaminadores(place.getIdCurso(), new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus) {
 
 					@Override
-					public void success(UserDTO result) {
-						view.setExaminador(result);
+					public void success(ArrayList<EvaluacionUsuarioDTO> result) {
+						view.setExaminadores(result);
 					}
+
 				});
 			}
 			if(getPermisos().get("ActividadService").contains("getActividad")){
@@ -139,24 +141,7 @@ public class FormActividadActivity extends SimceActivity implements
 
 	@Override
 	public void guardarFormulario() {
-		// TODO Auto-generated method stub
 		
-	}
-	
-	@Override
-	public void onCambiarExaminador(final UserDTO nuevoExaminador) {
-		
-		
-		if(!getPermisos().get("ActividadService").contains("cambiarExaminadorPrincipal")){
-			return;
-		}
-		getFactory().getActividadService().cambiarExaminadorPrincipal(place.getIdCurso(), nuevoExaminador.getId(), new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				view.setExaminador(nuevoExaminador);
-			}
-		});
 	}
 
 	@Override
@@ -197,6 +182,11 @@ public class FormActividadActivity extends SimceActivity implements
 	}
 	
 	@Override
+	public void onUploadFile(String file) {
+		a.setFile(file);
+	}
+	
+	@Override
 	public void onEstadoChange(Integer estadoId) {
 		EstadoAgendaDTO selected = null;
 		for(EstadoAgendaDTO estado:estados){
@@ -205,8 +195,7 @@ public class FormActividadActivity extends SimceActivity implements
 				break;
 			}
 		}
-		//view.showForm(selected.getEstado().contains(EstadoAgendaDTO.REALIZADA));
-		view.showForm(true);
+		view.showForm(selected.getEstado().contains(EstadoAgendaDTO.REALIZADA));
 	}
 	
 	@Override

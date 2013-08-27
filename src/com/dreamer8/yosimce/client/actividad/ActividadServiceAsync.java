@@ -31,14 +31,8 @@ public interface ActividadServiceAsync {
 	void getExaminadores(String search,
 			AsyncCallback<ArrayList<UserDTO>> callback);
 
-	void cambiarExaminadorPrincipal(Integer idCurso, Integer idNuevoExaminador,
-			AsyncCallback<Boolean> callback);
-
 	void getTiposContingencia(Integer idCurso,
 			AsyncCallback<ArrayList<TipoContingenciaDTO>> callback);
-
-	void EvaluarExaminador(EvaluacionUsuarioDTO evaluacion,
-			AsyncCallback<Boolean> callback);
 
 	void actualizarActividad(ActividadDTO actividad,
 			AsyncCallback<Boolean> callback);
@@ -51,13 +45,14 @@ public interface ActividadServiceAsync {
 	void updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion,
 			AsyncCallback<Boolean> callback);
 
-	void getEvaluacionExaminador(Integer idNuevoExaminador,
-			AsyncCallback<EvaluacionUsuarioDTO> callback);
-
 	void getEstadosActividad(AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
 
-	void getExaminadores(Integer idCurso,
-			AsyncCallback<ArrayList<UserDTO>> callback);
+	void getEvaluacionExaminadores(Integer idCurso,
+			AsyncCallback<ArrayList<EvaluacionUsuarioDTO>> callback);
+
+	void CreateOrUpdateEvaluacionExaminadores(
+			ArrayList<EvaluacionUsuarioDTO> evaluaciones,
+			AsyncCallback<Boolean> callback);
 
 	
 }

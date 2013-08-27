@@ -27,6 +27,7 @@ public class ActividadDTO implements Serializable {
 	private Boolean materialContingencia;
 	private String detalleUsoMaterialContingencia;
 	private Integer evaluacionProcedimientos;
+	private String file;
 	
 	public ActividadDTO() {
 		// TODO Auto-generated constructor stub
@@ -191,5 +192,13 @@ public class ActividadDTO implements Serializable {
 
 	public void setEvaluacionProcedimientos(Integer evaluacionProcedimientos) {
 		this.evaluacionProcedimientos = evaluacionProcedimientos;
+	}
+
+	public String getFile() {
+		return file;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
 	}
 }

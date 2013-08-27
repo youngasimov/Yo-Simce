@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import gwtupload.client.IUploadStatus;
 import gwtupload.client.IUploader;
 import gwtupload.client.SingleUploader;
 
@@ -14,6 +15,7 @@ import com.dreamer8.yosimce.client.ui.eureka.ValueTextBox;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.ButtonCell;
@@ -23,18 +25,26 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -47,6 +57,136 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	interface FormActividadViewDUiBinder extends
 			UiBinder<Widget, FormActividadViewD> {
+	}
+	
+	private class EvaluacionExaminador implements IsWidget{
+		private FlexTable table;
+		private Button cambiarButton;
+		private HTML nombre;
+		private HTML rut;
+		private ScoreSelector presentacionPersonalScoreSelector;
+		private ScoreSelector puntualidadScoreSelector;
+		private ScoreSelector formularioScoreSelector;
+		private ScoreSelector generalScoreSelector;
+		private EvaluacionUsuarioDTO evaluacion;
+		private ExaminadorSelectorViewD selector;
+		private ArrayList<HandlerRegistration> handlers;
+		
+		public EvaluacionExaminador(EvaluacionUsuarioDTO e, ExaminadorSelectorViewD s){
+			this.evaluacion = e;
+			this.selector = s;
+			handlers = new ArrayList<HandlerRegistration>();
+			table = new FlexTable();
+			nombre = new HTML(evaluacion.getUsuario().getNombres()+" "+evaluacion.getUsuario().getApellidoPaterno()+" "+evaluacion.getUsuario().getApellidoMaterno());
+			table.setWidget(0, 0, nombre);
+			rut = new HTML(evaluacion.getUsuario().getRut());
+			table.setWidget(1, 0, rut);
+			cambiarButton = new Button("Cambiar");
+			table.setWidget(0, 1, cambiarButton);
+			table.getFlexCellFormatter().setRowSpan(0, 1, 2);
+			
+			presentacionPersonalScoreSelector = new ScoreSelector();
+			presentacionPersonalScoreSelector.setValue(evaluacion.getPresentacionPersonal());
+			table.setWidget(2, 0, new HTML("Presentación personal:"));
+			table.setWidget(2, 1, presentacionPersonalScoreSelector);
+			
+			puntualidadScoreSelector = new ScoreSelector();
+			puntualidadScoreSelector.setValue(evaluacion.getPuntualidad());
+			table.setWidget(3, 0, new HTML("Puntualidad:"));
+			table.setWidget(3, 1, puntualidadScoreSelector);
+			
+			formularioScoreSelector = new ScoreSelector();
+			formularioScoreSelector.setValue(evaluacion.getFormulario());
+			table.setWidget(4, 0, new HTML("Llenado de formulario:"));
+			table.setWidget(4, 1, formularioScoreSelector);
+			
+			generalScoreSelector = new ScoreSelector();
+			generalScoreSelector.setValue(evaluacion.getGeneral());
+			table.setWidget(5, 0, new HTML("General:"));
+			table.setWidget(5, 1, generalScoreSelector);
+			
+			handlers.add(presentacionPersonalScoreSelector.addValueChangeHandler(new ValueChangeHandler<Integer>() {
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Integer> event) {
+					evaluacion.setPresentacionPersonal(event.getValue());
+				}
+			}));
+			
+			handlers.add(puntualidadScoreSelector.addValueChangeHandler(new ValueChangeHandler<Integer>() {
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Integer> event) {
+					evaluacion.setPuntualidad(event.getValue());
+				}
+			}));
+			
+			handlers.add(formularioScoreSelector.addValueChangeHandler(new ValueChangeHandler<Integer>() {
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Integer> event) {
+					evaluacion.setFormulario(event.getValue());
+				}
+			}));
+			
+			handlers.add(generalScoreSelector.addValueChangeHandler(new ValueChangeHandler<Integer>() {
+				
+				@Override
+				public void onValueChange(ValueChangeEvent<Integer> event) {
+					evaluacion.setGeneral(event.getValue());
+				}
+			}));
+			
+			handlers.add(cambiarButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					selector.show(new Command() {
+						
+						@Override
+						public void execute() {
+							evaluacion.setUsuario(selector.getSelectedUser());
+							evaluacion.setPresentacionPersonal(0);
+							evaluacion.setPuntualidad(0);
+							evaluacion.setFormulario(0);
+							evaluacion.setGeneral(0);
+							presentacionPersonalScoreSelector.setValue(evaluacion.getPresentacionPersonal());
+							puntualidadScoreSelector.setValue(evaluacion.getPuntualidad());
+							formularioScoreSelector.setValue(evaluacion.getFormulario());
+							generalScoreSelector.setValue(evaluacion.getGeneral());
+							nombre.setHTML(evaluacion.getUsuario().getNombres()+" "+evaluacion.getUsuario().getApellidoPaterno()+" "+evaluacion.getUsuario().getApellidoMaterno());
+							rut.setHTML(evaluacion.getUsuario().getRut());
+							selector.hide();
+						}
+					});
+				}
+			}));
+			
+		}
+		
+		public EvaluacionUsuarioDTO getEvaluacion(){
+			return evaluacion;
+		}
+		
+		public void clear(){
+			for(HandlerRegistration hr:handlers){
+				hr.removeHandler();
+			}
+			handlers.clear();
+			presentacionPersonalScoreSelector.setValue(0);
+			puntualidadScoreSelector.setValue(0);
+			formularioScoreSelector.setValue(0);
+			generalScoreSelector.setValue(0);
+			nombre.setHTML("");
+			rut.setHTML("");
+		}
+
+		@Override
+		public Widget asWidget() {
+			return table;
+		}
+		
+		
 	}
 
 	
@@ -68,13 +208,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField  Button contingenciaButton;
 	@UiField(provided=true) DataGrid<ContingenciaDTO> contingenciasTable;
 	@UiField DecoratorPanel datosExaminadorPanel;
-	@UiField Label nombreExaminadorLabel;
-	@UiField Label rutExaminadorLabel;
-	@UiField Button changeExaminadorButton;
-	@UiField ScoreSelector presentacionPersonalScoreSelector;
-	@UiField ScoreSelector puntualidadScoreSelector;
-	@UiField ScoreSelector llenadoFormularioScoreSelector;
-	@UiField ScoreSelector desempenoScoreSelector;
+	@UiField FlowPanel examinadoresPanel;
 	@UiField DecoratorPanel horasActividadPanel;
 	@UiField HTMLPanel formPanel;
 	@UiField(provided=true) TimeBox inicioActividadBox;
@@ -96,10 +230,10 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField(provided=true) SingleUploader uploader;
 	
 	private FormActividadPresenter presenter;
-	private UserDTO examinador;
 	private ArrayList<TipoContingenciaDTO> tiposContingencia;
 	private ExaminadorSelectorViewD examinadorSelector;
 	private boolean uploading;
+	private ArrayList<EvaluacionExaminador> evaluaciones;
 	
 	public FormActividadViewD() {
 		uploader = new SingleUploader();
@@ -111,7 +245,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		initWidget(uiBinder.createAndBindUi(this));
 		examinadorSelector = new ExaminadorSelectorViewD();
 		estadoBox.addItem("seleccione estado actividad","-1");
-		
+		uploading = false;
+		evaluaciones = new ArrayList<FormActividadViewD.EvaluacionExaminador>();
 		
 		
 		buildTable();
@@ -130,6 +265,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			@Override
 			public void onFinish(IUploader uploader) {
 				uploading = false;
+				if(uploader.getStatus().equals(IUploadStatus.Status.SUCCESS)){
+					presenter.onUploadFile(uploader.getFileName());
+				}
 			}
 		});
 		
@@ -181,13 +319,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		inhabilitaContingenciaBox.setValue(false);
 		presenter.onAgregarContingencia(c);
 	}
-	
-	@UiHandler("changeExaminadorButton")
-	void onChangeExaminadorClick(ClickEvent event){
-		examinadorSelector.show();
+
+	@Override
+	public boolean isUploading(){
+		return uploading;
 	}
-
-
 
 	@Override
 	public void setPresenter(FormActividadPresenter presenter) {
@@ -250,17 +386,26 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 
 	@Override
-	public void setExaminador(UserDTO user) {
-		this.examinador = user;
-		this.nombreExaminadorLabel.setText(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno());
-		this.rutExaminadorLabel.setText(examinador.getRut());
-		examinadorSelector.hide();
+	public void setExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluaciones) {
+		
+		for(EvaluacionExaminador ex:this.evaluaciones){
+			ex.clear();
+		}
+		evaluaciones.clear();
+		examinadoresPanel.clear();
+		for(EvaluacionUsuarioDTO e:evaluaciones){
+			EvaluacionExaminador ex = new EvaluacionExaminador(e, examinadorSelector);
+			examinadoresPanel.add(ex.asWidget());
+		}
 	}
-
-
+	
 	@Override
-	public UserDTO getExaminador() {
-		return examinador;
+	public ArrayList<EvaluacionUsuarioDTO> getExaminadores() {
+		ArrayList<EvaluacionUsuarioDTO> es = new ArrayList<EvaluacionUsuarioDTO>();
+		for(EvaluacionExaminador ex:evaluaciones){
+			es.add(ex.getEvaluacion());
+		}
+		return es;
 	}
 	
 	@Override

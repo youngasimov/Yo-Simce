@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -51,6 +52,7 @@ public class ExaminadorSelectorViewD {
 	private SingleSelectionModel<UserDTO> selectionModel;
 	private FormActividadPresenter presenter;
 	private UserDTO selected;
+	private Command c;
 	
 	public ExaminadorSelectorViewD() {
 		examinadoresList = new CellList<UserDTO>(new ExaminadorCell(),UserDTO.KEY_PROVIDER);
@@ -83,7 +85,7 @@ public class ExaminadorSelectorViewD {
 	@UiHandler("seleccionarBox")
 	void onSeleccionarClick(ClickEvent event){
 		if(selected!=null){
-			presenter.onCambiarExaminador(selected);
+			c.execute();
 		}
 	}
 	
@@ -92,13 +94,19 @@ public class ExaminadorSelectorViewD {
 		hide();
 	}
 	
-	void show(){
+	void show(Command action){
+		this.c = action;
 		panel.center();
+	}
+	
+	UserDTO getSelectedUser(){
+		return selected;
 	}
 	
 	void hide(){
 		examinadorBox.setValue("");
 		examinadoresList.setRowCount(0);
+		selected = null;
 		panel.hide();
 	}
 	
