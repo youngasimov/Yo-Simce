@@ -114,3 +114,39 @@ a{
 	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 	background: #00b5e2;
 }
+
+/********************/
+/* Gwt-Upload Styles */
+/********************/
+
+.DecoratedFileUpload {
+  margin-right: 5px;
+}
+
+.DecoratedFileUpload .gwt-Button,
+.DecoratedFileUpload .gwt-Anchor,
+.DecoratedFileUpload .gwt-Label {
+  white-space: nowrap;
+  font-size: 10px;
+  min-height: 15px;
+}
+
+.DecoratedFileUpload .gwt-Anchor,
+.DecoratedFileUpload .gwt-Label {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.DecoratedFileUpload .gwt-Button:HOVER,
+.DecoratedFileUpload .gwt-Button-over,
+.DecoratedFileUpload .gwt-Anchor-over,
+.DecoratedFileUpload .gwt-Label-over {
+  color: #af6b29;
+}
+
+.DecoratedFileUpload-disabled .gwt-Button,
+.DecoratedFileUpload-disabled .gwt-Anchor,
+.DecoratedFileUpload-disabled .gwt-Label {
+  color: grey;
+}

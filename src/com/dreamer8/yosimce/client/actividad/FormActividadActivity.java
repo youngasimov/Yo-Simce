@@ -9,7 +9,9 @@ import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadPresenter;
+import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
@@ -27,6 +29,8 @@ public class FormActividadActivity extends SimceActivity implements
 	
 	private ArrayList<ContingenciaDTO> contingencias;
 	private ArrayList<TipoContingenciaDTO> tipos;
+	private ArrayList<EstadoAgendaDTO> estados;
+	private ActividadDTO a;
 	
 	public FormActividadActivity(ClientFactory factory, FormActividadPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -58,7 +62,7 @@ public class FormActividadActivity extends SimceActivity implements
 			getPermisos().get("ActividadService").contains("cambiarExaminadorPrincipal") &&
 			getPermisos().get("ActividadService").contains("getExaminadores"));
 		
-		view.showForm(false);
+		view.showForm(true);
 		
 		if(place.getIdCurso()<0){
 			selector.setOnCancelAction(new Command() {
@@ -91,6 +95,35 @@ public class FormActividadActivity extends SimceActivity implements
 					@Override
 					public void success(UserDTO result) {
 						view.setExaminador(result);
+					}
+				});
+			}
+			if(getPermisos().get("ActividadService").contains("getActividad")){
+				getFactory().getActividadService().getActividad(place.getIdCurso(), new SimceCallback<ActividadDTO>(eventBus) {
+
+					@Override
+					public void success(ActividadDTO result) {
+						a = result;
+						setActividad();
+					}
+				});
+			}
+			if(getPermisos().get("ActividadService").contains("getEstadosActividad")){
+				getFactory().getActividadService().getEstadosActividad(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
+
+					@Override
+					public void success(ArrayList<EstadoAgendaDTO> result) {
+						estados = result;
+						if(a != null){
+							if(!estados.contains(a.getEstadoAplicacion())){
+								estados.add(a.getEstadoAplicacion());
+							}
+							view.setEstados(result);
+							view.selectEstado(a.getEstadoAplicacion());
+							onEstadoChange(a.getEstadoAplicacion().getId());
+						}else{
+							view.setEstados(result);
+						}
 					}
 				});
 			}
@@ -162,21 +195,64 @@ public class FormActividadActivity extends SimceActivity implements
 		view.setTiposContingencia(tipos);
 		view.setContingencias(contingencias);
 	}
-
+	
 	@Override
-	public void onEstadoCompletadoSelected() {
+	public void onEstadoChange(Integer estadoId) {
+		EstadoAgendaDTO selected = null;
+		for(EstadoAgendaDTO estado:estados){
+			if(estado.getId() == estadoId){
+				selected = estado;
+				break;
+			}
+		}
+		//view.showForm(selected.getEstado().contains(EstadoAgendaDTO.REALIZADA));
 		view.showForm(true);
-	}
-
-	@Override
-	public void onEstadoAnuladoSelected() {
-		 view.showForm(false);
 	}
 	
 	@Override
 	public void onStop() {
 		clear();
 		super.onStop();
+	}
+	
+	private void setActividad(){
+		view.setNombreEstablecimiento(a.getNombreEstablecimiento());
+		view.setRbd(a.getRbd());
+		view.setCurso(a.getCurso());
+		view.setTipoCurso(a.getTipoEstablecimiento());
+		view.setRegion(a.getRegion());
+		view.setComuna(a.getComuna());
+		if(estados == null){
+			estados = new ArrayList<EstadoAgendaDTO>();
+			estados.add(a.getEstadoAplicacion());
+		}else if(!estados.contains(a.getEstadoAplicacion())){
+			estados.add(a.getEstadoAplicacion());
+		}
+		view.selectEstado(a.getEstadoAplicacion());
+		
+		this.contingencias =a.getContingencias();
+		if(tipos != null && contingencias != null && !contingencias.isEmpty()){
+			for(ContingenciaDTO c: contingencias){
+				if(tipos.contains(c.getTipoContingencia())){
+					tipos.remove(c.getTipoContingencia());
+				}
+			}
+			view.setTiposContingencia(tipos);
+		}
+		view.setContingencias(a.getContingencias());
+		view.setInicioActividad(a.getInicioActividad());
+		view.setInicioPrueba(a.getInicioPrueba());
+		view.setTerminoPrueba(a.getTerminoPrueba());
+		view.setTotalAlumnos(a.getAlumnosTotal());
+		view.setAlumnosAusentes(a.getAlumnosAusentes());
+		view.setAlumnosDS(a.getAlumnosDs());
+		view.setCuestionariosTotales(a.getTotalCuestionarios());
+		view.setCuestionariosEntregados(a.getCuestionariosEntregados());
+		view.setCuestionariosRecibidos(a.getCuestionariosRecibidos());
+		view.setUsoMaterialContingencia(a.getMaterialContingencia());
+		view.setDetalleUsoMaterialContingencia(a.getDetalleUsoMaterialContingencia());
+		view.setEvaluacionGeneral(a.getEvaluacionProcedimientos());
+		onEstadoChange(a.getEstadoAplicacion().getId());
 	}
 	
 	private void clear(){

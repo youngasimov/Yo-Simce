@@ -3,6 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka"
+	xmlns:u="urn:import:gwtupload.client"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
@@ -279,7 +280,7 @@
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Recibidos:' help='Indique la cantidad de cuestionarios para padres y apoderados RECIBIDOS'/></td>
-								<td><e:ValueTextBox ui:field="cuestionariosNoEntregadosBox" addStyleNames='{style.numberBox}'/></td>
+								<td><e:ValueTextBox ui:field="cuestionariosRecibidosBox" addStyleNames='{style.numberBox}'/></td>
 							</tr>
 						</table>
 					</g:HTMLPanel>
@@ -318,7 +319,7 @@
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Formulario de control:' help='Adjunte el formulario de control utilizado para llenar los datos anteriores'/></td>
-								<td> <g:FileUpload ui:field="formularioControlFile" /> </td>
+								<td> <u:SingleUploader  ui:field="uploader" /> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

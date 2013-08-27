@@ -12,6 +12,8 @@
 	<inherits name="com.google.gwt.activity.Activity" />
 	<inherits name="com.google.gwt.i18n.I18N" />
 	
+	<inherits name="gwtupload.GWTUpload"/>
+	
 	<extend-property name="locale" values="es" />
 	<set-property-fallback name="locale" value="es" />
 
@@ -28,6 +30,7 @@
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
 
 	<!-- Other module inherits -->
+	<stylesheet src="Upload.css"/>
 
 	<!-- Specify the app entry point class. -->
 	<entry-point class='com.dreamer8.yosimce.client.YoSimce' />

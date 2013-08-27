@@ -87,11 +87,11 @@ public class ScoreSelector extends Composite implements HasValue<Integer> {
 	@Override
 	public void setValue(Integer value) {
 		this.value = value;
-		reallyBadButton.setValue(value == 0);
-		badButton.setValue(value == 1);
-		okButton.setValue(value == 2);
-		goodButton.setValue(value == 3);
-		remarkableButton.setValue(value == 4);
+		reallyBadButton.setValue(value <= 0 );
+		badButton.setValue(value > 0 && value<= 1);
+		okButton.setValue(value > 1 && value <= 2);
+		goodButton.setValue(value > 2 && value <= 3);
+		remarkableButton.setValue(value > 3 );
 	}
 
 	@Override

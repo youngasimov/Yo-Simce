@@ -1,5 +1,8 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import gwtupload.client.IUploader;
+import gwtupload.client.SingleUploader;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,6 +13,7 @@ import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.ValueTextBox;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.ButtonCell;
@@ -29,7 +33,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -84,34 +87,52 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField DecoratorPanel cuestionariosPanel;
 	@UiField ValueTextBox cuestionariosTotalesBox;
 	@UiField ValueTextBox cuestionariosEntregadosBox;
-	@UiField ValueTextBox cuestionariosNoEntregadosBox;
+	@UiField ValueTextBox cuestionariosRecibidosBox;
 	@UiField DecoratorPanel contingenciasPanel;
 	@UiField CheckBox usoMaterialBox;
 	@UiField TextBox detallesUsoBox;
 	@UiField DecoratorPanel evaluacionPanel;
 	@UiField ScoreSelector procedimientoScoreSelector;
-	@UiField FileUpload formularioControlFile;
+	@UiField(provided=true) SingleUploader uploader;
 	
 	private FormActividadPresenter presenter;
 	private UserDTO examinador;
 	private ArrayList<TipoContingenciaDTO> tiposContingencia;
 	private ExaminadorSelectorViewD examinadorSelector;
+	private boolean uploading;
 	
 	public FormActividadViewD() {
+		uploader = new SingleUploader();
+		uploader.setAutoSubmit(true);
 		inicioActividadBox = new TimeBox(new Date(0),false);
 		inicioPruebaBox = new TimeBox(new Date(0),false);
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
 		initWidget(uiBinder.createAndBindUi(this));
 		examinadorSelector = new ExaminadorSelectorViewD();
-		estadoBox.addItem("seleccione estado actividad","0");
-		estadoBox.addItem("Realizado","1");
-		estadoBox.addItem("Anulado", "2");
+		estadoBox.addItem("seleccione estado actividad","-1");
 		
 		
 		
 		buildTable();
 		contingenciasTable.setRowCount(0);
+		
+		uploader.addOnStartUploadHandler(new IUploader.OnStartUploaderHandler() {
+			
+			@Override
+			public void onStart(IUploader uploader) {
+				uploading = true;
+			}
+		});
+		
+		uploader.addOnFinishUploadHandler(new IUploader.OnFinishUploaderHandler() {
+			
+			@Override
+			public void onFinish(IUploader uploader) {
+				uploading = false;
+			}
+		});
+		
 	}
 	
 	
@@ -123,12 +144,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiHandler("estadoBox")
 	void onEstadoChange(ChangeEvent event){
 		String selected = estadoBox.getValue(estadoBox.getSelectedIndex());
-		if(selected.equals("1")){
-			presenter.onEstadoCompletadoSelected();
-		}
-		if(selected.equals("2")){
-			presenter.onEstadoAnuladoSelected();
-		}
+		presenter.onEstadoChange(Integer.parseInt(selected));
 	}
 	
 	@UiHandler("changeButton")
@@ -250,6 +266,170 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setExaminadoresSuplentes(ArrayList<UserDTO> examinadores) {
 		examinadorSelector.setExaminadores(examinadores);
+	}
+	
+
+	@Override
+	public void setEstados(ArrayList<EstadoAgendaDTO> estados) {
+		this.estadoBox.clear();
+		for(EstadoAgendaDTO estado:estados){
+			this.estadoBox.addItem(estado.getEstado(),estado.getId()+"");
+		}
+	}
+
+
+	@Override
+	public void selectEstado(EstadoAgendaDTO estado) {
+		for(int i=0; i<estadoBox.getItemCount(); i++){
+			if(Integer.parseInt(estadoBox.getValue(i)) == estado.getId()){
+				estadoBox.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+
+
+	@Override
+	public void setInicioActividad(Date hora) {
+		this.inicioActividadBox.setValue(hora.getTime());
+	}
+
+
+	@Override
+	public Date getInicioActividad() {
+		return new Date(inicioActividadBox.getTime());
+	}
+
+
+	@Override
+	public void setInicioPrueba(Date hora) {
+		this.inicioPruebaBox.setValue(hora.getTime());
+	}
+
+
+	@Override
+	public Date getInicioPrueba() {
+		return new Date(inicioPruebaBox.getTime());
+	}
+
+
+	@Override
+	public void setTerminoPrueba(Date hora) {
+		this.terminoPruebaBox.setValue(hora.getTime());
+	}
+
+
+	@Override
+	public Date getTerminoPrueba() {
+		return new Date(terminoPruebaBox.getTime());
+	}
+
+
+	@Override
+	public void setTotalAlumnos(int total) {
+		totalAlumnosBox.setValue(total+"");
+	}
+
+
+	@Override
+	public int getTotalAlumnos() {
+		return Integer.parseInt(totalAlumnosBox.getValue());
+	}
+
+
+	@Override
+	public void setAlumnosAusentes(int ausentes) {
+		alumnosAusentesBox.setValue(ausentes+"");
+	}
+
+
+	@Override
+	public int getAlumnosAusentes() {
+		return Integer.parseInt(alumnosAusentesBox.getValue());
+	}
+
+
+	@Override
+	public void setAlumnosDS(int ds) {
+		alumnosDsBox.setValue(ds+"");
+	}
+
+
+	@Override
+	public int getAlumnosDS() {
+		return Integer.parseInt(alumnosDsBox.getValue());
+	}
+
+
+	@Override
+	public void setCuestionariosTotales(int total) {
+		cuestionariosTotalesBox.setValue(total+"");
+	}
+
+
+	@Override
+	public int getCuestionariosTotales() {
+		return Integer.parseInt(cuestionariosTotalesBox.getValue());
+	}
+
+
+	@Override
+	public void setCuestionariosEntregados(int entregados) {
+		cuestionariosEntregadosBox.setValue(entregados+"");
+	}
+
+
+	@Override
+	public int getCuestionariosEntregados() {
+		return Integer.parseInt(cuestionariosEntregadosBox.getValue());
+	}
+
+
+	@Override
+	public void setCuestionariosRecibidos(int recibidos) {
+		cuestionariosRecibidosBox.setValue(recibidos+"");
+	}
+
+
+	@Override
+	public int getCuestionariosRecibidos() {
+		return Integer.parseInt(cuestionariosRecibidosBox.getValue());
+	}
+
+
+	@Override
+	public void setUsoMaterialContingencia(boolean contingencia) {
+		usoMaterialBox.setValue(contingencia);
+	}
+
+
+	@Override
+	public boolean getUsoMaterialContingencia() {
+		return usoMaterialBox.getValue();
+	}
+
+
+	@Override
+	public void setDetalleUsoMaterialContingencia(String detalle) {
+		detallesUsoBox.setValue(detalle);
+	}
+
+
+	@Override
+	public String getDetalleUsoMaterialContingencia() {
+		return detallesUsoBox.getValue();
+	}
+
+
+	@Override
+	public void setEvaluacionGeneral(Integer evaluacion) {
+		procedimientoScoreSelector.setValue(evaluacion);
+	}
+
+
+	@Override
+	public Integer getEvaluacionGeneral() {
+		return procedimientoScoreSelector.getValue();
 	}
 	
 
