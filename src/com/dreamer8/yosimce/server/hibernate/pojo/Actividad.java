@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoTipoDAO;
+import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
@@ -428,6 +429,34 @@ public class Actividad implements java.io.Serializable {
 			aidtos.add(ah.getAgendaItemDTO());
 		}
 		adto.setItems(aidtos);
+		return adto;
+	}
+
+	/**
+	 * @return
+	 */
+	public ActividadDTO getActividadDTO(Integer idAplicacion) {
+		ActividadDTO adto = new ActividadDTO();
+		adto.setNombreEstablecimiento(curso.getEstablecimiento().getNombre());
+		Integer idEstablecimiento = curso.getEstablecimiento().getId();
+		adto.setRbd(Integer.toString(idEstablecimiento));
+		adto.setCurso(curso.getNombre());
+		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
+		EstablecimientoTipo et = etdao.findByIdAplicacionANDIdEstablecimiento(
+				idAplicacion, idEstablecimiento);
+		if (et != null) {
+			adto.setTipoEstablecimiento(et.getNombre());
+		}
+		adto.setEstadoAplicacion(actividadEstado.getEstadoAgendaDTO());
+		adto.setInicioActividad(fechaInicio);
+		adto.setInicioPrueba(fechaInicioPrueba);
+		adto.setTerminoPrueba(fechaTerminoPrueba);
+		Integer total = ((totalAlumnosAusentes != null) ? totalAlumnosAusentes
+				: 0)
+				+ ((totalAlumnosPresentes != null) ? totalAlumnosPresentes : 0);
+		adto.setAlumnosTotal(total);
+		adto.setAlumnosAusentes(totalAlumnosAusentes);
+		adto.setEvaluacionProcedimientos(notaProceso);
 		return adto;
 	}
 }
