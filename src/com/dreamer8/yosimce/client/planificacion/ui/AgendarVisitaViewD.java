@@ -79,6 +79,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
 		idCurso = -1;
+		
 		editarContactoPanel = new EditarContactoViewD();
 		editarContactoDialog = new DialogBox();
 		editarContactoDialog.setAnimationEnabled(true);
@@ -156,8 +157,15 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	@UiHandler("fechaPicker")
 	void onFechaChange(ValueChangeEvent<Date> event){
-		fechaLabel.setText(format.format(event.getValue()));
-		timeBox.setValue(event.getValue().getTime());
+		Date now = new Date();
+		if(event.getValue().before(now) ){
+			fechaPicker.setValue(now);
+			fechaLabel.setText(format.format(now));
+			timeBox.setValue(now.getTime());
+		}else{
+			fechaLabel.setText(format.format(event.getValue()));
+			timeBox.setValue(event.getValue().getTime());
+		}
 	}
 	
 	@UiFactory

@@ -13,13 +13,11 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 public class MaterialActivity extends SimceActivity implements
 		MaterialPresenter {
 
-	private final MaterialPlace place;
 	private final MaterialView view;
 	
 	public MaterialActivity(ClientFactory factory, MaterialPlace place,
 			HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
-		this.place = place;
 		this.view = getFactory().getMaterialView();
 		this.view.setPresenter(this);
 	}

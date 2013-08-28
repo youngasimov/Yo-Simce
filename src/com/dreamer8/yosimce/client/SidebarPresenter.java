@@ -117,7 +117,6 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
-				tipoActividad = -1;
 				updateView();
 				
 			}
