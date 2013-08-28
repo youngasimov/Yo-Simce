@@ -59,9 +59,8 @@ public class FormActividadActivity extends SimceActivity implements
 			}
 		});
 		
-		view.showSeccionExaminador(getPermisos().get("ActividadService").contains("getExaminadorProncipal") &&
-			getPermisos().get("ActividadService").contains("cambiarExaminadorPrincipal") &&
-			getPermisos().get("ActividadService").contains("getExaminadores"));
+		view.showSeccionExaminador(getPermisos().get("ActividadService").contains("getEvaluacionExaminadores") &&
+			getPermisos().get("ActividadService").contains("updateEvaluacionExaminadores"));
 		
 		view.showForm(true);
 		
@@ -257,6 +256,9 @@ public class FormActividadActivity extends SimceActivity implements
 				}
 			}
 			view.setTiposContingencia(tipos);
+		}
+		if(a.getContingencias() == null){
+			a.setContingencias( new ArrayList<ContingenciaDTO>());
 		}
 		view.setContingencias(a.getContingencias());
 		view.setInicioActividad(a.getInicioActividad());

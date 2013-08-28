@@ -7,27 +7,19 @@
     <ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	<ui:style>
 	.header{
-		display:block;
-		width: 100%;
-		height: 50px;
+		display:inline-block;
 		float: left;
 		position: absolute;
 		top: 0px;
 		left: 0px;
-		padding-left: 80px;
-		padding-top: 10px;
-		border-bottom: 1px solid black;
+		padding-left: 10px;
+		min-width: 950px;
 	}
 	
-	.content{
-		display:block;
-		float: left;
+	.scroll{
 		width: 100%;
 		height: 100%;
-		position:absolute;
-		top: 50px;
-		bottom: 0px;
-		left: 0px;
+		border-bottom: 1px solid black;
 	}
 	
 	.title {
@@ -42,7 +34,7 @@
 		position: relative;
 		height: 50px;
 		float: left;
-		margin-left: 50px;
+		margin-left: 10px;
 	}
 	
 	.action{
@@ -51,7 +43,7 @@
 	
 	.estName{
 		display: inline;
-		margin-left: 20px;
+		margin-left: 10px;
 	}
 	
 	.data{
@@ -69,12 +61,15 @@
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
 		<g:north size="4">
+			<g:ScrollPanel addStyleNames='{style.scroll}'>
 			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Material defectuoso <g:HTML ui:field="establecimientoSeleccionado"/></div>
+				<div class='{style.title}'>Material defectuoso</div>
 				<div class='{style.actions}'>
+					<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
 					<my:ImageButton addStyleNames='{style.action}' text='Cambiar' resource='{res.popup}' ui:field="cambiarButton"/>
 				</div>
-			</g:HTMLPanel>	
+			</g:HTMLPanel>
+			</g:ScrollPanel>	
 		</g:north>
 		<g:north size="3">
 			<g:FlowPanel addStyleNames='{style.addMaterialBar}'>

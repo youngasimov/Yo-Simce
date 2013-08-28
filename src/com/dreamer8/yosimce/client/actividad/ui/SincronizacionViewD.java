@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.actividad.ui;
 
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -102,7 +103,7 @@ public class SincronizacionViewD extends Composite implements
 	@Override
 	public void setCurso(CursoDTO curso) {
 		this.curso = curso;
-		establecimientoSeleccionado.setHTML(curso.getNombreEstablecimiento()+"-"+curso.getNivel());
+		establecimientoSeleccionado.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),35));
 	}
 	
 	@Override

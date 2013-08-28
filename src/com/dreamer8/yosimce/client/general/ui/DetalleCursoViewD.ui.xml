@@ -5,7 +5,7 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style>
+	<ui:style field="style" type="com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD.Style">
 	.header{
 		display:block;
 		width: 100%;
@@ -85,6 +85,14 @@
 		font-size: 16px;
 	}
 	
+	.line{
+		border-bottom: 1px solid #AAAAAA;
+	}
+
+	.full{
+		width: 100%;
+	}
+	
 	.panel .label{
 		font-weight: bold;
 		font-size: 12px;
@@ -132,13 +140,13 @@
 								<td colspan='2'>Personas</td>
 							</tr>
 							<tr>
-								<td colspan='2'> <g:FlexTable ui:field='personasTable'/> </td>
+								<td colspan='2'> <g:FlexTable addStyleNames='{style.full}' ui:field='personasTable'/> </td>
 							</tr>
 							<tr class='{style.subtitle}'>
 								<td colspan='2'>Contactos</td>
 							</tr>
 							<tr>
-								<td colspan='2'> <g:FlexTable ui:field='contactosTable'/> </td>
+								<td colspan='2'> <g:FlexTable addStyleNames='{style.full}' ui:field='contactosTable'/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -27,7 +28,11 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 			UiBinder<Widget, DetalleCursoViewD> {
 	}
 
+	interface Style extends CssResource {
+		String line();
+	}
 	
+	@UiField Style style;
 	@UiField HTML establecimiento;
 	@UiField ImageButton cambiarButton;
 	@UiField Label rbdLabel;
@@ -42,6 +47,8 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	
 	public DetalleCursoViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
+		personasTable.getColumnFormatter().setWidth(0, "130px");
+		contactosTable.getColumnFormatter().setWidth(0, "130px");
 	}
 	
 	@UiHandler("cambiarButton")
@@ -94,20 +101,24 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	public void setSupervisor(UserDTO supervisor) {
 		personasTable.setWidget(1, 0, new HTML("Supervisor"));
 		personasTable.setWidget(1, 1, new HTML(supervisor.getNombres()+" "+supervisor.getApellidoPaterno()+" "+supervisor.getApellidoMaterno()));
-		personasTable.setWidget(1, 2, new HTML(supervisor.getTelefono()));
-		personasTable.setWidget(1, 3, new HTML(supervisor.getEmail()));
+		personasTable.setWidget(2, 0, new HTML(supervisor.getTelefono()));
+		personasTable.setWidget(2, 1, new HTML(supervisor.getEmail()));
+		personasTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
+		personasTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
 		
 	}
 
 	@Override
 	public void setExaminadores(ArrayList<UserDTO> examinadores) {
-		int i = 2;
+		int i = 3;
 		for(UserDTO examinador:examinadores){
 			personasTable.setWidget(i, 0, new HTML("Examinador"));
 			personasTable.setWidget(i, 1, new HTML(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno()));
-			personasTable.setWidget(i, 2, new HTML(examinador.getTelefono()));
-			personasTable.setWidget(i, 3, new HTML(examinador.getEmail()));
-			i++;
+			personasTable.setWidget(i+1, 0, new HTML(examinador.getTelefono()));
+			personasTable.setWidget(i+1, 1, new HTML(examinador.getEmail()));
+			personasTable.getFlexCellFormatter().addStyleName(i+1, 0, style.line());
+			personasTable.getFlexCellFormatter().addStyleName(i+1, 1, style.line());
+			i = i + 2;
 		}
 	}
 
@@ -119,32 +130,36 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 
 	@Override
 	public void setEmailDirector(String email) {
-		contactosTable.setWidget(1, 3, new HTML(email));
+		contactosTable.setWidget(2, 1, new HTML(email));
+		contactosTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
+		contactosTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
 	}
 
 	@Override
 	public void setTelefonoDirector(String telefono) {
-		contactosTable.setWidget(1, 2, new HTML(telefono));
+		contactosTable.setWidget(2, 0, new HTML(telefono));
+		contactosTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
+		contactosTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
 	}
 
 	@Override
 	public void setContacto(String director) {
-		contactosTable.setWidget(2, 1, new HTML(director));
+		contactosTable.setWidget(3, 1, new HTML(director));
 	}
 	
 	@Override
 	public void setCargoContacto(String cargo){
-		contactosTable.setWidget(2, 0, new HTML(cargo));
+		contactosTable.setWidget(3, 0, new HTML(cargo));
 	}
 
 	@Override
 	public void setEmailContacto(String email) {
-		contactosTable.setWidget(2, 3, new HTML(email));
+		contactosTable.setWidget(4, 1, new HTML(email));
 	}
 
 	@Override
 	public void setTelefonoContacto(String telefono) {
-		contactosTable.setWidget(2, 2, new HTML(telefono));
+		contactosTable.setWidget(4, 0, new HTML(telefono));
 	}
 
 	@Override

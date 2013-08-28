@@ -49,7 +49,7 @@ public class ActividadViewD extends Composite implements ActividadView {
 		presenter.goTo(new SincronizacionPlace());
 	}
 	
-	@UiHandler("sincronizacionActionButton")
+	@UiHandler("materialDefectuosoActionButton")
 	void onMaterialDefectuosoClick(ClickEvent event){
 		presenter.goTo(new MaterialDefectuosoPlace());
 	}

@@ -52,7 +52,6 @@ public class SincronizacionActivity extends SimceActivity implements
 				goTo(sp);
 			}
 		});
-		view.getDataDisplay().setRowCount(0);
 		if(place.getIdCurso() < 0){
 			selector.setOnCancelAction(new Command() {
 				
@@ -63,7 +62,6 @@ public class SincronizacionActivity extends SimceActivity implements
 			});
 			selector.show();
 		}else{
-			
 			if(getPermisos().get("GeneralService").contains("getCurso")){
 				getFactory().getGeneralService().getCurso(place.getIdCurso(), new SimceCallback<CursoDTO>(eventBus) {
 
@@ -88,6 +86,13 @@ public class SincronizacionActivity extends SimceActivity implements
 						view.getDataDisplay().setRowData(0, alumnos);
 						view.setTotalALumnos(alumnos.size());
 					}
+					
+					@Override
+					public void failure(Throwable caught) {
+						super.failure(caught);
+						view.getDataDisplay().setRowCount(0);
+						view.setTotalALumnos(0);
+					}
 				});
 			}else{
 				view.setGuardarButtonEnabled(false);
@@ -95,7 +100,7 @@ public class SincronizacionActivity extends SimceActivity implements
 			
 		}
 		
-		if(!getPermisos().get("ActividadService").contains("updateSincronizacionAlumno")){
+		if(getPermisos().get("ActividadService").contains("updateSincronizacionAlumno")){
 			view.setGuardarButtonEnabled(true);
 			view.setIdMaterialFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
 				
@@ -178,7 +183,7 @@ public class SincronizacionActivity extends SimceActivity implements
 		
 		alumno.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
 		view.updateTable();
-		getFactory().getActividadService().updateSincronizacionAlumno(alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus) {
+		getFactory().getActividadService().updateSincronizacionAlumno(place.getIdCurso(),alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus) {
 
 			@Override
 			public void success(Boolean result) {

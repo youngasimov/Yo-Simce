@@ -67,7 +67,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
-				if((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo)){
+				if(permisos!=null && ((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo))){
 					init = true;
 					init(panel,eventBus);
 				}
@@ -79,7 +79,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 			@Override
 			public void onTipoActividadChange(TipoActividadChangeEvent event) {
 				tipoActividadId = event.getIdTipo();
-				if((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo)){
+				if(permisos!=null && ((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo))){
 					init = true;
 					init(panel,eventBus);
 				}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.PlaceHolderTextBox;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
+import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.google.gwt.cell.client.ButtonCell;
@@ -49,6 +51,11 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 		buildTable();
 	}
 	
+	@UiHandler("cambiarButton")
+	void onCambiarCursoButton(ClickEvent event){
+		presenter.onCambiarCursoClick();
+	}
+	
 	@UiHandler("addButton")
 	void onAddMaterialButton(ClickEvent event){
 		if(materialBox.getValue() == null || materialBox.getValue().length()<1){
@@ -56,6 +63,15 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 		}
 		MaterialDefectuosoDTO md = new MaterialDefectuosoDTO();
 		md.setIdMaterial(materialBox.getValue());
+		int idEstado = Integer.parseInt(estadoBox.getValue(estadoBox.getSelectedIndex()));
+		for(EstadoSincronizacionDTO e:estados){
+			if(e.getIdEstadoSincronizacion() == idEstado){
+				md.setEstado(e);
+				break;
+			}
+		}
+		materialBox.setValue("");
+		presenter.onAddMaterialDefectuoso(md);
 	}
 	
 	@Override
@@ -74,6 +90,11 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 		for(EstadoSincronizacionDTO es:estados){
 			estadoBox.addItem(es.getNombreEstado(),es.getIdEstadoSincronizacion()+"");
 		}
+	}
+	
+	@Override
+	public void setCurso(CursoDTO curso) {
+		establecimientoSeleccionado.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),35));
 	}
 
 	@Override
