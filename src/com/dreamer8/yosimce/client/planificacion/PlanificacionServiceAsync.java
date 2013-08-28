@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface PlanificacionServiceAsync {
 
-	void getContacto(Integer idEstablecimiento,
+	void getContacto(Integer idCurso,
 			AsyncCallback<ContactoDTO> callback);
 
 	void getPreviewAgendamientos(Integer offset, Integer length,

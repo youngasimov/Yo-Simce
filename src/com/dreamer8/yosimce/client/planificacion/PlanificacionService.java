@@ -41,7 +41,7 @@ public interface PlanificacionService extends RemoteService {
 	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
 			throws NoAllowedException, NoLoggedException, DBException;
 
-	public ContactoDTO getContacto(Integer idEstablecimiento)
+	public ContactoDTO getContacto(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
 
 	public Boolean editarContacto(Integer idCurso, ContactoDTO contacto)
