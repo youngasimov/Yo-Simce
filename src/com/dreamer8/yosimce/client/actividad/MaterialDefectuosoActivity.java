@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView.MaterialDefectuosoPresenter;
+import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -58,6 +59,17 @@ public class MaterialDefectuosoActivity extends SimceActivity implements
 		}else{
 			
 		}
+	}
+
+	@Override
+	public void onRemoveMaterialDefectuoso(MaterialDefectuosoDTO material) {
+		
+	}
+
+	@Override
+	public void onAddMaterialDefectuoso(MaterialDefectuosoDTO material) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

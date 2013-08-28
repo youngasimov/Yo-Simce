@@ -136,6 +136,10 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		
 		boolean tipo = tipoActividad>=0;
 		
+		if(permisos == null || permisos.isEmpty()){
+			return;
+		}
+		
 		view.setGeneralVisivility(permisos.get("GeneralService").contains("getDetalleCurso"));
 		view.setDetalleCursoViewItemVisivility(permisos.get("GeneralService").contains("getDetalleCurso") && tipo);
 		
