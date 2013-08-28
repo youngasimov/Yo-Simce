@@ -29,5 +29,8 @@
         <property name="modificadorId" type="java.lang.Integer">
             <column name="modificador_id" />
         </property>
+        <property name="comentario" type="string">
+            <column name="comentario" />
+        </property>
     </class>
 </hibernate-mapping>

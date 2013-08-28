@@ -17,6 +17,7 @@ public class AlumnoXActividadXDocumento implements java.io.Serializable {
 	private Boolean recibido;
 	private Date updatedAt;
 	private Integer modificadorId;
+	private String comentario;
 
 	public AlumnoXActividadXDocumento() {
 	}
@@ -101,6 +102,21 @@ public class AlumnoXActividadXDocumento implements java.io.Serializable {
 
 	public void setModificadorId(Integer modificadorId) {
 		this.modificadorId = modificadorId;
+	}
+
+	/**
+	 * @return the comentario
+	 */
+	public String getComentario() {
+		return comentario;
+	}
+
+	/**
+	 * @param comentario
+	 *            the comentario to set
+	 */
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
 }
