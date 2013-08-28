@@ -6,7 +6,9 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
+import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -66,5 +68,15 @@ public interface ActividadService extends RemoteService {
 	
 	Boolean updateEvaluacionExaminadores(Integer idCurso, ArrayList<EvaluacionUsuarioDTO> evaluaciones)
 			throws NoAllowedException, NoLoggedException, DBException;
+	
+	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida() throws NoAllowedException, NoLoggedException, DBException;
+	
+	ArrayList<MaterialDefectuosoDTO> getMaterialDefectuoso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
+	
+	Boolean addOrUpdateMaterialDefectuoso(Integer idCurso, MaterialDefectuosoDTO material)  throws NoAllowedException, NoLoggedException, DBException;
+	
+	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)  throws NoAllowedException, NoLoggedException, DBException;
+	
+	
 
 }

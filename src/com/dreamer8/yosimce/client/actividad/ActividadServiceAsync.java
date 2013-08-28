@@ -6,7 +6,9 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
+import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -52,6 +54,18 @@ public interface ActividadServiceAsync {
 
 	void updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones,
+			AsyncCallback<Boolean> callback);
+
+	void getEstadosSincronizacionFallida(
+			AsyncCallback<ArrayList<EstadoSincronizacionDTO>> callback);
+
+	void getMaterialDefectuoso(Integer idCurso,
+			AsyncCallback<ArrayList<MaterialDefectuosoDTO>> callback);
+
+	void addOrUpdateMaterialDefectuoso(Integer idCurso,
+			MaterialDefectuosoDTO material, AsyncCallback<Boolean> callback);
+
+	void removeMaterialDefectuoso(Integer idCurso, String idMaterial,
 			AsyncCallback<Boolean> callback);
 
 	
