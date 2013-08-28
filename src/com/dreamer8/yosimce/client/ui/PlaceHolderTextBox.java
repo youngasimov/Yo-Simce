@@ -9,7 +9,7 @@ public class PlaceHolderTextBox extends TextBox {
 	
 	public PlaceHolderTextBox() {
 	}
-
+	
 	public PlaceHolderTextBox(Element element) {
 		super(element);
 	}
@@ -20,6 +20,6 @@ public class PlaceHolderTextBox extends TextBox {
 
 	public void setPlaceholder(String placeholder) {
 		this.placeholder = placeholder;
-		getElement().getStyle().setProperty("placeholder", placeholder);
+		getElement().setAttribute("placeholder", placeholder);
 	}
 }
