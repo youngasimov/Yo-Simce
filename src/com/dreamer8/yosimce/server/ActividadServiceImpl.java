@@ -9,10 +9,12 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadXDocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
@@ -485,8 +487,63 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public ArrayList<EstadoAgendaDTO> getEstadosActividad()
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getEstadosActividad")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				List<ActividadEstado> aes = aedao.findAllByActividad();
+				if (aes != null && !aes.isEmpty()) {
+					for (ActividadEstado ae : aes) {
+						eadtos.add(ae.getEstadoAgendaDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return eadtos;
 	}
 
 	/**
