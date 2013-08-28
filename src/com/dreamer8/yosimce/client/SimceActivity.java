@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
@@ -15,13 +16,23 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	
 	private HashMap<String,ArrayList<String>> permisos;
 	private HandlerRegistration permisosHandlerRegistration;
+	private HandlerRegistration tipoActividadChangeHandlerRegistration;
 	
 	private boolean init;
 	
+	private boolean requiereTipo;
+	
+	private int tipoActividadId;
+	
 	public SimceActivity(ClientFactory factory, SimcePlace place,HashMap<String,ArrayList<String>> permisos){
+		this(factory,place,permisos,true);
+	}
+	
+	public SimceActivity(ClientFactory factory, SimcePlace place,HashMap<String,ArrayList<String>> permisos, boolean requiereTipo){
 		this.factory = factory;
 		this.permisos = permisos;
 		this.place = place;
+		this.requiereTipo = requiereTipo;
 		init = false;
 	}
 	
@@ -45,19 +56,39 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+		tipoActividadId = place.getTipoId();
+		String k = Cookies.getCookie("t");
+		if(k == null){
+			tipoActividadId = -1;
+		}
+		
 		permisosHandlerRegistration = eventBus.addHandler(PermisosEvent.TYPE, new PermisosEvent.PermisosHandler() {
 			
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
-				if(!init){
+				if((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo)){
 					init = true;
 					init(panel,eventBus);
 				}
 			}
-		});	
+		});
 		
-		if(permisos != null && !init){
+		tipoActividadChangeHandlerRegistration = eventBus.addHandler(TipoActividadChangeEvent.TYPE, new TipoActividadChangeEvent.TipoActividadChangeHandler() {
+			
+			@Override
+			public void onTipoActividadChange(TipoActividadChangeEvent event) {
+				tipoActividadId = event.getIdTipo();
+				if((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo)){
+					init = true;
+					init(panel,eventBus);
+				}
+			}
+		});
+		
+		
+		
+		if((requiereTipo && tipoActividadId>=0 && permisos != null && !init) || (!requiereTipo && permisos != null && !init)){
 			init = true;
 			init(panel,eventBus);
 		}
@@ -67,6 +98,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	public void onStop() {
 		super.onStop();
 		permisosHandlerRegistration.removeHandler();
+		tipoActividadChangeHandlerRegistration.removeHandler();
 		init = false;
 	}
 	

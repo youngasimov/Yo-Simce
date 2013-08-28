@@ -26,5 +26,8 @@ public class AdminActivity extends SimceActivity implements AdminPresenter {
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
+		view.setAdminUsersVisivility(false);
+		view.setAdminEventsVisivility(false);
+		view.setAdminPermisosVisivility(getPermisos().get("AdministracionService").contains("getTiposUsuario") && getPermisos().get("AdministracionService").contains("getPermisos"));
 	}
 }

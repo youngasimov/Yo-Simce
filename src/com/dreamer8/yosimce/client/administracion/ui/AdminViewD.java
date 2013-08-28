@@ -54,10 +54,14 @@ public class AdminViewD extends Composite implements AdminView {
 	public void setAdminEventsVisivility(boolean visible) {
 		adminEventsViewButton.setVisible(visible);
 	}
+	
+	@Override
+	public void setAdminPermisosVisivility(boolean visible) {
+		adminPermisosViewButton.setVisible(visible);
+	}
 
 	@Override
 	public void setPresenter(AdminPresenter presenter) {
 		this.presenter = presenter;
 	}
-
 }

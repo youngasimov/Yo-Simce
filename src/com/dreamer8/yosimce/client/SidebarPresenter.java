@@ -31,9 +31,12 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 	
 	private HashMap<String,ArrayList<String>> permisos;
 	
+	private int tipoActividad;
+	
 	public SidebarPresenter(ClientFactory factory){
 		this.factory = factory;
 		this.view = factory.getSidebarView();
+		tipoActividad = -1;
 		bind();
 	}
 	
@@ -114,16 +117,58 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
+				tipoActividad = -1;
+				updateView();
 				
-				
-				if(factory.onTesting()){
-					view.setGeneralVisivility(true);
-					view.setAgendamientoVisivility(true);
-					view.setActividadVisivility(true);
-					view.setMaterialVisivility(true);
-					view.setAdministracionVisivility(true);
-				}
 			}
 		});
+		
+		factory.getEventBus().addHandler(TipoActividadChangeEvent.TYPE, new TipoActividadChangeEvent.TipoActividadChangeHandler() {
+			
+			@Override
+			public void onTipoActividadChange(TipoActividadChangeEvent event) {
+				tipoActividad = event.getIdTipo();
+				updateView();
+			}
+		});
+	}
+	
+	private void updateView(){
+		
+		boolean tipo = tipoActividad>=0;
+		
+		view.setGeneralVisivility(permisos.get("GeneralService").contains("getDetalleCurso"));
+		view.setDetalleCursoViewItemVisivility(permisos.get("GeneralService").contains("getDetalleCurso") && tipo);
+		
+		view.setAgendamientoVisivility((permisos.get("PlanificacionService").contains("getPreviewAgendamientos") && permisos.get("PlanificacionService").contains("getTotalPreviewAgendamientos")) ||
+				(permisos.get("PlanificacionService").contains("getAgendaCurso") && permisos.get("PlanificacionService").contains("AgendarVisita") && permisos.get("PlanificacionService").contains("getEstadosAgenda")) ||
+				permisos.get("PlanificacionService").contains("getAgendaCurso"));
+		view.setAgendamientosViewItemVisivility(permisos.get("PlanificacionService").contains("getPreviewAgendamientos") && permisos.get("PlanificacionService").contains("getTotalPreviewAgendamientos") && tipo);
+		view.setAgendarVisitaActionItemVisivility(permisos.get("PlanificacionService").contains("getAgendaCurso") && permisos.get("PlanificacionService").contains("AgendarVisita") && permisos.get("PlanificacionService").contains("getEstadosAgenda") && tipo);
+		view.setDetalleAgendaViewItemVisivility(permisos.get("PlanificacionService").contains("getAgendaCurso") && tipo);
+		
+		view.setActividadVisivility((permisos.get("ActividadService").contains("getTotalPreviewActividades") && permisos.get("ActividadService").contains("getPreviewActividades")) ||
+				permisos.get("ActividadService").contains("getActividad") ||
+				permisos.get("ActividadService").contains("getSincronizacionesCurso") ||
+				permisos.get("ActividadService").contains("getEvaluacionSupervisores"));
+		view.setActividadesViewItemVisivility(permisos.get("ActividadService").contains("getTotalPreviewActividades") && permisos.get("ActividadService").contains("getPreviewActividades") && tipo);
+		view.setFormularioActividadActionItemVisivility(permisos.get("ActividadService").contains("getActividad") && tipo);
+		view.setSincronizacionActionItemVisivility(permisos.get("ActividadService").contains("getSincronizacionesCurso") && tipo);
+		
+		view.setMaterialDefectuosoActionItemVisivility(true);
+		
+		view.setAprobarSupervisoresActionItemVisivility(permisos.get("ActividadService").contains("getEvaluacionSupervisores") && tipo);
+		
+		view.setMaterialVisivility(false);
+		view.setIngresoMaterialActionItemVisivility(false);
+		view.setSalidaMaterialActionItemVisivility(false);
+		view.setMovimientosMaterialViewItemVisivility(false);
+		
+		view.setAdministracionVisivility((permisos.get("AdministracionService").contains("getTiposUsuario") && permisos.get("AdministracionService").contains("getPermisos")) ||
+				false ||
+				false);
+		view.setAdministrarUsuariosActionItemVisivility(false);
+		view.setAdministrarEventosActionItemVisivility(false);
+		view.setAdministrarPermisosActionItemVisivility(permisos.get("AdministracionService").contains("getTiposUsuario") && permisos.get("AdministracionService").contains("getPermisos"));
 	}
 }

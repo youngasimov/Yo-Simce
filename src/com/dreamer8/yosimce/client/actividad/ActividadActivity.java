@@ -25,6 +25,12 @@ public class ActividadActivity extends SimceActivity implements
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
+		
+		view.setActividadesVisivility(getPermisos().get("ActividadService").contains("getTotalPreviewActividades") && getPermisos().get("ActividadService").contains("getPreviewActividades"));
+		view.setFormActividadVisivility(getPermisos().get("ActividadService").contains("getActividad"));
+		view.setSincronizacionVisivility(getPermisos().get("ActividadService").contains("getSincronizacionesCurso"));
+		view.setMaterialDefectuosoVisivility(true);
+		view.setAprobarSupervisoresVisivility(getPermisos().get("ActividadService").contains("getEvaluacionSupervisores"));
 	}
 
 }

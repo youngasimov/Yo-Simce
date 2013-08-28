@@ -7,6 +7,7 @@ public interface AdminView extends IsWidget {
 
 	void setAdminUsersVisivility(boolean visible);
 	void setAdminEventsVisivility(boolean visible);
+	void setAdminPermisosVisivility(boolean visible);
 	
 	void setPresenter(AdminPresenter presenter);
 	

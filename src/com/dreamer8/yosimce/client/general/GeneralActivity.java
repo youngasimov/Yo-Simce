@@ -24,6 +24,8 @@ public class GeneralActivity extends SimceActivity implements GeneralPresenter {
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
+		
+		view.setDetalleEstablecimientoVisivility(getPermisos().get("GeneralService").contains("getDetalleCurso"));
 	}
 
 }

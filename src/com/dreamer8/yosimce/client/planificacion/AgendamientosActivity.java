@@ -153,6 +153,11 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 	
 	private void updateFiltros(){
+		
+		if(!getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos") || !getPermisos().get("PlanificacionService").contains("getTotalPreviewAgendamientos")){
+			return;
+		}
+		
 		filtros.clear();
 		if(place.getDesdeTimestamp()!=-1){
 			Date d = new Date(place.getDesdeTimestamp());

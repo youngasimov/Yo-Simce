@@ -221,7 +221,7 @@ public class SincronizacionViewD extends Composite implements
 		comentarioColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getIdPendrive();
+				return o.getComentario();
 			}
 		};
 		dataGrid.addColumn(comentarioColumn, "Comentario");

@@ -24,5 +24,9 @@ public class PlanificacionActivity extends SimceActivity implements
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
+		
+		view.setAgendamientosVisivility(getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos") && getPermisos().get("PlanificacionService").contains("getTotalPreviewAgendamientos"));
+		view.setAgendarVisitaVisivility(getPermisos().get("PlanificacionService").contains("getAgendaCurso") && getPermisos().get("PlanificacionService").contains("AgendarVisita") && getPermisos().get("PlanificacionService").contains("getEstadosAgenda"));
+		view.setDetalleAgendaVisivility(getPermisos().get("PlanificacionService").contains("getAgendaCurso"));
 	}
 }
