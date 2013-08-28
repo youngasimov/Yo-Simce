@@ -10,9 +10,20 @@ import java.util.List;
  */
 public class DocumentoEstado implements java.io.Serializable {
 
+	public static final String SINCRONIZADO = "Sincronizado";
+	public static final String NO_SINCRONIZA = "No Sincroniza";
+	public static final String NO_INICIA = "No Inicia";
+	public static final String ROTO = "Roto";
+	public static final String EXTRAVIADO = "Extraviado";
+	public static final String SIN_INFORMACION = "Sin Información";
+	public static final String EN_BLANCO = "En Blanco";
+	public static final String INCOMPLETO = "Incompleto";
+	public static final String LLENO = "Lleno";
+	
 	private Integer id;
 	private String nombre;
-	private List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos = new ArrayList<AlumnoXActividadXDocumento>(0);
+	private List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos = new ArrayList<AlumnoXActividadXDocumento>(
+			0);
 	private List<Aplicacion> aplicacions = new ArrayList<Aplicacion>(0);
 
 	public DocumentoEstado() {
@@ -23,7 +34,8 @@ public class DocumentoEstado implements java.io.Serializable {
 	}
 
 	public DocumentoEstado(Integer id, String nombre,
-			List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos, List<Aplicacion> aplicacions) {
+			List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos,
+			List<Aplicacion> aplicacions) {
 		this.id = id;
 		this.nombre = nombre;
 		this.alumnoXActividadXDocumentos = alumnoXActividadXDocumentos;
@@ -50,7 +62,8 @@ public class DocumentoEstado implements java.io.Serializable {
 		return this.alumnoXActividadXDocumentos;
 	}
 
-	public void setAlumnoXActividadXDocumentos(List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos) {
+	public void setAlumnoXActividadXDocumentos(
+			List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos) {
 		this.alumnoXActividadXDocumentos = alumnoXActividadXDocumentos;
 	}
 

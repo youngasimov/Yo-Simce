@@ -12,6 +12,7 @@ import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
@@ -39,8 +40,9 @@ public interface ActividadService extends RemoteService {
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
 
-	Boolean updateSincronizacionAlumno(SincAlumnoDTO sinc)
-			throws NoAllowedException, NoLoggedException, DBException;
+	Boolean updateSincronizacionAlumno(Integer idCurso, SincAlumnoDTO sinc)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
 
 	ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -50,7 +52,6 @@ public interface ActividadService extends RemoteService {
 
 	ArrayList<UserDTO> getExaminadores(String search)
 			throws NoAllowedException, NoLoggedException, DBException;
-
 
 	ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -64,19 +65,24 @@ public interface ActividadService extends RemoteService {
 	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException,
 			NoLoggedException, DBException;
 
-	ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
-	
-	Boolean updateEvaluacionExaminadores(Integer idCurso, ArrayList<EvaluacionUsuarioDTO> evaluaciones)
+	ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
-	
-	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida() throws NoAllowedException, NoLoggedException, DBException;
-	
-	ArrayList<MaterialDefectuosoDTO> getMaterialDefectuoso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
-	
-	Boolean addOrUpdateMaterialDefectuoso(Integer idCurso, MaterialDefectuosoDTO material)  throws NoAllowedException, NoLoggedException, DBException;
-	
-	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)  throws NoAllowedException, NoLoggedException, DBException;
-	
-	
+
+	Boolean updateEvaluacionExaminadores(Integer idCurso,
+			ArrayList<EvaluacionUsuarioDTO> evaluaciones)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida()
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	ArrayList<MaterialDefectuosoDTO> getMaterialDefectuoso(Integer idCurso)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	Boolean addOrUpdateMaterialDefectuoso(Integer idCurso,
+			MaterialDefectuosoDTO material) throws NoAllowedException,
+			NoLoggedException, DBException;
+
+	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
+			throws NoAllowedException, NoLoggedException, DBException;
 
 }

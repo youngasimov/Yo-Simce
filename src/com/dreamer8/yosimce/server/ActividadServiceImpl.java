@@ -171,9 +171,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
-		
 
-		ArrayList<SincAlumnoDTO> sadtos = new ArrayList<SincAlumnoDTO>();
+		ArrayList<SincAlumnoDTO> sadtos = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			AccessControl ac = getAccessControl();
@@ -197,9 +196,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado el tipo de la actividad.");
 				}
-				
+
 				if (idCurso == null) {
-					throw new NullPointerException("No se ha especificado el curso.");
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
 				}
 
 				Usuario u = getUsuarioActual();
@@ -213,6 +213,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				sadtos = (ArrayList<SincAlumnoDTO>) axaxddao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
 
 				s.getTransaction().commit();
 			}
@@ -234,10 +237,64 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso updateSincronizacionAlumno
 	 */
 	@Override
-	public Boolean updateSincronizacionAlumno(SincAlumnoDTO sinc)
-			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean updateSincronizacionAlumno(Integer idCurso,
+			SincAlumnoDTO sinc) throws NoAllowedException, NoLoggedException,
+			DBException, ConsistencyException {
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "updateSincronizacionAlumno")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (sinc == null) {
+					throw new NullPointerException(
+							"No se han especificado los datos para la sincronización.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return result;
 	}
 
 	/**

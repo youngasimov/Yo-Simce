@@ -10,6 +10,17 @@ import java.util.List;
  */
 public class DocumentoTipo implements java.io.Serializable {
 
+	public static final String PRUEBA = "Prueba";
+	public static final String CUESTIONARIO_PADRE = "Cuestionario Padre";
+	public static final String CUESTIONARIO_ALUMNO = "Cuestionario Alumno";
+	public static final String LISTA_CURSO = "Lista Curso";
+	public static final String FORMULARIO_CONTROL_DE_APLICACION = "Formulario Control de Aplicación";
+	public static final String PRUEBA_COMPLEMENTARIA = "Prueba Complementaria";
+	public static final String CUESTIONARIO_PADRE_COMPLEMENTARIO = "Cuestionario Padre Complementario";
+	public static final String CUESTIONARIO_ALUMNO_COMPLEMENTARIO = "Cuestionario Alumno Complementario";
+	public static final String LISTA_CURSO_COMPLEMENTARIA = "Lista Curso Complementaria";
+	public static final String FORMULARIO_CONTROL_DE_APLICACION_COMPLEMENTARIO = "Formulario Control de Aplicación Complementario";
+	
 	private Integer id;
 	private String nombre;
 	private List<ActividadXDocumentoTipo> actividadXDocumentoTipos = new ArrayList<ActividadXDocumentoTipo>(0);

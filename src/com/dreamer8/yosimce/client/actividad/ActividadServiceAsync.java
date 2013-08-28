@@ -19,16 +19,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ActividadServiceAsync {
 
-	void getPreviewActividades(Integer offset, Integer length,HashMap<String, String> filtros,AsyncCallback<ArrayList<ActividadPreviewDTO>> callback) throws NoAllowedException, NoLoggedException, DBException;
+	void getPreviewActividades(Integer offset, Integer length,
+			HashMap<String, String> filtros,
+			AsyncCallback<ArrayList<ActividadPreviewDTO>> callback)
+			throws NoAllowedException, NoLoggedException, DBException;
 
 	void getTotalPreviewActividades(HashMap<String, String> filtros,
 			AsyncCallback<Integer> callback);
 
 	void getSincronizacionesCurso(Integer idCurso,
 			AsyncCallback<ArrayList<SincAlumnoDTO>> callback);
-
-	void updateSincronizacionAlumno(SincAlumnoDTO sinc,
-			AsyncCallback<Boolean> callback);
 
 	void getExaminadores(String search,
 			AsyncCallback<ArrayList<UserDTO>> callback);
@@ -68,5 +68,7 @@ public interface ActividadServiceAsync {
 	void removeMaterialDefectuoso(Integer idCurso, String idMaterial,
 			AsyncCallback<Boolean> callback);
 
-	
+	void updateSincronizacionAlumno(Integer idCurso, SincAlumnoDTO sinc,
+			AsyncCallback<Boolean> callback);
+
 }
