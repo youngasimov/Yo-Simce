@@ -12,6 +12,7 @@ public class SincronizacionPlace extends SimcePlace {
 	
 	public SincronizacionPlace(){
 		super();
+		idCurso = -1;
 	}
 	
 	public SincronizacionPlace(int aplicacionId, int nivelId, int tipoId, int idCurso){
