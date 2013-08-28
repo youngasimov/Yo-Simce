@@ -364,7 +364,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT c.id as curso_id,c.nombre as nombre_curso,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.id as est_tipo_id,et.nombre as est_tipo_nombre,"
-				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
+				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -444,40 +444,27 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			q.setMaxResults(lenght);
 		}
 		List<Object[]> os = q.list();
-		AgendaPreviewDTO apdto = null;
-		TipoEstablecimientoDTO tedto = null;
-		ActividadPreviewDTO aidto = null;
+		ActividadPreviewDTO apdto = null;
 		UserDTO udto = null;
 		EstadoAgendaDTO eadto = null;
 		for (Object[] o : os) {
-			// apdto = new AgendaPreviewDTO();
-			// apdto.setCursoId((Integer) o[0]);
-			// apdto.setCurso((String) o[1]);
-			// apdto.setRbd(Integer.toString((Integer) o[2]));
-			// apdto.setEstablecimientoName((String) o[3]);
-			// tedto = new TipoEstablecimientoDTO();
-			// tedto.setId((Integer) o[4]);
-			// tedto.setTipo((String) o[5]);
-			// apdto.setTipoEstablecimiento(tedto);
-			// apdto.setRegionName((String) o[6]);
-			// apdto.setComunaName((String) o[8]);
-			// aidto = new AgendaItemDTO();
-			// aidto.setFecha((Date) o[9]);
-			// aidto.setComentario((String) o[10]);
-			// udto = new UserDTO();
-			// udto.setId((Integer) o[11]);
-			// udto.setUsername((String) o[12]);
-			// udto.setEmail((String) o[13]);
-			// udto.setNombres((String) o[14]);
-			// udto.setApellidoPaterno((String) o[15]);
-			// udto.setApellidoMaterno((String) o[16]);
-			// aidto.setCreador(udto);
-			// eadto = new EstadoAgendaDTO();
-			// eadto.setId((Integer) o[17]);
-			// eadto.setEstado((String) o[18]);
-			// aidto.setEstado(eadto);
-			// apdto.setAgendaItemActual(aidto);
-			// apdtos.add(apdto);
+			apdto = new ActividadPreviewDTO();
+			apdto.setCursoId((Integer) o[0]);
+			apdto.setCurso((String) o[1]);
+			apdto.setRbd(Integer.toString((Integer) o[2]));
+			apdto.setNombreEstablecimiento((String) o[3]);
+			apdto.setTipoEstablecimiento((String) o[5]);
+			apdto.setRegion((String) o[6]);
+			apdto.setComuna((String) o[8]);
+			apdto.setCuestionariosPadresApoderadosEntregados(0);
+			apdto.setCuestionariosPadresApoderadosRecibidos(0);
+			apdto.setAlumnosTotales(0);
+			apdto.setAlumnosEvaluados(0);
+			apdto.setAlumnosSincronizados(0);
+			apdto.setMaterialDefectuoso(0);
+			apdto.setContingencia(false);
+			apdto.setContingenciaLimitante(false);
+			apdtos.add(apdto);
 		}
 
 		return apdtos;
