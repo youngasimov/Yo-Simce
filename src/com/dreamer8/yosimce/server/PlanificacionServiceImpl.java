@@ -87,7 +87,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				ActividadDAO adao = new ActividadDAO();
 				apdtos = (ArrayList<AgendaPreviewDTO>) adao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
+						.findAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), usuarioTipo.getNombre(), offset,
 								length, filtros);
@@ -338,7 +338,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	 * @permiso getContacto
 	 */
 	@Override
-	public ContactoDTO getContacto(Integer idEstablecimiento)
+	public ContactoDTO getContacto(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ContactoDTO cdto = new ContactoDTO();
@@ -364,14 +364,18 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					throw new NullPointerException(
 							"No se ha especificado el tipo de la actividad.");
 				}
+				
+				if (idCurso == null) {
+					throw new NullPointerException("No se ha especificado un curso.");
+				}
 
 				s.beginTransaction();
 
 				ActividadDAO adao = new ActividadDAO();
 				Actividad a = adao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimient(
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo,
-								idEstablecimiento);
+								idCurso);
 				if (a != null) {
 					cdto = a.getContactoDTO();
 				}
@@ -435,7 +439,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				ActividadDAO adao = new ActividadDAO();
 				result = adao
-						.countByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
+						.countAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), usuarioTipo.getNombre(), filtros);
 

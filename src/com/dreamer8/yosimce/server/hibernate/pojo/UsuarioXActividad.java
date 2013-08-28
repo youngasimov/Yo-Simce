@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
+import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
+
 // Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 /**
@@ -131,6 +133,17 @@ public class UsuarioXActividad implements java.io.Serializable {
 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+
+	public EvaluacionUsuarioDTO getEvaluacionUsuarioDTO() {
+		EvaluacionUsuarioDTO eudto = new EvaluacionUsuarioDTO();
+		eudto.setFormulario(notaLlenadoFormularios);
+		eudto.setGeneral(notaDespempeno);
+		eudto.setPresentacionPersonal(notaPresentacionPersonal);
+		eudto.setPuntualidad(notaPuntualidad);
+		eudto.setUsuario(usuarioSeleccion.getUsuarioXAplicacionXNivel()
+				.getUsuario().getUserDTO());
+		return eudto;
 	}
 
 }

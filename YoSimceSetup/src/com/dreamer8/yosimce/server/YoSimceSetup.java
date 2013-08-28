@@ -205,7 +205,8 @@ public class YoSimceSetup {
 						axutxp = new AplicacionXUsuarioTipoXPermiso();
 						axutxp.setPermiso(p);
 						axutxp.setAplicacionXUsuarioTipo(axut);
-						axutxp.setAcceso(false);
+						axutxp.setAcceso(axut.getUsuarioTipo().getNombre()
+								.equals(UsuarioTipo.ADMINISTRADOR));
 						axutxpdao.save(axutxp);
 					}
 					s.flush();
