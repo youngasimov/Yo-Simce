@@ -38,7 +38,7 @@ public class ActividadTipoDAO extends
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON axn.id=axnxat.aplicacion_x_nivel_id"
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
 				+ " WHERE uxaxn.usuario_id="
-				+ SecurityFilter.escapeString(idUsuario);
+				+ SecurityFilter.escapeString(idUsuario) + " ORDER BY at.id ASC";
 		Query q = s.createSQLQuery(query).addEntity(ActividadTipo.class);
 		ats = q.list();
 		return ats;

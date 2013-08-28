@@ -43,20 +43,21 @@ import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXAplicacionXNivel;
 public class YoSimceSetup {
 
 	public static void main(String[] args) {
-		createActividad();
-		List<Integer> ids = new ArrayList<Integer>();
-		ids.add(2);
-		ids.add(4);
-		ids.add(6);
-		ids.add(8);
-		ids.add(10);
-		asignarUsuario(16361209, 1, ids, 1);
-		asignarUsuario(16370885, 1, ids, 1);
-		ids = new ArrayList<Integer>();
-		ids.add(10);
-		asignarUsuario(16361209, 2, ids, 1);
-		asignarUsuario(16370885, 2, ids, 1);
-		// initPermisos();
+		// createActividad();
+		// List<Integer> ids = new ArrayList<Integer>();
+		// ids.add(2);
+		// ids.add(4);
+		// ids.add(6);
+		// ids.add(8);
+		// ids.add(10);
+		// asignarUsuario(16361209, 1, ids, 1);
+		// asignarUsuario(16370885, 1, ids, 1);
+		// ids = new ArrayList<Integer>();
+		// ids.add(10);
+		// asignarUsuario(16361209, 2, ids, 1);
+		// asignarUsuario(16370885, 2, ids, 1);
+		initPermisos();
+		System.out.println("fin :P");
 	}
 
 	public static void createActividad() {
@@ -96,11 +97,11 @@ public class YoSimceSetup {
 							a.setContactoCargo(cc);
 							a.setFechaInicio(axnxat.getFechaInicio());
 							a.setFechaTermino(axnxat.getFechaTermino());
-							if (axnxat.getActividadTipo().equals(
-									ActividadTipo.APLICACION_DIA_1)) {
+							if (axnxat.getActividadTipo().getNombre()
+									.equals(ActividadTipo.APLICACION_DIA_1)) {
 								a.setDia(1);
-							} else if (axnxat.getActividadTipo().equals(
-									ActividadTipo.APLICACION_DIA_1)) {
+							} else if (axnxat.getActividadTipo().getNombre()
+									.equals(ActividadTipo.APLICACION_DIA_2)) {
 								actividadBase = adao
 										.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 												axnxat.getAplicacionXNivel()

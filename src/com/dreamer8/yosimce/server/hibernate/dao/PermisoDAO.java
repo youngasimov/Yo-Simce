@@ -81,4 +81,16 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 		}
 		return pdtos;
 	}
+
+	public List<String> getClases() {
+		List<String> clases = new ArrayList<String>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT p.clase FROM PERMISO p";
+		Query q = s.createSQLQuery(query);
+		List<Object> os = q.list();
+		for (Object o : os) {
+			clases.add((String) o);
+		}
+		return clases;
+	}
 }

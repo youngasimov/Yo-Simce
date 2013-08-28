@@ -642,6 +642,7 @@ public class Usuario implements java.io.Serializable {
 		udto.setNombres(nombres);
 		udto.setApellidoPaterno(apellidoPaterno);
 		udto.setApellidoMaterno(apellidoMaterno);
+		udto.setTelefono(celular);
 		return udto;
 	}
 

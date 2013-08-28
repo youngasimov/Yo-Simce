@@ -191,7 +191,6 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return sdtos;
 	}
 
-
 	/**
 	 * @permiso getCursos
 	 */
@@ -264,6 +263,9 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return cdtos;
 	}
 
+	/**
+	 * @permiso getDetalleCurso
+	 */
 	@Override
 	public DetalleCursoDTO getDetalleCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
@@ -351,11 +353,73 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return dcdto;
 	}
 
+	/**
+	 * @permiso getCurso
+	 */
 	@Override
 	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		CursoDTO cdto = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getCurso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado un curso.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				CursoDAO cdao = new CursoDAO();
+				Curso c = cdao.getById(idCurso);
+				if (c == null || c.getId() == null) {
+					throw new NullPointerException(
+							"El curso especificado no existe.");
+				}
+				cdto = c.getCursoDTO();
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return cdto;
 	}
 
 }

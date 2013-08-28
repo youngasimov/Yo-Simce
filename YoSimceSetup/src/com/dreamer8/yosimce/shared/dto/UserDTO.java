@@ -2,12 +2,11 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
-
 public class UserDTO extends PersonDTO implements Serializable {
 
-	
 	private String username;
 	private TipoUsuarioDTO tipo;
+	private String telefono;
 
 	public UserDTO() {
 		super();
@@ -28,4 +27,20 @@ public class UserDTO extends PersonDTO implements Serializable {
 	public void setTipo(TipoUsuarioDTO tipo) {
 		this.tipo = tipo;
 	}
+
+	/**
+	 * @return the telefono
+	 */
+	public String getTelefono() {
+		return telefono;
+	}
+
+	/**
+	 * @param telefono
+	 *            the telefono to set
+	 */
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
 }
