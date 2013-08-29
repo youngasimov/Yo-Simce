@@ -8,7 +8,6 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -47,8 +46,10 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	
 	public DetalleCursoViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
-		personasTable.getColumnFormatter().setWidth(0, "130px");
-		contactosTable.getColumnFormatter().setWidth(0, "130px");
+		personasTable.getColumnFormatter().setWidth(0, "30%");
+		personasTable.getColumnFormatter().setWidth(1, "70%");
+		contactosTable.getColumnFormatter().setWidth(0, "30%");
+		contactosTable.getColumnFormatter().setWidth(1, "70%");
 	}
 	
 	@UiHandler("cambiarButton")
@@ -172,16 +173,6 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 		tipoLabel.setText("");
 		personasTable.clear();
 		contactosTable.clear();
-		personasTable.setHTML(0, 0, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Cargo</div>"));
-		personasTable.setHTML(0, 1, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Nombre</div>"));
-		personasTable.setHTML(0, 2, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Teléfono</div>"));
-		personasTable.setHTML(0, 3, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Email</div>"));
-		
-		contactosTable.setHTML(0, 0, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Cargo</div>"));
-		contactosTable.setHTML(0, 1, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Nombre</div>"));
-		contactosTable.setHTML(0, 2, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Teléfono</div>"));
-		contactosTable.setHTML(0, 3, SafeHtmlUtils.fromString("<div style='font-weight: bolder;'>Email</div>"));
-		
 	}
 
 	
