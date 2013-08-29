@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -33,6 +34,9 @@ public interface PlanificacionServiceAsync {
 			AsyncCallback<Boolean> callback);
 
 	void getCargos(AsyncCallback<ArrayList<CargoDTO>> callback);
+
+	void getDocumentoPreviewAgendamientos(Map<String, String> filtros,
+			AsyncCallback<DocumentoDTO> callback);
 
 	
 

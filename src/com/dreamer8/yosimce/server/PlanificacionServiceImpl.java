@@ -27,6 +27,7 @@ import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
@@ -610,6 +611,14 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throw ex;
 		}
 		return cdtos;
+	}
+
+	@Override
+	public DocumentoDTO getDocumentoPreviewAgendamientos(
+			Map<String, String> filtros) throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

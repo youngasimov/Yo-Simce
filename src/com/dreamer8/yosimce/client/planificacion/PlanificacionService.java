@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -31,6 +32,8 @@ public interface PlanificacionService extends RemoteService {
 
 	public Integer getTotalPreviewAgendamientos(Map<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException;
+	
+	public DocumentoDTO getDocumentoPreviewAgendamientos(Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
 
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
 			NoLoggedException, DBException;

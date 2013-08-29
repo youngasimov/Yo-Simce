@@ -10,9 +10,11 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.Range;
 
@@ -96,7 +98,13 @@ public class AgendamientosActivity extends SimceActivity implements
 	
 	@Override
 	public void onExportarClick() {
-		
+		getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus) {
+
+			@Override
+			public void success(DocumentoDTO result) {
+				Window.open(result.getUrl(), "_blank", "");
+			}
+		});
 	}
 	
 	@Override

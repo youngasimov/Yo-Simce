@@ -16,7 +16,7 @@ public class ActividadPreviewDTO implements Serializable{
 	
 	private Integer cursoId;
 	private String nombreEstablecimiento;
-	private String estadoAgenda = "Sin información";
+	private String estadoAgenda;
 	private String rbd;
 	private String tipoEstablecimiento;
 	private String curso;
@@ -29,6 +29,8 @@ public class ActividadPreviewDTO implements Serializable{
 	private Integer alumnosSincronizados;
 	private Integer materialDefectuoso;
 	private Boolean contingencia;
+	private DocumentoDTO documento;
+	
 	/**
 	 * indica si la toma de la prueba esta en riesgo en base a la contingencia detectada
 	 * en visita previa
@@ -197,5 +199,15 @@ public class ActividadPreviewDTO implements Serializable{
 
 	public void setEstadoAgenda(String estadoAgenda) {
 		this.estadoAgenda = estadoAgenda;
+	}
+
+
+	public DocumentoDTO getDocumento() {
+		return documento;
+	}
+
+
+	public void setDocumento(DocumentoDTO documento) {
+		this.documento = documento;
 	}
 }

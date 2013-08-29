@@ -9,8 +9,10 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView.ActividadesPresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.Range;
 
@@ -64,8 +66,13 @@ public class ActividadesActivity extends SimceActivity implements
 
 	@Override
 	public void onExportarClick() {
-		// TODO Auto-generated method stub
+		getFactory().getActividadService().getDocumentoPreviewActividades(filtros,new SimceCallback<DocumentoDTO>(eventBus) {
 
+			@Override
+			public void success(DocumentoDTO result) {
+				Window.open(result.getUrl(), "_blank", "");
+			}
+		});
 	}
 	
 

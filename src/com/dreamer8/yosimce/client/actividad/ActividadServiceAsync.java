@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
@@ -70,5 +71,8 @@ public interface ActividadServiceAsync {
 
 	void updateSincronizacionAlumno(Integer idCurso, SincAlumnoDTO sinc,
 			AsyncCallback<Boolean> callback);
+
+	void getDocumentoPreviewActividades(HashMap<String, String> filtros,
+			AsyncCallback<DocumentoDTO> callback);
 
 }

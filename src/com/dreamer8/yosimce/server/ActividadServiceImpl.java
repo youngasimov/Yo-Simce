@@ -21,6 +21,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
@@ -670,6 +671,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DocumentoDTO getDocumentoPreviewActividades(
+			HashMap<String, String> filtros) throws NoAllowedException,
+			NoLoggedException, DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}

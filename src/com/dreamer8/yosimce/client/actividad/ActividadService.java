@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
@@ -36,6 +37,8 @@ public interface ActividadService extends RemoteService {
 
 	Integer getTotalPreviewActividades(HashMap<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException;
+	
+	DocumentoDTO getDocumentoPreviewActividades(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;;
 
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -84,5 +87,4 @@ public interface ActividadService extends RemoteService {
 
 	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException;
-
 }
