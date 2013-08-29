@@ -25,6 +25,8 @@ public interface AgendarVisitaView extends IsWidget {
 	
 	void setContacto(ContactoDTO contacto);
 	
+	void setDirector(ContactoDTO contacto);
+	
 	void setCargos(ArrayList<CargoDTO> cargos);
 	
 	int getIdEstadoAgendaSeleccionado();
@@ -38,5 +40,6 @@ public interface AgendarVisitaView extends IsWidget {
 		void onCambiarCursoClick();
 		void onModificarAgendaClick();
 		void onEditarContacto(ContactoDTO contacto);
+		void onEditarDirector(ContactoDTO contacto);
 	}
 }

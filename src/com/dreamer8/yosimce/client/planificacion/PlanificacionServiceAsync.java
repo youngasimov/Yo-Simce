@@ -38,6 +38,11 @@ public interface PlanificacionServiceAsync {
 	void getDocumentoPreviewAgendamientos(Map<String, String> filtros,
 			AsyncCallback<DocumentoDTO> callback);
 
+	void getDirector(Integer idCurso, AsyncCallback<ContactoDTO> callback);
+
+	void editarDirector(Integer idCurso, ContactoDTO director,
+			AsyncCallback<Boolean> callback);
+
 	
 
 }

@@ -142,6 +142,7 @@
 				<div class='{style.actions}'>
 					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="editarContactoButton" text="Editar contacto" resource='{res.popup}'/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="editarDirectorButton" text="Editar director" resource='{res.popup}'/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar curso" resource='{res.popup}'/>
 					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
 				</div>

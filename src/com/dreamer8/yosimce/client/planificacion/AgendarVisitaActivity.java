@@ -75,6 +75,14 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				}
 			});
 			
+			getFactory().getPlanificacionService().getDirector(place.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
+
+				@Override
+				public void success(ContactoDTO result) {
+					view.setDirector(result);
+				}
+			});
+			
 			getFactory().getPlanificacionService().getCargos(new SimceCallback<ArrayList<CargoDTO>>(eventBus) {
 
 				@Override
@@ -121,6 +129,17 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			@Override
 			public void success(Boolean result) {
 				view.setContacto(contacto);
+			}
+		});
+	}
+	
+	@Override
+	public void onEditarDirector(final ContactoDTO director) {
+		getFactory().getPlanificacionService().editarDirector(place.getCursoId(), director, new SimceCallback<Boolean>(eventBus) {
+
+			@Override
+			public void success(Boolean result) {
+				view.setContacto(director);
 			}
 		});
 	}
