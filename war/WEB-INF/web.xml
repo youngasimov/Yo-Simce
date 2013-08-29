@@ -4,61 +4,78 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
+	<context-param>
+		<!-- max size of the upload request -->
+		<param-name>maxSize</param-name>
+		<param-value>104857600</param-value>
+	</context-param>
+	<context-param>
+		<!-- Useful in development mode to slow down the uploads in fast networks. 
+			Put the number of milliseconds to sleep in each block received in the server. 
+			false or 0, means don't use slow uploads -->
+		<param-name>slowUploads</param-name>
+		<param-value>false</param-value>
+		<!--<param-value>200</param-value> -->
+	</context-param>
+	<servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<!-- This is the default servlet, it puts files in session -->
+		<servlet-class>com.dreamer8.yosimce.server.UploadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>uploadServlet</servlet-name>
+		<url-pattern>*.gupld</url-pattern>
+	</servlet-mapping>
+
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>loginservice</servlet-name>
-		<servlet-class>com.dreamer8.yosimce.server.LoginServiceImpl
-		</servlet-class>
+		<servlet-class>com.dreamer8.yosimce.server.LoginServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>loginservice</servlet-name>
 		<url-pattern>/yosimce/loginservice</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>generalservice</servlet-name>
-		<servlet-class>com.dreamer8.yosimce.server.GeneralServiceImpl
-		</servlet-class>
+		<servlet-class>com.dreamer8.yosimce.server.GeneralServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>generalservice</servlet-name>
 		<url-pattern>/yosimce/generalservice</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>planificacionservice</servlet-name>
-		<servlet-class>com.dreamer8.yosimce.server.PlanificacionServiceImpl
-		</servlet-class>
+		<servlet-class>com.dreamer8.yosimce.server.PlanificacionServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>planificacionservice</servlet-name>
 		<url-pattern>/yosimce/planificacionservice</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>actividadservice</servlet-name>
-		<servlet-class>com.dreamer8.yosimce.server.ActividadServiceImpl
-		</servlet-class>
+		<servlet-class>com.dreamer8.yosimce.server.ActividadServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>actividadservice</servlet-name>
 		<url-pattern>/yosimce/actividadservice</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>materialservice</servlet-name>
-		<servlet-class>com.dreamer8.yosimce.server.MaterialServiceImpl
-		</servlet-class>
+		<servlet-class>com.dreamer8.yosimce.server.MaterialServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>materialservice</servlet-name>
 		<url-pattern>/yosimce/materialservice</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>administracionservice</servlet-name>
-		<servlet-class>com.dreamer8.yosimce.server.AdministracionServiceImpl
-		</servlet-class>
+		<servlet-class>com.dreamer8.yosimce.server.AdministracionServiceImpl</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>administracionservice</servlet-name>
@@ -70,4 +87,12 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 
+	<servlet>
+		<servlet-name>DownloadServlet</servlet-name>
+		<servlet-class>com.dreamer8.yosimce.server.DownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownloadServlet</servlet-name>
+		<url-pattern>/download</url-pattern>
+	</servlet-mapping>
 </web-app>

@@ -6,11 +6,14 @@ package com.dreamer8.yosimce.server;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.SesionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.*;
@@ -24,7 +27,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.codec.net.QCodec;
+
 import com.dreamer8.yosimce.server.hibernate.pojo.*;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -42,37 +47,29 @@ import org.hibernate.Session;
  */
 public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 
+	public static final String FILES = "Archivos";
+	public static final String FILE_TYPES = "Mimes";
+	public static final String FILE_NAMES = "Nombres";
+
 	/*
-
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			AccessControl ac = getAccessControl();
-			if (ac.isLogged() && ac.isAllowed(className, "getUser")) {
-
-				if ( == null) {
-					throw new NullPointerException(
-							"No se ha especificado un .");
-				}
-
-				s.beginTransaction();
-
-				s.getTransaction().commit();
-			}
-		} catch (HibernateException ex) {
-			System.err.println(ex);
-			HibernateUtil.rollback(s);
-			throw new DBException();
-		} catch (ConsistencyException ex) {
-			HibernateUtil.rollbackActiveOnly(s);
-			throw ex;
-		} catch (NullPointerException ex) {
-			HibernateUtil.rollbackActiveOnly(s);
-			throw ex;
-		}
-		return;
+	 * 
+	 * Session s = HibernateUtil.getSessionFactory().getCurrentSession(); try {
+	 * AccessControl ac = getAccessControl(); if (ac.isLogged() &&
+	 * ac.isAllowed(className, "getUser")) {
+	 * 
+	 * if ( == null) { throw new NullPointerException(
+	 * "No se ha especificado un ."); }
+	 * 
+	 * s.beginTransaction();
+	 * 
+	 * s.getTransaction().commit(); } } catch (HibernateException ex) {
+	 * System.err.println(ex); HibernateUtil.rollback(s); throw new
+	 * DBException(); } catch (ConsistencyException ex) {
+	 * HibernateUtil.rollbackActiveOnly(s); throw ex; } catch
+	 * (NullPointerException ex) { HibernateUtil.rollbackActiveOnly(s); throw
+	 * ex; } return;
 	 */
-	
-	
+
 	/**
 	 * 
 	 * @return
@@ -94,19 +91,19 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 		 * "gestion@araujo.cl"; String password = "arauj_2012"; String port =
 		 * "25";
 		 */
-//		ConfiguracionDAO cdao = new ConfiguracionDAO();
-//		List<Configuracion> cs = cdao.findAll();
-//		Configuracion c = (cs != null && !cs.isEmpty()) ? cs.get(0) : null;
-//		if (c != null) {
-//			String fromAddr = c.getFromAddrSmtp();
-//			String fromName = c.getFromNameSmtp();
-//			String smtp = c.getHostSmtp();
-//			String username = c.getUserSmtp();
-//			String password = c.getPasswordSmtp();
-//			String port = c.getPortSmtp().toString();
-//			sendMail(message, subject, toAddr, fromAddr, fromName, smtp,
-//					username, password, port);
-//		}
+		// ConfiguracionDAO cdao = new ConfiguracionDAO();
+		// List<Configuracion> cs = cdao.findAll();
+		// Configuracion c = (cs != null && !cs.isEmpty()) ? cs.get(0) : null;
+		// if (c != null) {
+		// String fromAddr = c.getFromAddrSmtp();
+		// String fromName = c.getFromNameSmtp();
+		// String smtp = c.getHostSmtp();
+		// String username = c.getUserSmtp();
+		// String password = c.getPasswordSmtp();
+		// String port = c.getPortSmtp().toString();
+		// sendMail(message, subject, toAddr, fromAddr, fromName, smtp,
+		// username, password, port);
+		// }
 	}
 
 	protected void sendMail(String message, String subject, String toAddr,
@@ -143,20 +140,20 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 		 * "gestion@araujo.cl"; String password = "arauj_2012"; String port =
 		 * "25";
 		 */
-//		ConfiguracionDAO cdao = new ConfiguracionDAO();
-//		List<Configuracion> cs = cdao.findAll();
-//		Configuracion c = (cs != null && !cs.isEmpty()) ? cs.get(0) : null;
-//		if (c != null) {
-//			String fromAddr = c.getFromAddrSmtp();
-//			String fromName = c.getFromNameSmtp();
-//			String smtp = c.getHostSmtp();
-//			String username = c.getUserSmtp();
-//			String password = c.getPasswordSmtp();
-//			String port = c.getPortSmtp().toString();
-//			sendMailWithAttachment(message, subject, toAddr, attachmentName,
-//					attachmentPath, attachmentMime, fromAddr, fromName, smtp,
-//					username, password, port);
-//		}
+		// ConfiguracionDAO cdao = new ConfiguracionDAO();
+		// List<Configuracion> cs = cdao.findAll();
+		// Configuracion c = (cs != null && !cs.isEmpty()) ? cs.get(0) : null;
+		// if (c != null) {
+		// String fromAddr = c.getFromAddrSmtp();
+		// String fromName = c.getFromNameSmtp();
+		// String smtp = c.getHostSmtp();
+		// String username = c.getUserSmtp();
+		// String password = c.getPasswordSmtp();
+		// String port = c.getPortSmtp().toString();
+		// sendMailWithAttachment(message, subject, toAddr, attachmentName,
+		// attachmentPath, attachmentMime, fromAddr, fromName, smtp,
+		// username, password, port);
+		// }
 	}
 
 	protected void sendMailWithAttachment(String message, String subject,
@@ -321,5 +318,33 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 		protected PasswordAuthentication getPasswordAuthentication() {
 			return new PasswordAuthentication(username, password);
 		}
+	}
+
+	protected Archivo guardarArchivo(String nombre) {
+		Archivo a = null;
+		if (nombre != null) {
+			HttpSession s = this.getThreadLocalRequest().getSession();
+			Hashtable<String, String> names = (Hashtable<String, String>) s
+					.getAttribute(FILE_NAMES);
+			String field = (names != null) ? names.get(nombre) : null;
+			if (field != null) {
+				Hashtable<String, File> files = (Hashtable<String, File>) s
+						.getAttribute(FILES);
+				File f = (files != null) ? files.get(field) : null;
+				if (f != null) {
+					a = new Archivo();
+					a.setTitulo(nombre);
+					try {
+						a.setRutaArchivo(f.getCanonicalPath());
+					} catch (IOException e) {
+						System.err.println(e);
+					}
+					Hashtable<String, String> types = (Hashtable<String, String>) s
+							.getAttribute(FILE_TYPES);
+					a.setMimeType((types != null) ? types.get(field) : null);
+				}
+			}
+		}
+		return a;
 	}
 }
