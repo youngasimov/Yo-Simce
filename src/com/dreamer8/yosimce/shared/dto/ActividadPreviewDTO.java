@@ -16,6 +16,7 @@ public class ActividadPreviewDTO implements Serializable{
 	
 	private Integer cursoId;
 	private String nombreEstablecimiento;
+	private String estadoAgenda = "Sin información";
 	private String rbd;
 	private String tipoEstablecimiento;
 	private String curso;
@@ -186,5 +187,15 @@ public class ActividadPreviewDTO implements Serializable{
 
 	public void setContingenciaLimitante(Boolean contingenciaLimitante) {
 		this.contingenciaLimitante = contingenciaLimitante;
+	}
+
+
+	public String getEstadoAgenda() {
+		return estadoAgenda;
+	}
+
+
+	public void setEstadoAgenda(String estadoAgenda) {
+		this.estadoAgenda = estadoAgenda;
 	}
 }

@@ -12,27 +12,46 @@
 	<g:HTMLPanel>
 		<table class='{style.panel}'>
 			<tr class='{style.title}'>
+				<td colspan='2'>Estado</td>
+			</tr>
+			<tr>
+				<td>Sin información:</td>
+				<td><g:CheckBox ui:field="estadoSinInformacionBox"/> </td>
+			</tr>
+			<tr>
+				<td>Realizadas:</td>
+				<td><g:CheckBox ui:field="estadoRealisadasBox"/> </td>
+			</tr>
+			<tr>
+				<td>Anuladas:</td>
+				<td><g:CheckBox ui:field="estadoAnuladasBox"/> </td>
+			</tr>
+			<tr class='{style.title}'>
 				<td colspan='2'>Opciones</td>
-			</tr>
-			<tr>
-				<td>No iniciadas o en proceso:</td>
-				<td><g:CheckBox ui:field="noIniciadasBox"/> </td>
-			</tr>
-			<tr>
-				<td>Terminadas:</td>
-				<td><g:CheckBox ui:field="terminadasBox"/> </td>
 			</tr>
 			<tr>
 				<td>Usó material contingencia:</td>
 				<td><g:CheckBox ui:field="contingenciaBox"/> </td>
 			</tr>
 			<tr>
-				<td>Con problemas o contingencia:</td>
+				<td>Con problemas:</td>
 				<td><g:CheckBox ui:field="problemasBox"/> </td>
 			</tr>
 			<tr>
-				<td>Parcial o totalmente sincronizadas:</td>
-				<td><g:CheckBox ui:field="sincronizadasBox"/> </td>
+				<td>Con problemas inhabilitantes:</td>
+				<td><g:CheckBox ui:field="problemasHinabilitantesBox"/> </td>
+			</tr>
+			<tr>
+				<td>No sincronizadas:</td>
+				<td><g:CheckBox ui:field="sincronizadasNulaBox"/> </td>
+			</tr>
+			<tr>
+				<td>Parcialmente sincronizadas:</td>
+				<td><g:CheckBox ui:field="sincronizacionParcialBox"/> </td>
+			</tr>
+			<tr>
+				<td>Totalmente sincronizadas:</td>
+				<td><g:CheckBox ui:field="sincronizacionTotalBox"/> </td>
 			</tr>
 			
 			<tr class='{style.title}'>

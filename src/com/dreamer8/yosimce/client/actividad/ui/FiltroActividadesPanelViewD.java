@@ -18,11 +18,15 @@ public class FiltroActividadesPanelViewD extends Composite {
 			UiBinder<Widget, FiltroActividadesPanelViewD> {
 	}
 	
-	@UiField CheckBox noIniciadasBox;
-	@UiField CheckBox terminadasBox;
+	@UiField CheckBox estadoSinInformacionBox;
+	@UiField CheckBox estadoRealisadasBox;
+	@UiField CheckBox estadoAnuladasBox;
 	@UiField CheckBox contingenciaBox;
-	@UiField CheckBox sincronizadasBox;
 	@UiField CheckBox problemasBox;
+	@UiField CheckBox problemasHinabilitantesBox;
+	@UiField CheckBox sincronizadasNulaBox;
+	@UiField CheckBox sincronizacionParcialBox;
+	@UiField CheckBox sincronizacionTotalBox;
 	@UiField ListBox regionBox;
 	@UiField ListBox comunaBox;
 	@UiField Button aplicarButton;

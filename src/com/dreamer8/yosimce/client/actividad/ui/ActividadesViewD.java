@@ -141,12 +141,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	
 	@Override
 	public void setActividadesNoIniciadas(boolean value) {
-		filtrosPanel.noIniciadasBox.setValue(value);
+		//filtrosPanel.noIniciadasBox.setValue(value);
 	}
 
 	@Override
 	public void setActividadesTerminadas(boolean value) {
-		filtrosPanel.terminadasBox.setValue(value);
+		//filtrosPanel.terminadasBox.setValue(value);
 	}
 
 	@Override
@@ -161,7 +161,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	
 	@Override
 	public void setActividadesSincronizadas(boolean value){
-		filtrosPanel.sincronizadasBox.setValue(value);
+		//filtrosPanel.sincronizadasBox.setValue(value);
 	}
 
 	@Override
@@ -267,11 +267,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public void onClick(ClickEvent event) {
 				ActividadesPlace ap = new ActividadesPlace();
-				ap.setShowActividadesNoInciadas(filtrosPanel.noIniciadasBox.getValue());
-				ap.setShowActividadesTerminadas(filtrosPanel.terminadasBox.getValue());
+				//ap.setShowActividadesNoInciadas(filtrosPanel.noIniciadasBox.getValue());
+				//ap.setShowActividadesTerminadas(filtrosPanel.terminadasBox.getValue());
 				ap.setShowActividadesContingencia(filtrosPanel.contingenciaBox.getValue());
 				ap.setShowActividadesProblema(filtrosPanel.problemasBox.getValue());
-				ap.setShowActividadesSincronizadas(filtrosPanel.sincronizadasBox.getValue());
+				//ap.setShowActividadesSincronizadas(filtrosPanel.sincronizadasBox.getValue());
 				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
 					ap.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
 				}
@@ -331,16 +331,30 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		dataGrid.addColumn(tipoColumn,"Tipo");
 		dataGrid.setColumnWidth(tipoColumn, "100px");
 		
+		Column<ActividadPreviewDTO,String> estadoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getEstadoAgenda();
+			}
+		};
+		estadoColumn.setSortable(false);
+		dataGrid.addColumn(estadoColumn,"Estado");
+		dataGrid.setColumnWidth(estadoColumn, "120px");
+		
 		Column<ActividadPreviewDTO,Number> cuestionarioColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
+				if(o.getCuestionariosPadresApoderadosEntregados() <= 0){
+					return 0;
+				}
 				float value =100 * ((float)o.getCuestionariosPadresApoderadosRecibidos())/((float)o.getCuestionariosPadresApoderadosEntregados());
 				return value;
 			}
 		};
 		SafeHtmlBuilder b = new SafeHtmlBuilder();
-		b.appendHtmlConstant("Cuestionarios<br />Recibidos vs Entregados");
+		b.appendHtmlConstant("Cuestionarios recibidos %");
 		cuestionarioColumn.setSortable(false);
 		dataGrid.addColumn(cuestionarioColumn,b.toSafeHtml());
 		dataGrid.setColumnWidth(cuestionarioColumn, "150px");
@@ -349,12 +363,15 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
+				if(o.getAlumnosTotales() <= 0){
+					return 0;
+				}
 				float value =100 * ((float)o.getAlumnosEvaluados())/((float)o.getAlumnosTotales());
 				return value;
 			}
 		};
 		b = new SafeHtmlBuilder();
-		b.appendHtmlConstant("Asistencia<br />Evaluados vs Total");
+		b.appendHtmlConstant("Asistencia %");
 		asistenciaColumn.setSortable(false);
 		dataGrid.addColumn(asistenciaColumn,b.toSafeHtml());
 		dataGrid.setColumnWidth(asistenciaColumn, "150px");
@@ -363,12 +380,15 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
+				if(o.getAlumnosEvaluados()<=0){
+					return 0;
+				}
 				float value = 100 * ((float)o.getAlumnosSincronizados())/((float)o.getAlumnosEvaluados());
 				return value;
 			}
 		};
 		b = new SafeHtmlBuilder();
-		b.appendHtmlConstant("Sinc<br />Sincronizados vs Evaluados");
+		b.appendHtmlConstant("Sincronizados %");
 		sincronizacionColumn.setSortable(false);
 		dataGrid.addColumn(sincronizacionColumn,b.toSafeHtml());
 		dataGrid.setColumnWidth(sincronizacionColumn, "150px");

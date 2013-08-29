@@ -95,7 +95,7 @@
 						<li><g:Anchor ui:field="formularioActividadActionItem" text="Formulario de actividad"/></li>
 						<li><g:Anchor ui:field="sincronizacionActionItem" text="Sincronización"/></li>
 						<li><g:Anchor ui:field="materialDefectuosoActionItem" text="Material defectuoso"/></li>
-						<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Aprobar supervisores"/></li>
+						<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Evaluación supervisores"/></li>
 					</ul>
 				</li>
 				<li ui:field="material">
