@@ -623,6 +623,9 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		return cdtos;
 	}
 
+	/**
+	 * @permiso getDocumentoPreviewAgendamientos
+	 */
 	@Override
 	public DocumentoDTO getDocumentoPreviewAgendamientos(
 			Map<String, String> filtros) throws NoAllowedException,

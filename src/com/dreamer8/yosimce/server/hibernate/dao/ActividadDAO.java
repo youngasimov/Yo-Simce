@@ -498,13 +498,13 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					aplic = null;
 				}
 				if (ActividadTipo.VISITA_PREVIA.equals((String) o[7])) {
-					visitaPrevia = ";" + ((Date) o[8]) + ";"
-							+ ((String) o[10]) + ";" + ((String) o[9]);
-				} else if (ActividadTipo.APLICACION_DIA_1.equals((String) o[7])) {
-					aplic = ";" + ((Date) o[8]) + ";" + ((String) o[10])
+					visitaPrevia = ";" + ((Date) o[8]) + ";" + ((String) o[10])
 							+ ";" + ((String) o[9]);
+				} else if (ActividadTipo.APLICACION_DIA_1.equals((String) o[7])) {
+					aplic = ";" + ((Date) o[8]) + ";" + ((String) o[10]) + ";"
+							+ ((String) o[9]);
 				}
-				if(visitaPrevia != null && aplic != null){
+				if (visitaPrevia != null && aplic != null) {
 					linea += visitaPrevia + aplic + contacto;
 					csv.add(linea);
 				}
@@ -676,7 +676,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			String where = "";
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
-					if (!where.equals("")) {
+					if (!where.equals("")
+							&& (key.equals(ActividadService.FKEY_COMUNA) || key
+									.equals(ActividadService.FKEY_REGION))) {
 						where += " AND ";
 					}
 					if (key.equals(ActividadService.FKEY_COMUNA)) {
@@ -783,7 +785,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Date fecha = null;
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
-					if (!where.equals("")) {
+					if (!where.equals("")
+							&& (key.equals(ActividadService.FKEY_COMUNA) || key
+									.equals(ActividadService.FKEY_REGION))) {
 						where += " AND ";
 					}
 					if (key.equals(ActividadService.FKEY_COMUNA)) {

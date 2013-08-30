@@ -77,4 +77,13 @@ public class StringUtils {
     public static Boolean isInt(String str){
         return str.matches("^[0-9]+$");
     }
+    
+    public static String getExtension(String ruta){
+        Integer index = ruta.lastIndexOf(".");
+        String extension = "";
+        if(index > 0){
+            extension = ruta.substring(index);
+        }
+        return extension;
+    }
 }

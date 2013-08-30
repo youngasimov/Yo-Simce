@@ -32,7 +32,7 @@ import org.hibernate.Session;
  */
 public class AccessControl {
 
-	public static final String TOKEN_COOKIE_NAME = "PHPSESSID";
+	public static final String TOKEN_COOKIE_NAME = "yosimce";
 	public static final String APLICACION_COOKIE_NAME = "a";
 	public static final String NIVEL_COOKIE_NAME = "n";
 	public static final String ACTIVIDAD_TIPO_COOKIE_NAME = "t";

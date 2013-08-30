@@ -11,10 +11,16 @@ import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadXDocumentoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.DocumentoEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.IncidenciaTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.MotivoFallaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.IncidenciaTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.MotivoFalla;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
@@ -397,8 +403,71 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<TipoContingenciaDTO> tcdto = new ArrayList<TipoContingenciaDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getTiposContingencia")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				IncidenciaTipoDAO itdao = new IncidenciaTipoDAO();
+				IncidenciaTipo it = itdao
+						.findByNombre(IncidenciaTipo.CONTINGENCIA);
+				if (it != null) {
+					MotivoFallaDAO mfdao = new MotivoFallaDAO();
+					List<MotivoFalla> mfs = mfdao.findByIdIncidenciaTipo(it
+							.getId());
+
+					if (mfs != null && !mfs.isEmpty()) {
+						for (MotivoFalla motivoFalla : mfs) {
+							tcdto.add(motivoFalla.getTipoContingenciaDTO());
+						}
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return tcdto;
 	}
 
 	/**
@@ -639,8 +708,65 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida()
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<EstadoSincronizacionDTO> esdtos = new ArrayList<EstadoSincronizacionDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className,
+							"getEstadosSincronizacionFallida")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+				List<DocumentoEstado> des = dedao.findForSincronizacionFallida();
+				if (des != null && !des.isEmpty()) {
+					for (DocumentoEstado documentoEstado : des) {
+						esdtos.add(documentoEstado.getEstadoSincrinizacion());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return esdtos;
 	}
 
 	/**
@@ -650,8 +776,68 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	public ArrayList<MaterialDefectuosoDTO> getMaterialDefectuoso(
 			Integer idCurso) throws NoAllowedException, NoLoggedException,
 			DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<MaterialDefectuosoDTO> mddtos = new ArrayList<MaterialDefectuosoDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getMaterialDefectuoso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				/**********
+				 * 
+				 * 
+				 * 
+				 * BORRAR DESPUÉS
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 */
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return mddtos;
 	}
 
 	/**
@@ -675,12 +861,81 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getDocumentoPreviewActividades
+	 */
 	@Override
 	public DocumentoDTO getDocumentoPreviewActividades(
 			HashMap<String, String> filtros) throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+		
+
+		DocumentoDTO ddto = new DocumentoDTO();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getDocumentoPreviewActividades")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				/**********
+				 * 
+				 * 
+				 * 
+				 * BORRAR DESPUÉS
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 */
+
+				if (true) {
+					throw new NullPointerException(
+							"No se ha podido generar el archivo");
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return ddto;
 	}
 
 	/**
@@ -689,8 +944,72 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public DocumentoDTO getDocumentoAlumnos(HashMap<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		DocumentoDTO ddto = new DocumentoDTO();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getDocumentoAlumnos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				/**********
+				 * 
+				 * 
+				 * 
+				 * BORRAR DESPUÉS
+				 * 
+				 * 
+				 * 
+				 * 
+				 * 
+				 */
+
+				if (true) {
+					throw new NullPointerException(
+							"No se han encontrado alumnos");
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return ddto;
 	}
 
 	/**
@@ -699,8 +1018,64 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion()
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<EstadoSincronizacionDTO> esdtos = new ArrayList<EstadoSincronizacionDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getEstadosSincronizacion")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+				List<DocumentoEstado> des = dedao.findForSincronizacion();
+				if (des != null && !des.isEmpty()) {
+					for (DocumentoEstado documentoEstado : des) {
+						esdtos.add(documentoEstado.getEstadoSincrinizacion());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return esdtos;
 	}
 
 }

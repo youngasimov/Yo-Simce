@@ -18,6 +18,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
@@ -87,8 +88,11 @@ public class DownloadServlet extends HttpServlet {
 
 		if (f != null) {
 			response.setContentType(a.getMimeType());
-			response.setHeader("Content-Disposition", "attachment; filename=\""
-					+ a.getTitulo() + "\"");
+			response.setHeader(
+					"Content-Disposition",
+					"attachment; filename=\"" + a.getTitulo()
+							+ StringUtils.getExtension(a.getRutaArchivo())
+							+ "\"");
 			FileInputStream fis = new FileInputStream(f);
 			IOUtils.copy(fis, response.getOutputStream());
 		} else {

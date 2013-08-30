@@ -141,7 +141,7 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void notLogged(){
-		if(Window.Location.getPath().contains("demo")){
+//		if(Window.Location.getPath().contains("demo")){
 			LoginView login = new LoginView();
 			login.setPresenter(new LoginView.LoginPresenter() {
 				
@@ -163,8 +163,8 @@ public class YoSimce implements EntryPoint {
 				}
 			});
 			panel.setWidget(login);
-		}else{
-			Window.open("http://www.yosimce.cl", "_self", "");
-		}
+//		}else{
+//			Window.open("http://www.yosimce.cl", "_self", "");
+//		}
 	}
 }
