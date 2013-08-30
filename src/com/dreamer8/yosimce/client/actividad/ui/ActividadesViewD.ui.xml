@@ -15,7 +15,7 @@
 		top: 0px;
 		left: 0px;
 		padding-left: 10px;
-		min-width: 1010px;
+		min-width: 800px;
 	}
 	
 	
@@ -29,16 +29,18 @@
 	.title {
 		display:inline-block;
 		position: relative;
-		height: 50px;
+		height: 38px;
 		float: left;
 		font-size: 26px;
+		margin-top: 7px;
 	}
 	.actions{
 		display:inline-block;
 		position: relative;
-		height: 50px;
+		height: 38px;
 		float: left;
 		margin-left: 10px;
+		margin-top: 7px;
 	}
 	
 	.action{
@@ -55,14 +57,16 @@
 	}
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
+		<g:north size="6">
 			<g:ScrollPanel addStyleNames='{style.scroll}'>
-			<g:HTMLPanel addStyleNames='{style.header}'>
+			<g:HTMLPanel addStyleNames='{style.header}' ui:field="header">
 				<div class='{style.title}'>Actividades</div>
 				<div class='{style.actions}'>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros" resource='{res.popup}'/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar actividades" resource='{res.gear}'/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarAlumnosButton" text="Exportar lista alumnos" resource='{res.gear}'/>
+				</div>
+				<div class='{style.actions}'>
 					|<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
 					<g:Button addStyleNames='{style.action}' ui:field="formularioButton" text="Formulario"/>
 					<g:Button addStyleNames='{style.action}' ui:field="sincronizacionButton" text="Sincronización"/>

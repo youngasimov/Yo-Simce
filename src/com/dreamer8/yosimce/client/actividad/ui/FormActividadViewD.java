@@ -14,6 +14,7 @@ import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.ValueTextBox;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -36,6 +37,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
@@ -228,14 +230,18 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField DecoratorPanel evaluacionPanel;
 	@UiField ScoreSelector procedimientoScoreSelector;
 	@UiField(provided=true) SingleUploader uploader;
+	@UiField Anchor fileLink;
 	
 	private FormActividadPresenter presenter;
 	private ArrayList<TipoContingenciaDTO> tiposContingencia;
 	private ExaminadorSelectorViewD examinadorSelector;
 	private boolean uploading;
+	private boolean fileUploaded;
 	private ArrayList<EvaluacionExaminador> evaluaciones;
+	private String file;
 	
 	public FormActividadViewD() {
+		file = "";
 		uploader = new SingleUploader();
 		uploader.setAutoSubmit(true);
 		inicioActividadBox = new TimeBox(new Date(0),false);
@@ -246,6 +252,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		examinadorSelector = new ExaminadorSelectorViewD();
 		estadoBox.addItem("seleccione estado actividad","-1");
 		uploading = false;
+		fileUploaded= false;
 		evaluaciones = new ArrayList<FormActividadViewD.EvaluacionExaminador>();
 		
 		
@@ -257,6 +264,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			@Override
 			public void onStart(IUploader uploader) {
 				uploading = true;
+				fileUploaded = false;
 			}
 		});
 		
@@ -266,7 +274,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			public void onFinish(IUploader uploader) {
 				uploading = false;
 				if(uploader.getStatus().equals(IUploadStatus.Status.SUCCESS)){
-					presenter.onUploadFile(uploader.getFileName());
+					fileUploaded = true;
+					file = uploader.getFileName();
 				}
 			}
 		});
@@ -325,6 +334,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		return uploading;
 	}
 
+	@Override
+	public boolean isFileUploaded() {
+		return fileUploaded;
+	}
+	
 	@Override
 	public void setPresenter(FormActividadPresenter presenter) {
 		this.presenter = presenter;
@@ -569,6 +583,25 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setEvaluacionGeneral(Integer evaluacion) {
 		procedimientoScoreSelector.setValue(evaluacion);
+	}
+	
+	@Override
+	public String getUploadFile() {
+		return file;
+	}
+	
+	@Override
+	public void setHyperlink(DocumentoDTO documento) {
+		fileLink.setTarget("_blank");
+		if(documento == null || documento.getUrl() == null || documento.getUrl().equals("")){
+			fileLink.setHref("");
+			fileLink.setText("");
+			fileLink.setVisible(false);
+		}else{
+			fileLink.setHref(documento.getUrl());
+			fileLink.setText(documento.getName());
+			fileLink.setVisible(true);
+		}
 	}
 
 

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -59,7 +60,11 @@ public interface FormActividadView extends IsWidget {
 	void setEvaluacionGeneral(Integer evaluacion);
 	Integer getEvaluacionGeneral();
 	
+	String getUploadFile();
+	void setHyperlink(DocumentoDTO documento);
+	
 	boolean isUploading();
+	boolean isFileUploaded();;
 	
 	void enableAddContingencia(boolean enable);
 	void showSeccionExaminador(boolean show);
@@ -73,6 +78,5 @@ public interface FormActividadView extends IsWidget {
 		void onRemoveContingecia(ContingenciaDTO contingencia);
 		void onEstadoChange(Integer estadoId);
 		void getExaminadoresSuplentes(String Search);
-		void onUploadFile(String file);
 	}
 }

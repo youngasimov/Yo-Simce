@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadPresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
@@ -75,9 +76,7 @@ public class FormActividadActivity extends SimceActivity implements
 			selector.show();
 		}else{
 			
-			if(!getPermisos().get("ActividadService").contains("getTiposContingencia")){
-				view.enableAddContingencia(false);
-			}else{
+			if(getPermisos().get("ActividadService").contains("getTiposContingencia")){
 				view.enableAddContingencia(true);
 				getFactory().getActividadService().getTiposContingencia(place.getIdCurso(), new SimceCallback<ArrayList<TipoContingenciaDTO>>(eventBus) {
 	
@@ -88,6 +87,8 @@ public class FormActividadActivity extends SimceActivity implements
 						view.setTiposContingencia(tipos);
 					}
 				});
+			}else{
+				view.enableAddContingencia(false);
 			}
 			if(getPermisos().get("ActividadService").contains("getEvaluacionExaminadores")){
 				getFactory().getActividadService().getEvaluacionExaminadores(place.getIdCurso(), new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus) {
@@ -140,6 +141,11 @@ public class FormActividadActivity extends SimceActivity implements
 
 	@Override
 	public void guardarFormulario() {
+		if(view.isUploading()){
+			//error
+			return;
+		}
+		
 		a.setInicioActividad(view.getInicioActividad());
 		a.setInicioPrueba(view.getInicioPrueba());
 		a.setTerminoPrueba(view.getTerminoPrueba());
@@ -154,6 +160,12 @@ public class FormActividadActivity extends SimceActivity implements
 		a.setEvaluacionProcedimientos(view.getEvaluacionGeneral());
 		a.setContingencias(contingencias);
 		
+		if(view.isFileUploaded()){
+			DocumentoDTO d = new DocumentoDTO();
+			d.setName(view.getUploadFile());
+			a.setDocumento(d);
+			
+		}
 		if(getPermisos().get("ActividadService").contains("actualizarActividad")){
 			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus) {
 	
@@ -210,11 +222,6 @@ public class FormActividadActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void onUploadFile(String file) {
-		a.setFile(file);
-	}
-	
-	@Override
 	public void onEstadoChange(Integer estadoId) {
 		EstadoAgendaDTO selected = null;
 		for(EstadoAgendaDTO estado:estados){
@@ -224,7 +231,7 @@ public class FormActividadActivity extends SimceActivity implements
 			}
 		}
 		a.setEstadoAplicacion(selected);
-		view.showForm(selected.getEstado().contains(EstadoAgendaDTO.REALIZADA));
+		view.showForm(selected.getEstado().equals(EstadoAgendaDTO.REALIZADA));
 	}
 	
 	@Override
@@ -246,8 +253,9 @@ public class FormActividadActivity extends SimceActivity implements
 		}else if(!estados.contains(a.getEstadoAplicacion())){
 			estados.add(a.getEstadoAplicacion());
 		}
+		view.setEstados(estados);
 		view.selectEstado(a.getEstadoAplicacion());
-		
+		onEstadoChange(a.getEstadoAplicacion().getId());
 		this.contingencias =a.getContingencias();
 		if(tipos != null && contingencias != null && !contingencias.isEmpty()){
 			for(ContingenciaDTO c: contingencias){
@@ -261,18 +269,19 @@ public class FormActividadActivity extends SimceActivity implements
 			a.setContingencias( new ArrayList<ContingenciaDTO>());
 		}
 		view.setContingencias(a.getContingencias());
-		view.setInicioActividad(a.getInicioActividad());
-		view.setInicioPrueba(a.getInicioPrueba());
-		view.setTerminoPrueba(a.getTerminoPrueba());
-		view.setTotalAlumnos(a.getAlumnosTotal());
-		view.setAlumnosAusentes(a.getAlumnosAusentes());
-		view.setAlumnosDS(a.getAlumnosDs());
-		view.setCuestionariosTotales(a.getTotalCuestionarios());
-		view.setCuestionariosEntregados(a.getCuestionariosEntregados());
-		view.setCuestionariosRecibidos(a.getCuestionariosRecibidos());
-		view.setUsoMaterialContingencia(a.getMaterialContingencia());
-		view.setDetalleUsoMaterialContingencia(a.getDetalleUsoMaterialContingencia());
-		view.setEvaluacionGeneral(a.getEvaluacionProcedimientos());
+		if(a.getInicioActividad()!=null){view.setInicioActividad(a.getInicioActividad());}
+		if(a.getInicioPrueba()!=null){view.setInicioPrueba(a.getInicioPrueba());}
+		if(a.getTerminoPrueba()!=null){view.setTerminoPrueba(a.getTerminoPrueba());}
+		if(a.getAlumnosTotal()!=null){view.setTotalAlumnos(a.getAlumnosTotal());}
+		if(a.getAlumnosTotal()!=null){view.setAlumnosAusentes(a.getAlumnosAusentes());}
+		if(a.getAlumnosDs()!=null){view.setAlumnosDS(a.getAlumnosDs());}
+		if(a.getTotalCuestionarios()!=null){view.setCuestionariosTotales(a.getTotalCuestionarios());}
+		if(a.getCuestionariosEntregados()!=null){view.setCuestionariosEntregados(a.getCuestionariosEntregados());}
+		if(a.getCuestionariosRecibidos()!=null){view.setCuestionariosRecibidos(a.getCuestionariosRecibidos());}
+		if(a.getMaterialContingencia()!=null){view.setUsoMaterialContingencia(a.getMaterialContingencia());}
+		if(a.getDetalleUsoMaterialContingencia()!=null){view.setDetalleUsoMaterialContingencia(a.getDetalleUsoMaterialContingencia());}
+		if(a.getEvaluacionProcedimientos()!=null){view.setEvaluacionGeneral(a.getEvaluacionProcedimientos());}
+		view.setHyperlink(a.getDocumento());
 		onEstadoChange(a.getEstadoAplicacion().getId());
 	}
 	

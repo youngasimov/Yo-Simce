@@ -160,7 +160,7 @@
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>
 							<tr>
-								<th colspan='2'>Estado de la aplicación</th>
+								<th colspan='2'>Estado de la actividad</th>
 							</tr>
 							<tr>
 								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la aplicación' /> </td>
@@ -203,7 +203,7 @@
 								<td> <e:TimeBox ui:field="inicioPruebaBox" /> </td>
 							</tr>
 							<tr>
-								<td><my:HelperLabel text='Termino de prueba:' help='Indique la hora en que el último alumno entregó la prueba'/></td>
+								<td><my:HelperLabel text='Termino de prueba o visita:' help='Indique la hora en que el último alumno entregó la prueba o, en caso de realizar la vista previa, cuando usted se retiró de la sala'/></td>
 								<td> <e:TimeBox ui:field="terminoPruebaBox" /> </td>
 							</tr>
 						</table>
@@ -259,7 +259,7 @@
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>
 							<tr>
-								<th colspan='2'> Contingencias y eventualidades </th>
+								<th colspan='2'> Uso de material de contingencia </th>
 							</tr>
 							
 							<tr>
@@ -279,16 +279,19 @@
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>
 							<tr>
-								<th colspan='2'> Evaluación y control</th>
+								<th colspan='2'> Evaluación y formularios</th>
 							</tr>
 							
 							<tr>
-								<td><my:HelperLabel text='Procedimientos:' help='Evalue los procedimientos, procesos y formas estandar de operar en una escala de 0 a 5, donde 0 indica procedimiento y procesos inutiles y obstructivos, y 5 procedimientos y procesos muy útiles y significativos para la correcta aplicación de la prueba '/></td>
+								<td><my:HelperLabel text='Evaluación procedimientos:' help='Evalue los procedimientos, procesos y formas estandar de operar en una escala de 0 a 5, donde 0 indica procedimiento y procesos inutiles y obstructivos, y 5 procedimientos y procesos muy útiles y significativos para la correcta aplicación de la prueba '/></td>
 								<td> <my:ScoreSelector ui:field="procedimientoScoreSelector" /></td>
 							</tr>
 							<tr>
 								<td><my:HelperLabel text='Formulario de control:' help='Adjunte el formulario de control utilizado para llenar los datos anteriores'/></td>
 								<td> <u:SingleUploader  ui:field="uploader" /> </td>
+							</tr>
+							<tr>
+								<td> <g:Anchor ui:field="fileLink"/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

@@ -35,6 +35,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
@@ -51,6 +52,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			UiBinder<Widget, ActividadesViewD> {
 	}
 
+	@UiField HTMLPanel header; 
 	@UiField ImageButton filtrosButton;
 	@UiField ImageButton exportarButton;
 	@UiField ImageButton exportarAlumnosButton;
