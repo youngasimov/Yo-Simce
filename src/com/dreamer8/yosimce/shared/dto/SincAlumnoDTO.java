@@ -26,7 +26,8 @@ public class SincAlumnoDTO implements Serializable {
 	private String rut;
 	private String tipoAlumno;
 	private String idPendrive;
-	private Boolean sincronizado;
+	private EstadoSincronizacionDTO estado;
+	private Boolean entregoFormulario;
 	private String comentario;
 	
 	//para uso dentro de la tabla
@@ -77,12 +78,13 @@ public class SincAlumnoDTO implements Serializable {
 	public void setIdPendrive(String idPendrive) {
 		this.idPendrive = idPendrive;
 	}
-	public Boolean getSincronizado() {
-		return sincronizado;
+
+	public EstadoSincronizacionDTO getEstado() {
+		return estado;
 	}
 
-	public void setSincronizado(Boolean sincronizado) {
-		this.sincronizado = sincronizado;
+	public void setEstado(EstadoSincronizacionDTO estado) {
+		this.estado = estado;
 	}
 
 	public String getComentario() {
@@ -90,6 +92,14 @@ public class SincAlumnoDTO implements Serializable {
 	}
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+
+	public Boolean getEntregoFormulario() {
+		return entregoFormulario;
+	}
+
+	public void setEntregoFormulario(Boolean entregoFormulario) {
+		this.entregoFormulario = entregoFormulario;
 	}
 
 	public int getSinc() {

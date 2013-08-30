@@ -75,4 +75,7 @@ public interface ActividadServiceAsync {
 	void getDocumentoPreviewActividades(HashMap<String, String> filtros,
 			AsyncCallback<DocumentoDTO> callback);
 
+	void getEstadosSincronizacion(
+			AsyncCallback<ArrayList<EstadoSincronizacionDTO>> callback);
+
 }

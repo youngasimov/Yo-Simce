@@ -87,4 +87,6 @@ public interface ActividadService extends RemoteService {
 
 	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException;
+	
+	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion() throws NoAllowedException, NoLoggedException, DBException;
 }

@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView.SincronizacionPresenter;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
@@ -27,6 +28,8 @@ public class SincronizacionActivity extends SimceActivity implements
 	private EventBus eventBus;
 	private ArrayList<SincAlumnoDTO> alumnos;
 	private CursoSelector selector;
+	
+	private ArrayList<EstadoSincronizacionDTO> estados;
 	
 	public SincronizacionActivity(ClientFactory factory, SincronizacionPlace place,
 			HashMap<String, ArrayList<String>> permisos) {
@@ -72,6 +75,18 @@ public class SincronizacionActivity extends SimceActivity implements
 				});
 			}
 			
+			if(getPermisos().get("GeneralService").contains("getEstadosSincronizacion")){
+				getFactory().getActividadService().getEstadosSincronizacion(new SimceCallback<ArrayList<EstadoSincronizacionDTO>>(eventBus) {
+
+					@Override
+					public void success(
+							ArrayList<EstadoSincronizacionDTO> result) {
+						estados = result;
+						view.setEstadosSincronizacion(estados);
+					}
+				});
+			}
+			
 			if(getPermisos().get("ActividadService").contains("getSincronizacionesCurso")){
 				view.setGuardarButtonEnabled(true);
 				getFactory().getActividadService().getSincronizacionesCurso(place.getIdCurso(), new SimceCallback<ArrayList<SincAlumnoDTO>>(eventBus) {
@@ -82,15 +97,14 @@ public class SincronizacionActivity extends SimceActivity implements
 						for(SincAlumnoDTO x:alumnos){
 							x.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
 						}
-						view.getDataDisplay().setRowCount(alumnos.size());
-						view.getDataDisplay().setRowData(0, alumnos);
+						view.setAlumnos(alumnos);
 						view.setTotalALumnos(alumnos.size());
 					}
 					
 					@Override
 					public void failure(Throwable caught) {
 						super.failure(caught);
-						view.getDataDisplay().setRowCount(0);
+						view.setAlumnos(new ArrayList<SincAlumnoDTO>());
 						view.setTotalALumnos(0);
 					}
 				});
@@ -111,12 +125,18 @@ public class SincronizacionActivity extends SimceActivity implements
 				}
 			});
 			
-			view.setEstadoFieldUpdater(new FieldUpdater<SincAlumnoDTO, Boolean>() {
+			view.setEstadoFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
 	
 				@Override
-				public void update(int index, SincAlumnoDTO object, Boolean value) {
-					object.setSincronizado(value);
-					sinc(object);
+				public void update(int index, SincAlumnoDTO object, String value) {
+					for(EstadoSincronizacionDTO e: estados){
+						if(e.getNombreEstado().equals(value)){
+							object.setEstado(e);
+							sinc(object);
+							return;
+						}
+					}
+					
 				}
 			});
 			
@@ -126,6 +146,16 @@ public class SincronizacionActivity extends SimceActivity implements
 				public void update(int index, SincAlumnoDTO object, String value) {
 					object.setComentario(value);
 					sinc(object);
+				}
+			});
+			
+			view.setFormFieldUpdater(new FieldUpdater<SincAlumnoDTO, Boolean>() {
+
+				@Override
+				public void update(int index, SincAlumnoDTO object,
+						Boolean value) {
+					object.setEntregoFormulario(value);
+					
 				}
 			});
 		}else{

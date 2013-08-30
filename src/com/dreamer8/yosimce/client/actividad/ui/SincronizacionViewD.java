@@ -1,14 +1,18 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import java.util.ArrayList;
+
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ImageCell;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
@@ -25,7 +29,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.HasData;
 
 public class SincronizacionViewD extends Composite implements
 		SincronizacionView {
@@ -45,10 +48,14 @@ public class SincronizacionViewD extends Composite implements
 	@UiField(provided = true) DataGrid<SincAlumnoDTO> dataGrid;
 	@UiField HTML alumnosHtml;
 
+	
+	private ArrayList<SincAlumnoDTO> alumnos;
+	private ArrayList<EstadoSincronizacionDTO> estados;
 	private SincronizacionPresenter presenter;
 	private Column<SincAlumnoDTO, String> materialColumn;
-	private Column<SincAlumnoDTO, Boolean> estadoColumn;
+	private Column<SincAlumnoDTO, String> estadoColumn;
 	private Column<SincAlumnoDTO, String> comentarioColumn;
+	private Column<SincAlumnoDTO, Boolean> formColumn;
 	private CursoDTO curso;
 
 	public SincronizacionViewD() {
@@ -91,6 +98,16 @@ public class SincronizacionViewD extends Composite implements
 	}
 	
 	@Override
+	public void setEstadosSincronizacion(
+			ArrayList<EstadoSincronizacionDTO> estados) {
+		this.estados = estados;
+		buildTable();
+		if(alumnos!= null){
+			setAlumnos(alumnos);
+		}
+	}
+	
+	@Override
 	public void setGuardarButtonEnabled(boolean enabled) {
 		guardarButton.setEnabled(enabled);
 	}
@@ -119,8 +136,15 @@ public class SincronizacionViewD extends Composite implements
 
 	@Override
 	public void setEstadoFieldUpdater(
-			FieldUpdater<SincAlumnoDTO, Boolean> updater) {
+			FieldUpdater<SincAlumnoDTO, String> updater) {
+		
+		
 		estadoColumn.setFieldUpdater(updater);
+	}
+	
+	@Override
+	public void setFormFieldUpdater(FieldUpdater<SincAlumnoDTO, Boolean> updater) {
+		formColumn.setFieldUpdater(updater);
 	}
 
 	@Override
@@ -130,8 +154,16 @@ public class SincronizacionViewD extends Composite implements
 	}
 
 	@Override
-	public HasData<SincAlumnoDTO> getDataDisplay() {
-		return dataGrid;
+	public void setAlumnos(ArrayList<SincAlumnoDTO> alumnos) {
+		this.alumnos = alumnos;
+		if(estados == null){
+			return;
+		}
+		dataGrid.setPageSize(alumnos.size()+1);
+		dataGrid.setPageStart(0);
+		dataGrid.setRowCount(alumnos.size());
+		dataGrid.setVisibleRange(0, alumnos.size());
+		dataGrid.setRowData(alumnos);
 	}
 
 	@Override
@@ -222,13 +254,29 @@ public class SincronizacionViewD extends Composite implements
 		};
 		dataGrid.addColumn(materialColumn, "id dispositivo");
 		
-		estadoColumn = new Column<SincAlumnoDTO, Boolean>(new CheckboxCell()) {
+		if(estados != null){
+			ArrayList<String> selection = new ArrayList<String>();
+			for(EstadoSincronizacionDTO e:estados){
+				selection.add(e.getNombreEstado());
+			}
+			
+			estadoColumn = new Column<SincAlumnoDTO, String>(new SelectionCell(selection)) {
+				@Override
+				public String getValue(SincAlumnoDTO o) {
+					return o.getEstado().getNombreEstado();
+				}
+			};
+			dataGrid.addColumn(estadoColumn, "Estado");
+		}
+		
+		formColumn = new Column<SincAlumnoDTO, Boolean>(new CheckboxCell()) {
+
 			@Override
 			public Boolean getValue(SincAlumnoDTO o) {
-				return o.getSincronizado();
+				return o.getEntregoFormulario();
 			}
 		};
-		dataGrid.addColumn(estadoColumn, "Sincronizado");
+		dataGrid.addColumn(formColumn, "Formulario P. y A.");
 		
 		comentarioColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
 			@Override
@@ -243,5 +291,6 @@ public class SincronizacionViewD extends Composite implements
 	public void clear() {
 		establecimientoSeleccionado.setText("");
 		dataGrid.setRowCount(0);
+		alumnos = null;
 	}
 }
