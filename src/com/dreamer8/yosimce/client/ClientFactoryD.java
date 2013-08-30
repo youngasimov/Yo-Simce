@@ -58,7 +58,7 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ClientFactoryD implements ClientFactory {
 	
-	private static final boolean TESTING = true;
+	public static final boolean TESTING = false;
 
 	private final EventBus eventBus = new SimpleEventBus();
 	private final PlaceController placeController = new PlaceController(eventBus);

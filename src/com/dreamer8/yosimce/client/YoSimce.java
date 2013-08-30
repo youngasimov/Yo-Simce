@@ -141,30 +141,30 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void notLogged(){
-		
-		//Window.open("http://www.yosimce.cl", "_self", "");
-		//return;
-		
-		LoginView login = new LoginView();
-		login.setPresenter(new LoginView.LoginPresenter() {
-			
-			@Override
-			public void onLogin(String username) {
-				loginService.getUserToken(username, new AsyncCallback<String>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						
-					}
-
-					@Override
-					public void onSuccess(String result) {
-						Cookies.setCookie(TOKEN_COOKIE, result);
-						Window.Location.reload();
-					}
-				});
-			}
-		});
-		panel.setWidget(login);
+		if(Window.Location.getPath().contains("demo")){
+			LoginView login = new LoginView();
+			login.setPresenter(new LoginView.LoginPresenter() {
+				
+				@Override
+				public void onLogin(String username) {
+					loginService.getUserToken(username, new AsyncCallback<String>() {
+	
+						@Override
+						public void onFailure(Throwable caught) {
+							
+						}
+	
+						@Override
+						public void onSuccess(String result) {
+							Cookies.setCookie(TOKEN_COOKIE, result);
+							Window.Location.reload();
+						}
+					});
+				}
+			});
+			panel.setWidget(login);
+		}else{
+			Window.open("http://www.yosimce.cl", "_self", "");
+		}
 	}
 }
