@@ -61,7 +61,8 @@
 				<div class='{style.title}'>Actividades</div>
 				<div class='{style.actions}'>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar" resource='{res.gear}'/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar actividades" resource='{res.gear}'/>
+					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarAlumnosButton" text="Exportar lista alumnos" resource='{res.gear}'/>
 					|<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
 					<g:Button addStyleNames='{style.action}' ui:field="formularioButton" text="Formulario"/>
 					<g:Button addStyleNames='{style.action}' ui:field="sincronizacionButton" text="Sincronización"/>

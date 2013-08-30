@@ -75,6 +75,17 @@ public class ActividadesActivity extends SimceActivity implements
 		});
 	}
 	
+	@Override
+	public void onExportarAlumnosClick() {
+		getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus) {
+
+			@Override
+			public void success(DocumentoDTO result) {
+				Window.open(result.getUrl(), "_blank", "");
+			}
+		});
+	}
+	
 
 	@Override
 	public void onCancelarFiltroClick() {

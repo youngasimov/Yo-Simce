@@ -9,6 +9,7 @@ public class AgendaDTO implements Serializable {
 	private String establecimiento;
 	private String rbd;
 	private String curso;
+	private Integer alumnos;
 	private ArrayList<AgendaItemDTO> items;
 
 	/**
@@ -50,4 +51,11 @@ public class AgendaDTO implements Serializable {
 		this.items = items;
 	}
 
+	public Integer getAlumnos() {
+		return alumnos;
+	}
+
+	public void setAlumnos(Integer alumnos) {
+		this.alumnos = alumnos;
+	}
 }

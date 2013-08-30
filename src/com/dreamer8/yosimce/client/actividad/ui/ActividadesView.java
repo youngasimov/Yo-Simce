@@ -29,6 +29,7 @@ public interface ActividadesView extends IsWidget {
 	
 	public interface ActividadesPresenter extends SimcePresenter{
 		void onExportarClick();
+		void onExportarAlumnosClick();
 		void onRegionChange(int regionId);
 		void onCancelarFiltroClick();
 		void onRangeChange(Range r);

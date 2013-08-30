@@ -38,7 +38,9 @@ public interface ActividadService extends RemoteService {
 	Integer getTotalPreviewActividades(HashMap<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException;
 	
-	DocumentoDTO getDocumentoPreviewActividades(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;;
+	DocumentoDTO getDocumentoPreviewActividades(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
+	
+	DocumentoDTO getDocumentoAlumnos(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
 
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;

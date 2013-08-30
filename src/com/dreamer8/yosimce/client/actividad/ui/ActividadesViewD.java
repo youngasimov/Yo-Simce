@@ -53,6 +53,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	@UiField ImageButton filtrosButton;
 	@UiField ImageButton exportarButton;
+	@UiField ImageButton exportarAlumnosButton;
 	@UiField Button sincronizacionButton;
 	@UiField Button informacionButton;
 	@UiField Button formularioButton;
@@ -85,6 +86,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	@UiHandler("exportarButton")
 	void onExportarClick(ClickEvent event){
 		presenter.onExportarClick();
+	}
+	
+	@UiHandler("exportarAlumnosButton")
+	void onExportarAlumnosClick(ClickEvent event){
+		presenter.onExportarAlumnosClick();
 	}
 	
 	@UiHandler("sincronizacionButton")
