@@ -60,51 +60,61 @@ public class AgendamientosActivity extends SimceActivity implements
 		estadosReady = false;
 		regionesReady = false;
 		
-		
-		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<SectorDTO> result) {
-				regiones.addAll(result);
-				view.setRegiones(regiones);
-				regionesReady = true;
-				if(estadosReady){
-					updateFiltros();
-				}
-			}
-		});
-		
-		getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<EstadoAgendaDTO> result) {
-				estados = result;
-				view.setEstados(estados);
-				if(place.getEstadosSeleccionados().isEmpty()){
-					ArrayList<Integer> x = new ArrayList<Integer>();
-					for(EstadoAgendaDTO eadto:result){
-						x.add(eadto.getId());
+		if(getPermisos().get("GeneralService").contains("getRegiones")){
+			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+	
+				@Override
+				public void success(ArrayList<SectorDTO> result) {
+					regiones.addAll(result);
+					view.setRegiones(regiones);
+					regionesReady = true;
+					if(estadosReady){
+						updateFiltros();
 					}
-					place.setEstadosSeleccionados(x);
 				}
-				
-				estadosReady = true;
-				if(regionesReady){
-					updateFiltros();
+			});
+		}
+		
+		if(getPermisos().get("PlanificacionService").contains("getEstadosAgenda")){
+			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
+	
+				@Override
+				public void success(ArrayList<EstadoAgendaDTO> result) {
+					estados = result;
+					view.setEstados(estados);
+					if(place.getEstadosSeleccionados().isEmpty()){
+						ArrayList<Integer> x = new ArrayList<Integer>();
+						for(EstadoAgendaDTO eadto:result){
+							x.add(eadto.getId());
+						}
+						place.setEstadosSeleccionados(x);
+					}
+					
+					estadosReady = true;
+					if(regionesReady){
+						updateFiltros();
+					}
 				}
-			}
-		});
+			});
+			
+			view.setExportarVisivility(getPermisos().get("PlanificacionService").contains("getDocumentoPreviewAgendamientos"));
+			view.setModificarAgendaVisivility(getPermisos().get("PlanificacionService").contains("getAgendaCurso") && getPermisos().get("PlanificacionService").contains("AgendarVisita") && getPermisos().get("PlanificacionService").contains("getEstadosAgenda"));
+			view.setDetallesAgendaVisivility(getPermisos().get("PlanificacionService").contains("getAgendaCurso"));
+			view.setInformacionGeneralVisivility(getPermisos().get("GeneralService").contains("getDetalleCurso"));
+		}
 	}
 	
 	@Override
 	public void onExportarClick() {
-		getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus) {
-
-			@Override
-			public void success(DocumentoDTO result) {
-				Window.open(result.getUrl(), "_blank", "");
-			}
-		});
+		if(getPermisos().get("PlanificacionService").contains("getDocumentoPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus) {
+	
+				@Override
+				public void success(DocumentoDTO result) {
+					Window.open(result.getUrl(), "_blank", "");
+				}
+			});
+		}
 	}
 	
 	@Override
@@ -115,13 +125,15 @@ public class AgendamientosActivity extends SimceActivity implements
 	@Override
 	public void onRangeChange(Range r) {
 		this.range = r;
-		getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<AgendaPreviewDTO> result) {
-				view.getDataDisplay().setRowData(range.getStart(), result);
-			}
-		});
+		if(getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+	
+				@Override
+				public void success(ArrayList<AgendaPreviewDTO> result) {
+					view.getDataDisplay().setRowData(range.getStart(), result);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -134,17 +146,19 @@ public class AgendamientosActivity extends SimceActivity implements
 					break;
 				}
 			}
-			getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
-	
-				@Override
-				public void success(ArrayList<SectorDTO> result) {
-					comunas.put(regionId, result);
-					view.setComunas(result);
-					if(place.getComunaId()!=-1){
-						view.setSelectedComuna(place.getComunaId());
+			if(getPermisos().get("GeneralService").contains("getComunas")){
+				getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+		
+					@Override
+					public void success(ArrayList<SectorDTO> result) {
+						comunas.put(regionId, result);
+						view.setComunas(result);
+						if(place.getComunaId()!=-1){
+							view.setSelectedComuna(place.getComunaId());
+						}
 					}
-				}
-			});
+				});
+			}
 		}else{
 			view.setComunas(comunas.get(regionId));
 			if(place.getComunaId()!=-1){
@@ -161,10 +175,6 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 	
 	private void updateFiltros(){
-		
-		if(!getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos") || !getPermisos().get("PlanificacionService").contains("getTotalPreviewAgendamientos")){
-			return;
-		}
 		
 		filtros.clear();
 		if(place.getDesdeTimestamp()!=-1){
@@ -199,21 +209,23 @@ public class AgendamientosActivity extends SimceActivity implements
 			b.deleteCharAt(b.length()-1);
 			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());
 		}
-		getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus) {
-
-			@Override
-			public void success(Integer result) {
-				view.getDataDisplay().setRowCount(result,true);
-			}
-		});
-		
-		getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<AgendaPreviewDTO> result) {
-				view.getDataDisplay().setRowData(range.getStart(), result);
-			}
-		});
-		
+		if(getPermisos().get("PlanificacionService").contains("getTotalPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus) {
+	
+				@Override
+				public void success(Integer result) {
+					view.getDataDisplay().setRowCount(result,true);
+				}
+			});
+		}
+		if(getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+	
+				@Override
+				public void success(ArrayList<AgendaPreviewDTO> result) {
+					view.getDataDisplay().setRowData(range.getStart(), result);
+				}
+			});
+		}
 	}
 }

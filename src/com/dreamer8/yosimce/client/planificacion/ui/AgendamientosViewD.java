@@ -75,6 +75,10 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	private DialogBox filtrosDialogBox;
 	private FiltroAgendamientosPanelViewD filtrosPanel;
 	
+	private boolean modificarAgendaVisible;
+	private boolean detalleVisible;
+	private boolean informacionVisible;
+	
 	public AgendamientosViewD() {
 		dataGrid = new DataGrid<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
 		pager = new SimplePager(TextLocation.CENTER, false, false);
@@ -149,6 +153,29 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			selectedItem = null;
 		}
 		
+	}
+	
+	@Override
+	public void setExportarVisivility(boolean visible) {
+		exportarButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setModificarAgendaVisivility(boolean visible) {
+		modificarAgendaVisible = visible;
+		modificarAgendaButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setDetallesAgendaVisivility(boolean visible) {
+		detalleVisible = visible;
+		detallesButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setInformacionGeneralVisivility(boolean visible) {
+		informacionVisible = visible;
+		informacionButton.setVisible(visible);
 	}
 
 	@Override
@@ -250,9 +277,9 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				establecimientoSeleccionado.setText((selectionModel.getSelectedObject()!=null)?
 						ViewUtils.limitarString(selectionModel.getSelectedObject().getEstablecimientoName(),30)+" >":"");
-				modificarAgendaButton.setVisible(selectionModel.getSelectedObject()!=null);
-				detallesButton.setVisible(selectionModel.getSelectedObject()!=null);
-				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
+				modificarAgendaButton.setVisible(selectionModel.getSelectedObject()!=null && modificarAgendaVisible);
+				detallesButton.setVisible(selectionModel.getSelectedObject()!=null && detalleVisible);
+				informacionButton.setVisible(selectionModel.getSelectedObject()!=null && informacionVisible);
 				selectedItem = selectionModel.getSelectedObject();
 			}
 		});

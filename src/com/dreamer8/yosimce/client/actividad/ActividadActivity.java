@@ -29,7 +29,7 @@ public class ActividadActivity extends SimceActivity implements
 		view.setActividadesVisivility(getPermisos().get("ActividadService").contains("getTotalPreviewActividades") && getPermisos().get("ActividadService").contains("getPreviewActividades"));
 		view.setFormActividadVisivility(getPermisos().get("ActividadService").contains("getActividad"));
 		view.setSincronizacionVisivility(getPermisos().get("ActividadService").contains("getSincronizacionesCurso"));
-		view.setMaterialDefectuosoVisivility(true);
+		view.setMaterialDefectuosoVisivility(getPermisos().get("ActividadService").contains("getMaterialDefectuoso"));
 		view.setAprobarSupervisoresVisivility(getPermisos().get("ActividadService").contains("getEvaluacionSupervisores"));
 	}
 

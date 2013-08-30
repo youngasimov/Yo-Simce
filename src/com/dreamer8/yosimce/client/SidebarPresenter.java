@@ -158,7 +158,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setFormularioActividadActionItemVisivility(permisos.get("ActividadService").contains("getActividad") && tipo);
 		view.setSincronizacionActionItemVisivility(permisos.get("ActividadService").contains("getSincronizacionesCurso") && tipo);
 		
-		view.setMaterialDefectuosoActionItemVisivility(true);
+		view.setMaterialDefectuosoActionItemVisivility(permisos.get("ActividadService").contains("getMaterialDefectuoso") && tipo);
 		
 		view.setAprobarSupervisoresActionItemVisivility(permisos.get("ActividadService").contains("getEvaluacionSupervisores") && tipo);
 		

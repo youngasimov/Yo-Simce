@@ -28,6 +28,11 @@ public interface AgendamientosView extends IsWidget {
 	void setSelectedRegion(int regionId);
 	void setSelectedComuna(int comunaId);
 	
+	void setExportarVisivility(boolean visible);
+	void setModificarAgendaVisivility(boolean visible);
+	void setDetallesAgendaVisivility(boolean visible);
+	void setInformacionGeneralVisivility(boolean visible);
+	
 	public interface AgendamientosPresenter extends SimcePresenter{
 		void onExportarClick();
 		void onRegionChange(int regionId);
