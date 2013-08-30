@@ -24,6 +24,7 @@ public class SincAlumnoDTO implements Serializable {
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private String rut;
+	private String tipoAlumno;
 	private String idPendrive;
 	private Boolean sincronizado;
 	private String comentario;
@@ -97,5 +98,13 @@ public class SincAlumnoDTO implements Serializable {
 
 	public void setSinc(int sinc) {
 		this.sinc = sinc;
+	}
+
+	public String getTipoAlumno() {
+		return tipoAlumno;
+	}
+
+	public void setTipoAlumno(String tipoAlumno) {
+		this.tipoAlumno = tipoAlumno;
 	}
 }

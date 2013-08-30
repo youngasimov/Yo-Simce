@@ -218,8 +218,19 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		return SimceResources.INSTANCE;
 	}
 
+	@Override
 	public void setIdCurso(int idCurso){
 		this.idCurso = idCurso;
+	}
+	
+	@Override
+	public void setFocusOnComment() {
+		this.comentarioBox.setFocus(true);
+	}
+	
+	@Override
+	public void setFocusOnEstado() {
+		this.estadoBox.setFocus(true);
 	}
 	
 	@Override

@@ -166,7 +166,7 @@ public class SincronizacionViewD extends Composite implements
 				return o.getNombres();
 			}
 		};
-		nombreColumn.setSortable(true);
+		nombreColumn.setSortable(false);
 		dataGrid.addColumn(nombreColumn, "Nombres");
 
 		Column<SincAlumnoDTO, String> paternoColumn = new Column<SincAlumnoDTO, String>(
@@ -177,7 +177,7 @@ public class SincronizacionViewD extends Composite implements
 				return o.getApellidoPaterno();
 			}
 		};
-		paternoColumn.setSortable(true);
+		paternoColumn.setSortable(false);
 		dataGrid.addColumn(paternoColumn, "A. Paterno");
 
 		Column<SincAlumnoDTO, String> maternoColumn = new Column<SincAlumnoDTO, String>(
@@ -188,7 +188,7 @@ public class SincronizacionViewD extends Composite implements
 				return o.getApellidoMaterno();
 			}
 		};
-		maternoColumn.setSortable(true);
+		maternoColumn.setSortable(false);
 		dataGrid.addColumn(maternoColumn, "A. Materno");
 
 		Column<SincAlumnoDTO, String> rutColumn = new Column<SincAlumnoDTO, String>(
@@ -199,8 +199,19 @@ public class SincronizacionViewD extends Composite implements
 				return o.getRut();
 			}
 		};
-		rutColumn.setSortable(true);
+		rutColumn.setSortable(false);
 		dataGrid.addColumn(rutColumn, "RUT");
+		
+		Column<SincAlumnoDTO, String> tipoColumn = new Column<SincAlumnoDTO, String>(
+				new TextCell()) {
+
+			@Override
+			public String getValue(SincAlumnoDTO o) {
+				return o.getTipoAlumno();
+			}
+		};
+		tipoColumn.setSortable(false);
+		dataGrid.addColumn(tipoColumn, "Tipo alumno");
 
 		
 		materialColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {

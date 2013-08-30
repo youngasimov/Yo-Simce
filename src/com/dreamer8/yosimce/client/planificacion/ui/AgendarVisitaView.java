@@ -35,6 +35,11 @@ public interface AgendarVisitaView extends IsWidget {
 	
 	String getComentario();
 	
+	void setFocusOnComment();
+	
+	void setFocusOnEstado();
+	
+	
 	
 	public interface AgendarVisitaPresenter extends SimcePresenter{
 		void onCambiarCursoClick();

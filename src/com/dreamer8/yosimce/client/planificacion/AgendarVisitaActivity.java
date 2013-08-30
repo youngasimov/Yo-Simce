@@ -146,6 +146,17 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	@Override
 	public void onModificarAgendaClick() {
+		
+		if(!agenda.getItems().isEmpty() && agenda.getItems().get(0).getEstado().getId()==view.getIdEstadoAgendaSeleccionado()){
+			view.setFocusOnEstado();
+			return;
+		}
+		
+		if(view.getComentario() == null || view.getComentario().isEmpty()){
+			view.setFocusOnComment();
+			return;
+		}
+		
 		AgendaItemDTO aidto = new AgendaItemDTO();
 		
 		for(EstadoAgendaDTO eadto:estados){
