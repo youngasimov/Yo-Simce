@@ -683,4 +683,24 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getDocumentoAlumnos
+	 */
+	@Override
+	public DocumentoDTO getDocumentoAlumnos(HashMap<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso getEstadosSincronizacion
+	 */
+	@Override
+	public ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion()
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

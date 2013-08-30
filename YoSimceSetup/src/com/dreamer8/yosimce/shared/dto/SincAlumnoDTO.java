@@ -8,14 +8,17 @@ public class SincAlumnoDTO implements Serializable {
 	public static final int SINC_EN_PROCESO = 1;
 	public static final int SINC_EXITOSA = 2;
 	public static final int SINC_ERRONEA = 3;
+	
 
 	private Integer idSincronizacion;
 	private String nombres;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private String rut;
+	private String tipoAlumno;
 	private String idPendrive;
-	private Boolean sincronizado;
+	private EstadoSincronizacionDTO estado;
+	private Boolean entregoFormulario;
 	private String comentario;
 	
 	//para uso dentro de la tabla
@@ -66,12 +69,13 @@ public class SincAlumnoDTO implements Serializable {
 	public void setIdPendrive(String idPendrive) {
 		this.idPendrive = idPendrive;
 	}
-	public Boolean getSincronizado() {
-		return sincronizado;
+
+	public EstadoSincronizacionDTO getEstado() {
+		return estado;
 	}
 
-	public void setSincronizado(Boolean sincronizado) {
-		this.sincronizado = sincronizado;
+	public void setEstado(EstadoSincronizacionDTO estado) {
+		this.estado = estado;
 	}
 
 	public String getComentario() {
@@ -81,11 +85,27 @@ public class SincAlumnoDTO implements Serializable {
 		this.comentario = comentario;
 	}
 
+	public Boolean getEntregoFormulario() {
+		return entregoFormulario;
+	}
+
+	public void setEntregoFormulario(Boolean entregoFormulario) {
+		this.entregoFormulario = entregoFormulario;
+	}
+
 	public int getSinc() {
 		return sinc;
 	}
 
 	public void setSinc(int sinc) {
 		this.sinc = sinc;
+	}
+
+	public String getTipoAlumno() {
+		return tipoAlumno;
+	}
+
+	public void setTipoAlumno(String tipoAlumno) {
+		this.tipoAlumno = tipoAlumno;
 	}
 }

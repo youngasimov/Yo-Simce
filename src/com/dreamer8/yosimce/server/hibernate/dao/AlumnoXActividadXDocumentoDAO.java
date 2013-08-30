@@ -14,6 +14,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
+import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 
 /**
@@ -30,7 +31,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT axaxd.id as axaxd_id,al.nombre as al_nombre,"
 				+ "al.apellido_paterno,al.apellido_paterno_materno,al.rut,d.codigo,"
-				+ "de.nombre doc_estado,axaxd.comentario axaxd_com  FROM APLICACION_x_NIVEL axn "
+				+ "de.id as doc_estado_id,de.nombre as doc_estado,axaxd.comentario as axaxd_com  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -53,6 +54,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
 		SincAlumnoDTO sadto = null;
+		EstadoSincronizacionDTO esdto = null;
 		for (Object[] o : os) {
 			sadto = new SincAlumnoDTO();
 			sadto.setIdSincronizacion((Integer) o[0]);
@@ -61,9 +63,11 @@ public class AlumnoXActividadXDocumentoDAO extends
 			sadto.setApellidoMaterno((String) o[3]);
 			sadto.setRut((String) o[4]);
 			sadto.setIdPendrive((String) o[5]);
-			sadto.setSincronizado(DocumentoEstado.SINCRONIZADO
-					.equals((String) o[6]));
-			sadto.setComentario((String) o[7]);
+			esdto = new EstadoSincronizacionDTO();
+			esdto.setIdEstadoSincronizacion((Integer) o[6]);
+			esdto.setNombreEstado((String) o[7]);
+			sadto.setEstado(esdto);
+			sadto.setComentario((String) o[8]);
 			sadtos.add(sadto);
 		}
 		return sadtos;

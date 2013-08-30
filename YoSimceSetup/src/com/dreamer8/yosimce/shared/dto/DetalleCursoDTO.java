@@ -16,9 +16,16 @@ public class DetalleCursoDTO implements Serializable {
 	private UserDTO supervisor;
 	private ArrayList<UserDTO> examinadores;
 
+	private String cargoContacto;
 	private String nombreContacto;
 	private String emailContacto;
 	private String telefonoContacto;
+	
+	private String nombreDirector;
+	private String emailDirector;
+	private String telefonoDirector;
+	
+	
 
 	public DetalleCursoDTO() {
 
@@ -87,6 +94,14 @@ public class DetalleCursoDTO implements Serializable {
 	public void setSupervisor(UserDTO supervisor) {
 		this.supervisor = supervisor;
 	}
+	
+	public String getCargoContacto() {
+		return cargoContacto;
+	}
+
+	public void setCargoContacto(String cargoContacto) {
+		this.cargoContacto = cargoContacto;
+	}
 
 	public String getNombreContacto() {
 		return nombreContacto;
@@ -110,6 +125,30 @@ public class DetalleCursoDTO implements Serializable {
 
 	public void setTelefonoContacto(String telefonoContacto) {
 		this.telefonoContacto = telefonoContacto;
+	}
+
+	public String getNombreDirector() {
+		return nombreDirector;
+	}
+
+	public void setNombreDirector(String nombreDirector) {
+		this.nombreDirector = nombreDirector;
+	}
+
+	public String getEmailDirector() {
+		return emailDirector;
+	}
+
+	public void setEmailDirector(String emailDirector) {
+		this.emailDirector = emailDirector;
+	}
+
+	public String getTelefonoDirector() {
+		return telefonoDirector;
+	}
+
+	public void setTelefonoDirector(String telefonoDirector) {
+		this.telefonoDirector = telefonoDirector;
 	}
 
 	/**

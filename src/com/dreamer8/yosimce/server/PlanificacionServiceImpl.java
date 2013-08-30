@@ -621,4 +621,24 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		return null;
 	}
 
+	/**
+	 * @permiso getDirector
+	 */
+	@Override
+	public ContactoDTO getDirector(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso editarDirector
+	 */
+	@Override
+	public Boolean editarDirector(Integer idCurso, ContactoDTO director)
+			throws NoAllowedException, NoLoggedException, DBException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
