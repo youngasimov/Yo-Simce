@@ -15,6 +15,7 @@ public class ContactoCargo implements java.io.Serializable {
 	public static final String DIRECTOR = "Director";
 	public static final String JEFE_UTP = "Jefe UTP";
 	public static final String PROFESOR = "Profesor";
+	public static final String SECRETARIA = "Secretaria";
 	private Integer id;
 	private String nombre;
 	private boolean base;

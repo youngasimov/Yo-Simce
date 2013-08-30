@@ -441,6 +441,9 @@ public class Actividad implements java.io.Serializable {
 		Integer idEstablecimiento = curso.getEstablecimiento().getId();
 		adto.setRbd(Integer.toString(idEstablecimiento));
 		adto.setCurso(curso.getNombre());
+		adto.setComuna(curso.getEstablecimiento().getComuna().getNombre());
+		adto.setRegion(curso.getEstablecimiento().getComuna().getProvincia()
+				.getRegion().getNombre());
 		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
 		EstablecimientoTipo et = etdao.findByIdAplicacionANDIdEstablecimiento(
 				idAplicacion, idEstablecimiento);

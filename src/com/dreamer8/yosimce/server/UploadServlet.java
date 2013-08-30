@@ -49,7 +49,7 @@ public class UploadServlet extends UploadAction {
                     /// Create a temporary file placed in /tmp (only works in unix)
                     // File file = File.createTempFile("upload-", ".bin", new File("/tmp"));
 
-                    File tmpDir = null;
+                    File tmpDir = CustomRemoteServiceServlet.getUploadDir();
                     
 
                     /// Create a temporary file placed in the default system temp folder

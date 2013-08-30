@@ -16,6 +16,7 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
@@ -268,6 +269,262 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
+				+ " JOIN REGION r ON p.region_id=r.id";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON e.id=coxe.establecimiento_id";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
+						+ SecurityFilter.escapeString(idUsuario)
+						+ ") AND joxco.activo=TRUE";
+			} else {
+				query += " JOIN CO co ON coxe.co_id=co.co_id";
+				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+							+ SecurityFilter.escapeString(idUsuario)
+							+ ") AND jzxz.activo=TRUE";
+				} else {
+					query += " JOIN ZONA z ON co.zona_id=z.id"
+							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
+							+ SecurityFilter.escapeString(idUsuario)
+							+ ") AND jrxcr.activo=TRUE";
+				}
+			}
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
+				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
+			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
+					+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
+					+ SecurityFilter.escapeString(idUsuario) + ")";
+		}
+		if (filtros != null && !filtros.isEmpty()) {
+			String where = "";
+			Date fecha = null;
+			for (String key : filtros.keySet()) {
+				if (!filtros.get(key).equals("")) {
+					if (!where.equals("")) {
+						where += " AND ";
+					}
+					if (key.equals(PlanificacionService.FKEY_DESDE)) {
+						where += " a.fecha_inicio >='"
+								+ SecurityFilter.escapeString(filtros.get(key))
+								+ "'";
+					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
+						where += " a.fecha_inicio <='"
+								+ SecurityFilter.escapeString(filtros.get(key))
+								+ "'";
+					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
+						where += " e.comuna_id ="
+								+ SecurityFilter.escapeString(filtros.get(key));
+					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
+						where += " p.region_id ="
+								+ SecurityFilter.escapeString(filtros.get(key));
+					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
+						String[] estados = filtros.get(key).split(
+								PlanificacionService.SEPARATOR);
+						if (estados.length != 0) {
+							where += " (";
+							for (int i = 0; i < estados.length; i++) {
+								where += "a.actividad_estado_id="
+										+ SecurityFilter
+												.escapeString(estados[i]);
+								if (i < estados.length - 1) {
+									where += " OR ";
+								}
+							}
+							where += ") ";
+						}
+					}
+				}
+			}
+			if (!where.equals("")) {
+				query += " WHERE " + where;
+			}
+		}
+		Query q = s.createSQLQuery(query);
+		result = ((BigInteger) q.uniqueResult()).intValue();
+		return result;
+	}
+
+	public List<String> findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
+			Integer idAplicacion, Integer idNivel, Integer idUsuario,
+			String usuarioTipo, Integer offset, Integer lenght,
+			Map<String, String> filtros) {
+
+		List<String> csv = new ArrayList<String>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
+				+ "et.nombre as est_tipo_nombre,"
+				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
+				+ "at.nombre as act_tipo_nombre,a.fecha_inicio,a.comentario,ae.nombre as act_est_nombre, "
+				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as contacto_cargo,"
+				+ "a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
+				+ ")"
+				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " LEFT JOIN CONTACTO_CARGO cc ON a.contacto_cargo_id=cc.id"
+				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ ")"
+				+ " LEFT JOIN ESTABLECIMIENTO_TIPO et ON axe.establecimiento_tipo_id=et.id"
+				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
+				+ " JOIN REGION r ON p.region_id=r.id"
+				+ " LEFT JOIN USUARIO u ON a.modificador_id=u.id";
+		;
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON e.id=coxe.establecimiento_id";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
+						+ SecurityFilter.escapeString(idUsuario)
+						+ ") AND joxco.activo=TRUE";
+			} else {
+				query += " JOIN CO co ON coxe.co_id=co.co_id";
+				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+							+ SecurityFilter.escapeString(idUsuario)
+							+ ") AND jzxz.activo=TRUE";
+				} else {
+					query += " JOIN ZONA z ON co.zona_id=z.id"
+							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
+							+ SecurityFilter.escapeString(idUsuario)
+							+ ") AND jrxcr.activo=TRUE";
+				}
+			}
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
+				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
+			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
+					+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
+					+ SecurityFilter.escapeString(idUsuario) + ")";
+		}
+		if (filtros != null && !filtros.isEmpty()) {
+			String where = "";
+			for (String key : filtros.keySet()) {
+				if (!filtros.get(key).equals("")) {
+					if (!where.equals("")) {
+						where += " AND ";
+					}
+					if (key.equals(PlanificacionService.FKEY_DESDE)) {
+						where += " a.fecha_inicio >='"
+								+ SecurityFilter.escapeString(filtros.get(key))
+								+ "'";
+					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
+						where += " a.fecha_inicio <='"
+								+ SecurityFilter.escapeString(filtros.get(key))
+								+ "'";
+					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
+						where += " e.comuna_id ="
+								+ SecurityFilter.escapeString(filtros.get(key));
+					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
+						where += " p.region_id ="
+								+ SecurityFilter.escapeString(filtros.get(key));
+					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
+						String[] estados = filtros.get(key).split(
+								PlanificacionService.SEPARATOR);
+						if (estados.length != 0) {
+							where += " (";
+							for (int i = 0; i < estados.length; i++) {
+								where += "a.actividad_estado_id="
+										+ SecurityFilter
+												.escapeString(estados[i]);
+								if (i < estados.length - 1) {
+									where += " OR ";
+								}
+							}
+							where += ") ";
+						}
+					}
+				}
+			}
+			if (!where.equals("")) {
+				query += " WHERE " + where;
+			}
+		}
+		query += " ORDER BY COMUNA.id,e.id,c.id,a.aplicacion_x_nivel_x_actividad_tipo_id";
+		Query q = s.createSQLQuery(query);
+		if (offset != null) {
+			q.setFirstResult(offset);
+		}
+		if (lenght != null) {
+			q.setMaxResults(lenght);
+		}
+		List<Object[]> os = q.list();
+		Integer idCursoAnterior = null;
+		Integer idCurso = null;
+		String linea = null;
+		String visitaPrevia = null;
+		String aplic = null;
+		String contacto = null;
+		if (os != null && !os.isEmpty()) {
+			csv.add("rbd;establecimiento_nombre;establecimiento_tipo;región;comuna;"
+					+ "fecha_visita_previa;estado_agendamiento_visita_previa;comentario_visita_previa;"
+					+ "fecha_aplicación;estado_agendamiento_aplicación;comentario_aplicación;"
+					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto");
+			for (Object[] o : os) {
+				idCurso = (Integer) o[0];
+				if (!idCurso.equals(idCursoAnterior)) {
+					idCursoAnterior = idCurso;
+					linea = Integer.toString((Integer) o[1]) + ";"
+							+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
+							+ ((String) o[4]) + ";" + ((String) o[6]);
+					contacto = ";" + ((String) o[11]) + ";" + ((String) o[14])
+							+ ";" + ((String) o[12]) + ";" + ((String) o[13]);
+					visitaPrevia = null;
+					aplic = null;
+				}
+				if (ActividadTipo.VISITA_PREVIA.equals((String) o[7])) {
+					visitaPrevia = ";" + ((Date) o[8]) + ";"
+							+ ((String) o[10]) + ";" + ((String) o[9]);
+				} else if (ActividadTipo.APLICACION_DIA_1.equals((String) o[7])) {
+					aplic = ";" + ((Date) o[8]) + ";" + ((String) o[10])
+							+ ";" + ((String) o[9]);
+				}
+				if(visitaPrevia != null && aplic != null){
+					linea += visitaPrevia + aplic + contacto;
+					csv.add(linea);
+				}
+			}
+		}
+		return csv;
+	}
+
+	public Integer countAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
+			Integer idAplicacion, Integer idNivel, Integer idUsuario,
+			String usuarioTipo, Map<String, String> filtros) {
+
+		Integer result = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"

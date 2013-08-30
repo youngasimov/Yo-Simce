@@ -44,18 +44,18 @@ public class YoSimceSetup {
 
 	public static void main(String[] args) {
 		// createActividad();
-		// List<Integer> ids = new ArrayList<Integer>();
-		// ids.add(2);
-		// ids.add(4);
-		// ids.add(6);
-		// ids.add(8);
-		// ids.add(10);
-		// asignarUsuario(16361209, 1, ids, 1);
-		// asignarUsuario(16370885, 1, ids, 1);
-		// ids = new ArrayList<Integer>();
-		// ids.add(10);
-		// asignarUsuario(16361209, 2, ids, 1);
-		// asignarUsuario(16370885, 2, ids, 1);
+//		List<Integer> ids = new ArrayList<Integer>();
+//		ids.add(2);
+//		ids.add(4);
+//		ids.add(6);
+//		ids.add(8);
+//		ids.add(10);
+//		asignarUsuario(16361209, 1, ids, 1);
+//		asignarUsuario(16370885, 1, ids, 1);
+//		ids = new ArrayList<Integer>();
+//		ids.add(10);
+//		asignarUsuario(16361209, 2, ids, 1);
+//		asignarUsuario(16370885, 2, ids, 1);
 		initPermisos();
 		System.out.println("fin :P");
 	}
@@ -181,14 +181,18 @@ public class YoSimceSetup {
 				AplicacionXUsuarioTipoDAO axutdao = new AplicacionXUsuarioTipoDAO();
 				List<AplicacionXUsuarioTipo> axuts = axutdao.findAll();
 				if (axuts == null || axuts.isEmpty()) {
-					UsuarioTipoDAO utdao = new UsuarioTipoDAO();
-					List<UsuarioTipo> uts = utdao.findAll();
-					AplicacionDAO adao = new AplicacionDAO();
-					List<Aplicacion> as = adao.findAll();
-					AplicacionXUsuarioTipo axut = null;
 					axuts = new ArrayList<AplicacionXUsuarioTipo>();
-					for (Aplicacion a : as) {
-						for (UsuarioTipo ut : uts) {
+				}
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				List<UsuarioTipo> uts = utdao.findAll();
+				AplicacionDAO adao = new AplicacionDAO();
+				List<Aplicacion> as = adao.findAll();
+				AplicacionXUsuarioTipo axut = null;
+				for (Aplicacion a : as) {
+					for (UsuarioTipo ut : uts) {
+						axut = axutdao.findByIdAplicacionANDIdUsuarioTipo(
+								a.getId(), ut.getId());
+						if (axut == null || axut.getId() == null) {
 							axut = new AplicacionXUsuarioTipo();
 							axut.setAplicacion(a);
 							axut.setUsuarioTipo(ut);
@@ -196,16 +200,16 @@ public class YoSimceSetup {
 							axuts.add(axut);
 						}
 					}
-					s.flush();
 				}
+				s.flush();
 				AplicacionXUsuarioTipoXPermisoDAO axutxpdao = new AplicacionXUsuarioTipoXPermisoDAO();
 				AplicacionXUsuarioTipoXPermiso axutxp = null;
 				for (Permiso p : ps) {
-					for (AplicacionXUsuarioTipo axut : axuts) {
+					for (AplicacionXUsuarioTipo aplicacionXUsuarioTipo : axuts) {
 						axutxp = new AplicacionXUsuarioTipoXPermiso();
 						axutxp.setPermiso(p);
-						axutxp.setAplicacionXUsuarioTipo(axut);
-						axutxp.setAcceso(axut.getUsuarioTipo().getNombre()
+						axutxp.setAplicacionXUsuarioTipo(aplicacionXUsuarioTipo);
+						axutxp.setAcceso(aplicacionXUsuarioTipo.getUsuarioTipo().getNombre()
 								.equals(UsuarioTipo.ADMINISTRADOR));
 						axutxpdao.save(axutxp);
 					}

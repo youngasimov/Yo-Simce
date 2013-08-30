@@ -347,4 +347,8 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 		}
 		return a;
 	}
+
+	public static File getUploadDir(){
+		return new File("/tmp");
+	}
 }
