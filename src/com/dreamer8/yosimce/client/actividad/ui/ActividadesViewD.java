@@ -7,10 +7,12 @@ import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.HyperTextCell;
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
@@ -444,6 +446,17 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		comunaColumn.setSortable(false);
 		dataGrid.addColumn(comunaColumn,"Comuna");
 		dataGrid.setColumnWidth(comunaColumn, "150px");
+		
+		Column<ActividadPreviewDTO,DocumentoDTO> docColumn = new Column<ActividadPreviewDTO, DocumentoDTO>(new HyperTextCell()) {
+
+			@Override
+			public DocumentoDTO getValue(ActividadPreviewDTO o) {
+				return o.getDocumento();
+			}
+		};
+		docColumn.setSortable(false);
+		dataGrid.addColumn(docColumn,"Documento");
+		dataGrid.setColumnWidth(docColumn, "150px");
 		
 	}
 }
