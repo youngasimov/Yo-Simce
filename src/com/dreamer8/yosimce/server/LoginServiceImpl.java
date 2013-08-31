@@ -288,10 +288,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		try {
 			s.beginTransaction();
 			UsuarioDAO udao = new UsuarioDAO();
-			Usuario u = udao.findbyUsername(StringUtils.formatRut(username));
-			if (u == null) {
-				throw new NullPointerException("No se encontró el usuario");
-			}
+			Usuario u = null;
 			SesionDAO sdao = new SesionDAO();
 			List<Sesion> ss = sdao.findBySessionId(username);
 
@@ -300,14 +297,19 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				sesion = ss.get(0);
 			}
 			if (sesion == null) {
+				u = udao.findbyUsername(StringUtils.formatRut(username));
+				if (u == null) {
+					throw new NullPointerException("No se encontró el usuario");
+				}
 				sesion = new Sesion();
 				sesion.setSessionId(username);
 				sesion.setSessionValue(username);
 				sesion.setUsuario(u);
 				sdao.saveOrUpdate(sesion);
 				result = username;
-			}else{
+			} else {
 				result = sesion.getSessionId();
+				u = sesion.getUsuario();
 			}
 
 			this.getThreadLocalRequest().getSession()
