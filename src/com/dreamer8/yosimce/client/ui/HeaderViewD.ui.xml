@@ -81,10 +81,10 @@
 			<li class='{style.username}'><g:HTML ui:field="username"/></li>
 		</ul>
 		<div class='{style.actividades}'>
-			<g:Button addStyleNames='{style.listbox}' text="Registro" ui:field="loginButton"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="actividadBox"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="nivelBox"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="tipoBox"/>
+	        <g:Button addStyleNames='{style.listbox}' text="Salir" ui:field="logoutButton"/>
 	    </div>	    
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -26,13 +26,11 @@ public interface HeaderView extends IsWidget {
 	
 	void setUserName(String user);
 	
-	void setLoginVisivibity(boolean visible);
-	
 	public interface HeaderPresenter extends Presenter{
 		void onAplicacionChange(int aplicacion);
 		void onNivelChange(int nivel);
 		void onTipoChange(int tipo);
-		void onLoginClick();
+		void onLogoutClick();
 	}
 	
 	

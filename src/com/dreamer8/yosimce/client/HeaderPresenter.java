@@ -53,7 +53,8 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 	}
 	
 	@Override
-	public void onLoginClick() {
+	public void onLogoutClick() {
+		Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
 		Window.open("http://www.yosimce.cl", "_self", "");
 	}
 
@@ -87,10 +88,8 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 		view.setAplicacionBoxVisivility(false);
 		view.setNivelBoxVisivility(false);
 		view.setTipoBoxVisivility(false);
-		view.setLoginVisivibity(false);
 		if(user == null){
 			view.setUserName("No Registrado");
-			view.setLoginVisivibity(true);
 		}else{
 			String username = user.getNombres()+" "+user.getApellidoPaterno()+" "+user.getApellidoMaterno();
 			if(username.length()>50){
@@ -132,7 +131,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 						view.setAplicacionBoxVisivility(false);
 						view.setNivelBoxVisivility(false);
 						view.setTipoBoxVisivility(false);
-						view.setLoginVisivibity(true);
 					}
 				}
 			});

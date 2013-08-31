@@ -28,7 +28,7 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	@UiField ListBox actividadBox;
 	@UiField ListBox nivelBox;
 	@UiField ListBox tipoBox;
-	@UiField Button loginButton;
+	@UiField Button logoutButton;
 	@UiField HTML username;
 	
 	private HeaderPresenter presenter;
@@ -58,6 +58,11 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	void onTipoBoxChange(ChangeEvent event){
 		int tipoId = Integer.parseInt(tipoBox.getValue(tipoBox.getSelectedIndex()));
 		presenter.onTipoChange(tipoId);
+	}
+	
+	@UiHandler("logoutButton")
+	void onLogoutClick(ChangeEvent event){
+		presenter.onLogoutClick();
 	}
 
 	@Override
@@ -138,11 +143,6 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	@Override
 	public void setUserName(String user) {
 		username.setText(user);
-	}
-
-	@Override
-	public void setLoginVisivibity(boolean visible) {
-		loginButton.setVisible(visible);
 	}
 
 }

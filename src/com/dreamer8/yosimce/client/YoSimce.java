@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
+import com.dreamer8.yosimce.client.ui.LoginView;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;
@@ -21,7 +22,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class YoSimce implements EntryPoint {
 	
-	private static final String TOKEN_COOKIE = "yosimce";
+	public static final String TOKEN_COOKIE = "yosimce";
 	
 	
 	private Place defaultPlace;
@@ -140,30 +141,30 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void notLogged(){
-//		if(Window.Location.getPath().contains("demo")){
-//			LoginView login = new LoginView();
-//			login.setPresenter(new LoginView.LoginPresenter() {
-//				
-//				@Override
-//				public void onLogin(String username) {
-//					loginService.getUserToken(username, new AsyncCallback<String>() {
-//	
-//						@Override
-//						public void onFailure(Throwable caught) {
-//							
-//						}
-//	
-//						@Override
-//						public void onSuccess(String result) {
-//							Cookies.setCookie(TOKEN_COOKIE, result);
-//							Window.Location.reload();
-//						}
-//					});
-//				}
-//			});
-//			panel.setWidget(login);
-//		}else{
+		if(Window.Location.getHost().contains("localhost") || Window.Location.getHost().contains("127.0.0.1")){
+			LoginView login = new LoginView();
+			login.setPresenter(new LoginView.LoginPresenter() {
+				
+				@Override
+				public void onLogin(String username) {
+					loginService.getUserToken(username, new AsyncCallback<String>() {
+	
+						@Override
+						public void onFailure(Throwable caught) {
+							
+						}
+	
+						@Override
+						public void onSuccess(String result) {
+							Cookies.setCookie(TOKEN_COOKIE, result);
+							Window.Location.reload();
+						}
+					});
+				}
+			});
+			panel.setWidget(login);
+		}else{
 			Window.open("http://www.yosimce.cl", "_self", "");
-//		}
+		}
 	}
 }
