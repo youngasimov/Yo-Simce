@@ -22,7 +22,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class YoSimce implements EntryPoint {
 	
-	private static final String TOKEN_COOKIE = "yosimce";
+	private static final String TOKEN_COOKIE = "yosimce_tracking";
 	
 	
 	private Place defaultPlace;
@@ -142,29 +142,29 @@ public class YoSimce implements EntryPoint {
 	
 	private void notLogged(){
 //		if(Window.Location.getPath().contains("demo")){
-			LoginView login = new LoginView();
-			login.setPresenter(new LoginView.LoginPresenter() {
-				
-				@Override
-				public void onLogin(String username) {
-					loginService.getUserToken(username, new AsyncCallback<String>() {
-	
-						@Override
-						public void onFailure(Throwable caught) {
-							
-						}
-	
-						@Override
-						public void onSuccess(String result) {
-							Cookies.setCookie(TOKEN_COOKIE, result);
-							Window.Location.reload();
-						}
-					});
-				}
-			});
-			panel.setWidget(login);
+//			LoginView login = new LoginView();
+//			login.setPresenter(new LoginView.LoginPresenter() {
+//				
+//				@Override
+//				public void onLogin(String username) {
+//					loginService.getUserToken(username, new AsyncCallback<String>() {
+//	
+//						@Override
+//						public void onFailure(Throwable caught) {
+//							
+//						}
+//	
+//						@Override
+//						public void onSuccess(String result) {
+//							Cookies.setCookie(TOKEN_COOKIE, result);
+//							Window.Location.reload();
+//						}
+//					});
+//				}
+//			});
+//			panel.setWidget(login);
 //		}else{
-//			Window.open("http://www.yosimce.cl", "_self", "");
+			Window.open("http://www.yosimce.cl", "_self", "");
 //		}
 	}
 }
