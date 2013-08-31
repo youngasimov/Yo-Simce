@@ -15,7 +15,6 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
 
 public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 
-
 	/**
 	 * @param idAplicacion
 	 * @param id
@@ -44,7 +43,11 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				+ " WHERE (u.username ILIKE '%"
 				+ SecurityFilter.escapeLikeString(
-						StringUtils.formatRut(filtro), "~")
+						StringUtils.formatRut(filtro, true), "~")
+				+ "%' ESCAPE '~'"
+				+ " OR u.username ILIKE '%"
+				+ SecurityFilter.escapeLikeString(
+						StringUtils.formatRut(filtro, false), "~")
 				+ "%' ESCAPE '~'"
 				+ " OR u.nombres || ' ' || u.apellido_paterno || ' ' || u.apellido_materno ILIKE '%"
 				+ SecurityFilter.escapeLikeString(filtro, "~")
@@ -89,7 +92,11 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				+ " WHERE (u.username ILIKE '%"
 				+ SecurityFilter.escapeLikeString(
-						StringUtils.formatRut(filtro), "~")
+						StringUtils.formatRut(filtro, true), "~")
+				+ "%' ESCAPE '~'"
+				+ " OR u.username ILIKE '%"
+				+ SecurityFilter.escapeLikeString(
+						StringUtils.formatRut(filtro, false), "~")
 				+ "%' ESCAPE '~'"
 				+ " OR u.nombres || ' ' || u.apellido_paterno || ' ' || u.apellido_materno ILIKE '%"
 				+ SecurityFilter.escapeLikeString(filtro, "~")
