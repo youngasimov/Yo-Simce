@@ -2,7 +2,6 @@ package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
-import com.dreamer8.yosimce.client.ui.LoginView;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;
@@ -22,7 +21,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class YoSimce implements EntryPoint {
 	
-	private static final String TOKEN_COOKIE = "yosimce_tracking";
+	private static final String TOKEN_COOKIE = "yosimce";
 	
 	
 	private Place defaultPlace;
