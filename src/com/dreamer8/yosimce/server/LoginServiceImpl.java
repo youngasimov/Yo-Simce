@@ -283,6 +283,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public String getUserToken(String username) throws DBException {
 
+		String result = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			s.beginTransaction();
@@ -302,9 +303,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				sesion = new Sesion();
 				sesion.setSessionId(username);
 				sesion.setSessionValue(username);
+				sesion.setUsuario(u);
+				sdao.saveOrUpdate(sesion);
+				result = username;
+			}else{
+				result = sesion.getSessionId();
 			}
-			sesion.setUsuario(u);
-			sdao.saveOrUpdate(sesion);
 
 			this.getThreadLocalRequest().getSession()
 					.setAttribute("usuario", u);
@@ -321,7 +325,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
 		}
-		return username;
+		return result;
 	}
 
 }
