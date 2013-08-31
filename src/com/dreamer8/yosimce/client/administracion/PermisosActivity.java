@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView.PermisosPresenter;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -38,6 +39,18 @@ public class PermisosActivity extends SimceActivity implements
 
 	@Override
 	public void onUpdatePermisosClick() {
+		String data= "permisos modificados: "+permisosModificados.size()+ "  \n ";
+		
+		for(PermisoDTO p:permisosModificados){
+			data = data+" "+p.getIdPermiso()+" "+p.getClase()+" "+p.getMetodo()+" = ";
+			for(Integer id:p.getIdTiposUsuariosPermitidos()){
+				data = data+id+":";
+			}
+			data = data+" \n ";
+		}
+		
+		GWT.log(data);
+		
 		getFactory().getAdministracionService().setPermisos(permisosModificados, new SimceCallback<Boolean>(eventBus) {
 
 			@Override

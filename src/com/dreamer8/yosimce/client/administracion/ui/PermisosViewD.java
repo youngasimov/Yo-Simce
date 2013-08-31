@@ -89,9 +89,9 @@ public class PermisosViewD extends Composite implements PermisosView {
 			hasPermisoColumn =new PermisoColumn(new CheckboxCell(), tiposUsuario.get(i).getId(),presenter);
 			columns.add(hasPermisoColumn);
 			dataGrid.addColumn(hasPermisoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(tiposUsuario.get(i).getTipoUsuario())));
-	        dataGrid.setColumnWidth(hasPermisoColumn, 150, Unit.PX);
+	        dataGrid.setColumnWidth(hasPermisoColumn, 120, Unit.PX);
 		}
-		dataGrid.redraw();
+		//dataGrid.redraw();
 	}
 	
 	private void buildStaticColumns(){
@@ -134,7 +134,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 						object.getIdTiposUsuariosPermitidos().add(idTipoUsuario);
 						PermisoColumn.this.presenter.permisoActualizado(object);
 					}else if(!value && object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
-						object.getIdTiposUsuariosPermitidos().remove(object.getIdTiposUsuariosPermitidos().indexOf(idTipoUsuario));
+						object.getIdTiposUsuariosPermitidos().remove(idTipoUsuario);
 						PermisoColumn.this.presenter.permisoActualizado(object);
 					}
 				}

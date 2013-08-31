@@ -92,4 +92,29 @@ public class PermisoDTO implements Serializable {
 		this.idTiposUsuariosPermitidos = idTiposUsuariosPermitidos;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((idPermiso == null) ? 0 : idPermiso.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PermisoDTO other = (PermisoDTO) obj;
+		if (idPermiso == null) {
+			if (other.idPermiso != null)
+				return false;
+		} else if (!idPermiso.equals(other.idPermiso))
+			return false;
+		return true;
+	}
 }
