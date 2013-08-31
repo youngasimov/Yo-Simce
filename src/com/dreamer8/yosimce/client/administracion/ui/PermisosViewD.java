@@ -134,7 +134,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 						object.getIdTiposUsuariosPermitidos().add(idTipoUsuario);
 						PermisoColumn.this.presenter.permisoActualizado(object);
 					}else if(!value && object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
-						object.getIdTiposUsuariosPermitidos().remove(idTipoUsuario);
+						object.getIdTiposUsuariosPermitidos().remove(new Integer(idTipoUsuario));
 						PermisoColumn.this.presenter.permisoActualizado(object);
 					}
 				}
