@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -61,7 +62,7 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	}
 	
 	@UiHandler("logoutButton")
-	void onLogoutClick(ChangeEvent event){
+	void onLogoutClick(ClickEvent event){
 		presenter.onLogoutClick();
 	}
 
