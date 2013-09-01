@@ -18,11 +18,14 @@ public interface PermisosView extends IsWidget {
 	
 	HasData<PermisoDTO> getDataDisplay();
 	
+	void setActualizarPermisosVisivility(boolean visible);
+	void setActualizarTablaVisivility(boolean visible);
 	
 	
 	public interface PermisosPresenter extends SimcePresenter{
 		void onUpdatePermisosClick();
 		void onUpdateTablaClick();
 		void permisoActualizado(PermisoDTO permiso);
+		boolean hasUpdatePermisos();
 	}
 }

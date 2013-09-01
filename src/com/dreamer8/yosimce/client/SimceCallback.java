@@ -52,7 +52,7 @@ public abstract class SimceCallback<T> implements AsyncCallback<T> {
 	public void onSuccess(T result) {
 		if(!timeout){
 			if(result == null){
-				onFailure(new NullPointerException());
+				onFailure(new NullPointerException("El servidor entregó un resultado nulo"));
 			}else{
 				SimceCallback.this.timeout = true;
 				eventBus.fireEvent(new WaitEvent(false,blocking));

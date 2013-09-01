@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
+import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
@@ -39,7 +40,7 @@ public interface PlanificacionService extends RemoteService {
 			NoLoggedException, DBException;
 
 	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
 
 	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -48,13 +49,13 @@ public interface PlanificacionService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException;
 
 	public Boolean editarContacto(Integer idCurso, ContactoDTO contacto)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
 	
 	public ContactoDTO getDirector(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
 	
 	public Boolean editarDirector(Integer idCurso, ContactoDTO director)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
 
 	public ArrayList<CargoDTO> getCargos() throws NoAllowedException,
 			NoLoggedException, DBException;

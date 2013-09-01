@@ -53,7 +53,7 @@ public interface ActividadService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException;
 
 	Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException,ConsistencyException;
 
 	ArrayList<UserDTO> getExaminadores(String search)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -65,7 +65,7 @@ public interface ActividadService extends RemoteService {
 			NoLoggedException, DBException;
 
 	Boolean actualizarActividad(ActividadDTO actividad)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
 
 	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException,
 			NoLoggedException, DBException;
@@ -75,7 +75,7 @@ public interface ActividadService extends RemoteService {
 
 	Boolean updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
 
 	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida()
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -85,10 +85,10 @@ public interface ActividadService extends RemoteService {
 
 	Boolean addOrUpdateMaterialDefectuoso(Integer idCurso,
 			MaterialDefectuosoDTO material) throws NoAllowedException,
-			NoLoggedException, DBException;
+			NoLoggedException, DBException, ConsistencyException;
 
 	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
 	
 	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion() throws NoAllowedException, NoLoggedException, DBException;
 }

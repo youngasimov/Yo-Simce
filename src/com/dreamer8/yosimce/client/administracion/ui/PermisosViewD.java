@@ -66,6 +66,16 @@ public class PermisosViewD extends Composite implements PermisosView {
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
 	}
+	
+	@Override
+	public void setActualizarPermisosVisivility(boolean visible) {
+		updateButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setActualizarTablaVisivility(boolean visible) {
+		updateViewButton.setVisible(visible);
+	}
 
 	@Override
 	public void setTiposUsuarios(ArrayList<TipoUsuarioDTO> tiposUsuario) {
@@ -130,6 +140,9 @@ public class PermisosViewD extends Composite implements PermisosView {
 
 				@Override
 				public void update(int index, PermisoDTO object, Boolean value) {
+					if(!PermisoColumn.this.presenter.hasUpdatePermisos()){
+						return;
+					}
 					if(value && !object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
 						object.getIdTiposUsuariosPermitidos().add(idTipoUsuario);
 						PermisoColumn.this.presenter.permisoActualizado(object);

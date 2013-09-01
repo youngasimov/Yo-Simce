@@ -11,7 +11,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,7 +35,7 @@ public class AdminEventosViewD extends Composite implements AdminEventosView{
 	@UiField ListBox tipoBox;
 	
 	
-	private AdminEventosPresenter presenter;
+	//private AdminEventosPresenter presenter;
 	
 	public AdminEventosViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -49,7 +48,7 @@ public class AdminEventosViewD extends Composite implements AdminEventosView{
 
 	@Override
 	public void setPresenter(AdminEventosPresenter presenter) {
-		this.presenter = presenter;
+		//this.presenter = presenter;
 	}
 
 	@Override

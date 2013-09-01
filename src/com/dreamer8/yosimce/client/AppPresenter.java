@@ -7,6 +7,10 @@ import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
+import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
+import com.google.gwt.user.client.rpc.SerializedTypeViolationException;
+import com.google.gwt.user.client.rpc.InvocationException;
+import com.google.gwt.user.client.rpc.StatusCodeException;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class AppPresenter implements AppView.AppPresenter {
@@ -77,7 +81,17 @@ public class AppPresenter implements AppView.AppPresenter {
 			
 			@Override
 			public void onError(ErrorEvent event) {
-				if(event.getError() instanceof NoAllowedException){
+				if(event.getError() instanceof IncompatibleRemoteServiceException){
+					view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false);
+				}else if(event.getError() instanceof InvocationException){
+					view.showErrorMessage("El petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no esta disponible", false);
+				}else if(event.getError() instanceof SerializedTypeViolationException){
+					view.showErrorMessage("Tipo de dato inesperado", true);
+				}else if(event.getError() instanceof StatusCodeException){
+					view.showErrorMessage("El código del mensaje HTTP es inválido<br />"+event.getError().getMessage(), true);
+				}else if(event.getError() instanceof NullPointerException){
+					view.showErrorMessage(event.getError().getMessage(), true);
+				}else if(event.getError() instanceof NoAllowedException){
 					view.showPermisoMessage(event.getError().getMessage(), true);
 				}else if(event.getError() instanceof DBException){
 					view.showErrorMessage(event.getError().getMessage(), false);

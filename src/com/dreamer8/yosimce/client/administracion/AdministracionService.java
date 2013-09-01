@@ -36,7 +36,7 @@ public interface AdministracionService extends RemoteService {
 			NoLoggedException, DBException;
 	
 	public Boolean setPermisos(ArrayList<PermisoDTO> permisos) throws NoAllowedException,
-	NoLoggedException, DBException;
+	NoLoggedException, DBException,ConsistencyException;
 	
 
 }

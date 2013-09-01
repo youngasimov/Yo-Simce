@@ -169,16 +169,16 @@ public class FormActividadActivity extends SimceActivity implements
 			
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad")){
-			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus,true) {
+			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus,false) {
 	
 				@Override
 				public void success(Boolean result) {
-					eventBus.fireEvent(new MensajeEvent("La actividad se ha guardado de exitosamente",MensajeEvent.MSG_OK,true));
+					eventBus.fireEvent(new MensajeEvent("La actividad se ha guardado exitosamente",MensajeEvent.MSG_OK,false));
 				}
 			});
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
-			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),view.getExaminadores(), new SimceCallback<Boolean>(eventBus,true) {
+			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),view.getExaminadores(), new SimceCallback<Boolean>(eventBus,false) {
 	
 				@Override
 				public void success(Boolean result) {

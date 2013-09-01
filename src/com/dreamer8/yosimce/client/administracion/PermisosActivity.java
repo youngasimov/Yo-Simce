@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView.PermisosPresenter;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -34,30 +35,23 @@ public class PermisosActivity extends SimceActivity implements
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		permisosModificados = new ArrayList<PermisoDTO>();
+		view.setActualizarPermisosVisivility(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "setPermisos"));
+		view.setActualizarTablaVisivility(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getTiposUsuario") && Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getPermisos"));
 		updateTable();
 	}
 
 	@Override
 	public void onUpdatePermisosClick() {
-		String data= "permisos modificados: "+permisosModificados.size()+ "  \n ";
-		
-		for(PermisoDTO p:permisosModificados){
-			data = data+" "+p.getIdPermiso()+" "+p.getClase()+" "+p.getMetodo()+" = ";
-			for(Integer id:p.getIdTiposUsuariosPermitidos()){
-				data = data+id+":";
-			}
-			data = data+" \n ";
+		if(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "setPermisos")){
+			getFactory().getAdministracionService().setPermisos(permisosModificados, new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					permisosModificados.clear();
+					eventBus.fireEvent(new MensajeEvent("Permisos actualizados",MensajeEvent.MSG_OK,true));
+				}
+			});
 		}
-		
-		GWT.log(data);
-		
-		getFactory().getAdministracionService().setPermisos(permisosModificados, new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				permisosModificados.clear();
-			}
-		});
 	}
 
 	@Override
@@ -65,25 +59,33 @@ public class PermisosActivity extends SimceActivity implements
 		updateTable();
 	}
 	
+	@Override
+	public boolean hasUpdatePermisos() {
+		return Utils.hasPermisos(getPermisos(), "AdministracionService", "setPermisos");
+	}
+	
 	private void updateTable(){
+		if(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getTiposUsuario")){
+			getFactory().getAdministracionService().getTiposUsuario(new SimceCallback<ArrayList<TipoUsuarioDTO>>(this.eventBus,true) {
+				
+				@Override
+				public void success(ArrayList<TipoUsuarioDTO> result) {
+					permisosModificados.clear();
+					view.setTiposUsuarios(result);
+					if(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getPermisos")){
+						getFactory().getAdministracionService().getPermisos(new SimceCallback<ArrayList<PermisoDTO>>(PermisosActivity.this.eventBus,true) {
 		
-		getFactory().getAdministracionService().getTiposUsuario(new SimceCallback<ArrayList<TipoUsuarioDTO>>(this.eventBus) {
-			
-			@Override
-			public void success(ArrayList<TipoUsuarioDTO> result) {
-				permisosModificados.clear();
-				view.setTiposUsuarios(result);
-				getFactory().getAdministracionService().getPermisos(new SimceCallback<ArrayList<PermisoDTO>>(PermisosActivity.this.eventBus) {
-
-					@Override
-					public void success(ArrayList<PermisoDTO> result) {
-						view.getDataDisplay().setRowCount(result.size());
-						view.getDataDisplay().setVisibleRange(0,result.size());
-						view.getDataDisplay().setRowData(0, result);
+							@Override
+							public void success(ArrayList<PermisoDTO> result) {
+								view.getDataDisplay().setRowCount(result.size());
+								view.getDataDisplay().setVisibleRange(0,result.size());
+								view.getDataDisplay().setRowData(0, result);
+							}
+						});
 					}
-				});
-			}
-		});
+				}
+			});
+		}
 	}
 
 	@Override
