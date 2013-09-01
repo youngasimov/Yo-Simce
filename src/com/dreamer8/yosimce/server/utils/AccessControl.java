@@ -55,7 +55,7 @@ public class AccessControl {
 	public boolean isLogged() throws NoLoggedException {
 		Usuario usuario = (Usuario) this.session.getAttribute("usuario");
 
-		if (usuario != null) {
+		if (usuario != null && usuario.getId() != null) {
 			return true;
 		}
 
