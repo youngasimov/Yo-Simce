@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
@@ -42,11 +43,42 @@
 		height: 100%;
 		font-size: 12pt;
 	}
+	
+	.footer{
+		background: #CCCCCC;
+		border-top: 1px solid black;
+	}
+	
+	.imageLeft{
+		position:absolute;
+		top:2px;
+		left: 20px;
+	}
+	
+	.imageCenter{
+		display:block;
+		width:220px;
+		margin:auto;
+	}
+	
+	.imageRight{
+		position:absolute;
+		top: 1px;
+		right:20px;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit='EM' addStyleNames='{style.content}' ui:field="appPanel">
 		<g:north size='3'>
         	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="headerPanel"/> 
     	</g:north>
+    	<g:south size='1.8'>
+    		<g:HTMLPanel addStyleNames='{style.footer}'>
+    			<g:Image addStyleNames='{style.imageCenter}' resource='{res.barLoad}' ui:field="barload" />
+    			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageLeft}'><g:Image resource='{res.dreamer}'/></a>
+    			<a href='http://www.yosimce.cl' target="_blank" class='{style.imageRight}'><g:Image resource='{res.logoSimce}'/></a>
+    		</g:HTMLPanel>
+    	</g:south>
     	<g:west size='3'>
     		<g:LayoutPanel addStyleNames='{style.sidebarContainer}'  ui:field="sidebarContainer">
     			<g:layer left='0px' width='100%' top='0px' height='45px'>

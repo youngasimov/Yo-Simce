@@ -5,8 +5,10 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadPresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
@@ -60,8 +62,8 @@ public class FormActividadActivity extends SimceActivity implements
 			}
 		});
 		
-		view.showSeccionExaminador(getPermisos().get("ActividadService").contains("getEvaluacionExaminadores") &&
-			getPermisos().get("ActividadService").contains("updateEvaluacionExaminadores"));
+		view.showSeccionExaminador(Utils.hasPermisos(getPermisos(),"ActividadService","getEvaluacionExaminadores") &&
+				Utils.hasPermisos(getPermisos(),"ActividadService","updateEvaluacionExaminadores"));
 		
 		view.showForm(true);
 		
@@ -76,9 +78,9 @@ public class FormActividadActivity extends SimceActivity implements
 			selector.show();
 		}else{
 			
-			if(getPermisos().get("ActividadService").contains("getTiposContingencia")){
+			if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getTiposContingencia")){
 				view.enableAddContingencia(true);
-				getFactory().getActividadService().getTiposContingencia(place.getIdCurso(), new SimceCallback<ArrayList<TipoContingenciaDTO>>(eventBus) {
+				getFactory().getActividadService().getTiposContingencia(place.getIdCurso(), new SimceCallback<ArrayList<TipoContingenciaDTO>>(eventBus,true) {
 	
 					@Override
 					public void success(ArrayList<TipoContingenciaDTO> result) {
@@ -90,8 +92,8 @@ public class FormActividadActivity extends SimceActivity implements
 			}else{
 				view.enableAddContingencia(false);
 			}
-			if(getPermisos().get("ActividadService").contains("getEvaluacionExaminadores")){
-				getFactory().getActividadService().getEvaluacionExaminadores(place.getIdCurso(), new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus) {
+			if(Utils.hasPermisos(getPermisos(),"ActividadService","getEvaluacionExaminadores")){
+				getFactory().getActividadService().getEvaluacionExaminadores(place.getIdCurso(), new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus,true) {
 
 					@Override
 					public void success(ArrayList<EvaluacionUsuarioDTO> result) {
@@ -100,8 +102,8 @@ public class FormActividadActivity extends SimceActivity implements
 
 				});
 			}
-			if(getPermisos().get("ActividadService").contains("getActividad")){
-				getFactory().getActividadService().getActividad(place.getIdCurso(), new SimceCallback<ActividadDTO>(eventBus) {
+			if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getActividad")){
+				getFactory().getActividadService().getActividad(place.getIdCurso(), new SimceCallback<ActividadDTO>(eventBus,true) {
 
 					@Override
 					public void success(ActividadDTO result) {
@@ -110,8 +112,8 @@ public class FormActividadActivity extends SimceActivity implements
 					}
 				});
 			}
-			if(getPermisos().get("ActividadService").contains("getEstadosActividad")){
-				getFactory().getActividadService().getEstadosActividad(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
+			if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getEstadosActividad")){
+				getFactory().getActividadService().getEstadosActividad(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,true) {
 
 					@Override
 					public void success(ArrayList<EstadoAgendaDTO> result) {
@@ -142,7 +144,7 @@ public class FormActividadActivity extends SimceActivity implements
 	@Override
 	public void guardarFormulario() {
 		if(view.isUploading()){
-			//error
+			eventBus.fireEvent(new MensajeEvent("Espere a que se termine la carga del documento antes de guardar el formulario",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
 		
@@ -166,30 +168,31 @@ public class FormActividadActivity extends SimceActivity implements
 			a.setDocumento(d);
 			
 		}
-		if(getPermisos().get("ActividadService").contains("actualizarActividad")){
-			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad")){
+			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus,true) {
 	
 				@Override
 				public void success(Boolean result) {
-					
+					eventBus.fireEvent(new MensajeEvent("La actividad se ha guardado de exitosamente",MensajeEvent.MSG_OK,true));
 				}
 			});
 		}
-		getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),view.getExaminadores(), new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
+			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),view.getExaminadores(), new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					eventBus.fireEvent(new MensajeEvent("La evaluación de los examinadores se ha guardado exitosamente",MensajeEvent.MSG_OK,true));
+				}
+			});
+		}
 	}
 
 	@Override
 	public void getExaminadoresSuplentes(String search) {
 
-		if(getPermisos().get("ActividadService").contains("getExaminadores")){
-			getFactory().getActividadService().getExaminadores(search, new SimceCallback<ArrayList<UserDTO>>(eventBus) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getExaminadores")){
+			getFactory().getActividadService().getExaminadores(search, new SimceCallback<ArrayList<UserDTO>>(eventBus,false) {
 	
 				@Override
 				public void success(ArrayList<UserDTO> result) {
@@ -201,24 +204,22 @@ public class FormActividadActivity extends SimceActivity implements
 	
 	@Override
 	public void onAgregarContingencia(ContingenciaDTO contingencia) {
-		if(!getPermisos().get("ActividadService").contains("getTiposContingencia")){
-			return;
+		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad")){
+			tipos.remove(contingencia.getTipoContingencia());
+			contingencias.add(contingencia);
+			view.setTiposContingencia(tipos);
+			view.setContingencias(contingencias);
 		}
-		tipos.remove(contingencia.getTipoContingencia());
-		contingencias.add(contingencia);
-		view.setTiposContingencia(tipos);
-		view.setContingencias(contingencias);
 	}
 
 	@Override
 	public void onRemoveContingecia(ContingenciaDTO contingencia) {
-		if(!getPermisos().get("ActividadService").contains("getTiposContingencia")){
-			return;
+		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad")){
+			contingencias.remove(contingencia);
+			tipos.add(contingencia.getTipoContingencia());
+			view.setTiposContingencia(tipos);
+			view.setContingencias(contingencias);
 		}
-		contingencias.remove(contingencia);
-		tipos.add(contingencia.getTipoContingencia());
-		view.setTiposContingencia(tipos);
-		view.setContingencias(contingencias);
 	}
 	
 	@Override
@@ -273,7 +274,7 @@ public class FormActividadActivity extends SimceActivity implements
 		if(a.getInicioPrueba()!=null){view.setInicioPrueba(a.getInicioPrueba());}
 		if(a.getTerminoPrueba()!=null){view.setTerminoPrueba(a.getTerminoPrueba());}
 		if(a.getAlumnosTotal()!=null){view.setTotalAlumnos(a.getAlumnosTotal());}
-		if(a.getAlumnosTotal()!=null){view.setAlumnosAusentes(a.getAlumnosAusentes());}
+		if(a.getAlumnosAusentes()!=null){view.setAlumnosAusentes(a.getAlumnosAusentes());}
 		if(a.getAlumnosDs()!=null){view.setAlumnosDS(a.getAlumnosDs());}
 		if(a.getTotalCuestionarios()!=null){view.setCuestionariosTotales(a.getTotalCuestionarios());}
 		if(a.getCuestionariosEntregados()!=null){view.setCuestionariosEntregados(a.getCuestionariosEntregados());}
@@ -288,6 +289,7 @@ public class FormActividadActivity extends SimceActivity implements
 	private void clear(){
 		contingencias.clear();
 		view.setContingencias(contingencias);
+		a = null;
 		view.showForm(false);
 	}
 }

@@ -30,7 +30,6 @@ public interface HeaderView extends IsWidget {
 		void onAplicacionChange(int aplicacion);
 		void onNivelChange(int nivel);
 		void onTipoChange(int tipo);
-		void onLogoutClick();
 	}
 	
 	

@@ -7,11 +7,9 @@ import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
@@ -29,7 +27,6 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	@UiField ListBox actividadBox;
 	@UiField ListBox nivelBox;
 	@UiField ListBox tipoBox;
-	@UiField Button logoutButton;
 	@UiField HTML username;
 	
 	private HeaderPresenter presenter;
@@ -59,11 +56,6 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	void onTipoBoxChange(ChangeEvent event){
 		int tipoId = Integer.parseInt(tipoBox.getValue(tipoBox.getSelectedIndex()));
 		presenter.onTipoChange(tipoId);
-	}
-	
-	@UiHandler("logoutButton")
-	void onLogoutClick(ClickEvent event){
-		presenter.onLogoutClick();
 	}
 
 	@Override

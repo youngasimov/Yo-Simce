@@ -7,6 +7,7 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
@@ -33,6 +34,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	private boolean estadosReady;
 	private boolean regionesReady;
 	
+	
 	private Range range;
 	
 	public AgendamientosActivity(ClientFactory factory,AgendamientosPlace place,HashMap<String, ArrayList<String>> permisos) {
@@ -47,7 +49,6 @@ public class AgendamientosActivity extends SimceActivity implements
 		estadosReady = false;
 		regionesReady = false;
 		range = view.getDataDisplay().getVisibleRange();
-		view.getDataDisplay().setRowCount(0,true);
 	}
 	
 	@Override
@@ -61,7 +62,7 @@ public class AgendamientosActivity extends SimceActivity implements
 		regionesReady = false;
 		
 		if(getPermisos().get("GeneralService").contains("getRegiones")){
-			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
 	
 				@Override
 				public void success(ArrayList<SectorDTO> result) {
@@ -76,7 +77,7 @@ public class AgendamientosActivity extends SimceActivity implements
 		}
 		
 		if(getPermisos().get("PlanificacionService").contains("getEstadosAgenda")){
-			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
+			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
 	
 				@Override
 				public void success(ArrayList<EstadoAgendaDTO> result) {
@@ -97,17 +98,20 @@ public class AgendamientosActivity extends SimceActivity implements
 				}
 			});
 			
-			view.setExportarVisivility(getPermisos().get("PlanificacionService").contains("getDocumentoPreviewAgendamientos"));
-			view.setModificarAgendaVisivility(getPermisos().get("PlanificacionService").contains("getAgendaCurso") && getPermisos().get("PlanificacionService").contains("AgendarVisita") && getPermisos().get("PlanificacionService").contains("getEstadosAgenda"));
-			view.setDetallesAgendaVisivility(getPermisos().get("PlanificacionService").contains("getAgendaCurso"));
-			view.setInformacionGeneralVisivility(getPermisos().get("GeneralService").contains("getDetalleCurso"));
+			view.setExportarVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos"));
+			view.setModificarAgendaVisivility(
+					Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso") &&
+					Utils.hasPermisos(getPermisos(),"PlanificacionService","AgendarVisita") &&
+					Utils.hasPermisos(getPermisos(),"PlanificacionService","getEstadosAgenda"));
+			view.setDetallesAgendaVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso"));
+			view.setInformacionGeneralVisivility(Utils.hasPermisos(getPermisos(),"GeneralService","getDetalleCurso"));
 		}
 	}
 	
 	@Override
 	public void onExportarClick() {
-		if(getPermisos().get("PlanificacionService").contains("getDocumentoPreviewAgendamientos")){
-			getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true) {
 	
 				@Override
 				public void success(DocumentoDTO result) {
@@ -125,12 +129,17 @@ public class AgendamientosActivity extends SimceActivity implements
 	@Override
 	public void onRangeChange(Range r) {
 		this.range = r;
-		if(getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos")){
-			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus,false) {
 	
 				@Override
 				public void success(ArrayList<AgendaPreviewDTO> result) {
 					view.getDataDisplay().setRowData(range.getStart(), result);
+				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					view.getDataDisplay().setRowCount(0);
 				}
 			});
 		}
@@ -146,8 +155,8 @@ public class AgendamientosActivity extends SimceActivity implements
 					break;
 				}
 			}
-			if(getPermisos().get("GeneralService").contains("getComunas")){
-				getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
+			if(Utils.hasPermisos(eventBus,getPermisos(),"GeneralService","getComunas")){
+				getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
 		
 					@Override
 					public void success(ArrayList<SectorDTO> result) {
@@ -209,8 +218,8 @@ public class AgendamientosActivity extends SimceActivity implements
 			b.deleteCharAt(b.length()-1);
 			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());
 		}
-		if(getPermisos().get("PlanificacionService").contains("getTotalPreviewAgendamientos")){
-			getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getTotalPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getTotalPreviewAgendamientos(filtros, new SimceCallback<Integer>(eventBus,false) {
 	
 				@Override
 				public void success(Integer result) {
@@ -218,8 +227,8 @@ public class AgendamientosActivity extends SimceActivity implements
 				}
 			});
 		}
-		if(getPermisos().get("PlanificacionService").contains("getPreviewAgendamientos")){
-			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getPreviewAgendamientos")){
+			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus,false) {
 	
 				@Override
 				public void success(ArrayList<AgendaPreviewDTO> result) {

@@ -1,0 +1,21 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:style>
+		
+		.scroll{
+			display:block;
+			width: 370px;
+			float: left;
+		}
+		.panel{
+			display:block;
+			width: 350px;
+			float: left;
+		}
+	</ui:style>
+	<g:ScrollPanel addStyleNames='{style.scroll}'>
+		<g:FlowPanel addStyleNames="{style.panel}" ui:field="panel"/>
+	</g:ScrollPanel>
+</ui:UiBinder> 

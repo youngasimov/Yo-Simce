@@ -17,8 +17,17 @@ public interface SimceResources extends ClientBundle {
 	@Source("simce.css")
 	StyleResource style();
 	
+	@Source("images/logosimce.png")
+	public ImageResource logoSimce();
+	
+	@Source("images/dreamer8.png")
+	public ImageResource dreamer();
+	
 	@Source("images/load.gif")
 	public ImageResource load();
+	
+	@Source("images/barload.gif")
+	public ImageResource barLoad();
 	
 	@Source("images/update.gif")
 	public ImageResource update();
@@ -40,4 +49,19 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/gear.png")
 	public ImageResource gear();
+	
+	@Source("images/msg_error.png")
+	public ImageResource msgError();
+	
+	@Source("images/msg_warning.png")
+	public ImageResource msgWarning();
+	
+	@Source("images/msg_ok.png")
+	public ImageResource msgOk();
+	
+	@Source("images/msg_locked.png")
+	public ImageResource msgLocked();
+	
+	@Source("images/close.png")
+	public ImageResource close();
 }

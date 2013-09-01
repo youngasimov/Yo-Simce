@@ -1,6 +1,10 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	
+	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
+	
 	<ui:style>
 	
 		.all{
@@ -73,18 +77,23 @@
 			margin-top: 10px;
 			margin-right: 10px;
 		}
+		
+		.boton{
+			float:left;
+			margin-top: 3px;
+			margin-right: 10px;
+		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames='{style.all}'>
 	
 		<ul class='{style.leftbar}'>
-			<li class='{style.logo}'><a href='http://www.yosimce.cl'>YoSimce</a></li>
+			<li class='{style.logo}'><a href='http://tracking.yosimce.cl'>YoSimce</a></li>
 			<li class='{style.username}'><g:HTML ui:field="username"/></li>
 		</ul>
 		<div class='{style.actividades}'>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="actividadBox"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="nivelBox"/>
 	        <g:ListBox addStyleNames='{style.listbox}' ui:field="tipoBox"/>
-	        <g:Button addStyleNames='{style.listbox}' text="Salir" ui:field="logoutButton"/>
 	    </div>	    
 	</g:HTMLPanel>
 </ui:UiBinder> 

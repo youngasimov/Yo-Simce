@@ -163,19 +163,16 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@Override
 	public void setModificarAgendaVisivility(boolean visible) {
 		modificarAgendaVisible = visible;
-		modificarAgendaButton.setVisible(visible);
 	}
 	
 	@Override
 	public void setDetallesAgendaVisivility(boolean visible) {
 		detalleVisible = visible;
-		detallesButton.setVisible(visible);
 	}
 	
 	@Override
 	public void setInformacionGeneralVisivility(boolean visible) {
 		informacionVisible = visible;
-		informacionButton.setVisible(visible);
 	}
 
 	@Override

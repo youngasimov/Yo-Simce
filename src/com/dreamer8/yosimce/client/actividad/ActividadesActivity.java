@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView.ActividadesPresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
@@ -49,16 +50,24 @@ public class ActividadesActivity extends SimceActivity implements
 		comunas.clear();
 		range = view.getDataDisplay().getVisibleRange();
 		
-		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<SectorDTO> result) {
-				regiones.addAll(result);
-				view.setRegiones(regiones);
-				updateFiltros();
-			}
-		});
+		view.setExportarActividadesVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getDocumentoPreviewActividades"));
+		view.setExportarAlumnosVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getDocumentoAlumnos"));
 		
+		view.setSincronizacionVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getSincronizacionesCurso"));
+		view.setFormularioVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getActividad"));
+		view.setInformacionVisivility(Utils.hasPermisos(getPermisos(), "GeneralService","getDetalleCurso"));
+		
+		if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getRegiones")){
+			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
+	
+				@Override
+				public void success(ArrayList<SectorDTO> result) {
+					regiones.addAll(result);
+					view.setRegiones(regiones);
+					updateFiltros();
+				}
+			});
+		}
 		
 		
 		
@@ -66,24 +75,28 @@ public class ActividadesActivity extends SimceActivity implements
 
 	@Override
 	public void onExportarClick() {
-		getFactory().getActividadService().getDocumentoPreviewActividades(filtros,new SimceCallback<DocumentoDTO>(eventBus) {
-
-			@Override
-			public void success(DocumentoDTO result) {
-				Window.open(result.getUrl(), "_blank", "");
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getDocumentoPreviewActividades")){
+			getFactory().getActividadService().getDocumentoPreviewActividades(filtros,new SimceCallback<DocumentoDTO>(eventBus,true) {
+	
+				@Override
+				public void success(DocumentoDTO result) {
+					Window.open(result.getUrl(), "_blank", "");
+				}
+			});
+		}
 	}
 	
 	@Override
 	public void onExportarAlumnosClick() {
-		getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus) {
-
-			@Override
-			public void success(DocumentoDTO result) {
-				Window.open(result.getUrl(), "_blank", "");
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getDocumentoAlumnos")){
+			getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true) {
+	
+				@Override
+				public void success(DocumentoDTO result) {
+					Window.open(result.getUrl(), "_blank", "");
+				}
+			});
+		}
 	}
 	
 
@@ -95,13 +108,15 @@ public class ActividadesActivity extends SimceActivity implements
 	@Override
 	public void onRangeChange(Range r) {
 		this.range = r;
-		getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<ActividadPreviewDTO> result) {
-				view.getDataDisplay().setRowData(range.getStart(), result);
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getPreviewActividades")){
+			getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus,false) {
+	
+				@Override
+				public void success(ArrayList<ActividadPreviewDTO> result) {
+					view.getDataDisplay().setRowData(range.getStart(), result);
+				}
+			});
+		}
 	}
 	
 	@Override
@@ -114,17 +129,19 @@ public class ActividadesActivity extends SimceActivity implements
 					break;
 				}
 			}
-			getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus) {
-	
-				@Override
-				public void success(ArrayList<SectorDTO> result) {
-					comunas.put(regionId, result);
-					view.setComunas(result);
-					if(place.getComunaId()!=-1){
-						view.setSelectedComuna(place.getComunaId());
+			if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getComunas")){
+				getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
+		
+					@Override
+					public void success(ArrayList<SectorDTO> result) {
+						comunas.put(regionId, result);
+						view.setComunas(result);
+						if(place.getComunaId()!=-1){
+							view.setSelectedComuna(place.getComunaId());
+						}
 					}
-				}
-			});
+				});
+			}
 		}else{
 			view.setComunas(comunas.get(regionId));
 			if(place.getComunaId()!=-1){
@@ -161,22 +178,24 @@ public class ActividadesActivity extends SimceActivity implements
 		if(place.getComunaId()!=-1){
 			filtros.put(ActividadService.FKEY_COMUNA, place.getComunaId()+"");
 		}
-		
-		getFactory().getActividadService().getTotalPreviewActividades(filtros, new SimceCallback<Integer>(eventBus) {
-
-			@Override
-			public void success(Integer result) {
-				view.getDataDisplay().setRowCount(result,true);
-			}
-		});
-		
-		getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus) {
-
-			@Override
-			public void success(ArrayList<ActividadPreviewDTO> result) {
-				view.getDataDisplay().setRowData(range.getStart(), result);
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getTotalPreviewActividades")){
+			getFactory().getActividadService().getTotalPreviewActividades(filtros, new SimceCallback<Integer>(eventBus,false) {
+	
+				@Override
+				public void success(Integer result) {
+					view.getDataDisplay().setRowCount(result,true);
+				}
+			});
+		}
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getPreviewActividades")){
+			getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus,false) {
+	
+				@Override
+				public void success(ArrayList<ActividadPreviewDTO> result) {
+					view.getDataDisplay().setRowData(range.getStart(), result);
+				}
+			});
+		}
 		
 	}
 }

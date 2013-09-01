@@ -140,38 +140,38 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 			return;
 		}
 		
-		view.setGeneralVisivility(permisos.get("GeneralService").contains("getDetalleCurso"));
-		view.setDetalleCursoViewItemVisivility(permisos.get("GeneralService").contains("getDetalleCurso") && tipo);
+		view.setGeneralVisivility(Utils.hasPermisos(permisos,"GeneralService","getDetalleCurso"));
+		view.setDetalleCursoViewItemVisivility(Utils.hasPermisos(permisos,"GeneralService","getDetalleCurso") && tipo);
 		
-		view.setAgendamientoVisivility((permisos.get("PlanificacionService").contains("getPreviewAgendamientos") && permisos.get("PlanificacionService").contains("getTotalPreviewAgendamientos")) ||
-				(permisos.get("PlanificacionService").contains("getAgendaCurso") && permisos.get("PlanificacionService").contains("AgendarVisita") && permisos.get("PlanificacionService").contains("getEstadosAgenda")) ||
-				permisos.get("PlanificacionService").contains("getAgendaCurso"));
-		view.setAgendamientosViewItemVisivility(permisos.get("PlanificacionService").contains("getPreviewAgendamientos") && permisos.get("PlanificacionService").contains("getTotalPreviewAgendamientos") && tipo);
-		view.setAgendarVisitaActionItemVisivility(permisos.get("PlanificacionService").contains("getAgendaCurso") && permisos.get("PlanificacionService").contains("AgendarVisita") && permisos.get("PlanificacionService").contains("getEstadosAgenda") && tipo);
-		view.setDetalleAgendaViewItemVisivility(permisos.get("PlanificacionService").contains("getAgendaCurso") && tipo);
+		view.setAgendamientoVisivility((Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos")) ||
+				(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda")) ||
+				Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso"));
+		view.setAgendamientosViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos") && tipo);
+		view.setAgendarVisitaActionItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda") && tipo);
+		view.setDetalleAgendaViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && tipo);
 		
-		view.setActividadVisivility((permisos.get("ActividadService").contains("getTotalPreviewActividades") && permisos.get("ActividadService").contains("getPreviewActividades")) ||
-				permisos.get("ActividadService").contains("getActividad") ||
-				permisos.get("ActividadService").contains("getSincronizacionesCurso") ||
-				permisos.get("ActividadService").contains("getEvaluacionSupervisores"));
-		view.setActividadesViewItemVisivility(permisos.get("ActividadService").contains("getTotalPreviewActividades") && permisos.get("ActividadService").contains("getPreviewActividades") && tipo);
-		view.setFormularioActividadActionItemVisivility(permisos.get("ActividadService").contains("getActividad") && tipo);
-		view.setSincronizacionActionItemVisivility(permisos.get("ActividadService").contains("getSincronizacionesCurso") && tipo);
+		view.setActividadVisivility((Utils.hasPermisos(permisos,"ActividadService","getTotalPreviewActividades") && Utils.hasPermisos(permisos,"ActividadService","getPreviewActividades")) ||
+				Utils.hasPermisos(permisos,"ActividadService","getActividad") ||
+				Utils.hasPermisos(permisos,"ActividadService","getSincronizacionesCurso") ||
+				Utils.hasPermisos(permisos,"ActividadService","getEvaluacionSupervisores"));
+		view.setActividadesViewItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getTotalPreviewActividades") && Utils.hasPermisos(permisos,"ActividadService","getPreviewActividades") && tipo);
+		view.setFormularioActividadActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getActividad") && tipo);
+		view.setSincronizacionActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getSincronizacionesCurso") && tipo);
 		
-		view.setMaterialDefectuosoActionItemVisivility(permisos.get("ActividadService").contains("getMaterialDefectuoso") && tipo);
+		view.setMaterialDefectuosoActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getMaterialDefectuoso") && tipo);
 		
-		view.setAprobarSupervisoresActionItemVisivility(permisos.get("ActividadService").contains("getEvaluacionSupervisores") && tipo);
+		view.setAprobarSupervisoresActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getEvaluacionSupervisores") && tipo);
 		
 		view.setMaterialVisivility(false);
 		view.setIngresoMaterialActionItemVisivility(false);
 		view.setSalidaMaterialActionItemVisivility(false);
 		view.setMovimientosMaterialViewItemVisivility(false);
 		
-		view.setAdministracionVisivility((permisos.get("AdministracionService").contains("getTiposUsuario") && permisos.get("AdministracionService").contains("getPermisos")) ||
+		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")) ||
 				false ||
 				false);
 		view.setAdministrarUsuariosActionItemVisivility(false);
 		view.setAdministrarEventosActionItemVisivility(false);
-		view.setAdministrarPermisosActionItemVisivility(permisos.get("AdministracionService").contains("getTiposUsuario") && permisos.get("AdministracionService").contains("getPermisos"));
+		view.setAdministrarPermisosActionItemVisivility(Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos"));
 	}
 }

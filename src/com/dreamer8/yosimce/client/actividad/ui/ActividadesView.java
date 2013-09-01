@@ -27,6 +27,12 @@ public interface ActividadesView extends IsWidget {
 	void setSelectedRegion(int regionId);
 	void setSelectedComuna(int comunaId);
 	
+	void setExportarActividadesVisivility(boolean visible);
+	void setExportarAlumnosVisivility(boolean visible);
+	void setSincronizacionVisivility(boolean visible);
+	void setFormularioVisivility(boolean visible);
+	void setInformacionVisivility(boolean visible);
+	
 	public interface ActividadesPresenter extends SimcePresenter{
 		void onExportarClick();
 		void onExportarAlumnosClick();

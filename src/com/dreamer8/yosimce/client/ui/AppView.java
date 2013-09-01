@@ -10,6 +10,14 @@ public interface AppView extends IsWidget {
 	SimpleLayoutPanel getSideBarPanel();
 	SimpleLayoutPanel getContentPanel();
 	
+	void setBarLoadVisibility(boolean visible);
+	
+	void setCirularLoadVisibility(boolean visible);
+	
+	void showErrorMessage(String message,boolean autoclose);
+	void showWarningMessage(String message,boolean autoclose);
+	void showOkMessage(String message,boolean autoclose);
+	void showPermisoMessage(String message,boolean autoclose);
 	
 	public interface AppPresenter extends Presenter{
 		

@@ -1,0 +1,64 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	
+	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
+	
+	<ui:style>
+		.panel{
+			display: block;
+			width: 346px;
+			float: left;
+			border: 2px solid black;
+			background: #EEEEEE;
+			margin-bottom: 10px;
+			: 
+		}
+		
+		.image{
+			display:block;
+			margin-left:5px;
+			margin-top:5px;
+			width: 50px;
+			height: 50px;
+			float: left;
+		}
+		
+		.close{
+			display: block;
+			width: 291px;
+			float: right;
+		}
+		
+		.closeButton{
+			float:right;
+			margin: 3px;
+		}
+		
+		.message{
+			display:block;
+			width: 261px;
+			float: right;
+			padding-left: 20px;
+			padding-right: 10px;
+			padding-top: 5px;
+			min-height: 50px;
+			text-align: justify;
+			font-weight: bold;
+		}
+	</ui:style>
+	<g:HTMLPanel addStyleNames='{style.panel}'>
+	    <div class='{style.image}'>
+	    	<g:Image ui:field="image"/>
+	    </div>
+	    <div>
+	    	<div class='{style.close}'>
+	    		<g:Image addStyleNames='{style.closeButton}' resource='{res.close}' ui:field="closeButton" />
+	    	</div>
+		    <div class='{style.message}'>
+		    	<g:HTML ui:field="message"/>
+		    </div>
+	    </div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -70,6 +70,10 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	private DialogBox filtrosDialogBox;
 	private FiltroActividadesPanelViewD filtrosPanel;
 	
+	private boolean sinc;
+	private boolean form;
+	private boolean info;
+	
 	public ActividadesViewD() {
 		dataGrid = new DataGrid<ActividadPreviewDTO>(ActividadPreviewDTO.KEY_PROVIDER);
 		pager = new SimplePager(TextLocation.CENTER, false, false);
@@ -119,6 +123,31 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	@UiFactory
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
+	}
+	
+	@Override
+	public void setExportarActividadesVisivility(boolean visible) {
+		exportarButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setExportarAlumnosVisivility(boolean visible) {
+		exportarAlumnosButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setSincronizacionVisivility(boolean visible) {
+		this.sinc = visible;
+	}
+	
+	@Override
+	public void setFormularioVisivility(boolean visible) {
+		this.form = visible;
+	}
+	
+	@Override
+	public void setInformacionVisivility(boolean visible) {
+		this.info = visible;
 	}
 
 	@Override
@@ -240,9 +269,9 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			public void onSelectionChange(SelectionChangeEvent event) {
 				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
 						ViewUtils.limitarString(selectionModel.getSelectedObject().getNombreEstablecimiento(),27)+" >":"");
-				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null);
-				informacionButton.setVisible(selectionModel.getSelectedObject()!=null);
-				formularioButton.setVisible(selectionModel.getSelectedObject()!=null);
+				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null && sinc);
+				informacionButton.setVisible(selectionModel.getSelectedObject()!=null && info);
+				formularioButton.setVisible(selectionModel.getSelectedObject()!=null && form);
 				selectedItem = selectionModel.getSelectedObject();
 			}
 		});

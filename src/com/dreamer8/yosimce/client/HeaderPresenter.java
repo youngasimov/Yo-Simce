@@ -11,7 +11,6 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class HeaderPresenter implements HeaderView.HeaderPresenter{
@@ -51,12 +50,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 		panel.setWidget(view.asWidget());
 		
 	}
-	
-	@Override
-	public void onLogoutClick() {
-		Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
-		Window.open("http://www.yosimce.cl", "_self", "");
-	}
 
 	@Override
 	public void onAplicacionChange(int aplicacion) {
@@ -76,7 +69,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			sp.setTipoId(tipo);
 			factory.getPlaceController().goTo(sp);
 		}
-		//factory.getPlaceController().goTo(new SimcePlace(aplicacionId,nivelId,tipo));
 	}
 	
 	private void error(){
@@ -113,7 +105,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 						
 						if(aplicaciones == null || aplicaciones.isEmpty()){
 							//descarga la lista de aplicaciones
-							factory.getLoginService().getAplicaciones(new SimceCallback<ArrayList<AplicacionDTO>>(factory.getEventBus()) {
+							factory.getLoginService().getAplicaciones(new SimceCallback<ArrayList<AplicacionDTO>>(factory.getEventBus(),false) {
 	
 								@Override
 								public void success(ArrayList<AplicacionDTO> result) {
@@ -166,7 +158,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			if(niveles.containsKey(aplicacionId+"")){
 				selectNivel();
 			}else{
-				factory.getLoginService().getNiveles(new SimceCallback<ArrayList<NivelDTO>>(factory.getEventBus()) {
+				factory.getLoginService().getNiveles(new SimceCallback<ArrayList<NivelDTO>>(factory.getEventBus(),false) {
 
 					@Override
 					public void success(ArrayList<NivelDTO> result) {
@@ -209,7 +201,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			if(permisos.containsKey(aplicacionId+":"+nivelId)){
 				factory.getEventBus().fireEvent(new PermisosEvent(permisos.get(aplicacionId+":"+nivelId)));
 			}else{
-				factory.getLoginService().getUsuarioPermisos(new SimceCallback<HashMap<String,ArrayList<String>>>(factory.getEventBus()) {
+				factory.getLoginService().getUsuarioPermisos(new SimceCallback<HashMap<String,ArrayList<String>>>(factory.getEventBus(),false) {
 	
 					@Override
 					public void success(HashMap<String, ArrayList<String>> result) {
@@ -222,7 +214,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			if(tipos.containsKey(aplicacionId+":"+nivelId)){
 				selectTipo();
 			}else{
-				factory.getLoginService().getActividadTipos(new SimceCallback<ArrayList<ActividadTipoDTO>>(factory.getEventBus()) {
+				factory.getLoginService().getActividadTipos(new SimceCallback<ArrayList<ActividadTipoDTO>>(factory.getEventBus(),false) {
 
 					@Override
 					public void success(ArrayList<ActividadTipoDTO> result) {
