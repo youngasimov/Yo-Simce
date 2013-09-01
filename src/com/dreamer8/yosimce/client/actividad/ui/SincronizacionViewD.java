@@ -98,6 +98,11 @@ public class SincronizacionViewD extends Composite implements
 	}
 	
 	@Override
+	public void setMaterialDefectusoVisivility(boolean visible) {
+		conProblemasButton.setVisible(visible);
+	}
+	
+	@Override
 	public void setEstadosSincronizacion(
 			ArrayList<EstadoSincronizacionDTO> estados) {
 		this.estados = estados;

@@ -72,7 +72,7 @@
 			</g:ScrollPanel>	
 		</g:north>
 		<g:north size="3">
-			<g:FlowPanel addStyleNames='{style.addMaterialBar}'>
+			<g:FlowPanel addStyleNames='{style.addMaterialBar}' ui:field='addMaterialBar'>
 		        <my:PlaceHolderTextBox addStyleNames='{style.materialBarWidget}' placeholder="Pendrive" ui:field="materialBox"/>
 		        <g:ListBox addStyleNames='{style.materialBarWidget}' ui:field="estadoBox"/>
 		        <g:Button addStyleNames='{style.materialBarWidget}' text="Añadir" ui:field="addButton"/>

@@ -24,6 +24,8 @@ public interface SincronizacionView extends IsWidget {
 	void clear();
 	void setGuardarButtonEnabled(boolean enabled);
 	
+	void setMaterialDefectusoVisivility(boolean visible);
+	
 	public interface SincronizacionPresenter extends SimcePresenter{
 		
 		void onCambiarCursoButtonClick();

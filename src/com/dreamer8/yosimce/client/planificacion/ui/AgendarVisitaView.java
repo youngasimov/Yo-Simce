@@ -39,6 +39,9 @@ public interface AgendarVisitaView extends IsWidget {
 	
 	void setFocusOnEstado();
 	
+	void setEditarContactoVisivility(boolean visible);
+	void setEditarDirectorVisivility(boolean visible);
+	void setInformacionVisivility(boolean visible);
 	
 	
 	public interface AgendarVisitaPresenter extends SimcePresenter{

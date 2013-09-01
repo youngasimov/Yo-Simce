@@ -217,6 +217,21 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
 	}
+	
+	@Override
+	public void setEditarContactoVisivility(boolean visible) {
+		editarContactoButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setEditarDirectorVisivility(boolean visible) {
+		editarDirectorButton.setVisible(visible);
+	}
+	
+	@Override
+	public void setInformacionVisivility(boolean visible) {
+		informacionButton.setVisible(visible);
+	}
 
 	@Override
 	public void setIdCurso(int idCurso){

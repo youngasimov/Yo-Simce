@@ -16,6 +16,8 @@ public interface MaterialDefectuosoView extends IsWidget {
 	
 	void setPresenter(MaterialDefectuosoPresenter presenter);
 	
+	void setAddMaterialDefectuosoPanelVisivility(boolean visible);
+	
 	public interface MaterialDefectuosoPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
 		void onRemoveMaterialDefectuoso(MaterialDefectuosoDTO material);

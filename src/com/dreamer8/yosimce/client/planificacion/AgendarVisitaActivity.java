@@ -6,8 +6,10 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView.AgendarVisitaPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
@@ -43,6 +45,11 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		
+		view.setEditarContactoVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "editarContacto"));
+		view.setEditarDirectorVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "editarDirector"));
+		view.setInformacionVisivility(Utils.hasPermisos(getPermisos(), "GeneralService","getDetalleCurso"));
+		
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
@@ -66,54 +73,60 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		}else{
 			
 			view.setIdCurso(place.getCursoId());
+			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getContacto")){
+				getFactory().getPlanificacionService().getContacto(place.getCursoId(), new SimceCallback<ContactoDTO>(eventBus,false) {
+	
+					@Override
+					public void success(ContactoDTO result) {
+						view.setContacto(result);
+					}
+				});
+			}
 			
-			getFactory().getPlanificacionService().getContacto(place.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
-
-				@Override
-				public void success(ContactoDTO result) {
-					view.setContacto(result);
-				}
-			});
-			
-			getFactory().getPlanificacionService().getDirector(place.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
-
-				@Override
-				public void success(ContactoDTO result) {
-					view.setDirector(result);
-				}
-			});
-			
-			getFactory().getPlanificacionService().getCargos(new SimceCallback<ArrayList<CargoDTO>>(eventBus) {
-
-				@Override
-				public void success(ArrayList<CargoDTO> result) {
-					view.setCargos(result);
-				}
-			});
-			
-			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus) {
-
-				@Override
-				public void success(ArrayList<EstadoAgendaDTO> result) {
-					estados = result;
-					view.setEstadosAgenda(result);
-				}
-			});
-			
-			getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus) {
-				
-				@Override
-				public void success(AgendaDTO result) {
-					agenda = result;
-					view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
-					view.getDataDisplay().setRowCount(result.getItems().size());
+			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getDirector")){
+				getFactory().getPlanificacionService().getDirector(place.getCursoId(), new SimceCallback<ContactoDTO>(eventBus,false) {
+	
+					@Override
+					public void success(ContactoDTO result) {
+						view.setDirector(result);
+					}
+				});
+			}
+			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getCargos")){
+				getFactory().getPlanificacionService().getCargos(new SimceCallback<ArrayList<CargoDTO>>(eventBus,false) {
+	
+					@Override
+					public void success(ArrayList<CargoDTO> result) {
+						view.setCargos(result);
+					}
+				});
+			}
+			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getEstadosAgenda")){
+				getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
+	
+					@Override
+					public void success(ArrayList<EstadoAgendaDTO> result) {
+						estados = result;
+						view.setEstadosAgenda(result);
+					}
+				});
+			}
+			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getAgendaCurso")){
+				getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus,true) {
 					
-					Collections.reverse(agenda.getItems());
-
-					view.getDataDisplay().setVisibleRange(0,result.getItems().size());
-					view.getDataDisplay().setRowData(0, result.getItems());
-				}
-			});	
+					@Override
+					public void success(AgendaDTO result) {
+						agenda = result;
+						view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+						view.getDataDisplay().setRowCount(result.getItems().size());
+						
+						Collections.reverse(agenda.getItems());
+	
+						view.getDataDisplay().setVisibleRange(0,result.getItems().size());
+						view.getDataDisplay().setRowData(0, result.getItems());
+					}
+				});
+			}
 		}
 	}
 	
@@ -124,24 +137,28 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	@Override
 	public void onEditarContacto(final ContactoDTO contacto) {
-		getFactory().getPlanificacionService().editarContacto(place.getCursoId(),contacto,new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				view.setContacto(contacto);
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarContacto")){
+			getFactory().getPlanificacionService().editarContacto(place.getCursoId(),contacto,new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					view.setContacto(contacto);
+				}
+			});
+		}
 	}
 	
 	@Override
 	public void onEditarDirector(final ContactoDTO director) {
-		getFactory().getPlanificacionService().editarDirector(place.getCursoId(), director, new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				view.setContacto(director);
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarDirector")){
+			getFactory().getPlanificacionService().editarDirector(place.getCursoId(), director, new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					view.setContacto(director);
+				}
+			});
+		}
 	}
 	
 	@Override
@@ -149,11 +166,13 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		
 		if(!agenda.getItems().isEmpty() && agenda.getItems().get(0).getEstado().getId()==view.getIdEstadoAgendaSeleccionado()){
 			view.setFocusOnEstado();
+			eventBus.fireEvent(new MensajeEvent("El estado debe ser distinto al último estado agendado",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
 		
 		if(view.getComentario() == null || view.getComentario().isEmpty()){
 			view.setFocusOnComment();
+			eventBus.fireEvent(new MensajeEvent("Debe ingresar comentario",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
 		
@@ -168,17 +187,18 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		aidto.setFecha(view.getFechaHoraSeleccionada());
 		
 		aidto.setComentario(view.getComentario());
-		
-		getFactory().getPlanificacionService().AgendarVisita(place.getCursoId(), aidto,new SimceCallback<AgendaItemDTO>(eventBus) {
-
-			@Override
-			public void success(AgendaItemDTO result) {
-				agenda.getItems().add(0, result);
-				view.getDataDisplay().setRowCount(agenda.getItems().size());
-				view.getDataDisplay().setVisibleRange(0,agenda.getItems().size());
-				view.getDataDisplay().setRowData(0, agenda.getItems());
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "AgendarVisita")){
+			getFactory().getPlanificacionService().AgendarVisita(place.getCursoId(), aidto,new SimceCallback<AgendaItemDTO>(eventBus,true) {
+	
+				@Override
+				public void success(AgendaItemDTO result) {
+					agenda.getItems().add(0, result);
+					view.getDataDisplay().setRowCount(agenda.getItems().size());
+					view.getDataDisplay().setVisibleRange(0,agenda.getItems().size());
+					view.getDataDisplay().setRowData(0, agenda.getItems());
+				}
+			});
+		}
 	}
 	
 	@Override

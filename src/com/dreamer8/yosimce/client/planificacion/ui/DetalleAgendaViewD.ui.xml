@@ -91,9 +91,9 @@
 			<g:HTMLPanel addStyleNames='{style.header}'>
 				<div class='{style.title}'>Agenda de </div>
 				<div class='{style.actions}'>
-					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> 
-					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
+					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/>
 					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar" resource='{res.popup}'/>
+					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
 				</div>
 			</g:HTMLPanel>
 			</g:ScrollPanel>

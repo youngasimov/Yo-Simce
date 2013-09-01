@@ -21,6 +21,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -38,6 +39,7 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 	@UiField PlaceHolderTextBox materialBox;
 	@UiField ListBox estadoBox;
 	@UiField Button addButton;
+	@UiField FlowPanel addMaterialBar;
 	@UiField(provided = true) DataGrid<MaterialDefectuosoDTO> dataGrid;
 	
 	private MaterialDefectuosoPresenter presenter;
@@ -72,6 +74,11 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 		}
 		materialBox.setValue("");
 		presenter.onAddMaterialDefectuoso(md);
+	}
+	
+	@Override
+	public void setAddMaterialDefectuosoPanelVisivility(boolean visible) {
+		addMaterialBar.setVisible(visible);
 	}
 	
 	@Override

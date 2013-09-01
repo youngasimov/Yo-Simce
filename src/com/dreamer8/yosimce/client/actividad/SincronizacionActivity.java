@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView.SincronizacionPresenter;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
@@ -44,6 +45,9 @@ public class SincronizacionActivity extends SimceActivity implements
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		view.clear();
+		
+		view.setMaterialDefectusoVisivility(Utils.hasPermisos(getPermisos(),"ActividadService","getMaterialDefectuoso"));
+		
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
@@ -65,8 +69,8 @@ public class SincronizacionActivity extends SimceActivity implements
 			});
 			selector.show();
 		}else{
-			if(getPermisos().get("GeneralService").contains("getCurso")){
-				getFactory().getGeneralService().getCurso(place.getIdCurso(), new SimceCallback<CursoDTO>(eventBus) {
+			if(Utils.hasPermisos(eventBus,getPermisos(),"GeneralService","getCurso")){
+				getFactory().getGeneralService().getCurso(place.getIdCurso(), new SimceCallback<CursoDTO>(eventBus,false) {
 
 					@Override
 					public void success(CursoDTO result) {
@@ -75,8 +79,8 @@ public class SincronizacionActivity extends SimceActivity implements
 				});
 			}
 			
-			if(getPermisos().get("GeneralService").contains("getEstadosSincronizacion")){
-				getFactory().getActividadService().getEstadosSincronizacion(new SimceCallback<ArrayList<EstadoSincronizacionDTO>>(eventBus) {
+			if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getEstadosSincronizacion")){
+				getFactory().getActividadService().getEstadosSincronizacion(new SimceCallback<ArrayList<EstadoSincronizacionDTO>>(eventBus,false) {
 
 					@Override
 					public void success(
@@ -87,9 +91,9 @@ public class SincronizacionActivity extends SimceActivity implements
 				});
 			}
 			
-			if(getPermisos().get("ActividadService").contains("getSincronizacionesCurso")){
+			if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getSincronizacionesCurso")){
 				view.setGuardarButtonEnabled(true);
-				getFactory().getActividadService().getSincronizacionesCurso(place.getIdCurso(), new SimceCallback<ArrayList<SincAlumnoDTO>>(eventBus) {
+				getFactory().getActividadService().getSincronizacionesCurso(place.getIdCurso(), new SimceCallback<ArrayList<SincAlumnoDTO>>(eventBus,false) {
 	
 					@Override
 					public void success(ArrayList<SincAlumnoDTO> result) {
@@ -114,7 +118,7 @@ public class SincronizacionActivity extends SimceActivity implements
 			
 		}
 		
-		if(getPermisos().get("ActividadService").contains("updateSincronizacionAlumno")){
+		if(Utils.hasPermisos(getPermisos(),"ActividadService","updateSincronizacionAlumno")){
 			view.setGuardarButtonEnabled(true);
 			view.setIdMaterialFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
 				
@@ -207,30 +211,25 @@ public class SincronizacionActivity extends SimceActivity implements
 	
 	private void sinc(final SincAlumnoDTO alumno){
 		
-		if(!getPermisos().get("ActividadService").contains("updateSincronizacionAlumno")){
-			return;
+		if(Utils.hasPermisos(getPermisos(),"ActividadService","updateSincronizacionAlumno")){
+			alumno.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
+			view.updateTable();
+			getFactory().getActividadService().updateSincronizacionAlumno(place.getIdCurso(),alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus,false) {
+	
+				@Override
+				public void success(Boolean result) {
+					alumno.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
+					view.updateTable();
+				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					super.failure(caught);
+					alumno.setSinc(SincAlumnoDTO.SINC_ERRONEA);
+					view.updateTable();
+				}
+			});
 		}
-		
-		alumno.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
-		view.updateTable();
-		getFactory().getActividadService().updateSincronizacionAlumno(place.getIdCurso(),alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				alumno.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
-				view.updateTable();
-			}
-			
-			@Override
-			public void failure(Throwable caught) {
-				super.failure(caught);
-				alumno.setSinc(SincAlumnoDTO.SINC_ERRONEA);
-				view.updateTable();
-			}
-			
-			
-		});
-
 	}
 
 }

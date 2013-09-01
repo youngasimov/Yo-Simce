@@ -132,7 +132,7 @@ public class AppViewD extends Composite implements AppView {
 		MessagePanel mp = new MessagePanel(messages, i, message, messagesContainer);
 		mp.setAutoClose(autoclose);
 		if(autoclose){
-			mp.setOpenTime(4000);
+			mp.setOpenTime(6000);
 		}
 		mp.setCloseCommand(new Command() {
 			

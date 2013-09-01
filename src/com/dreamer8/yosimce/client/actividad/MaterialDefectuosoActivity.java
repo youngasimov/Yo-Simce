@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView.MaterialDefectuosoPresenter;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
@@ -40,6 +41,8 @@ public class MaterialDefectuosoActivity extends SimceActivity implements
 		this.eventBus = eventBus;
 		panel.setWidget(view.asWidget());
 		
+		view.setAddMaterialDefectuosoPanelVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "addOrUpdateMaterialDefectuoso"));
+		
 		selector = new CursoSelector(getFactory(),eventBus);
 		selector.setOnCursoChangeAction(new Command() {
 			
@@ -62,43 +65,49 @@ public class MaterialDefectuosoActivity extends SimceActivity implements
 			});
 			selector.show();
 		}else{
-			
-			getFactory().getGeneralService().getCurso(place.getIdCurso(), new SimceCallback<CursoDTO>(eventBus) {
-
-				@Override
-				public void success(CursoDTO result) {
-					view.setCurso(result);
-				}
-			});
-			
-			getFactory().getActividadService().getEstadosSincronizacionFallida(new SimceCallback<ArrayList<EstadoSincronizacionDTO>>(eventBus) {
-
-				@Override
-				public void success(ArrayList<EstadoSincronizacionDTO> result) {
-					view.setEstadosSincronizacion(result);
-				}
-			});
-			
-			getFactory().getActividadService().getMaterialDefectuoso(place.getIdCurso(), new SimceCallback<ArrayList<MaterialDefectuosoDTO>>(eventBus) {
-
-				@Override
-				public void success(ArrayList<MaterialDefectuosoDTO> result) {
-					if(MaterialDefectuosoActivity.this.material == null){
-						MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+			if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getCurso")){
+				getFactory().getGeneralService().getCurso(place.getIdCurso(), new SimceCallback<CursoDTO>(eventBus,false) {
+	
+					@Override
+					public void success(CursoDTO result) {
+						view.setCurso(result);
 					}
-					material.addAll(result);
-					view.setMaterialDefectuoso(result);
-				}
-				
-				@Override
-				public void failure(Throwable caught) {
-					super.failure(caught);
-					if(MaterialDefectuosoActivity.this.material == null){
-						MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+				});
+			}
+			if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEstadosSincronizacionFallida")){
+				getFactory().getActividadService().getEstadosSincronizacionFallida(new SimceCallback<ArrayList<EstadoSincronizacionDTO>>(eventBus,false) {
+	
+					@Override
+					public void success(ArrayList<EstadoSincronizacionDTO> result) {
+						view.setEstadosSincronizacion(result);
 					}
-					view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
-				}
-			});
+				});
+			}
+			if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getMaterialDefectuoso")){
+				getFactory().getActividadService().getMaterialDefectuoso(place.getIdCurso(), new SimceCallback<ArrayList<MaterialDefectuosoDTO>>(eventBus,false) {
+	
+					@Override
+					public void success(ArrayList<MaterialDefectuosoDTO> result) {
+						if(MaterialDefectuosoActivity.this.material == null){
+							MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+						}
+						material.addAll(result);
+						view.setMaterialDefectuoso(result);
+					}
+					
+					@Override
+					public void failure(Throwable caught) {
+						super.failure(caught);
+						if(MaterialDefectuosoActivity.this.material == null){
+							MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+						}
+						view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
+					}
+				});
+			}else{
+				MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+				view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
+			}
 			
 		}
 	}
@@ -110,29 +119,33 @@ public class MaterialDefectuosoActivity extends SimceActivity implements
 	
 	@Override
 	public void onRemoveMaterialDefectuoso(final MaterialDefectuosoDTO material) {
-		getFactory().getActividadService().removeMaterialDefectuoso(place.getIdCurso(), material.getIdMaterial(), new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				MaterialDefectuosoActivity.this.material.remove(material);
-				view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
-			}
-		});
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "removeMaterialDefectuoso")){
+			getFactory().getActividadService().removeMaterialDefectuoso(place.getIdCurso(), material.getIdMaterial(), new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					MaterialDefectuosoActivity.this.material.remove(material);
+					view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
+				}
+			});
+		}
 	}
 
 	@Override
 	public void onAddMaterialDefectuoso(final MaterialDefectuosoDTO material) {
-		getFactory().getActividadService().addOrUpdateMaterialDefectuoso(place.getIdCurso(), material, new SimceCallback<Boolean>(eventBus) {
-
-			@Override
-			public void success(Boolean result) {
-				if(MaterialDefectuosoActivity.this.material == null){
-					MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "addOrUpdateMaterialDefectuoso")){
+			getFactory().getActividadService().addOrUpdateMaterialDefectuoso(place.getIdCurso(), material, new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					if(MaterialDefectuosoActivity.this.material == null){
+						MaterialDefectuosoActivity.this.material = new ArrayList<MaterialDefectuosoDTO>();
+					}
+					MaterialDefectuosoActivity.this.material.add(material);
+					view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
 				}
-				MaterialDefectuosoActivity.this.material.add(material);
-				view.setMaterialDefectuoso(MaterialDefectuosoActivity.this.material);
-			}
-		});
+			});
+		}
 	}
 
 }

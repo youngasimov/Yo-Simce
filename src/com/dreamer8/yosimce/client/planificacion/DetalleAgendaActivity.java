@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView.DetalleAgendaPresenter;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
@@ -56,21 +57,22 @@ public class DetalleAgendaActivity extends SimceActivity
 			selector.show();
 		}else{
 			view.setIdCurso(place.getCursoId());
-			
-			getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus) {
-				
-				@Override
-				public void success(AgendaDTO result) {
-					agenda = result;
-					view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
-					view.getDataDisplay().setRowCount(result.getItems().size());
+			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getAgendaCurso")){
+				getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus,true) {
 					
-					Collections.reverse(agenda.getItems());
-
-					view.getDataDisplay().setVisibleRange(0,result.getItems().size());
-					view.getDataDisplay().setRowData(0, result.getItems());
-				}
-			});	
+					@Override
+					public void success(AgendaDTO result) {
+						agenda = result;
+						view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+						view.getDataDisplay().setRowCount(result.getItems().size());
+						
+						Collections.reverse(agenda.getItems());
+	
+						view.getDataDisplay().setVisibleRange(0,result.getItems().size());
+						view.getDataDisplay().setRowData(0, result.getItems());
+					}
+				});	
+			}
 		}
 	}
 
