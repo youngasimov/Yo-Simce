@@ -24,8 +24,13 @@ public class StringUtils {
 		return str;
 	}
 
+	public static Boolean isRut(String rut) {
+		return rut
+				.matches("([0-9]){1,2}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9]){0,3}[,.;_-]*([0-9kK]){0,1}");
+	}
+
 	public static String stripRut(String rut) {
-		if (!rut.matches("([0-9]){1,2}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9kK]){0,1}")) {
+		if (!isRut(rut)) {
 			return rut;
 		}
 		rut = rut.replaceAll("[,.;_-][0-9kK]$", "").replaceAll("[,.;_-]", "");
@@ -36,7 +41,7 @@ public class StringUtils {
 	}
 
 	public static String formatRut(String rut) {
-		if (!rut.matches("([0-9]){1,2}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9]){0,3}[,.;_-]*([0-9kK]){0,1}")) {
+		if (!isRut(rut)) {
 			return rut;
 		}
 		rut = rut.replaceAll("[,.;_-]", "");
@@ -59,7 +64,7 @@ public class StringUtils {
 	}
 
 	public static String formatRut(String rut, Boolean sobre10M) {
-		if (!rut.matches("([0-9]){1,2}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9]){0,3}[,.;_-]*([0-9kK]){0,1}")) {
+		if (!isRut(rut)) {
 			return rut;
 		}
 		rut = rut.replaceAll("[,.;_-]", "");

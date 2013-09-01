@@ -14,6 +14,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 
@@ -72,5 +73,58 @@ public class AlumnoXActividadXDocumentoDAO extends
 		}
 		return sadtos;
 
+	}
+
+	public AlumnoXActividadXDocumento findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDIdAlumnoANDCodigoDocumento(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idCurso, Integer idAlumno, String codigo,
+			String tipoDocumento) {
+
+		AlumnoXActividadXDocumento axaxd = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT axaxd.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
+				+ SecurityFilter.escapeString(idCurso)
+				+ ")"
+				+ " JOIN ALUMNO_x_ACTIVIDAD axa ON (a.id=axa.actividad_id AND axa.alumno_id="
+				+ SecurityFilter.escapeString(idAlumno)
+				+ ")"
+				+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON axa.id=axaxd.alumno_x_actividad_id"
+				+ " JOIN DOCUMENTO d ON ( axaxd.documento_id=d.id AND d.codigo='"
+				+ SecurityFilter.escapeString(codigo)
+				+ "')"
+				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
+				+ SecurityFilter.escapeString(tipoDocumento) + "')";
+		Query q = s.createSQLQuery(query).addEntity(
+				AlumnoXActividadXDocumento.class);
+		axaxd = ((AlumnoXActividadXDocumento) q.uniqueResult());
+		return axaxd;
+	}
+
+	public AlumnoXActividadXDocumento findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
+			Integer idAlumnoXActividad, String codigo, String tipoDocumento) {
+
+		AlumnoXActividadXDocumento axaxd = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT axaxd.* FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd"
+				+ " JOIN DOCUMENTO d ON ( axaxd.documento_id=d.id AND d.codigo='"
+				+ SecurityFilter.escapeString(codigo)
+				+ "')"
+				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
+				+ SecurityFilter.escapeString(tipoDocumento)
+				+ "')"
+				+ " WHERE axaxd.alumno_x_actividad_id="
+				+ SecurityFilter.escapeString(idAlumnoXActividad);
+		Query q = s.createSQLQuery(query).addEntity(
+				AlumnoXActividadXDocumento.class);
+		axaxd = ((AlumnoXActividadXDocumento) q.uniqueResult());
+		return axaxd;
 	}
 }

@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,7 +11,11 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.AlumnoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.AlumnoEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadXDocumentoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.DocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.IncidenciaTipoDAO;
@@ -18,13 +23,20 @@ import com.dreamer8.yosimce.server.hibernate.dao.MotivoFallaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.Alumno;
+import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividad;
+import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividadXDocumento;
+import com.dreamer8.yosimce.server.hibernate.pojo.Documento;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.IncidenciaTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.MotivoFalla;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
@@ -281,6 +293,22 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se han especificado los datos para la sincronización.");
 				}
 
+				if (sinc.getRut() == null || !StringUtils.isRut(sinc.getRut())) {
+					throw new NullPointerException(
+							"No se ha especificado un alumno. Verifique que ha ingresado un rut válido.");
+				}
+
+				if (sinc.getIdPendrive() == null) {
+					throw new NullPointerException(
+							"No se ha especificado un Pendrive.");
+				}
+
+				if (sinc.getEstado() == null
+						|| sinc.getEstado().getIdEstadoSincronizacion() == null) {
+					throw new NullPointerException(
+							"No se ha especificado un estado.");
+				}
+
 				Usuario u = getUsuarioActual();
 
 				s.beginTransaction();
@@ -290,6 +318,64 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
+
+				/**
+				 * Obtener encuesta.
+				 * 
+				 * si sincroniza y no era titular, cambiar a titular (preguntar)
+				 */
+
+				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
+				AlumnoXActividad axa = axadao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDRutAlumno(
+								idAplicacion, idNivel, idActividadTipo,
+								idCurso, sinc.getRut());
+
+				if (axa == null) {
+					throw new NullPointerException(
+							"No se ha encontrado al alumno especificado.");
+				}
+
+				AlumnoEstadoDAO aedao = new AlumnoEstadoDAO();
+				AlumnoEstado ae = aedao.findByNombre(AlumnoEstado.PRESENTE);
+
+				axa.setAlumnoEstado(ae);
+				axa.setPruebaComentario(sinc.getComentario());
+				axadao.update(axa);
+
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				AlumnoXActividadXDocumento axaxdPndrive = axaxddao
+						.findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
+								axa.getId(), sinc.getIdPendrive(),
+								DocumentoTipo.PRUEBA);
+
+				if (axaxdPndrive == null) {
+					DocumentoDAO ddao = new DocumentoDAO();
+					Documento pendrive = ddao.findByCodigoANDTipoDocumento(
+							sinc.getIdPendrive(), DocumentoTipo.PRUEBA);
+					if (pendrive == null) {
+						throw new NullPointerException(
+								"No se ha encontrado un pendrive con el código ingresado.");
+					}
+					axaxdPndrive = new AlumnoXActividadXDocumento();
+					axaxdPndrive.setAlumnoXActividad(axa);
+					axaxdPndrive.setDocumento(pendrive);
+				}
+
+				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+				DocumentoEstado de = dedao.getById(sinc.getEstado()
+						.getIdEstadoSincronizacion());
+
+				axaxdPndrive.setDocumentoEstado(de);
+				axaxdPndrive.setComentario(sinc.getComentario());
+				axaxdPndrive.setEntregado(true);
+				axaxdPndrive
+						.setRecibido(!de.equals(DocumentoEstado.EXTRAVIADO));
+
+				axaxdPndrive.setUpdatedAt(new Date());
+				axaxdPndrive.setModificadorId(u.getId());
+
+				axaxddao.saveOrUpdate(axaxdPndrive);
 
 				s.getTransaction().commit();
 			}
@@ -746,7 +832,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
-				List<DocumentoEstado> des = dedao.findForSincronizacionFallida();
+				List<DocumentoEstado> des = dedao
+						.findForSincronizacionFallida();
 				if (des != null && !des.isEmpty()) {
 					for (DocumentoEstado documentoEstado : des) {
 						esdtos.add(documentoEstado.getEstadoSincrinizacion());
@@ -868,7 +955,6 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	public DocumentoDTO getDocumentoPreviewActividades(
 			HashMap<String, String> filtros) throws NoAllowedException,
 			NoLoggedException, DBException {
-		
 
 		DocumentoDTO ddto = new DocumentoDTO();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
