@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.actividad;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.SimcePlace;
@@ -8,77 +9,100 @@ import com.google.gwt.place.shared.Prefix;
 
 public class ActividadesPlace extends SimcePlace {
 
-	private boolean showActividadesNoInciadas;
-	private boolean showActividadesTerminadas;
-	private boolean showActividadesContingencia;
-	private boolean showActividadesProblema;
-	private boolean showActividadesSincronizadas;
+	private ArrayList<Integer> estadosSeleccionados;
+	private boolean actividadesMaterialContintencia;
+	private boolean actividadesContintencia;
+	private boolean actividadesContintenciaInhabilitante;
+	private boolean actividadesSincronizadas;
+	private boolean actividadesParcialmenteSincronizadas;
+	private boolean actividadesNoSincronizadas;
 	
 	private Integer regionId;
 	private Integer comunaId;
 	
 	public ActividadesPlace(){
 		super();
-		showActividadesNoInciadas = true;
-		showActividadesTerminadas = true;
-		showActividadesContingencia = true;
-		showActividadesProblema = true;
-		showActividadesSincronizadas = true;
+		estadosSeleccionados = new ArrayList<Integer>();
+		actividadesMaterialContintencia = true;
+		actividadesContintencia = true;
+		actividadesContintenciaInhabilitante = true;
+		actividadesSincronizadas = true;
+		actividadesParcialmenteSincronizadas = true;
+		actividadesNoSincronizadas = true;
 		regionId = -1;
 		comunaId = -1;
 	}
 	
 	public ActividadesPlace(int aplicacionId, int nivelId, int tipoId){
 		super(aplicacionId, nivelId, tipoId);
-		showActividadesNoInciadas = true;
-		showActividadesTerminadas = true;
-		showActividadesContingencia = true;
-		showActividadesProblema = true;
-		showActividadesSincronizadas = true;
+		estadosSeleccionados = new ArrayList<Integer>();
+		actividadesMaterialContintencia = true;
+		actividadesContintencia = true;
+		actividadesContintenciaInhabilitante = true;
+		actividadesSincronizadas = true;
+		actividadesParcialmenteSincronizadas = true;
+		actividadesNoSincronizadas = true;
 		regionId = -1;
 		comunaId = -1;
 	}
-	
-	
-	
-	public boolean isShowActividadesNoInciadas() {
-		return showActividadesNoInciadas;
+
+	public ArrayList<Integer> getEstadosSeleccionados() {
+		return estadosSeleccionados;
 	}
 
-	public void setShowActividadesNoInciadas(boolean showActividadesNoInciadas) {
-		this.showActividadesNoInciadas = showActividadesNoInciadas;
+	public void setEstadosSeleccionados(ArrayList<Integer> estadosSeleccionados) {
+		this.estadosSeleccionados = estadosSeleccionados;
 	}
 
-	public boolean isShowActividadesTerminadas() {
-		return showActividadesTerminadas;
+	public boolean isActividadesMaterialContintencia() {
+		return actividadesMaterialContintencia;
 	}
 
-	public void setShowActividadesTerminadas(boolean showActividadesTerminadas) {
-		this.showActividadesTerminadas = showActividadesTerminadas;
+	public void setActividadesMaterialContintencia(
+			boolean actividadesMaterialContintencia) {
+		this.actividadesMaterialContintencia = actividadesMaterialContintencia;
 	}
 
-	public boolean isShowActividadesContingencia() {
-		return showActividadesContingencia;
+	public boolean isActividadesContintencia() {
+		return actividadesContintencia;
 	}
 
-	public void setShowActividadesContingencia(boolean showActividadesContingencia) {
-		this.showActividadesContingencia = showActividadesContingencia;
+	public void setActividadesContintencia(boolean actividadesContintencia) {
+		this.actividadesContintencia = actividadesContintencia;
 	}
 
-	public boolean isShowActividadesProblema() {
-		return showActividadesProblema;
+	public boolean isActividadesContintenciaInhabilitante() {
+		return actividadesContintenciaInhabilitante;
 	}
 
-	public void setShowActividadesProblema(boolean showActividadesProblema) {
-		this.showActividadesProblema = showActividadesProblema;
+	public void setActividadesContintenciaInhabilitante(
+			boolean actividadesContintenciaInhabilitante) {
+		this.actividadesContintenciaInhabilitante = actividadesContintenciaInhabilitante;
 	}
 
-	public boolean isShowActividadesSincronizadas() {
-		return showActividadesSincronizadas;
+	public boolean isActividadesSincronizadas() {
+		return actividadesSincronizadas;
 	}
 
-	public void setShowActividadesSincronizadas(boolean showActividadesSincronizadas) {
-		this.showActividadesSincronizadas = showActividadesSincronizadas;
+	public void setActividadesSincronizadas(boolean actividadesSincronizadas) {
+		this.actividadesSincronizadas = actividadesSincronizadas;
+	}
+
+	public boolean isActividadesParcialmenteSincronizadas() {
+		return actividadesParcialmenteSincronizadas;
+	}
+
+	public void setActividadesParcialmenteSincronizadas(
+			boolean actividadesParcialmenteSincronizadas) {
+		this.actividadesParcialmenteSincronizadas = actividadesParcialmenteSincronizadas;
+	}
+
+	public boolean isActividadesNoSincronizadas() {
+		return actividadesNoSincronizadas;
+	}
+
+	public void setActividadesNoSincronizadas(boolean actividadesNoSincronizadas) {
+		this.actividadesNoSincronizadas = actividadesNoSincronizadas;
 	}
 
 	public Integer getRegionId() {
@@ -112,15 +136,23 @@ public class ActividadesPlace extends SimcePlace {
 					.get(NIVELID)) : -1);
 			aup.setTipoId((kvs.containsKey(TIPOID)) ? Integer.parseInt(kvs
 					.get(TIPOID)) : -1);
-			aup.setShowActividadesNoInciadas((kvs.containsKey("sani") &&  kvs.get("sani").equals("0"))?false:true);
-			aup.setShowActividadesTerminadas((kvs.containsKey("sat") &&  kvs.get("sat").equals("0"))?false:true);
-			aup.setShowActividadesContingencia((kvs.containsKey("sac") &&  kvs.get("sac").equals("0"))?false:true);
-			aup.setShowActividadesProblema((kvs.containsKey("sap") &&  kvs.get("sap").equals("0"))?false:true);
-			aup.setShowActividadesSincronizadas((kvs.containsKey("sas") &&  kvs.get("sas").equals("0"))?false:true);
-			aup.setRegionId((kvs.containsKey("rid")) ? Integer.parseInt(kvs
-					.get("rid")) : -1);
-			aup.setComunaId((kvs.containsKey("rid") && kvs.containsKey("cid")) ? Integer.parseInt(kvs
-					.get("cid")) : -1);
+			aup.setActividadesContintencia((kvs.containsKey("ac") &&  kvs.get("ac").equals("0"))?false:true);
+			aup.setActividadesContintenciaInhabilitante((kvs.containsKey("aci") &&  kvs.get("aci").equals("0"))?false:true);
+			aup.setActividadesMaterialContintencia((kvs.containsKey("amc") &&  kvs.get("amc").equals("0"))?false:true);
+			aup.setActividadesSincronizadas((kvs.containsKey("as") &&  kvs.get("as").equals("0"))?false:true);
+			aup.setActividadesParcialmenteSincronizadas((kvs.containsKey("aps") &&  kvs.get("aps").equals("0"))?false:true);
+			aup.setActividadesNoSincronizadas((kvs.containsKey("ans") &&  kvs.get("ans").equals("0"))?false:true);
+			aup.setRegionId((kvs.containsKey("rid")) ? Integer.parseInt(kvs.get("rid")) : -1);
+			aup.setComunaId((kvs.containsKey("rid") && kvs.containsKey("cid")) ? Integer.parseInt(kvs.get("cid")) : -1);
+			if(kvs.containsKey("es")){
+				
+				String[] estados = kvs.get("es").split(":");
+				ArrayList<Integer> e = new ArrayList<Integer>();
+				for(String s:estados){
+					e.add(Integer.parseInt(s));
+				}
+				aup.setEstadosSeleccionados(e);
+			}
 			return aup;
 		}
 
@@ -130,13 +162,23 @@ public class ActividadesPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			if(!place.isShowActividadesNoInciadas()){kvs.put("sani", "0");}
-			if(!place.isShowActividadesTerminadas()){kvs.put("sat", "0");}
-			if(!place.isShowActividadesContingencia()){kvs.put("sac", "0");}
-			if(!place.isShowActividadesProblema()){kvs.put("sap", "0");}
-			if(!place.isShowActividadesSincronizadas()){kvs.put("sas", "0");}
+			if(!place.isActividadesContintencia()){kvs.put("ac", "0");}
+			if(!place.isActividadesContintenciaInhabilitante()){kvs.put("aci", "0");}
+			if(!place.isActividadesMaterialContintencia()){kvs.put("amc", "0");}
+			if(!place.isActividadesSincronizadas()){kvs.put("as", "0");}
+			if(!place.isActividadesParcialmenteSincronizadas()){kvs.put("aps", "0");}
+			if(!place.isActividadesNoSincronizadas()){kvs.put("ans", "0");}
 			if(place.getRegionId()!=-1){ kvs.put("rid", place.getRegionId()+""); }
 			if(place.getComunaId()!=-1){ kvs.put("cid", place.getComunaId()+""); }
+			if(!place.getEstadosSeleccionados().isEmpty()){	
+				StringBuilder estados = new StringBuilder();
+				for(Integer i:place.getEstadosSeleccionados()){
+					estados.append(i);
+					estados.append(":");
+				}
+				estados.deleteCharAt(estados.length()-1);
+				kvs.put("es", estados.toString());
+			}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		

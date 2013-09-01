@@ -71,6 +71,8 @@ public interface FormActividadView extends IsWidget {
 	void showForm(boolean show);
 	void setPresenter(FormActividadPresenter presenter);
 	
+	void setSaveVisibility(boolean visible);
+	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
 		void guardarFormulario();

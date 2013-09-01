@@ -328,6 +328,12 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		inhabilitaContingenciaBox.setValue(false);
 		presenter.onAgregarContingencia(c);
 	}
+	
+	@Override
+	public void setSaveVisibility(boolean visible) {
+		saveButton.setVisible(visible);
+		save2Button.setVisible(visible);
+	}
 
 	@Override
 	public boolean isUploading(){

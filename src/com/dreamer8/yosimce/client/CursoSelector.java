@@ -31,7 +31,7 @@ public class CursoSelector implements
 	@Override
 	public void onSearchBoxChange(String search) {
 		if(search!=null && search.length()>2){
-			factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus) {
+			factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus,false) {
 
 				@Override
 				public void success(ArrayList<CursoDTO> result) {

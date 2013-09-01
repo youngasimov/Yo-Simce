@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -17,13 +18,18 @@ public interface ActividadesView extends IsWidget {
 	int getColumnIndex(Column<ActividadPreviewDTO,?> column);
 	void clearCursoSelection();
 	void setPresenter(ActividadesPresenter presenter);
-	void setActividadesNoIniciadas(boolean value);
-	void setActividadesTerminadas(boolean value);
+	void setEstadosActividad(ArrayList<EstadoAgendaDTO> estados);
+	
+	void setActividadesMaterialContingencia(boolean value);
 	void setActividadesContingencia(boolean value);
-	void setActividadesProblema(boolean value);
+	void setActividadesContingenciaInhabilitante(boolean value);
 	void setActividadesSincronizadas(boolean value);
+	void setActividadesParcialementeSincronizadas(boolean value);
+	void setActividadesNoSincronizadas(boolean value);
+	
 	void setRegiones(ArrayList<SectorDTO> regiones);
 	void setComunas(ArrayList<SectorDTO> comunas);
+	void setSelectedEstados(ArrayList<Integer> estadosId);
 	void setSelectedRegion(int regionId);
 	void setSelectedComuna(int comunaId);
 	

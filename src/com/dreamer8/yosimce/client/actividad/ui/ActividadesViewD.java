@@ -2,6 +2,8 @@ package com.dreamer8.yosimce.client.actividad.ui;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
@@ -13,6 +15,7 @@ import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
@@ -29,9 +32,12 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
@@ -63,6 +69,8 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	@UiField(provided = true) DataGrid<ActividadPreviewDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
 	
+	private HashMap<Integer,CheckBox> estadoCheckBoxs;
+	
 	private SingleSelectionModel<ActividadPreviewDTO> selectionModel;
 	private ActividadPreviewDTO selectedItem;
 	private ActividadesPresenter presenter;
@@ -81,6 +89,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		filtrosPanel = new FiltroActividadesPanelViewD();
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosDialogBox.setWidget(filtrosPanel);
+		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
 		bind();
 	}
 	
@@ -177,30 +186,47 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	public void setPresenter(ActividadesPresenter presenter) {
 		this.presenter = presenter;
 	}
-	
-	@Override
-	public void setActividadesNoIniciadas(boolean value) {
-		//filtrosPanel.noIniciadasBox.setValue(value);
-	}
 
 	@Override
-	public void setActividadesTerminadas(boolean value) {
-		//filtrosPanel.terminadasBox.setValue(value);
-	}
-
-	@Override
-	public void setActividadesContingencia(boolean value) {
+	public void setActividadesMaterialContingencia(boolean value) {
 		filtrosPanel.contingenciaBox.setValue(value);
 	}
+	
+	@Override
+	public void setActividadesContingencia(boolean value) {
+		filtrosPanel.problemasBox.setValue(value);
+	}
 
 	@Override
-	public void setActividadesProblema(boolean value) {
-		filtrosPanel.problemasBox.setValue(value);
+	public void setActividadesContingenciaInhabilitante(boolean value) {
+		filtrosPanel.problemasHinabilitantesBox.setValue(value);
 	}
 	
 	@Override
 	public void setActividadesSincronizadas(boolean value){
-		//filtrosPanel.sincronizadasBox.setValue(value);
+		filtrosPanel.sincronizacionTotalBox.setValue(value);
+	}
+
+	@Override
+	public void setActividadesParcialementeSincronizadas(boolean value) {
+		filtrosPanel.sincronizacionParcialBox.setValue(value);
+	}
+
+	@Override
+	public void setActividadesNoSincronizadas(boolean value) {
+		filtrosPanel.sincronizadasNulaBox.setValue(value);
+	}
+
+	@Override
+	public void setSelectedEstados(ArrayList<Integer> estados) {
+		for(Entry<Integer,CheckBox> e:estadoCheckBoxs.entrySet()){
+			e.getValue().setValue(false);
+		}
+		for(Integer id:estados){
+			if(estadoCheckBoxs.containsKey(id)){
+				estadoCheckBoxs.get(id).setValue(true);
+			}
+		}
 	}
 
 	@Override
@@ -250,6 +276,9 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		formularioButton.setVisible(false);
 		
 		pager.setDisplay(dataGrid);
+		
+		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
+		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 		
 		selectionModel = new SingleSelectionModel<ActividadPreviewDTO>(ActividadPreviewDTO.KEY_PROVIDER);
 		
@@ -306,16 +335,26 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public void onClick(ClickEvent event) {
 				ActividadesPlace ap = new ActividadesPlace();
-				//ap.setShowActividadesNoInciadas(filtrosPanel.noIniciadasBox.getValue());
-				//ap.setShowActividadesTerminadas(filtrosPanel.terminadasBox.getValue());
-				ap.setShowActividadesContingencia(filtrosPanel.contingenciaBox.getValue());
-				ap.setShowActividadesProblema(filtrosPanel.problemasBox.getValue());
-				//ap.setShowActividadesSincronizadas(filtrosPanel.sincronizadasBox.getValue());
+				ap.setActividadesContintencia(filtrosPanel.problemasBox.getValue());
+				ap.setActividadesContintenciaInhabilitante(filtrosPanel.problemasHinabilitantesBox.getValue());
+				ap.setActividadesMaterialContintencia(filtrosPanel.contingenciaBox.getValue());
+				ap.setActividadesSincronizadas(filtrosPanel.sincronizacionTotalBox.getValue());
+				ap.setActividadesParcialmenteSincronizadas(filtrosPanel.sincronizacionParcialBox.getValue());
+				ap.setActividadesNoSincronizadas(filtrosPanel.sincronizadasNulaBox.getValue());
 				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
 					ap.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
 				}
-				if(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())!="-1"){
+				if(filtrosPanel.comunaBox.isVisible() && filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())!="-1"){
 					ap.setComunaId(Integer.parseInt(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())));
+				}
+				ArrayList<Integer> es = new ArrayList<Integer>();
+				for(Entry<Integer,CheckBox> e:estadoCheckBoxs.entrySet()){
+					if(e.getValue().getValue()){
+						es.add(e.getKey());
+					}
+				}
+				if(es.size()>0){
+					ap.setEstadosSeleccionados(es);
 				}
 				filtrosDialogBox.hide();
 				presenter.goTo(ap);
@@ -495,5 +534,16 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		dataGrid.addColumn(docColumn,"Documento");
 		dataGrid.setColumnWidth(docColumn, "150px");
 		
+	}
+
+	@Override
+	public void setEstadosActividad(ArrayList<EstadoAgendaDTO> estados) {
+		estadoCheckBoxs.clear();
+		filtrosPanel.estadosPanel.clear();
+		for(EstadoAgendaDTO ea:estados){
+			CheckBox cb = new CheckBox(ea.getEstado());
+			estadoCheckBoxs.put(ea.getId(), cb);
+			filtrosPanel.estadosPanel.add(cb);
+		}
 	}
 }

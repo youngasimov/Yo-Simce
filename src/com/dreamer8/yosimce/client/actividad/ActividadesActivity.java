@@ -9,8 +9,10 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView.ActividadesPresenter;
+import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
@@ -69,7 +71,15 @@ public class ActividadesActivity extends SimceActivity implements
 			});
 		}
 		
-		
+		if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getRegiones")){
+			getFactory().getActividadService().getEstadosActividad(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
+
+				@Override
+				public void success(ArrayList<EstadoAgendaDTO> result) {
+					
+				}
+			});
+		}
 		
 	}
 
@@ -121,6 +131,10 @@ public class ActividadesActivity extends SimceActivity implements
 	
 	@Override
 	public void onRegionChange(final int regionId) {
+		if(regionId == -1){
+			view.setComunas(new ArrayList<SectorDTO>());
+			return;
+		}
 		if(!comunas.containsKey(regionId)){
 			SectorDTO region = null;
 			for(SectorDTO r:regiones){
@@ -160,16 +174,18 @@ public class ActividadesActivity extends SimceActivity implements
 	private void updateFiltros(){
 		
 		filtros.clear();
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_NO_INICIADAS, (place.isShowActividadesNoInciadas())?"1":"0");
-		view.setActividadesNoIniciadas(place.isShowActividadesNoInciadas());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_TERMINADAS, (place.isShowActividadesTerminadas())?"1":"0");
-		view.setActividadesTerminadas(place.isShowActividadesTerminadas());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA, (place.isShowActividadesContingencia())?"1":"0");
-		view.setActividadesContingencia(place.isShowActividadesContingencia());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_PROBLEMA, (place.isShowActividadesProblema())?"1":"0");
-		view.setActividadesProblema(place.isShowActividadesProblema());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS, (place.isShowActividadesSincronizadas())?"1":"0");
-		view.setActividadesSincronizadas(place.isShowActividadesSincronizadas());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA, (place.isActividadesContintencia())?"1":"0");
+		view.setActividadesContingencia(place.isActividadesContintencia());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE, (place.isActividadesContintenciaInhabilitante())?"1":"0");
+		view.setActividadesContingenciaInhabilitante(place.isActividadesContintenciaInhabilitante());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA, (place.isActividadesMaterialContintencia())?"1":"0");
+		view.setActividadesMaterialContingencia(place.isActividadesMaterialContintencia());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS, (place.isActividadesSincronizadas())?"1":"0");
+		view.setActividadesSincronizadas(place.isActividadesSincronizadas());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS, (place.isActividadesParcialmenteSincronizadas())?"1":"0");
+		view.setActividadesParcialementeSincronizadas(place.isActividadesParcialmenteSincronizadas());
+		filtros.put(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS, (place.isActividadesNoSincronizadas())?"1":"0");
+		view.setActividadesNoSincronizadas(place.isActividadesNoSincronizadas());
 		if(place.getRegionId()!=-1){
 			filtros.put(ActividadService.FKEY_REGION, place.getRegionId()+"");
 			view.setSelectedRegion(place.getRegionId());
@@ -177,6 +193,16 @@ public class ActividadesActivity extends SimceActivity implements
 		}
 		if(place.getComunaId()!=-1){
 			filtros.put(ActividadService.FKEY_COMUNA, place.getComunaId()+"");
+		}
+		if(place.getEstadosSeleccionados().size()>0){
+			view.setSelectedEstados(place.getEstadosSeleccionados());
+			StringBuilder b = new StringBuilder();
+			for(Integer id:place.getEstadosSeleccionados()){
+				b.append(id);
+				b.append(PlanificacionService.SEPARATOR);
+			}
+			b.deleteCharAt(b.length()-1);
+			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getTotalPreviewActividades")){
 			getFactory().getActividadService().getTotalPreviewActividades(filtros, new SimceCallback<Integer>(eventBus,false) {
