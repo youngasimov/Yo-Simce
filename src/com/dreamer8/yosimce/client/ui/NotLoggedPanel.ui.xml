@@ -1,0 +1,82 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	
+	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
+	
+	<ui:style>
+		
+		.panel{
+			display:block;
+			width: 600px;
+			height: 310px;
+			float: left;
+		}
+		
+		.upPanel{
+			display:block;
+			width: 600px;
+			height: 258px;
+			float: left;
+		}
+		
+		.bottomPanel{
+			display:block;
+			width: 600px;
+			height: 50px;
+			float: left;
+		}
+		
+		.logoPanel{
+			display:block;
+			width: 200px;
+			height: 260px;
+			float: left;
+		}
+		
+		.logo{
+			display:block;
+			width: 176px;
+			height: 146px;
+			margin-left:auto;
+			margin-right:auto;
+			margin-top: 40px;
+		}
+		
+		.mensaje{
+			display:block;
+			width: 350px;
+			height: 208px;
+			padding: 25px;
+			float: right;
+			text-align: left;
+			font-weight: bold;
+			font-size: 14px;
+		}
+		
+		.submensaje{
+			font-weight: normal;
+			font-size: 12px;
+		}
+		
+		.button{
+			float: right;
+			margin: 3px;
+		}
+		
+	</ui:style>
+	<g:HTMLPanel addStyleNames='{style.panel}'>
+		<div class='{style.upPanel}'>
+			<div class='{style.logoPanel}'><g:Image addStyleNames='{style.logo}' resource='{res.logoSimceGrande}' /></div>
+			<div class='{style.mensaje}'>
+				Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />
+				Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />
+				<div class="{style.submensaje}">Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce</div>
+			</div>
+		</div>
+		<div class='{style.bottomPanel}'>
+			<my:ImageButton text="Ir a YoSimce" addStyleNames='{style.button}' resource='{res.logoSimce}' ui:field="yosimceButton"/>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

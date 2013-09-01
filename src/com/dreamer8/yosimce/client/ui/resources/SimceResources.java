@@ -20,6 +20,9 @@ public interface SimceResources extends ClientBundle {
 	@Source("images/logosimce.png")
 	public ImageResource logoSimce();
 	
+	@Source("images/logosimcegrande.jpg")
+	public ImageResource logoSimceGrande();
+	
 	@Source("images/dreamer8.png")
 	public ImageResource dreamer();
 	

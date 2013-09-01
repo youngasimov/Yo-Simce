@@ -127,6 +127,16 @@ public class AppViewD extends Composite implements AppView {
 		showMessage(SimceResources.INSTANCE.msgLocked(), message, autoclose);
 	}
 	
+	@Override
+	public void openLoginPopup() {
+		PopupPanel p = new PopupPanel(false, true);
+		p.setAnimationEnabled(false);
+		p.setAutoHideOnHistoryEventsEnabled(false);
+		p.setGlassEnabled(true);
+		p.setWidget(new NotLoggedPanel());
+		p.center();
+	}
+	
 	private void showMessage(ImageResource i,String message, boolean autoclose){
 		messages++;
 		MessagePanel mp = new MessagePanel(messages, i, message, messagesContainer);

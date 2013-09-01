@@ -4,6 +4,7 @@ import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
+import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -17,11 +18,14 @@ public class AppPresenter implements AppView.AppPresenter {
 	private int blockingEvents;
 	private int nonBlockingEvents;
 	
+	private boolean notLogged;
+	
 	public AppPresenter(ClientFactory factory){
 		this.factory = factory;
 		this.view = factory.getAppView();
 		blockingEvents = 0;
 		nonBlockingEvents = 0;
+		notLogged = false;
 		bind();
 	}
 	
@@ -32,7 +36,6 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void bind(){
-		
 		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
 			
 			@Override
@@ -77,11 +80,14 @@ public class AppPresenter implements AppView.AppPresenter {
 				if(event.getError() instanceof NoAllowedException){
 					view.showPermisoMessage(event.getError().getMessage(), true);
 				}else if(event.getError() instanceof DBException){
-					view.showErrorMessage(event.getError().getMessage(), true);
+					view.showErrorMessage(event.getError().getMessage(), false);
 				}else if(event.getError() instanceof TimeoutException){
-					view.showWarningMessage(event.getError().getMessage(), true);
+					view.showErrorMessage(event.getError().getMessage(), true);
 				}else if(event.getError() instanceof ConsistencyException){
-					view.showWarningMessage(event.getError().getMessage(), true);
+					view.showWarningMessage(event.getError().getMessage(), false);
+				}else if(event.getError() instanceof NoLoggedException && !notLogged){
+					notLogged = true;
+					view.openLoginPopup();
 				}
 			}
 		});
