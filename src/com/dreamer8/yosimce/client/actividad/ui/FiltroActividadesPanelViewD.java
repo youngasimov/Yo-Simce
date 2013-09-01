@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class FiltroActividadesPanelViewD extends Composite {
@@ -18,9 +19,7 @@ public class FiltroActividadesPanelViewD extends Composite {
 			UiBinder<Widget, FiltroActividadesPanelViewD> {
 	}
 	
-	@UiField CheckBox estadoSinInformacionBox;
-	@UiField CheckBox estadoRealisadasBox;
-	@UiField CheckBox estadoAnuladasBox;
+	@UiField VerticalPanel estadosPanel;
 	@UiField CheckBox contingenciaBox;
 	@UiField CheckBox problemasBox;
 	@UiField CheckBox problemasHinabilitantesBox;

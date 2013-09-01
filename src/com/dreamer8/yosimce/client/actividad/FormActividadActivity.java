@@ -49,6 +49,9 @@ public class FormActividadActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		
+		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
+		
 		selector = new CursoSelector(getFactory(),eventBus);
 		clear();
 		selector.setOnCursoChangeAction(new Command() {

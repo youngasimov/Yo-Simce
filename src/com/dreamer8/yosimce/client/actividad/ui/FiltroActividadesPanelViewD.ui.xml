@@ -15,16 +15,7 @@
 				<td colspan='2'>Estado</td>
 			</tr>
 			<tr>
-				<td>Sin información:</td>
-				<td><g:CheckBox ui:field="estadoSinInformacionBox"/> </td>
-			</tr>
-			<tr>
-				<td>Realizadas:</td>
-				<td><g:CheckBox ui:field="estadoRealisadasBox"/> </td>
-			</tr>
-			<tr>
-				<td>Anuladas:</td>
-				<td><g:CheckBox ui:field="estadoAnuladasBox"/> </td>
+				<td colspan='2'> <g:VerticalPanel ui:field="estadosPanel"/> </td>
 			</tr>
 			<tr class='{style.title}'>
 				<td colspan='2'>Opciones</td>

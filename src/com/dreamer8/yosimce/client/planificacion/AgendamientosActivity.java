@@ -147,6 +147,10 @@ public class AgendamientosActivity extends SimceActivity implements
 
 	@Override
 	public void onRegionChange(final int regionId) {
+		if(regionId == -1){
+			view.setComunas(new ArrayList<SectorDTO>());
+			return;
+		}
 		if(!comunas.containsKey(regionId)){
 			SectorDTO region = null;
 			for(SectorDTO r:regiones){
