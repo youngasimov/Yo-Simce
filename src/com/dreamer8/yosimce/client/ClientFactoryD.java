@@ -6,6 +6,8 @@ import com.dreamer8.yosimce.client.actividad.ui.ActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadViewD;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesViewD;
+import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
+import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresViewD;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadViewD;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
@@ -89,6 +91,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final FormActividadView formActividadView = new FormActividadViewD();
 	private final SincronizacionView sincronizacionView = new SincronizacionViewD();
 	private final MaterialDefectuosoView materialDefectuosoView = new MaterialDefectuosoViewD();
+	private final AprobarSupervisoresView aprobarSupervisoresView = new AprobarSupervisoresViewD();
 	
 	private final MaterialView materialView = new MaterialViewD(); 
 	
@@ -221,6 +224,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public MaterialDefectuosoView getMaterialDefectuosoView() {
 		return materialDefectuosoView;
+	}
+	
+	@Override
+	public AprobarSupervisoresView getAprobarSupervisoresView() {
+		return aprobarSupervisoresView;
 	}
 	
 	@Override
