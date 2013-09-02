@@ -65,7 +65,7 @@ public class ClientFactoryD implements ClientFactory {
 
 	public class CustomRpcRequestBuilder extends RpcRequestBuilder {
 
-		private int timeout = 6000;
+		private int timeout = 8000;
 
 		public CustomRpcRequestBuilder() {
 		}
