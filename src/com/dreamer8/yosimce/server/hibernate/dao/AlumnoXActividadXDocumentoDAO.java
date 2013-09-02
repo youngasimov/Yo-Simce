@@ -30,8 +30,8 @@ public class AlumnoXActividadXDocumentoDAO extends
 
 		List<SincAlumnoDTO> sadtos = new ArrayList<SincAlumnoDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT axaxd.id as axaxd_id,al.nombre as al_nombre,"
-				+ "al.apellido_paterno,al.apellido_paterno_materno,al.rut,d.codigo,"
+		String query = "SELECT DISTINCT axaxd.id as axaxd_id,al.nombres as al_nombres,"
+				+ "al.apellido_paterno,al.apellido_materno,al.rut,d.codigo,"
 				+ "de.id as doc_estado_id,de.nombre as doc_estado,axaxd.comentario as axaxd_com  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
