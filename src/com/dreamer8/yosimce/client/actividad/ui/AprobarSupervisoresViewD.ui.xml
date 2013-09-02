@@ -65,16 +65,5 @@
 		<g:center>
 			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
 		</g:center>
-    	<g:south size="3">
-	     	<g:HTMLPanel>
-       			<table style="width:100%">
-         			<tr>
-           				<td align='center'>
-             				<c:SimplePager  ui:field='pager' />
-           				</td>
-         			</tr>
-       			</table>
-     		</g:HTMLPanel>
-  		</g:south>
 	</g:DockLayoutPanel>
 </ui:UiBinder>

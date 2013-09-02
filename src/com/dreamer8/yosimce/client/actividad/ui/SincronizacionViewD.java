@@ -16,6 +16,7 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -56,6 +57,12 @@ public class SincronizacionViewD extends Composite implements
 	private Column<SincAlumnoDTO, String> estadoColumn;
 	private Column<SincAlumnoDTO, String> comentarioColumn;
 	private Column<SincAlumnoDTO, Boolean> formColumn;
+	
+	private FieldUpdater<SincAlumnoDTO, String> materialUpdater;
+	private FieldUpdater<SincAlumnoDTO, String> estadoUpdater;
+	private FieldUpdater<SincAlumnoDTO, String> comentarioUpdater;
+	private FieldUpdater<SincAlumnoDTO, Boolean> formUpdater;
+	
 	private CursoDTO curso;
 
 	public SincronizacionViewD() {
@@ -65,7 +72,6 @@ public class SincronizacionViewD extends Composite implements
 		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CURRENT_PAGE);
 		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 		
-		buildTable();
 	}
 
 	@UiHandler("cambiarButton")
@@ -136,26 +142,36 @@ public class SincronizacionViewD extends Composite implements
 	@Override
 	public void setIdMaterialFieldUpdater(
 			FieldUpdater<SincAlumnoDTO, String> updater) {
-		materialColumn.setFieldUpdater(updater);
+		materialUpdater = updater;
+		if(materialColumn!=null){
+			materialColumn.setFieldUpdater(updater);
+		}
 	}
 
 	@Override
 	public void setEstadoFieldUpdater(
 			FieldUpdater<SincAlumnoDTO, String> updater) {
-		
-		
-		estadoColumn.setFieldUpdater(updater);
+		estadoUpdater = updater;
+		if(estadoColumn != null){
+			estadoColumn.setFieldUpdater(updater);
+		}
 	}
 	
 	@Override
 	public void setFormFieldUpdater(FieldUpdater<SincAlumnoDTO, Boolean> updater) {
-		formColumn.setFieldUpdater(updater);
+		formUpdater = updater;
+		if(formColumn!=null){
+			formColumn.setFieldUpdater(updater);
+		}
 	}
 
 	@Override
 	public void setComentarioFieldUpdater(
 			FieldUpdater<SincAlumnoDTO, String> updater) {
-		comentarioColumn.setFieldUpdater(updater);
+		comentarioUpdater = updater;
+		if(comentarioColumn!=null){
+			comentarioColumn.setFieldUpdater(updater);
+		}
 	}
 
 	@Override
@@ -177,6 +193,10 @@ public class SincronizacionViewD extends Composite implements
 	}
 
 	private void buildTable() {
+		for(int i=0;i<dataGrid.getColumnCount();i++){
+			dataGrid.removeColumn(i);
+		}
+		
 		dataGrid.addColumn(new Column<SincAlumnoDTO, String>(new ImageCell()) {
 
 			@Override
@@ -200,11 +220,12 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getNombres();
+				return ViewUtils.limitarString(o.getNombres(),25);
 			}
 		};
 		nombreColumn.setSortable(false);
 		dataGrid.addColumn(nombreColumn, "Nombres");
+		dataGrid.setColumnWidth(nombreColumn, 130,Unit.PX);
 
 		Column<SincAlumnoDTO, String> paternoColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
@@ -216,6 +237,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		paternoColumn.setSortable(false);
 		dataGrid.addColumn(paternoColumn, "A. Paterno");
+		dataGrid.setColumnWidth(paternoColumn,120,Unit.PX);
 
 		Column<SincAlumnoDTO, String> maternoColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
@@ -227,6 +249,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		maternoColumn.setSortable(false);
 		dataGrid.addColumn(maternoColumn, "A. Materno");
+		dataGrid.setColumnWidth(maternoColumn,120,Unit.PX);
 
 		Column<SincAlumnoDTO, String> rutColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
@@ -238,9 +261,9 @@ public class SincronizacionViewD extends Composite implements
 		};
 		rutColumn.setSortable(false);
 		dataGrid.addColumn(rutColumn, "RUT");
+		dataGrid.setColumnWidth(rutColumn,100,Unit.PX);
 		
-		Column<SincAlumnoDTO, String> tipoColumn = new Column<SincAlumnoDTO, String>(
-				new TextCell()) {
+		Column<SincAlumnoDTO, String> tipoColumn = new Column<SincAlumnoDTO, String>(new TextCell()) {
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
@@ -249,6 +272,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		tipoColumn.setSortable(false);
 		dataGrid.addColumn(tipoColumn, "Tipo alumno");
+		dataGrid.setColumnWidth(tipoColumn,130,Unit.PX);
 
 		
 		materialColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
@@ -258,6 +282,10 @@ public class SincronizacionViewD extends Composite implements
 			}
 		};
 		dataGrid.addColumn(materialColumn, "id dispositivo");
+		dataGrid.setColumnWidth(materialColumn,100,Unit.PX);
+		if(materialUpdater!=null){
+			materialColumn.setFieldUpdater(materialUpdater);
+		}
 		
 		if(estados != null){
 			ArrayList<String> selection = new ArrayList<String>();
@@ -272,6 +300,9 @@ public class SincronizacionViewD extends Composite implements
 				}
 			};
 			dataGrid.addColumn(estadoColumn, "Estado");
+			if(estadoUpdater!=null){
+				estadoColumn.setFieldUpdater(estadoUpdater);
+			}
 		}
 		
 		formColumn = new Column<SincAlumnoDTO, Boolean>(new CheckboxCell()) {
@@ -282,14 +313,22 @@ public class SincronizacionViewD extends Composite implements
 			}
 		};
 		dataGrid.addColumn(formColumn, "Formulario P. y A.");
+		dataGrid.setColumnWidth(formColumn,100,Unit.PX);
+		if(formUpdater!=null){
+			formColumn.setFieldUpdater(formUpdater);
+		}
 		
 		comentarioColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getComentario();
+				return ViewUtils.limitarString(o.getComentario(),35);
 			}
 		};
 		dataGrid.addColumn(comentarioColumn, "Comentario");
+		dataGrid.setColumnWidth(comentarioColumn,250,Unit.PX);
+		if(comentarioUpdater!=null){
+			comentarioColumn.setFieldUpdater(comentarioUpdater);
+		}
 	}
 
 	@Override
