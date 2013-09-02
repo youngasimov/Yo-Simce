@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client;
 
+import java.util.Date;
+
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.LoginView;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -67,18 +70,25 @@ public class YoSimce implements EntryPoint {
 			user = null;
 			loadApp();
 		}else{
-			loginService.getUser(token, new AsyncCallback<UserDTO>() {
+			
+			loginService.getUser(token, new TimeoutAsyncCallback<UserDTO>(4500) {
+				
 				
 				@Override
-				public void onSuccess(UserDTO result) {
+				public void success(UserDTO result) {
 					user = result;
-					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Descargando aplicación...");
+					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Cargando aplicación...");
 					loadApp();
 				}
 				
 				@Override
-				public void onFailure(Throwable caught) {
-					loadView.setMessage("Ocurrio un problema al comprobar los permisos de usuario<br />Error: "+caught.getMessage());
+				public void failure(Throwable caught) {
+					
+					if(caught instanceof TimeoutException){
+						Window.Location.reload();
+					}
+					
+					loadView.setMessage(caught.getMessage());
 					user = null;
 					Cookies.removeCookie(TOKEN_COOKIE);
 					Timer t = new Timer(){
@@ -156,7 +166,9 @@ public class YoSimce implements EntryPoint {
 	
 						@Override
 						public void onSuccess(String result) {
-							Cookies.setCookie(TOKEN_COOKIE, result);
+							Date d = new Date();
+							CalendarUtil.addDaysToDate(d, 1);
+							Cookies.setCookie(TOKEN_COOKIE, result,d);
 							Window.Location.reload();
 						}
 					});
@@ -166,5 +178,49 @@ public class YoSimce implements EntryPoint {
 		}else{
 			Window.open("http://www.yosimce.cl", "_self", "");
 		}
+	}
+	
+	private abstract class TimeoutAsyncCallback<T> implements AsyncCallback<T>{
+
+		private Timer t; 
+		private boolean retorno;
+		
+		public TimeoutAsyncCallback(int timeout){
+			retorno= false;
+			t = new Timer() {
+				
+				@Override
+				public void run() {
+					if(!retorno){
+						onFailure(new TimeoutException());
+					}
+				}
+			};
+			t.schedule(timeout);
+		}
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			if(!retorno){
+				retorno = true;
+				failure(caught);
+			}
+			
+		}
+
+		@Override
+		public void onSuccess(T result) {
+			if(!retorno){
+				retorno = true;
+				success(result);
+			}
+		}
+		
+		public void failure(Throwable caught){
+			
+		}
+		
+		public abstract void success(T result);
+		
 	}
 }

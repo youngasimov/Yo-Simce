@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ui.HeaderView;
@@ -12,6 +13,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 
 public class HeaderPresenter implements HeaderView.HeaderPresenter{
 	
@@ -154,7 +156,9 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 		}
 		if(aplicacionId>-1){
 			view.selectAplicacion(aplicacionId);
-			Cookies.setCookie("a", aplicacionId+"");
+			Date d = new Date();
+			CalendarUtil.addMonthsToDate(d, 1);
+			Cookies.setCookie("a", aplicacionId+"",d);
 			if(niveles.containsKey(aplicacionId+"")){
 				selectNivel();
 			}else{
@@ -196,7 +200,9 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 		}
 		if(nivelId>-1){
 			view.selectNivel(nivelId);
-			Cookies.setCookie("n", nivelId+"");
+			Date d = new Date();
+			CalendarUtil.addMonthsToDate(d, 1);
+			Cookies.setCookie("n", nivelId+"",d);
 			
 			if(permisos.containsKey(aplicacionId+":"+nivelId)){
 				factory.getEventBus().fireEvent(new PermisosEvent(permisos.get(aplicacionId+":"+nivelId)));
@@ -252,7 +258,9 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 		
 		if(tipoId>-1){
 			view.selectTipo(tipoId);
-			Cookies.setCookie("t", tipoId+"");
+			Date d = new Date();
+			CalendarUtil.addMonthsToDate(d, 1);
+			Cookies.setCookie("t", tipoId+"",d);
 			factory.getEventBus().fireEvent(new TipoActividadChangeEvent(tipoId));
 		}
 	}
