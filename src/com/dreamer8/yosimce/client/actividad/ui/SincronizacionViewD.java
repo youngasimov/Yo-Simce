@@ -336,5 +336,8 @@ public class SincronizacionViewD extends Composite implements
 		establecimientoSeleccionado.setText("");
 		dataGrid.setRowCount(0);
 		alumnos = null;
+		for(int i=0;i<dataGrid.getColumnCount();i++){
+			dataGrid.removeColumn(i);
+		}
 	}
 }

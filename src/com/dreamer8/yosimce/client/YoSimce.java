@@ -152,7 +152,7 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void notLogged(){
-		if(Window.Location.getHost().contains("localhost") || Window.Location.getHost().contains("127.0.0.1")){
+		if(Window.Location.getHost().contains("localhost") || Window.Location.getHost().contains("127.0.0.1") || Window.Location.getPath().contains("demo")){
 			LoginView login = new LoginView();
 			login.setPresenter(new LoginView.LoginPresenter() {
 				
