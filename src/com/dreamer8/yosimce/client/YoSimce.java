@@ -10,6 +10,7 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Cookies;
@@ -71,34 +72,34 @@ public class YoSimce implements EntryPoint {
 			loadApp();
 		}else{
 			
-			loginService.getUser(token, new TimeoutAsyncCallback<UserDTO>(4500) {
+			loginService.getUser(token, new AsyncCallback<UserDTO>() {
 				
 				
 				@Override
-				public void success(UserDTO result) {
+				public void onSuccess(UserDTO result) {
 					user = result;
 					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Cargando aplicación...");
 					loadApp();
 				}
 				
 				@Override
-				public void failure(Throwable caught) {
+				public void onFailure(Throwable caught) {
 					
-					if(caught instanceof TimeoutException){
+					if(caught instanceof RequestTimeoutException){
 						Window.Location.reload();
+					}else{
+						loadView.setMessage(caught.getMessage());
+						user = null;
+						Cookies.removeCookie(TOKEN_COOKIE);
+						Timer t = new Timer(){
+	
+							@Override
+							public void run() {
+								notLogged();
+							}
+						};
+						t.schedule(3000);
 					}
-					
-					loadView.setMessage(caught.getMessage());
-					user = null;
-					Cookies.removeCookie(TOKEN_COOKIE);
-					Timer t = new Timer(){
-
-						@Override
-						public void run() {
-							notLogged();
-						}
-					};
-					t.schedule(3000);
 				}
 			});
 		}
@@ -178,49 +179,5 @@ public class YoSimce implements EntryPoint {
 		}else{
 			Window.open("http://www.yosimce.cl", "_self", "");
 		}
-	}
-	
-	private abstract class TimeoutAsyncCallback<T> implements AsyncCallback<T>{
-
-		private Timer t; 
-		private boolean retorno;
-		
-		public TimeoutAsyncCallback(int timeout){
-			retorno= false;
-			t = new Timer() {
-				
-				@Override
-				public void run() {
-					if(!retorno){
-						onFailure(new TimeoutException());
-					}
-				}
-			};
-			t.schedule(timeout);
-		}
-		
-		@Override
-		public void onFailure(Throwable caught) {
-			if(!retorno){
-				retorno = true;
-				failure(caught);
-			}
-			
-		}
-
-		@Override
-		public void onSuccess(T result) {
-			if(!retorno){
-				retorno = true;
-				success(result);
-			}
-		}
-		
-		public void failure(Throwable caught){
-			
-		}
-		
-		public abstract void success(T result);
-		
-	}
+	}	
 }

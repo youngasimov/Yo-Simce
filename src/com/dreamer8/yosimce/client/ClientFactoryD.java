@@ -53,59 +53,96 @@ import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.dreamer8.yosimce.client.ui.SidebarView;
 import com.dreamer8.yosimce.client.ui.SidebarViewD;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
+import com.google.gwt.user.client.rpc.RpcRequestBuilder;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ClientFactoryD implements ClientFactory {
-	
+
+	public class CustomRpcRequestBuilder extends RpcRequestBuilder {
+
+		private int timeout = 6000;
+
+		public CustomRpcRequestBuilder() {
+		}
+
+		public CustomRpcRequestBuilder(int timeout) {
+			this.timeout = timeout;
+		}
+
+		@Override
+		protected RequestBuilder doCreate(String serviceEntryPoint) {
+			RequestBuilder builder = super.doCreate(serviceEntryPoint);
+			builder.setTimeoutMillis(this.timeout);
+
+			return builder;
+		}
+	}
+
 	public static final boolean TESTING = false;
 
 	private final EventBus eventBus = new SimpleEventBus();
-	private final PlaceController placeController = new PlaceController(eventBus);
-	private final PlaceHistoryMapper placeHistoryMapper = GWT.create(SimcePlaceHistoryMapper.class);
-	private final LoginServiceAsync loginService = (LoginServiceAsync)GWT.create(LoginService.class);
-	private final GeneralServiceAsync generalService = (GeneralServiceAsync)GWT.create(GeneralService.class);
-	private final PlanificacionServiceAsync planificacionService = (PlanificacionServiceAsync)GWT.create(PlanificacionService.class);
-	private final ActividadServiceAsync actividadService = (ActividadServiceAsync)GWT.create(ActividadService.class);
-	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync)GWT.create(AdministracionService.class);
-	
-	
+	private final PlaceController placeController = new PlaceController(
+			eventBus);
+	private final PlaceHistoryMapper placeHistoryMapper = GWT
+			.create(SimcePlaceHistoryMapper.class);
+	private final LoginServiceAsync loginService = (LoginServiceAsync) GWT
+			.create(LoginService.class);
+	private final GeneralServiceAsync generalService = (GeneralServiceAsync) GWT
+			.create(GeneralService.class);
+	private final PlanificacionServiceAsync planificacionService = (PlanificacionServiceAsync) GWT
+			.create(PlanificacionService.class);
+	private final ActividadServiceAsync actividadService = (ActividadServiceAsync) GWT
+			.create(ActividadService.class);
+	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync) GWT
+			.create(AdministracionService.class);
+
 	private final LoadView loadView = new LoadViewD();
 	private final AppView appView = new AppViewD();
 	private final HeaderView headerView = new HeaderViewD();
 	private final SidebarView sidebarView = new SidebarViewD();
 	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
-	
+
 	private final GeneralView generalView = new GeneralViewD();
 	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
-	
+
 	private final PlanificacionView planificacionView = new PlanificacionViewD();
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
 	private final DetalleAgendaView detalleAgendaView = new DetalleAgendaViewD();
-	
+
 	private final ActividadView actividadView = new ActividadViewD();
 	private final ActividadesView actividadesView = new ActividadesViewD();
 	private final FormActividadView formActividadView = new FormActividadViewD();
 	private final SincronizacionView sincronizacionView = new SincronizacionViewD();
 	private final MaterialDefectuosoView materialDefectuosoView = new MaterialDefectuosoViewD();
 	private final AprobarSupervisoresView aprobarSupervisoresView = new AprobarSupervisoresViewD();
-	
-	private final MaterialView materialView = new MaterialViewD(); 
-	
+
+	private final MaterialView materialView = new MaterialViewD();
+
 	private final AdminView adminView = new AdminViewD();
 	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
 	private final AdminEventosView adminEventosView = new AdminEventosViewD();
 	private final PermisosView permisosView = new PermisosViewD();
-	
+
+	public ClientFactoryD(){
+		CustomRpcRequestBuilder builder = new CustomRpcRequestBuilder();
+		((ServiceDefTarget) loginService).setRpcRequestBuilder(builder);
+		((ServiceDefTarget) generalService).setRpcRequestBuilder(builder);
+		((ServiceDefTarget) planificacionService).setRpcRequestBuilder(builder);
+		((ServiceDefTarget) actividadService).setRpcRequestBuilder(builder);
+		((ServiceDefTarget) administracionService).setRpcRequestBuilder(builder);
+	}
 	
 	@Override
 	public boolean onTesting() {
 		return TESTING;
 	}
-	
+
 	@Override
 	public EventBus getEventBus() {
 		return eventBus;
@@ -120,12 +157,12 @@ public class ClientFactoryD implements ClientFactory {
 	public PlaceHistoryMapper getPlaceHistoryMapper() {
 		return placeHistoryMapper;
 	}
-	
+
 	@Override
 	public LoginServiceAsync getLoginService() {
 		return loginService;
 	}
-	
+
 	@Override
 	public GeneralServiceAsync getGeneralService() {
 		return generalService;
@@ -135,12 +172,12 @@ public class ClientFactoryD implements ClientFactory {
 	public PlanificacionServiceAsync getPlanificacionService() {
 		return planificacionService;
 	}
-	
+
 	@Override
 	public ActividadServiceAsync getActividadService() {
 		return actividadService;
 	}
-	
+
 	@Override
 	public AdministracionServiceAsync getAdministracionService() {
 		return administracionService;
@@ -165,19 +202,19 @@ public class ClientFactoryD implements ClientFactory {
 	public SidebarView getSidebarView() {
 		return sidebarView;
 	}
-	
+
 	@Override
 	public CursoSelectorView getCursoSelectorView() {
 		return cursoSelectorView;
 	}
-	
+
 	@Override
 	public GeneralView getGeneralView() {
 		return generalView;
 	}
-	
+
 	@Override
-	public DetalleCursoView getDetalleCursoView(){
+	public DetalleCursoView getDetalleCursoView() {
 		return detalleCursoView;
 	}
 
@@ -200,42 +237,42 @@ public class ClientFactoryD implements ClientFactory {
 	public DetalleAgendaView getDetalleAgendaView() {
 		return detalleAgendaView;
 	}
-	
+
 	@Override
 	public ActividadView getActividadView() {
 		return actividadView;
 	}
-	
+
 	@Override
 	public ActividadesView getActividadesView() {
 		return actividadesView;
 	}
-	
+
 	@Override
 	public FormActividadView getFormActividadView() {
 		return formActividadView;
 	}
-	
+
 	@Override
 	public SincronizacionView getSincronizacionView() {
 		return sincronizacionView;
 	}
-	
+
 	@Override
 	public MaterialDefectuosoView getMaterialDefectuosoView() {
 		return materialDefectuosoView;
 	}
-	
+
 	@Override
 	public AprobarSupervisoresView getAprobarSupervisoresView() {
 		return aprobarSupervisoresView;
 	}
-	
+
 	@Override
 	public MaterialView getMaterialView() {
 		return materialView;
 	}
-	
+
 	@Override
 	public AdminView getAdminView() {
 		return adminView;

@@ -5,6 +5,7 @@ import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
+import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
@@ -95,8 +96,8 @@ public class AppPresenter implements AppView.AppPresenter {
 					view.showPermisoMessage(event.getError().getMessage(), true);
 				}else if(event.getError() instanceof DBException){
 					view.showErrorMessage(event.getError().getMessage(), false);
-				}else if(event.getError() instanceof TimeoutException){
-					view.showErrorMessage(event.getError().getMessage(), true);
+				}else if(event.getError() instanceof RequestTimeoutException){
+					view.showErrorMessage("El tiempo máximo de espera de respuesta se ha excedido", true);
 				}else if(event.getError() instanceof ConsistencyException){
 					view.showWarningMessage(event.getError().getMessage(), false);
 				}else if(event.getError() instanceof NoLoggedException && !notLogged){
