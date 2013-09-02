@@ -299,7 +299,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			if (sesion == null) {
 				u = udao.findbyUsername(StringUtils.formatRut(username));
 				if (u == null) {
-					throw new NullPointerException("No se encontró el usuario");
+					throw new NoLoggedException();
 				}
 				sesion = new Sesion();
 				sesion.setSessionId(username);
