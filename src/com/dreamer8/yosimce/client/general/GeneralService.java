@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
+import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
@@ -13,14 +14,23 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("generalservice")
 public interface GeneralService extends RemoteService {
-	
-	public DetalleCursoDTO getDetalleCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
 
-	public ArrayList<SectorDTO> getRegiones() throws NoAllowedException, NoLoggedException, DBException;
-	public ArrayList<SectorDTO> getComunas(SectorDTO parent) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public ArrayList<CursoDTO> getCursos(String rbdSeach) throws NoAllowedException, NoLoggedException, DBException;
-	
-	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException, NoLoggedException, DBException;
-	
+	public DetalleCursoDTO getDetalleCurso(Integer idCurso)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
+
+	public ArrayList<SectorDTO> getRegiones() throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException;
+
+	public ArrayList<SectorDTO> getComunas(SectorDTO parent)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
+
+	public ArrayList<CursoDTO> getCursos(String rbdSeach)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
+
+	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException;
+
 }

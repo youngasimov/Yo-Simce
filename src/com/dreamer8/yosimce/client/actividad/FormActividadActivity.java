@@ -18,6 +18,7 @@ import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -112,6 +113,13 @@ public class FormActividadActivity extends SimceActivity implements
 					public void success(ActividadDTO result) {
 						a = result;
 						setActividad();
+					}
+					
+					@Override
+					public void failure(Throwable caught) {
+						if(caught instanceof ConsistencyException){
+							
+						}
 					}
 				});
 			}

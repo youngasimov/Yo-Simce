@@ -115,11 +115,11 @@
 		</g:north>
 		<g:west size="18">
 			<g:HTMLPanel addStyleNames='{style.usersListPanel}'>
-				<div style='{style.usersSearchPanel}'>
+				<div class='{style.usersSearchPanel}'>
 					<g:TextBox ui:field="searchBox" width="14em"/>
 					<g:Button ui:field="clearButton" width="6em" text="limpiar"/>
 				</div>
-				<div style='{style.usersList}'>
+				<div class='{style.usersList}'>
 					<g:ScrollPanel addStyleNames='{style.full}'>
 						<c:CellList addStyleNames='{style.full}' ui:field="usuariosList"/>
 					</g:ScrollPanel>
@@ -130,7 +130,7 @@
 			<g:HTMLPanel>
 				<g:DecoratorPanel ui:field="formPanel" addStyleNames='{style.userForm}'>
 					<g:HTMLPanel>
-						<table style='width: 350px'>
+						<table style='width: 350px;'>
 							<tr>
 								<td class='{style.label}'>Tipo:</td>
 								<td><g:ListBox ui:field="tipoBox" /> </td>

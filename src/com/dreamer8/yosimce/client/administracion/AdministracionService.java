@@ -17,27 +17,32 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface AdministracionService extends RemoteService {
 	public ArrayList<UserDTO> getUsuarios(String filtro, Integer offset,
 			Integer length) throws NoAllowedException, NoLoggedException,
-			DBException;
+			DBException, ConsistencyException;
 
 	public ArrayList<TipoUsuarioDTO> getTiposUsuario()
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
 
 	public ArrayList<EmplazamientoDTO> getEmplazamientos(
 			String tipoEmplazamiento) throws NoAllowedException,
-			NoLoggedException, DBException,ConsistencyException, NullPointerException;
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException;
 
 	public Boolean setPerfilUsuario(Integer idUsuario, Integer idTipoUsuario,
 			EmplazamientoDTO emplazamiento) throws ConsistencyException,
-			NoAllowedException, NoLoggedException, DBException, NullPointerException;
+			NoAllowedException, NoLoggedException, DBException,
+			NullPointerException;
 
 	public Boolean reiniciarPassword(Integer idUsuario)
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
 
 	public ArrayList<PermisoDTO> getPermisos() throws NoAllowedException,
-			NoLoggedException, DBException, NullPointerException;
-	
-	public Boolean setPermisos(ArrayList<PermisoDTO> permisos) throws NoAllowedException,
-	NoLoggedException, DBException,ConsistencyException, NullPointerException;
-	
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException;
+
+	public Boolean setPermisos(ArrayList<PermisoDTO> permisos)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
 
 }

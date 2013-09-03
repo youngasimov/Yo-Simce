@@ -29,34 +29,47 @@ public interface PlanificacionService extends RemoteService {
 
 	public ArrayList<AgendaPreviewDTO> getPreviewAgendamientos(Integer offset,
 			Integer length, Map<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
 
 	public Integer getTotalPreviewAgendamientos(Map<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
-	
-	public DocumentoDTO getDocumentoPreviewAgendamientos(Map<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+
+	public DocumentoDTO getDocumentoPreviewAgendamientos(
+			Map<String, String> filtros) throws NoAllowedException,
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException;
 
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
-			NoLoggedException, DBException, NullPointerException;
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException;
 
 	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
-			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
 
 	public ArrayList<EstadoAgendaDTO> getEstadosAgenda()
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
 
-	public ContactoDTO getContacto(Integer idCurso)
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
+	public ContactoDTO getContacto(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException;
 
 	public Boolean editarContacto(Integer idCurso, ContactoDTO contacto)
-			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException, NullPointerException;
-	
-	public ContactoDTO getDirector(Integer idCurso)
-			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
-	
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
+
+	public ContactoDTO getDirector(Integer idCurso) throws NoAllowedException,
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException;
+
 	public Boolean editarDirector(Integer idCurso, ContactoDTO director)
-			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException, NullPointerException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
 
 	public ArrayList<CargoDTO> getCargos() throws NoAllowedException,
-			NoLoggedException, DBException, NullPointerException;
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException;
 }
