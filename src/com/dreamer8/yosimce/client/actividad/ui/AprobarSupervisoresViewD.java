@@ -1,6 +1,10 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import java.util.ArrayList;
+
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
+import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,7 +26,10 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 	
 	@UiField(provided = true) DataGrid<EvaluacionUsuarioDTO> dataGrid;
 	
-	private AprobarSupervisoresPresenter presenter;
+	private Column<EvaluacionUsuarioDTO,Boolean> puntualidadColumn;
+	private Column<EvaluacionUsuarioDTO,Boolean> presentacionColumn;
+	private Column<EvaluacionUsuarioDTO,Boolean> formColumn;
+	private Column<EvaluacionUsuarioDTO,Boolean> generalColumn;
 	
 	public AprobarSupervisoresViewD() {
 		dataGrid = new DataGrid<EvaluacionUsuarioDTO>(EvaluacionUsuarioDTO.KEY_PROVIDER);
@@ -32,8 +39,35 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 	}
 	
 	@Override
-	public void setPresenter(AprobarSupervisoresPresenter presenter) {
-		this.presenter = presenter;
+	public void setSupervisores(ArrayList<EvaluacionUsuarioDTO> supervisores) {
+		dataGrid.setPageSize(supervisores.size()+1);
+		dataGrid.setRowCount(supervisores.size());
+		dataGrid.setVisibleRange(0, supervisores.size()+1);
+		dataGrid.setRowData(supervisores);
+	}
+	
+	@Override
+	public void setGeneralFieldUpdater(
+			FieldUpdater<EvaluacionUsuarioDTO, Boolean> updater) {
+		generalColumn.setFieldUpdater(updater);
+	}
+	
+	@Override
+	public void setPuntualidadFieldUpdater(
+			FieldUpdater<EvaluacionUsuarioDTO, Boolean> updater) {
+		puntualidadColumn.setFieldUpdater(updater);
+	}
+	
+	@Override
+	public void setFormularioFieldUpdater(
+			FieldUpdater<EvaluacionUsuarioDTO, Boolean> updater) {
+		formColumn.setFieldUpdater(updater);
+	}
+	
+	@Override
+	public void setPresentacionFieldUpdater(
+			FieldUpdater<EvaluacionUsuarioDTO, Boolean> updater) {
+		presentacionColumn.setFieldUpdater(updater);
 	}
 	
 	private void buildTable(){
@@ -77,7 +111,45 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 		maternoColumn.setSortable(false);
 		dataGrid.addColumn(maternoColumn,"A. materno");
 		
+		puntualidadColumn = new Column<EvaluacionUsuarioDTO, Boolean>(new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionUsuarioDTO o) {
+				return o.getPuntualidad()>0;
+			}
+		};
+		puntualidadColumn.setSortable(false);
+		dataGrid.addColumn(puntualidadColumn,"Puntualidad");
 		
+		presentacionColumn = new Column<EvaluacionUsuarioDTO, Boolean>(new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionUsuarioDTO o) {
+				return o.getPresentacionPersonal()>0;
+			}
+		};
+		presentacionColumn.setSortable(false);
+		dataGrid.addColumn(presentacionColumn,"Presentación personal");
+		
+		formColumn = new Column<EvaluacionUsuarioDTO, Boolean>(new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionUsuarioDTO o) {
+				return o.getFormulario()>0;
+			}
+		};
+		formColumn.setSortable(false);
+		dataGrid.addColumn(formColumn,"Llenado formulario");
+		
+		generalColumn = new Column<EvaluacionUsuarioDTO, Boolean>(new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionUsuarioDTO o) {
+				return o.getGeneral()>0;
+			}
+		};
+		generalColumn.setSortable(false);
+		dataGrid.addColumn(generalColumn,"Cumplió");
 		
 	}
 

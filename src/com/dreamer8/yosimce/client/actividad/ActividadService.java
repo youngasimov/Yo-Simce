@@ -40,10 +40,12 @@ public interface ActividadService extends RemoteService {
 
 	Integer getTotalPreviewActividades(HashMap<String, String> filtros)
 			throws NoAllowedException, NoLoggedException, DBException;
-	
-	DocumentoDTO getDocumentoPreviewActividades(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
-	
-	DocumentoDTO getDocumentoAlumnos(HashMap<String, String> filtros) throws NoAllowedException, NoLoggedException, DBException;
+
+	DocumentoDTO getDocumentoPreviewActividades(HashMap<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException;
+
+	DocumentoDTO getDocumentoAlumnos(HashMap<String, String> filtros)
+			throws NoAllowedException, NoLoggedException, DBException;
 
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -56,7 +58,8 @@ public interface ActividadService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException;
 
 	Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException,ConsistencyException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
 
 	ArrayList<UserDTO> getExaminadores(String search)
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -68,7 +71,8 @@ public interface ActividadService extends RemoteService {
 			NoLoggedException, DBException;
 
 	Boolean actualizarActividad(ActividadDTO actividad)
-			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
 
 	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException,
 			NoLoggedException, DBException;
@@ -78,7 +82,8 @@ public interface ActividadService extends RemoteService {
 
 	Boolean updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones)
-			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
 
 	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida()
 			throws NoAllowedException, NoLoggedException, DBException;
@@ -91,7 +96,9 @@ public interface ActividadService extends RemoteService {
 			NoLoggedException, DBException, ConsistencyException;
 
 	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
-			throws NoAllowedException, NoLoggedException, DBException, ConsistencyException;
-	
-	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion() throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException;
+
+	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion()
+			throws NoAllowedException, NoLoggedException, DBException;
 }
