@@ -77,8 +77,9 @@ public class ClientFactoryD implements ClientFactory {
 		@Override
 		protected RequestBuilder doCreate(String serviceEntryPoint) {
 			RequestBuilder builder = super.doCreate(serviceEntryPoint);
-			builder.setTimeoutMillis(this.timeout);
-
+			if(timeout>0){
+				builder.setTimeoutMillis(this.timeout);
+			}
 			return builder;
 		}
 	}
@@ -130,12 +131,11 @@ public class ClientFactoryD implements ClientFactory {
 	private final PermisosView permisosView = new PermisosViewD();
 
 	public ClientFactoryD(){
-		CustomRpcRequestBuilder builder = new CustomRpcRequestBuilder();
-		((ServiceDefTarget) loginService).setRpcRequestBuilder(builder);
-		((ServiceDefTarget) generalService).setRpcRequestBuilder(builder);
-		((ServiceDefTarget) planificacionService).setRpcRequestBuilder(builder);
-		((ServiceDefTarget) actividadService).setRpcRequestBuilder(builder);
-		((ServiceDefTarget) administracionService).setRpcRequestBuilder(builder);
+		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(8));
+		((ServiceDefTarget) generalService).setRpcRequestBuilder(new CustomRpcRequestBuilder(8));
+		((ServiceDefTarget) planificacionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
+		((ServiceDefTarget) actividadService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
+		((ServiceDefTarget) administracionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(15));
 	}
 	
 	@Override
