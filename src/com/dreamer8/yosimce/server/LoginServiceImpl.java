@@ -43,7 +43,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	 */
 	public UserDTO getUser(String token) {
 		UserDTO udto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = null;
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()) {
@@ -52,7 +52,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado un usuario.");
 				}
-
+				s = HibernateUtil.getSessionFactory().getCurrentSession();
 				s.beginTransaction();
 				SesionDAO sdao = new SesionDAO();
 				List<Sesion> ss = sdao.findBySessionId(token);
