@@ -6,6 +6,8 @@ import gwtupload.client.SingleUploader;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ScoreSelector;
@@ -240,6 +242,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private ArrayList<EvaluacionExaminador> evaluaciones;
 	private String file;
 	
+	private Logger logger = Logger.getLogger("");
+	
 	public FormActividadViewD() {
 		file = "";
 		uploader = new SingleUploader();
@@ -265,6 +269,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			public void onStart(IUploader uploader) {
 				uploading = true;
 				fileUploaded = false;
+				logger.log(Level.INFO, "Archivo start upload");
 			}
 		});
 		
@@ -274,6 +279,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			public void onFinish(IUploader uploader) {
 				uploading = false;
 				if(uploader.getStatus().equals(IUploadStatus.Status.SUCCESS)){
+					logger.log(Level.INFO, "Archivo uploaded success");
 					fileUploaded = true;
 					file = uploader.getFileName();
 				}

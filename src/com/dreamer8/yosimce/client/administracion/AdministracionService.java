@@ -20,23 +20,24 @@ public interface AdministracionService extends RemoteService {
 			DBException;
 
 	public ArrayList<TipoUsuarioDTO> getTiposUsuario()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	public ArrayList<EmplazamientoDTO> getEmplazamientos(
-			String tipoEmplazamiento);
+			String tipoEmplazamiento) throws NoAllowedException,
+			NoLoggedException, DBException,ConsistencyException, NullPointerException;
 
 	public Boolean setPerfilUsuario(Integer idUsuario, Integer idTipoUsuario,
 			EmplazamientoDTO emplazamiento) throws ConsistencyException,
-			NoAllowedException, NoLoggedException, DBException;
+			NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	public Boolean reiniciarPassword(Integer idUsuario)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	public ArrayList<PermisoDTO> getPermisos() throws NoAllowedException,
-			NoLoggedException, DBException;
+			NoLoggedException, DBException, NullPointerException;
 	
 	public Boolean setPermisos(ArrayList<PermisoDTO> permisos) throws NoAllowedException,
-	NoLoggedException, DBException,ConsistencyException;
+	NoLoggedException, DBException,ConsistencyException, NullPointerException;
 	
 
 }

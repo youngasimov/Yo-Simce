@@ -146,17 +146,17 @@ public class AppPresenter implements AppView.AppPresenter {
 		if(e instanceof IncompatibleRemoteServiceException){
 			view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false);
 			logger.log(Level.WARNING, e.getLocalizedMessage());
+		}else if(e instanceof NullPointerException){
+			view.showErrorMessage(e.getLocalizedMessage(), true);
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof InvocationException){
-			view.showErrorMessage("El petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no esta disponible", false);
+			view.showErrorMessage("La petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no está disponible", false);
 			logger.log(Level.WARNING, e.getLocalizedMessage());
 		}else if(e instanceof SerializedTypeViolationException){
 			view.showErrorMessage("Tipo de dato inesperado", true);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof StatusCodeException){
 			view.showErrorMessage("El código del mensaje HTTP es inválido<br />"+e.getLocalizedMessage(), true);
-			logger.log(Level.SEVERE, e.getLocalizedMessage());
-		}else if(e instanceof NullPointerException){
-			view.showErrorMessage(e.getLocalizedMessage(), true);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof NoAllowedException){
 			view.showPermisoMessage(e.getLocalizedMessage(), true);

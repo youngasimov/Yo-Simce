@@ -16,19 +16,19 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("loginservice")
 public interface LoginService extends RemoteService {
 
-	public UserDTO getUser(String token) throws NoLoggedException, DBException;
+	public UserDTO getUser(String token) throws NoLoggedException, DBException, NullPointerException;
 	
-	public String getUserToken(String username) throws DBException;
+	public String getUserToken(String username) throws DBException , NullPointerException;
 
 	public ArrayList<AplicacionDTO> getAplicaciones()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	public ArrayList<NivelDTO> getNiveles() throws NoAllowedException,
-			NoLoggedException, DBException;
+			NoLoggedException, DBException, NullPointerException;
 
 	public ArrayList<ActividadTipoDTO> getActividadTipos()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	public HashMap<String, ArrayList<String>> getUsuarioPermisos()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 }

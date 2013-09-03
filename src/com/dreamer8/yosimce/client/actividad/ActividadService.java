@@ -36,69 +36,69 @@ public interface ActividadService extends RemoteService {
 
 	ArrayList<ActividadPreviewDTO> getPreviewActividades(Integer offset,
 			Integer length, HashMap<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	Integer getTotalPreviewActividades(HashMap<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	DocumentoDTO getDocumentoPreviewActividades(HashMap<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	DocumentoDTO getDocumentoAlumnos(HashMap<String, String> filtros)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	ArrayList<SincAlumnoDTO> getSincronizacionesCurso(Integer idCurso)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	Boolean updateSincronizacionAlumno(Integer idCurso, SincAlumnoDTO sinc)
-			throws NoAllowedException, NoLoggedException, DBException,
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException,
 			ConsistencyException;
 
 	ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException,
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException,
 			ConsistencyException;
 
 	ArrayList<UserDTO> getExaminadores(String search)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	ArrayList<TipoContingenciaDTO> getTiposContingencia(Integer idCurso)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	ActividadDTO getActividad(Integer idCurso) throws NoAllowedException,
-			NoLoggedException, DBException;
+			NoLoggedException, DBException, NullPointerException;
 
 	Boolean actualizarActividad(ActividadDTO actividad)
 			throws NoAllowedException, NoLoggedException, DBException,
-			ConsistencyException;
+			ConsistencyException, NullPointerException;
 
 	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException,
-			NoLoggedException, DBException;
+			NoLoggedException, DBException, NullPointerException;
 
 	ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(Integer idCurso)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	Boolean updateEvaluacionExaminadores(Integer idCurso,
 			ArrayList<EvaluacionUsuarioDTO> evaluaciones)
 			throws NoAllowedException, NoLoggedException, DBException,
-			ConsistencyException;
+			ConsistencyException, NullPointerException;
 
 	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacionFallida()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	ArrayList<MaterialDefectuosoDTO> getMaterialDefectuoso(Integer idCurso)
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 
 	Boolean addOrUpdateMaterialDefectuoso(Integer idCurso,
 			MaterialDefectuosoDTO material) throws NoAllowedException,
-			NoLoggedException, DBException, ConsistencyException;
+			NoLoggedException, DBException, ConsistencyException, NullPointerException;
 
 	Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException,
-			ConsistencyException;
+			ConsistencyException, NullPointerException;
 
 	ArrayList<EstadoSincronizacionDTO> getEstadosSincronizacion()
-			throws NoAllowedException, NoLoggedException, DBException;
+			throws NoAllowedException, NoLoggedException, DBException, NullPointerException;
 }

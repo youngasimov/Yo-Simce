@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client;
 
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
@@ -17,6 +19,7 @@ import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
@@ -35,7 +38,7 @@ public class YoSimce implements EntryPoint {
 	private LoadView loadView;
 	private SimplePanel panel;
 	private LoginServiceAsync loginService ;
-	
+	private Logger logger = Logger.getLogger("");
 
 	/**
 	 * This is the entry point method.
@@ -87,8 +90,12 @@ public class YoSimce implements EntryPoint {
 					
 					if(caught instanceof RequestTimeoutException){
 						Window.Location.reload();
+					}else if(caught instanceof IncompatibleRemoteServiceException){
+						loadView.setMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio");
+						logger.log(Level.WARNING, caught.getLocalizedMessage());
 					}else{
 						loadView.setMessage(caught.getMessage());
+						logger.log(Level.WARNING, caught.getLocalizedMessage());
 						user = null;
 						Cookies.removeCookie(TOKEN_COOKIE);
 						Timer t = new Timer(){
