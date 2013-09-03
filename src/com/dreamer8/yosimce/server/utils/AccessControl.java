@@ -66,7 +66,7 @@ public class AccessControl {
 				break;
 			}
 		}
-		if (cookie != null) {
+		if (cookie != null && cookie.getValue() != null) {
 			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 			s.beginTransaction();
 			SesionDAO sdao = new SesionDAO();

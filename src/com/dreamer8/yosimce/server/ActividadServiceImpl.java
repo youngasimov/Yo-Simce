@@ -760,6 +760,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No existe una actividad para el curso especificado.");
 				}
+				if(a.getFechaInicio() == null){
+					throw new ConsistencyException("Esta actividad aún no ha sido agendada.");
+				}
 				adto = a.getActividadDTO(idAplicacion, getBaseURL());
 				s.getTransaction().commit();
 			}
