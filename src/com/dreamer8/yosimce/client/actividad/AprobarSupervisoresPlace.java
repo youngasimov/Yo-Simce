@@ -8,23 +8,12 @@ import com.google.gwt.place.shared.Prefix;
 
 public class AprobarSupervisoresPlace extends SimcePlace {
 
-	private int idActividad;
-	
 	public AprobarSupervisoresPlace(){
 		super();
 	}
 	
-	public AprobarSupervisoresPlace(int aplicacionId, int nivelId, int tipoId, int idActividad){
+	public AprobarSupervisoresPlace(int aplicacionId, int nivelId, int tipoId){
 		super(aplicacionId, nivelId, tipoId);
-		this.idActividad = idActividad;
-	}
-	
-	public int getIdActividad() {
-		return idActividad;
-	}
-
-	public void setIdActividad(int idActividad) {
-		this.idActividad = idActividad;
 	}
 	
 	@Prefix("aprobarsupervisores")
@@ -40,8 +29,6 @@ public class AprobarSupervisoresPlace extends SimcePlace {
 					.get(NIVELID)) : -1);
 			fap.setTipoId((kvs.containsKey(TIPOID)) ? Integer.parseInt(kvs
 					.get(TIPOID)) : -1);
-			fap.setIdActividad((kvs.containsKey("act")) ? Integer.parseInt(kvs
-					.get("act")) : -1);
 			return fap;
 		}
 
@@ -51,7 +38,6 @@ public class AprobarSupervisoresPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			if(place.getIdActividad() != -1){kvs.put("act", place.getIdActividad() + "");}
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		
