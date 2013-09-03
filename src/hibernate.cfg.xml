@@ -152,5 +152,7 @@
         <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/AplicacionXEstablecimiento.hbm.xml" />
         <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/FaseXAplicacion.hbm.xml" />
         <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/Test.hbm.xml" />
+        <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/ActividadXDocumento.hbm.xml" />
+        
  </session-factory>
 </hibernate-configuration>

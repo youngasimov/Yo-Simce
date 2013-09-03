@@ -12,11 +12,14 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadXIncidenciaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadXDocumentoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoTipoDAO;
@@ -27,11 +30,15 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumento;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoId;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXIncidencia;
 import com.dreamer8.yosimce.server.hibernate.pojo.Alumno;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividadXDocumento;
+import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Documento;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
@@ -44,6 +51,7 @@ import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
@@ -752,7 +760,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No existe una actividad para el curso especificado.");
 				}
-				adto = a.getActividadDTO(idAplicacion);
+				adto = a.getActividadDTO(idAplicacion, getBaseURL());
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
@@ -901,8 +909,76 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				a.setDetalleUsoMaterialContingencia(actividad
 						.getDetalleUsoMaterialContingencia());
-				
-				
+				a.setMaterialContingencia(actividad.getMaterialContingencia());
+
+				if (actividad.getDocumento() != null
+						&& actividad.getDocumento().getId() != null) {
+					DocumentoDAO ddao = new DocumentoDAO();
+					Documento d = ddao.findByIdArchivo(actividad.getDocumento()
+							.getId());
+					if (d == null) {
+						d = new Documento();
+						DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+						DocumentoTipo dt = dtdao
+								.findByNombre(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION);
+						d.setDocumentoTipo(dt);
+					}
+					if (d.getArchivo() == null
+							|| !actividad.getDocumento().getId()
+									.equals(d.getArchivo().getId())) {
+						ArchivoDAO archivoDAO = new ArchivoDAO();
+						Archivo archivo = archivoDAO.getById(actividad
+								.getDocumento().getId());
+						if (archivo == null) {
+							archivo = guardarArchivo(actividad.getDocumento()
+									.getName());
+							archivoDAO.save(archivo);
+						}
+						d.setArchivo(archivo);
+						ddao.saveOrUpdate(d);
+					}
+
+					ActividadXDocumentoDAO axddao = new ActividadXDocumentoDAO();
+					ActividadXDocumento axd = axddao
+							.findByIdActividadANDIdDocumento(a.getId(),
+									d.getId());
+					if (axd == null) {
+						axd = new ActividadXDocumento();
+						ActividadXDocumentoId axdi = new ActividadXDocumentoId();
+						axdi.setIdActividad(a.getId());
+						axdi.setIdDocumento(d.getId());
+						axd.setId(axdi);
+						axddao.save(axd);
+					}
+				}
+
+				if (actividad.getContingencias() != null
+						&& !actividad.getContingencias().isEmpty()) {
+					ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO();
+					ActividadXIncidencia axi = null;
+					MotivoFallaDAO mfdao = new MotivoFallaDAO();
+					MotivoFalla mf = null;
+					for (ContingenciaDTO cdto : actividad.getContingencias()) {
+						if (cdto.getTipoContingencia() != null
+								&& cdto.getTipoContingencia().getId() != null) {
+							axi = axidao.findByIdActividadANDIdMotivoFalla(a
+									.getId(), cdto.getTipoContingencia()
+									.getId());
+							if (axi == null) {
+								axi = new ActividadXIncidencia();
+								axi.setActividad(a);
+								mf = mfdao.getById(cdto.getTipoContingencia()
+										.getId());
+								axi.setMotivoFalla(mf);
+							}
+							axi.setInhabilitaAplicacion(cdto.getInabilitante());
+							axi.setMotivoDescripcion(cdto
+									.getDetalleContingencia());
+							axidao.saveOrUpdate(axi);
+						}
+					}
+				}
+
 				a.setUsuario(u);
 				adao.update(a);
 

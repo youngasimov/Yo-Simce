@@ -69,6 +69,9 @@
         <property name="detalleUsoMaterialContingencia" type="string">
             <column name="detalle_material_contingencia" />
         </property>
+        <property name="materialContingencia" type="boolean">
+            <column name="material_contingencia" not-null="true" />
+        </property>
         <many-to-one name="actividadBase" class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" fetch="select">
             <column name="actividad_base_id" />
         </many-to-one>

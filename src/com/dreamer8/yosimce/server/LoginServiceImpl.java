@@ -312,10 +312,10 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				u = sesion.getUsuario();
 			}
 
+			s.getTransaction().commit();
+
 			this.getThreadLocalRequest().getSession()
 					.setAttribute("usuario", u);
-
-			s.getTransaction().commit();
 		} catch (HibernateException ex) {
 			System.err.println(ex);
 			HibernateUtil.rollback(s);

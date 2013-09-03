@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 18-08-2012 02:59:46 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumento" table="actividad_x_documento" schema="public">
+	<composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoId">
+	    <key-property name="idActividad" type="int">
+		<column name="actividad_id" />
+	    </key-property>
+	    <key-property name="idDocumento" type="int">
+		<column name="documento_id" />
+	    </key-property>
+	</composite-id>
+    </class>
+</hibernate-mapping> 

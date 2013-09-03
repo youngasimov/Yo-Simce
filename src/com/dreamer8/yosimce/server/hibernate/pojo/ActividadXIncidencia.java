@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
+import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
+
 // Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 /**
@@ -68,6 +70,17 @@ public class ActividadXIncidencia implements java.io.Serializable {
 
 	public void setInhabilitaAplicacion(Boolean inhabilitaAplicacion) {
 		this.inhabilitaAplicacion = inhabilitaAplicacion;
+	}
+
+	/**
+	 * @return
+	 */
+	public ContingenciaDTO getContingenciaDTO() {
+		ContingenciaDTO cdto = new ContingenciaDTO();
+		cdto.setInabilitante(inhabilitaAplicacion);
+		cdto.setDetalleContingencia(motivoDescripcion);
+		cdto.setTipoContingencia(motivoFalla.getTipoContingenciaDTO());
+		return cdto;
 	}
 
 }

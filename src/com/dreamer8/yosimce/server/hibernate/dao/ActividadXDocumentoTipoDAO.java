@@ -22,7 +22,7 @@ public class ActividadXDocumentoTipoDAO extends
 		ActividadXDocumentoTipo axdt = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT axdt.* FROM ACTIVIDAD_x_DOCUMENTO_TIPO axdt"
-				+ " JOIN DOCUMENTO_TIPO dt ON (axdt.documento_id=dt.id AND dt.nombre='"
+				+ " JOIN DOCUMENTO_TIPO dt ON (axdt.documento_tipo_id=dt.id AND dt.nombre='"
 				+ SecurityFilter.escapeString(documentoTipo) + "')"
 				+ " WHERE axdt.actividad_id="
 				+ SecurityFilter.escapeString(idActividad);
