@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.server;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +12,14 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoXActividadXDocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.DocumentoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.IncidenciaTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MotivoFallaDAO;
@@ -24,6 +27,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Alumno;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividad;
@@ -771,7 +775,6 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public Boolean actualizarActividad(ActividadDTO actividad)
 			throws NoAllowedException, NoLoggedException, DBException {
-		
 
 		Boolean result = true;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -796,9 +799,15 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado el tipo de la actividad.");
 				}
-				
+
 				if (actividad == null) {
-					throw new NullPointerException("No se ha especificado una actividad..");
+					throw new NullPointerException(
+							"No se ha especificado una actividad..");
+				}
+
+				if (actividad.getIdCurso() == null) {
+					throw new NullPointerException(
+							"No se ha especificado un curso..");
 				}
 
 				Usuario u = getUsuarioActual();
@@ -811,8 +820,91 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de usuario.");
 				}
 
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo,
+								actividad.getIdCurso());
+
+				if (a == null) {
+					throw new NullPointerException(
+							"No se ha encontrado la actividad especificada.");
+				}
+
+				a.setTotalAlumnosAusentes(actividad.getAlumnosAusentes());
+				if (idAplicacion == 1) {
+					a.setTotalAlumnosPresentes(actividad.getAlumnosTotal()
+							- actividad.getAlumnosAusentes());
+				}
+				a.setTotalAlumnosNee(actividad.getAlumnosDs());
+
+				Calendar c = Calendar.getInstance();
+
+				c.setTime(a.getFechaInicio());
+
+				int year = c.get(Calendar.YEAR);
+				int month = c.get(Calendar.MONTH);
+				int day = c.get(Calendar.DATE);
+				int hour;
+				int minute;
+
+				if (actividad.getInicioActividad() != null) {
+					c.setTime(actividad.getInicioActividad());
+					hour = c.get(Calendar.HOUR_OF_DAY);
+					minute = c.get(Calendar.MINUTE);
+					c.set(year, month, day, hour, minute);
+					a.setFechaInicio(c.getTime());
+				}
+				if (actividad.getInicioPrueba() != null) {
+					c.setTime(actividad.getInicioPrueba());
+					hour = c.get(Calendar.HOUR_OF_DAY);
+					minute = c.get(Calendar.MINUTE);
+					c.set(year, month, day, hour, minute);
+					a.setFechaInicioPrueba(c.getTime());
+				}
+				if (actividad.getTerminoPrueba() != null) {
+					c.setTime(actividad.getTerminoPrueba());
+					hour = c.get(Calendar.HOUR_OF_DAY);
+					minute = c.get(Calendar.MINUTE);
+					c.set(year, month, day, hour, minute);
+					a.setFechaTerminoPrueba(c.getTime());
+				}
+
+				a.setNotaProceso(actividad.getEvaluacionProcedimientos());
+
+				if (actividad.getEstadoAplicacion() != null
+						&& actividad.getEstadoAplicacion().getId() != null) {
+					ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+					ActividadEstado ae = aedao.getById(actividad
+							.getEstadoAplicacion().getId());
+					a.setActividadEstado(ae);
+				}
+
+				ActividadXDocumentoTipoDAO axdtdao = new ActividadXDocumentoTipoDAO();
+				ActividadXDocumentoTipo axdt = axdtdao
+						.findByIdActividadANDDocumentoTipo(a.getId(),
+								DocumentoTipo.CUESTIONARIO_PADRE);
+
+				if (axdt == null) {
+					axdt = new ActividadXDocumentoTipo();
+					axdt.setActividad(a);
+					DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+					DocumentoTipo dt = dtdao
+							.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
+					axdt.setDocumentoTipo(dt);
+				}
+
+				axdt.setTotal(actividad.getTotalCuestionarios());
+				axdt.setTotalEntregados(actividad.getCuestionariosEntregados());
+				axdt.setTotalRecibidos(actividad.getCuestionariosRecibidos());
+				axdtdao.saveOrUpdate(axdt);
+
+				a.setDetalleUsoMaterialContingencia(actividad
+						.getDetalleUsoMaterialContingencia());
 				
 				
+				a.setUsuario(u);
+				adao.update(a);
 
 				s.getTransaction().commit();
 			}

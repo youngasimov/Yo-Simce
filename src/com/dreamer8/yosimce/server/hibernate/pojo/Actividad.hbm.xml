@@ -63,6 +63,12 @@
         <property name="totalAlumnosAusentes" type="java.lang.Integer">
             <column name="total_alumnos_ausentes" />
         </property>
+        <property name="totalAlumnosNee" type="java.lang.Integer">
+            <column name="total_alumnos_nee" />
+        </property>
+        <property name="detalleUsoMaterialContingencia" type="string">
+            <column name="detalle_material_contingencia" />
+        </property>
         <many-to-one name="actividadBase" class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" fetch="select">
             <column name="actividad_base_id" />
         </many-to-one>

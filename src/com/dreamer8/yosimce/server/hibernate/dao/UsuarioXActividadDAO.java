@@ -53,7 +53,7 @@ public class UsuarioXActividadDAO extends
 
 		List<UsuarioXActividad> uxas = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT .* FROM APLICACION_x_NIVEL axn "
+		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="

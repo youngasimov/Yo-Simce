@@ -37,6 +37,8 @@ public class Actividad implements java.io.Serializable {
 	private Integer dia;
 	private Integer totalAlumnosPresentes;
 	private Integer totalAlumnosAusentes;
+	private Integer totalAlumnosNee;
+	private String detalleUsoMaterialContingencia;
 	private Actividad actividadBase;
 	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(
 			0);
@@ -299,6 +301,37 @@ public class Actividad implements java.io.Serializable {
 	 */
 	public void setTotalAlumnosAusentes(Integer totalAlumnosAusentes) {
 		this.totalAlumnosAusentes = totalAlumnosAusentes;
+	}
+
+	/**
+	 * @return the totalAlumnosNee
+	 */
+	public Integer getTotalAlumnosNee() {
+		return totalAlumnosNee;
+	}
+
+	/**
+	 * @param totalAlumnosNee
+	 *            the totalAlumnosNee to set
+	 */
+	public void setTotalAlumnosNee(Integer totalAlumnosNee) {
+		this.totalAlumnosNee = totalAlumnosNee;
+	}
+
+	/**
+	 * @return the detalleUsoMaterialContingencia
+	 */
+	public String getDetalleUsoMaterialContingencia() {
+		return detalleUsoMaterialContingencia;
+	}
+
+	/**
+	 * @param detalleUsoMaterialContingencia
+	 *            the detalleUsoMaterialContingencia to set
+	 */
+	public void setDetalleUsoMaterialContingencia(
+			String detalleUsoMaterialContingencia) {
+		this.detalleUsoMaterialContingencia = detalleUsoMaterialContingencia;
 	}
 
 	public List<AlumnoXActividad> getAlumnoXActividads() {
