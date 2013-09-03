@@ -261,8 +261,8 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			Date d = new Date();
 			CalendarUtil.addMonthsToDate(d, 1);
 			Cookies.setCookie("t", tipoId+"",d);
-			factory.getEventBus().fireEvent(new TipoActividadChangeEvent(tipoId));
 		}
+		factory.getEventBus().fireEvent(new TipoActividadChangeEvent(tipoId));
 	}
 	
 }

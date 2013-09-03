@@ -11,6 +11,7 @@
 	<inherits name="com.google.gwt.place.Place" />
 	<inherits name="com.google.gwt.activity.Activity" />
 	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name="com.google.gwt.logging.Logging" />
 	
 	<inherits name="gwtupload.GWTUpload"/>
 	
@@ -28,6 +29,15 @@
 	<!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/>  -->
 	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
+	
+	<set-property name="gwt.logging.logLevel" value="SEVERE" />            
+	<set-property name="gwt.logging.enabled" value="TRUE" />
+	<set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />
+	<set-property name="gwt.logging.systemHandler" value="DISABLED" />
+	<set-property name="gwt.logging.popupHandler" value="DISABLED" />
+	<set-property name="gwt.logging.consoleHandler" value="DISABLED"/>
+	<set-property name="gwt.logging.firebugHandler" value="ENABLED" />
+	<set-property name="gwt.logging.simpleRemoteHandler" value="ENABLED" />
 
 	<!-- Other module inherits -->
 	<stylesheet src="Upload.css"/>

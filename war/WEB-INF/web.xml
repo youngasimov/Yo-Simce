@@ -26,6 +26,17 @@
 		<servlet-name>uploadServlet</servlet-name>
 		<url-pattern>*.gupld</url-pattern>
 	</servlet-mapping>
+	
+	<!-- Logger server -->
+	
+	<servlet>
+		<servlet-name>remoteLogging</servlet-name>
+		<servlet-class>com.google.gwt.logging.server.RemoteLoggingServiceImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>remoteLogging</servlet-name>
+		<url-pattern>/yosimce/remote_logging</url-pattern>
+	</servlet-mapping>
 
 	<!-- Servlets -->
 	<servlet>

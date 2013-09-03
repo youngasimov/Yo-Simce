@@ -1,10 +1,16 @@
 package com.dreamer8.yosimce.client;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
@@ -25,6 +31,8 @@ public class AppPresenter implements AppView.AppPresenter {
 	
 	private boolean notLogged;
 	
+	private Logger logger = Logger.getLogger("");
+	
 	public AppPresenter(ClientFactory factory){
 		this.factory = factory;
 		this.view = factory.getAppView();
@@ -41,6 +49,26 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void bind(){
+		
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			
+			@Override
+			public void onUncaughtException(Throwable e) {
+				Throwable unwrapped = unwrap(e);
+				errorHandler(unwrapped);
+			}
+			
+			public Throwable unwrap(Throwable e) {   
+			    if(e instanceof UmbrellaException) {   
+			      UmbrellaException ue = (UmbrellaException) e;  
+			      if(ue.getCauses().size() == 1) {   
+			        return unwrap(ue.getCauses().iterator().next());  
+			      }  
+			    }  
+			    return e;  
+			  }
+		});
+		
 		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
 			
 			@Override
@@ -56,8 +84,20 @@ public class AppPresenter implements AppView.AppPresenter {
 			
 			@Override
 			public void onPermisos(PermisosEvent event) {
-				if(place.getClass().equals(SimcePlace.class)){
+				//if(place.getClass().equals(SimcePlace.class)){
+				//	view.setSidebarPanelState(true);
+				//}
+			}
+		});
+		
+		factory.getEventBus().addHandler(TipoActividadChangeEvent.TYPE, new TipoActividadChangeEvent.TipoActividadChangeHandler() {
+			
+			@Override
+			public void onTipoActividadChange(TipoActividadChangeEvent event) {
+				if(place.getClass().equals(SimcePlace.class) && event.getIdTipo()>=0){
 					view.setSidebarPanelState(true);
+				}else{
+					view.setSidebarPanelState(false);
 				}
 			}
 		});
@@ -82,28 +122,7 @@ public class AppPresenter implements AppView.AppPresenter {
 			
 			@Override
 			public void onError(ErrorEvent event) {
-				if(event.getError() instanceof IncompatibleRemoteServiceException){
-					view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false);
-				}else if(event.getError() instanceof InvocationException){
-					view.showErrorMessage("El petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no esta disponible", false);
-				}else if(event.getError() instanceof SerializedTypeViolationException){
-					view.showErrorMessage("Tipo de dato inesperado", true);
-				}else if(event.getError() instanceof StatusCodeException){
-					view.showErrorMessage("El código del mensaje HTTP es inválido<br />"+event.getError().getMessage(), true);
-				}else if(event.getError() instanceof NullPointerException){
-					view.showErrorMessage(event.getError().getMessage(), true);
-				}else if(event.getError() instanceof NoAllowedException){
-					view.showPermisoMessage(event.getError().getMessage(), true);
-				}else if(event.getError() instanceof DBException){
-					view.showErrorMessage(event.getError().getMessage(), false);
-				}else if(event.getError() instanceof RequestTimeoutException){
-					view.showErrorMessage("El tiempo máximo de espera de respuesta se ha excedido", true);
-				}else if(event.getError() instanceof ConsistencyException){
-					view.showWarningMessage(event.getError().getMessage(), false);
-				}else if(event.getError() instanceof NoLoggedException && !notLogged){
-					notLogged = true;
-					view.openLoginPopup();
-				}
+				errorHandler(event.getError());
 			}
 		});
 		
@@ -120,6 +139,44 @@ public class AppPresenter implements AppView.AppPresenter {
 				view.setBarLoadVisibility(nonBlockingEvents>0);
 			}
 		});
+	}
+	
+	private void errorHandler(Throwable e){
+		
+		if(e instanceof IncompatibleRemoteServiceException){
+			view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false);
+			logger.log(Level.WARNING, e.getLocalizedMessage());
+		}else if(e instanceof InvocationException){
+			view.showErrorMessage("El petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no esta disponible", false);
+			logger.log(Level.WARNING, e.getLocalizedMessage());
+		}else if(e instanceof SerializedTypeViolationException){
+			view.showErrorMessage("Tipo de dato inesperado", true);
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}else if(e instanceof StatusCodeException){
+			view.showErrorMessage("El código del mensaje HTTP es inválido<br />"+e.getLocalizedMessage(), true);
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}else if(e instanceof NullPointerException){
+			view.showErrorMessage(e.getLocalizedMessage(), true);
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}else if(e instanceof NoAllowedException){
+			view.showPermisoMessage(e.getLocalizedMessage(), true);
+			logger.log(Level.INFO, e.getLocalizedMessage());
+		}else if(e instanceof DBException){
+			view.showErrorMessage(e.getLocalizedMessage(), false);
+			logger.log(Level.WARNING, e.getLocalizedMessage());
+		}else if(e instanceof RequestTimeoutException){
+			view.showErrorMessage("El tiempo máximo de espera de respuesta se ha excedido", true);
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}else if(e instanceof ConsistencyException){
+			view.showWarningMessage(e.getMessage(), false);
+			logger.log(Level.INFO, e.getLocalizedMessage());
+		}else if(e instanceof NoLoggedException && !notLogged){
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
+			notLogged = true;
+			view.openLoginPopup();
+		}else{
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}
 	}
 
 }

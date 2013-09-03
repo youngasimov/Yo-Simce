@@ -13,17 +13,13 @@ import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
-import com.dreamer8.yosimce.shared.exceptions.DBException;
-import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
-import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ActividadServiceAsync {
 
 	void getPreviewActividades(Integer offset, Integer length,
 			HashMap<String, String> filtros,
-			AsyncCallback<ArrayList<ActividadPreviewDTO>> callback)
-			throws NoAllowedException, NoLoggedException, DBException;
+			AsyncCallback<ArrayList<ActividadPreviewDTO>> callback);
 
 	void getTotalPreviewActividades(HashMap<String, String> filtros,
 			AsyncCallback<Integer> callback);
