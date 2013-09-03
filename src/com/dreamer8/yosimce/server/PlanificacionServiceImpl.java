@@ -681,7 +681,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				Integer lenght = 1000;
 				List<String> filas = null;
 				DateFormat dateFormat = new SimpleDateFormat(
-						"dd-MM-yyyy HH:mm:ss");
+						"dd-MM-yyyy HH.mm.ss");
 				String name = dateFormat.format(new Date());
 				File file = File.createTempFile(name.replaceAll(" ", "_").replaceAll(":", ""), ".csv", getUploadDir());
 //				FileWriter fw = new FileWriter(file.getAbsoluteFile());

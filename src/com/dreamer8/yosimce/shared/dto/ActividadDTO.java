@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class ActividadDTO implements Serializable {
 
-	
 	private String nombreEstablecimiento;
 	private String rbd;
+	private Integer idCurso;
 	private String curso;
 	private String tipoEstablecimiento;
 	private String region;
@@ -22,13 +22,13 @@ public class ActividadDTO implements Serializable {
 	private Integer alumnosAusentes;
 	private Integer alumnosDs;
 	private Integer totalCuestionarios;
-	private Integer cuestionariosEntregados;	
+	private Integer cuestionariosEntregados;
 	private Integer cuestionariosRecibidos;
 	private Boolean materialContingencia;
 	private String detalleUsoMaterialContingencia;
 	private Integer evaluacionProcedimientos;
 	private DocumentoDTO documento;
-	
+
 	public ActividadDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -201,4 +201,20 @@ public class ActividadDTO implements Serializable {
 	public void setDocumento(DocumentoDTO documento) {
 		this.documento = documento;
 	}
+
+	/**
+	 * @return the idCurso
+	 */
+	public Integer getIdCurso() {
+		return idCurso;
+	}
+
+	/**
+	 * @param idCurso
+	 *            the idCurso to set
+	 */
+	public void setIdCurso(Integer idCurso) {
+		this.idCurso = idCurso;
+	}
+
 }
