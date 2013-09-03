@@ -80,5 +80,6 @@ public interface FormActividadView extends IsWidget {
 		void onRemoveContingecia(ContingenciaDTO contingencia);
 		void onEstadoChange(Integer estadoId);
 		void getExaminadoresSuplentes(String Search);
+		void onDocumentoUploaded(String documento);
 	}
 }

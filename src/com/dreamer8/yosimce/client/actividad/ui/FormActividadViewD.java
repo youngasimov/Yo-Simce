@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
+import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.IUploadStatus;
 import gwtupload.client.IUploader;
 import gwtupload.client.SingleUploader;
@@ -233,6 +234,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField ScoreSelector procedimientoScoreSelector;
 	@UiField(provided=true) SingleUploader uploader;
 	@UiField Anchor fileLink;
+	@UiField Label fileLabel;
 	
 	private FormActividadPresenter presenter;
 	private ArrayList<TipoContingenciaDTO> tiposContingencia;
@@ -246,7 +248,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	
 	public FormActividadViewD() {
 		file = "";
-		uploader = new SingleUploader();
+		uploader = new SingleUploader(FileInputType.LABEL);
 		uploader.setAutoSubmit(true);
 		inicioActividadBox = new TimeBox(new Date(0),false);
 		inicioPruebaBox = new TimeBox(new Date(0),false);
@@ -282,6 +284,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 					logger.log(Level.INFO, "Archivo uploaded success");
 					fileUploaded = true;
 					file = uploader.getFileName();
+					presenter.onDocumentoUploaded(file);
 				}
 			}
 		});
@@ -605,14 +608,30 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setHyperlink(DocumentoDTO documento) {
 		fileLink.setTarget("_blank");
-		if(documento == null || documento.getUrl() == null || documento.getUrl().equals("")){
+		if((documento == null || documento.getUrl() == null || documento.getUrl().isEmpty()) && documento.getName() != null && !documento.getName().isEmpty()){
 			fileLink.setHref("");
 			fileLink.setText("");
 			fileLink.setVisible(false);
-		}else{
+			fileLabel.setText(documento.getName());
+			fileLabel.setVisible(true);
+		}else if((documento == null || documento.getUrl() == null || documento.getUrl().isEmpty()) && (documento.getName() == null || documento.getName().isEmpty())){
+			fileLink.setHref("");
+			fileLink.setText("");
+			fileLink.setVisible(false);
+			fileLabel.setText(documento.getName());
+			fileLabel.setVisible(true);
+		}else if(documento.getUrl()!=null && !documento.getUrl().isEmpty() && documento.getName()!=null && !documento.getName().isEmpty()){
 			fileLink.setHref(documento.getUrl());
 			fileLink.setText(documento.getName());
 			fileLink.setVisible(true);
+			fileLabel.setText("");
+			fileLabel.setVisible(false);
+		}else{
+			fileLink.setHref("");
+			fileLink.setText("");
+			fileLink.setVisible(false);
+			fileLabel.setText("");
+			fileLabel.setVisible(false);
 		}
 	}
 

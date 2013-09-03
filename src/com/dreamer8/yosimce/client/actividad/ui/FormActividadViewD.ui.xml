@@ -74,8 +74,8 @@
 	}
 	
 	.formPanel{
-		margin-top:10px;
-		margin-bottom:10px;
+		margin-top: 10px;
+		margin-bottom: 10px;
 	}
 	
 	.panel2{
@@ -291,7 +291,7 @@
 								<td> <u:SingleUploader  ui:field="uploader" /> </td>
 							</tr>
 							<tr>
-								<td> <g:Anchor ui:field="fileLink"/> </td>
+								<td colspan='2'> <g:Anchor ui:field="fileLink"/> <g:Label ui:field="fileLabel"/> </td>
 							</tr>
 						</table>
 					</g:HTMLPanel>

@@ -143,6 +143,15 @@ public class FormActividadActivity extends SimceActivity implements
 	public void onCambiarCursoClick() {
 		selector.show();
 	}
+	
+	@Override
+	public void onDocumentoUploaded(String documento) {
+		eventBus.fireEvent(new MensajeEvent("El documento "+documento+" se a subido correctamente",MensajeEvent.MSG_OK,true));
+		DocumentoDTO d = new DocumentoDTO();
+		d.setName(documento);
+		d.setUrl("");
+		view.setHyperlink(d);
+	}
 
 	@Override
 	public void guardarFormulario() {

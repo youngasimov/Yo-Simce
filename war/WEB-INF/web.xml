@@ -15,7 +15,7 @@
 			false or 0, means don't use slow uploads -->
 		<param-name>slowUploads</param-name>
 		<param-value>false</param-value>
-		<!--<param-value>200</param-value> -->
+		<!-- <param-value>200</param-value> -->
 	</context-param>
 	<servlet>
 		<servlet-name>uploadServlet</servlet-name>
