@@ -28,7 +28,6 @@
 	</servlet-mapping>
 	
 	<!-- Logger server -->
-	
 	<servlet>
 		<servlet-name>remoteLogging</servlet-name>
 		<servlet-class>com.google.gwt.logging.server.RemoteLoggingServiceImpl</servlet-class>

@@ -51,7 +51,7 @@
 	
 	.imageLeft{
 		position:absolute;
-		top:2px;
+		top:1px;
 		left: 20px;
 	}
 	
@@ -75,8 +75,8 @@
     	<g:south size='1.8'>
     		<g:HTMLPanel addStyleNames='{style.footer}'>
     			<g:Image addStyleNames='{style.imageCenter}' resource='{res.barLoad}' ui:field="barload" />
-    			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageLeft}'><g:Image resource='{res.dreamer}'/></a>
-    			<a href='http://www.yosimce.cl' target="_blank" class='{style.imageRight}'><g:Image resource='{res.logoSimce}'/></a>
+    			<a href='http://www.yosimce.cl' target="_blank" class='{style.imageLeft}'><g:Image resource='{res.logoSimce}'/></a>
+    			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageRight}'><g:Image resource='{res.dreamer}'/></a>
     		</g:HTMLPanel>
     	</g:south>
     	<g:west size='3'>
