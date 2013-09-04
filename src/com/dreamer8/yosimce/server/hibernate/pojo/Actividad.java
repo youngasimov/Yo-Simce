@@ -436,6 +436,7 @@ public class Actividad implements java.io.Serializable {
 		cdto.setContactoEmail(contactoEmail);
 		cdto.setContactoNombre(contactoNombre);
 		cdto.setContactoTelefono(contactoTelefono);
+		cdto.setCargo(contactoCargo.getCargoDTO());
 		return cdto;
 	}
 
