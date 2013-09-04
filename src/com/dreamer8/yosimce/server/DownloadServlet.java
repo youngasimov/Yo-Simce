@@ -90,7 +90,8 @@ public class DownloadServlet extends HttpServlet {
 			response.setContentType(a.getMimeType());
 			response.setHeader(
 					"Content-Disposition",
-					"attachment; filename=\"" + a.getTitulo()
+					"attachment; filename=\""
+							+ StringUtils.getDatePathSafe(a.getTitulo())
 							+ StringUtils.getExtension(a.getRutaArchivo())
 							+ "\"");
 			FileInputStream fis = new FileInputStream(f);

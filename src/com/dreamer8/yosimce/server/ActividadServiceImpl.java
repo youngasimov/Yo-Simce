@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.server;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -760,8 +762,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No existe una actividad para el curso especificado.");
 				}
-				if(a.getFechaInicio() == null){
-					throw new ConsistencyException("Esta actividad aún no ha sido agendada.");
+				if (a.getFechaInicio() == null) {
+					throw new ConsistencyException(
+							"Esta actividad aún no ha sido agendada.");
 				}
 				adto = a.getActividadDTO(idAplicacion, getBaseURL());
 				s.getTransaction().commit();
@@ -914,11 +917,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						.getDetalleUsoMaterialContingencia());
 				a.setMaterialContingencia(actividad.getMaterialContingencia());
 
-				if (actividad.getDocumento() != null
-						&& actividad.getDocumento().getId() != null) {
+				Documento d = null;
+				if (actividad.getDocumento() != null) {
 					DocumentoDAO ddao = new DocumentoDAO();
-					Documento d = ddao.findByIdArchivo(actividad.getDocumento()
-							.getId());
+					if (actividad.getDocumento().getId() != null) {
+						d = ddao.findByIdArchivo(actividad.getDocumento()
+								.getId());
+					}
 					if (d == null) {
 						d = new Documento();
 						DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
@@ -927,14 +932,20 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						d.setDocumentoTipo(dt);
 					}
 					if (d.getArchivo() == null
-							|| !actividad.getDocumento().getId()
-									.equals(d.getArchivo().getId())) {
+							|| !d.getArchivo().getId()
+									.equals(actividad.getDocumento().getId())) {
 						ArchivoDAO archivoDAO = new ArchivoDAO();
-						Archivo archivo = archivoDAO.getById(actividad
-								.getDocumento().getId());
+						Archivo archivo = null;
+						if (actividad.getDocumento().getId() != null) {
+							archivo = archivoDAO.getById(actividad
+									.getDocumento().getId());
+						}
 						if (archivo == null) {
 							archivo = guardarArchivo(actividad.getDocumento()
 									.getName());
+							DateFormat dateFormat = new SimpleDateFormat(
+									"dd-MM-yyyy HH.mm.ss");
+							archivo.setTitulo(dateFormat.format(new Date()));
 							archivoDAO.save(archivo);
 						}
 						d.setArchivo(archivo);

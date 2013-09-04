@@ -117,4 +117,8 @@ public class StringUtils {
 		}
 		return extension;
 	}
+
+	public static String getDatePathSafe(String date) {
+		return date.replaceAll(" ", "_").replaceAll(":", "");
+	}
 }

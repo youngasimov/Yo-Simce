@@ -35,6 +35,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
@@ -683,7 +684,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
 				String name = dateFormat.format(new Date());
-				File file = File.createTempFile(name.replaceAll(" ", "_").replaceAll(":", ""), ".csv", getUploadDir());
+				File file = File.createTempFile(
+						StringUtils.getDatePathSafe(name), ".csv", getUploadDir());
 //				FileWriter fw = new FileWriter(file.getAbsoluteFile());
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "ISO-8859-1"));
 
