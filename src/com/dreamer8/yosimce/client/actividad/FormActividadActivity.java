@@ -263,21 +263,25 @@ public class FormActividadActivity extends SimceActivity implements
 	}
 	
 	private void setActividad(){
-		view.setNombreEstablecimiento(a.getNombreEstablecimiento());
-		view.setRbd(a.getRbd());
-		view.setCurso(a.getCurso());
-		view.setTipoCurso(a.getTipoEstablecimiento());
-		view.setRegion(a.getRegion());
-		view.setComuna(a.getComuna());
-		if(estados == null){
+		view.setNombreEstablecimiento((a.getNombreEstablecimiento()!=null)?a.getNombreEstablecimiento():"");
+		view.setRbd((a.getRbd()!=null)?a.getRbd():"");
+		view.setCurso((a.getCurso()!=null)?a.getCurso():"");
+		view.setTipoCurso((a.getTipoEstablecimiento()!=null)?a.getTipoEstablecimiento():"");
+		view.setRegion((a.getRegion()!=null)?a.getRegion():"");
+		view.setComuna((a.getComuna()!=null)?a.getComuna():"");
+		if(estados == null && a.getEstadoAplicacion() != null){
 			estados = new ArrayList<EstadoAgendaDTO>();
 			estados.add(a.getEstadoAplicacion());
-		}else if(!estados.contains(a.getEstadoAplicacion())){
+		}else if(a.getEstadoAplicacion()!=null && !estados.contains(a.getEstadoAplicacion())){
 			estados.add(a.getEstadoAplicacion());
+		}else if(estados == null && a.getEstadoAplicacion() == null){
+			estados = new ArrayList<EstadoAgendaDTO>();
 		}
 		view.setEstados(estados);
-		view.selectEstado(a.getEstadoAplicacion());
-		onEstadoChange(a.getEstadoAplicacion().getId());
+		if(a.getEstadoAplicacion()!=null){
+			view.selectEstado(a.getEstadoAplicacion());
+			onEstadoChange(a.getEstadoAplicacion().getId());
+		}
 		this.contingencias =a.getContingencias();
 		if(tipos != null && contingencias != null && !contingencias.isEmpty()){
 			for(ContingenciaDTO c: contingencias){

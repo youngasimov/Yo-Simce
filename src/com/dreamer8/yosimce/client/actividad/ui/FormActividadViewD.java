@@ -155,12 +155,16 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 							evaluacion.setPuntualidad(0);
 							evaluacion.setFormulario(0);
 							evaluacion.setGeneral(0);
-							presentacionPersonalScoreSelector.setValue(evaluacion.getPresentacionPersonal());
-							puntualidadScoreSelector.setValue(evaluacion.getPuntualidad());
-							formularioScoreSelector.setValue(evaluacion.getFormulario());
-							generalScoreSelector.setValue(evaluacion.getGeneral());
-							nombre.setHTML(evaluacion.getUsuario().getNombres()+" "+evaluacion.getUsuario().getApellidoPaterno()+" "+evaluacion.getUsuario().getApellidoMaterno());
-							rut.setHTML(evaluacion.getUsuario().getRut());
+							presentacionPersonalScoreSelector.setValue((evaluacion.getPresentacionPersonal()!=null)?evaluacion.getPresentacionPersonal():0);
+							puntualidadScoreSelector.setValue((evaluacion.getPuntualidad()!=null)?evaluacion.getPuntualidad():0);
+							formularioScoreSelector.setValue((evaluacion.getFormulario()!=null)?evaluacion.getFormulario():0);
+							generalScoreSelector.setValue((evaluacion.getGeneral()!=null)?evaluacion.getGeneral():0);
+							String n= (evaluacion.getUsuario().getNombres()!=null)?evaluacion.getUsuario().getNombres():"";
+							n = n+" ";
+							n= (evaluacion.getUsuario().getApellidoPaterno()!=null)?n+evaluacion.getUsuario().getApellidoPaterno():n;
+							n = (evaluacion.getUsuario().getApellidoMaterno()!=null)?n+evaluacion.getUsuario().getApellidoMaterno():n;
+							nombre.setHTML(n);
+							rut.setHTML((evaluacion.getUsuario().getRut()!=null)?evaluacion.getUsuario().getRut():"");
 							selector.hide();
 						}
 					});

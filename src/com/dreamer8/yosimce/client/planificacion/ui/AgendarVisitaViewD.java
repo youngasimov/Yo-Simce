@@ -190,9 +190,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiHandler("editarContactoButton")
 	void onEditarContactoClick(ClickEvent event){
 		if(contacto != null){
-			editarContactoPanel.nombreBox.setText(contacto.getContactoNombre());
-			editarContactoPanel.fonoBox.setText(contacto.getContactoTelefono());
-			editarContactoPanel.emailBox.setText(contacto.getContactoEmail());
+			editarContactoPanel.nombreBox.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+			editarContactoPanel.fonoBox.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+			editarContactoPanel.emailBox.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
 			
 			if(contacto.getCargo()!=null){
 				for(int i = 0; i < editarContactoPanel.cargoBox.getItemCount(); i++){
@@ -209,12 +209,14 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiHandler("editarDirectorButton")
 	void onEditarDirectorClick(ClickEvent event){
 		if(director != null){
-			editarDirectorPanel.fonoBox.setText(director.getContactoTelefono());
-			editarDirectorPanel.nombreBox.setText(director.getContactoNombre());
-			editarDirectorPanel.emailBox.setText(director.getContactoEmail());
+			editarDirectorPanel.fonoBox.setText((director.getContactoTelefono()!=null)?director.getContactoTelefono():"");
+			editarDirectorPanel.nombreBox.setText((director.getContactoNombre()!=null)?director.getContactoNombre():"");
+			editarDirectorPanel.emailBox.setText((director.getContactoEmail()!=null)?director.getContactoEmail():"");
 			editarDirectorPanel.cargoBox.setVisible(true);
 			editarDirectorPanel.cargoBox.clear();
-			editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
+			if(director.getCargo()!=null){
+				editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
+			}
 		}
 		editarDirectorDialog.center();
 	}
@@ -310,9 +312,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public void setContacto(ContactoDTO contacto) {
 		this.contacto = contacto;
-		nombreContactoLabel.setText(contacto.getContactoNombre());
-		fonoContactoLabel.setText(contacto.getContactoTelefono());
-		emailContactoLabel.setText(contacto.getContactoEmail());
+		nombreContactoLabel.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+		fonoContactoLabel.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+		emailContactoLabel.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
 		if(contacto.getCargo()!=null){
 			cargoContactoLabel.setText(contacto.getCargo().getCargo());
 		}

@@ -9,7 +9,6 @@ import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView.ActividadesPresenter;
-import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
@@ -47,7 +46,6 @@ public class ActividadesActivity extends SimceActivity implements
 		estados = new ArrayList<EstadoAgendaDTO>();
 		estadosReady = false;
 		regionesReady = false;
-		view.getDataDisplay().setRowCount(0,true);
 	}
 	
 	@Override
@@ -61,7 +59,6 @@ public class ActividadesActivity extends SimceActivity implements
 		estadosReady = false;
 		regionesReady = false;
 		range = view.getDataDisplay().getVisibleRange();
-		
 		view.setExportarActividadesVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getDocumentoPreviewActividades"));
 		view.setExportarAlumnosVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getDocumentoAlumnos"));
 		
@@ -81,7 +78,14 @@ public class ActividadesActivity extends SimceActivity implements
 						updateFiltros();
 					}
 				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					view.getDataDisplay().setRowCount(0);
+				}
 			});
+		}else{
+			view.getDataDisplay().setRowCount(0);
 		}
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEstadosActividad")){
@@ -103,7 +107,14 @@ public class ActividadesActivity extends SimceActivity implements
 						updateFiltros();
 					}
 				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					view.getDataDisplay().setRowCount(0);
+				}
 			});
+		}else{
+			view.getDataDisplay().setRowCount(0);
 		}
 		
 	}
@@ -198,6 +209,8 @@ public class ActividadesActivity extends SimceActivity implements
 		estados.clear();
 		estadosReady = false;
 		regionesReady = false;
+		view.getDataDisplay().setRowCount(0);
+		view.getDataDisplay().setRowData(0, new ArrayList<ActividadPreviewDTO>());
 		view.clear();
 	}
 	
@@ -229,10 +242,10 @@ public class ActividadesActivity extends SimceActivity implements
 			StringBuilder b = new StringBuilder();
 			for(Integer id:place.getEstadosSeleccionados()){
 				b.append(id);
-				b.append(PlanificacionService.SEPARATOR);
+				b.append(ActividadService.SEPARATOR);
 			}
 			b.deleteCharAt(b.length()-1);
-			filtros.put(PlanificacionService.FKEY_ESTADOS, b.toString());
+			filtros.put(ActividadService.FKEY_ESTADOS, b.toString());
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getTotalPreviewActividades")){
 			getFactory().getActividadService().getTotalPreviewActividades(filtros, new SimceCallback<Integer>(eventBus,false) {

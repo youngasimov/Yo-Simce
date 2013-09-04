@@ -366,7 +366,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
                 return object.getEstablecimientoName();
             }
         };
-        establecimientoColumn.setSortable(true);
+        establecimientoColumn.setSortable(false);
         dataGrid.addColumn(establecimientoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Establecimiento")));
         dataGrid.setColumnWidth(establecimientoColumn, 250, Unit.PX);
         
@@ -406,7 +406,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
                 return object.getAgendaItemActual().getFecha();
             }
         };
-        dateColumn.setSortable(true);
+        dateColumn.setSortable(false);
         dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
         dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
         

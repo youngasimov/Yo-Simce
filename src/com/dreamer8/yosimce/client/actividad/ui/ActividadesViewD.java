@@ -181,9 +181,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			selectionModel.setSelected(selectedItem, false);
 			selectedItem = null;
 		}
+		sinc = false;
+		form = false;
+		info = false;
 		establecimientoSeleccionado.setHTML("");
-		dataGrid.setRowCount(0);
-		dataGrid.setRowData(new ArrayList<ActividadPreviewDTO>());
+		estadoCheckBoxs.clear();
+		filtrosPanel.estadosPanel.clear();
 	}
 
 	@Override
@@ -509,12 +512,15 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
-				return o.getRegion();
+				if(o.getRegion().startsWith("Región")){
+            		return o.getRegion().substring(6);
+            	}
+                return o.getRegion();
 			}
 		};
 		regionColumn.setSortable(false);
 		dataGrid.addColumn(regionColumn,"Región");
-		dataGrid.setColumnWidth(regionColumn, 100, Unit.PX);
+		dataGrid.setColumnWidth(regionColumn, 140, Unit.PX);
 		
 		Column<ActividadPreviewDTO,String> comunaColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
 
@@ -525,7 +531,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		comunaColumn.setSortable(false);
 		dataGrid.addColumn(comunaColumn,"Comuna");
-		dataGrid.setColumnWidth(comunaColumn, 100, Unit.PX);
+		dataGrid.setColumnWidth(comunaColumn, 120, Unit.PX);
 		
 		Column<ActividadPreviewDTO,DocumentoDTO> docColumn = new Column<ActividadPreviewDTO, DocumentoDTO>(new HyperTextCell()) {
 

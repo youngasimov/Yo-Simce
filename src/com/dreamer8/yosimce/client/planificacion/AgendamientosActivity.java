@@ -48,7 +48,6 @@ public class AgendamientosActivity extends SimceActivity implements
 		estados = new ArrayList<EstadoAgendaDTO>();
 		estadosReady = false;
 		regionesReady = false;
-		range = view.getDataDisplay().getVisibleRange();
 	}
 	
 	@Override
@@ -61,6 +60,15 @@ public class AgendamientosActivity extends SimceActivity implements
 		estados.clear();
 		estadosReady = false;
 		regionesReady = false;
+		range = view.getDataDisplay().getVisibleRange();
+		
+		view.setExportarVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos"));
+		view.setModificarAgendaVisivility(
+				Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso") &&
+				Utils.hasPermisos(getPermisos(),"PlanificacionService","AgendarVisita") &&
+				Utils.hasPermisos(getPermisos(),"PlanificacionService","getEstadosAgenda"));
+		view.setDetallesAgendaVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso"));
+		view.setInformacionGeneralVisivility(Utils.hasPermisos(getPermisos(),"GeneralService","getDetalleCurso"));
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(),"GeneralService","getRegiones")){
 			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
@@ -74,7 +82,14 @@ public class AgendamientosActivity extends SimceActivity implements
 						updateFiltros();
 					}
 				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					view.getDataDisplay().setRowCount(0);
+				}
 			});
+		}else{
+			view.getDataDisplay().setRowCount(0);
 		}
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getEstadosAgendaFiltro")){
@@ -97,18 +112,15 @@ public class AgendamientosActivity extends SimceActivity implements
 						updateFiltros();
 					}
 				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					view.getDataDisplay().setRowCount(0);
+				}
 			});
 		}else{
 			view.getDataDisplay().setRowCount(0);
-			view.getDataDisplay().setRowData(0, new ArrayList<AgendaPreviewDTO>());
 		}
-		view.setExportarVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos"));
-		view.setModificarAgendaVisivility(
-				Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso") &&
-				Utils.hasPermisos(getPermisos(),"PlanificacionService","AgendarVisita") &&
-				Utils.hasPermisos(getPermisos(),"PlanificacionService","getEstadosAgenda"));
-		view.setDetallesAgendaVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso"));
-		view.setInformacionGeneralVisivility(Utils.hasPermisos(getPermisos(),"GeneralService","getDetalleCurso"));
 	}
 	
 	@Override
