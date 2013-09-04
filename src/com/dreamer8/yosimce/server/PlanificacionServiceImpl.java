@@ -264,7 +264,9 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				a.setComentario(itemAgenda.getComentario());
 				a.setActividadEstado(ae);
 				adao.update(a);
-
+				
+				UsuarioDAO udao = new UsuarioDAO();
+				u = udao.getById(u.getId());
 				itemAgenda.setCreador(u.getUserDTO());
 
 				s.getTransaction().commit();
