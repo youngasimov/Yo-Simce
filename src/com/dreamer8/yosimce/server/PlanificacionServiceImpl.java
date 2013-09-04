@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.AplicacionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ContactoCargoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
@@ -28,6 +30,8 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
@@ -259,6 +263,38 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					throw new NullPointerException(
 							"El estado especificado no existe");
 				}
+
+				if (idAplicacion == 2
+						&& a.getAplicacionXNivelXActividadTipo()
+								.getActividadTipo().getNombre()
+								.equals(ActividadTipo.APLICACION_DIA_1)) {
+					if (itemAgenda.getFecha() != null) {
+						Actividad visitaPrevia = adao
+								.findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
+										idAplicacion, idNivel, idCurso,
+										ActividadTipo.VISITA_PREVIA);
+						if (visitaPrevia == null
+								|| !ActividadEstado.SIN_INFORMACION
+										.equals(visitaPrevia
+												.getActividadEstado()
+												.getNombre())
+								|| visitaPrevia.getFechaInicio() == null) {
+							throw new ConsistencyException(
+									"Primero debe agendarse la visita previa.");
+						}
+
+						Long diff = itemAgenda.getFecha().getTime()
+								- visitaPrevia.getFechaInicio().getTime();
+						Double dias = diff.doubleValue()
+								/ (1000 * 60 * 60 * 24);
+
+						if (dias < 7) {
+							throw new ConsistencyException(
+									"La aplicación debe realizarse al menos 7 días después de la visita previa.");
+						}
+					}
+				}
+
 				a.setFechaInicio(itemAgenda.getFecha());
 				a.setUsuario(u);
 				a.setComentario(itemAgenda.getComentario());

@@ -14,6 +14,7 @@ public class ContactoDTO implements Serializable {
 	private String contactoNombre;
 	private String contactoTelefono;
 	private String contactoEmail;
+	private CargoDTO cargo;
 
 	/**
 	 * 
@@ -46,4 +47,11 @@ public class ContactoDTO implements Serializable {
 		this.contactoEmail = contactoEmail;
 	}
 
+	public CargoDTO getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(CargoDTO cargo) {
+		this.cargo = cargo;
+	}
 }

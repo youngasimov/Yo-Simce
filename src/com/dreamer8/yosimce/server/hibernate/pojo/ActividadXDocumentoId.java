@@ -42,9 +42,7 @@ public class ActividadXDocumentoId implements java.io.Serializable {
 		this.idDocumento = idDocumento;
 	}
 
-	/**
-	 * @permiso hashCode
-	 */
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -56,9 +54,6 @@ public class ActividadXDocumentoId implements java.io.Serializable {
 		return result;
 	}
 
-	/**
-	 * @permiso equals
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

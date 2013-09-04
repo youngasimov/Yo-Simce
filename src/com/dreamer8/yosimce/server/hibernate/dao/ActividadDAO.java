@@ -807,4 +807,26 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		result = ((BigInteger) q.uniqueResult()).intValue();
 		return result;
 	}
+
+	public Actividad findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
+			Integer idAplicacion, Integer idNivel, Integer idCurso,
+			String tipoActividad) {
+
+		Actividad a = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id)"
+				+ " JOIN ACTIVIDAD_TIPO at ON (axnxat.actividad_tipo_id=at.id AND at.nombre='"
+				+ SecurityFilter.escapeString(tipoActividad)
+				+ "')"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
+				+ SecurityFilter.escapeString(idCurso) + ")";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		a = ((Actividad) q.uniqueResult());
+		return a;
+	}
 }
