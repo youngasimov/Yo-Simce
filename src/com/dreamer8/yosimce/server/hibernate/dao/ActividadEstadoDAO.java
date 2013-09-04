@@ -24,7 +24,7 @@ public class ActividadEstadoDAO extends AbstractHibernateDAO<ActividadEstado, In
 
 		List<ActividadEstado> aes = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae" + " WHERE ae.id < 4";
+		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae" + " WHERE ae.id > 1 AND ae.id < 4";
 		Query q = s.createSQLQuery(query).addEntity(ActividadEstado.class);
 		aes = q.list();
 		return aes;
