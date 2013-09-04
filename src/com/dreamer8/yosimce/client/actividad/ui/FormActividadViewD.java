@@ -287,7 +287,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 				if(uploader.getStatus().equals(IUploadStatus.Status.SUCCESS)){
 					logger.log(Level.INFO, "Archivo uploaded success");
 					fileUploaded = true;
-					file = uploader.getFileName();
+					file = uploader.getBasename();
 					presenter.onDocumentoUploaded(file);
 				}
 			}
@@ -612,13 +612,21 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setHyperlink(DocumentoDTO documento) {
 		fileLink.setTarget("_blank");
-		if((documento == null || documento.getUrl() == null || documento.getUrl().isEmpty()) && documento.getName() != null && !documento.getName().isEmpty()){
+		
+		if(documento == null){
+			fileLink.setHref("");
+			fileLink.setText("");
+			fileLink.setVisible(false);
+			fileLabel.setText("");
+			fileLabel.setVisible(false);
+		}
+		else if((documento.getUrl() == null || documento.getUrl().isEmpty()) && documento.getName() != null && !documento.getName().isEmpty()){
 			fileLink.setHref("");
 			fileLink.setText("");
 			fileLink.setVisible(false);
 			fileLabel.setText(documento.getName());
 			fileLabel.setVisible(true);
-		}else if((documento == null || documento.getUrl() == null || documento.getUrl().isEmpty()) && (documento.getName() == null || documento.getName().isEmpty())){
+		}else if((documento.getUrl() == null || documento.getUrl().isEmpty()) && (documento.getName() == null || documento.getName().isEmpty())){
 			fileLink.setHref("");
 			fileLink.setText("");
 			fileLink.setVisible(false);

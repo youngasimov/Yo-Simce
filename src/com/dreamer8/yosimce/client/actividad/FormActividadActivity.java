@@ -194,7 +194,7 @@ public class FormActividadActivity extends SimceActivity implements
 	
 				@Override
 				public void success(Boolean result) {
-					eventBus.fireEvent(new MensajeEvent("La actividad se ha guardado exitosamente",MensajeEvent.MSG_OK,false));
+					eventBus.fireEvent(new MensajeEvent("La actividad se ha guardado exitosamente",MensajeEvent.MSG_OK,true));
 				}
 			});
 		}
