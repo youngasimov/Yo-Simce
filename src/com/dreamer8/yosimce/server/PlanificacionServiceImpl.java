@@ -264,7 +264,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				a.setComentario(itemAgenda.getComentario());
 				a.setActividadEstado(ae);
 				adao.update(a);
-				
+
 				UsuarioDAO udao = new UsuarioDAO();
 				u = udao.getById(u.getId());
 				itemAgenda.setCreador(u.getUserDTO());
@@ -687,9 +687,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 						"dd-MM-yyyy HH.mm.ss");
 				String name = dateFormat.format(new Date());
 				File file = File.createTempFile(
-						StringUtils.getDatePathSafe(name), ".csv", getUploadDir());
-//				FileWriter fw = new FileWriter(file.getAbsoluteFile());
-				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "ISO-8859-1"));
+						StringUtils.getDatePathSafe(name), ".csv",
+						getUploadDir());
+				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file), "ISO-8859-1"));
 
 				while (total > 0) {
 					filas = adao
@@ -706,7 +708,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					}
 				}
 				bw.close();
-				
+
 				ArchivoDAO ardao = new ArchivoDAO();
 				Archivo archivo = new Archivo();
 				archivo.setTitulo(name);
@@ -714,7 +716,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				archivo.setMimeType("text/plain");
 				archivo.setIpServer("200.1.30.52");
 				ardao.save(archivo);
-				
+
 				ddto = archivo.getDocumentoDTO(getBaseURL());
 				s.getTransaction().commit();
 			}
@@ -919,5 +921,72 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throw ex;
 		}
 		return result;
+	}
+
+	/**
+	 * @permiso getEstadosAgendaFiltro
+	 */
+	@Override
+	public ArrayList<EstadoAgendaDTO> getEstadosAgendaFiltro()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+
+		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getEstadosAgendaFiltro")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				List<ActividadEstado> aes = aedao.findAll();
+				if (aes != null && !aes.isEmpty()) {
+					for (ActividadEstado ae : aes) {
+						eadtos.add(ae.getEstadoAgendaDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return eadtos;
 	}
 }

@@ -43,6 +43,9 @@ public interface PlanificacionServiceAsync {
 	void editarDirector(Integer idCurso, ContactoDTO director,
 			AsyncCallback<Boolean> callback);
 
+	void getEstadosAgendaFiltro(
+			AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
+
 	
 
 }

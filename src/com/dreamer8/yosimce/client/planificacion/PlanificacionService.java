@@ -53,6 +53,10 @@ public interface PlanificacionService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
 
+	public ArrayList<EstadoAgendaDTO> getEstadosAgendaFiltro()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+
 	public ContactoDTO getContacto(Integer idCurso) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException;
