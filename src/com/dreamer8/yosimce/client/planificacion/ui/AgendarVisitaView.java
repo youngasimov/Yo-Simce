@@ -43,6 +43,8 @@ public interface AgendarVisitaView extends IsWidget {
 	void setEditarDirectorVisivility(boolean visible);
 	void setInformacionVisivility(boolean visible);
 	
+	void clear();
+	
 	
 	public interface AgendarVisitaPresenter extends SimcePresenter{
 		void onCambiarCursoClick();

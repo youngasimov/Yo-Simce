@@ -13,6 +13,7 @@ public interface DetalleAgendaView extends IsWidget {
 	void setNombreEstablecimiento(String establecimiento);
 	UIObject getCambiarButton();
 	void setPresenter(DetalleAgendaPresenter presenter);
+	void clear();
 	
 	public interface DetalleAgendaPresenter extends SimcePresenter{
 		void onCambiarCursoClick();

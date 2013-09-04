@@ -16,7 +16,7 @@ public interface ActividadesView extends IsWidget {
 	HasData<ActividadPreviewDTO> getDataDisplay();
 	Column<ActividadPreviewDTO,?> getColumn(int index);
 	int getColumnIndex(Column<ActividadPreviewDTO,?> column);
-	void clearCursoSelection();
+	void clear();
 	void setPresenter(ActividadesPresenter presenter);
 	void setEstadosActividad(ArrayList<EstadoAgendaDTO> estados);
 	

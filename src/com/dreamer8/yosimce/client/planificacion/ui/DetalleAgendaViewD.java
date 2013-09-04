@@ -1,5 +1,7 @@
 package com.dreamer8.yosimce.client.planificacion.ui;
 
+import java.util.ArrayList;
+
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
@@ -84,5 +86,13 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 	@Override
 	public void setIdCurso(int idCurso) {
 		this.idCurso = idCurso;
+	}
+	
+	@Override
+	public void clear() {
+		idCurso = -1;
+		this.establecimiento.setHTML("");
+		agendaList.setRowCount(0);
+		agendaList.setRowData(new ArrayList<AgendaItemDTO>());
 	}
 }

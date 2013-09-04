@@ -176,11 +176,14 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	}
 
 	@Override
-	public void clearCursoSelection() {
+	public void clear() {
 		if(selectedItem !=null){
 			selectionModel.setSelected(selectedItem, false);
 			selectedItem = null;
 		}
+		establecimientoSeleccionado.setHTML("");
+		dataGrid.setRowCount(0);
+		dataGrid.setRowData(new ArrayList<ActividadPreviewDTO>());
 	}
 
 	@Override

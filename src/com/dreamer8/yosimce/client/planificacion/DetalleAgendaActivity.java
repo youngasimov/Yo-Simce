@@ -84,8 +84,7 @@ public class DetalleAgendaActivity extends SimceActivity
 	@Override
 	public void onStop() {
 		super.onStop();
-		view.getDataDisplay().setRowCount(0);
-		view.setNombreEstablecimiento("");
+		view.clear();
 		agenda = null;
 	}
 }

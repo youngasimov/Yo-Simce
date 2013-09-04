@@ -146,7 +146,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setAgendamientoVisivility((Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos")) ||
 				(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda")) ||
 				Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso"));
-		view.setAgendamientosViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos") && tipo);
+		view.setAgendamientosViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgendaFiltro") && Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos") && tipo);
 		view.setAgendarVisitaActionItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda") && tipo);
 		view.setDetalleAgendaViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && tipo);
 		
@@ -154,7 +154,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 				Utils.hasPermisos(permisos,"ActividadService","getActividad") ||
 				Utils.hasPermisos(permisos,"ActividadService","getSincronizacionesCurso") ||
 				Utils.hasPermisos(permisos,"ActividadService","getEvaluacionSupervisores"));
-		view.setActividadesViewItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getTotalPreviewActividades") && Utils.hasPermisos(permisos,"ActividadService","getPreviewActividades") && tipo);
+		view.setActividadesViewItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getTotalPreviewActividades") && Utils.hasPermisos(permisos,"ActividadService","getTotalPreviewActividades") && Utils.hasPermisos(permisos,"ActividadService","getPreviewActividades") && tipo);
 		view.setFormularioActividadActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getActividad") && tipo);
 		view.setSincronizacionActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getSincronizacionesCurso") && tipo);
 		

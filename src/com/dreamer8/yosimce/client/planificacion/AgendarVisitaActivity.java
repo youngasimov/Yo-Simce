@@ -111,6 +111,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 					}
 				});
 			}
+			
 			if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getAgendaCurso")){
 				getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus,true) {
 					
@@ -143,6 +144,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				@Override
 				public void success(Boolean result) {
 					view.setContacto(contacto);
+					eventBus.fireEvent(new MensajeEvent("Los datos de contacto se han modificado", MensajeEvent.MSG_OK, true));
 				}
 			});
 		}
@@ -155,7 +157,8 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 				@Override
 				public void success(Boolean result) {
-					view.setContacto(director);
+					view.setDirector(director);
+					eventBus.fireEvent(new MensajeEvent("Los datos del director se han modificado", MensajeEvent.MSG_OK, true));
 				}
 			});
 		}
@@ -204,8 +207,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	@Override
 	public void onStop() {
 		super.onStop();
-		view.getDataDisplay().setRowCount(0);
-		view.setNombreEstablecimiento("");
+		view.clear();
 		agenda = null;
 	}
 }

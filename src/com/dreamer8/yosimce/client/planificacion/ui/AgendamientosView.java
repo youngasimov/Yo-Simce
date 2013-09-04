@@ -18,7 +18,7 @@ public interface AgendamientosView extends IsWidget {
     Column<AgendaPreviewDTO,?> getColumn(int index);
     int getColumnIndex(Column<AgendaPreviewDTO,?> column);
 	void setPresenter(AgendamientosPresenter presenter);
-	void clearCursoSelection();
+	void clear();
 	void setEstados(ArrayList<EstadoAgendaDTO> estados);
 	void setRegiones(ArrayList<SectorDTO> regiones);
 	void setComunas(ArrayList<SectorDTO> comunas);

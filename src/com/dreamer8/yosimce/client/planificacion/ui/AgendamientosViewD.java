@@ -149,12 +149,17 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	}
 	
 	@Override
-	public void clearCursoSelection() {
+	public void clear() {
 		if(selectedItem !=null){
 			selectionModel.setSelected(selectedItem, false);
 			selectedItem = null;
 		}
-		
+		establecimientoSeleccionado.setHTML("");
+		modificarAgendaVisible = false;
+		detalleVisible = false;
+		informacionVisible = false;
+		estadoCheckBoxs.clear();
+		filtrosPanel.estadosPanel.clear();
 	}
 	
 	@Override

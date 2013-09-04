@@ -55,13 +55,14 @@ public class AgendamientosActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		filtros.clear();
 		regiones.clear();
 		comunas.clear();
 		estados.clear();
 		estadosReady = false;
 		regionesReady = false;
 		
-		if(getPermisos().get("GeneralService").contains("getRegiones")){
+		if(Utils.hasPermisos(eventBus,getPermisos(),"GeneralService","getRegiones")){
 			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
 	
 				@Override
@@ -76,8 +77,8 @@ public class AgendamientosActivity extends SimceActivity implements
 			});
 		}
 		
-		if(getPermisos().get("PlanificacionService").contains("getEstadosAgenda")){
-			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
+		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getEstadosAgendaFiltro")){
+			getFactory().getPlanificacionService().getEstadosAgendaFiltro(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
 	
 				@Override
 				public void success(ArrayList<EstadoAgendaDTO> result) {
@@ -97,15 +98,17 @@ public class AgendamientosActivity extends SimceActivity implements
 					}
 				}
 			});
-			
-			view.setExportarVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos"));
-			view.setModificarAgendaVisivility(
-					Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso") &&
-					Utils.hasPermisos(getPermisos(),"PlanificacionService","AgendarVisita") &&
-					Utils.hasPermisos(getPermisos(),"PlanificacionService","getEstadosAgenda"));
-			view.setDetallesAgendaVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso"));
-			view.setInformacionGeneralVisivility(Utils.hasPermisos(getPermisos(),"GeneralService","getDetalleCurso"));
+		}else{
+			view.getDataDisplay().setRowCount(0);
+			view.getDataDisplay().setRowData(0, new ArrayList<AgendaPreviewDTO>());
 		}
+		view.setExportarVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos"));
+		view.setModificarAgendaVisivility(
+				Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso") &&
+				Utils.hasPermisos(getPermisos(),"PlanificacionService","AgendarVisita") &&
+				Utils.hasPermisos(getPermisos(),"PlanificacionService","getEstadosAgenda"));
+		view.setDetallesAgendaVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso"));
+		view.setInformacionGeneralVisivility(Utils.hasPermisos(getPermisos(),"GeneralService","getDetalleCurso"));
 	}
 	
 	@Override
@@ -183,8 +186,15 @@ public class AgendamientosActivity extends SimceActivity implements
 	@Override
 	public void onStop() {
 		super.onStop();
+		filtros.clear();
+		regiones.clear();
+		comunas.clear();
+		estados.clear();
+		estadosReady = false;
+		regionesReady = false;
 		view.getDataDisplay().setRowCount(0);
-		view.clearCursoSelection();
+		view.getDataDisplay().setRowData(0, new ArrayList<AgendaPreviewDTO>());
+		view.clear();
 	}
 	
 	private void updateFiltros(){

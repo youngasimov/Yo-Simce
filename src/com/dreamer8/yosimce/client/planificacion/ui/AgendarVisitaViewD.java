@@ -112,6 +112,12 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 				}
 				presenter.onEditarContacto(c);
 				editarContactoDialog.hide();
+				editarContactoPanel.nombreBox.setText("");
+				editarContactoPanel.fonoBox.setText("");
+				editarContactoPanel.emailBox.setText("");
+				if(editarContactoPanel.cargoBox.getItemCount()>0){
+					editarContactoPanel.cargoBox.setItemSelected(0, true);
+				}
 			}
 		});
 		editarContactoPanel.cancelarButton.addClickHandler(new ClickHandler() {
@@ -119,6 +125,12 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 			@Override
 			public void onClick(ClickEvent event) {
 				editarContactoDialog.hide();
+				editarContactoPanel.nombreBox.setText("");
+				editarContactoPanel.fonoBox.setText("");
+				editarContactoPanel.emailBox.setText("");
+				if(editarContactoPanel.cargoBox.getItemCount()>0){
+					editarContactoPanel.cargoBox.setItemSelected(0, true);
+				}
 			}
 		});
 		
@@ -141,6 +153,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 				c.setContactoEmail(editarDirectorPanel.emailBox.getText());
 				presenter.onEditarDirector(c);
 				editarDirectorDialog.hide();
+				editarDirectorPanel.nombreBox.setText("");
+				editarDirectorPanel.fonoBox.setText("");
+				editarDirectorPanel.emailBox.setText("");
 			}
 		});
 		editarDirectorPanel.cancelarButton.addClickHandler(new ClickHandler() {
@@ -148,6 +163,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 			@Override
 			public void onClick(ClickEvent event) {
 				editarDirectorDialog.hide();
+				editarDirectorPanel.nombreBox.setText("");
+				editarDirectorPanel.fonoBox.setText("");
+				editarDirectorPanel.emailBox.setText("");
 			}
 		});
 	}
@@ -191,9 +209,12 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@UiHandler("editarDirectorButton")
 	void onEditarDirectorClick(ClickEvent event){
 		if(director != null){
-			editarContactoPanel.fonoBox.setText(director.getContactoTelefono());
+			editarDirectorPanel.fonoBox.setText(director.getContactoTelefono());
 			editarDirectorPanel.nombreBox.setText(director.getContactoNombre());
 			editarDirectorPanel.emailBox.setText(director.getContactoEmail());
+			editarDirectorPanel.cargoBox.setVisible(true);
+			editarDirectorPanel.cargoBox.clear();
+			editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
 		}
 		editarDirectorDialog.center();
 	}
@@ -309,5 +330,32 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public void setDirector(ContactoDTO contacto) {
 		director = contacto;
+	}
+	
+	@Override
+	public void clear() {
+		establecimiento.setHTML("");
+		estadoBox.clear();
+		fechaPicker.setValue(new Date());
+		fechaLabel.setText("");
+		timeBox.setValue(new Date().getTime());
+		comentarioBox.setText("");
+		nombreContactoLabel.setText("");
+		fonoContactoLabel.setText("");
+		emailContactoLabel.setText("");
+		cargoContactoLabel.setText("");
+		editarContactoPanel.nombreBox.setText("");
+		editarContactoPanel.fonoBox.setText("");
+		editarContactoPanel.emailBox.setText("");
+		editarContactoPanel.cargoBox.clear();
+		editarDirectorPanel.nombreBox.setText("");
+		editarDirectorPanel.fonoBox.setText("");
+		editarDirectorPanel.emailBox.setText("");
+		editarDirectorPanel.cargoBox.clear();
+		contacto = null;
+		director = null;
+		idCurso = -1;
+		agendaList.setRowCount(0);
+		agendaList.setRowData(new ArrayList<AgendaItemDTO>());
 	}
 }

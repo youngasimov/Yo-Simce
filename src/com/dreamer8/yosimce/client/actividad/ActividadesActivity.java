@@ -29,6 +29,9 @@ public class ActividadesActivity extends SimceActivity implements
 	
 	private ArrayList<SectorDTO> regiones;
 	private HashMap<Integer,ArrayList<SectorDTO>> comunas;
+	private ArrayList<EstadoAgendaDTO> estados;
+	private boolean estadosReady;
+	private boolean regionesReady;
 	
 	private Range range;
 	
@@ -41,6 +44,9 @@ public class ActividadesActivity extends SimceActivity implements
 		filtros = new HashMap<String, String>();
 		regiones = new ArrayList<SectorDTO>();
 		comunas = new HashMap<Integer, ArrayList<SectorDTO>>();
+		estados = new ArrayList<EstadoAgendaDTO>();
+		estadosReady = false;
+		regionesReady = false;
 		view.getDataDisplay().setRowCount(0,true);
 	}
 	
@@ -48,8 +54,12 @@ public class ActividadesActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		filtros.clear();
 		regiones.clear();
 		comunas.clear();
+		estados.clear();
+		estadosReady = false;
+		regionesReady = false;
 		range = view.getDataDisplay().getVisibleRange();
 		
 		view.setExportarActividadesVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getDocumentoPreviewActividades"));
@@ -66,17 +76,32 @@ public class ActividadesActivity extends SimceActivity implements
 				public void success(ArrayList<SectorDTO> result) {
 					regiones.addAll(result);
 					view.setRegiones(regiones);
-					updateFiltros();
+					regionesReady = true;
+					if(estadosReady){
+						updateFiltros();
+					}
 				}
 			});
 		}
 		
-		if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getRegiones")){
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEstadosActividad")){
 			getFactory().getActividadService().getEstadosActividad(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
 
 				@Override
 				public void success(ArrayList<EstadoAgendaDTO> result) {
-					
+					estados = result;
+					view.setEstadosActividad(estados);
+					if(place.getEstadosSeleccionados().isEmpty()){
+						ArrayList<Integer> x = new ArrayList<Integer>();
+						for(EstadoAgendaDTO eadto:result){
+							x.add(eadto.getId());
+						}
+						place.setEstadosSeleccionados(x);
+					}
+					estadosReady = true;
+					if(regionesReady){
+						updateFiltros();
+					}
 				}
 			});
 		}
@@ -167,8 +192,13 @@ public class ActividadesActivity extends SimceActivity implements
 	@Override
 	public void onStop() {
 		super.onStop();
-		view.getDataDisplay().setRowCount(0);
-		view.clearCursoSelection();
+		filtros.clear();
+		regiones.clear();
+		comunas.clear();
+		estados.clear();
+		estadosReady = false;
+		regionesReady = false;
+		view.clear();
 	}
 	
 	private void updateFiltros(){
