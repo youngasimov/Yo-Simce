@@ -479,7 +479,7 @@ public class Actividad implements java.io.Serializable {
 		adto.setEstablecimiento(curso.getEstablecimiento().getNombre());
 		adto.setRbd(Integer.toString(curso.getEstablecimiento().getId()));
 		ArrayList<AgendaItemDTO> aidtos = new ArrayList<AgendaItemDTO>();
-		for (ActividadHistorial ah : actividadHistorials) {
+		for (ActividadHistorial ah : getActividadHistorials()) {
 			aidtos.add(ah.getAgendaItemDTO());
 		}
 		adto.setItems(aidtos);
