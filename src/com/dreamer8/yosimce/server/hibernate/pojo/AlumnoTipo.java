@@ -10,9 +10,14 @@ import java.util.List;
  */
 public class AlumnoTipo implements java.io.Serializable {
 
+	public static final String TITULAR = "Titular";
+	public static final String SUPLENTE = "Suplente";
+	public static final String AGREGADO = "Agregado";
+
 	private Integer id;
 	private String nombre;
-	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(0);
+	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(
+			0);
 
 	public AlumnoTipo() {
 	}
@@ -21,7 +26,8 @@ public class AlumnoTipo implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public AlumnoTipo(Integer id, String nombre, List<AlumnoXActividad> alumnoXActividads) {
+	public AlumnoTipo(Integer id, String nombre,
+			List<AlumnoXActividad> alumnoXActividads) {
 		this.id = id;
 		this.nombre = nombre;
 		this.alumnoXActividads = alumnoXActividads;

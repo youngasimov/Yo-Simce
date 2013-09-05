@@ -40,6 +40,7 @@ public class Actividad implements java.io.Serializable {
 	private boolean sinMaterial;
 	private Integer notaProceso;
 	private Integer dia;
+	private Integer totalAlumnos;
 	private Integer totalAlumnosPresentes;
 	private Integer totalAlumnosAusentes;
 	private Integer totalAlumnosNee;
@@ -280,6 +281,21 @@ public class Actividad implements java.io.Serializable {
 	}
 
 	/**
+	 * @return the totalAlumnos
+	 */
+	public Integer getTotalAlumnos() {
+		return totalAlumnos;
+	}
+
+	/**
+	 * @param totalAlumnos
+	 *            the totalAlumnos to set
+	 */
+	public void setTotalAlumnos(Integer totalAlumnos) {
+		this.totalAlumnos = totalAlumnos;
+	}
+
+	/**
 	 * @return the totalAlumnosPresentes
 	 */
 	public Integer getTotalAlumnosPresentes() {
@@ -510,10 +526,15 @@ public class Actividad implements java.io.Serializable {
 		adto.setInicioActividad(fechaInicio);
 		adto.setInicioPrueba(fechaInicioPrueba);
 		adto.setTerminoPrueba(fechaTerminoPrueba);
-		Integer total = ((totalAlumnosAusentes != null) ? totalAlumnosAusentes
-				: 0)
-				+ ((totalAlumnosPresentes != null) ? totalAlumnosPresentes : 0);
-		adto.setAlumnosTotal(total);
+		if (totalAlumnos == null) {
+			Integer total = ((totalAlumnosAusentes != null) ? totalAlumnosAusentes
+					: 0)
+					+ ((totalAlumnosPresentes != null) ? totalAlumnosPresentes
+							: 0);
+			adto.setAlumnosTotal(total);
+		} else {
+			adto.setAlumnosTotal(totalAlumnos);
+		}
 		adto.setAlumnosAusentes(totalAlumnosAusentes);
 		adto.setAlumnosDs(totalAlumnosNee);
 		adto.setEvaluacionProcedimientos(notaProceso);

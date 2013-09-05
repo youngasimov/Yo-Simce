@@ -12,10 +12,19 @@ import com.dreamer8.yosimce.shared.dto.TipoEstablecimientoDTO;
  */
 public class EstablecimientoTipo implements java.io.Serializable {
 
+	public static final String SELECCIONADO = "Seleccionado";
+	public static final String SELECCIONADO_NO_APLICA = "Seleccionado No Aplica";
+	public static final String REEMPLAZO_1 = "Reemplazo 1";
+	public static final String REEMPLAZO_1_SELECCIONADO = "Reemplazo 1 Seleccionado";
+	public static final String REEMPLAZO_2 = "Reemplazo 2";
+	public static final String REEMPLAZO_2_SELECCIONADO = "Reemplazo 2 Seleccionado";
+	public static final String EMERGENTE = "Emergente";
+
 	private Integer id;
 	private String nombre;
 	private String icono;
-	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(0);
+	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(
+			0);
 
 	public EstablecimientoTipo() {
 	}
@@ -24,7 +33,8 @@ public class EstablecimientoTipo implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public EstablecimientoTipo(Integer id, String nombre, String icono, List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
+	public EstablecimientoTipo(Integer id, String nombre, String icono,
+			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
 		this.id = id;
 		this.nombre = nombre;
 		this.icono = icono;
@@ -59,7 +69,8 @@ public class EstablecimientoTipo implements java.io.Serializable {
 		return this.aplicacionXEstablecimientos;
 	}
 
-	public void setAplicacionXEstablecimientos(List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
+	public void setAplicacionXEstablecimientos(
+			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
 		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
 	}
 
