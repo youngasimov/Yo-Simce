@@ -18,8 +18,6 @@
 		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames='{style.panel}'>
-		<g:Button addStyleNames="{style.button}" ui:field="ingresoMaterialActionButton" text="Ingreso de material"/>
-		<g:Button addStyleNames="{style.button}" ui:field="salidaMaterialActionButton" text="Salida de material"/>
-		<g:Button addStyleNames="{style.button}" ui:field="movimientoMaterialViewButton" text="Movimientos de material"/>
+		<g:Button addStyleNames="{style.button}" ui:field="centroOperacionViewButton" text="Centro operación"/>
 	</g:HTMLPanel>
 </ui:UiBinder> 

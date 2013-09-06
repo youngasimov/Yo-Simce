@@ -8,77 +8,37 @@
 	
 	
 	<ui:style>
-	.header{
-		display:inline-block;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 10px;
-		min-width: 800px;
-	}
-	
-	
-	
-	.scroll{
-		width: 100%;
-		height: 100%;
-		border-bottom: 1px solid black;
-	}
 	
 	.title {
-		display:inline-block;
-		position: relative;
-		height: 38px;
-		float: left;
-		font-size: 26px;
-		margin-top: 7px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 38px;
-		float: left;
+		font-size: 20px;
 		margin-left: 10px;
-		margin-top: 7px;
-	}
-	
-	.action{
-		margin: 5px;
-	}
-	
-	.estName{
-		display: inline;
-		margin-left: 10px;
+		margin-right: 10px;
 	}
 	
 	.data{
-		font-size: 10px;
+		font-size: 12px;
 	}
 	</ui:style>
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="6">
-			<g:ScrollPanel addStyleNames='{style.scroll}'>
-			<g:HTMLPanel addStyleNames='{style.header}' ui:field="header">
-				<div class='{style.title}'>Actividades</div>
-				<div class='{style.actions}'>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar actividades" resource='{res.gear}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarAlumnosButton" text="Exportar lista alumnos" resource='{res.gear}'/>
-				</div>
-				<div class='{style.actions}'>
-					|<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
-					<g:Button addStyleNames='{style.action}' ui:field="formularioButton" text="Formulario"/>
-					<g:Button addStyleNames='{style.action}' ui:field="sincronizacionButton" text="Sincronización"/>
-					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
-				</div>
-			</g:HTMLPanel>
-			</g:ScrollPanel>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+		    <g:MenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}'>Actividades</g:MenuItem>
+				<g:MenuItem ui:field="filtrosItem" text='Filtros'/>
+				<g:MenuItem ui:field="exportarActividadesItem" text='Exportar actividades' />
+				<g:MenuItem ui:field="exportarAlumnosItem" text='Exportar lista alumnos' />
+				<g:MenuItem ui:field="cursoItem">
+					<g:MenuBar vertical="true">
+						<g:MenuItem ui:field="formItem" text='Formulario' />
+						<g:MenuItem ui:field="sincronizacionItem" text='Sincronización' />
+						<g:MenuItem ui:field="informacionItem" text='Información General' />
+					</g:MenuBar>
+				</g:MenuItem>
+			</g:MenuBar>
 		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
 		</g:center>
-    	<g:south size="3">
+    	<g:south size="35">
 	     	<g:HTMLPanel>
        			<table style="width:100%">
          			<tr>

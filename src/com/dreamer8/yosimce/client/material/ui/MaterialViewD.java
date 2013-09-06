@@ -1,8 +1,6 @@
 package com.dreamer8.yosimce.client.material.ui;
 
-import com.dreamer8.yosimce.client.material.IngresoMaterialPlace;
-import com.dreamer8.yosimce.client.material.MovimientosMaterialPlace;
-import com.dreamer8.yosimce.client.material.SalidaMaterialPlace;
+import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,9 +18,7 @@ public class MaterialViewD extends Composite implements MaterialView {
 	interface MaterialViewDUiBinder extends UiBinder<Widget, MaterialViewD> {
 	}
 
-	@UiField Button ingresoMaterialActionButton;
-	@UiField Button salidaMaterialActionButton;
-	@UiField Button movimientoMaterialViewButton;
+	@UiField Button centroOperacionViewButton;
 	
 	private MaterialPresenter presenter;
 	
@@ -30,35 +26,16 @@ public class MaterialViewD extends Composite implements MaterialView {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	@UiHandler("ingresoMaterialActionButton")
+	@UiHandler("centroOperacionViewButton")
 	void onIngresoMaterialActionButtonClick(ClickEvent event){
-		presenter.goTo(new IngresoMaterialPlace());
+		presenter.goTo(new CentroOperacionPlace());
+	}
+
+	@Override
+	public void setCentroOperacionVisivility(boolean visible) {
+		centroOperacionViewButton.setVisible(visible);
 	}
 	
-	@UiHandler("salidaMaterialActionButton")
-	void onSalidaMaterialActionButtonClick(ClickEvent event){
-		presenter.goTo(new SalidaMaterialPlace());
-	}
-	
-	@UiHandler("movimientoMaterialViewButton")
-	void onMovimientoMaterialViewButtonClick(ClickEvent event){
-		presenter.goTo(new MovimientosMaterialPlace());
-	}
-
-	@Override
-	public void setIngresoMaterialVisivility(boolean visible) {
-		ingresoMaterialActionButton.setVisible(visible);
-	}
-
-	@Override
-	public void setSalidaMaterialVisivility(boolean visible) {
-		salidaMaterialActionButton.setVisible(visible);
-	}
-
-	@Override
-	public void setMovimientoMaterialVisivility(boolean visible) {
-		movimientoMaterialViewButton.setVisible(visible);
-	}
 
 	@Override
 	public void setPresenter(MaterialPresenter presenter) {

@@ -5,9 +5,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface MaterialView extends IsWidget {
 
-	void setIngresoMaterialVisivility(boolean visible);
-	void setSalidaMaterialVisivility(boolean visible);
-	void setMovimientoMaterialVisivility(boolean visible);
+	void setCentroOperacionVisivility(boolean visible);
 	
 	void setPresenter(MaterialPresenter presenter);
 	

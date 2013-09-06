@@ -53,36 +53,13 @@ import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.dreamer8.yosimce.client.ui.SidebarView;
 import com.dreamer8.yosimce.client.ui.SidebarViewD;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
-import com.google.gwt.user.client.rpc.RpcRequestBuilder;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 
 public class ClientFactoryD implements ClientFactory {
-
-	public class CustomRpcRequestBuilder extends RpcRequestBuilder {
-
-		private int timeout = 8000;
-
-		public CustomRpcRequestBuilder() {
-		}
-
-		public CustomRpcRequestBuilder(int timeout) {
-			this.timeout = timeout;
-		}
-
-		@Override
-		protected RequestBuilder doCreate(String serviceEntryPoint) {
-			RequestBuilder builder = super.doCreate(serviceEntryPoint);
-			if(timeout>0){
-				builder.setTimeoutMillis(this.timeout);
-			}
-			return builder;
-		}
-	}
 
 	public static final boolean TESTING = false;
 

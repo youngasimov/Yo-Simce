@@ -12,9 +12,7 @@ import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
-import com.dreamer8.yosimce.client.material.IngresoMaterialPlace;
-import com.dreamer8.yosimce.client.material.MovimientosMaterialPlace;
-import com.dreamer8.yosimce.client.material.SalidaMaterialPlace;
+import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -95,12 +93,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setMaterialDefectuosoActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof AprobarSupervisoresPlace){
 					view.setAprobarSupervisoresActionItemSelected(true);
-				}else if(event.getNewPlace() instanceof IngresoMaterialPlace){
-					view.setIngresoMaterialActionItemSelected(true);
-				}else if(event.getNewPlace() instanceof SalidaMaterialPlace){
-					view.setSalidaMaterialActionItemSelected(true);
-				}else if(event.getNewPlace() instanceof MovimientosMaterialPlace){
-					view.setMovimientosMaterialViewItemSelected(true);
+				}else if(event.getNewPlace() instanceof CentroOperacionPlace){
+					view.setCentroOperacionViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AdminUsuariosPlace){
 					view.setAdministrarUsuariosActionItemItemSelected(true);
 				}else if(event.getNewPlace() instanceof AdminEventosPlace){
@@ -163,9 +157,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setAprobarSupervisoresActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getEvaluacionSupervisores") && tipo);
 		
 		view.setMaterialVisivility(false);
-		view.setIngresoMaterialActionItemVisivility(false);
-		view.setSalidaMaterialActionItemVisivility(false);
-		view.setMovimientosMaterialViewItemVisivility(false);
+		view.setCentroOperacionViewItemVisivility(false);
 		
 		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")) ||
 				false ||

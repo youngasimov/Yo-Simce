@@ -10,7 +10,6 @@ import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.HyperTextCell;
-import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
@@ -21,6 +20,7 @@ import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -30,19 +30,17 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
@@ -59,14 +57,16 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			UiBinder<Widget, ActividadesViewD> {
 	}
 
-	@UiField HTMLPanel header; 
-	@UiField ImageButton filtrosButton;
-	@UiField ImageButton exportarButton;
-	@UiField ImageButton exportarAlumnosButton;
-	@UiField Button sincronizacionButton;
-	@UiField Button informacionButton;
-	@UiField Button formularioButton;
-	@UiField  HTML establecimientoSeleccionado;
+	
+	@UiField MenuBar menu;
+	@UiField MenuItem filtrosItem;
+	@UiField MenuItem exportarActividadesItem;
+	@UiField MenuItem exportarAlumnosItem;
+	@UiField MenuItem cursoItem;
+	@UiField MenuItem formItem;
+	@UiField MenuItem sincronizacionItem;
+	@UiField MenuItem informacionItem;
+	
 	@UiField(provided = true) DataGrid<ActividadPreviewDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
 	
@@ -91,43 +91,64 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosDialogBox.setWidget(filtrosPanel);
 		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
+		
+		menu.insertSeparator(1);
+		menu.insertSeparator(5);
+		filtrosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				filtrosDialogBox.showRelativeTo(filtrosItem);
+			}
+		});
+		
+		exportarActividadesItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onExportarClick();
+			}
+		});
+		
+		exportarAlumnosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onExportarAlumnosClick();
+			}
+		});
+		
+		formItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				FormActividadPlace fap = new FormActividadPlace();
+				if(selectedItem !=null)fap.setIdCurso(selectedItem.getCursoId());
+				presenter.goTo(fap);
+			}
+		});
+		
+		sincronizacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				SincronizacionPlace place = new SincronizacionPlace();
+				place.setIdCurso(selectedItem.getCursoId());
+				presenter.goTo(place);
+			}
+		});
+		
+		informacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				DetalleCursoPlace dcp = new DetalleCursoPlace();
+				if(selectedItem !=null)dcp.setCursoId(selectedItem.getCursoId());
+				presenter.goTo(dcp);
+			}
+		});
+		
 		bind();
-	}
-	
-	@UiHandler("filtrosButton")
-	void onFiltrosClick(ClickEvent event){
-		filtrosDialogBox.showRelativeTo(filtrosButton);
-	}
-	
-	@UiHandler("exportarButton")
-	void onExportarClick(ClickEvent event){
-		presenter.onExportarClick();
-	}
-	
-	@UiHandler("exportarAlumnosButton")
-	void onExportarAlumnosClick(ClickEvent event){
-		presenter.onExportarAlumnosClick();
-	}
-	
-	@UiHandler("sincronizacionButton")
-	void onDetallesClick(ClickEvent event){
-		SincronizacionPlace place = new SincronizacionPlace();
-		place.setIdCurso(selectedItem.getCursoId());
-		presenter.goTo(place);
-	}
-	
-	@UiHandler("informacionButton")
-	void onInformacionClick(ClickEvent event){
-		DetalleCursoPlace dcp = new DetalleCursoPlace();
-		if(selectedItem !=null)dcp.setCursoId(selectedItem.getCursoId());
-		presenter.goTo(dcp);
-	}
-	
-	@UiHandler("formularioButton")
-	void onFormularioClick(ClickEvent event){
-		FormActividadPlace fap = new FormActividadPlace();
-		if(selectedItem !=null)fap.setIdCurso(selectedItem.getCursoId());
-		presenter.goTo(fap);
 	}
 	
 	@UiFactory
@@ -137,12 +158,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	
 	@Override
 	public void setExportarActividadesVisivility(boolean visible) {
-		exportarButton.setVisible(visible);
+		exportarActividadesItem.setVisible(visible);
 	}
 	
 	@Override
 	public void setExportarAlumnosVisivility(boolean visible) {
-		exportarAlumnosButton.setVisible(visible);
+		exportarAlumnosItem.setVisible(visible);
 	}
 	
 	@Override
@@ -184,7 +205,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		sinc = false;
 		form = false;
 		info = false;
-		establecimientoSeleccionado.setHTML("");
+		cursoItem.setHTML("");
 		estadoCheckBoxs.clear();
 		filtrosPanel.estadosPanel.clear();
 	}
@@ -278,9 +299,9 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	private void bind(){
 		dataGrid.setWidth("100%");
 		buildGrid();
-		sincronizacionButton.setVisible(false);
-		informacionButton.setVisible(false);
-		formularioButton.setVisible(false);
+		sincronizacionItem.setVisible(false);
+		informacionItem.setVisible(false);
+		formItem.setVisible(false);
 		
 		pager.setDisplay(dataGrid);
 		
@@ -303,11 +324,13 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				establecimientoSeleccionado.setHTML((selectionModel.getSelectedObject()!=null)?
-						ViewUtils.limitarString(selectionModel.getSelectedObject().getNombreEstablecimiento(),27)+" >":"");
-				sincronizacionButton.setVisible(selectionModel.getSelectedObject()!=null && sinc);
-				informacionButton.setVisible(selectionModel.getSelectedObject()!=null && info);
-				formularioButton.setVisible(selectionModel.getSelectedObject()!=null && form);
+				cursoItem.setHTML((selectionModel.getSelectedObject()!=null)?
+						ViewUtils.limitarString(selectionModel.getSelectedObject().getNombreEstablecimiento(),40):"");
+				sincronizacionItem.setVisible(selectionModel.getSelectedObject()!=null && sinc);
+				informacionItem.setVisible(selectionModel.getSelectedObject()!=null && info);
+				formItem.setVisible(selectionModel.getSelectedObject()!=null && form);
+				cursoItem.setVisible(sincronizacionItem.isVisible() || informacionItem.isVisible() || formItem.isVisible());
+				
 				selectedItem = selectionModel.getSelectedObject();
 			}
 		});

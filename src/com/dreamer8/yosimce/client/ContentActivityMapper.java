@@ -27,11 +27,9 @@ import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralActivity;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.material.IngresoMaterialPlace;
 import com.dreamer8.yosimce.client.material.MaterialActivity;
 import com.dreamer8.yosimce.client.material.MaterialPlace;
-import com.dreamer8.yosimce.client.material.MovimientosMaterialPlace;
-import com.dreamer8.yosimce.client.material.SalidaMaterialPlace;
+import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosActivity;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaActivity;
@@ -90,12 +88,8 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 		}else if(place instanceof MaterialPlace){
 			return new MaterialActivity(factory, (MaterialPlace)place, permisos);
-		}else if(place instanceof IngresoMaterialPlace){
-			//return new IngresoMaterialActivity(factory, (IngresoMaterialPlace)place, permisos);
-		}else if(place instanceof SalidaMaterialPlace){
-			//return new SalidaMaterialActivity(factory, (SalidaMaterialPlace)place, permisos);
-		}else if(place instanceof MovimientosMaterialPlace){
-			//return new MovimientosMaterialActivity(factory, (MovimientosMaterialPlace)place, permisos);
+		}else if(place instanceof CentroOperacionPlace){
+			//return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
 		}else if(place instanceof AdminPlace){
 			return new AdminActivity(factory, (AdminPlace)place, permisos);
 		}else if(place instanceof AdminUsuariosPlace){

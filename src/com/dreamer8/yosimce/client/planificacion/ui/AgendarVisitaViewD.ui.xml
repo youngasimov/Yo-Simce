@@ -9,50 +9,17 @@
     <ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
     
 	<ui:style>
-	.header{
-		display:inline-block;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 10px;
-		min-width: 800px;
-	}
-	
-	.content{
-		display:block;
-		float: left;
-		width: 100%;
-		height: 100%;
-		position:absolute;
-		top: 50px;
-		bottom: 0px;
-		left: 0px;
-	}
-	
-	.scroll{
-		width: 100%;
-		height: 98%;
-		border-bottom: 1px solid black;
-	}
+
+
 	
 	.title {
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		font-size: 26px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
+		font-size: 20px;
 		margin-left: 10px;
 	}
 	
-	.action{
-		margin: 5px;
+	.curso {
+		font-size: 20px;
+		margin-right: 10px;
 	}
 	
 	.leftPanel{
@@ -134,20 +101,16 @@
 	}
 	
 	</ui:style>
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
-			<g:ScrollPanel addStyleNames='{style.scroll}'>
-			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Agenda de </div>
-				<div class='{style.actions}'>
-					<g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="editarContactoButton" text="Editar contacto" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="editarDirectorButton" text="Editar director" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar curso" resource='{res.popup}'/>
-					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
-				</div>
-			</g:HTMLPanel>
-			</g:ScrollPanel>	
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+			<g:MenuBar ui:field="menu" animationEnabled="true" autoOpen='false' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}'>Agenda de</g:MenuItem>
+				<g:MenuItem enabled="false" ui:field="cursoItem"/>
+				<g:MenuItem ui:field="editarContactoItem" text='Editar contacto'/>
+				<g:MenuItem ui:field="editarDirectorItem" text='Editar director' />
+				<g:MenuItem ui:field="cambiarItem" text='Cambiar curso' />
+				<g:MenuItem ui:field="informacionItem" text='Información general' />
+			</g:MenuBar>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>

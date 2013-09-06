@@ -20,6 +20,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
@@ -47,6 +48,7 @@ public class YoSimce implements EntryPoint {
 		
 		defaultPlace = new SimcePlace();
 		loginService = (LoginServiceAsync)GWT.create(LoginService.class);
+		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(4000));
 		panel = new SimplePanel();
 		loadView = new LoadViewD();
 		

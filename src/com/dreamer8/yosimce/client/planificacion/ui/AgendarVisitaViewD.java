@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
-import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
@@ -14,6 +13,7 @@ import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -27,9 +27,10 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DatePicker;
@@ -44,11 +45,13 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 			UiBinder<Widget, AgendarVisitaViewD> {
 	}
 	
-	@UiField HTML establecimiento;
-	@UiField Button informacionButton;
-	@UiField ImageButton cambiarButton;
-	@UiField ImageButton editarContactoButton;
-	@UiField ImageButton editarDirectorButton;
+	@UiField MenuBar menu;
+	@UiField MenuItem cursoItem;
+	@UiField MenuItem editarContactoItem;
+	@UiField MenuItem editarDirectorItem;
+	@UiField MenuItem cambiarItem;
+	@UiField MenuItem informacionItem;
+	
 	@UiField ListBox estadoBox;
 	@UiField DatePicker fechaPicker;
 	@UiField Label fechaLabel;
@@ -83,6 +86,67 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
 		idCurso = -1;
+		
+		menu.insertSeparator(2);
+		
+		editarContactoItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(contacto != null){
+					editarContactoPanel.nombreBox.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+					editarContactoPanel.fonoBox.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+					editarContactoPanel.emailBox.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
+					
+					if(contacto.getCargo()!=null){
+						for(int i = 0; i < editarContactoPanel.cargoBox.getItemCount(); i++){
+							if(contacto.getCargo().getId() == Integer.parseInt(editarContactoPanel.cargoBox.getValue(i))){
+								editarContactoPanel.cargoBox.setItemSelected(i, true);
+								break;
+							}
+						}
+					}
+				}
+				editarContactoDialog.center();
+			}
+		});
+		
+		editarDirectorItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(director != null){
+					editarDirectorPanel.fonoBox.setText((director.getContactoTelefono()!=null)?director.getContactoTelefono():"");
+					editarDirectorPanel.nombreBox.setText((director.getContactoNombre()!=null)?director.getContactoNombre():"");
+					editarDirectorPanel.emailBox.setText((director.getContactoEmail()!=null)?director.getContactoEmail():"");
+					editarDirectorPanel.cargoBox.setVisible(true);
+					editarDirectorPanel.cargoBox.clear();
+					if(director.getCargo()!=null){
+						editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
+					}
+				}
+				editarDirectorDialog.center();
+			}
+		});
+		
+		cambiarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onCambiarCursoClick();
+			}
+		});
+		
+		informacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				DetalleCursoPlace dcp = new DetalleCursoPlace();
+				dcp.setCursoId(idCurso);
+				presenter.goTo(dcp);
+			}
+		});
+		
 		
 		editarContactoPanel = new EditarContactoViewD();
 		editarContactoDialog = new DialogBox();
@@ -175,52 +239,6 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		presenter.onModificarAgendaClick();
 	}
 	
-	@UiHandler("cambiarButton")
-	void onCambiarClick(ClickEvent event){
-		presenter.onCambiarCursoClick();
-	}
-	
-	@UiHandler("informacionButton")
-	void onInformacionClick(ClickEvent event){
-		DetalleCursoPlace dcp = new DetalleCursoPlace();
-		dcp.setCursoId(idCurso);
-		presenter.goTo(dcp);
-	}
-	
-	@UiHandler("editarContactoButton")
-	void onEditarContactoClick(ClickEvent event){
-		if(contacto != null){
-			editarContactoPanel.nombreBox.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
-			editarContactoPanel.fonoBox.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
-			editarContactoPanel.emailBox.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
-			
-			if(contacto.getCargo()!=null){
-				for(int i = 0; i < editarContactoPanel.cargoBox.getItemCount(); i++){
-					if(contacto.getCargo().getId() == Integer.parseInt(editarContactoPanel.cargoBox.getValue(i))){
-						editarContactoPanel.cargoBox.setItemSelected(i, true);
-						break;
-					}
-				}
-			}
-		}
-		editarContactoDialog.center();
-	}
-	
-	@UiHandler("editarDirectorButton")
-	void onEditarDirectorClick(ClickEvent event){
-		if(director != null){
-			editarDirectorPanel.fonoBox.setText((director.getContactoTelefono()!=null)?director.getContactoTelefono():"");
-			editarDirectorPanel.nombreBox.setText((director.getContactoNombre()!=null)?director.getContactoNombre():"");
-			editarDirectorPanel.emailBox.setText((director.getContactoEmail()!=null)?director.getContactoEmail():"");
-			editarDirectorPanel.cargoBox.setVisible(true);
-			editarDirectorPanel.cargoBox.clear();
-			if(director.getCargo()!=null){
-				editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
-			}
-		}
-		editarDirectorDialog.center();
-	}
-	
 	
 	
 	@UiHandler("fechaPicker")
@@ -243,17 +261,17 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	@Override
 	public void setEditarContactoVisivility(boolean visible) {
-		editarContactoButton.setVisible(visible);
+		editarContactoItem.setVisible(visible);
 	}
 	
 	@Override
 	public void setEditarDirectorVisivility(boolean visible) {
-		editarDirectorButton.setVisible(visible);
+		editarDirectorItem.setVisible(visible);
 	}
 	
 	@Override
 	public void setInformacionVisivility(boolean visible) {
-		informacionButton.setVisible(visible);
+		informacionItem.setVisible(visible);
 	}
 
 	@Override
@@ -283,7 +301,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 
 	@Override
 	public void setNombreEstablecimiento(String establecimiento) {
-		this.establecimiento.setHTML(ViewUtils.limitarString(establecimiento,35));
+		this.cursoItem.setHTML(ViewUtils.limitarString(establecimiento,35));
 	}
 
 	@Override
@@ -336,7 +354,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	@Override
 	public void clear() {
-		establecimiento.setHTML("");
+		cursoItem.setHTML("");
 		estadoBox.clear();
 		fechaPicker.setValue(new Date());
 		fechaLabel.setText("");

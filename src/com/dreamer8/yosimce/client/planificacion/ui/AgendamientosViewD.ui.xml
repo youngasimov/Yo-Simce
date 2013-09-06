@@ -5,84 +5,39 @@
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
     <ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
-    
+     
 	<ui:style>
-	.header{
-		display:inline-block;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 10px;
-		min-width: 950px;
-	}
 	
-	.content{
-		display:block;
-		float: left;
-		width: 100%;
-		height: 100%;
-		position:absolute;
-		top: 50px;
-		bottom: 0px;
-		left: 0px;
-	}
-
-	.scroll{
-		width: 100%;
-		height: 100%;
-		border-bottom: 1px solid black;
+	.data{
+		font-size: 12px;
 	}
 	
 	.title {
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		font-size: 26px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
+		font-size: 20px;
 		margin-left: 10px;
-	}
-	
-	.action{
-		margin: 5px;
-	}
-	
-	.estName{
-		display: inline;
-		margin-left: 10px;
-	}
-	
-	.data{
-		font-size: 10px;
+		margin-right: 10px;
 	}
 	
 	</ui:style>
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
-		    <g:ScrollPanel addStyleNames='{style.scroll}'>
-			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Agenda</div>
-				<div class='{style.actions}'>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar" resource='{res.gear}'/>
-					| <g:HTML addStyleNames='{style.estName}' ui:field="establecimientoSeleccionado"/>
-					<g:Button addStyleNames='{style.action}' ui:field="modificarAgendaButton" text="Modificar"/>
-					<g:Button addStyleNames='{style.action}' ui:field="detallesButton" text="Detalles"/>
-					<g:Button addStyleNames='{style.action}' ui:field="informacionButton" text="Información general"/>
-				</div>
-			</g:HTMLPanel>
-			</g:ScrollPanel>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+			<g:MenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}'>Agenda</g:MenuItem>
+				<g:MenuItem ui:field="filtrosItem" text='Filtros'/>
+				<g:MenuItem ui:field="exportarItem" text='Exportar' />
+				<g:MenuItem ui:field="cursoItem">
+					<g:MenuBar vertical="true">
+						<g:MenuItem ui:field="modificarItem" text='Modificar' />
+						<g:MenuItem ui:field="detallesItem" text='Detalles' />
+						<g:MenuItem ui:field="informacionItem" text='Información General' />
+					</g:MenuBar>
+				</g:MenuItem>
+			</g:MenuBar>
 		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
 		</g:center>
-    	<g:south size="3">
+    	<g:south size="35">
 	     	<g:HTMLPanel>
        			<table style="width:100%">
          			<tr>

@@ -12,10 +12,8 @@ import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.material.IngresoMaterialPlace;
 import com.dreamer8.yosimce.client.material.MaterialPlace;
-import com.dreamer8.yosimce.client.material.MovimientosMaterialPlace;
-import com.dreamer8.yosimce.client.material.SalidaMaterialPlace;
+import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
@@ -67,9 +65,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor materialDefectuosoActionItem;
 	@UiField Anchor aprobarSupervisoresActionItem;
 	
-	@UiField Anchor ingresoMaterialActionItem;
-	@UiField Anchor salidaMaterialActionItem;
-	@UiField Anchor movimientosMaterialViewItem;
+	@UiField Anchor centroOperacionViewItem;
 	
 	@UiField Anchor administrarUsuariosActionItem;
 	@UiField Anchor administrarEventosActionItem;
@@ -153,19 +149,9 @@ public class SidebarViewD extends Composite implements SidebarView{
 		presenter.goTo(new AprobarSupervisoresPlace());
 	}
 	
-	@UiHandler("ingresoMaterialActionItem")
-	void onIngresoMaterialActionItemClick(ClickEvent event){
-		presenter.goTo(new IngresoMaterialPlace());
-	}
-	
-	@UiHandler("salidaMaterialActionItem")
-	void onSalidaMaterialActionItemClick(ClickEvent event){
-		presenter.goTo(new SalidaMaterialPlace());
-	}
-	
-	@UiHandler("movimientosMaterialViewItem")
-	void onMovimientosMaterialViewItemClick(ClickEvent event){
-		presenter.goTo(new MovimientosMaterialPlace());
+	@UiHandler("centroOperacionViewItem")
+	void onCentroOperacionViewItemClick(ClickEvent event){
+		presenter.goTo(new CentroOperacionPlace());
 	}
 	
 	@UiHandler("administrarUsuariosActionItem")
@@ -280,18 +266,8 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setIngresoMaterialActionItemVisivility(boolean visible) {
-		ingresoMaterialActionItem.setVisible(visible);
-	}
-
-	@Override
-	public void setSalidaMaterialActionItemVisivility(boolean visible) {
-		salidaMaterialActionItem.setVisible(visible);
-	}
-
-	@Override
-	public void setMovimientosMaterialViewItemVisivility(boolean visible) {
-		movimientosMaterialViewItem.setVisible(visible);
+	public void setCentroOperacionViewItemVisivility(boolean visible) {
+		centroOperacionViewItem.setVisible(visible);
 	}
 
 	@Override
@@ -387,26 +363,10 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 
 	@Override
-	public void setIngresoMaterialActionItemSelected(boolean selected) {
+	public void setCentroOperacionViewItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
-			ingresoMaterialActionItem.addStyleName(style.selected());
-		}
-	}
-
-	@Override
-	public void setSalidaMaterialActionItemSelected(boolean selected) {
-		removeSeleccion();
-		if(selected){
-			salidaMaterialActionItem.addStyleName(style.selected());
-		}
-	}
-
-	@Override
-	public void setMovimientosMaterialViewItemSelected(boolean selected) {
-		removeSeleccion();
-		if(selected){
-			movimientosMaterialViewItem.addStyleName(style.selected());
+			centroOperacionViewItem.addStyleName(style.selected());
 		}
 	}
 
@@ -437,9 +397,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 		sincronizacionActionItem.removeStyleName(style.selected());
 		materialDefectuosoActionItem.removeStyleName(style.selected());
 		aprobarSupervisoresActionItem.removeStyleName(style.selected());
-		ingresoMaterialActionItem.removeStyleName(style.selected());
-		salidaMaterialActionItem.removeStyleName(style.selected());
-		movimientosMaterialViewItem.removeStyleName(style.selected());
+		centroOperacionViewItem.removeStyleName(style.selected());
 		administrarUsuariosActionItem.removeStyleName(style.selected());
 		administrarEventosActionItem.removeStyleName(style.selected());
 		administrarPermisosActionItem.removeStyleName(style.selected());

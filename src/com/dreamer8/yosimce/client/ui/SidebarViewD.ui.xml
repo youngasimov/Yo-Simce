@@ -101,9 +101,7 @@
 				<li ui:field="material">
 					<g:Anchor ui:field="materialButton" text="Material"/>
 					<ul>
-						<li><g:Anchor ui:field="ingresoMaterialActionItem" text="Ingreso de material"/></li>
-						<li><g:Anchor ui:field="salidaMaterialActionItem" text="Salida de material"/></li>
-						<li><g:Anchor ui:field="movimientosMaterialViewItem" text="lista de movimientos"/></li>
+						<li><g:Anchor ui:field="centroOperacionViewItem" text="Centro operación"/></li>
 					</ul>
 				</li>
 				<li ui:field="administracion">
