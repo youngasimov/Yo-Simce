@@ -6,51 +6,17 @@
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
 	<ui:style field="style" type="com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD.Style">
-	.header{
-		display:block;
-		width: 100%;
-		height: 50px;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 80px;
-		padding-top: 10px;
-		border-bottom: 1px solid black;
-	}
-	
-	.content{
-		display:block;
-		float: left;
-		width: 100%;
-		height: 100%;
-		position:absolute;
-		top: 50px;
-		bottom: 0px;
-		left: 0px;
-	}
 	
 	.title {
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		font-size: 26px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		margin-left: 50px;
+		font-size: 20px;
+		margin-left: 10px;
+		margin-right: 10px;
 	}
 	
-	.action{
-		margin: 5px;
-	}
-	.estName{
-		display: inline;
-		margin-left: 20px;
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
 	}
 	
 	.scroll{
@@ -99,14 +65,14 @@
 	}
 	
 	</ui:style>
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
-			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'><g:HTML addStyleNames='{style.estName}' ui:field="establecimiento"/> </div>
-				<div class='{style.actions}'>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="cambiarButton" text="Cambiar" resource='{res.popup}'/>
-				</div>
-			</g:HTMLPanel>	
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+		
+			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Detalles</div> ></g:MenuItem>
+				<g:MenuItem enabled="false" ui:field="cursoItem" />
+				<g:MenuItem ui:field="cambiarItem" text='Cambiar'/>
+			</my:OverMenuBar>	
 		</g:north>
 		<g:center>
 			<g:ScrollPanel addStyleNames='{style.scroll}'>

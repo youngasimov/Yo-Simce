@@ -13,6 +13,12 @@
 		margin-left: 10px;
 	}
 	
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
+	}
+	
 	.leftPanel{
 		display:block;
 		width: 450px;
@@ -47,12 +53,12 @@
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
-			<g:MenuBar ui:field="menu"  animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
-				<g:MenuItem enabled="false" addStyleNames='{style.title}'>Agenda de</g:MenuItem>
+			<my:OverMenuBar ui:field="menu"  animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Detalle agenda</div> ></g:MenuItem>
 				<g:MenuItem enabled="false" ui:field="cursoItem" />
 				<g:MenuItem ui:field="cambiarItem" text='Cambiar'/>
 				<g:MenuItem ui:field="informacionItem" text='Información General' />
-			</g:MenuBar>
+			</my:OverMenuBar>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>

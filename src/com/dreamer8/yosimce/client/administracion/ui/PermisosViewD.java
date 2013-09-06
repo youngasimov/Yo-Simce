@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
@@ -12,17 +12,17 @@ import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 
@@ -34,8 +34,11 @@ public class PermisosViewD extends Composite implements PermisosView {
 	interface PermisosViewDUiBinder extends UiBinder<Widget, PermisosViewD> {
 	}
 
-	@UiField ImageButton updateButton;
-	@UiField ImageButton updateViewButton;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
+	@UiField MenuItem updatePermisosItem;
+	@UiField MenuItem updateViewItem;
+	
 	@UiField(provided = true) DataGrid<PermisoDTO> dataGrid;
 	
 	private PermisosPresenter presenter;
@@ -49,17 +52,31 @@ public class PermisosViewD extends Composite implements PermisosView {
 		dataGrid.setPageSize(500);
 		initWidget(uiBinder.createAndBindUi(this));
 		columns = new ArrayList<PermisosViewD.PermisoColumn>();
-		//buildStaticColumns();
-	}
-	
-	@UiHandler("updateButton")
-	void onUpdateButtonClick(ClickEvent event){
-		presenter.onUpdatePermisosClick();
-	}
-	
-	@UiHandler("updateViewButton")
-	void onUpdateViewClick(ClickEvent event){
-		presenter.onUpdateTablaClick();
+		menu.insertSeparator(1);
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
+		updatePermisosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onUpdatePermisosClick();
+			}
+		});
+		
+		updateViewItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onUpdateTablaClick();
+			}
+		});
+		
 	}
 	
 	@UiFactory
@@ -69,12 +86,12 @@ public class PermisosViewD extends Composite implements PermisosView {
 	
 	@Override
 	public void setActualizarPermisosVisivility(boolean visible) {
-		updateButton.setVisible(visible);
+		updatePermisosItem.setVisible(visible);
 	}
 	
 	@Override
 	public void setActualizarTablaVisivility(boolean visible) {
-		updateViewButton.setVisible(visible);
+		updateViewItem.setVisible(visible);
 	}
 
 	@Override
@@ -99,7 +116,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 			hasPermisoColumn =new PermisoColumn(new CheckboxCell(), tiposUsuario.get(i).getId(),presenter);
 			columns.add(hasPermisoColumn);
 			dataGrid.addColumn(hasPermisoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(tiposUsuario.get(i).getTipoUsuario())));
-	        dataGrid.setColumnWidth(hasPermisoColumn, 120, Unit.PX);
+	        dataGrid.setColumnWidth(hasPermisoColumn, 150, Unit.PX);
 		}
 		//dataGrid.redraw();
 	}
@@ -124,7 +141,7 @@ public class PermisosViewD extends Composite implements PermisosView {
         };
         permisoColumn.setSortable(false);
         dataGrid.addColumn(permisoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Permiso")));
-        dataGrid.setColumnWidth(permisoColumn, 200, Unit.PX);
+        dataGrid.setColumnWidth(permisoColumn, 220, Unit.PX);
 	}
 	
 	public class PermisoColumn extends Column<PermisoDTO, Boolean>{

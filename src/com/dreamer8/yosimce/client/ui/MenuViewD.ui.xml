@@ -1,0 +1,52 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	<ui:style>
+	
+	.menu{
+		height: 45px;
+	}	
+
+	.title {
+		font-size: 20px;
+		margin-left: 30px;
+		margin-right: 30px;
+	}
+	
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
+	}
+	
+	.help{
+		display:block;
+		width: 300px;
+		float: left;
+		position:relative;
+		top: 20px;
+		left: 125px;
+	}
+	
+	.puntero{
+		display:block;
+		width: 10px;
+		position:absolute;
+		top: -20px;
+		left: -20px;
+		font-weight: bolder;
+		font-size: 30px;
+	}
+	</ui:style>
+	<g:HTMLPanel>
+	    <my:OverMenuBar addStyleNames='{style.menu}' ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+			<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Menu</div> ></g:MenuItem>
+		</my:OverMenuBar>
+		<div class='{style.help}'>
+			<div class='{style.puntero}'>^</div>
+			Mantenga el puntero sobre el nombre de la sección para acceder al menu lateral
+		</div>
+		
+	</g:HTMLPanel>
+</ui:UiBinder> 

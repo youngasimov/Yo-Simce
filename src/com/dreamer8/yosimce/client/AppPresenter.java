@@ -12,8 +12,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.SerializedTypeViolationException;
 import com.google.gwt.user.client.rpc.InvocationException;
@@ -24,21 +22,23 @@ public class AppPresenter implements AppView.AppPresenter {
 
 	private final ClientFactory factory;
 	private final AppView view;
-	private Place place;
 	
 	private int blockingEvents;
 	private int nonBlockingEvents;
 	
 	private boolean notLogged;
+	private boolean menuOpen;
 	
 	private Logger logger = Logger.getLogger("");
 	
 	public AppPresenter(ClientFactory factory){
 		this.factory = factory;
 		this.view = factory.getAppView();
+		this.view.setPresenter(this);
 		blockingEvents = 0;
 		nonBlockingEvents = 0;
 		notLogged = false;
+		menuOpen = false;
 		bind();
 	}
 	
@@ -46,6 +46,12 @@ public class AppPresenter implements AppView.AppPresenter {
 	@Override
 	public void setDisplay(AcceptsOneWidget panel) {
 		panel.setWidget(view.asWidget());
+	}
+	
+	@Override
+	public void onMouseOutFromPanel() {
+		menuOpen = false;
+		view.setSidebarPanelState(menuOpen);
 	}
 	
 	private void bind(){
@@ -69,36 +75,12 @@ public class AppPresenter implements AppView.AppPresenter {
 			  }
 		});
 		
-		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+		factory.getEventBus().addHandler(MenuEvent.TYPE, new MenuEvent.MenuHandler() {
 			
 			@Override
-			public void onPlaceChange(PlaceChangeEvent event) {
-				place = event.getNewPlace();
-				if(!event.getNewPlace().getClass().equals(SimcePlace.class)){
-					view.setSidebarPanelState(false);
-				}
-			}
-		});
-		
-		factory.getEventBus().addHandler(PermisosEvent.TYPE,new PermisosEvent.PermisosHandler() {
-			
-			@Override
-			public void onPermisos(PermisosEvent event) {
-				//if(place.getClass().equals(SimcePlace.class)){
-				//	view.setSidebarPanelState(true);
-				//}
-			}
-		});
-		
-		factory.getEventBus().addHandler(TipoActividadChangeEvent.TYPE, new TipoActividadChangeEvent.TipoActividadChangeHandler() {
-			
-			@Override
-			public void onTipoActividadChange(TipoActividadChangeEvent event) {
-				if(place.getClass().equals(SimcePlace.class) && event.getIdTipo()>=0){
-					view.setSidebarPanelState(true);
-				}else{
-					view.setSidebarPanelState(false);
-				}
+			public void onMenu(MenuEvent event) {
+				menuOpen = event.isOpen();
+				view.setSidebarPanelState(menuOpen);
 			}
 		});
 		

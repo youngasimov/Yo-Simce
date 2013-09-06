@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
@@ -29,7 +30,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,7 +45,8 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 			UiBinder<Widget, AgendarVisitaViewD> {
 	}
 	
-	@UiField MenuBar menu;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
 	@UiField MenuItem cursoItem;
 	@UiField MenuItem editarContactoItem;
 	@UiField MenuItem editarDirectorItem;
@@ -88,7 +89,14 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		idCurso = -1;
 		
 		menu.insertSeparator(2);
-		
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
 		editarContactoItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			
 			@Override

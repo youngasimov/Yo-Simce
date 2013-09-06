@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ScoreSelector;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
@@ -27,6 +28,7 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -52,6 +54,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -198,10 +201,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		
 	}
 
-	
-	@UiField HTML establecimientoSeleccionado;
-	@UiField ImageButton changeButton;
-	@UiField ImageButton saveButton;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
+	@UiField MenuItem cursoItem;
+	@UiField MenuItem saveItem;
+	@UiField MenuItem cambiarItem;
 	@UiField ImageButton save2Button;
 	@UiField Label nombreEstablecimientoLabel;
 	@UiField Label rbdLabel;
@@ -264,7 +268,30 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		uploading = false;
 		fileUploaded= false;
 		evaluaciones = new ArrayList<FormActividadViewD.EvaluacionExaminador>();
+		menu.insertSeparator(2);
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
+		saveItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.guardarFormulario();
+			}
+		});
 		
+		cambiarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onCambiarCursoClick();
+			}
+		});
 		
 		buildTable();
 		contingenciasTable.setRowCount(0);
@@ -307,16 +334,6 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		presenter.onEstadoChange(Integer.parseInt(selected));
 	}
 	
-	@UiHandler("changeButton")
-	void onChangeActividadClick(ClickEvent event){
-		presenter.onCambiarCursoClick();
-	}
-	
-	@UiHandler("saveButton")
-	void onSaveClick(ClickEvent event){
-		presenter.guardarFormulario();
-	}
-	
 	@UiHandler("save2Button")
 	void onSave2Click(ClickEvent event){
 		presenter.guardarFormulario();
@@ -344,7 +361,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	
 	@Override
 	public void setSaveVisibility(boolean visible) {
-		saveButton.setVisible(visible);
+		saveItem.setVisible(visible);
 		save2Button.setVisible(visible);
 	}
 
@@ -367,7 +384,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	@Override
 	public void setNombreEstablecimiento(String establecimiento) {
-		this.establecimientoSeleccionado.setHTML(ViewUtils.limitarString(establecimiento,35));
+		cursoItem.setHTML(ViewUtils.limitarString(establecimiento,40));
 		nombreEstablecimientoLabel.setText(establecimiento);
 	}
 

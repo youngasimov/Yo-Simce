@@ -7,77 +7,46 @@
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
 	<ui:style>
-	.header{
-		display:inline-block;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 10px;
-		min-width: 950px;
-	}
-	
-	.scroll{
-		width: 100%;
-		height: 100%;
-		border-bottom: 1px solid black;
-	}
 	
 	.title {
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		font-size: 26px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
+		font-size: 20px;
 		margin-left: 10px;
+		margin-right: 10px;
 	}
-	
-	.action{
-		margin: 5px;
-	}
-	
-	.estName{
-		display: inline;
-		margin-left: 10px;
+
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
 	}
 	
 	.data{
-		font-size: 10px;
+		font-size: 12px;
+	}
+
+	.footer{
+		display: inline-block;
 	}
 	</ui:style>
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
-		<g:ScrollPanel addStyleNames='{style.scroll}'>
-			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Sincronización</div>
-				<div class='{style.actions}'>
-					<g:HTML styleName='{style.estName}' ui:field="establecimientoSeleccionado"/>
-					<my:ImageButton addStyleNames='{style.action}' text='Cambiar' resource='{res.popup}' ui:field="cambiarButton"/>
-					
-					<!--
-					<my:ImageButton addStyleNames='{style.action}' text='Agregar alumno' resource='{res.popup}' ui:field="agregarButton"/>
-					 -->
-					 <my:ImageButton addStyleNames='{style.action}' ui:field="guardarButton" text="Guardar" resource='{res.gear}' />
-					<g:Button addStyleNames='{style.action}' ui:field="conProblemasButton" text="Material defectuoso"/>
-				</div>
-			</g:HTMLPanel>
-			</g:ScrollPanel>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+		    <my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Sincronización</div> ></g:MenuItem>
+				<g:MenuItem enabled="false" ui:field="cursoItem" />
+				<g:MenuItem ui:field="cambiarItem" text='Cambiar'/>
+				<g:MenuItem ui:field="guardarItem" text='Guardar' />
+				<g:MenuItem ui:field="materialDefectuosoItem" text='Material defectuoso' />
+			</my:OverMenuBar>
 		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid'  addStyleNames='{style.data}'/>
 		</g:center>
-    	<g:south size="3">
+    	<g:south size="40">
 	     	<g:HTMLPanel>
        			<table style="width:100%">
          			<tr>
            				<td align='center'>
-             					alumnos totales: <g:HTML ui:field="alumnosHtml" />
+             					alumnos totales: <g:HTML addStyleNames='{style.footer}' ui:field="alumnosHtml" />
            				</td>
          			</tr>
        			</table>

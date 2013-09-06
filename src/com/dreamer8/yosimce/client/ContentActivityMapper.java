@@ -99,7 +99,7 @@ public class ContentActivityMapper implements ActivityMapper {
 		}else if(place instanceof PermisosPlace){
 			return new PermisosActivity(factory, (PermisosPlace)place, permisos);
 		}else if(place instanceof SimcePlace){
-			
+			return new MenuActivity(factory, (SimcePlace)place, permisos);
 		}
 		return null;
 	}

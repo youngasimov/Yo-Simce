@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
@@ -13,7 +14,6 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -28,7 +28,8 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 			UiBinder<Widget, DetalleAgendaViewD> {
 	}
 	
-	@UiField MenuBar menu;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
 	@UiField MenuItem cursoItem;
 	@UiField MenuItem cambiarItem;
 	@UiField MenuItem informacionItem;
@@ -44,6 +45,14 @@ public class DetalleAgendaViewD extends Composite implements DetalleAgendaView{
 		initWidget(uiBinder.createAndBindUi(this));
 		idCurso = -1;
 		menu.insertSeparator(2);
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
 		cambiarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			
 			@Override

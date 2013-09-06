@@ -3,7 +3,7 @@ package com.dreamer8.yosimce.client.actividad.ui;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
-import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
@@ -16,19 +16,18 @@ import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SincronizacionViewD extends Composite implements
@@ -41,11 +40,12 @@ public class SincronizacionViewD extends Composite implements
 			UiBinder<Widget, SincronizacionViewD> {
 	}
 
-	@UiField HTML establecimientoSeleccionado;
-	@UiField ImageButton cambiarButton;
-	//@UiField ImageButton agregarButton;
-	@UiField ImageButton guardarButton;
-	@UiField Button conProblemasButton;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
+	@UiField MenuItem cursoItem;
+	@UiField MenuItem cambiarItem;
+	@UiField MenuItem guardarItem;
+	@UiField MenuItem materialDefectuosoItem;
 	@UiField(provided = true) DataGrid<SincAlumnoDTO> dataGrid;
 	@UiField HTML alumnosHtml;
 
@@ -68,34 +68,43 @@ public class SincronizacionViewD extends Composite implements
 	public SincronizacionViewD() {
 		dataGrid = new DataGrid<SincAlumnoDTO>(100,SincAlumnoDTO.KEY_PROVIDER);
 		initWidget(uiBinder.createAndBindUi(this));
-		
 		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CURRENT_PAGE);
 		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+		menu.insertSeparator(2);
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
 		
-	}
-
-	@UiHandler("cambiarButton")
-	public void onCambiarClick(ClickEvent event) {
-		presenter.onCambiarCursoButtonClick();
-	}
-
-	/*
-	@UiHandler("agregarButton")
-	public void onAgregarClick(ClickEvent event) {
-		presenter.onAgregarAlumnoButtonClick();
-	}
-	*/
-
-	@UiHandler("guardarButton")
-	public void onGuardarClick(ClickEvent event) {
-		presenter.onGuardarTodoButtonClick();
-	}
-	
-	@UiHandler("conProblemasButton")
-	public void onConProblemasClick(ClickEvent event) {
-		MaterialDefectuosoPlace mdp = new MaterialDefectuosoPlace();
-		mdp.setIdCurso(curso.getId());
-		presenter.goTo(mdp);
+		cambiarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onCambiarCursoButtonClick();
+			}
+		});
+		
+		guardarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onGuardarTodoButtonClick();
+			}
+		});
+		
+		materialDefectuosoItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				MaterialDefectuosoPlace mdp = new MaterialDefectuosoPlace();
+				mdp.setIdCurso(curso.getId());
+				presenter.goTo(mdp);
+			}
+		});
 	}
 
 	@UiFactory
@@ -105,7 +114,7 @@ public class SincronizacionViewD extends Composite implements
 	
 	@Override
 	public void setMaterialDefectusoVisivility(boolean visible) {
-		conProblemasButton.setVisible(visible);
+		materialDefectuosoItem.setVisible(visible);
 	}
 	
 	@Override
@@ -120,7 +129,7 @@ public class SincronizacionViewD extends Composite implements
 	
 	@Override
 	public void setGuardarButtonEnabled(boolean enabled) {
-		guardarButton.setEnabled(enabled);
+		guardarItem.setEnabled(enabled);
 	}
 	
 	@Override
@@ -131,7 +140,7 @@ public class SincronizacionViewD extends Composite implements
 	@Override
 	public void setCurso(CursoDTO curso) {
 		this.curso = curso;
-		establecimientoSeleccionado.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),35));
+		cursoItem.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),40));
 	}
 	
 	@Override
@@ -197,7 +206,7 @@ public class SincronizacionViewD extends Composite implements
 			dataGrid.removeColumn(i);
 		}
 		
-		dataGrid.addColumn(new Column<SincAlumnoDTO, String>(new ImageCell()) {
+		Column<SincAlumnoDTO, String> sincColumn = new Column<SincAlumnoDTO, String>(new ImageCell()) {
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
@@ -213,8 +222,10 @@ public class SincronizacionViewD extends Composite implements
 							.asString();
 				}
 			}
-		});
-
+		};
+		dataGrid.addColumn(sincColumn,"");
+		dataGrid.setColumnWidth(sincColumn, 50,Unit.PX);
+		
 		Column<SincAlumnoDTO, String> nombreColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
 
@@ -225,7 +236,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		nombreColumn.setSortable(false);
 		dataGrid.addColumn(nombreColumn, "Nombres");
-		dataGrid.setColumnWidth(nombreColumn, 130,Unit.PX);
+		dataGrid.setColumnWidth(nombreColumn, 160,Unit.PX);
 
 		Column<SincAlumnoDTO, String> paternoColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
@@ -237,7 +248,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		paternoColumn.setSortable(false);
 		dataGrid.addColumn(paternoColumn, "A. Paterno");
-		dataGrid.setColumnWidth(paternoColumn,120,Unit.PX);
+		dataGrid.setColumnWidth(paternoColumn,130,Unit.PX);
 
 		Column<SincAlumnoDTO, String> maternoColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
@@ -249,7 +260,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		maternoColumn.setSortable(false);
 		dataGrid.addColumn(maternoColumn, "A. Materno");
-		dataGrid.setColumnWidth(maternoColumn,120,Unit.PX);
+		dataGrid.setColumnWidth(maternoColumn,130,Unit.PX);
 
 		Column<SincAlumnoDTO, String> rutColumn = new Column<SincAlumnoDTO, String>(
 				new TextCell()) {
@@ -261,7 +272,7 @@ public class SincronizacionViewD extends Composite implements
 		};
 		rutColumn.setSortable(false);
 		dataGrid.addColumn(rutColumn, "RUT");
-		dataGrid.setColumnWidth(rutColumn,100,Unit.PX);
+		dataGrid.setColumnWidth(rutColumn,110,Unit.PX);
 		
 		Column<SincAlumnoDTO, String> tipoColumn = new Column<SincAlumnoDTO, String>(new TextCell()) {
 
@@ -300,6 +311,7 @@ public class SincronizacionViewD extends Composite implements
 				}
 			};
 			dataGrid.addColumn(estadoColumn, "Estado");
+			dataGrid.setColumnWidth(estadoColumn,120,Unit.PX);
 			if(estadoUpdater!=null){
 				estadoColumn.setFieldUpdater(estadoUpdater);
 			}
@@ -312,8 +324,8 @@ public class SincronizacionViewD extends Composite implements
 				return o.getEntregoFormulario();
 			}
 		};
-		dataGrid.addColumn(formColumn, "Formulario P. y A.");
-		dataGrid.setColumnWidth(formColumn,100,Unit.PX);
+		dataGrid.addColumn(formColumn, "Form. P. y A.");
+		dataGrid.setColumnWidth(formColumn,110,Unit.PX);
 		if(formUpdater!=null){
 			formColumn.setFieldUpdater(formUpdater);
 		}
@@ -333,7 +345,7 @@ public class SincronizacionViewD extends Composite implements
 
 	@Override
 	public void clear() {
-		establecimientoSeleccionado.setText("");
+		cursoItem.setText("");
 		dataGrid.setRowCount(0);
 		alumnos = null;
 		for(int i=0;i<dataGrid.getColumnCount();i++){

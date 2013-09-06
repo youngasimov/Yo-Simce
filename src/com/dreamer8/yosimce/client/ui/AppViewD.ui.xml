@@ -5,7 +5,7 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style>
+	<ui:style field="style" type="com.dreamer8.yosimce.client.ui.AppViewD.Style">
 	
 	.sidebarActions{
 		display:block;
@@ -33,7 +33,31 @@
 	}
 	
 	.sidebarContainer{
+		display:block;
+		width: 300px;
+		position:fixed;
+		top: 40px;
+		bottom: 30px;
+		left: -310px;
 		border-right: 1px solid black;
+		z-index: 1;
+		background: white;
+		-webkit-box-shadow:  8px 0px 10px -5px rgba(100, 100, 100, 1);
+        box-shadow:  8px 0px 10px -5px rgba(100, 100, 100, 1);
+        -webkit-transition: all 100ms linear;
+		-moz-transition: all 100ms linear;
+        -ms-transition: all 100ms linear;
+        -o-transition: all 100ms linear;
+		transition: all 100ms linear;
+	}
+	
+	.showMenu{
+		left: 0 !important;
+		-webkit-transition: all 100ms linear;
+		-moz-transition: all 100ms linear;
+        -ms-transition: all 100ms linear;
+        -o-transition: all 100ms linear;
+		transition: all 100ms linear;
 	}
 	
 	.content{
@@ -68,30 +92,24 @@
 	}
 	
 	</ui:style>
-	<g:DockLayoutPanel unit='EM' addStyleNames='{style.content}' ui:field="appPanel">
-		<g:north size='3'>
+	<g:DockLayoutPanel unit='PX' addStyleNames='{style.content}' ui:field="appPanel">
+		<g:north size='40'>
         	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="headerPanel"/> 
     	</g:north>
-    	<g:south size='1.8'>
+    	<g:south size='30'>
     		<g:HTMLPanel addStyleNames='{style.footer}'>
     			<g:Image addStyleNames='{style.imageCenter}' resource='{res.barLoad}' ui:field="barload" />
     			<a href='http://www.yosimce.cl' target="_blank" class='{style.imageLeft}'><g:Image resource='{res.logoSimce}'/></a>
     			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageRight}'><g:Image resource='{res.dreamer}'/></a>
     		</g:HTMLPanel>
     	</g:south>
-    	<g:west size='3'>
-    		<g:LayoutPanel addStyleNames='{style.sidebarContainer}'  ui:field="sidebarContainer">
-    			<g:layer left='0px' width='100%' top='0px' height='45px'>
-    				<g:FlowPanel addStyleNames='{style.content} {style.sidebarButtonPanel}'> <g:ToggleButton addStyleNames='{style.sidebarButton}' ui:field="sidebarButton" /></g:FlowPanel>
-    			</g:layer>
-    			<g:layer left='0px' width='100%' top='45px' bottom='10px'>
-    				<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="sidebarPanel"/>
-    			</g:layer>
- 				
- 			</g:LayoutPanel>
-    	</g:west>
     	<g:center>
-        	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="contentPanel"/>
+    		<g:HTMLPanel>
+    			<div class='{style.sidebarContainer}' ui:field="sidebarContainer">
+		    		<g:FocusPanel addStyleNames='{style.content}' ui:field="sidebarFocusPanel"><g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="sidebarPanel"/></g:FocusPanel>
+	 			</div>
+	        	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="contentPanel"/>
+        	</g:HTMLPanel>
     	</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

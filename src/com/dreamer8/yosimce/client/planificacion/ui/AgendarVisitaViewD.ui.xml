@@ -17,6 +17,12 @@
 		margin-left: 10px;
 	}
 	
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
+	}
+	
 	.curso {
 		font-size: 20px;
 		margin-right: 10px;
@@ -72,10 +78,7 @@
 		width: 440px;
 	}
 	
-	.estName{
-		display: inline;
-		margin-left: 10px;
-	}
+	
 	.timepicker{
 		display: block;
 		width: 80px;
@@ -103,14 +106,14 @@
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
-			<g:MenuBar ui:field="menu" animationEnabled="true" autoOpen='false' focusOnHoverEnabled='false'>
-				<g:MenuItem enabled="false" addStyleNames='{style.title}'>Agenda de</g:MenuItem>
+			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='false' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Agendar</div> ></g:MenuItem>
 				<g:MenuItem enabled="false" ui:field="cursoItem"/>
 				<g:MenuItem ui:field="editarContactoItem" text='Editar contacto'/>
 				<g:MenuItem ui:field="editarDirectorItem" text='Editar director' />
 				<g:MenuItem ui:field="cambiarItem" text='Cambiar curso' />
 				<g:MenuItem ui:field="informacionItem" text='Información general' />
-			</g:MenuBar>
+			</my:OverMenuBar>
 		</g:north>
 		<g:center>
 			<g:ScrollPanel>

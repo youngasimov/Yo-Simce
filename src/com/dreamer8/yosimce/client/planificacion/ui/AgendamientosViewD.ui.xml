@@ -17,12 +17,17 @@
 		margin-left: 10px;
 		margin-right: 10px;
 	}
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
+	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
-			<g:MenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
-				<g:MenuItem enabled="false" addStyleNames='{style.title}'>Agenda</g:MenuItem>
+			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem  ui:field="menuItem" enabled="false" addStyleNames='{style.title}'><div class='{style.title2}'>Agenda</div> ></g:MenuItem>
 				<g:MenuItem ui:field="filtrosItem" text='Filtros'/>
 				<g:MenuItem ui:field="exportarItem" text='Exportar' />
 				<g:MenuItem ui:field="cursoItem">
@@ -32,7 +37,7 @@
 						<g:MenuItem ui:field="informacionItem" text='Información General' />
 					</g:MenuBar>
 				</g:MenuItem>
-			</g:MenuBar>
+			</my:OverMenuBar>
 		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>

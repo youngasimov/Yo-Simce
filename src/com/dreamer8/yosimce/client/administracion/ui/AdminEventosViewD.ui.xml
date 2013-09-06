@@ -6,73 +6,11 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	<ui:style>
-	.header{
-		display:block;
-		width: 100%;
-		height: 50px;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 80px;
-		padding-top: 10px;
-		border-bottom: 1px solid black;
-	}
-	
-	.content{
-		display:block;
-		float: left;
-		width: 100%;
-		height: 100%;
-		position:absolute;
-		top: 50px;
-		bottom: 0px;
-		left: 0px;
-	}
-	
-	.title {
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		font-size: 26px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		margin-left: 50px;
-	}
-	
-	.action{
-		margin: 5px;
-	}
-	
-	.estName{
-		display: inline;
-		margin-left: 20px;
-	}
 	
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
-			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Administración de eventos</div>
-				<div class='{style.actions}'>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="nuevaAplicacionButton" text="Nueva aplicación" resource='{res.popup}' />
-					|<g:ListBox ui:field="aplicacionBox"/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="editarAplicacionButton" text="Editar aplicación" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="nuevoNivelButton" text="Nuevo nivel" resource='{res.popup}'/>
-					|<g:ListBox ui:field="nivelBox"/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="editarNivelButton" text="Editar nivel" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="nuevoTipoButton" text="Nuevo tipo de actividad" resource='{res.popup}'/>
-					|<g:ListBox ui:field="tipoBox"/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="editarTipoButton" text="Editar tipo de actividad" resource='{res.popup}'/>
-				</div>
-			</g:HTMLPanel>	
-		</g:north>
+		
 		<g:center>
 			<g:HTMLPanel>
 				

@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.HyperTextCell;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
@@ -39,7 +40,6 @@ import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -58,7 +58,8 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	}
 
 	
-	@UiField MenuBar menu;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
 	@UiField MenuItem filtrosItem;
 	@UiField MenuItem exportarActividadesItem;
 	@UiField MenuItem exportarAlumnosItem;
@@ -94,6 +95,16 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		
 		menu.insertSeparator(1);
 		menu.insertSeparator(5);
+		
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
+		
 		filtrosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			
 			@Override

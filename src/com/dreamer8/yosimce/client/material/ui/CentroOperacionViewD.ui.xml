@@ -7,173 +7,131 @@
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
 	<ui:style>
-	.header{
-		display:inline-block;
-		float: left;
-		position: absolute;
-		top: 0px;
-		left: 0px;
-		padding-left: 10px;
-		min-width: 950px;
-	}
-	
-	.content{
-		display:block;
-		float: left;
-		width: 100%;
-		height: 100%;
-		position:absolute;
-		top: 50px;
-		bottom: 0px;
-		left: 0px;
-	}
-
-	.scroll{
-		width: 100%;
-		height: 100%;
-		border-bottom: 1px solid black;
-	}
 	
 	.title {
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
-		font-size: 26px;
-	}
-	.actions{
-		display:inline-block;
-		position: relative;
-		height: 50px;
-		float: left;
+		font-size: 20px;
 		margin-left: 10px;
+		margin-right: 10px;
 	}
 	
-	.action{
-		margin: 5px;
-	}
-	
-	.estName{
-		display: inline;
-		margin-left: 10px;
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
 	}
 	
 	.data{
-		font-size: 10px;
+		font-size: 12px;
 	}
 	</ui:style>
-	<g:DockLayoutPanel unit="EM">
-		<g:north size="4">
-		    <g:ScrollPanel addStyleNames='{style.scroll}'>
-			<g:HTMLPanel addStyleNames='{style.header}'>
-				<div class='{style.title}'>Centro operación</div>
-				<div class='{style.actions}'>
-					<g:ListBox addStyleNames='{style.action}' ui:field="cosBox"/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="filtrosButton" text="Filtros" resource='{res.popup}'/>
-					<my:ImageButton addStyleNames='{style.action}' ui:field="exportarButton" text="Exportar" resource='{res.gear}'/>
-				</div>
-			</g:HTMLPanel>
-			</g:ScrollPanel>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Centro Operación</div> ></g:MenuItem>
+				<g:MenuItem ui:field="cosItem" text='Centro operación'/>
+				<g:MenuItem ui:field="filtroItem" text='Filtros' />
+				<g:MenuItem ui:field="exportarItem" text='Exportar' />
+			</my:OverMenuBar>
 		</g:north>
 		<g:center>
-			<g:SplitLayoutPanel>
-				<g:west size='400'>
-					<g:TabLayoutPanel barUnit='PX' barHeight='25'>
-						<g:tab> 
-            				<g:header size='7'>Ingreso</g:header> 
-            				<g:DockLayoutPanel unit="PX">
-            					<g:north size='35'>
-            						<g:HTMLPanel>
-            							<div>
-            								<g:TextBox ui:field='ingresoBox'/>
-            								<my:ImageButton ui:field='ingresoAddButton' text='Añadir'/>
-            							</div>
-            						</g:HTMLPanel>
-            					</g:north>
-            					<g:south size='50'>
-            						<g:HTMLPanel>
-            							<div><my:ImageButton ui:field='ingresarButton'/></div>
-            						</g:HTMLPanel>
-            					</g:south>
-            				
-            				</g:DockLayoutPanel>
-          				</g:tab>
-          				<g:tab> 
-            				<g:header size='7'>Despacho</g:header> 
-            				<g:DockLayoutPanel unit="PX">
-            					<g:north size='35'>
-            						<g:HTMLPanel>
-            							<div>
-            								<g:TextBox ui:field='despachoBox'/>
-            								<my:ImageButton ui:field='despachoAddButton' text='Añadir'/>
-            								<g:CheckBox ui:field='loteBox'/>
-            							</div>
-            						</g:HTMLPanel>
-            					</g:north>
-            					<g:south size='80'>
-            						<g:HTMLPanel>
-            							<table>
-            								<tr>
-            									<td>Enviar a:</td>
-            									<td> <g:ListBox ui:field='destinoDespachoBox'/> </td>
-            									<td> <g:Button ui:field='seleccionarCOBox'/> <g:Label ui:field='coLabel'/> </td>
-            								</tr>
-            								<tr>
-            									<td>Rut de quien retira</td>
-            									<td> <g:TextBox ui:field='rutRetiranteBox'/> </td>
-            									<td> <g:Label ui:field='retiranteLabel'/> </td>
-            								</tr>
-            								<tr>
-            									<td colspan='2'></td>
-            									<td> <g:Button ui:field='despacharButton' text='Despachar'/> </td>
-            								</tr>
-            							</table>
-            						</g:HTMLPanel>
-            					</g:south>
-            					<g:center>
-            						<c:DataGrid ui:field="despachoGrid"/>
-            					</g:center>
-            				</g:DockLayoutPanel>
-          				</g:tab>
-          				<g:tab> 
-            				<g:header size='7'>Pre despacho</g:header> 
-            				<g:DockLayoutPanel unit="PX">
-            					<g:north size='70'>
-            						<g:HTMLPanel>
-            							<table>
-            								<tr>
-            									<td> <g:Button ui:field="addLoteButton" text='Nuevo'/> </td>
-            									<td> <g:ListBox ui:field="lotesBox"/> </td>
-            									<td> <g:Button ui:field="removeLoteButton" text='Eliminar'/> </td>
-            								</tr>
-            								<tr>
-            									<td colspan='2'> <g:TextBox ui:field="predespachoBox"/> </td>
-            									<td> <g:Button ui:field="predespachoAddButton" text='Añadir'/> </td>
-            								</tr>
-            							</table>
-            						</g:HTMLPanel>
-            					</g:north>
-            					<g:center>
-            						<c:DataGrid ui:field="predespachoGrid"/>
-            					</g:center>
-            				</g:DockLayoutPanel>
-          				</g:tab>
-					</g:TabLayoutPanel>
-				</g:west>
-				<g:east size='200'>
-				
-				</g:east>
-				<g:center>
-					<g:DockLayoutPanel unit="PX">
+			<g:TabLayoutPanel barUnit='PX' barHeight='25'>
+				<g:tab> 
+       				<g:header size='7'>Ingreso</g:header> 
+       				<g:DockLayoutPanel unit="PX">
+       					<g:north size='35'>
+       						<g:HTMLPanel>
+       							<div>
+       								<g:TextBox ui:field='ingresoBox'/>
+       								<my:ImageButton ui:field='ingresoAddButton' text='Añadir'/>
+       							</div>
+       						</g:HTMLPanel>
+       					</g:north>
+       					<g:south size='50'>
+       						<g:HTMLPanel>
+       							<div><my:ImageButton ui:field='ingresarButton'/></div>
+       						</g:HTMLPanel>
+       					</g:south>
+       					<g:center>
+       						<c:DataGrid addStyleNames='{style.data}' ui:field="ingresoGrid"/>
+       					</g:center>
+       				</g:DockLayoutPanel>
+     			</g:tab>
+     			<g:tab> 
+       				<g:header size='7'>Despacho</g:header> 
+       				<g:DockLayoutPanel unit="PX">
+       					<g:north size='35'>
+       						<g:HTMLPanel>
+       							<div>
+       								<g:TextBox ui:field='despachoBox'/>
+       								<my:ImageButton ui:field='despachoAddButton' text='Añadir'/>
+       								<g:CheckBox ui:field='loteBox'/>
+       							</div>
+       						</g:HTMLPanel>
+       					</g:north>
+       					<g:south size='80'>
+       						<g:HTMLPanel>
+       							<table>
+       								<tr>
+       									<td>Enviar a:</td>
+       									<td> <g:ListBox ui:field='destinoDespachoBox'/> </td>
+       									<td> <g:Button ui:field='seleccionarCOBox'/> <g:Label ui:field='coLabel'/> </td>
+       								</tr>
+       								<tr>
+       									<td>Rut de quien retira</td>
+       									<td> <g:TextBox ui:field='rutRetiranteBox'/> </td>
+       									<td> <g:Label ui:field='retiranteLabel'/> </td>
+       								</tr>
+       								<tr>
+       									<td colspan='2'></td>
+       									<td> <g:Button ui:field='despacharButton' text='Despachar'/> </td>
+       								</tr>
+       							</table>
+       						</g:HTMLPanel>
+       					</g:south>
+       					<g:center>
+       						<c:DataGrid addStyleNames='{style.data}' ui:field="despachoGrid"/>
+       					</g:center>
+       				</g:DockLayoutPanel>
+     			</g:tab>
+     			<g:tab> 
+       				<g:header size='7'>Pre despacho</g:header> 
+       				<g:DockLayoutPanel unit="PX">
+       					<g:north size='70'>
+       						<g:HTMLPanel>
+       							<table>
+       								<tr>
+       									<td> <g:Button ui:field="addLoteButton" text='Nuevo'/> </td>
+       									<td> <g:ListBox ui:field="lotesBox"/> </td>
+       									<td> <g:Button ui:field="removeLoteButton" text='Eliminar'/> </td>
+       								</tr>
+       								<tr>
+       									<td colspan='2'> <g:TextBox ui:field="predespachoBox"/> </td>
+       									<td> <g:Button ui:field="predespachoAddButton" text='Añadir'/> </td>
+       								</tr>
+       							</table>
+       						</g:HTMLPanel>
+       					</g:north>
+       					<g:center>
+       						<c:DataGrid addStyleNames='{style.data}' ui:field="predespachoGrid"/>
+       					</g:center>
+       				</g:DockLayoutPanel>
+     			</g:tab>
+     			<g:tab>
+     				<g:DockLayoutPanel unit="PX">
+     					<g:east size='200'>
+     						<g:HTMLPanel>
+     						
+     						</g:HTMLPanel>
+     					</g:east>
 						<g:south size='30'>
 							<g:Label ui:field="totalLabel"/>
 						</g:south>
 						<g:center>
-							<c:DataGrid ui:field="materialGrid"/>
+							<c:DataGrid addStyleNames='{style.data}' ui:field="materialGrid"/>
 						</g:center>
 					</g:DockLayoutPanel>
-				</g:center>
-			</g:SplitLayoutPanel>
+     			</g:tab>
+			</g:TabLayoutPanel>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

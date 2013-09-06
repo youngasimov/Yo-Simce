@@ -20,6 +20,8 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	
 	private boolean init;
 	
+	private EventBus eventBus;
+	
 	private boolean requiereTipo;
 	
 	private int tipoActividadId;
@@ -55,7 +57,13 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	}
 	
 	@Override
+	public void toggleMenu() {
+		eventBus.fireEvent(new MenuEvent(true));
+	}
+	
+	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+		this.eventBus = eventBus;
 		tipoActividadId = place.getTipoId();
 		String k = Cookies.getCookie("t");
 		if(k == null){

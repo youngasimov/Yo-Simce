@@ -67,6 +67,7 @@ public class CursoSelector implements
 	@Override
 	public void onCancel() {
 		hide();
+		eventBus.fireEvent(new MenuEvent(false));
 		if(cancelCommand!=null){
 			cancelCommand.execute();
 		}

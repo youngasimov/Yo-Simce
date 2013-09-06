@@ -48,11 +48,11 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField LIElement actividad;
 	@UiField LIElement material;
 	@UiField LIElement administracion;
-	@UiField Anchor generalButton;
-	@UiField Anchor agendamientoButton;
-	@UiField Anchor actividadButton;
-	@UiField Anchor materialButton;
-	@UiField Anchor administracionButton;
+	//@UiField Anchor generalButton;
+	//@UiField Anchor agendamientoButton;
+	//@UiField Anchor actividadButton;
+	//@UiField Anchor materialButton;
+	//@UiField Anchor administracionButton;
 	
 	@UiField Anchor detalleCursoViewItem;
 	@UiField Anchor agendamientosViewItem;
@@ -78,12 +78,14 @@ public class SidebarViewD extends Composite implements SidebarView{
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
+	/*
 	@UiHandler("generalButton")
 	void onGeneralButtonClick(ClickEvent event){
 		presenter.goTo(new GeneralPlace());
 	}
+	*/
 	
-	@UiHandler("agendamientoButton")
+	/*@UiHandler("agendamientoButton")
 	void onAgendamientoButtonClick(ClickEvent event){
 		presenter.goTo(new PlanificacionPlace());
 	}
@@ -102,7 +104,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	void onAdministracionButtonClick(ClickEvent event){
 		presenter.goTo(new AdminPlace());
 	}
-	
+	*/
 	
 	@UiHandler("detalleCursoViewItem")
 	void onDetalleCursoViewItemClick(ClickEvent event){

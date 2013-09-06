@@ -25,6 +25,7 @@ import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.CursoSelectorView;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.HeaderView;
+import com.dreamer8.yosimce.client.ui.MenuView;
 import com.dreamer8.yosimce.client.ui.SidebarView;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
@@ -48,6 +49,8 @@ public interface ClientFactory {
 	LoadView getLoadView();
 	HeaderView getHeaderView();
 	SidebarView getSidebarView();
+	
+	MenuView getMenuView();
 	
 	GeneralView getGeneralView();
 	DetalleCursoView getDetalleCursoView();

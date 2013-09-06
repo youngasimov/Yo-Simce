@@ -24,6 +24,7 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	public AprobarSupervisoresActivity(ClientFactory factory, SimcePlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos,true);
 		this.view = getFactory().getAprobarSupervisoresView();
+		this.view.setPresenter(this);
 	}
 
 	@Override

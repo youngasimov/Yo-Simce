@@ -50,6 +50,8 @@ import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.HeaderViewD;
 import com.dreamer8.yosimce.client.ui.HeaderView;
+import com.dreamer8.yosimce.client.ui.MenuView;
+import com.dreamer8.yosimce.client.ui.MenuViewD;
 import com.dreamer8.yosimce.client.ui.SidebarView;
 import com.dreamer8.yosimce.client.ui.SidebarViewD;
 import com.google.gwt.core.client.GWT;
@@ -84,7 +86,8 @@ public class ClientFactoryD implements ClientFactory {
 	private final HeaderView headerView = new HeaderViewD();
 	private final SidebarView sidebarView = new SidebarViewD();
 	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
-
+	private final MenuView menuView = new MenuViewD();
+	
 	private final GeneralView generalView = new GeneralViewD();
 	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
 
@@ -183,6 +186,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public CursoSelectorView getCursoSelectorView() {
 		return cursoSelectorView;
+	}
+	
+	@Override
+	public MenuView getMenuView() {
+		return menuView;
 	}
 
 	@Override

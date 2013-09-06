@@ -20,7 +20,9 @@ public interface AppView extends IsWidget {
 	void showPermisoMessage(String message,boolean autoclose);
 	void openLoginPopup();
 	
+	void setPresenter(AppPresenter presenter);
+	
 	public interface AppPresenter extends Presenter{
-		
+		void onMouseOutFromPanel();
 	}
 }

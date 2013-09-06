@@ -2,7 +2,7 @@ package com.dreamer8.yosimce.client.actividad.ui;
 
 import java.util.ArrayList;
 
-import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.PlaceHolderTextBox;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
@@ -12,6 +12,7 @@ import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -20,9 +21,9 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
 public class MaterialDefectuosoViewD extends Composite implements MaterialDefectuosoView {
@@ -34,8 +35,10 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 			UiBinder<Widget, MaterialDefectuosoViewD> {
 	}
 
-	@UiField HTML establecimientoSeleccionado;
-	@UiField ImageButton cambiarButton;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
+	@UiField MenuItem cursoItem;
+	@UiField MenuItem cambiarItem;
 	@UiField PlaceHolderTextBox materialBox;
 	@UiField ListBox estadoBox;
 	@UiField Button addButton;
@@ -48,14 +51,24 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 	public MaterialDefectuosoViewD() {
 		
 		dataGrid = new DataGrid<MaterialDefectuosoDTO>(MaterialDefectuosoDTO.KEY_PROVIDER);
-		
 		initWidget(uiBinder.createAndBindUi(this));
+		menu.insertSeparator(2);
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
+		cambiarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onCambiarCursoClick();
+			}
+		});
 		buildTable();
-	}
-	
-	@UiHandler("cambiarButton")
-	void onCambiarCursoButton(ClickEvent event){
-		presenter.onCambiarCursoClick();
 	}
 	
 	@UiHandler("addButton")
@@ -101,7 +114,7 @@ public class MaterialDefectuosoViewD extends Composite implements MaterialDefect
 	
 	@Override
 	public void setCurso(CursoDTO curso) {
-		establecimientoSeleccionado.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),35));
+		cursoItem.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),40));
 	}
 
 	@Override

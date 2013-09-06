@@ -2,20 +2,21 @@ package com.dreamer8.yosimce.client.general.ui;
 
 import java.util.ArrayList;
 
-import com.dreamer8.yosimce.client.ui.ImageButton;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DetalleCursoViewD extends Composite implements DetalleCursoView{
@@ -32,8 +33,10 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	}
 	
 	@UiField Style style;
-	@UiField HTML establecimiento;
-	@UiField ImageButton cambiarButton;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
+	@UiField MenuItem cursoItem;
+	@UiField MenuItem cambiarItem;
 	@UiField Label rbdLabel;
 	@UiField Label regionLabel;
 	@UiField Label comunaLabel;
@@ -50,11 +53,22 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 		personasTable.getColumnFormatter().setWidth(1, "70%");
 		contactosTable.getColumnFormatter().setWidth(0, "30%");
 		contactosTable.getColumnFormatter().setWidth(1, "70%");
-	}
-	
-	@UiHandler("cambiarButton")
-	void onCambiarButtonClick(ClickEvent event){
-		presenter.onCambiarCursoClick();
+		menu.insertSeparator(2);
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
+		cambiarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onCambiarCursoClick();
+			}
+		});
 	}
 	
 	@UiFactory
@@ -69,7 +83,7 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	
 	@Override
 	public void setNombreEstablecimiento(String nombre) {
-		establecimiento.setHTML(nombre);
+		cursoItem.setHTML(ViewUtils.limitarString(nombre, 40));
 	}
 
 	@Override
@@ -165,7 +179,7 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 
 	@Override
 	public void clearAll() {
-		establecimiento.setText("");
+		cursoItem.setText("");
 		rbdLabel.setText("");
 		regionLabel.setText("");
 		comunaLabel.setText("");

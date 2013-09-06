@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
+import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
@@ -39,7 +40,6 @@ import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -57,7 +57,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			UiBinder<Widget, AgendamientosViewD> {
 	}
 	
-	@UiField MenuBar menu;
+	@UiField OverMenuBar menu;
+	@UiField MenuItem menuItem;
 	@UiField MenuItem filtrosItem;
 	@UiField MenuItem exportarItem;
 	@UiField MenuItem cursoItem;
@@ -91,6 +92,15 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		
 		menu.insertSeparator(1);
 		menu.insertSeparator(4);
+		
+		menu.setOverItem(menuItem);
+		menu.setOverCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.toggleMenu();
+			}
+		});
 		
 		filtrosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			
