@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadPresenter;
@@ -77,7 +78,8 @@ public class FormActividadActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					goTo(new ActividadPlace());
+					//goTo(new ActividadPlace());
+					goTo(new SimcePlace());
 				}
 			});
 			selector.show();

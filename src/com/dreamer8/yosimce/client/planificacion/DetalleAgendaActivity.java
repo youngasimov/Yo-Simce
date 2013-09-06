@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView.DetalleAgendaPresenter;
@@ -51,7 +52,8 @@ public class DetalleAgendaActivity extends SimceActivity
 				
 				@Override
 				public void execute() {
-					goTo(new PlanificacionPlace());
+					//goTo(new PlanificacionPlace());
+					goTo(new SimcePlace());
 				}
 			});
 			selector.show();

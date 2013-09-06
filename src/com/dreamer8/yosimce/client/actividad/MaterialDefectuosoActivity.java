@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView.MaterialDefectuosoPresenter;
@@ -60,7 +61,8 @@ public class MaterialDefectuosoActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					goTo(new ActividadPlace());
+					//goTo(new ActividadPlace());
+					goTo(new SimcePlace());
 				}
 			});
 			selector.show();

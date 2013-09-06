@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView.DetalleCursoPresenter;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
@@ -48,8 +49,8 @@ public class DetalleCursoActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					GeneralPlace p =new GeneralPlace();
-					goTo(p);
+					//goTo(new GeneralPlace());
+					goTo(new SimcePlace());
 				}
 			});
 			selector.show();

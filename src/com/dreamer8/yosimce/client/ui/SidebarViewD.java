@@ -1,23 +1,18 @@
 package com.dreamer8.yosimce.client.ui;
 
-import com.dreamer8.yosimce.client.actividad.ActividadPlace;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
-import com.dreamer8.yosimce.client.administracion.AdminPlace;
 import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
-import com.dreamer8.yosimce.client.general.GeneralPlace;
-import com.dreamer8.yosimce.client.material.MaterialPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
-import com.dreamer8.yosimce.client.planificacion.PlanificacionPlace;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.ClickEvent;
