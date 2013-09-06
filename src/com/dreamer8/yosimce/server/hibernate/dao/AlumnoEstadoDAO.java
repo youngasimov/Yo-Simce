@@ -15,6 +15,7 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class AlumnoEstadoDAO extends
 		AbstractHibernateDAO<AlumnoEstado, Integer> {
+	
 	public AlumnoEstado findByNombre(String nombre) {
 
 		AlumnoEstado ae = null;

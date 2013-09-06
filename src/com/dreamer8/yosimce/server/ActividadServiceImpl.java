@@ -846,6 +846,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				a.setTotalAlumnosAusentes(actividad.getAlumnosAusentes());
+				a.setTotalAlumnos(actividad.getAlumnosTotal());
 				if (idAplicacion == 1) {
 					a.setTotalAlumnosPresentes(actividad.getAlumnosTotal()
 							- actividad.getAlumnosAusentes());

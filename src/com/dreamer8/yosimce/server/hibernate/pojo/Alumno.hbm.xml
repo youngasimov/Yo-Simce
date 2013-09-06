@@ -6,7 +6,7 @@
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Alumno" table="alumno" schema="public">
         <id name="id" type="int">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="assigned" />
         </id>
         <many-to-one name="sexo" class="com.dreamer8.yosimce.server.hibernate.pojo.Sexo" fetch="select">
             <column name="sexo_id" />

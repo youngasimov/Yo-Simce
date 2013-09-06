@@ -30,4 +30,16 @@ public class EstablecimientoTipoDAO extends
 		et = ((EstablecimientoTipo) q.uniqueResult());
 		return et;
 	}
+
+	public EstablecimientoTipo findByNombre(String nombre) {
+
+		EstablecimientoTipo et = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT et.* FROM ESTABLECIMIENTO_TIPO et"
+				+ " WHERE et.nombre='" + SecurityFilter.escapeString(nombre)
+				+ "'";
+		Query q = s.createSQLQuery(query).addEntity(EstablecimientoTipo.class);
+		et = ((EstablecimientoTipo) q.uniqueResult());
+		return et;
+	}
 }
