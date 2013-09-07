@@ -1,6 +1,5 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -17,26 +16,35 @@ import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
+import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.builder.shared.TableCellBuilder;
+import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.AbstractHeaderOrFooterBuilder;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.ColumnSortList;
+import com.google.gwt.user.cellview.client.ColumnSortList.ColumnSortInfo;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.cellview.client.TextHeader;
+import com.google.gwt.user.cellview.client.AbstractCellTable.Style;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -56,137 +64,349 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	interface ActividadesViewDUiBinder extends
 			UiBinder<Widget, ActividadesViewD> {
 	}
+	
+	interface Styles extends CssResource {
+	    /**
+	     * Indents cells in child rows.
+	     */
+	    String childCell();
 
+	    /**
+	     * Applies to group headers.
+	     */
+	    String groupHeaderCell();
+	  }
+
+	/**
+	 * Renders custom table headers. The top header row includes the groups
+	 * "Name" and "Information", each of which spans multiple columns. The
+	 * second row of the headers includes the contacts' first and last names
+	 * grouped under the "Name" category. The second row also includes the age,
+	 * category, and address of the contacts grouped under the "Information"
+	 * category.
+	 */
+	private class CustomHeaderBuilder extends
+			AbstractHeaderOrFooterBuilder<ActividadPreviewDTO> {
+
+		private Header<String> rbdHeader = new TextHeader("RBD");
+		private Header<String> establecimientoHeader = new TextHeader("Establecimiento");
+		private Header<String> cursoHeader = new TextHeader("Curso");
+		private Header<String> tipoHeader = new TextHeader("Tipo");
+		private Header<String> estadoHeader = new TextHeader("estado");
+		
+		private Header<String> alumnosTotalesHeader = new TextHeader("Total");
+		private Header<String> alumnosEvaluadosHeader = new TextHeader("Evaluados");
+		private Header<String> alumnosSincronizadosHeader = new TextHeader("Sinc.");
+		
+		private Header<String> formEntregadosHeader = new TextHeader("Entregados");
+		private Header<String> formRecibidosHeader = new TextHeader("Recibidos");
+		
+		private Header<String> contingenciaHeader = new TextHeader("Momentanea");
+		private Header<String> contingenciaLimitanteHeader = new TextHeader("Limitante");
+		
+		private Header<String> regionHeader = new TextHeader("Región");
+		private Header<String> comunaHeader = new TextHeader("Comuna");
+		private Header<String> docHeader = new TextHeader("Documento");
+
+		public CustomHeaderBuilder() {
+			super(dataGrid, false);
+			setSortIconStartOfLine(false);
+		}
+
+		@Override
+		protected boolean buildHeaderOrFooterImpl() {
+
+			TableRowBuilder tr = startRow();
+
+			/*
+			 * Name group header. Associated with the last name column, so
+			 * clicking on the group header sorts by last name.
+			 */
+			TableCellBuilder th = tr.startTH().colSpan(5).className(style.groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white").endStyle();
+			th.text("Información de establecimiento").endTH();
+
+			th = tr.startTH().colSpan(3).className(style.groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white").endStyle();
+			th.text("Alumnos").endTH();
+			
+			th = tr.startTH().colSpan(2).className(style.groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white").endStyle();
+			th.text("Form. P. y A.").endTH();
+			
+			th = tr.startTH().colSpan(2).className(style.groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white").endStyle();
+			th.text("Contingencia").endTH();
+			
+			th = tr.startTH().colSpan(3);
+
+			// Get information about the sorted column.
+			ColumnSortList sortList = dataGrid.getColumnSortList();
+			ColumnSortInfo sortedInfo = (sortList.size() == 0) ? null
+					: sortList.get(0);
+			Column<?, ?> sortedColumn = (sortedInfo == null) ? null
+					: sortedInfo.getColumn();
+			boolean isSortAscending = (sortedInfo == null) ? false : sortedInfo
+					.isAscending();
+
+			// Add column headers.
+			tr = startRow();
+			buildHeader(tr, rbdHeader, rbdColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, establecimientoHeader, establecimientoColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, cursoHeader, cursoColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, tipoHeader, tipoColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, estadoHeader, estadoColumn, sortedColumn,isSortAscending, false, false);
+			
+			buildHeader(tr, alumnosTotalesHeader, alumnosTotalColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, alumnosEvaluadosHeader, alumnosEvaluadosColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, alumnosSincronizadosHeader, alumnosSincronizadosColumn, sortedColumn,isSortAscending, false, false);
+			
+			buildHeader(tr, formEntregadosHeader,cuestionarioEntregadosColumn , sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, formRecibidosHeader, cuestionarioRecibidosColumn, sortedColumn,isSortAscending, false, false);
+			
+			buildHeader(tr, contingenciaHeader, contingenciaColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, contingenciaLimitanteHeader, contingenciaLimitanteColumn, sortedColumn,isSortAscending, false, false);
+			
+			buildHeader(tr, regionHeader, regionColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, comunaHeader, comunaColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, docHeader, docColumn, sortedColumn,isSortAscending, false, false);
+			tr.endTR();
+
+			return true;
+		}
+
+		/**
+		 * Renders the header of one column, with the given options.
+		 * 
+		 * @param out
+		 *            the table row to build into
+		 * @param header
+		 *            the {@link Header} to render
+		 * @param column
+		 *            the column to associate with the header
+		 * @param sortedColumn
+		 *            the column that is currently sorted
+		 * @param isSortAscending
+		 *            true if the sorted column is in ascending order
+		 * @param isFirst
+		 *            true if this the first column
+		 * @param isLast
+		 *            true if this the last column
+		 */
+		private void buildHeader(TableRowBuilder out, Header<?> header,
+				Column<ActividadPreviewDTO, ?> column,
+				Column<?, ?> sortedColumn, boolean isSortAscending,
+				boolean isFirst, boolean isLast) {
+			// Choose the classes to include with the element.
+			Style style = dataGrid.getResources().style();
+			boolean isSorted = (sortedColumn == column);
+			StringBuilder classesBuilder = new StringBuilder(style.header());
+			if (isFirst) {
+				classesBuilder.append(" " + style.firstColumnHeader());
+			}
+			if (isLast) {
+				classesBuilder.append(" " + style.lastColumnHeader());
+			}
+			if (column.isSortable()) {
+				classesBuilder.append(" " + style.sortableHeader());
+			}
+			if (isSorted) {
+				classesBuilder.append(" "
+						+ (isSortAscending ? style.sortedHeaderAscending()
+								: style.sortedHeaderDescending()));
+			}
+
+			// Create the table cell.
+			TableCellBuilder th = out.startTH().className(
+					classesBuilder.toString());
+
+			// Associate the cell with the column to enable sorting of the
+			// column.
+			enableColumnHandlers(th, column);
+
+			// Render the header.
+			Context context = new Context(0, 2, header.getKey());
+			renderSortableHeader(th, context, header, isSorted, isSortAscending);
+
+			// End the table cell.
+			th.endTH();
+		}
+	}
+
+	@UiField
+	Styles style;
 	
-	@UiField OverMenuBar menu;
-	@UiField MenuItem menuItem;
-	@UiField MenuItem filtrosItem;
-	@UiField MenuItem exportarActividadesItem;
-	@UiField MenuItem exportarAlumnosItem;
-	@UiField MenuItem cursoItem;
-	@UiField MenuItem formItem;
-	@UiField MenuItem sincronizacionItem;
-	@UiField MenuItem informacionItem;
-	
-	@UiField(provided = true) DataGrid<ActividadPreviewDTO> dataGrid;
-	@UiField(provided = true) SimplePager pager;
-	
-	private HashMap<Integer,CheckBox> estadoCheckBoxs;
-	
+	@UiField
+	OverMenuBar menu;
+	@UiField
+	MenuItem menuItem;
+	@UiField
+	MenuItem filtrosItem;
+	@UiField
+	MenuItem exportarActividadesItem;
+	@UiField
+	MenuItem exportarAlumnosItem;
+	@UiField
+	MenuItem cursoItem;
+	@UiField
+	MenuItem formItem;
+	@UiField
+	MenuItem sincronizacionItem;
+	@UiField
+	MenuItem informacionItem;
+
+	@UiField(provided = true)
+	DataGrid<ActividadPreviewDTO> dataGrid;
+	@UiField(provided = true)
+	SimplePager pager;
+
+	private HashMap<Integer, CheckBox> estadoCheckBoxs;
+
 	private SingleSelectionModel<ActividadPreviewDTO> selectionModel;
 	private ActividadPreviewDTO selectedItem;
 	private ActividadesPresenter presenter;
-	
+
 	private DialogBox filtrosDialogBox;
 	private FiltroActividadesPanelViewD filtrosPanel;
-	
+
 	private boolean sinc;
 	private boolean form;
 	private boolean info;
 	
+	private Column<ActividadPreviewDTO, String> rbdColumn;
+	private Column<ActividadPreviewDTO, String> establecimientoColumn;
+	private Column<ActividadPreviewDTO, String> cursoColumn;
+	private Column<ActividadPreviewDTO, String> tipoColumn;
+	private Column<ActividadPreviewDTO, String> estadoColumn;
+	
+	private Column<ActividadPreviewDTO, Number> alumnosTotalColumn;
+	private Column<ActividadPreviewDTO, Number> alumnosEvaluadosColumn;
+	private Column<ActividadPreviewDTO, Number> alumnosSincronizadosColumn;
+	
+	private Column<ActividadPreviewDTO, Number> cuestionarioEntregadosColumn;
+	private Column<ActividadPreviewDTO, Number> cuestionarioRecibidosColumn;
+	
+	private Column<ActividadPreviewDTO, String> contingenciaColumn;
+	private Column<ActividadPreviewDTO, String> contingenciaLimitanteColumn;
+	
+	private Column<ActividadPreviewDTO, String> regionColumn;
+	private Column<ActividadPreviewDTO, String> comunaColumn;
+	private Column<ActividadPreviewDTO, DocumentoDTO> docColumn;
+	
+	
+
 	public ActividadesViewD() {
-		dataGrid = new DataGrid<ActividadPreviewDTO>(ActividadPreviewDTO.KEY_PROVIDER);
+		dataGrid = new DataGrid<ActividadPreviewDTO>(
+				ActividadPreviewDTO.KEY_PROVIDER);
 		pager = new SimplePager(TextLocation.CENTER, false, false);
+		dataGrid.setWidth("100%");
+		dataGrid.setAutoHeaderRefreshDisabled(true);
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		filtrosPanel = new FiltroActividadesPanelViewD();
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosDialogBox.setWidget(filtrosPanel);
-		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
-		
+		estadoCheckBoxs = new HashMap<Integer, CheckBox>();
+
 		menu.insertSeparator(1);
 		menu.insertSeparator(5);
-		
+
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
-			
+
 			@Override
 			public void execute() {
 				presenter.toggleMenu();
 			}
 		});
-		
+
 		filtrosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
+
 			@Override
 			public void execute() {
 				filtrosDialogBox.showRelativeTo(filtrosItem);
 			}
 		});
-		
-		exportarActividadesItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				presenter.onExportarClick();
-			}
-		});
-		
-		exportarAlumnosItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				presenter.onExportarAlumnosClick();
-			}
-		});
-		
+
+		exportarActividadesItem
+				.setScheduledCommand(new Scheduler.ScheduledCommand() {
+
+					@Override
+					public void execute() {
+						presenter.onExportarClick();
+					}
+				});
+
+		exportarAlumnosItem
+				.setScheduledCommand(new Scheduler.ScheduledCommand() {
+
+					@Override
+					public void execute() {
+						presenter.onExportarAlumnosClick();
+					}
+				});
+
 		formItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
+
 			@Override
 			public void execute() {
 				FormActividadPlace fap = new FormActividadPlace();
-				if(selectedItem !=null)fap.setIdCurso(selectedItem.getCursoId());
+				if (selectedItem != null)
+					fap.setIdCurso(selectedItem.getCursoId());
 				presenter.goTo(fap);
 			}
 		});
-		
-		sincronizacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				SincronizacionPlace place = new SincronizacionPlace();
-				place.setIdCurso(selectedItem.getCursoId());
-				presenter.goTo(place);
-			}
-		});
-		
+
+		sincronizacionItem
+				.setScheduledCommand(new Scheduler.ScheduledCommand() {
+
+					@Override
+					public void execute() {
+						SincronizacionPlace place = new SincronizacionPlace();
+						place.setIdCurso(selectedItem.getCursoId());
+						presenter.goTo(place);
+					}
+				});
+
 		informacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
+
 			@Override
 			public void execute() {
 				DetalleCursoPlace dcp = new DetalleCursoPlace();
-				if(selectedItem !=null)dcp.setCursoId(selectedItem.getCursoId());
+				if (selectedItem != null)
+					dcp.setCursoId(selectedItem.getCursoId());
 				presenter.goTo(dcp);
 			}
 		});
-		
+
 		bind();
 	}
-	
+
 	@UiFactory
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
 	}
-	
+
 	@Override
 	public void setExportarActividadesVisivility(boolean visible) {
 		exportarActividadesItem.setVisible(visible);
 	}
-	
+
 	@Override
 	public void setExportarAlumnosVisivility(boolean visible) {
 		exportarAlumnosItem.setVisible(visible);
 	}
-	
+
 	@Override
 	public void setSincronizacionVisivility(boolean visible) {
 		this.sinc = visible;
 	}
-	
+
 	@Override
 	public void setFormularioVisivility(boolean visible) {
 		this.form = visible;
 	}
-	
+
 	@Override
 	public void setInformacionVisivility(boolean visible) {
 		this.info = visible;
@@ -209,7 +429,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	@Override
 	public void clear() {
-		if(selectedItem !=null){
+		if (selectedItem != null) {
 			selectionModel.setSelected(selectedItem, false);
 			selectedItem = null;
 		}
@@ -230,7 +450,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	public void setActividadesMaterialContingencia(boolean value) {
 		filtrosPanel.contingenciaBox.setValue(value);
 	}
-	
+
 	@Override
 	public void setActividadesContingencia(boolean value) {
 		filtrosPanel.problemasBox.setValue(value);
@@ -240,9 +460,9 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	public void setActividadesContingenciaInhabilitante(boolean value) {
 		filtrosPanel.problemasHinabilitantesBox.setValue(value);
 	}
-	
+
 	@Override
-	public void setActividadesSincronizadas(boolean value){
+	public void setActividadesSincronizadas(boolean value) {
 		filtrosPanel.sincronizacionTotalBox.setValue(value);
 	}
 
@@ -258,11 +478,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	@Override
 	public void setSelectedEstados(ArrayList<Integer> estados) {
-		for(Entry<Integer,CheckBox> e:estadoCheckBoxs.entrySet()){
+		for (Entry<Integer, CheckBox> e : estadoCheckBoxs.entrySet()) {
 			e.getValue().setValue(false);
 		}
-		for(Integer id:estados){
-			if(estadoCheckBoxs.containsKey(id)){
+		for (Integer id : estados) {
+			if (estadoCheckBoxs.containsKey(id)) {
 				estadoCheckBoxs.get(id).setValue(true);
 			}
 		}
@@ -272,10 +492,10 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	public void setRegiones(ArrayList<SectorDTO> regiones) {
 		filtrosPanel.regionBox.setVisible(true);
 		filtrosPanel.regionBox.clear();
-		filtrosPanel.regionBox.addItem("todas",-1+"");
+		filtrosPanel.regionBox.addItem("todas", -1 + "");
 		filtrosPanel.comunaBox.setVisible(false);
-		for(SectorDTO s:regiones){
-			filtrosPanel.regionBox.addItem(s.getSector(),s.getIdSector()+"");
+		for (SectorDTO s : regiones) {
+			filtrosPanel.regionBox.addItem(s.getSector(), s.getIdSector() + "");
 		}
 	}
 
@@ -283,16 +503,16 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	public void setComunas(ArrayList<SectorDTO> comunas) {
 		filtrosPanel.comunaBox.setVisible(true);
 		filtrosPanel.comunaBox.clear();
-		filtrosPanel.comunaBox.addItem("todas","-1");
-		for(SectorDTO s:comunas){
-			filtrosPanel.comunaBox.addItem(s.getSector(),s.getIdSector()+"");
+		filtrosPanel.comunaBox.addItem("todas", "-1");
+		for (SectorDTO s : comunas) {
+			filtrosPanel.comunaBox.addItem(s.getSector(), s.getIdSector() + "");
 		}
 	}
 
 	@Override
 	public void setSelectedRegion(int regionId) {
-		for(int i=0;i<filtrosPanel.regionBox.getItemCount();i++){
-			if(Integer.parseInt(filtrosPanel.regionBox.getValue(i)) == regionId){
+		for (int i = 0; i < filtrosPanel.regionBox.getItemCount(); i++) {
+			if (Integer.parseInt(filtrosPanel.regionBox.getValue(i)) == regionId) {
 				filtrosPanel.regionBox.setItemSelected(i, true);
 			}
 		}
@@ -300,101 +520,142 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	@Override
 	public void setSelectedComuna(int comunaId) {
-		for(int i=0;i<filtrosPanel.comunaBox.getItemCount();i++){
-			if(Integer.parseInt(filtrosPanel.comunaBox.getValue(i)) == comunaId){
+		for (int i = 0; i < filtrosPanel.comunaBox.getItemCount(); i++) {
+			if (Integer.parseInt(filtrosPanel.comunaBox.getValue(i)) == comunaId) {
 				filtrosPanel.comunaBox.setItemSelected(i, true);
 			}
 		}
 	}
 	
-	private void bind(){
-		dataGrid.setWidth("100%");
+	@Override
+	public void setEstadosActividad(ArrayList<EstadoAgendaDTO> estados) {
+		estadoCheckBoxs.clear();
+		filtrosPanel.estadosPanel.clear();
+		for (EstadoAgendaDTO ea : estados) {
+			CheckBox cb = new CheckBox(ea.getEstado());
+			estadoCheckBoxs.put(ea.getId(), cb);
+			filtrosPanel.estadosPanel.add(cb);
+		}
+	}
+
+	private void bind() {
 		buildGrid();
+		dataGrid.setHeaderBuilder(new CustomHeaderBuilder());
 		sincronizacionItem.setVisible(false);
 		informacionItem.setVisible(false);
 		formItem.setVisible(false);
-		
+
 		pager.setDisplay(dataGrid);
-		
+
 		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
 		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
-		
-		selectionModel = new SingleSelectionModel<ActividadPreviewDTO>(ActividadPreviewDTO.KEY_PROVIDER);
-		
-		dataGrid.setSelectionModel(selectionModel,new CellPreviewEvent.Handler<ActividadPreviewDTO>(){
 
-			@Override
-			public void onCellPreview(CellPreviewEvent<ActividadPreviewDTO> event) {
-				if(!event.getNativeEvent().getType().contains("click")){
-					return;
-				}
-				selectionModel.setSelected(event.getValue(), !selectionModel.isSelected(event.getValue()));
-			}});
-		
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			
-			@Override
-			public void onSelectionChange(SelectionChangeEvent event) {
-				cursoItem.setHTML((selectionModel.getSelectedObject()!=null)?
-						ViewUtils.limitarString(selectionModel.getSelectedObject().getNombreEstablecimiento(),40):"");
-				sincronizacionItem.setVisible(selectionModel.getSelectedObject()!=null && sinc);
-				informacionItem.setVisible(selectionModel.getSelectedObject()!=null && info);
-				formItem.setVisible(selectionModel.getSelectedObject()!=null && form);
-				cursoItem.setVisible(sincronizacionItem.isVisible() || informacionItem.isVisible() || formItem.isVisible());
-				
-				selectedItem = selectionModel.getSelectedObject();
-			}
-		});
-		
+		selectionModel = new SingleSelectionModel<ActividadPreviewDTO>(
+				ActividadPreviewDTO.KEY_PROVIDER);
+
+		dataGrid.setSelectionModel(selectionModel,
+				new CellPreviewEvent.Handler<ActividadPreviewDTO>() {
+
+					@Override
+					public void onCellPreview(
+							CellPreviewEvent<ActividadPreviewDTO> event) {
+						if (!event.getNativeEvent().getType().contains("click")) {
+							return;
+						}
+						selectionModel.setSelected(event.getValue(),
+								!selectionModel.isSelected(event.getValue()));
+					}
+				});
+
+		selectionModel
+				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+					@Override
+					public void onSelectionChange(SelectionChangeEvent event) {
+						cursoItem
+								.setHTML((selectionModel.getSelectedObject() != null) ? ViewUtils
+										.limitarString(selectionModel
+												.getSelectedObject()
+												.getNombreEstablecimiento(), 40)
+										: "");
+						sincronizacionItem.setVisible(selectionModel
+								.getSelectedObject() != null && sinc);
+						informacionItem.setVisible(selectionModel
+								.getSelectedObject() != null && info);
+						formItem.setVisible(selectionModel.getSelectedObject() != null
+								&& form);
+						cursoItem.setVisible(sincronizacionItem.isVisible()
+								|| informacionItem.isVisible()
+								|| formItem.isVisible());
+
+						selectedItem = selectionModel.getSelectedObject();
+					}
+				});
+
 		dataGrid.addRangeChangeHandler(new RangeChangeEvent.Handler() {
-			
+
 			@Override
 			public void onRangeChange(RangeChangeEvent event) {
 				presenter.onRangeChange(event.getNewRange());
 			}
 		});
-		
-		filtrosPanel.regionBox.addChangeHandler(new ChangeHandler(){
+
+		filtrosPanel.regionBox.addChangeHandler(new ChangeHandler() {
 
 			@Override
 			public void onChange(ChangeEvent event) {
-				presenter.onRegionChange(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
+				presenter.onRegionChange(Integer
+						.parseInt(filtrosPanel.regionBox
+								.getValue(filtrosPanel.regionBox
+										.getSelectedIndex())));
 			}
 		});
-		
+
 		filtrosPanel.cancelarButton.addClickHandler(new ClickHandler() {
-			
+
 			@Override
 			public void onClick(ClickEvent event) {
 				presenter.onCancelarFiltroClick();
 				filtrosDialogBox.hide();
 			}
 		});
-		
+
 		filtrosPanel.aplicarButton.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
 				ActividadesPlace ap = new ActividadesPlace();
-				ap.setActividadesContintencia(filtrosPanel.problemasBox.getValue());
-				ap.setActividadesContintenciaInhabilitante(filtrosPanel.problemasHinabilitantesBox.getValue());
-				ap.setActividadesMaterialContintencia(filtrosPanel.contingenciaBox.getValue());
-				ap.setActividadesSincronizadas(filtrosPanel.sincronizacionTotalBox.getValue());
-				ap.setActividadesParcialmenteSincronizadas(filtrosPanel.sincronizacionParcialBox.getValue());
-				ap.setActividadesNoSincronizadas(filtrosPanel.sincronizadasNulaBox.getValue());
-				if(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())!="-1"){
-					ap.setRegionId(Integer.parseInt(filtrosPanel.regionBox.getValue(filtrosPanel.regionBox.getSelectedIndex())));
+				ap.setActividadesContintencia(filtrosPanel.problemasBox
+						.getValue());
+				ap.setActividadesContintenciaInhabilitante(filtrosPanel.problemasHinabilitantesBox
+						.getValue());
+				ap.setActividadesMaterialContintencia(filtrosPanel.contingenciaBox
+						.getValue());
+				ap.setActividadesSincronizadas(filtrosPanel.sincronizacionTotalBox
+						.getValue());
+				ap.setActividadesParcialmenteSincronizadas(filtrosPanel.sincronizacionParcialBox
+						.getValue());
+				ap.setActividadesNoSincronizadas(filtrosPanel.sincronizadasNulaBox
+						.getValue());
+				if (filtrosPanel.regionBox.getValue(filtrosPanel.regionBox
+						.getSelectedIndex()) != "-1") {
+					ap.setRegionId(Integer.parseInt(filtrosPanel.regionBox
+							.getValue(filtrosPanel.regionBox.getSelectedIndex())));
 				}
-				if(filtrosPanel.comunaBox.isVisible() && filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())!="-1"){
-					ap.setComunaId(Integer.parseInt(filtrosPanel.comunaBox.getValue(filtrosPanel.comunaBox.getSelectedIndex())));
+				if (filtrosPanel.comunaBox.isVisible()
+						&& filtrosPanel.comunaBox
+								.getValue(filtrosPanel.comunaBox
+										.getSelectedIndex()) != "-1") {
+					ap.setComunaId(Integer.parseInt(filtrosPanel.comunaBox
+							.getValue(filtrosPanel.comunaBox.getSelectedIndex())));
 				}
 				ArrayList<Integer> es = new ArrayList<Integer>();
-				for(Entry<Integer,CheckBox> e:estadoCheckBoxs.entrySet()){
-					if(e.getValue().getValue()){
+				for (Entry<Integer, CheckBox> e : estadoCheckBoxs.entrySet()) {
+					if (e.getValue().getValue()) {
 						es.add(e.getKey());
 					}
 				}
-				if(es.size()>0){
+				if (es.size() > 0) {
 					ap.setEstadosSeleccionados(es);
 				}
 				filtrosDialogBox.hide();
@@ -403,10 +664,10 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		});
 	}
 
-	
-	private void buildGrid(){
-		
-		Column<ActividadPreviewDTO,String> rbdColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+	private void buildGrid() {
+
+		rbdColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
@@ -414,10 +675,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		rbdColumn.setSortable(false);
-		dataGrid.addColumn(rbdColumn,"RBD");
-		dataGrid.setColumnWidth(rbdColumn, 60, Unit.PX);
+		dataGrid.addColumn(rbdColumn);
+		dataGrid.setColumnWidth(0, 60, Unit.PX);
 		
-		Column<ActividadPreviewDTO,String> establecimientoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+		establecimientoColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
@@ -425,10 +687,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		establecimientoColumn.setSortable(false);
-		dataGrid.addColumn(establecimientoColumn,"Establecimiento");
-		dataGrid.setColumnWidth(establecimientoColumn, 250, Unit.PX);
+		dataGrid.addColumn(establecimientoColumn);
+		dataGrid.setColumnWidth(1, 250, Unit.PX);
 		
-		Column<ActividadPreviewDTO,String> cursoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+		cursoColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
@@ -436,10 +700,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		cursoColumn.setSortable(false);
-		dataGrid.addColumn(cursoColumn,"Curso");
-		dataGrid.setColumnWidth(cursoColumn, 60, Unit.PX);
-		
-		Column<ActividadPreviewDTO,String> tipoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+		dataGrid.addColumn(cursoColumn);
+		dataGrid.setColumnWidth(2, 60, Unit.PX);
+
+		tipoColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
@@ -447,10 +712,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		tipoColumn.setSortable(false);
-		dataGrid.addColumn(tipoColumn,"Tipo");
-		dataGrid.setColumnWidth(tipoColumn, 100, Unit.PX);
-		
-		Column<ActividadPreviewDTO,String> estadoColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+		dataGrid.addColumn(tipoColumn);
+		dataGrid.setColumnWidth(3, 100, Unit.PX);
+
+		estadoColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
@@ -458,105 +724,126 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		estadoColumn.setSortable(false);
-		dataGrid.addColumn(estadoColumn,"Estado");
-		dataGrid.setColumnWidth(estadoColumn, 140, Unit.PX);
+		dataGrid.addColumn(estadoColumn);
+		dataGrid.setColumnWidth(4, 140, Unit.PX);
 		
-		Column<ActividadPreviewDTO,Number> cuestionarioColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
+		alumnosTotalColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
-				if(o.getCuestionariosPadresApoderadosEntregados() <= 0){
-					return 0;
-				}
-				float value =100 * ((float)o.getCuestionariosPadresApoderadosRecibidos())/((float)o.getCuestionariosPadresApoderadosEntregados());
-				return value;
+				return o.getAlumnosTotales();
 			}
 		};
-		SafeHtmlBuilder b = new SafeHtmlBuilder();
-		b.appendHtmlConstant("% Cuestionarios");
-		cuestionarioColumn.setSortable(false);
-		dataGrid.addColumn(cuestionarioColumn,b.toSafeHtml());
-		dataGrid.setColumnWidth(cuestionarioColumn, 100, Unit.PX);
+		alumnosTotalColumn.setSortable(false);
+		dataGrid.addColumn(alumnosTotalColumn);
+		dataGrid.setColumnWidth(5, 90, Unit.PX);
 		
-		Column<ActividadPreviewDTO,Number> asistenciaColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
+		alumnosEvaluadosColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
-				if(o.getAlumnosTotales() <= 0){
-					return 0;
-				}
-				float value =100 * ((float)o.getAlumnosEvaluados())/((float)o.getAlumnosTotales());
-				return value;
+				return o.getAlumnosEvaluados();
 			}
 		};
-		b = new SafeHtmlBuilder();
-		b.appendHtmlConstant("% Asistencia");
-		asistenciaColumn.setSortable(false);
-		dataGrid.addColumn(asistenciaColumn,b.toSafeHtml());
-		dataGrid.setColumnWidth(asistenciaColumn, 100, Unit.PX);
-		
-		Column<ActividadPreviewDTO,Number> sincronizacionColumn = new Column<ActividadPreviewDTO, Number>(new NumberCell()) {
+		alumnosEvaluadosColumn.setSortable(false);
+		dataGrid.addColumn(alumnosEvaluadosColumn);
+		dataGrid.setColumnWidth(6, 90, Unit.PX);
+
+
+		alumnosSincronizadosColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
-				if(o.getAlumnosEvaluados()<=0){
+				if (o.getAlumnosEvaluados() <= 0) {
 					return 0;
 				}
-				float value = 100 * ((float)o.getAlumnosSincronizados())/((float)o.getAlumnosEvaluados());
+				float value = 100 * ((float) o.getAlumnosSincronizados())
+						/ ((float) o.getAlumnosEvaluados());
 				return value;
 			}
 		};
-		b = new SafeHtmlBuilder();
-		b.appendHtmlConstant("% Sincronizados");
-		sincronizacionColumn.setSortable(false);
-		dataGrid.addColumn(sincronizacionColumn,b.toSafeHtml());
-		dataGrid.setColumnWidth(sincronizacionColumn, 100, Unit.PX);
+		alumnosSincronizadosColumn.setSortable(false);
+		dataGrid.addColumn(alumnosSincronizadosColumn);
+		dataGrid.setColumnWidth(7, 90, Unit.PX);
+
+		cuestionarioEntregadosColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				return o.getCuestionariosPadresApoderadosEntregados();
+			}
+		};
+		cuestionarioEntregadosColumn.setSortable(false);
+		dataGrid.addColumn(cuestionarioEntregadosColumn);
+		dataGrid.setColumnWidth(8, 90, Unit.PX);
 		
-		Column<ActividadPreviewDTO,String> contingenciaColumn = new Column<ActividadPreviewDTO, String>(new ImageCell()) {
+		cuestionarioRecibidosColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				return o.getCuestionariosPadresApoderadosRecibidos();
+			}
+		};
+		cuestionarioRecibidosColumn.setSortable(false);
+		dataGrid.addColumn(cuestionarioRecibidosColumn);
+		dataGrid.setColumnWidth(9, 90, Unit.PX);
+
+		
+
+		contingenciaColumn = new Column<ActividadPreviewDTO, String>(
+				new ImageCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
-				if(o.getContingencia()){
+				if (o.getContingencia()) {
 					return "/images/warning.png";
-				}else{
+				} else {
 					return "";
 				}
 			}
 		};
 		contingenciaColumn.setSortable(false);
-		dataGrid.addColumn(contingenciaColumn,"Contingencia");
-		dataGrid.setColumnWidth(contingenciaColumn, 100, Unit.PX);
-		
-		Column<ActividadPreviewDTO,String> contingenciaLimitanteColumn = new Column<ActividadPreviewDTO, String>(new ImageCell()) {
+		dataGrid.addColumn(contingenciaColumn);
+		dataGrid.setColumnWidth(10, 90, Unit.PX);
+
+		contingenciaLimitanteColumn = new Column<ActividadPreviewDTO, String>(
+				new ImageCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
-				if(o.getContingenciaLimitante()){
+				if (o.getContingenciaLimitante()) {
 					return "/images/warning.png";
-				}else{
+				} else {
 					return "";
 				}
 			}
 		};
 		contingenciaLimitanteColumn.setSortable(false);
-		dataGrid.addColumn(contingenciaLimitanteColumn,"Limitante");
-		dataGrid.setColumnWidth(contingenciaLimitanteColumn, 100, Unit.PX);
-		
-		Column<ActividadPreviewDTO,String> regionColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+		dataGrid.addColumn(contingenciaLimitanteColumn);
+		dataGrid.setColumnWidth(11, 90, Unit.PX);
+
+		regionColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
-				if(o.getRegion().startsWith("Región")){
-            		return o.getRegion().substring(6);
-            	}
-                return o.getRegion();
+				if (o.getRegion().startsWith("Región")) {
+					return o.getRegion().substring(6);
+				}
+				return o.getRegion();
 			}
 		};
 		regionColumn.setSortable(false);
-		dataGrid.addColumn(regionColumn,"Región");
-		dataGrid.setColumnWidth(regionColumn, 140, Unit.PX);
-		
-		Column<ActividadPreviewDTO,String> comunaColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+		dataGrid.addColumn(regionColumn);
+		dataGrid.setColumnWidth(12, 140, Unit.PX);
+
+		comunaColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
@@ -564,10 +851,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		comunaColumn.setSortable(false);
-		dataGrid.addColumn(comunaColumn,"Comuna");
-		dataGrid.setColumnWidth(comunaColumn, 120, Unit.PX);
-		
-		Column<ActividadPreviewDTO,DocumentoDTO> docColumn = new Column<ActividadPreviewDTO, DocumentoDTO>(new HyperTextCell()) {
+		dataGrid.addColumn(comunaColumn);
+		dataGrid.setColumnWidth(13, 120, Unit.PX);
+
+		docColumn = new Column<ActividadPreviewDTO, DocumentoDTO>(
+				new HyperTextCell()) {
 
 			@Override
 			public DocumentoDTO getValue(ActividadPreviewDTO o) {
@@ -575,19 +863,8 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			}
 		};
 		docColumn.setSortable(false);
-		dataGrid.addColumn(docColumn,"Documento");
-		dataGrid.setColumnWidth(docColumn, 200, Unit.PX);
-		
-	}
+		dataGrid.addColumn(docColumn);
+		dataGrid.setColumnWidth(14, 200, Unit.PX);
 
-	@Override
-	public void setEstadosActividad(ArrayList<EstadoAgendaDTO> estados) {
-		estadoCheckBoxs.clear();
-		filtrosPanel.estadosPanel.clear();
-		for(EstadoAgendaDTO ea:estados){
-			CheckBox cb = new CheckBox(ea.getEstado());
-			estadoCheckBoxs.put(ea.getId(), cb);
-			filtrosPanel.estadosPanel.add(cb);
-		}
 	}
 }

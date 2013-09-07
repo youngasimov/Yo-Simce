@@ -5,6 +5,8 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface SidebarView extends IsWidget {
 	
+	void setScrollOnTop();
+	
 	void setGeneralVisivility(boolean visible);
 	void setDetalleCursoViewItemVisivility(boolean visible);
 	void setDetalleCursoViewItemSelected(boolean selected);

@@ -61,6 +61,15 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 	
 	private void bind(){
 		view.setPresenter(this);
+		
+		factory.getEventBus().addHandler(MenuEvent.TYPE, new MenuEvent.MenuHandler() {
+			
+			@Override
+			public void onMenu(MenuEvent event) {
+				view.setScrollOnTop();
+			}
+		});
+		
 		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
 			
 			@Override
