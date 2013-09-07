@@ -14,7 +14,7 @@ import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.LIElement;
+import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,6 +22,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class SidebarViewD extends Composite implements SidebarView{
@@ -38,16 +39,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 	
 	@UiField Style style;
-	@UiField LIElement general;
-	@UiField LIElement agendamiento;
-	@UiField LIElement actividad;
-	@UiField LIElement material;
-	@UiField LIElement administracion;
-	//@UiField Anchor generalButton;
-	//@UiField Anchor agendamientoButton;
-	//@UiField Anchor actividadButton;
-	//@UiField Anchor materialButton;
-	//@UiField Anchor administracionButton;
+	@UiField ScrollPanel scroll;
+	@UiField UListElement general;
+	@UiField UListElement agendamiento;
+	@UiField UListElement actividad;
+	@UiField UListElement material;
+	@UiField UListElement administracion;
 	
 	@UiField Anchor detalleCursoViewItem;
 	@UiField Anchor agendamientosViewItem;
@@ -72,34 +69,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 		
 		initWidget(uiBinder.createAndBindUi(this));
 	}
-	
-	/*
-	@UiHandler("generalButton")
-	void onGeneralButtonClick(ClickEvent event){
-		presenter.goTo(new GeneralPlace());
-	}
-	*/
-	
-	/*@UiHandler("agendamientoButton")
-	void onAgendamientoButtonClick(ClickEvent event){
-		presenter.goTo(new PlanificacionPlace());
-	}
-	
-	@UiHandler("actividadButton")
-	void onActividadButtonClick(ClickEvent event){
-		presenter.goTo(new ActividadPlace());
-	}
-	
-	@UiHandler("materialButton")
-	void onMaterialButtonClick(ClickEvent event){
-		presenter.goTo(new MaterialPlace());
-	}
-	
-	@UiHandler("administracionButton")
-	void onAdministracionButtonClick(ClickEvent event){
-		presenter.goTo(new AdminPlace());
-	}
-	*/
 	
 	@UiHandler("detalleCursoViewItem")
 	void onDetalleCursoViewItemClick(ClickEvent event){
@@ -166,6 +135,10 @@ public class SidebarViewD extends Composite implements SidebarView{
 		presenter.goTo(new PermisosPlace());
 	}
 	
+	@Override
+	public void setScrollOnTop() {
+		scroll.setVerticalScrollPosition(0);
+	}
 
 	@Override
 	public void setPresenter(SidebarPresenter presenter) {

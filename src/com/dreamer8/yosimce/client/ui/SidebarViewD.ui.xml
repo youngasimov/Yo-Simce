@@ -6,13 +6,29 @@
 	.sidebar .selected{
 		/*background: rgb(255,183,107);*/
 	}
+	
+	
 	.sidebar ul{
 		display:block;
 		float: left;
 		width: 100%;
 		list-style: none;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		margin-left: 0px;
+		margin-right: 0px;
 		padding: 0px;
-		margin: 0px;
+	}
+	
+	.sidebar ul:before{
+		content: V;
+		position:relative;
+		top:10px;
+	}
+	
+	.sidebar ul.margin{
+		margin-top: 10px;
+		border-top: 1px solid #888888;
 	}
 	
 	.sidebar ul li{
@@ -20,42 +36,15 @@
 		display:block;
 		width: 100%;
 		margin: 0px;
-		padding: 0px;
-		padding-top: 3px;
-		padding-bottom: 3px;
-		border-top: 1px solid #888888;
-		border-bottom: 1px solid #BBBBBB;
+		padding-left: 0px;
+		padding-right: 0px;
+		padding-top: 1px;
+		padding-bottom: 1px;
+		
 	}
+	
 	
 	.sidebar ul li a{
-		display: block;
-		float:left;
-		width: 100%;
-		height: 1em;
-		padding-top: 0.5em;
-		padding-bottom:0.5em;
-		text-align: center;
-		font-weight: bold;
-		text-decoration: none;
-		background: rgb(63,76,107); /* Old browsers */
-		background: -moz-linear-gradient(top,  rgba(63,76,107,1) 0%, rgba(63,76,107,1) 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(63,76,107,1)), color-stop(100%,rgba(63,76,107,1))); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  rgba(63,76,107,1) 0%,rgba(63,76,107,1) 100%); /* W3C */
-	}
-	
-	.sidebar ul li ul{
-		list-style: none;
-		float: left;
-		display:block;
-		width: 100%;
-		margin: 0px;
-		padding: 0px;
-	}
-	
-	.sidebar ul li ul li a{
 		display:block;
 		float: left;
 		padding-left: 10%;
@@ -75,8 +64,8 @@
 		font-weight: bold;
 	}
 	
-	.sidebar ul li ul li a:HOVER{
-		background: #DDDDDD;
+	.sidebar ul li a:HOVER{
+		background: #EEEEEE;
 		color: #000000;
 		font-weight: bold;
 		-webkit-transition: all 200ms linear;
@@ -85,49 +74,51 @@
         -o-transition: all 200ms linear;
 		transition: all 200ms linear;
 	}
+	
+	.menu{
+		display:block;
+		width: 100%;
+		height: 35px;
+		padding-top: 10px;
+		padding-bottom: 0px;
+		padding-right: 0px;
+		padding-left: 0px;
+		margin: 0;
+		text-align: center;
+		background: url("images/hborder.png") repeat-x scroll 0 -2003px #E3E8F3;
+    	border-top: 1px solid #E0E0E0;
+    	border-bottom: 1px solid #E0E0E0;
+    	font-size: 20px;
+	}
 	  
 	</ui:style>
-	<g:ScrollPanel>
+	<g:ScrollPanel ui:field="scroll">
 		<g:HTMLPanel addStyleNames='{style.sidebar}'>
-			<ul>
-				<li ui:field="general">
-					<!-- <g:Anchor ui:field="generalButton" text="General"/> -->
-					<ul>
-						<li><g:Anchor ui:field="detalleCursoViewItem" text="Detalle curso"/></li>
-					</ul>
-				</li>
-				<li ui:field="agendamiento">
-					<!--<g:Anchor ui:field="agendamientoButton" text="Planificación"/>-->
-					<ul>
-						<li><g:Anchor ui:field="agendamientosViewItem" text="Lista de agendamientos"/></li>
-						<li><g:Anchor ui:field="detalleAgendaViewItem" text="Detalles de agendamiento"/></li>
-						<li><g:Anchor ui:field="agendarVisitaActionItem" text="Agendar visita"/></li>
-					</ul>
-				</li>
-				<li ui:field="actividad">
-					<!-- <g:Anchor ui:field="actividadButton" text="Actividad"/> -->
-					<ul>
-						<li><g:Anchor ui:field="actividadesViewItem" text="Lista de actividades"/></li>
-						<li><g:Anchor ui:field="formularioActividadActionItem" text="Formulario de actividad"/></li>
-						<li><g:Anchor ui:field="sincronizacionActionItem" text="Sincronización"/></li>
-						<li><g:Anchor ui:field="materialDefectuosoActionItem" text="Material defectuoso"/></li>
-						<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Evaluación supervisores"/></li>
-					</ul>
-				</li>
-				<li ui:field="material">
-					<!-- <g:Anchor ui:field="materialButton" text="Material"/> -->
-					<ul>
-						<li><g:Anchor ui:field="centroOperacionViewItem" text="Centro operación"/></li>
-					</ul>
-				</li>
-				<li ui:field="administracion">
-					<!-- <g:Anchor ui:field="administracionButton" text="Administración"/> -->
-					<ul>
-						<li><g:Anchor ui:field="administrarUsuariosActionItem" text="Administrar usuarios"/></li>
-						<li><g:Anchor ui:field="administrarEventosActionItem" text="Administrar eventos"/></li>
-						<li><g:Anchor ui:field="administrarPermisosActionItem" text="Administrar permisos"/></li>
-					</ul>
-				</li>
+			<div class="{style.menu}">
+				Menu
+			</div>
+			<ul ui:field="general">
+				<li><g:Anchor ui:field="detalleCursoViewItem" text="Detalle curso"/></li>
+			</ul>
+			<ul class='{style.margin}' ui:field="agendamiento">
+				<li><g:Anchor ui:field="agendamientosViewItem" text="Lista de agendamientos"/></li>
+				<li><g:Anchor ui:field="detalleAgendaViewItem" text="Detalles de agendamiento"/></li>
+				<li><g:Anchor ui:field="agendarVisitaActionItem" text="Agendar visita"/></li>
+			</ul>
+			<ul class='{style.margin}' ui:field="actividad">
+				<li><g:Anchor ui:field="actividadesViewItem" text="Lista de actividades"/></li>
+				<li><g:Anchor ui:field="formularioActividadActionItem" text="Formulario de actividad"/></li>
+				<li><g:Anchor ui:field="sincronizacionActionItem" text="Sincronización"/></li>
+				<li><g:Anchor ui:field="materialDefectuosoActionItem" text="Material defectuoso"/></li>
+				<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Evaluación supervisores"/></li>
+			</ul>
+			<ul class='{style.margin}' ui:field="material">
+				<li><g:Anchor ui:field="centroOperacionViewItem" text="Centro operación"/></li>
+			</ul>
+			<ul class='{style.margin}' ui:field="administracion">
+				<li><g:Anchor ui:field="administrarUsuariosActionItem" text="Administrar usuarios"/></li>
+				<li><g:Anchor ui:field="administrarEventosActionItem" text="Administrar eventos"/></li>
+				<li><g:Anchor ui:field="administrarPermisosActionItem" text="Administrar permisos"/></li>
 			</ul>
 		</g:HTMLPanel>
 	</g:ScrollPanel>

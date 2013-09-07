@@ -55,7 +55,7 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void bind(){
-		
+		/*
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			
 			@Override
@@ -73,7 +73,7 @@ public class AppPresenter implements AppView.AppPresenter {
 			    }  
 			    return e;  
 			  }
-		});
+		});*/
 		
 		factory.getEventBus().addHandler(MenuEvent.TYPE, new MenuEvent.MenuHandler() {
 			

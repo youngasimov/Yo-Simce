@@ -59,6 +59,7 @@ public class CursoSelector implements
 
 	@Override
 	public void onConfirm() {
+		eventBus.fireEvent(new MenuEvent(false));
 		if(confirmCommand!=null){
 			confirmCommand.execute();
 		}
