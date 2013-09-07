@@ -443,6 +443,26 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
         dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
         
+        Column<AgendaPreviewDTO, String> examinadorColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+            	return (object.getExaminador()!=null)?object.getExaminador().getRut():"";
+            }
+        };
+        examinadorColumn.setSortable(false);
+        dataGrid.addColumn(examinadorColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Examinador")));
+        dataGrid.setColumnWidth(examinadorColumn, 200, Unit.PX);
+        
+        Column<AgendaPreviewDTO, String> supervisorColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+            	return (object.getSupervisor()!=null)?object.getSupervisor().getRut():"";
+            }
+        };
+        supervisorColumn.setSortable(false);
+        dataGrid.addColumn(supervisorColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Supervisor")));
+        dataGrid.setColumnWidth(supervisorColumn, 200, Unit.PX);
+        
         Column<AgendaPreviewDTO, String> regionColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {

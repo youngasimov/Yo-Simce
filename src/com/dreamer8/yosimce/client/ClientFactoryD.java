@@ -2,8 +2,6 @@ package com.dreamer8.yosimce.client;
 
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.client.actividad.ActividadServiceAsync;
-import com.dreamer8.yosimce.client.actividad.ui.ActividadView;
-import com.dreamer8.yosimce.client.actividad.ui.ActividadViewD;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesViewD;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
@@ -20,18 +18,12 @@ import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminEventosViewD;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosViewD;
-import com.dreamer8.yosimce.client.administracion.ui.AdminView;
-import com.dreamer8.yosimce.client.administracion.ui.AdminViewD;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosViewD;
 import com.dreamer8.yosimce.client.general.GeneralService;
 import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
-import com.dreamer8.yosimce.client.general.ui.GeneralView;
-import com.dreamer8.yosimce.client.general.ui.GeneralViewD;
-import com.dreamer8.yosimce.client.material.ui.MaterialView;
-import com.dreamer8.yosimce.client.material.ui.MaterialViewD;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionServiceAsync;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
@@ -40,8 +32,6 @@ import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaViewD;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaViewD;
-import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionView;
-import com.dreamer8.yosimce.client.planificacion.ui.PlanificacionViewD;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
 import com.dreamer8.yosimce.client.ui.CursoSelectorView;
@@ -88,24 +78,18 @@ public class ClientFactoryD implements ClientFactory {
 	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
 	private final MenuView menuView = new MenuViewD();
 	
-	private final GeneralView generalView = new GeneralViewD();
 	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
 
-	private final PlanificacionView planificacionView = new PlanificacionViewD();
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
 	private final DetalleAgendaView detalleAgendaView = new DetalleAgendaViewD();
 
-	private final ActividadView actividadView = new ActividadViewD();
 	private final ActividadesView actividadesView = new ActividadesViewD();
 	private final FormActividadView formActividadView = new FormActividadViewD();
 	private final SincronizacionView sincronizacionView = new SincronizacionViewD();
 	private final MaterialDefectuosoView materialDefectuosoView = new MaterialDefectuosoViewD();
 	private final AprobarSupervisoresView aprobarSupervisoresView = new AprobarSupervisoresViewD();
 
-	private final MaterialView materialView = new MaterialViewD();
-
-	private final AdminView adminView = new AdminViewD();
 	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
 	private final AdminEventosView adminEventosView = new AdminEventosViewD();
 	private final PermisosView permisosView = new PermisosViewD();
@@ -194,18 +178,8 @@ public class ClientFactoryD implements ClientFactory {
 	}
 
 	@Override
-	public GeneralView getGeneralView() {
-		return generalView;
-	}
-
-	@Override
 	public DetalleCursoView getDetalleCursoView() {
 		return detalleCursoView;
-	}
-
-	@Override
-	public PlanificacionView getPlanificacionView() {
-		return planificacionView;
 	}
 
 	@Override
@@ -221,11 +195,6 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public DetalleAgendaView getDetalleAgendaView() {
 		return detalleAgendaView;
-	}
-
-	@Override
-	public ActividadView getActividadView() {
-		return actividadView;
 	}
 
 	@Override
@@ -251,16 +220,6 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public AprobarSupervisoresView getAprobarSupervisoresView() {
 		return aprobarSupervisoresView;
-	}
-
-	@Override
-	public MaterialView getMaterialView() {
-		return materialView;
-	}
-
-	@Override
-	public AdminView getAdminView() {
-		return adminView;
 	}
 
 	@Override
