@@ -25,6 +25,7 @@ public class AgendaPreviewDTO implements Serializable {
 	private AgendaItemDTO agendaItemActual;
 	private UserDTO examinador;
 	private UserDTO supervisor;
+	private Integer alumnosTotal;
 
 	/**
 	 * 
@@ -112,5 +113,13 @@ public class AgendaPreviewDTO implements Serializable {
 
 	public void setSupervisor(UserDTO supervisor) {
 		this.supervisor = supervisor;
+	}
+
+	public Integer getTotalAlumnos() {
+		return alumnosTotal;
+	}
+
+	public void setTotalAlumnos(Integer alumnos) {
+		this.alumnosTotal = alumnos;
 	}
 }
