@@ -38,6 +38,15 @@ public class OverMenuBar extends MenuBar{
 	@Override
 	public void onBrowserEvent(Event event) {
 		MenuItem currentItem = null;
+		
+		if(item == null && getItems().size()>0){
+			item = getItems().get(0);
+		}
+		
+		if(command == null){
+			return;
+		}
+		
         if (DOM.isOrHasChild(item.getElement(), DOM.eventGetTarget(event))) {
             currentItem = item;
         }

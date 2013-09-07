@@ -21,6 +21,7 @@ import com.dreamer8.yosimce.client.administracion.PermisosActivity;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.material.CentroOperacionActivity;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosActivity;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -70,7 +71,7 @@ public class ContentActivityMapper implements ActivityMapper {
 		}else if(place instanceof AprobarSupervisoresPlace){
 			return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 		}else if(place instanceof CentroOperacionPlace){
-			//return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
+			return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
 		}else if(place instanceof AdminUsuariosPlace){
 			return new AdminUsuariosActivity(factory, (AdminUsuariosPlace)place, permisos);
 		}else if(place instanceof AdminEventosPlace){

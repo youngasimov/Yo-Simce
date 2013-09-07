@@ -28,15 +28,31 @@
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Centro Operación</div> ></g:MenuItem>
-				<g:MenuItem ui:field="cosItem" text='Centro operación'/>
-				<g:MenuItem ui:field="filtroItem" text='Filtros' />
+				<g:MenuItem enabled="false" ui:field="cosItem" text='Centro operación'/>
+				<g:MenuItem ui:field="filtrosItem" text='Filtros' />
 				<g:MenuItem ui:field="exportarItem" text='Exportar' />
 			</my:OverMenuBar>
 		</g:north>
 		<g:center>
-			<g:TabLayoutPanel barUnit='PX' barHeight='25'>
+			<g:TabLayoutPanel animationVertical='false' animationDuration='200' barUnit='PX' barHeight='30'>
+				<g:tab>
+     				<g:header size='10'>Material</g:header>
+     				<g:DockLayoutPanel unit="PX">
+     					<g:east size='200'>
+     						<g:HTMLPanel>
+     						
+     						</g:HTMLPanel>
+     					</g:east>
+						<g:south size='30'>
+							<g:Label ui:field="totalLabel"/>
+						</g:south>
+						<g:center>
+							<c:DataGrid addStyleNames='{style.data}' ui:field="materialGrid"/>
+						</g:center>
+					</g:DockLayoutPanel>
+     			</g:tab>
 				<g:tab> 
-       				<g:header size='7'>Ingreso</g:header> 
+       				<g:header size='10'>Ingreso</g:header>
        				<g:DockLayoutPanel unit="PX">
        					<g:north size='35'>
        						<g:HTMLPanel>
@@ -57,7 +73,30 @@
        				</g:DockLayoutPanel>
      			</g:tab>
      			<g:tab> 
-       				<g:header size='7'>Despacho</g:header> 
+       				<g:header size='10'>Pre despacho</g:header> 
+       				<g:DockLayoutPanel unit="PX">
+       					<g:north size='70'>
+       						<g:HTMLPanel>
+       							<table>
+       								<tr>
+       									<td> <g:Button ui:field="addLoteButton" text='Nuevo'/> </td>
+       									<td> <g:ListBox ui:field="lotesBox"/> </td>
+       									<td> <g:Button ui:field="removeLoteButton" text='Eliminar'/> </td>
+       								</tr>
+       								<tr>
+       									<td colspan='2'> <g:TextBox ui:field="predespachoBox"/> </td>
+       									<td> <g:Button ui:field="predespachoAddButton" text='Añadir'/> </td>
+       								</tr>
+       							</table>
+       						</g:HTMLPanel>
+       					</g:north>
+       					<g:center>
+       						<c:DataGrid addStyleNames='{style.data}' ui:field="predespachoGrid"/>
+       					</g:center>
+       				</g:DockLayoutPanel>
+     			</g:tab>
+     			<g:tab> 
+       				<g:header size='10'>Despacho</g:header> 
        				<g:DockLayoutPanel unit="PX">
        					<g:north size='35'>
        						<g:HTMLPanel>
@@ -92,44 +131,6 @@
        						<c:DataGrid addStyleNames='{style.data}' ui:field="despachoGrid"/>
        					</g:center>
        				</g:DockLayoutPanel>
-     			</g:tab>
-     			<g:tab> 
-       				<g:header size='7'>Pre despacho</g:header> 
-       				<g:DockLayoutPanel unit="PX">
-       					<g:north size='70'>
-       						<g:HTMLPanel>
-       							<table>
-       								<tr>
-       									<td> <g:Button ui:field="addLoteButton" text='Nuevo'/> </td>
-       									<td> <g:ListBox ui:field="lotesBox"/> </td>
-       									<td> <g:Button ui:field="removeLoteButton" text='Eliminar'/> </td>
-       								</tr>
-       								<tr>
-       									<td colspan='2'> <g:TextBox ui:field="predespachoBox"/> </td>
-       									<td> <g:Button ui:field="predespachoAddButton" text='Añadir'/> </td>
-       								</tr>
-       							</table>
-       						</g:HTMLPanel>
-       					</g:north>
-       					<g:center>
-       						<c:DataGrid addStyleNames='{style.data}' ui:field="predespachoGrid"/>
-       					</g:center>
-       				</g:DockLayoutPanel>
-     			</g:tab>
-     			<g:tab>
-     				<g:DockLayoutPanel unit="PX">
-     					<g:east size='200'>
-     						<g:HTMLPanel>
-     						
-     						</g:HTMLPanel>
-     					</g:east>
-						<g:south size='30'>
-							<g:Label ui:field="totalLabel"/>
-						</g:south>
-						<g:center>
-							<c:DataGrid addStyleNames='{style.data}' ui:field="materialGrid"/>
-						</g:center>
-					</g:DockLayoutPanel>
      			</g:tab>
 			</g:TabLayoutPanel>
 		</g:center>
