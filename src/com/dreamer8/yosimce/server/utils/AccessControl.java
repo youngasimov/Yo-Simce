@@ -59,27 +59,27 @@ public class AccessControl {
 			return true;
 		}
 
-		Cookie cookie = null;
-		for (Cookie c : this.request.getCookies()) {
-			if (c.getName().equals(TOKEN_COOKIE_NAME)) {
-				cookie = c;
-				break;
-			}
-		}
-		if (cookie != null && cookie.getValue() != null) {
-			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-			s.beginTransaction();
-			SesionDAO sdao = new SesionDAO();
-			List<Sesion> ss = sdao.findBySessionId(cookie.getValue());
-			if (!ss.isEmpty()) {
-				usuario = ss.get(0).getUsuario();
-				this.session.setAttribute("usuario", usuario);
-			}
-			s.getTransaction().commit();
-			if (usuario != null) {
-				return true;
-			}
-		}
+//		Cookie cookie = null;
+//		for (Cookie c : this.request.getCookies()) {
+//			if (c.getName().equals(TOKEN_COOKIE_NAME)) {
+//				cookie = c;
+//				break;
+//			}
+//		}
+//		if (cookie != null && cookie.getValue() != null) {
+//			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+//			s.beginTransaction();
+//			SesionDAO sdao = new SesionDAO();
+//			List<Sesion> ss = sdao.findBySessionId(cookie.getValue());
+//			if (!ss.isEmpty()) {
+//				usuario = ss.get(0).getUsuario();
+//				this.session.setAttribute("usuario", usuario);
+//			}
+//			s.getTransaction().commit();
+//			if (usuario != null) {
+//				return true;
+//			}
+//		}
 
 		throw new NoLoggedException();
 	}

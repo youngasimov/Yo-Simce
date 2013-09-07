@@ -14,12 +14,14 @@ public class Alumno implements java.io.Serializable {
 	private Integer id;
 	private Sexo sexo;
 	private String rut;
+	private String rutStripped;
 	private String nombres;
 	private String apellidoPaterno;
 	private String apellidoMaterno;
 	private Date fechaNacimiento;
 	private boolean nee;
-	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(0);
+	private List<AlumnoXActividad> alumnoXActividads = new ArrayList<AlumnoXActividad>(
+			0);
 
 	public Alumno() {
 	}
@@ -31,7 +33,8 @@ public class Alumno implements java.io.Serializable {
 
 	public Alumno(Integer id, Sexo sexo, String rut, String nombres,
 			String apellidoPaterno, String apellidoMaterno,
-			Date fechaNacimiento, boolean nee, List<AlumnoXActividad> alumnoXActividads) {
+			Date fechaNacimiento, boolean nee,
+			List<AlumnoXActividad> alumnoXActividads) {
 		this.id = id;
 		this.sexo = sexo;
 		this.rut = rut;
@@ -65,6 +68,21 @@ public class Alumno implements java.io.Serializable {
 
 	public void setRut(String rut) {
 		this.rut = rut;
+	}
+
+	/**
+	 * @return the rutStripped
+	 */
+	public String getRutStripped() {
+		return rutStripped;
+	}
+
+	/**
+	 * @param rutStripped
+	 *            the rutStripped to set
+	 */
+	public void setRutStripped(String rutStripped) {
+		this.rutStripped = rutStripped;
 	}
 
 	public String getNombres() {

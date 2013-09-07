@@ -4,9 +4,34 @@
 <hibernate-configuration>
  <session-factory>
   <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+  
+  <!-- Config  local -->
+  
   <property name="hibernate.connection.password">simce</property>
   <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/simce</property>
   <property name="hibernate.connection.username">simce</property>
+
+<!-- FIN Config  local -->
+
+
+
+<!-- Config  hacia el maestro -->
+
+<!--   <property name="hibernate.connection.password">pg.simce</property> -->
+<!--   <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.13:5432/simcedb</property> -->
+<!--   <property name="hibernate.connection.username">pg_simce</property> -->
+
+<!-- FIN Config  hacia el maestro -->
+
+
+<!-- Config  hacia el balanceador -->
+  
+<!--   <property name="hibernate.connection.password">pg.simce</property> -->
+<!--   <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.12:9999/simcedb</property> -->
+<!--   <property name="hibernate.connection.username">pg_simce</property> -->
+  
+<!-- FIN Config  hacia el balanceador -->
+  
   <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
   <property name="hibernate.show_sql">true</property>
   <property name="hibernate.default_entity_mode">pojo</property>

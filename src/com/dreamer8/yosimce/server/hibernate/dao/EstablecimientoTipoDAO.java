@@ -3,6 +3,8 @@
  */
 package com.dreamer8.yosimce.server.hibernate.dao;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -15,6 +17,18 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class EstablecimientoTipoDAO extends
 		AbstractHibernateDAO<EstablecimientoTipo, Integer> {
+
+	public List<EstablecimientoTipo> findAll() {
+
+		List<EstablecimientoTipo> ets = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT et.* FROM ESTABLECIMIENTO_TIPO et"
+				+ " ORDER et.id ASC";
+		Query q = s.createSQLQuery(query).addEntity(EstablecimientoTipo.class);
+		ets = q.list();
+		return ets;
+	}
+
 	public EstablecimientoTipo findByIdAplicacionANDIdEstablecimiento(
 			Integer idAplicacion, Integer idEstablecimiento) {
 

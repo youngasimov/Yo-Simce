@@ -14,6 +14,9 @@
         <property name="rut" type="string">
             <column name="rut" length="15" />
         </property>
+        <property name="rutStripped" type="string">
+            <column name="rut_stripped" length="15" />
+        </property>
         <property name="nombres" type="string">
             <column name="nombres" />
         </property>

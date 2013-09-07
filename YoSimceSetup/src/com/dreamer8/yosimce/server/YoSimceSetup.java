@@ -82,8 +82,8 @@ public class YoSimceSetup {
 		// initPermisos();
 
 		cargarAlumnosTic("titulares.csv", EstablecimientoTipo.SELECCIONADO);
-		cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
-		cargarAlumnosTic("reemplazos2.csv", EstablecimientoTipo.REEMPLAZO_2);
+//		cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
+//		cargarAlumnosTic("reemplazos2.csv", EstablecimientoTipo.REEMPLAZO_2);
 
 		System.out.println("fin :P");
 	}
@@ -125,6 +125,7 @@ public class YoSimceSetup {
 							a.setContactoCargo(cc);
 							a.setFechaInicio(axnxat.getFechaInicio());
 							a.setFechaTermino(axnxat.getFechaTermino());
+							a.setTotalAlumnos(curso.getCantidadAlumnos());
 							if (axnxat.getActividadTipo().getNombre()
 									.equals(ActividadTipo.APLICACION_DIA_1)) {
 								a.setDia(1);
@@ -268,6 +269,7 @@ public class YoSimceSetup {
 			s.beginTransaction();
 			String rbd = null;
 			Curso c = null;
+			CursoDAO cdao = new CursoDAO();
 			AplicacionDAO aplicacionDAO = new AplicacionDAO();
 			Aplicacion aplicacion = aplicacionDAO.getById(2);
 			EstablecimientoDAO edao = new EstablecimientoDAO();
@@ -278,9 +280,16 @@ public class YoSimceSetup {
 			EstablecimientoTipo et = etdao.findByNombre(tipoEstablecimiento);
 			List<Curso> cs = null;
 			List<Actividad> as = null;
+			Actividad a = null;
 			ActividadDAO actividadDAO = new ActividadDAO();
 			Alumno alumno = null;
 			AlumnoDAO alumnoDAO = new AlumnoDAO();
+			ActividadEstadoDAO actividadEstadoDAO = new ActividadEstadoDAO();
+			ActividadEstado actividadEstado = actividadEstadoDAO
+					.findByNombre(ActividadEstado.SIN_INFORMACION);
+			Establecimiento e = null;
+			ContactoCargoDAO ccdao = new ContactoCargoDAO();
+			ContactoCargo cc = ccdao.findByName(ContactoCargo.DIRECTOR);
 			AlumnoEstadoDAO aedao = new AlumnoEstadoDAO();
 			AlumnoEstado ae = aedao.findByNombre(AlumnoEstado.SIN_INFORMACION);
 			AlumnoTipoDAO atdao = new AlumnoTipoDAO();
@@ -293,61 +302,90 @@ public class YoSimceSetup {
 			AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
 			AlumnoXActividad axa = null;
 			String[] fechaNacimiento = null;
+			AplicacionXNivelDAO axndao = new AplicacionXNivelDAO();
+			AplicacionXNivel axn = axndao.getById(6);
 			while ((line = br.readLine()) != null) {
 				row = line.split(";");
-				if (!row[0].equals(rbd)) {
-					rbd = row[0];
-					establecimiento = edao.getById(Integer.getInteger(rbd));
-					if (establecimiento == null) {
-						throw new NullPointerException(
-								"No se encontró el establecimiento " + rbd);
+				if (rowCounter != 0) {
+					if (!row[0].equals(rbd)) {
+						rbd = row[0];
+						establecimiento = edao.getById(Integer.valueOf(rbd));
+						if (establecimiento == null) {
+							throw new NullPointerException(
+									"No se encontró el establecimiento " + rbd);
+						}
+						axe = axedao.findByIdAplicacionANDIdEstablecimiento(2,
+								establecimiento.getId());
+						if (axe == null) {
+							axe = new AplicacionXEstablecimiento();
+							axe.setEstablecimiento(establecimiento);
+							axe.setAplicacion(aplicacion);
+						}
+						axe.setEstablecimientoTipo(et);
+						axedao.saveOrUpdate(axe);
+						cs = establecimiento.getCursos();
+						if (cs == null || cs.isEmpty()) {
+							c = new Curso();
+							c.setEstablecimiento(establecimiento);
+							c.setAplicacionXNivel(axn);
+							c.setNombre("2TIC");
+							c.setCantidadAlumnos(Integer.valueOf(row[6]));
+							cdao.save(c);
+						} else {
+							c = cs.get(0);
+						}
+						as = c.getActividads();
+						if (as == null || as.isEmpty()) {
+							for (AplicacionXNivelXActividadTipo axnxat : axn
+									.getAplicacionXNivelXActividadTipos()) {
+								a = new Actividad();
+								a.setCurso(c);
+								a.setAplicacionXNivelXActividadTipo(axnxat);
+								a.setActividadEstado(actividadEstado);
+								a.setContactoNombre(establecimiento
+										.getDirectorNombre());
+								a.setContactoEmail(establecimiento.getEmail());
+								a.setContactoTelefono(establecimiento
+										.getTelefono());
+								a.setContactoCargo(cc);
+								a.setFechaInicio(axnxat.getFechaInicio());
+								a.setFechaTermino(axnxat.getFechaTermino());
+								a.setDia(1);
+								actividadDAO.save(a);
+								as.add(a);
+							}
+						} else {
+							for (Actividad actividad : as) {
+								actividad.setTotalAlumnos(Integer
+										.valueOf(row[6]));
+								actividadDAO.update(actividad);
+							}
+						}
 					}
-					axe = axedao.findByIdAplicacionANDIdEstablecimiento(2,
-							establecimiento.getId());
-					if (axe == null) {
-						axe = new AplicacionXEstablecimiento();
-						axe.setEstablecimiento(establecimiento);
-						axe.setAplicacion(aplicacion);
-					}
-					axe.setEstablecimientoTipo(et);
-					axedao.saveOrUpdate(axe);
-					cs = establecimiento.getCursos();
-					if (cs == null || cs.isEmpty()) {
-						throw new NullPointerException("El establecimiento "
-								+ rbd + " no tiene curso");
-					}
-					c = cs.get(0);
-					as = c.getActividads();
-					if (as == null || as.isEmpty()) {
-						throw new NullPointerException("El establecimiento "
-								+ rbd + " no tiene actividades");
-					}
+					alumno = new Alumno();
+					alumno.setId(Integer.valueOf(row[7]));
+					alumno.setRut(StringUtils.formatRut(row[7] + row[8]));
+					alumno.setRutStripped(StringUtils.formatRut(row[7] + "-"
+							+ row[8]));
+					alumno.setNombres(row[9]);
+					alumno.setApellidoPaterno(row[10]);
+					alumno.setApellidoMaterno(row[11]);
+					alumno.setSexo((row[12].equals("M")) ? masculino : femenino);
+					fechaNacimiento = row[13].split("-");
+					calendar.set(Integer.valueOf(fechaNacimiento[2]),
+							Integer.valueOf(fechaNacimiento[1]) - 1,
+							Integer.valueOf(fechaNacimiento[0]));
+					alumno.setFechaNacimiento(calendar.getTime());
+					alumnoDAO.save(alumno);
 					for (Actividad actividad : as) {
-						actividad.setTotalAlumnos(Integer.getInteger(row[6]));
-						actividadDAO.update(actividad);
+						axa = new AlumnoXActividad();
+						axa.setActividad(actividad);
+						axa.setAlumno(alumno);
+						axa.setAlumnoEstado(ae);
+						axa.setAlumnoTipo((row[19].equals("T") ? titular
+								: reemplazo));
+						axadao.save(axa);
 					}
-				}
-				alumno = new Alumno();
-				alumno.setId(Integer.getInteger(row[7]));
-				alumno.setRut(StringUtils.formatRut(row[7] + row[8]));
-				alumno.setNombres(row[9]);
-				alumno.setApellidoPaterno(row[10]);
-				alumno.setApellidoMaterno(row[11]);
-				alumno.setSexo((row[12].equals("M")) ? masculino : femenino);
-				fechaNacimiento = row[13].split("-");
-				calendar.set(Integer.getInteger(fechaNacimiento[2]),
-						Integer.getInteger(fechaNacimiento[1]),
-						Integer.getInteger(fechaNacimiento[0]));
-				alumno.setFechaNacimiento(calendar.getTime());
-				alumnoDAO.save(alumno);
-				for (Actividad actividad : as) {
-					axa = new AlumnoXActividad();
-					axa.setActividad(actividad);
-					axa.setAlumno(alumno);
-					axa.setAlumnoEstado(ae);
-					axa.setAlumnoTipo((row[19].equals("T") ? titular
-							: reemplazo));
-					axadao.save(axa);
 				}
 				rowCounter++;
 			}

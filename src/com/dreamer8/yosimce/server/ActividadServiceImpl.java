@@ -334,12 +334,6 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				/**
-				 * Obtener encuesta.
-				 * 
-				 * si sincroniza y no era titular
-				 */
-
 				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
 				AlumnoXActividad axa = axadao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDRutAlumno(
@@ -364,8 +358,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 								axa.getId(), sinc.getIdPendrive(),
 								DocumentoTipo.PRUEBA);
 
+				DocumentoDAO ddao = new DocumentoDAO();
+
 				if (axaxdPndrive == null) {
-					DocumentoDAO ddao = new DocumentoDAO();
 					Documento pendrive = ddao.findByCodigoANDTipoDocumento(
 							sinc.getIdPendrive(), DocumentoTipo.PRUEBA);
 					if (pendrive == null) {
@@ -391,6 +386,30 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				axaxdPndrive.setModificadorId(u.getId());
 
 				axaxddao.saveOrUpdate(axaxdPndrive);
+
+				AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
+						.findByIdAlumnoXActividadANDTipoDocumento(axa.getId(),
+								DocumentoTipo.CUESTIONARIO_PADRE);
+
+				if (axaxdCuestionario == null) {
+					DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+					DocumentoTipo dt = dtdao
+							.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
+					Documento cuestionario = new Documento();
+					cuestionario.setDocumentoTipo(dt);
+					ddao.save(cuestionario);
+					axaxdCuestionario = new AlumnoXActividadXDocumento();
+					axaxdCuestionario.setAlumnoXActividad(axa);
+					axaxdCuestionario.setDocumento(cuestionario);
+				}
+
+				axaxdCuestionario.setEntregado(true);
+				axaxdCuestionario.setRecibido(sinc.getEntregoFormulario());
+
+				axaxdCuestionario.setUpdatedAt(new Date());
+				axaxdCuestionario.setModificadorId(u.getId());
+
+				axaxddao.saveOrUpdate(axaxdCuestionario);
 
 				s.getTransaction().commit();
 			}
@@ -1358,17 +1377,20 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				/**********
-				 * 
-				 * 
-				 * 
-				 * BORRAR DESPUÉS
-				 * 
-				 * 
-				 * 
-				 * 
-				 * 
-				 */
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+
+				if (a == null) {
+					throw new NullPointerException(
+							"El curso especificado no tiene una actividad asociada.");
+				}
+
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				mddtos = (ArrayList<MaterialDefectuosoDTO>) axaxddao
+						.findDefectuososByIdctividadANDTipoDocumento(a.getId(),
+								DocumentoTipo.PRUEBA);
 
 				s.getTransaction().commit();
 			}
@@ -1393,8 +1415,116 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	public Boolean addOrUpdateMaterialDefectuoso(Integer idCurso,
 			MaterialDefectuosoDTO material) throws NoAllowedException,
 			NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "addOrUpdateMaterialDefectuoso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+
+				if (material == null || material.getIdMaterial() == null
+						|| material.getIdMaterial().equals("")) {
+					throw new NullPointerException(
+							"No se ha especificado el pendrive.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+
+				if (a == null) {
+					throw new NullPointerException(
+							"El curso especificado no tiene una actividad asociada.");
+				}
+
+				DocumentoDAO ddao = new DocumentoDAO();
+				Documento d = ddao.findByCodigoANDTipoDocumento(
+						material.getIdMaterial(), DocumentoTipo.PRUEBA);
+
+				if (d == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el pendrive especificado. Verifique que ha ingresado el código correctamente.");
+				}
+
+				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
+				AlumnoXActividad axa = axadao.findSinAlumnoByIdActividad(a
+						.getId());
+
+				if (axa == null) {
+					axa = new AlumnoXActividad();
+					axa.setActividad(a);
+					axadao.save(axa);
+				}
+
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				AlumnoXActividadXDocumento axaxd = axaxddao
+						.findByIdAlumnoXActividadANDIdDocumento(axa.getId(),
+								d.getId());
+
+				if (axaxd == null) {
+					axaxd = new AlumnoXActividadXDocumento();
+					axaxd.setAlumnoXActividad(axa);
+					axaxd.setDocumento(d);
+				}
+
+				if (material.getEstado() != null) {
+					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+					DocumentoEstado de = dedao.getById(material.getEstado()
+							.getIdEstadoSincronizacion());
+					axaxd.setDocumentoEstado(de);
+				}
+
+				axaxddao.saveOrUpdate(axaxd);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return result;
 	}
 
 	/**
@@ -1403,8 +1533,93 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public Boolean removeMaterialDefectuoso(Integer idCurso, String idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "removeMaterialDefectuoso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+
+				if (idMaterial == null || idMaterial.equals("")) {
+					throw new NullPointerException(
+							"No se ha especificado el pendrive.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+
+				if (a == null) {
+					throw new NullPointerException(
+							"El curso especificado no tiene una actividad asociada.");
+				}
+
+				DocumentoDAO ddao = new DocumentoDAO();
+				Documento d = ddao.findByCodigoANDTipoDocumento(idMaterial,
+						DocumentoTipo.PRUEBA);
+
+				if (d == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el pendrive especificado. Verifique que ha ingresado el código correctamente.");
+				}
+
+				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
+				AlumnoXActividad axa = axadao.findSinAlumnoByIdActividad(a
+						.getId());
+
+				if (axa != null) {
+					axadao.delete(axa);
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return result;
 	}
 
 	/**

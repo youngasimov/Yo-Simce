@@ -12,8 +12,8 @@ import com.dreamer8.yosimce.shared.dto.TipoEstablecimientoDTO;
  */
 public class EstablecimientoTipo implements java.io.Serializable {
 
-	public static final String SELECCIONADO = "Seleccionado";
-	public static final String SELECCIONADO_NO_APLICA = "Seleccionado No Aplica";
+	public static final String SELECCIONADO = "Titular";
+	public static final String SELECCIONADO_NO_APLICA = "Titular No Aplica";
 	public static final String REEMPLAZO_1 = "Reemplazo 1";
 	public static final String REEMPLAZO_1_SELECCIONADO = "Reemplazo 1 Seleccionado";
 	public static final String REEMPLAZO_2 = "Reemplazo 2";

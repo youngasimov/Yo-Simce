@@ -40,4 +40,17 @@ public class AlumnoXActividadDAO extends
 		axa = ((AlumnoXActividad) q.uniqueResult());
 		return axa;
 	}
+
+	public AlumnoXActividad findSinAlumnoByIdActividad(Integer idActividad) {
+
+		AlumnoXActividad axa = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT axa.* FROM FROM ALUMNO_x_ACTIVIDAD axa "
+				+ " WHERE axa.actividad_id="
+				+ SecurityFilter.escapeString(idActividad)
+				+ " AND axa.alumno_id IS NULL";
+		Query q = s.createSQLQuery(query).addEntity(AlumnoXActividad.class);
+		axa = ((AlumnoXActividad) q.uniqueResult());
+		return axa;
+	}
 }

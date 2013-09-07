@@ -57,6 +57,9 @@
         <property name="dia" type="java.lang.Integer">
             <column name="dia" />
         </property>
+        <property name="totalAlumnos" type="java.lang.Integer">
+            <column name="total_alumnos" />
+        </property>
         <property name="totalAlumnosPresentes" type="java.lang.Integer">
             <column name="total_alumnos_presentes" />
         </property>

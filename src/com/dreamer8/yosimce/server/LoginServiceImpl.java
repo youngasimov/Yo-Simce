@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.Cookie;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -43,35 +45,45 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	 */
 	public UserDTO getUser(String token) {
 		UserDTO udto = null;
-		Session s = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			AccessControl ac = getAccessControl();
-			if (ac.isLogged()) {
 
-				if (token == null) {
-					throw new NullPointerException(
-							"No se ha especificado un usuario.");
+			if (token == null) {
+				Cookie cookie = null;
+				for (Cookie c : this.getThreadLocalRequest().getCookies()) {
+					if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
+						cookie = c;
+						break;
+					}
 				}
-				s = HibernateUtil.getSessionFactory().getCurrentSession();
-				s.beginTransaction();
-				SesionDAO sdao = new SesionDAO();
-				List<Sesion> ss = sdao.findBySessionId(token);
-				if (ss == null || ss.isEmpty()) {
-					throw new NullPointerException(
-							"No se ha encontrado el usuario especificado");
-				}
-
-				Usuario u = ss.get(0).getUsuario();
-
-				if (u == null) {
-					throw new NullPointerException(
-							"No se ha encontrado el usuario especificado");
-				}
-
-				udto = u.getUserDTO();
-
-				s.getTransaction().commit();
+				token = cookie.getValue();
 			}
+			if (token == null) {
+				throw new NullPointerException(
+						"No se ha especificado un usuario.");
+			}
+			
+			s.beginTransaction();
+			SesionDAO sdao = new SesionDAO();
+			List<Sesion> ss = sdao.findBySessionId(token);
+			if (ss == null || ss.isEmpty()) {
+				throw new NullPointerException(
+						"No se ha encontrado el usuario especificado");
+			}
+
+			Usuario u = ss.get(0).getUsuario();
+
+			if (u == null) {
+				throw new NullPointerException(
+						"No se ha encontrado el usuario especificado");
+			}
+
+			this.getThreadLocalRequest().getSession()
+					.setAttribute("usuario", u);
+
+			udto = u.getUserDTO();
+
+			s.getTransaction().commit();
 		} catch (HibernateException ex) {
 			System.err.println(ex);
 			HibernateUtil.rollback(s);
