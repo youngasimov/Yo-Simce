@@ -231,7 +231,7 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return ViewUtils.limitarString(o.getNombres(),25);
+				return ViewUtils.limitarString(o.getNombres(),20);
 			}
 		};
 		nombreColumn.setSortable(false);
@@ -243,7 +243,7 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getApellidoPaterno();
+				return (o.getApellidoPaterno()!=null)?o.getApellidoPaterno():"";
 			}
 		};
 		paternoColumn.setSortable(false);
@@ -255,7 +255,7 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getApellidoMaterno();
+				return (o.getApellidoMaterno()!=null)?o.getApellidoMaterno():"";
 			}
 		};
 		maternoColumn.setSortable(false);
@@ -267,7 +267,7 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getRut();
+				return (o.getRut()!=null)?o.getRut():"";
 			}
 		};
 		rutColumn.setSortable(false);
@@ -278,7 +278,7 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getTipoAlumno();
+				return (o.getTipoAlumno()!=null)?o.getTipoAlumno():"";
 			}
 		};
 		tipoColumn.setSortable(false);
@@ -289,7 +289,7 @@ public class SincronizacionViewD extends Composite implements
 		materialColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
 			@Override
 			public String getValue(SincAlumnoDTO o) {
-				return o.getIdPendrive();
+				return (o.getIdPendrive()!=null)?o.getIdPendrive():"";
 			}
 		};
 		dataGrid.addColumn(materialColumn, "id dispositivo");
@@ -307,7 +307,7 @@ public class SincronizacionViewD extends Composite implements
 			estadoColumn = new Column<SincAlumnoDTO, String>(new SelectionCell(selection)) {
 				@Override
 				public String getValue(SincAlumnoDTO o) {
-					return o.getEstado().getNombreEstado();
+					return (o.getEstado()!=null)?o.getEstado().getNombreEstado():"";
 				}
 			};
 			dataGrid.addColumn(estadoColumn, "Estado");
@@ -321,7 +321,7 @@ public class SincronizacionViewD extends Composite implements
 
 			@Override
 			public Boolean getValue(SincAlumnoDTO o) {
-				return o.getEntregoFormulario();
+				return (o.getEntregoFormulario()!=null)?o.getEntregoFormulario():false;
 			}
 		};
 		dataGrid.addColumn(formColumn, "Form. P. y A.");
