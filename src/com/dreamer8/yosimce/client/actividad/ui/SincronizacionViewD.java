@@ -66,10 +66,11 @@ public class SincronizacionViewD extends Composite implements
 	private CursoDTO curso;
 
 	public SincronizacionViewD() {
-		dataGrid = new DataGrid<SincAlumnoDTO>(100,SincAlumnoDTO.KEY_PROVIDER);
+		dataGrid = new DataGrid<SincAlumnoDTO>(200,SincAlumnoDTO.KEY_PROVIDER);
 		initWidget(uiBinder.createAndBindUi(this));
 		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CURRENT_PAGE);
 		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+		estados = new ArrayList<EstadoSincronizacionDTO>();
 		menu.insertSeparator(2);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
@@ -105,6 +106,8 @@ public class SincronizacionViewD extends Composite implements
 				presenter.goTo(mdp);
 			}
 		});
+		
+		buildTable();
 	}
 
 	@UiFactory
@@ -120,8 +123,12 @@ public class SincronizacionViewD extends Composite implements
 	@Override
 	public void setEstadosSincronizacion(
 			ArrayList<EstadoSincronizacionDTO> estados) {
-		this.estados = estados;
-		buildTable();
+		this.estados.clear();
+		this.estados.addAll(estados);
+		
+		insertEstadoColumn();
+		
+		dataGrid.redraw();
 		if(alumnos!= null){
 			setAlumnos(alumnos);
 		}
@@ -133,14 +140,15 @@ public class SincronizacionViewD extends Composite implements
 	}
 	
 	@Override
-	public void updateTable() {
-		dataGrid.redraw();
+	public void updateTableRow(SincAlumnoDTO alumno) {
+		int index = dataGrid.getVisibleItems().indexOf(alumno);
+		dataGrid.redrawRow(index);
 	}
 	
 	@Override
 	public void setCurso(CursoDTO curso) {
 		this.curso = curso;
-		cursoItem.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+"-"+curso.getNombre(),40));
+		cursoItem.setHTML(ViewUtils.limitarString(curso.getNombreEstablecimiento()+" - "+curso.getNombre(),40));
 	}
 	
 	@Override
@@ -186,14 +194,13 @@ public class SincronizacionViewD extends Composite implements
 	@Override
 	public void setAlumnos(ArrayList<SincAlumnoDTO> alumnos) {
 		this.alumnos = alumnos;
-		if(estados == null){
-			return;
+		if(!estados.isEmpty()){
+			dataGrid.setPageSize(alumnos.size()+1);
+			dataGrid.setPageStart(0);
+			dataGrid.setRowCount(alumnos.size());
+			dataGrid.setVisibleRange(0, alumnos.size());
+			dataGrid.setRowData(alumnos);
 		}
-		dataGrid.setPageSize(alumnos.size()+1);
-		dataGrid.setPageStart(0);
-		dataGrid.setRowCount(alumnos.size());
-		dataGrid.setVisibleRange(0, alumnos.size());
-		dataGrid.setRowData(alumnos);
 	}
 
 	@Override
@@ -202,9 +209,6 @@ public class SincronizacionViewD extends Composite implements
 	}
 
 	private void buildTable() {
-		for(int i=0;i<dataGrid.getColumnCount();i++){
-			dataGrid.removeColumn(i);
-		}
 		
 		Column<SincAlumnoDTO, String> sincColumn = new Column<SincAlumnoDTO, String>(new ImageCell()) {
 
@@ -213,13 +217,11 @@ public class SincronizacionViewD extends Composite implements
 				if (o.getSinc() == SincAlumnoDTO.SINC_SIN_INFORMACION) {
 					return "";
 				} else if (o.getSinc() == SincAlumnoDTO.SINC_EN_PROCESO) {
-					return SimceResources.INSTANCE.update().getSafeUri()
-							.asString();
+					return "/images/update.gif";
 				} else if (o.getSinc() == SincAlumnoDTO.SINC_EXITOSA) {
-					return SimceResources.INSTANCE.ok().getSafeUri().asString();
+					return "/images/ok.png";
 				} else {
-					return SimceResources.INSTANCE.error().getSafeUri()
-							.asString();
+					return "/images/error.png";
 				}
 			}
 		};
@@ -293,28 +295,9 @@ public class SincronizacionViewD extends Composite implements
 			}
 		};
 		dataGrid.addColumn(materialColumn, "id dispositivo");
-		dataGrid.setColumnWidth(materialColumn,100,Unit.PX);
+		dataGrid.setColumnWidth(materialColumn,154,Unit.PX);
 		if(materialUpdater!=null){
 			materialColumn.setFieldUpdater(materialUpdater);
-		}
-		
-		if(estados != null){
-			ArrayList<String> selection = new ArrayList<String>();
-			for(EstadoSincronizacionDTO e:estados){
-				selection.add(e.getNombreEstado());
-			}
-			
-			estadoColumn = new Column<SincAlumnoDTO, String>(new SelectionCell(selection)) {
-				@Override
-				public String getValue(SincAlumnoDTO o) {
-					return (o.getEstado()!=null)?o.getEstado().getNombreEstado():"";
-				}
-			};
-			dataGrid.addColumn(estadoColumn, "Estado");
-			dataGrid.setColumnWidth(estadoColumn,120,Unit.PX);
-			if(estadoUpdater!=null){
-				estadoColumn.setFieldUpdater(estadoUpdater);
-			}
 		}
 		
 		formColumn = new Column<SincAlumnoDTO, Boolean>(new CheckboxCell()) {
@@ -337,19 +320,41 @@ public class SincronizacionViewD extends Composite implements
 			}
 		};
 		dataGrid.addColumn(comentarioColumn, "Comentario");
-		dataGrid.setColumnWidth(comentarioColumn,250,Unit.PX);
+		dataGrid.setColumnWidth(comentarioColumn,200,Unit.PX);
 		if(comentarioUpdater!=null){
 			comentarioColumn.setFieldUpdater(comentarioUpdater);
+		}
+	}
+	
+	private void insertEstadoColumn(){
+		
+		ArrayList<String> selection = new ArrayList<String>();
+		for(EstadoSincronizacionDTO e:estados){
+			selection.add(e.getNombreEstado());
+		}
+		
+		estadoColumn = new Column<SincAlumnoDTO, String>(new SelectionCell(selection)) {
+			@Override
+			public String getValue(SincAlumnoDTO o) {
+				return (o.getEstado()!=null)?o.getEstado().getNombreEstado():"";
+			}
+		};
+		dataGrid.insertColumn(7,estadoColumn, "Estado");
+		dataGrid.setColumnWidth(estadoColumn,140,Unit.PX);
+		if(estadoUpdater!=null){
+			estadoColumn.setFieldUpdater(estadoUpdater);
 		}
 	}
 
 	@Override
 	public void clear() {
 		cursoItem.setText("");
+		estados.clear();
 		dataGrid.setRowCount(0);
 		alumnos = null;
-		for(int i=0;i<dataGrid.getColumnCount();i++){
-			dataGrid.removeColumn(i);
+		if(estadoColumn!=null){
+			dataGrid.removeColumn(estadoColumn);
+			estadoColumn = null;
 		}
 	}
 }

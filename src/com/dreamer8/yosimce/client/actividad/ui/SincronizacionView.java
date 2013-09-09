@@ -16,7 +16,7 @@ public interface SincronizacionView extends IsWidget {
 	void setFormFieldUpdater(FieldUpdater<SincAlumnoDTO, Boolean> updater);
 	void setComentarioFieldUpdater(FieldUpdater<SincAlumnoDTO, String> updater);
 	void setEstadosSincronizacion(ArrayList<EstadoSincronizacionDTO> estados);
-	void updateTable();
+	void updateTableRow(SincAlumnoDTO alumno);
 	void setAlumnos(ArrayList<SincAlumnoDTO> alumnos);
 	void setTotalALumnos(int total);
 	void setCurso(CursoDTO curso);

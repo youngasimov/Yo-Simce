@@ -161,7 +161,7 @@ public class SincronizacionActivity extends SimceActivity implements
 				public void update(int index, SincAlumnoDTO object,
 						Boolean value) {
 					object.setEntregoFormulario(value);
-					
+					sinc(object);
 				}
 			});
 		}else{
@@ -215,20 +215,21 @@ public class SincronizacionActivity extends SimceActivity implements
 		
 		if(Utils.hasPermisos(getPermisos(),"ActividadService","updateSincronizacionAlumno")){
 			alumno.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
-			view.updateTable();
+			view.updateTableRow(alumno);
+				
 			getFactory().getActividadService().updateSincronizacionAlumno(place.getIdCurso(),alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus,false) {
 	
 				@Override
 				public void success(Boolean result) {
 					alumno.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
-					view.updateTable();
+					view.updateTableRow(alumno);
 				}
 				
 				@Override
 				public void failure(Throwable caught) {
 					super.failure(caught);
 					alumno.setSinc(SincAlumnoDTO.SINC_ERRONEA);
-					view.updateTable();
+					view.updateTableRow(alumno);
 				}
 			});
 		}
