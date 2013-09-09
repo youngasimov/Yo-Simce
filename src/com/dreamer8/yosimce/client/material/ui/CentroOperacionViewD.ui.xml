@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui"
+	xmlns:u="urn:import:gwtupload.client">
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
@@ -20,8 +21,27 @@
 		text-align: center;
 	}
 	
+	.subtitle{
+		display:block;
+		text-align: left;
+		padding-left: 50px;
+		font-size: 18px;
+		font-weight: bolder;
+		border-bottom: 1px solid black;
+	}
+	
 	.data{
 		font-size: 12px;
+	}
+	
+	.actions{
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	.actions td{
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
@@ -37,34 +57,64 @@
 			<g:TabLayoutPanel animationVertical='false' animationDuration='200' barUnit='PX' barHeight='30'>
 				<g:tab>
      				<g:header size='10'>Material</g:header>
-     				<g:DockLayoutPanel unit="PX">
-     					<g:east size='200'>
-     						<g:HTMLPanel>
-     						
-     						</g:HTMLPanel>
-     					</g:east>
-						<g:south size='30'>
-							<g:Label ui:field="totalLabel"/>
-						</g:south>
-						<g:center>
-							<c:DataGrid addStyleNames='{style.data}' ui:field="materialGrid"/>
+     				<g:SplitLayoutPanel>
+     					<g:south size='240'>
+	     					<g:DockLayoutPanel unit="PX">
+	     						<g:north size='30'>
+									<g:Label addStyleNames='{style.subtitle}' text="Historial"/>
+								</g:north>
+	     						<g:center size='200'>
+	     							<c:DataGrid addStyleNames='{style.data}' ui:field="historialGrid"/>
+	     						</g:center>
+	     					</g:DockLayoutPanel>
+     					</g:south>
+     					<g:center>
+	     					<g:DockLayoutPanel unit="PX">
+								<g:south size='30'>
+									<g:Label ui:field="totalLabel"/>
+								</g:south>
+								<g:center>
+									<c:DataGrid addStyleNames='{style.data}' ui:field="materialGrid"/>
+								</g:center>
+							</g:DockLayoutPanel>
 						</g:center>
-					</g:DockLayoutPanel>
+     				</g:SplitLayoutPanel>
      			</g:tab>
 				<g:tab> 
        				<g:header size='10'>Ingreso</g:header>
        				<g:DockLayoutPanel unit="PX">
-       					<g:north size='35'>
+       					<g:north size='40'>
        						<g:HTMLPanel>
-       							<div>
-       								<g:TextBox ui:field='ingresoBox'/>
-       								<my:ImageButton ui:field='ingresoAddButton' text='Añadir'/>
-       							</div>
+       							<table class='{style.actions}'>
+       								<tr>
+       									<td>
+       										<my:PlaceHolderTextBox placeholder='Código material' width="200px" ui:field='ingresoBox'/>
+       									</td>
+       									<td>
+       										<my:ImageButton ui:field='ingresoAddButton' text='Añadir'/>
+       									</td>
+       								</tr>
+       							</table>
        						</g:HTMLPanel>
        					</g:north>
        					<g:south size='50'>
        						<g:HTMLPanel>
-       							<div><my:ImageButton ui:field='ingresarButton'/></div>
+       							<table class='{style.actions}'>
+       								<tr>
+       									<td rowspan='2'>
+       										<g:Label ui:field='totalIngresoLabel'/>
+       									</td>
+       									<td>
+       										<u:SingleUploader width="300px"  ui:field="ingresoUploader"/>
+       									</td>
+       									<td>
+       										<g:Label visible='false' ui:field="docIngresoLabel"/>
+       									</td>
+       									<td rowspan='2'>
+       										<my:ImageButton ui:field='ingresarButton' text='Ingresar'/>
+       									</td>
+       								</tr>
+       							</table>
        						</g:HTMLPanel>
        					</g:south>
        					<g:center>
@@ -75,16 +125,16 @@
      			<g:tab> 
        				<g:header size='10'>Pre despacho</g:header> 
        				<g:DockLayoutPanel unit="PX">
-       					<g:north size='70'>
+       					<g:north size='75'>
        						<g:HTMLPanel>
-       							<table>
+       							<table class='{style.actions}'>
        								<tr>
        									<td> <g:Button ui:field="addLoteButton" text='Nuevo'/> </td>
        									<td> <g:ListBox ui:field="lotesBox"/> </td>
        									<td> <g:Button ui:field="removeLoteButton" text='Eliminar'/> </td>
        								</tr>
        								<tr>
-       									<td colspan='2'> <g:TextBox ui:field="predespachoBox"/> </td>
+       									<td colspan='2'> <my:PlaceHolderTextBox placeholder='Código material' ui:field="predespachoBox"/> </td>
        									<td> <g:Button ui:field="predespachoAddButton" text='Añadir'/> </td>
        								</tr>
        							</table>
@@ -98,31 +148,36 @@
      			<g:tab> 
        				<g:header size='10'>Despacho</g:header> 
        				<g:DockLayoutPanel unit="PX">
-       					<g:north size='35'>
+       					<g:north size='40'>
        						<g:HTMLPanel>
-       							<div>
-       								<g:TextBox ui:field='despachoBox'/>
-       								<my:ImageButton ui:field='despachoAddButton' text='Añadir'/>
-       								<g:CheckBox ui:field='loteBox'/>
-       							</div>
+       							<table class='{style.actions}'>
+       								<tr>
+       									<td><g:TextBox ui:field='despachoBox'/></td>
+       									<td><my:ImageButton ui:field='despachoAddButton' text='Añadir'/></td>
+       									<td><g:CheckBox ui:field='loteBox' text='Añadir lote'/></td>
+       								</tr>
+       							</table>
        						</g:HTMLPanel>
        					</g:north>
-       					<g:south size='80'>
+       					<g:south size='100'>
        						<g:HTMLPanel>
-       							<table>
+       							<table class='{style.actions}'>
        								<tr>
        									<td>Enviar a:</td>
        									<td> <g:ListBox ui:field='destinoDespachoBox'/> </td>
-       									<td> <g:Button ui:field='seleccionarCOBox'/> <g:Label ui:field='coLabel'/> </td>
+       									<td> <g:Label ui:field='coLabel'/></td>
        								</tr>
        								<tr>
-       									<td>Rut de quien retira</td>
+       									<td>Rut de quien retira:</td>
        									<td> <g:TextBox ui:field='rutRetiranteBox'/> </td>
        									<td> <g:Label ui:field='retiranteLabel'/> </td>
        								</tr>
        								<tr>
-       									<td colspan='2'></td>
-       									<td> <g:Button ui:field='despacharButton' text='Despachar'/> </td>
+       									<td colspan='2'> <u:SingleUploader ui:field="despachoUploader"/> </td>
+       									<td rowspan='2'> <g:Button ui:field='despacharButton' text='Despachar'/> </td>
+       								</tr>
+       								<tr>
+       									<td colspan='2'> <g:Label ui:field='salidaDocLabel'/> </td>
        								</tr>
        							</table>
        						</g:HTMLPanel>
