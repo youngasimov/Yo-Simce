@@ -24,6 +24,8 @@ import com.dreamer8.yosimce.client.general.GeneralService;
 import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
+import com.dreamer8.yosimce.client.material.MaterialService;
+import com.dreamer8.yosimce.client.material.MaterialServiceAsync;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionViewD;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
@@ -70,6 +72,8 @@ public class ClientFactoryD implements ClientFactory {
 			.create(PlanificacionService.class);
 	private final ActividadServiceAsync actividadService = (ActividadServiceAsync) GWT
 			.create(ActividadService.class);
+	private final MaterialServiceAsync materialService = (MaterialServiceAsync) GWT
+			.create(MaterialService.class);
 	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync) GWT
 			.create(AdministracionService.class);
 
@@ -144,6 +148,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public ActividadServiceAsync getActividadService() {
 		return actividadService;
+	}
+	
+	@Override
+	public MaterialServiceAsync getMaterialService() {
+		return materialService;
 	}
 
 	@Override

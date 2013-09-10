@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class LoteDTO implements Serializable {
 
 	private int id;

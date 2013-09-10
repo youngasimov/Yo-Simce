@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
+import com.dreamer8.yosimce.client.material.MaterialWrap;
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.PlaceHolderTextBox;
@@ -16,7 +17,6 @@ import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
-import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.ActionCell.Delegate;
@@ -66,10 +66,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField MenuItem exportarItem;
 	
 	@UiField(provided=true) DataGrid<HistorialMaterialItemDTO> historialGrid;
-	@UiField(provided=true) DataGrid<MaterialDTO> materialGrid;
-	@UiField(provided=true) DataGrid<MaterialDTO> ingresoGrid;
-	@UiField(provided=true) DataGrid<MaterialDTO> predespachoGrid;
-	@UiField(provided=true) DataGrid<MaterialDTO> despachoGrid;
+	@UiField(provided=true) DataGrid<MaterialWrap> materialGrid;
+	@UiField(provided=true) DataGrid<MaterialWrap> ingresoGrid;
+	@UiField(provided=true) DataGrid<MaterialWrap> predespachoGrid;
+	@UiField(provided=true) DataGrid<MaterialWrap> despachoGrid;
 	@UiField(provided=true) SingleUploaderModal ingresoUploader;
 	@UiField(provided=true) SingleUploaderModal despachoUploader;
 	@UiField(provided=true) SimplePager materialPager;
@@ -109,10 +109,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	public CentroOperacionViewD() {
 		
 		historialGrid = new DataGrid<HistorialMaterialItemDTO>(HistorialMaterialItemDTO.KEY_PROVIDER);
-		materialGrid = new DataGrid<MaterialDTO>(MaterialDTO.KEY_PROVIDER);
-		ingresoGrid = new DataGrid<MaterialDTO>(MaterialDTO.KEY_PROVIDER);
-		predespachoGrid = new DataGrid<MaterialDTO>(MaterialDTO.KEY_PROVIDER);
-		despachoGrid = new DataGrid<MaterialDTO>(MaterialDTO.KEY_PROVIDER);
+		materialGrid = new DataGrid<MaterialWrap>(MaterialWrap.KEY_PROVIDER);
+		ingresoGrid = new DataGrid<MaterialWrap>(MaterialWrap.KEY_PROVIDER);
+		predespachoGrid = new DataGrid<MaterialWrap>(MaterialWrap.KEY_PROVIDER);
+		despachoGrid = new DataGrid<MaterialWrap>(MaterialWrap.KEY_PROVIDER);
 		ingresoUploader = new SingleUploaderModal(FileInputType.ANCHOR);
 		ingresoUploader.setAutoSubmit(true);
 		despachoUploader = new SingleUploaderModal(FileInputType.ANCHOR);
@@ -198,6 +198,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 	
 	@Override
+	public void setCO(EmplazamientoDTO emplazamiento) {
+		cosItem.setHTML(emplazamiento.getNombre());
+	}
+	
+	@Override
 	public HasData<HistorialMaterialItemDTO> getHistorialDataDisplay() {
 		return historialGrid;
 	}
@@ -220,35 +225,35 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public HasData<MaterialDTO> getMaterialDataDisplay() {
+	public HasData<MaterialWrap> getMaterialDataDisplay() {
 		return materialGrid;
 	}
 
 	@Override
-	public void setMaterialSortHandler(ListHandler<MaterialDTO> handler) {
+	public void setMaterialSortHandler(ListHandler<MaterialWrap> handler) {
 		if(materialHandlerRegistration!=null){
 			materialHandlerRegistration.removeHandler();
 		}
 		materialHandlerRegistration = materialGrid.addColumnSortHandler(handler);
 		configureSortHandler(materialGrid, handler);
 		
-		handler.setComparator( materialGrid.getColumn(6), new Comparator<MaterialDTO>() {
+		handler.setComparator( materialGrid.getColumn(6), new Comparator<MaterialWrap>() {
 
 			@Override
-			public int compare(MaterialDTO o1, MaterialDTO o2) {
-				return o1.getEtapa().compareTo(o2.getEtapa());
+			public int compare(MaterialWrap o1, MaterialWrap o2) {
+				return o1.getMaterial().getEtapa().compareTo(o2.getMaterial().getEtapa());
 			}
 		});
 		
 	}
 	
 	@Override
-	public HasData<MaterialDTO> getIngresoDataDisplay() {
+	public HasData<MaterialWrap> getIngresoDataDisplay() {
 		return ingresoGrid;
 	}
 	
 	@Override
-	public void setIngresoSortHandler(ListHandler<MaterialDTO> handler) {
+	public void setIngresoSortHandler(ListHandler<MaterialWrap> handler) {
 		if(ingresoHandlerRegistration!=null){
 			ingresoHandlerRegistration.removeHandler();
 		}
@@ -257,12 +262,12 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public HasData<MaterialDTO> getPredespachoDataDisplay() {
+	public HasData<MaterialWrap> getPredespachoDataDisplay() {
 		return predespachoGrid;
 	}
 
 	@Override
-	public void setPredespachoSortHandler(ListHandler<MaterialDTO> handler) {
+	public void setPredespachoSortHandler(ListHandler<MaterialWrap> handler) {
 		if(predespachoHandlerRegistration!=null){
 			predespachoHandlerRegistration.removeHandler();
 		}
@@ -271,12 +276,12 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 	
 	@Override
-	public HasData<MaterialDTO> getDespachoDataDisplay() {
+	public HasData<MaterialWrap> getDespachoDataDisplay() {
 		return despachoGrid;
 	}
 	
 	@Override
-	public void setDespachoSortHandler(ListHandler<MaterialDTO> handler) {
+	public void setDespachoSortHandler(ListHandler<MaterialWrap> handler) {
 		if(despachoHandlerRegistration!=null){
 			despachoHandlerRegistration.removeHandler();
 		}
@@ -462,7 +467,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		materialGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
 	    materialPager.setDisplay(materialGrid);
 	    
-	    final SingleSelectionModel<MaterialDTO> sm = new SingleSelectionModel<MaterialDTO>();
+	    final SingleSelectionModel<MaterialWrap> sm = new SingleSelectionModel<MaterialWrap>();
 	    materialGrid.setSelectionModel(sm);
 	    
 	    sm.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -475,11 +480,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	    
 	    buildTable(materialGrid);
 		
-		Column<MaterialDTO,String> etapaColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> etapaColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return o.getEtapa();
+			public String getValue(MaterialWrap o) {
+				return o.getMaterial().getEtapa();
 			}
 		};
 		etapaColumn.setSortable(true);
@@ -489,16 +494,16 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	private void buildIngresoGrid(){
 		ingresoGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		buildTable(ingresoGrid);
-		Column<MaterialDTO,MaterialDTO> removeColumn = new Column<MaterialDTO,MaterialDTO>(new ActionCell<MaterialDTO>("Eliminar", new Delegate<MaterialDTO>() {
+		Column<MaterialWrap,MaterialWrap> removeColumn = new Column<MaterialWrap,MaterialWrap>(new ActionCell<MaterialWrap>("Eliminar", new Delegate<MaterialWrap>() {
 
 			@Override
-			public void execute(MaterialDTO object) {
+			public void execute(MaterialWrap object) {
 				presenter.onRemoveIngresoItem(object);
 			}
 		})){
 
 			@Override
-			public MaterialDTO getValue(MaterialDTO object) {
+			public MaterialWrap getValue(MaterialWrap object) {
 				return object;
 			}
 		};
@@ -509,16 +514,16 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	private void buildPreDespachoTable(){
 		predespachoGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		buildTable(predespachoGrid);
-		Column<MaterialDTO,MaterialDTO> removeColumn = new Column<MaterialDTO,MaterialDTO>(new ActionCell<MaterialDTO>("Eliminar", new Delegate<MaterialDTO>() {
+		Column<MaterialWrap,MaterialWrap> removeColumn = new Column<MaterialWrap,MaterialWrap>(new ActionCell<MaterialWrap>("Eliminar", new Delegate<MaterialWrap>() {
 
 			@Override
-			public void execute(MaterialDTO object) {
+			public void execute(MaterialWrap object) {
 				presenter.onRemovePredespachoItem(object);
 			}
 		})){
 
 			@Override
-			public MaterialDTO getValue(MaterialDTO object) {
+			public MaterialWrap getValue(MaterialWrap object) {
 				return object;
 			}
 		};
@@ -529,16 +534,16 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	private void buildDespachoTable(){
 		despachoGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		buildTable(despachoGrid);
-		Column<MaterialDTO,MaterialDTO> removeColumn = new Column<MaterialDTO,MaterialDTO>(new ActionCell<MaterialDTO>("Eliminar", new Delegate<MaterialDTO>() {
+		Column<MaterialWrap,MaterialWrap> removeColumn = new Column<MaterialWrap,MaterialWrap>(new ActionCell<MaterialWrap>("Eliminar", new Delegate<MaterialWrap>() {
 
 			@Override
-			public void execute(MaterialDTO object) {
+			public void execute(MaterialWrap object) {
 				presenter.onRemoveDespachoItem(object);
 			}
 		})){
 
 			@Override
-			public MaterialDTO getValue(MaterialDTO object) {
+			public MaterialWrap getValue(MaterialWrap object) {
 				return object;
 			}
 		};
@@ -546,111 +551,111 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		despachoGrid.addColumn(removeColumn,"");
 	}
 	
-	private void buildTable(DataGrid<MaterialDTO> d){
+	private void buildTable(DataGrid<MaterialWrap> d){
 		
 		d.setAutoFooterRefreshDisabled(true);
 		d.setAutoHeaderRefreshDisabled(true);
 		d.setPageSize(50);
 		d.setPageStart(0);
 		
-		Column<MaterialDTO,String> idColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> idColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return (o.getCodigo()!=null && o.getCodigo().length()>5)?"..."+o.getCodigo().substring(o.getCodigo().length()-4):"...";
+			public String getValue(MaterialWrap o) {
+				return (o.getMaterial().getCodigo()!=null && o.getMaterial().getCodigo().length()>5)?"..."+o.getMaterial().getCodigo().substring(o.getMaterial().getCodigo().length()-4):"...";
 			}
 		};
 		idColumn.setSortable(false);
 		d.addColumn(idColumn,"Id");
 		
-		Column<MaterialDTO,String> tipoColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> tipoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return o.getTipo();
+			public String getValue(MaterialWrap o) {
+				return o.getMaterial().getTipo();
 			}
 		};
 		tipoColumn.setSortable(true);
 		d.addColumn(tipoColumn,"Tipo");
 		
-		Column<MaterialDTO,String> rbdColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> rbdColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return o.getRbd();
+			public String getValue(MaterialWrap o) {
+				return o.getMaterial().getRbd();
 			}
 		};
 		rbdColumn.setSortable(true);
 		d.addColumn(rbdColumn,"RBD");
 		
-		Column<MaterialDTO,String> establecimientoColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> establecimientoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return o.getEstablecimiento();
+			public String getValue(MaterialWrap o) {
+				return o.getMaterial().getEstablecimiento();
 			}
 		};
 		establecimientoColumn.setSortable(true);
 		d.addColumn(establecimientoColumn,"Establecimiento");
 		
-		Column<MaterialDTO,String> nivelColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> nivelColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return o.getNivel();
+			public String getValue(MaterialWrap o) {
+				return o.getMaterial().getNivel();
 			}
 		};
 		nivelColumn.setSortable(true);
 		d.addColumn(nivelColumn,"Nivel");
 		
-		Column<MaterialDTO,String> cursoColumn = new Column<MaterialDTO,String>(new TextCell()){
+		Column<MaterialWrap,String> cursoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
-			public String getValue(MaterialDTO o) {
-				return o.getCurso();
+			public String getValue(MaterialWrap o) {
+				return o.getMaterial().getCurso();
 			}
 		};
 		cursoColumn.setSortable(true);
 		d.addColumn(cursoColumn,"Curso");
 	}
 	
-	private void configureSortHandler(DataGrid<MaterialDTO> d, ListHandler<MaterialDTO> h){
+	private void configureSortHandler(DataGrid<MaterialWrap> d, ListHandler<MaterialWrap> h){
 		
-		h.setComparator( d.getColumn(1), new Comparator<MaterialDTO>() {
+		h.setComparator( d.getColumn(1), new Comparator<MaterialWrap>() {
 
 			@Override
-			public int compare(MaterialDTO o1, MaterialDTO o2) {
-				return o1.getTipo().compareTo(o2.getTipo());
-			}
-		});
-		
-		h.setComparator( d.getColumn(2), new Comparator<MaterialDTO>() {
-
-			@Override
-			public int compare(MaterialDTO o1, MaterialDTO o2) {
-				return o1.getRbd().compareTo(o2.getRbd());
+			public int compare(MaterialWrap o1, MaterialWrap o2) {
+				return o1.getMaterial().getTipo().compareTo(o2.getMaterial().getTipo());
 			}
 		});
 		
-		h.setComparator( d.getColumn(3), new Comparator<MaterialDTO>() {
+		h.setComparator( d.getColumn(2), new Comparator<MaterialWrap>() {
 
 			@Override
-			public int compare(MaterialDTO o1, MaterialDTO o2) {
-				return o1.getEstablecimiento().compareTo(o2.getEstablecimiento());
+			public int compare(MaterialWrap o1, MaterialWrap o2) {
+				return o1.getMaterial().getRbd().compareTo(o2.getMaterial().getRbd());
 			}
 		});
-		h.setComparator( d.getColumn(4), new Comparator<MaterialDTO>() {
+		
+		h.setComparator( d.getColumn(3), new Comparator<MaterialWrap>() {
 
 			@Override
-			public int compare(MaterialDTO o1, MaterialDTO o2) {
-				return o1.getNivel().compareTo(o2.getNivel());
+			public int compare(MaterialWrap o1, MaterialWrap o2) {
+				return o1.getMaterial().getEstablecimiento().compareTo(o2.getMaterial().getEstablecimiento());
 			}
 		});
-		h.setComparator( d.getColumn(5), new Comparator<MaterialDTO>() {
+		h.setComparator( d.getColumn(4), new Comparator<MaterialWrap>() {
 
 			@Override
-			public int compare(MaterialDTO o1, MaterialDTO o2) {
-				return o1.getCurso().compareTo(o2.getCurso());
+			public int compare(MaterialWrap o1, MaterialWrap o2) {
+				return o1.getMaterial().getNivel().compareTo(o2.getMaterial().getNivel());
+			}
+		});
+		h.setComparator( d.getColumn(5), new Comparator<MaterialWrap>() {
+
+			@Override
+			public int compare(MaterialWrap o1, MaterialWrap o2) {
+				return o1.getMaterial().getCurso().compareTo(o2.getMaterial().getCurso());
 			}
 		});
 	}

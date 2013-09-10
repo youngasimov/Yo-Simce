@@ -17,6 +17,7 @@ public class MaterialDTO implements Serializable {
 	
 	
 	private Integer id;
+	private Integer idCentro;
 	private String codigo;
 	private String tipo;
 	private String rbd;
@@ -35,6 +36,16 @@ public class MaterialDTO implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	public Integer getIdCentro() {
+		return idCentro;
+	}
+
+
+	public void setIdCentro(Integer idCentro) {
+		this.idCentro = idCentro;
+	}
+
 
 	public String getCodigo() {
 		return codigo;

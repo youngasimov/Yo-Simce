@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.material.ui;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
+import com.dreamer8.yosimce.client.material.MaterialWrap;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
@@ -16,17 +17,18 @@ import com.google.gwt.view.client.HasData;
 
 public interface CentroOperacionView extends IsWidget {
 
+	void setCO(EmplazamientoDTO emplazamiento);
 	
 	HasData<HistorialMaterialItemDTO> getHistorialDataDisplay();
 	void setHistorialSortHandler(ListHandler<HistorialMaterialItemDTO> handler);
-	HasData<MaterialDTO> getMaterialDataDisplay();
-	void setMaterialSortHandler(ListHandler<MaterialDTO> handler);
-	HasData<MaterialDTO> getIngresoDataDisplay();
-	void setIngresoSortHandler(ListHandler<MaterialDTO> handler);
-	HasData<MaterialDTO> getPredespachoDataDisplay();
-	void setPredespachoSortHandler(ListHandler<MaterialDTO> handler);
-	HasData<MaterialDTO> getDespachoDataDisplay();
-	void setDespachoSortHandler(ListHandler<MaterialDTO> handler);
+	HasData<MaterialWrap> getMaterialDataDisplay();
+	void setMaterialSortHandler(ListHandler<MaterialWrap> handler);
+	HasData<MaterialWrap> getIngresoDataDisplay();
+	void setIngresoSortHandler(ListHandler<MaterialWrap> handler);
+	HasData<MaterialWrap> getPredespachoDataDisplay();
+	void setPredespachoSortHandler(ListHandler<MaterialWrap> handler);
+	HasData<MaterialWrap> getDespachoDataDisplay();
+	void setDespachoSortHandler(ListHandler<MaterialWrap> handler);
 	
 	void clearCodigoIngresoBox();
 	void clearCodigoPredespachoBox();
@@ -58,15 +60,15 @@ public interface CentroOperacionView extends IsWidget {
 	void setPresenter(CentroOperacionPresenter presenter);
 	
 	public interface CentroOperacionPresenter extends SimcePresenter{
-		void onMaterialSelected(MaterialDTO material);
+		void onMaterialSelected(MaterialWrap material);
 		
 		void onMaterialAddedToIngresoStack(String id);
 		void onMaterialAddedToPredespachoStack(String id);
 		void onMaterialAddedToDespachoStack(String id);
 		
-		void onRemoveIngresoItem(MaterialDTO material);
-		void onRemovePredespachoItem(MaterialDTO material);
-		void onRemoveDespachoItem(MaterialDTO material);
+		void onRemoveIngresoItem(MaterialWrap material);
+		void onRemovePredespachoItem(MaterialWrap material);
+		void onRemoveDespachoItem(MaterialWrap material);
 		
 		void onIngresoDocUploaded(DocumentoDTO doc);
 		void onDespachoDocUploaded(DocumentoDTO doc);
