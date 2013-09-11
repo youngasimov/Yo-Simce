@@ -22,7 +22,7 @@ public class DocumentoDAO extends AbstractHibernateDAO<Documento, Integer> {
 		Documento d = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT d.* FROM DOCUMENTO d"
-				+ " JOIN DOCUMENTO_ESTADO de ON (d.documento_estado_id=de.id AND de.nombre='"
+				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
 				+ SecurityFilter.escapeString(tipo) + "')"
 				+ " WHERE d.codigo='" + SecurityFilter.escapeString(codigo)
 				+ "'";
@@ -41,7 +41,7 @@ public class DocumentoDAO extends AbstractHibernateDAO<Documento, Integer> {
 		d = ((Documento) q.uniqueResult());
 		return d;
 	}
-	
+
 	public List<Documento> findByIdActividadANDDocumentoTipo(
 			Integer idActividad, String documentoTipo) {
 

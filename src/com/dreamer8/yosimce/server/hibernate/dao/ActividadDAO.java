@@ -774,13 +774,13 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						// No se está comprobando por materiales de contingencia
-						where += " true";
+						where += " a.material_contingencia=true";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
 						where += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0)";
+						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0  AND a.total_alumnos_presentes!=a.total_alumnos)";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
 						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";

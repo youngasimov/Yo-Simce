@@ -22,7 +22,7 @@ public class AlumnoXActividadDAO extends
 
 		AlumnoXActividad axa = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT axa.* FROM FROM APLICACION_x_NIVEL axn "
+		String query = "SELECT axa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -45,7 +45,7 @@ public class AlumnoXActividadDAO extends
 
 		AlumnoXActividad axa = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT axa.* FROM FROM ALUMNO_x_ACTIVIDAD axa "
+		String query = "SELECT axa.* FROM ALUMNO_x_ACTIVIDAD axa "
 				+ " WHERE axa.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)
 				+ " AND axa.alumno_id IS NULL";
