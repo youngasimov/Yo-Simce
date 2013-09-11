@@ -88,8 +88,8 @@ public class ActividadesActivity extends SimceActivity implements
 			view.getDataDisplay().setRowCount(0);
 		}
 		
-		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEstadosActividad")){
-			getFactory().getActividadService().getEstadosActividad(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEstadosActividadFiltro")){
+			getFactory().getActividadService().getEstadosActividadFiltro(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
 
 				@Override
 				public void success(ArrayList<EstadoAgendaDTO> result) {

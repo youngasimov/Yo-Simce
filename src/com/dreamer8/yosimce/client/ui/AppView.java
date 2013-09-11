@@ -24,5 +24,6 @@ public interface AppView extends IsWidget {
 	
 	public interface AppPresenter extends Presenter{
 		void onMouseOutFromPanel();
+		void onLogout();
 	}
 }

@@ -24,14 +24,16 @@
 				<td>Usó material contingencia:</td>
 				<td><g:CheckBox ui:field="contingenciaBox"/> </td>
 			</tr>
+			<!--
 			<tr>
-				<td>Con problemas:</td>
+				<td>Contingencia momentanea:</td>
 				<td><g:CheckBox ui:field="problemasBox"/> </td>
 			</tr>
 			<tr>
-				<td>Con problemas inhabilitantes:</td>
+				<td>Contingencia inhabilitante:</td>
 				<td><g:CheckBox ui:field="problemasHinabilitantesBox"/> </td>
 			</tr>
+			 -->
 			<tr>
 				<td>No sincronizadas:</td>
 				<td><g:CheckBox ui:field="sincronizadasNulaBox"/> </td>

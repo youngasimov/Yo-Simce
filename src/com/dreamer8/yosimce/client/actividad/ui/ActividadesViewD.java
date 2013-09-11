@@ -453,12 +453,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 	@Override
 	public void setActividadesContingencia(boolean value) {
-		filtrosPanel.problemasBox.setValue(value);
+		//filtrosPanel.problemasBox.setValue(value);
 	}
 
 	@Override
 	public void setActividadesContingenciaInhabilitante(boolean value) {
-		filtrosPanel.problemasHinabilitantesBox.setValue(value);
+		//filtrosPanel.problemasHinabilitantesBox.setValue(value);
 	}
 
 	@Override
@@ -625,10 +625,13 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public void onClick(ClickEvent event) {
 				ActividadesPlace ap = new ActividadesPlace();
-				ap.setActividadesContintencia(filtrosPanel.problemasBox
+				ap.setActividadesContintencia(true);
+				ap.setActividadesContintenciaInhabilitante(true);
+				/*ap.setActividadesContintencia(filtrosPanel.problemasBox
 						.getValue());
 				ap.setActividadesContintenciaInhabilitante(filtrosPanel.problemasHinabilitantesBox
 						.getValue());
+						*/
 				ap.setActividadesMaterialContintencia(filtrosPanel.contingenciaBox
 						.getValue());
 				ap.setActividadesSincronizadas(filtrosPanel.sincronizacionTotalBox
@@ -757,12 +760,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
-				if (o.getAlumnosEvaluados() <= 0) {
-					return 0;
-				}
-				float value = 100 * ((float) o.getAlumnosSincronizados())
-						/ ((float) o.getAlumnosEvaluados());
-				return value;
+				return (o.getAlumnosSincronizados()!=null)?o.getAlumnosSincronizados():0;
 			}
 		};
 		alumnosSincronizadosColumn.setSortable(false);
@@ -774,7 +772,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
-				return o.getCuestionariosPadresApoderadosEntregados();
+				return (o.getCuestionariosPadresApoderadosEntregados()!=null)?o.getCuestionariosPadresApoderadosEntregados():0;
 			}
 		};
 		cuestionarioEntregadosColumn.setSortable(false);
@@ -786,7 +784,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public Number getValue(ActividadPreviewDTO o) {
-				return o.getCuestionariosPadresApoderadosRecibidos();
+				return (o.getCuestionariosPadresApoderadosRecibidos()!=null)?o.getCuestionariosPadresApoderadosRecibidos():0;
 			}
 		};
 		cuestionarioRecibidosColumn.setSortable(false);

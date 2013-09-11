@@ -67,4 +67,10 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/close.png")
 	public ImageResource close();
+	
+	@Source("images/pdfdownload.png")
+	public ImageResource pdfDownload();
+	
+	@Source("images/logout.png")
+	public ImageResource logout();
 }

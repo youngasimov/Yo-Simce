@@ -21,8 +21,8 @@ public class FiltroActividadesPanelViewD extends Composite {
 	
 	@UiField VerticalPanel estadosPanel;
 	@UiField CheckBox contingenciaBox;
-	@UiField CheckBox problemasBox;
-	@UiField CheckBox problemasHinabilitantesBox;
+	//@UiField CheckBox problemasBox;
+	//@UiField CheckBox problemasHinabilitantesBox;
 	@UiField CheckBox sincronizadasNulaBox;
 	@UiField CheckBox sincronizacionParcialBox;
 	@UiField CheckBox sincronizacionTotalBox;

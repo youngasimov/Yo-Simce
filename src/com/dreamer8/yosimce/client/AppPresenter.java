@@ -8,10 +8,10 @@ import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.http.client.RequestTimeoutException;
+import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.SerializedTypeViolationException;
 import com.google.gwt.user.client.rpc.InvocationException;
@@ -52,6 +52,24 @@ public class AppPresenter implements AppView.AppPresenter {
 	public void onMouseOutFromPanel() {
 		menuOpen = false;
 		view.setSidebarPanelState(menuOpen);
+	}
+	
+	@Override
+	public void onLogout() {
+		factory.getLoginService().logout(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
+				Window.open("http://www.yosimce.cl", "_self", "");
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
+				Window.open("http://www.yosimce.cl", "_self", "");
+			}
+		});
 	}
 	
 	private void bind(){

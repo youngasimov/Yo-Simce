@@ -3,12 +3,13 @@ package com.dreamer8.yosimce.client.ui;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
@@ -39,6 +40,7 @@ public class AppViewD extends Composite implements AppView {
 	@UiField SimpleLayoutPanel sidebarPanel;
 	@UiField SimpleLayoutPanel contentPanel;
 	@UiField Image barload;
+	@UiField FocusPanel logout;
 	
 	private MessageContainer messagesContainer;
 	
@@ -52,6 +54,7 @@ public class AppViewD extends Composite implements AppView {
 
 	public AppViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
 		sidebarPanel.setVisible(true);
 		barload.setVisible(false);
 		popup = new PopupPanel(false, true);
@@ -68,14 +71,16 @@ public class AppViewD extends Composite implements AppView {
 		messagePopup.setWidget(messagesContainer);
 		
 		messages = 0;
-		
-		sidebarFocusPanel.addMouseOutHandler(new MouseOutHandler() {
-			
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				presenter.onMouseOutFromPanel();
-			}
-		});
+	}
+	
+	@UiHandler("sidebarFocusPanel")
+	void onSidebarMouseOut(MouseOutEvent event){
+		presenter.onMouseOutFromPanel();
+	}
+	
+	@UiHandler("logout")
+	void onLogoutClick(ClickEvent event){
+		presenter.onLogout();
 	}
 	
 	@Override
