@@ -217,18 +217,37 @@ public class ActividadesActivity extends SimceActivity implements
 	private void updateFiltros(){
 		
 		filtros.clear();
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA, (place.isActividadesContintencia())?"1":"0");
+		
+		if(place.isActividadesContintencia()){
+			filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA, "1");
+		}
 		view.setActividadesContingencia(place.isActividadesContintencia());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE, (place.isActividadesContintenciaInhabilitante())?"1":"0");
+		
+		if(place.isActividadesContintenciaInhabilitante()){
+			filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE, "1");
+		}
 		view.setActividadesContingenciaInhabilitante(place.isActividadesContintenciaInhabilitante());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA, (place.isActividadesMaterialContintencia())?"1":"0");
+		
+		if(place.isActividadesMaterialContintencia()){
+			filtros.put(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA,"1");
+		}
 		view.setActividadesMaterialContingencia(place.isActividadesMaterialContintencia());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS, (place.isActividadesSincronizadas())?"1":"0");
+		
+		if(place.isActividadesSincronizadas()){
+			filtros.put(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS, "1");
+		}
 		view.setActividadesSincronizadas(place.isActividadesSincronizadas());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS, (place.isActividadesParcialmenteSincronizadas())?"1":"0");
+		
+		if(place.isActividadesParcialmenteSincronizadas()){
+			filtros.put(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS, "1");
+		}
 		view.setActividadesParcialementeSincronizadas(place.isActividadesParcialmenteSincronizadas());
-		filtros.put(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS, (place.isActividadesNoSincronizadas())?"1":"0");
+		
+		if(place.isActividadesNoSincronizadas()){
+			filtros.put(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS, "1");
+		}
 		view.setActividadesNoSincronizadas(place.isActividadesNoSincronizadas());
+		
 		if(place.getRegionId()!=-1){
 			filtros.put(ActividadService.FKEY_REGION, place.getRegionId()+"");
 			view.setSelectedRegion(place.getRegionId());
