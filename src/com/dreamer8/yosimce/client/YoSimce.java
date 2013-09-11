@@ -31,6 +31,7 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 public class YoSimce implements EntryPoint {
 	
 	public static final String TOKEN_COOKIE = "yosimce";
+	public static final String TOKEN_COOKIE_DEMO = "tracking";
 	
 	
 	private Place defaultPlace;
@@ -68,10 +69,14 @@ public class YoSimce implements EntryPoint {
 		Cookies.removeCookie("t");
 		
 		loadView.setMessage("Comprobando permisos de usuario...");
+		String token = "";
+		if(Window.Location.getHost().contains("localhost") || Window.Location.getHost().contains("127.0.0.1") || Window.Location.getPath().contains("demo")){
+			token = Cookies.getCookie(TOKEN_COOKIE_DEMO);
+		}else{
+			token = Cookies.getCookie(TOKEN_COOKIE);
+		}
 		
-		String token = Cookies.getCookie(TOKEN_COOKIE);
-		
-		if(token == null){
+		if(token == null || token.length()==0){
 			loadView.setMessage("Usuario no registrado");
 			user = null;
 			loadApp();
@@ -100,6 +105,7 @@ public class YoSimce implements EntryPoint {
 						logger.log(Level.WARNING, caught.getLocalizedMessage());
 						user = null;
 						Cookies.removeCookie(TOKEN_COOKIE);
+						Cookies.removeCookie(TOKEN_COOKIE_DEMO);
 						Timer t = new Timer(){
 	
 							@Override
@@ -178,7 +184,7 @@ public class YoSimce implements EntryPoint {
 						public void onSuccess(String result) {
 							Date d = new Date();
 							CalendarUtil.addDaysToDate(d, 1);
-							Cookies.setCookie(TOKEN_COOKIE, result,d);
+							Cookies.setCookie(TOKEN_COOKIE_DEMO, result,d);
 							Window.Location.reload();
 						}
 					});
