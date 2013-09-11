@@ -173,7 +173,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 	public List<MaterialDefectuosoDTO> findDefectuososByIdctividadANDTipoDocumento(
 			Integer idActividad, String tipoDocumento) {
 
-		List<MaterialDefectuosoDTO> mddtos = null;
+		List<MaterialDefectuosoDTO> mddtos = new ArrayList<MaterialDefectuosoDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT d.codigo,de.id as doc_estado_id,de.nombre as doc_estado FROM ALUMNO_x_ACTIVIDAD axa"
 				+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON (axa.id=axaxd.alumno_x_actividad_id AND axa.actividad_id="

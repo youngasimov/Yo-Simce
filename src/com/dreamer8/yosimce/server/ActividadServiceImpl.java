@@ -1089,7 +1089,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
-				List<ActividadEstado> aes = aedao.findAllByActividad();
+				// List<ActividadEstado> aes = aedao.findAllByActividad();
+				List<ActividadEstado> aes = aedao.findAll();
 				if (aes != null && !aes.isEmpty()) {
 					for (ActividadEstado ae : aes) {
 						eadtos.add(ae.getEstadoAgendaDTO());
@@ -1357,7 +1358,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			Integer idCurso) throws NoAllowedException, NoLoggedException,
 			DBException {
 
-		ArrayList<MaterialDefectuosoDTO> mddtos = new ArrayList<MaterialDefectuosoDTO>();
+		ArrayList<MaterialDefectuosoDTO> mddtos = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			AccessControl ac = getAccessControl();

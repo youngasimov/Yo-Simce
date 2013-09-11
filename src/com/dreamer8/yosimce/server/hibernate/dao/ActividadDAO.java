@@ -118,7 +118,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		String query = "SELECT DISTINCT c.id as curso_id,c.nombre as nombre_curso,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.id as est_tipo_id,et.nombre as est_tipo_nombre,"
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,a.fecha_inicio,a.comentario,u.id as usuario_id,u.username,"
-				+ "u.email,u.nombres,u.apellido_paterno,u.apellido_materno,ae.id as act_est_id,ae.nombre as act_est_nombre FROM APLICACION_x_NIVEL axn "
+				+ "u.email,u.nombres,u.apellido_paterno,u.apellido_materno,ae.id as act_est_id,ae.nombre as act_est_nombre,"
+				+ "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
+				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup"
+				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -137,7 +140,15 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
 				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
 				+ " JOIN REGION r ON p.region_id=r.id"
-				+ " LEFT JOIN USUARIO u ON a.modificador_id=u.id";
+				+ " LEFT JOIN USUARIO u ON a.modificador_id=u.id"
+				+ " LEFT JOIN USUARIO_x_ACTIVIDAD uxa ON (a.id=uxa.actividad_id AND uxa.asistencia != false)"
+				+ " LEFT JOIN USUARIO_SELECCION us_ex ON (uxa.usuario_seleccion_id=us_ex.id AND (us_ex.usuario_tipo_id=11 OR us_ex.usuario_tipo_id=12 OR us_ex.usuario_tipo_id=13))"
+				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_ex ON us_ex.usuario_x_aplicacion_x_nivel_id=uxaxn_ex.id"
+				+ " LEFT JOIN USUARIO u_ex ON uxaxn_ex.usuario_id=u_ex.id"
+
+				+ " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa.usuario_seleccion_id=us_sup.id AND (us_sup.usuario_tipo_id=9 OR us_sup.usuario_tipo_id=10))"
+				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
+				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
 		;
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
@@ -255,6 +266,26 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			eadto.setEstado((String) o[18]);
 			aidto.setEstado(eadto);
 			apdto.setAgendaItemActual(aidto);
+			if (o[19] != null) {
+				udto = new UserDTO();
+				udto.setId((Integer) o[19]);
+				udto.setUsername((String) o[20]);
+				udto.setEmail((String) o[21]);
+				udto.setNombres((String) o[22]);
+				udto.setApellidoPaterno((String) o[23]);
+				udto.setApellidoMaterno((String) o[24]);
+				apdto.setExaminador(udto);
+			}
+			if (o[25] != null) {
+				udto = new UserDTO();
+				udto.setId((Integer) o[25]);
+				udto.setUsername((String) o[26]);
+				udto.setEmail((String) o[27]);
+				udto.setNombres((String) o[28]);
+				udto.setApellidoPaterno((String) o[29]);
+				udto.setApellidoMaterno((String) o[30]);
+				apdto.setExaminador(udto);
+			}
 			apdtos.add(apdto);
 		}
 
@@ -373,7 +404,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
 				+ "at.nombre as act_tipo_nombre,a.fecha_inicio,a.comentario,ae.nombre as act_est_nombre, "
 				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as contacto_cargo,"
-				+ "a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ "a.aplicacion_x_nivel_x_actividad_tipo_id,"
+				+ "u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
+				+ "u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -394,7 +427,15 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
 				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
 				+ " JOIN REGION r ON p.region_id=r.id"
-				+ " LEFT JOIN USUARIO u ON a.modificador_id=u.id";
+				+ " LEFT JOIN USUARIO u ON a.modificador_id=u.id"
+				+ " LEFT JOIN USUARIO_x_ACTIVIDAD uxa ON (a.id=uxa.actividad_id AND uxa.asistencia != false)"
+				+ " LEFT JOIN USUARIO_SELECCION us_ex ON (uxa.usuario_seleccion_id=us_ex.id AND (us_ex.usuario_tipo_id=11 OR us_ex.usuario_tipo_id=12 OR us_ex.usuario_tipo_id=13))"
+				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_ex ON us_ex.usuario_x_aplicacion_x_nivel_id=uxaxn_ex.id"
+				+ " LEFT JOIN USUARIO u_ex ON uxaxn_ex.usuario_id=u_ex.id"
+
+				+ " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa.usuario_seleccion_id=us_sup.id AND (us_sup.usuario_tipo_id=9 OR us_sup.usuario_tipo_id=10))"
+				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
+				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
 		;
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
@@ -489,7 +530,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			csv.add("rbd;establecimiento_nombre;establecimiento_tipo;región;comuna;"
 					+ "fecha_visita_previa;estado_agendamiento_visita_previa;comentario_visita_previa;"
 					+ "fecha_aplicación;estado_agendamiento_aplicación;comentario_aplicación;"
-					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto");
+					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto;examinador;supervisor");
 			for (Object[] o : os) {
 				idCurso = (Integer) o[0];
 				if (!idCurso.equals(idCursoAnterior)) {
