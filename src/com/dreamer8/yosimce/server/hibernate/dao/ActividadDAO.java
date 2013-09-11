@@ -15,13 +15,18 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
+import com.dreamer8.yosimce.server.CustomRemoteServiceServlet;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
+import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.TipoEstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -615,13 +620,16 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 	public List<ActividadPreviewDTO> findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario, String usuarioTipo, Integer offset,
-			Integer lenght, Map<String, String> filtros) {
+			Integer lenght, Map<String, String> filtros, String baseURL) {
 
 		List<ActividadPreviewDTO> apdtos = new ArrayList<ActividadPreviewDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT c.id as curso_id,c.nombre as nombre_curso,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.id as est_tipo_id,et.nombre as est_tipo_nombre,"
-				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre"
+				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,a.total_alumnos,a.total_alumnos_ausentes,a.total_alumnos_presentes,"
+				+ "axdt_cuest.total_entregados,axdt_cuest.total_recibidos,arc_form.id as arc_form_id,arc_form.titulo as arc_form_tit,"
+				+ "COUNT(axaxd_def.id) as total_defectuosos,bool_or(axi.id IS NOT NULL) as contingencia, bool_or(axi.inhabilita_aplicacion) as limitante,"
+				+ "ae.id as act_est_id,ae.nombre as act_est"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -632,6 +640,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
+				+ " LEFT JOIN ACTIVIDAD_x_INCIDENCIA axi ON a.id=axi.actividad_id"
+				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD axa_def ON a.id=axa_def.actividad_id AND axa_def.alumno_id IS NULL"
+				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_def ON axa_def.id=axaxd_def.alumno_x_actividad_id"
+				+ " LEFT JOIN ACTIVIDAD_x_DOCUMENTO_TIPO axdt_cuest ON a.id=axdt_cuest.actividad_id"
+				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON axdt_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
+				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
+				+ "'"
+				+ " LEFT JOIN ACTIVIDAD_x_DOCUMENTO axd_form ON a.id=axd_form.actividad_id"
+				+ " LEFT JOIN DOCUMENTO d_form ON axd_form.documento_id=d_form.id"
+				+ " LEFT JOIN DOCUMENTO_TIPO dt_form ON d_form.documento_tipo_id=dt_form.id AND dt_form.nombre='"
+				+ SecurityFilter
+						.escapeString(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION)
+				+ "'"
+				+ " LEFT JOIN ARCHIVO arc_form ON d_form.archivo_id=arc_form.id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
@@ -676,9 +698,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			String where = "";
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
-					if (!where.equals("")
-							&& (key.equals(ActividadService.FKEY_COMUNA) || key
-									.equals(ActividadService.FKEY_REGION))) {
+					if (!where.equals("")) {
 						where += " AND ";
 					}
 					if (key.equals(ActividadService.FKEY_COMUNA)) {
@@ -687,6 +707,42 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					} else if (key.equals(ActividadService.FKEY_REGION)) {
 						where += " p.region_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
+					} else if (key.equals(ActividadService.FKEY_ESTADOS)) {
+						String[] estados = filtros.get(key).split(
+								ActividadService.SEPARATOR);
+						if (estados.length != 0) {
+							where += " (";
+							for (int i = 0; i < estados.length; i++) {
+								where += "a.actividad_estado_id="
+										+ SecurityFilter
+												.escapeString(estados[i]);
+								if (i < estados.length - 1) {
+									where += " OR ";
+								}
+							}
+							where += ") ";
+						}
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
+						// where += " contingencia=true";
+						where += " true";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
+						// where += " limitante=true";
+						where += " true";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
+						// No se está comprobando por materiales de contingencia
+						where += " true";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
+						where += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
+						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0)";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
+						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";
 					}
 				}
 			}
@@ -694,7 +750,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				query += " WHERE " + where;
 			}
 		}
-		query += " ORDER BY COMUNA.id,e.id,c.id";
+		query += " GROUP BY c.id,c.nombre,e.id,e.nombre,et.id,et.nombre,"
+				+ "r.nombre,COMUNA.id,COMUNA.nombre,a.total_alumnos,a.total_alumnos_ausentes,a.total_alumnos_presentes,"
+				+ "axdt_cuest.total_entregados,axdt_cuest.total_recibidos,arc_form.id,arc_form.titulo,ae.id,ae.nombre"
+				+ " ORDER BY COMUNA.id,e.id,c.id";
 		Query q = s.createSQLQuery(query);
 		if (offset != null) {
 			q.setFirstResult(offset);
@@ -705,7 +764,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		List<Object[]> os = q.list();
 		ActividadPreviewDTO apdto = null;
 		UserDTO udto = null;
-		EstadoAgendaDTO eadto = null;
+		DocumentoDTO ddto = new DocumentoDTO();
 		for (Object[] o : os) {
 			apdto = new ActividadPreviewDTO();
 			apdto.setCursoId((Integer) o[0]);
@@ -715,14 +774,26 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setTipoEstablecimiento((String) o[5]);
 			apdto.setRegion((String) o[6]);
 			apdto.setComuna((String) o[8]);
-			apdto.setCuestionariosPadresApoderadosEntregados(0);
-			apdto.setCuestionariosPadresApoderadosRecibidos(0);
-			apdto.setAlumnosTotales(0);
-			apdto.setAlumnosEvaluados(0);
-			apdto.setAlumnosSincronizados(0);
-			apdto.setMaterialDefectuoso(0);
-			apdto.setContingencia(false);
-			apdto.setContingenciaLimitante(false);
+			apdto.setCuestionariosPadresApoderadosEntregados((Integer) o[12]);
+			apdto.setCuestionariosPadresApoderadosRecibidos((Integer) o[13]);
+			apdto.setAlumnosTotales((o[9] == null) ? 0 : (Integer) o[9]);
+			apdto.setAlumnosEvaluados(apdto.getAlumnosTotales()
+					- ((o[10] == null) ? 0 : (Integer) o[10]));
+			apdto.setAlumnosSincronizados((o[11] == null) ? 0 : (Integer) o[11]);
+			if (o[14] != null) {
+				ddto = new DocumentoDTO();
+				ddto.setId((Integer) o[14]);
+				ddto.setName((o[15] == null) ? "" : (String) o[15]);
+				ddto.setUrl(Archivo.buildDownloadURL(baseURL, ddto.getId(),
+						ddto.getName()));
+				apdto.setDocumento(ddto);
+			}
+			apdto.setMaterialDefectuoso((o[16] == null) ? 0
+					: ((BigInteger) o[16]).intValue());
+			apdto.setContingencia((o[17] == null) ? false : (Boolean) o[17]);
+			apdto.setContingenciaLimitante((o[18] == null) ? false
+					: (Boolean) o[18]);
+			apdto.setEstadoAgenda((String) o[20]);
 			apdtos.add(apdto);
 		}
 
@@ -782,12 +853,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		}
 		if (filtros != null && !filtros.isEmpty()) {
 			String where = "";
-			Date fecha = null;
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
-					if (!where.equals("")
-							&& (key.equals(ActividadService.FKEY_COMUNA) || key
-									.equals(ActividadService.FKEY_REGION))) {
+					if (!where.equals("")) {
 						where += " AND ";
 					}
 					if (key.equals(ActividadService.FKEY_COMUNA)) {
@@ -796,6 +864,42 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					} else if (key.equals(ActividadService.FKEY_REGION)) {
 						where += " p.region_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
+					} else if (key.equals(ActividadService.FKEY_ESTADOS)) {
+						String[] estados = filtros.get(key).split(
+								ActividadService.SEPARATOR);
+						if (estados.length != 0) {
+							where += " (";
+							for (int i = 0; i < estados.length; i++) {
+								where += "a.actividad_estado_id="
+										+ SecurityFilter
+												.escapeString(estados[i]);
+								if (i < estados.length - 1) {
+									where += " OR ";
+								}
+							}
+							where += ") ";
+						}
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
+						// where += " contingencia=true";
+						where += " true";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
+						// where += " limitante=true";
+						where += " true";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
+						// No se está comprobando por materiales de contingencia
+						where += " true";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
+						where += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
+						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0)";
+					} else if (key
+							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
+						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";
 					}
 				}
 			}

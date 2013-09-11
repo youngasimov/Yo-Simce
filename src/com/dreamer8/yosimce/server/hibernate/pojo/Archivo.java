@@ -145,8 +145,13 @@ public class Archivo implements java.io.Serializable {
 		DocumentoDTO ddto = new DocumentoDTO();
 		ddto.setId(id);
 		ddto.setName(titulo);
-		ddto.setUrl(baseURL + "/download?id=" + id + "&file=" + titulo);
+		ddto.setUrl(buildDownloadURL(baseURL, id, titulo));
 		return ddto;
+	}
+
+	public static String buildDownloadURL(String baseURL, Integer id,
+			String titulo) {
+		return baseURL + "/download?id=" + id + "&file=" + titulo;
 	}
 
 }

@@ -1,5 +1,10 @@
 package com.dreamer8.yosimce.server;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -120,7 +125,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						.findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), usuarioTipo.getNombre(), offset,
-								length, filtros);
+								length, filtros, getBaseURL());
 
 				s.getTransaction().commit();
 			}
@@ -313,10 +318,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un alumno. Verifique que ha ingresado un rut válido.");
 				}
 
-				if (sinc.getIdPendrive() == null) {
-					throw new NullPointerException(
-							"No se ha especificado un Pendrive.");
-				}
+				// if (sinc.getIdPendrive() == null) {
+				// throw new NullPointerException(
+				// "No se ha especificado un Pendrive.");
+				// }
 
 				if (sinc.getEstado() == null
 						|| sinc.getEstado().getIdEstadoSincronizacion() == null) {
@@ -352,40 +357,50 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				axa.setPruebaComentario(sinc.getComentario());
 				axadao.update(axa);
 
-				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
-				AlumnoXActividadXDocumento axaxdPndrive = axaxddao
-						.findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
-								axa.getId(), sinc.getIdPendrive(),
-								DocumentoTipo.PRUEBA);
-
 				DocumentoDAO ddao = new DocumentoDAO();
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				if (sinc.getIdPendrive() != null) {
+					AlumnoXActividadXDocumento axaxdPndrive = axaxddao
+							.findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
+									axa.getId(), sinc.getIdPendrive(),
+									DocumentoTipo.PRUEBA);
 
-				if (axaxdPndrive == null) {
-					Documento pendrive = ddao.findByCodigoANDTipoDocumento(
-							sinc.getIdPendrive(), DocumentoTipo.PRUEBA);
-					if (pendrive == null) {
-						throw new NullPointerException(
-								"No se ha encontrado un pendrive con el código ingresado.");
+					if (axaxdPndrive == null) {
+						Documento pendrive = ddao.findByCodigoANDTipoDocumento(
+								sinc.getIdPendrive(), DocumentoTipo.PRUEBA);
+						if (pendrive == null) {
+							throw new NullPointerException(
+									"No se ha encontrado un pendrive con el código ingresado.");
+						}
+						axaxdPndrive = new AlumnoXActividadXDocumento();
+						axaxdPndrive.setAlumnoXActividad(axa);
+						axaxdPndrive.setDocumento(pendrive);
 					}
-					axaxdPndrive = new AlumnoXActividadXDocumento();
-					axaxdPndrive.setAlumnoXActividad(axa);
-					axaxdPndrive.setDocumento(pendrive);
+
+					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+					DocumentoEstado de = dedao.getById(sinc.getEstado()
+							.getIdEstadoSincronizacion());
+
+					axaxdPndrive.setDocumentoEstado(de);
+					axaxdPndrive.setComentario(sinc.getComentario());
+					axaxdPndrive.setEntregado(true);
+					axaxdPndrive.setRecibido(!de
+							.equals(DocumentoEstado.EXTRAVIADO));
+
+					axaxdPndrive.setUpdatedAt(new Date());
+					axaxdPndrive.setModificadorId(u.getId());
+
+					axaxddao.saveOrUpdate(axaxdPndrive);
 				}
 
-				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
-				DocumentoEstado de = dedao.getById(sinc.getEstado()
-						.getIdEstadoSincronizacion());
-
-				axaxdPndrive.setDocumentoEstado(de);
-				axaxdPndrive.setComentario(sinc.getComentario());
-				axaxdPndrive.setEntregado(true);
-				axaxdPndrive
-						.setRecibido(!de.equals(DocumentoEstado.EXTRAVIADO));
-
-				axaxdPndrive.setUpdatedAt(new Date());
-				axaxdPndrive.setModificadorId(u.getId());
-
-				axaxddao.saveOrUpdate(axaxdPndrive);
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (a != null) {
+					a.setTotalAlumnosPresentes((a.getTotalAlumnosPresentes() != null) ? a
+							.getTotalAlumnosPresentes() : 0 + 1);
+				}
 
 				AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
 						.findByIdAlumnoXActividadANDTipoDocumento(axa.getId(),
@@ -1665,22 +1680,77 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				/**********
-				 * 
-				 * 
-				 * 
-				 * BORRAR DESPUÉS
-				 * 
-				 * 
-				 * 
-				 * 
-				 * 
-				 */
-
-				if (true) {
+				ActividadDAO adao = new ActividadDAO();
+				Integer total = adao
+						.countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
+								idAplicacion, idNivel, idActividadTipo,
+								u.getId(), usuarioTipo.getNombre(), filtros);
+				if (total == null || total == 0) {
 					throw new NullPointerException(
-							"No se ha podido generar el archivo");
+							"No se han obtenido resultados con el filtro especificado.");
 				}
+
+				Integer offset = 0;
+				Integer lenght = 1000;
+				List<ActividadPreviewDTO> apdtos = null;
+				DateFormat dateFormat = new SimpleDateFormat(
+						"dd-MM-yyyy HH.mm.ss");
+				String name = dateFormat.format(new Date());
+				File file = File.createTempFile(
+						StringUtils.getDatePathSafe(name), ".csv",
+						getUploadDir());
+				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file), "ISO-8859-1"));
+
+				String contenido;
+				if (total != 0) {
+					bw.write("RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total;Alumnos Evaluados;Alumnos Sincronizados;Cuestionarios Entregados;Cuestionarios Recibidos;Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna\n\r");
+				}
+				while (total > 0) {
+					apdtos = adao
+							.findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
+									idAplicacion, idNivel, idActividadTipo,
+									u.getId(), usuarioTipo.getNombre(), offset,
+									lenght, filtros, getBaseURL());
+
+					total -= lenght;
+
+					if (apdtos != null && !apdtos.isEmpty()) {
+						for (ActividadPreviewDTO apdto : apdtos) {
+							contenido = apdto.getRbd() + ";";
+							contenido += apdto.getNombreEstablecimiento() + ";";
+							contenido += apdto.getCurso() + ";";
+							contenido += apdto.getTipoEstablecimiento() + ";";
+							contenido += apdto.getEstadoAgenda() + ";";
+							contenido += apdto.getAlumnosTotales() + ";";
+							contenido += apdto.getAlumnosEvaluados() + ";";
+							contenido += apdto.getAlumnosSincronizados() + ";";
+							contenido += apdto
+									.getCuestionariosPadresApoderadosEntregados()
+									+ ";";
+							contenido += apdto
+									.getCuestionariosPadresApoderadosRecibidos()
+									+ ";";
+							contenido += apdto.getContingencia() + ";";
+							contenido += apdto.getContingenciaLimitante() + ";";
+							contenido += apdto.getRegion() + ";";
+							contenido += apdto.getComuna();
+							bw.write(contenido + "\n\r");
+						}
+					}
+				}
+				bw.close();
+
+				ArchivoDAO ardao = new ArchivoDAO();
+				Archivo archivo = new Archivo();
+				archivo.setTitulo(name);
+				archivo.setRutaArchivo(file.getAbsolutePath());
+				archivo.setMimeType("text/plain");
+				archivo.setIpServer("200.1.30.52");
+				ardao.save(archivo);
+
+				ddto = archivo.getDocumentoDTO(getBaseURL());
 
 				s.getTransaction().commit();
 			}
@@ -1694,6 +1764,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} catch (IOException e) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw new NullPointerException("No se pudo generar el archivo");
 		}
 		return ddto;
 	}
@@ -1753,7 +1826,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				if (true) {
 					throw new NullPointerException(
-							"No se han encontrado alumnos");
+							"No se ha podido generar el archivo");
 				}
 
 				s.getTransaction().commit();

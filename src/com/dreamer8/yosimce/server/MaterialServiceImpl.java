@@ -19,6 +19,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 	private String className = "MaterialService";
 
+	/**
+	 * @permiso getCentrosOperacionAsociados
+	 */
 	@Override
 	public ArrayList<EmplazamientoDTO> getCentrosOperacionAsociados()
 			throws NoAllowedException, NoLoggedException, DBException,
@@ -27,6 +30,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getEtapas
+	 */
 	@Override
 	public ArrayList<EtapaDTO> getEtapas() throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
@@ -35,6 +41,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getUser
+	 */
 	@Override
 	public UserDTO getUser(String rut) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
@@ -43,6 +52,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getMateriales
+	 */
 	@Override
 	public ArrayList<MaterialDTO> getMateriales(Integer idCo)
 			throws NoAllowedException, NoLoggedException, DBException,
@@ -51,6 +63,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getMaterial
+	 */
 	@Override
 	public MaterialDTO getMaterial(String codigo) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
@@ -59,6 +74,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getHistorialMaterial
+	 */
 	@Override
 	public ArrayList<HistorialMaterialItemDTO> getHistorialMaterial(
 			Integer idMaterial) throws NoAllowedException, NoLoggedException,
@@ -67,6 +85,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso exportar
+	 */
 	@Override
 	public DocumentoDTO exportar(ArrayList<Integer> idsMaterial)
 			throws NoAllowedException, NoLoggedException, DBException,
@@ -74,4 +95,6 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }
