@@ -76,6 +76,7 @@ public class ActividadesActivity extends SimceActivity implements
 					regionesReady = true;
 					if(estadosReady){
 						updateFiltros();
+						getActividades();
 					}
 				}
 				
@@ -105,6 +106,7 @@ public class ActividadesActivity extends SimceActivity implements
 					estadosReady = true;
 					if(regionesReady){
 						updateFiltros();
+						getActividades();
 					}
 				}
 				
@@ -214,6 +216,27 @@ public class ActividadesActivity extends SimceActivity implements
 		view.clear();
 	}
 	
+	private void getActividades(){
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getTotalPreviewActividades")){
+			getFactory().getActividadService().getTotalPreviewActividades(filtros, new SimceCallback<Integer>(eventBus,false) {
+	
+				@Override
+				public void success(Integer result) {
+					view.getDataDisplay().setRowCount(result,true);
+				}
+			});
+		}
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getPreviewActividades")){
+			getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus,false) {
+	
+				@Override
+				public void success(ArrayList<ActividadPreviewDTO> result) {
+					view.getDataDisplay().setRowData(range.getStart(), result);
+				}
+			});
+		}
+	}
+	
 	private void updateFiltros(){
 		
 		filtros.clear();
@@ -265,24 +288,6 @@ public class ActividadesActivity extends SimceActivity implements
 			}
 			b.deleteCharAt(b.length()-1);
 			filtros.put(ActividadService.FKEY_ESTADOS, b.toString());
-		}
-		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getTotalPreviewActividades")){
-			getFactory().getActividadService().getTotalPreviewActividades(filtros, new SimceCallback<Integer>(eventBus,false) {
-	
-				@Override
-				public void success(Integer result) {
-					view.getDataDisplay().setRowCount(result,true);
-				}
-			});
-		}
-		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getPreviewActividades")){
-			getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus,false) {
-	
-				@Override
-				public void success(ArrayList<ActividadPreviewDTO> result) {
-					view.getDataDisplay().setRowData(range.getStart(), result);
-				}
-			});
 		}
 		
 	}
