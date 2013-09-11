@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.Utils;
@@ -31,6 +32,8 @@ public class ActividadesActivity extends SimceActivity implements
 	private ArrayList<EstadoAgendaDTO> estados;
 	private boolean estadosReady;
 	private boolean regionesReady;
+	
+	private int total = 0;
 	
 	private Range range;
 	
@@ -136,6 +139,12 @@ public class ActividadesActivity extends SimceActivity implements
 	
 	@Override
 	public void onExportarAlumnosClick() {
+		
+		if(total > 200 && place.getRegionId() == -1){
+			eventBus.fireEvent(new MensajeEvent("La lista seleccionada es muy grande para descargarla completamente, filtre por atributo y vuelva a intentarlo",MensajeEvent.MSG_WARNING,false));
+			return;
+		}
+		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getDocumentoAlumnos")){
 			getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true) {
 	
@@ -222,6 +231,7 @@ public class ActividadesActivity extends SimceActivity implements
 	
 				@Override
 				public void success(Integer result) {
+					total = result;
 					view.getDataDisplay().setRowCount(result,true);
 				}
 			});
