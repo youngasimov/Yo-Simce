@@ -52,6 +52,7 @@ public class SincronizacionViewD extends Composite implements
 	
 	private ArrayList<SincAlumnoDTO> alumnos;
 	private ArrayList<EstadoSincronizacionDTO> estados;
+	private EstadoSincronizacionDTO sinInfo;
 	private SincronizacionPresenter presenter;
 	private Column<SincAlumnoDTO, String> materialColumn;
 	private Column<SincAlumnoDTO, String> estadoColumn;
@@ -62,6 +63,7 @@ public class SincronizacionViewD extends Composite implements
 	private FieldUpdater<SincAlumnoDTO, String> estadoUpdater;
 	private FieldUpdater<SincAlumnoDTO, String> comentarioUpdater;
 	private FieldUpdater<SincAlumnoDTO, Boolean> formUpdater;
+	
 	
 	private CursoDTO curso;
 
@@ -329,13 +331,20 @@ public class SincronizacionViewD extends Composite implements
 	private void insertEstadoColumn(){
 		
 		ArrayList<String> selection = new ArrayList<String>();
+		sinInfo = null;
 		for(EstadoSincronizacionDTO e:estados){
 			selection.add(e.getNombreEstado());
+			if(e.getNombreEstado().contains("Sin Información")){
+				sinInfo = e;
+			}
 		}
 		
 		estadoColumn = new Column<SincAlumnoDTO, String>(new SelectionCell(selection)) {
 			@Override
 			public String getValue(SincAlumnoDTO o) {
+				if(o.getEstado() == null || o.getEstado().getIdEstadoSincronizacion() == null || o.getEstado().getNombreEstado() == null){
+					o.setEstado(sinInfo);
+				}
 				return (o.getEstado()!=null)?o.getEstado().getNombreEstado():"";
 			}
 		};
