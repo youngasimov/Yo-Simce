@@ -77,4 +77,7 @@ public interface ActividadServiceAsync {
 	void getDocumentoAlumnos(HashMap<String, String> filtros,
 			AsyncCallback<DocumentoDTO> callback);
 
+	void getEstadosActividadFiltro(
+			AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
+
 }

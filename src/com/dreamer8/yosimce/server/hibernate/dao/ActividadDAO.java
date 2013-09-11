@@ -120,7 +120,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,a.fecha_inicio,a.comentario,u.id as usuario_id,u.username,"
 				+ "u.email,u.nombres,u.apellido_paterno,u.apellido_materno,ae.id as act_est_id,ae.nombre as act_est_nombre,"
 				+ "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
-				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup"
+				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
+				+ "a.total_alumnos"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -286,6 +287,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				udto.setApellidoMaterno((String) o[30]);
 				apdto.setExaminador(udto);
 			}
+			apdto.setTotalAlumnos((Integer) o[31]);
 			apdtos.add(apdto);
 		}
 
@@ -406,7 +408,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as contacto_cargo,"
 				+ "a.aplicacion_x_nivel_x_actividad_tipo_id,"
 				+ "u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
-				+ "u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup"
+				+ "u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
+				+ "a.total_alumnos"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -526,8 +529,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		String visitaPrevia = null;
 		String aplic = null;
 		String contacto = null;
+		String supervisor = null;
+		String examinador = null;
 		if (os != null && !os.isEmpty()) {
-			csv.add("rbd;establecimiento_nombre;establecimiento_tipo;región;comuna;"
+			csv.add("rbd;establecimiento_nombre;establecimiento_tipo;región;comuna;total_alumnos;"
 					+ "fecha_visita_previa;estado_agendamiento_visita_previa;comentario_visita_previa;"
 					+ "fecha_aplicación;estado_agendamiento_aplicación;comentario_aplicación;"
 					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto;examinador;supervisor");
@@ -537,11 +542,17 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					idCursoAnterior = idCurso;
 					linea = Integer.toString((Integer) o[1]) + ";"
 							+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
-							+ ((String) o[4]) + ";" + ((String) o[6]);
+							+ ((String) o[4]) + ";" + ((String) o[6]) + ";"
+							+ (Integer) o[22];
 					contacto = ";" + ((String) o[11]) + ";" + ((String) o[14])
 							+ ";" + ((String) o[12]) + ";" + ((String) o[13]);
 					visitaPrevia = null;
 					aplic = null;
+					examinador = ";" + ((String) o[16]) + " "
+							+ ((String) o[17]) + " " + ((String) o[18]);
+					supervisor = ";" + ((String) o[19]) + " "
+							+ ((String) o[20]) + " " + ((String) o[21]);
+
 				}
 				if (ActividadTipo.VISITA_PREVIA.equals((String) o[7])) {
 					visitaPrevia = ";" + ((Date) o[8]) + ";" + ((String) o[10])
@@ -551,7 +562,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							+ ((String) o[9]);
 				}
 				if (visitaPrevia != null && aplic != null) {
-					linea += visitaPrevia + aplic + contacto;
+					linea += visitaPrevia + aplic + contacto + examinador
+							+ supervisor;
 					csv.add(linea);
 				}
 			}
@@ -737,18 +749,25 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		}
 		if (filtros != null && !filtros.isEmpty()) {
 			String where = "";
+			String opciones = "";
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
-					if (!where.equals("")) {
-						where += " AND ";
-					}
 					if (key.equals(ActividadService.FKEY_COMUNA)) {
+						if (!where.equals("")) {
+							where += " AND ";
+						}
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_REGION)) {
+						if (!where.equals("")) {
+							where += " AND ";
+						}
 						where += " p.region_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_ESTADOS)) {
+						if (!where.equals("")) {
+							where += " AND ";
+						}
 						String[] estados = filtros.get(key).split(
 								ActividadService.SEPARATOR);
 						if (estados.length != 0) {
@@ -765,31 +784,57 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						}
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-						// where += " contingencia=true";
-						where += " true";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						// opciones += " contingencia=true";
+						opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-						// where += " limitante=true";
-						where += " true";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						// opciones += " limitante=true";
+						opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
 						// No se está comprobando por materiales de contingencia
-						where += " a.material_contingencia=true";
+						opciones += " a.material_contingencia=true";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						opciones += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0  AND a.total_alumnos_presentes!=a.total_alumnos)";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						opciones += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0  AND a.total_alumnos_presentes!=a.total_alumnos)";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						opciones += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";
 					}
 				}
 			}
-			if (!where.equals("")) {
-				query += " WHERE " + where;
+			if (!where.equals("") || !opciones.equals("")) {
+				query += " WHERE ";
 			}
+			query += where;
+			if (!opciones.equals("")) {
+				if (!where.equals("")) {
+					query += " AND ";
+				}
+				query += "(" + opciones + ")";
+			}
+
 		}
 		query += " GROUP BY c.id,c.nombre,e.id,e.nombre,et.id,et.nombre,"
 				+ "r.nombre,COMUNA.id,COMUNA.nombre,a.total_alumnos,a.total_alumnos_ausentes,a.total_alumnos_presentes,"
@@ -815,11 +860,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setTipoEstablecimiento((String) o[5]);
 			apdto.setRegion((String) o[6]);
 			apdto.setComuna((String) o[8]);
-			apdto.setCuestionariosPadresApoderadosEntregados((Integer) o[12]);
-			apdto.setCuestionariosPadresApoderadosRecibidos((Integer) o[13]);
+			apdto.setCuestionariosPadresApoderadosEntregados((o[12] == null) ? 0 : (Integer) o[12]);
+			apdto.setCuestionariosPadresApoderadosRecibidos((o[13] == null) ? 0 : (Integer) o[13]);
 			apdto.setAlumnosTotales((o[9] == null) ? 0 : (Integer) o[9]);
-			apdto.setAlumnosEvaluados(apdto.getAlumnosTotales()
-					- ((o[10] == null) ? 0 : (Integer) o[10]));
+			apdto.setAlumnosEvaluados((o[10] == null) ? 0 : (apdto
+					.getAlumnosTotales() - (Integer) o[10]));
 			apdto.setAlumnosSincronizados((o[11] == null) ? 0 : (Integer) o[11]);
 			if (o[14] != null) {
 				ddto = new DocumentoDTO();
@@ -894,18 +939,25 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		}
 		if (filtros != null && !filtros.isEmpty()) {
 			String where = "";
+			String opciones = "";
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
-					if (!where.equals("")) {
-						where += " AND ";
-					}
 					if (key.equals(ActividadService.FKEY_COMUNA)) {
+						if (!where.equals("")) {
+							where += " AND ";
+						}
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_REGION)) {
+						if (!where.equals("")) {
+							where += " AND ";
+						}
 						where += " p.region_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_ESTADOS)) {
+						if (!where.equals("")) {
+							where += " AND ";
+						}
 						String[] estados = filtros.get(key).split(
 								ActividadService.SEPARATOR);
 						if (estados.length != 0) {
@@ -922,31 +974,57 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						}
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-						// where += " contingencia=true";
-						where += " true";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						// opciones += " contingencia=true";
+						opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-						// where += " limitante=true";
-						where += " true";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						// opciones += " limitante=true";
+						opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
 						// No se está comprobando por materiales de contingencia
-						where += " true";
+						opciones += " a.material_contingencia=true";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						opciones += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0)";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						opciones += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0  AND a.total_alumnos_presentes!=a.total_alumnos)";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
-						where += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";
+						if (!opciones.equals("")) {
+							opciones += " OR ";
+						}
+						opciones += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes=a.total_alumnos)";
 					}
 				}
 			}
-			if (!where.equals("")) {
-				query += " WHERE " + where;
+			if (!where.equals("") || !opciones.equals("")) {
+				query += " WHERE ";
 			}
+			query += where;
+			if (!opciones.equals("")) {
+				if (!where.equals("")) {
+					query += " AND ";
+				}
+				query += "(" + opciones + ")";
+			}
+
 		}
 		Query q = s.createSQLQuery(query);
 		result = ((BigInteger) q.uniqueResult()).intValue();

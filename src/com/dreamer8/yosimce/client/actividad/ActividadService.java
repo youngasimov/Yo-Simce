@@ -86,6 +86,10 @@ public interface ActividadService extends RemoteService {
 	ArrayList<EstadoAgendaDTO> getEstadosActividad() throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException;
+	
+	ArrayList<EstadoAgendaDTO> getEstadosActividadFiltro() throws NoAllowedException,
+	NoLoggedException, DBException, NullPointerException,
+	ConsistencyException;
 
 	ArrayList<EvaluacionUsuarioDTO> getEvaluacionExaminadores(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException,

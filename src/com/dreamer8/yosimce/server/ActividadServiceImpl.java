@@ -1089,8 +1089,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
-				// List<ActividadEstado> aes = aedao.findAllByActividad();
-				List<ActividadEstado> aes = aedao.findAll();
+				List<ActividadEstado> aes = aedao.findAllByActividad();
+
 				if (aes != null && !aes.isEmpty()) {
 					for (ActividadEstado ae : aes) {
 						eadtos.add(ae.getEstadoAgendaDTO());
@@ -1910,6 +1910,74 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throw ex;
 		}
 		return esdtos;
+	}
+
+	/**
+	 * @permiso getEstadosActividadFiltro
+	 */
+	@Override
+	public ArrayList<EstadoAgendaDTO> getEstadosActividadFiltro()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+
+		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getEstadosActividadFiltro")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				List<ActividadEstado> aes = aedao.findAll();
+
+				if (aes != null && !aes.isEmpty()) {
+					for (ActividadEstado ae : aes) {
+						eadtos.add(ae.getEstadoAgendaDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		}
+		return eadtos;
 	}
 
 }
