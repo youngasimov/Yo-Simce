@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.ui;
 
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
@@ -41,6 +42,7 @@ public class AppViewD extends Composite implements AppView {
 	@UiField SimpleLayoutPanel contentPanel;
 	@UiField Image barload;
 	@UiField FocusPanel logout;
+	@UiField AnchorElement manual;
 	
 	private MessageContainer messagesContainer;
 	
@@ -54,7 +56,7 @@ public class AppViewD extends Composite implements AppView {
 
 	public AppViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		manual.setHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual.pdf");
 		sidebarPanel.setVisible(true);
 		barload.setVisible(false);
 		popup = new PopupPanel(false, true);

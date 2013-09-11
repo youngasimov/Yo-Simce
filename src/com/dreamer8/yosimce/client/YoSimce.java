@@ -171,7 +171,7 @@ public class YoSimce implements EntryPoint {
 	
 						@Override
 						public void onFailure(Throwable caught) {
-							
+							Window.alert("Error al iniciar sesión, el servidor respondió: "+caught.getLocalizedMessage());
 						}
 	
 						@Override
