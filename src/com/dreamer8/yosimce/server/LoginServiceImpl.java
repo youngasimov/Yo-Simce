@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -62,7 +63,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				throw new NullPointerException(
 						"No se ha especificado un usuario.");
 			}
-			
+
 			s.beginTransaction();
 			SesionDAO sdao = new SesionDAO();
 			List<Sesion> ss = sdao.findBySessionId(token);
@@ -342,13 +343,32 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		return result;
 	}
 
-	/**
-	 * @permiso logout
-	 */
 	@Override
 	public Boolean logout() {
-		// TODO Auto-generated method stub
-		return null;
+		Boolean result = true;
+		try {
+			SesionDAO sdao = new SesionDAO();
+			for (Cookie c : this.getThreadLocalRequest().getCookies()) {
+				if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
+					Session s = HibernateUtil.getSessionFactory()
+							.getCurrentSession();
+					s.beginTransaction().begin();
+					if (c.getValue() != null) {
+						sdao.deleteById(c.getValue());
+					}
+					s.getTransaction().commit();
+					c.setMaxAge(0);
+					this.getThreadLocalResponse().addCookie(c);
+					break;
+				}
+			}
+			HttpSession session = this.getThreadLocalRequest().getSession();
+			session.invalidate();
+		} catch (Exception e) {
+			result = false;
+			System.err.println(e);
+		}
+		return result;
 	}
 
 }
