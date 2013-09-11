@@ -49,7 +49,6 @@ public class DetalleCursoActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					//goTo(new GeneralPlace());
 					goTo(new SimcePlace());
 				}
 			});

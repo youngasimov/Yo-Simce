@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
@@ -74,7 +75,13 @@ public class CentroOperacionActivity extends SimceActivity implements
 						break;
 					}
 				}
-				if(selected == null){
+				if(selected == null && result.isEmpty()){
+					CentroOperacionActivity.this.eventBus.fireEvent(new MensajeEvent("No tiene ningun centro de operación asociado",MensajeEvent.MSG_WARNING,true));
+					goTo(new SimcePlace());
+				}else if(selected == null && result.size()==1){
+					co = result.get(0);
+					initialize();
+				}else if(selected == null && result.size()>1){
 					showCoSelectorPopup();
 				}else{
 					co = selected;

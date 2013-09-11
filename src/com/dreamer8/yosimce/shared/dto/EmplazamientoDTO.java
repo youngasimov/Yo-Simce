@@ -2,6 +2,9 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
+import com.google.gwt.view.client.ProvidesKey;
+
+@SuppressWarnings("serial")
 public class EmplazamientoDTO implements Serializable {
 
 	public static final String CENTRO_OPERACIONAL = "Centro Operacional";
@@ -9,6 +12,14 @@ public class EmplazamientoDTO implements Serializable {
 	public static final String CENTRO_REGIONAL = "Centro Regional";
 	public static final String CENTRO_CAPACITACION = "Centro de Capacitación";
 
+	public static final ProvidesKey<EmplazamientoDTO> KEY_PROVIDER = new ProvidesKey<EmplazamientoDTO>() {
+
+		@Override
+		public Object getKey(EmplazamientoDTO item) {
+			return (item == null) ? null : item.getId();
+		}
+	};
+	
 	private Integer id;
 	private String nombre;
 	private String tipoEmplazamiento;
