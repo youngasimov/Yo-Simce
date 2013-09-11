@@ -30,7 +30,7 @@ public interface ActividadService extends RemoteService {
 	public static final String FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE = "aci";
 	public static final String FKEY_ACTIVIDADES_SINCRONIZADAS = "as";
 	public static final String FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS = "aps";
-	public static final String FKEY_ACTIVIDADES_NO_SINCRONIZADAS = "aps";
+	public static final String FKEY_ACTIVIDADES_NO_SINCRONIZADAS = "ans";
 	public static final String FKEY_REGION = "rid";
 	public static final String FKEY_COMUNA = "cid";
 
