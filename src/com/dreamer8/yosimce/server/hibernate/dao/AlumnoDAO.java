@@ -34,8 +34,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		return a;
 	}
 
-	public List<String> findAlumnosCsvByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idUsuario,
+	public List<String> findAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
+			Integer idAplicacion, Integer idNivel,Integer idActividadTipo, Integer idUsuario,
 			String usuarioTipo, Integer offset, Integer lenght,
 			Map<String, String> filtros) {
 
@@ -52,7 +52,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
@@ -230,8 +231,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		return csv;
 	}
 
-	public Integer countAlumnosCsvByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idUsuario,
+	public Integer countAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
+			Integer idAplicacion, Integer idNivel,Integer idActividadTipo, Integer idUsuario,
 			String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
@@ -242,7 +243,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"

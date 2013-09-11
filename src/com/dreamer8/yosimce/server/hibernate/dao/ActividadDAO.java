@@ -858,8 +858,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setTipoEstablecimiento((String) o[5]);
 			apdto.setRegion((String) o[6]);
 			apdto.setComuna((String) o[8]);
-			apdto.setCuestionariosPadresApoderadosEntregados((o[12] == null) ? 0 : (Integer) o[12]);
-			apdto.setCuestionariosPadresApoderadosRecibidos((o[13] == null) ? 0 : (Integer) o[13]);
+			apdto.setCuestionariosPadresApoderadosEntregados((o[12] == null) ? 0
+					: (Integer) o[12]);
+			apdto.setCuestionariosPadresApoderadosRecibidos((o[13] == null) ? 0
+					: (Integer) o[13]);
 			apdto.setAlumnosTotales((o[9] == null) ? 0 : (Integer) o[9]);
 			apdto.setAlumnosEvaluados((o[10] == null) ? 0 : (apdto
 					.getAlumnosTotales() - (Integer) o[10]));

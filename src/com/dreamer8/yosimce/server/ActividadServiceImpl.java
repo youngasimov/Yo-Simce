@@ -1692,7 +1692,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				Integer offset = 0;
-				Integer lenght = 1000;
+				Integer lenght = 10000;
 				List<ActividadPreviewDTO> apdtos = null;
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
@@ -1815,9 +1815,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				AlumnoDAO adao = new AlumnoDAO();
 				Integer total = adao
-						.countAlumnosCsvByIdAplicacionANDIdNivelANDFiltros(
-								idAplicacion, idNivel, u.getId(),
-								usuarioTipo.getNombre(), filtros);
+						.countAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
+								idAplicacion, idNivel, idActividadTipo,
+								u.getId(), usuarioTipo.getNombre(), filtros);
 				if (total == null || total == 0) {
 					throw new NullPointerException(
 							"No se han obtenido resultados con el filtro especificado.");
@@ -1838,10 +1838,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				while (total > 0) {
 					filas = adao
-							.findAlumnosCsvByIdAplicacionANDIdNivelANDFiltros(
-									idAplicacion, idNivel, u.getId(),
-									usuarioTipo.getNombre(), offset, lenght,
-									filtros);
+							.findAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
+									idAplicacion, idNivel, idActividadTipo,
+									u.getId(), usuarioTipo.getNombre(), offset,
+									lenght, filtros);
 					total -= lenght;
 
 					if (filas != null && !filas.isEmpty()) {
