@@ -342,4 +342,13 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		return result;
 	}
 
+	/**
+	 * @permiso logout
+	 */
+	@Override
+	public Boolean logout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

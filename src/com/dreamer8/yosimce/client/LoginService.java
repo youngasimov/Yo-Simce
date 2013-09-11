@@ -38,4 +38,6 @@ public interface LoginService extends RemoteService {
 	public HashMap<String, ArrayList<String>> getUsuarioPermisos()
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
+
+	public Boolean logout();
 }

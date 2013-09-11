@@ -24,4 +24,6 @@ public interface LoginServiceAsync {
 
 	void getUserToken(String username, AsyncCallback<String> callback);
 
+	void logout(AsyncCallback<Boolean> callback);
+
 }
