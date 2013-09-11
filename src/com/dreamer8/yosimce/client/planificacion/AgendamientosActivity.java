@@ -126,7 +126,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	@Override
 	public void onExportarClick() {
 		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getDocumentoPreviewAgendamientos")){
-			getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true) {
+			getFactory().getPlanificacionService().getDocumentoPreviewAgendamientos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true,0) {
 	
 				@Override
 				public void success(DocumentoDTO result) {

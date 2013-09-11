@@ -127,7 +127,7 @@ public class ActividadesActivity extends SimceActivity implements
 	@Override
 	public void onExportarClick() {
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getDocumentoPreviewActividades")){
-			getFactory().getActividadService().getDocumentoPreviewActividades(filtros,new SimceCallback<DocumentoDTO>(eventBus,true) {
+			getFactory().getActividadService().getDocumentoPreviewActividades(filtros,new SimceCallback<DocumentoDTO>(eventBus,true,0) {
 	
 				@Override
 				public void success(DocumentoDTO result) {
@@ -146,7 +146,7 @@ public class ActividadesActivity extends SimceActivity implements
 		}
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getDocumentoAlumnos")){
-			getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true) {
+			getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true,0) {
 	
 				@Override
 				public void success(DocumentoDTO result) {

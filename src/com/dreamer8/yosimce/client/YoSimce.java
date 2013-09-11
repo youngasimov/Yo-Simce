@@ -49,7 +49,7 @@ public class YoSimce implements EntryPoint {
 		
 		defaultPlace = new SimcePlace();
 		loginService = (LoginServiceAsync)GWT.create(LoginService.class);
-		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(4000));
+		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(10000));
 		panel = new SimplePanel();
 		loadView = new LoadViewD();
 		

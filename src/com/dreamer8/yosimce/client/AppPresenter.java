@@ -173,6 +173,9 @@ public class AppPresenter implements AppView.AppPresenter {
 		}else if(e instanceof RequestTimeoutException){
 			view.showErrorMessage("El tiempo máximo de espera de respuesta se ha excedido", true);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}else if(e instanceof TimeoutException){
+			view.showErrorMessage(e.getLocalizedMessage(), true);
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof ConsistencyException){
 			view.showWarningMessage(e.getMessage(), false);
 			logger.log(Level.INFO, e.getLocalizedMessage());

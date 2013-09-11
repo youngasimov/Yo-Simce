@@ -103,11 +103,11 @@ public class ClientFactoryD implements ClientFactory {
 	private final PermisosView permisosView = new PermisosViewD();
 
 	public ClientFactoryD(){
-		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(8000));
-		((ServiceDefTarget) generalService).setRpcRequestBuilder(new CustomRpcRequestBuilder(8000));
+		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(19000));
+		((ServiceDefTarget) generalService).setRpcRequestBuilder(new CustomRpcRequestBuilder(19000));
 		((ServiceDefTarget) planificacionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
 		((ServiceDefTarget) actividadService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
-		((ServiceDefTarget) administracionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(15000));
+		((ServiceDefTarget) administracionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(19000));
 	}
 	
 	@Override
