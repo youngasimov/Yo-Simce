@@ -13,6 +13,9 @@ public class AgendaPreviewDTO implements Serializable {
 	private String regionName;
 	private String comunaName;
 	private AgendaItemDTO agendaItemActual;
+	private UserDTO examinador;
+	private UserDTO supervisor;
+	private Integer alumnosTotal;
 
 	/**
 	 * 
@@ -21,17 +24,10 @@ public class AgendaPreviewDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @return the cursoId
-	 */
 	public Integer getCursoId() {
 		return cursoId;
 	}
 
-	/**
-	 * @param cursoId
-	 *            the cursoId to set
-	 */
 	public void setCursoId(Integer cursoId) {
 		this.cursoId = cursoId;
 	}
@@ -91,5 +87,29 @@ public class AgendaPreviewDTO implements Serializable {
 
 	public void setCurso(String curso) {
 		this.curso = curso;
+	}
+
+	public UserDTO getExaminador() {
+		return examinador;
+	}
+
+	public void setExaminador(UserDTO examinador) {
+		this.examinador = examinador;
+	}
+
+	public UserDTO getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(UserDTO supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public Integer getTotalAlumnos() {
+		return alumnosTotal;
+	}
+
+	public void setTotalAlumnos(Integer alumnos) {
+		this.alumnosTotal = alumnos;
 	}
 }

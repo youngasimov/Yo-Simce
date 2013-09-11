@@ -15,7 +15,6 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
-import com.dreamer8.yosimce.server.CustomRemoteServiceServlet;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
@@ -801,7 +800,6 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
-						// No se está comprobando por materiales de contingencia
 						opciones += " a.material_contingencia=true";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {

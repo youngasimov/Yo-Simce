@@ -1696,7 +1696,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				List<ActividadPreviewDTO> apdtos = null;
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
-				String name = dateFormat.format(new Date());
+				String name = "Actividades " + dateFormat.format(new Date());
 				File file = File.createTempFile(
 						StringUtils.getDatePathSafe(name), ".csv",
 						getUploadDir());
@@ -1767,7 +1767,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throw ex;
 		} catch (IOException e) {
 			HibernateUtil.rollbackActiveOnly(s);
-			throw new NullPointerException("No se pudo generar el archivo");
+			throw new NullPointerException("No se pudo crear el archivo.");
 		}
 		return ddto;
 	}
@@ -1813,22 +1813,54 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				/**********
-				 * 
-				 * 
-				 * 
-				 * BORRAR DESPUÉS
-				 * 
-				 * 
-				 * 
-				 * 
-				 * 
-				 */
-
-				if (true) {
+				AlumnoDAO adao = new AlumnoDAO();
+				Integer total = adao
+						.countAlumnosCsvByIdAplicacionANDIdNivelANDFiltros(
+								idAplicacion, idNivel, u.getId(),
+								usuarioTipo.getNombre(), filtros);
+				if (total == null || total == 0) {
 					throw new NullPointerException(
-							"No se ha podido generar el archivo");
+							"No se han obtenido resultados con el filtro especificado.");
 				}
+
+				Integer offset = 0;
+				Integer lenght = 1000;
+				List<String> filas = null;
+				DateFormat dateFormat = new SimpleDateFormat(
+						"dd-MM-yyyy HH.mm.ss");
+				String name = "Alumnos " + dateFormat.format(new Date());
+				File file = File.createTempFile(
+						StringUtils.getDatePathSafe(name), ".csv",
+						getUploadDir());
+				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file), "ISO-8859-1"));
+
+				while (total > 0) {
+					filas = adao
+							.findAlumnosCsvByIdAplicacionANDIdNivelANDFiltros(
+									idAplicacion, idNivel, u.getId(),
+									usuarioTipo.getNombre(), offset, lenght,
+									filtros);
+					total -= lenght;
+
+					if (filas != null && !filas.isEmpty()) {
+						for (String contenido : filas) {
+							bw.write(contenido + "\n\r");
+						}
+					}
+				}
+				bw.close();
+
+				ArchivoDAO ardao = new ArchivoDAO();
+				Archivo archivo = new Archivo();
+				archivo.setTitulo(name);
+				archivo.setRutaArchivo(file.getAbsolutePath());
+				archivo.setMimeType("text/plain");
+				archivo.setIpServer("200.1.30.52");
+				ardao.save(archivo);
+
+				ddto = archivo.getDocumentoDTO(getBaseURL());
 
 				s.getTransaction().commit();
 			}
@@ -1842,6 +1874,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} catch (IOException e) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw new NullPointerException("No se pudo crear el archivo.");
 		}
 		return ddto;
 	}
