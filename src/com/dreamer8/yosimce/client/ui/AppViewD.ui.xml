@@ -131,9 +131,9 @@
     			<g:Image addStyleNames='{style.imageCenter}' resource='{res.barLoad}' ui:field="barload" />
     			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageLeft}'><g:Image resource='{res.dreamer}'/></a>
     			<a href='http://tracking.yosimce.cl/manual.pdf' target="_blank" class='{style.imageLeft}' title='manual de usuario'><g:Image resource='{res.pdfDownload}'  altText="manual de usuario" /></a>
-    			<g:FocusPanel addStyleNames='{style.logout}' ui:field='logout' >
+    			<g:FocusPanel addStyleNames='{style.logout}' ui:field='logout' title="Cerrar sesión">
     				<g:HTMLPanel>
-    					<g:Image addStyleNames="{style.logoutImage}" resource='{res.logout}'/>
+    					<g:Image altText="Cerrar sesión" addStyleNames="{style.logoutImage}" resource='{res.logout}'/>
     				</g:HTMLPanel>
     			</g:FocusPanel> 
     		</g:HTMLPanel>

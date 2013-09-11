@@ -18,7 +18,7 @@ public interface AppView extends IsWidget {
 	void showWarningMessage(String message,boolean autoclose);
 	void showOkMessage(String message,boolean autoclose);
 	void showPermisoMessage(String message,boolean autoclose);
-	void openLoginPopup();
+	void openLoginPopup(String mensaje1, String mensaje2);
 	
 	void setPresenter(AppPresenter presenter);
 	

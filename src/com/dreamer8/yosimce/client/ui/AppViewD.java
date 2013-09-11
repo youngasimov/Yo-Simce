@@ -143,12 +143,15 @@ public class AppViewD extends Composite implements AppView {
 	}
 	
 	@Override
-	public void openLoginPopup() {
+	public void openLoginPopup(String mensaje1, String mensaje2) {
 		PopupPanel p = new PopupPanel(false, true);
 		p.setAnimationEnabled(false);
 		p.setAutoHideOnHistoryEventsEnabled(false);
 		p.setGlassEnabled(true);
-		p.setWidget(new NotLoggedPanel());
+		NotLoggedPanel nlp = new NotLoggedPanel();
+		nlp.mensaje1.setHTML(mensaje1);
+		nlp.mensaje2.setHTML(mensaje2);
+		p.setWidget(nlp);
 		p.center();
 	}
 	

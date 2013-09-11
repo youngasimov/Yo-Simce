@@ -7,6 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 public class NotLoggedPanel extends Composite {
@@ -18,6 +19,8 @@ public class NotLoggedPanel extends Composite {
 	}
 	
 	@UiField ImageButton yosimceButton;
+	@UiField HTML mensaje1;
+	@UiField HTML mensaje2;
 
 	public NotLoggedPanel() {
 		initWidget(uiBinder.createAndBindUi(this));

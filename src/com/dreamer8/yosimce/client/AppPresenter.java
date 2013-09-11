@@ -60,16 +60,21 @@ public class AppPresenter implements AppView.AppPresenter {
 			
 			@Override
 			public void onSuccess(Boolean result) {
-				Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
-				Window.open("http://www.yosimce.cl", "_self", "");
+				logout();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
-				Window.open("http://www.yosimce.cl", "_self", "");
+				logout();
 			}
 		});
+	}
+	
+	private void logout(){
+		Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
+		notLogged = true;
+		view.openLoginPopup("<br /><br />Su sesión se ha cerrado con éxito<br /><br />",
+				"<br /><br />Para volver a ingresar diríjase a YoSimce");
 	}
 	
 	private void bind(){
@@ -173,7 +178,8 @@ public class AppPresenter implements AppView.AppPresenter {
 		}else if(e instanceof NoLoggedException && !notLogged){
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 			notLogged = true;
-			view.openLoginPopup();
+			view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />",
+					"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
 		}else{
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}

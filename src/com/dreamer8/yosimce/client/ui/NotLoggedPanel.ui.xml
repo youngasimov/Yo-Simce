@@ -70,9 +70,8 @@
 		<div class='{style.upPanel}'>
 			<div class='{style.logoPanel}'><g:Image addStyleNames='{style.logo}' resource='{res.logoSimceGrande}' /></div>
 			<div class='{style.mensaje}'>
-				Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />
-				Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />
-				<div class="{style.submensaje}">Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce</div>
+				<g:HTML ui:field='mensaje1' />
+				<div class="{style.submensaje}"><g:HTML ui:field='mensaje2' /></div>
 			</div>
 		</div>
 		<div class='{style.bottomPanel}'>
