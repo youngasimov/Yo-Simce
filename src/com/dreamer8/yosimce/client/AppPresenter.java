@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.http.client.RequestTimeoutException;
+import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
@@ -97,6 +98,15 @@ public class AppPresenter implements AppView.AppPresenter {
 			    return e;  
 			  }
 		});*/
+		
+		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+
+			@Override
+			public void onPlaceChange(PlaceChangeEvent event) {
+				menuOpen = false;
+				view.setSidebarPanelState(menuOpen);
+			}
+		});
 		
 		factory.getEventBus().addHandler(MenuEvent.TYPE, new MenuEvent.MenuHandler() {
 			

@@ -25,6 +25,7 @@ public class MaterialWrap {
 	private boolean historialUpToDate;
 	private boolean documentosUpToDate;
 	
+	
 	public MaterialDTO getMaterial() {
 		return material;
 	}

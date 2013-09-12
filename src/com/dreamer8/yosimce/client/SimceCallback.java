@@ -15,7 +15,7 @@ public abstract class SimceCallback<T> implements AsyncCallback<T> {
 	}
 	
 	public SimceCallback(EventBus eventbus, boolean blocking){
-		this(eventbus,true,21000);
+		this(eventbus,blocking,21000);
 	}
 	
 	public SimceCallback(EventBus eventbus, boolean blocking, int timeout){

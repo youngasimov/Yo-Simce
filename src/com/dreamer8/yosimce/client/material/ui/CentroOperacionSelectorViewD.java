@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.material.ui;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -13,6 +14,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -28,19 +30,23 @@ public class CentroOperacionSelectorViewD extends Composite implements CentroOpe
 	}
 	
 	private class CentroOperacionCell extends AbstractCell<EmplazamientoDTO>{
-
+		
 		@Override
 		public void render(com.google.gwt.cell.client.Cell.Context context,
 				EmplazamientoDTO value, SafeHtmlBuilder sb) {
-			
-			sb.appendHtmlConstant("<div style='display:block; width: 95% ;height: 40px; float:left; text-align: center; font-size: 20px; font-weight: bolder;'>");
-			sb.appendEscaped(value.getNombre());
-			sb.appendHtmlConstant("</div>");
+			if(context.getIndex()%2 == 0){
+				sb.appendHtmlConstant("<table style='height: 50px; border-bottom: 1px solid #AAAAAA; font-size: 20px; font-weight: bold; width: 90%' ><tr><td>");
+			}else{
+				sb.appendHtmlConstant("<table style='background= #DEDEDE; height: 50px; border-bottom: 1px solid #AAAAAA; font-size: 20px; font-weight: bold; width: 90%' ><tr><td>");
+			}
+				sb.appendEscaped("Centro Operación "+value.getNombre());
+			sb.appendHtmlConstant("</td></tr></table>");
 		}
 		
 	}
 	
 	@UiField HTMLPanel panel;
+	@UiField ScrollPanel scroll;
 	@UiField(provided=true) CellList<EmplazamientoDTO> coList;
 	
 	private PopupPanel popup;
@@ -51,20 +57,23 @@ public class CentroOperacionSelectorViewD extends Composite implements CentroOpe
 
 	public CentroOperacionSelectorViewD() {
 		coList = new CellList<EmplazamientoDTO>(new CentroOperacionCell(),EmplazamientoDTO.KEY_PROVIDER);
+		selectionModel = new SingleSelectionModel<EmplazamientoDTO>(EmplazamientoDTO.KEY_PROVIDER);
+		coList.setSelectionModel(selectionModel);
+		coList.setPageSize(300);
 		initWidget(uiBinder.createAndBindUi(this));
-		popup = new PopupPanel(true, false);
+		popup = new PopupPanel(true, true);
 		popup.setAnimationEnabled(true);
 		popup.setAutoHideOnHistoryEventsEnabled(true);
 		popup.setGlassEnabled(false);
 		popup.setModal(true);
 		popup.setWidget(this);
-		selectionModel = new SingleSelectionModel<EmplazamientoDTO>(EmplazamientoDTO.KEY_PROVIDER);
-		coList.setSelectionModel(selectionModel);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler(){
 
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				presenter.centroOperacionSelected(selectionModel.getSelectedObject());
+				if(selectionModel.getSelectedObject()!=null){
+					presenter.centroOperacionSelected(selectionModel.getSelectedObject());
+				}
 			}
 		});
 		popup.addCloseHandler(new CloseHandler<PopupPanel>() {
@@ -82,9 +91,21 @@ public class CentroOperacionSelectorViewD extends Composite implements CentroOpe
 	public void show() {
 		int h = Window.getClientHeight();
 		h = (9*h)/10;
-		panel.getElement().setAttribute("style", "max-height: "+h+"px;");
+		panel.getElement().setAttribute("style", "max-height: "+(h+20)+"px;");
 		selectionModel.clear();
-		popup.center();
+		if(coList.getRowCount()*50>h){
+			scroll.setHeight(h+"px");
+		}else{
+			scroll.setHeight(((coList.getRowCount()+1)*50)+"px");
+		}
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				popup.center();
+			}
+		});
+		
 	}
 
 	@Override

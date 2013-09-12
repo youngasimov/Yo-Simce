@@ -61,7 +61,7 @@
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Centro Operación</div> ></g:MenuItem>
-				<g:MenuItem enabled="false" ui:field="cosItem" text='Centro operación'/>
+				<g:MenuItem enabled="false" ui:field="cosItem" text='-------'/>
 				<g:MenuItem ui:field="filtrosItem" text='Filtros' />
 				<g:MenuItem ui:field="exportarItem" text='Exportar' />
 			</my:OverMenuBar>

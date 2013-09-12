@@ -199,7 +199,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	
 	@Override
 	public void setCO(EmplazamientoDTO emplazamiento) {
-		cosItem.setHTML(emplazamiento.getNombre());
+		cosItem.setText(emplazamiento.getNombre());
 	}
 	
 	@Override
@@ -375,6 +375,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@Override
 	public void setLotes(ArrayList<LoteDTO> lotes) {
 		lotesBox.clear();
+		lotesBox.addItem("----------","-1");
 		for(LoteDTO lote:lotes){
 			lotesBox.addItem(lote.getNombre(),lote.getId()+"");
 		}

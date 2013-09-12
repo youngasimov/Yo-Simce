@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client.material;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionSelectorView;
@@ -24,6 +26,14 @@ public class CentroOperacionSelector implements
 	public CentroOperacionSelector(ClientFactory factory, ArrayList<EmplazamientoDTO> emplazamientos) {
 		this.view = factory.getCentroOperacionSelectorView();
 		view.setPresenter(this);
+		
+		Collections.sort(emplazamientos, new Comparator<EmplazamientoDTO>() {
+
+			@Override
+			public int compare(EmplazamientoDTO o1, EmplazamientoDTO o2) {
+				return o1.getNombre().compareToIgnoreCase(o2.getNombre());
+			}
+		});
 		provider = new ListDataProvider<EmplazamientoDTO>(emplazamientos,EmplazamientoDTO.KEY_PROVIDER);
 		provider.addDataDisplay(view.getDataDisplay());
 	}
