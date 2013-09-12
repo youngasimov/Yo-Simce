@@ -33,7 +33,7 @@ public class CentroOperacionSelectorViewD extends Composite implements CentroOpe
 		public void render(com.google.gwt.cell.client.Cell.Context context,
 				EmplazamientoDTO value, SafeHtmlBuilder sb) {
 			
-			sb.appendHtmlConstant("<div style='display:block; width: 95%';height: 40px; float:left; text-align: center; font-size: 20px; font-weight: bolder;>");
+			sb.appendHtmlConstant("<div style='display:block; width: 95% ;height: 40px; float:left; text-align: center; font-size: 20px; font-weight: bolder;'>");
 			sb.appendEscaped(value.getNombre());
 			sb.appendHtmlConstant("</div>");
 		}

@@ -69,24 +69,33 @@ public class CentroOperacionActivity extends SimceActivity implements
 			@Override
 			public void success(ArrayList<EmplazamientoDTO> result) {
 				cosAsociados = result;
-				EmplazamientoDTO selected = null;
-				for(EmplazamientoDTO empl:result){
-					if(empl.getId() == place.getCentroId()){
-						selected = empl;
-						break;
-					}
-				}
-				if(selected == null && result.isEmpty()){
+				
+				if(cosAsociados.isEmpty()){
 					CentroOperacionActivity.this.eventBus.fireEvent(new MensajeEvent("No tiene ningun centro de operación asociado",MensajeEvent.MSG_WARNING,true));
 					goTo(new SimcePlace());
-				}else if(selected == null && result.size()==1){
-					co = result.get(0);
-					initialize();
-				}else if(selected == null && result.size()>1){
-					showCoSelectorPopup();
+				}else if(cosAsociados.size() == 1){
+					if(place.getCentroId() == cosAsociados.get(0).getId()){
+						co = cosAsociados.get(0);
+						initialize();
+					}else{
+						CentroOperacionPlace p = new CentroOperacionPlace();
+						p.setCentroId(cosAsociados.get(0).getId());
+						goTo(p);
+					}
 				}else{
-					co = selected;
-					initialize();
+					EmplazamientoDTO selected = null;
+					for(EmplazamientoDTO empl:cosAsociados){
+						if(empl.getId() == place.getCentroId()){
+							selected = empl;
+							break;
+						}
+					}
+					if(selected != null){
+						co =selected;
+						initialize();
+					}else{
+						showCoSelectorPopup();
+					}
 				}
 			}
 			
