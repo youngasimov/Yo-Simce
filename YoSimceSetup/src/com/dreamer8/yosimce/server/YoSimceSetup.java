@@ -1,11 +1,16 @@
 package com.dreamer8.yosimce.server;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -51,6 +56,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivel;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso;
+import com.dreamer8.yosimce.server.hibernate.pojo.CarreraEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
@@ -79,12 +85,13 @@ public class YoSimceSetup {
 		// ids.add(10);
 		// asignarUsuario(16361209, 2, ids, 1);
 		// asignarUsuario(16370885, 2, ids, 1);
-		initPermisos();
+		// initPermisos();
 
 		// cargarAlumnosTic("titulares.csv", EstablecimientoTipo.SELECCIONADO);
 		// cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
 		// cargarAlumnosTic("reemplazos2.csv", EstablecimientoTipo.REEMPLAZO_2);
 
+		loadLaWeaDeCapacitacion();
 		System.out.println("fin :P");
 	}
 
@@ -405,5 +412,103 @@ public class YoSimceSetup {
 			System.err.println(e);
 			HibernateUtil.rollback(s);
 		}
+	}
+
+	public static void loadLaWeaDeCapacitacion() {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+
+			fstream = new FileInputStream("Muestra_TSES-61_2013.csv");
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			File file = File.createTempFile(
+					StringUtils.getDatePathSafe("TSES"), ".csv", new File(
+							"/tmp"));
+			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(file), "ISO-8859-1"));
+			String line;
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			UsuarioDAO udao = new UsuarioDAO();
+			Usuario u = null;
+			String lineaOut = "RUN;PATERNO;MATERNO;NOMBRES;SEXO;EDAD;REGION;CARRERA;PROFESION";
+			for (int i = 1; i < 62; i++) {
+				lineaOut += ";P" + StringUtils.forceTwoDigits(i);
+			}
+			System.out.println(lineaOut);
+			bw.write(lineaOut + "\n\r");
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					u = udao.getById(Integer.valueOf(row[2]));
+					if (u == null) {
+//						System.out.println("No se encontró el examinador "
+//								+ row[2]);
+					} else {
+						lineaOut = row[2] + ";" + u.getApellidoPaterno() + ";"
+								+ u.getApellidoMaterno() + ";" + u.getNombres()
+								+ ";";
+
+						if (u.getSexo() != null) {
+							lineaOut += (u.getSexo().getNombre().equals(Sexo.MASCULINO) ? "H"
+									: "M");
+						}
+						lineaOut += ";"
+								+ edad(u.getFechaNacimiento())
+								+ ";"
+								+ u.getComuna().getProvincia().getRegion()
+										.getId();
+						if (u.getCarreraEstado().getNombre()
+								.equals(CarreraEstado.TITULADO)) {
+							lineaOut += ";;" + u.getCarrera().getNombre();
+						} else {
+							lineaOut += ";" + u.getCarrera().getNombre() + ";";
+						}
+						for (int i = 0; i < 61; i++) {
+							lineaOut += ";" + row[4 + i];
+						}
+						System.out.println(lineaOut);
+						bw.write(lineaOut + "\n\r");
+					}
+				}
+				rowCounter++;
+			}
+			bw.close();
+			br.close();
+
+			System.out.println("Ingresados " + rowCounter + " alumnos.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static Integer edad(Date dateOfBirth) {
+		Calendar dob = Calendar.getInstance();
+		dob.setTime(dateOfBirth);
+		Calendar today = Calendar.getInstance();
+		Integer age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+		if (today.get(Calendar.MONTH) < dob.get(Calendar.MONTH)) {
+			age--;
+		} else if (today.get(Calendar.MONTH) == dob.get(Calendar.MONTH)
+				&& today.get(Calendar.DAY_OF_MONTH) < dob
+						.get(Calendar.DAY_OF_MONTH)) {
+			age--;
+		}
+		return age;
 	}
 }

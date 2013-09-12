@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
 
 /**
@@ -25,6 +26,36 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
 				+ " JOIN CO co ON z.id=co.zona_id";
+		Query q = s.createSQLQuery(query).addEntity(Co.class);
+		cos = q.list();
+		return cos;
+	}
+
+	public List<Co> findByIdAplicacionANDIdUsuarioANDUsuarioTipo(
+			Integer idAplicacion, Integer idUsuario, String usuarioTipo) {
+
+		List<Co> cos = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT co.* FROM  CENTRO_REGIONAL cr "
+				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + ")"
+				+ " JOIN CO co ON z.id=co.zona_id";
+
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+			query += " JOIN JO_x_CO joxco ON (co.id=joxco.co_id AND joxco.jo_id="
+					+ SecurityFilter.escapeString(idUsuario)
+					+ ") AND joxco.activo=TRUE";
+		} else if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
+			query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					+ SecurityFilter.escapeString(idUsuario)
+					+ ") AND jzxz.activo=TRUE";
+		} else if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)) {
+			query += " JOIN ZONA z ON co.zona_id=z.id"
+					+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
+					+ SecurityFilter.escapeString(idUsuario)
+					+ ") AND jrxcr.activo=TRUE";
+		}
+
 		Query q = s.createSQLQuery(query).addEntity(Co.class);
 		cos = q.list();
 		return cos;
