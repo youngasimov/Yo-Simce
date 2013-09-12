@@ -3,35 +3,31 @@ package com.dreamer8.yosimce.server;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
-import com.dreamer8.yosimce.server.hibernate.dao.AplicacionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ContactoCargoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
-import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
-import com.dreamer8.yosimce.server.hibernate.pojo.Aplicacion;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
@@ -46,10 +42,7 @@ import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
-import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
-import com.dreamer8.yosimce.shared.dto.ExaminadorDTO;
-import com.dreamer8.yosimce.shared.dto.SupervisorDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
@@ -69,7 +62,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<AgendaPreviewDTO> apdtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -122,6 +116,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return apdtos;
 	}
@@ -133,7 +133,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
 			NoLoggedException, DBException {
 		AgendaDTO adto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getAgendaCurso")) {
@@ -192,6 +193,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return adto;
 	}
@@ -203,7 +210,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
 			throws NoAllowedException, NoLoggedException, DBException {
 
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "AgendarVisita")) {
@@ -317,6 +325,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return itemAgenda;
 	}
@@ -329,7 +343,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getEstadosAgenda")) {
@@ -380,6 +395,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return eadtos;
 	}
@@ -392,7 +413,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			NoLoggedException, DBException {
 
 		ContactoDTO cdto = new ContactoDTO();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getContacto")) {
@@ -441,6 +463,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return cdto;
 	}
@@ -453,7 +481,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Integer result = 0;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -505,6 +534,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -517,7 +552,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean resutl = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "editarContacto")) {
@@ -593,6 +629,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return resutl;
 	}
@@ -605,7 +647,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			NoLoggedException, DBException {
 
 		ArrayList<CargoDTO> cdtos = new ArrayList<CargoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getCargos")) {
@@ -658,6 +701,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return cdtos;
 	}
@@ -671,7 +720,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			NoLoggedException, DBException {
 
 		DocumentoDTO ddto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -769,6 +819,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (IOException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw new NullPointerException("No se pudo crear el archivo.");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return ddto;
 	}
@@ -781,7 +837,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			NoLoggedException, DBException {
 
 		ContactoDTO cdto = new ContactoDTO();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getDirector")) {
@@ -845,6 +902,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return cdto;
 	}
@@ -857,7 +920,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "editarDirector")) {
@@ -955,6 +1019,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -968,7 +1038,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			NullPointerException, ConsistencyException {
 
 		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1022,6 +1093,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return eadtos;
 	}

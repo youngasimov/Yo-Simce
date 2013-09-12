@@ -5,20 +5,16 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.general.GeneralService;
-import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ComunaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
-import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.RegionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
-import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
-import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.Comuna;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
-import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.Region;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
@@ -26,8 +22,6 @@ import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
-import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
-import com.dreamer8.yosimce.shared.dto.HistorialCambioItemDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
@@ -47,7 +41,8 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	public ArrayList<SectorDTO> getRegiones() {
 
 		ArrayList<SectorDTO> sdtos = new ArrayList<SectorDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getRegiones")) {
@@ -103,6 +98,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return sdtos;
 	}
@@ -114,7 +115,8 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	public ArrayList<SectorDTO> getComunas(SectorDTO sector) {
 
 		ArrayList<SectorDTO> sdtos = new ArrayList<SectorDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getComunas")) {
@@ -187,6 +189,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return sdtos;
 	}
@@ -199,7 +207,8 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<CursoDTO> cdtos = new ArrayList<CursoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getCursos")) {
@@ -259,6 +268,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return cdtos;
 	}
@@ -271,7 +286,8 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		DetalleCursoDTO dcdto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getDetalleCurso")) {
@@ -349,6 +365,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return dcdto;
 	}
@@ -361,7 +383,8 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 			NoLoggedException, DBException {
 
 		CursoDTO cdto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getCurso")) {
@@ -418,6 +441,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return cdto;
 	}

@@ -3,13 +3,13 @@ package com.dreamer8.yosimce.server;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.LoginService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadTipoDAO;
@@ -46,7 +46,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	 */
 	public UserDTO getUser(String token) {
 		UserDTO udto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 
 			if (token == null) {
@@ -95,6 +96,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return udto;
 	}
@@ -107,7 +114,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<AplicacionDTO> adtos = new ArrayList<AplicacionDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()) {
@@ -135,6 +143,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return adtos;
 	}
@@ -147,7 +161,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			NoLoggedException, DBException {
 
 		ArrayList<NivelDTO> ndtos = new ArrayList<NivelDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()) {
@@ -179,6 +194,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return ndtos;
 	}
@@ -191,7 +212,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<ActividadTipoDTO> atdtos = new ArrayList<ActividadTipoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getActividadTipos")) {
@@ -233,6 +255,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return atdtos;
 	}
@@ -245,7 +273,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		HashMap<String, ArrayList<String>> permisos = new HashMap<String, ArrayList<String>>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()) {
@@ -289,6 +318,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return permisos;
 	}
@@ -297,7 +332,8 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	public String getUserToken(String username) throws DBException {
 
 		String result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			s.beginTransaction();
 			UsuarioDAO udao = new UsuarioDAO();
@@ -339,6 +375,12 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -346,12 +388,13 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public Boolean logout() {
 		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
+
 			SesionDAO sdao = new SesionDAO();
 			for (Cookie c : this.getThreadLocalRequest().getCookies()) {
 				if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
-					Session s = HibernateUtil.getSessionFactory()
-							.getCurrentSession();
 					s.beginTransaction().begin();
 					if (c.getValue() != null) {
 						sdao.deleteById(c.getValue());
@@ -366,7 +409,14 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			session.invalidate();
 		} catch (Exception e) {
 			result = false;
+			HibernateUtil.rollbackActiveOnly(s);
 			System.err.println(e);
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}

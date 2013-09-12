@@ -4,7 +4,10 @@
  */
 package com.dreamer8.yosimce.server;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,15 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.utils.StringUtils;
-
-import org.hibernate.Hibernate;
-import org.hibernate.Session;
 
 /**
  * 
@@ -74,33 +77,47 @@ public class DownloadServlet extends HttpServlet {
 			return;
 		}
 
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		s.beginTransaction();
-		ArchivoDAO adao = new ArchivoDAO();
-		Archivo a = adao.getById(id);
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			s.beginTransaction();
+			ArchivoDAO adao = new ArchivoDAO();
+			Archivo a = adao.getById(id);
 
-		if (a == null || !a.getTitulo().equals(nombreArchivo)) {
-			showMessage(response, "Error", "No se ha encontrado el archivo.");
-			return;
+			if (a == null || !a.getTitulo().equals(nombreArchivo)) {
+				showMessage(response, "Error",
+						"No se ha encontrado el archivo.");
+				return;
+			}
+
+			File f = new File(a.getRutaArchivo());
+
+			if (f != null) {
+				response.setContentType(a.getMimeType());
+				response.setHeader(
+						"Content-Disposition",
+						"attachment; filename=\""
+								+ StringUtils.getDatePathSafe(a.getTitulo())
+								+ StringUtils.getExtension(a.getRutaArchivo())
+								+ "\"");
+				FileInputStream fis = new FileInputStream(f);
+				IOUtils.copy(fis, response.getOutputStream());
+			} else {
+				showMessage(response, "Error",
+						"No se ha encontrado el archivo.");
+			}
+
+			s.getTransaction().commit();
+		} catch (HibernateException ex) {
+
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 
-		File f = new File(a.getRutaArchivo());
-
-		if (f != null) {
-			response.setContentType(a.getMimeType());
-			response.setHeader(
-					"Content-Disposition",
-					"attachment; filename=\""
-							+ StringUtils.getDatePathSafe(a.getTitulo())
-							+ StringUtils.getExtension(a.getRutaArchivo())
-							+ "\"");
-			FileInputStream fis = new FileInputStream(f);
-			IOUtils.copy(fis, response.getOutputStream());
-		} else {
-			showMessage(response, "Error", "No se ha encontrado el archivo.");
-		}
-
-		s.getTransaction().commit();
 	}
 
 	// <editor-fold defaultstate="collapsed"

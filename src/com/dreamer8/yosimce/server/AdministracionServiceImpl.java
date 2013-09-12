@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoDAO;
@@ -21,7 +22,6 @@ import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso
 import com.dreamer8.yosimce.server.hibernate.pojo.CentroRegional;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
-import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Zona;
 import com.dreamer8.yosimce.server.utils.AccessControl;
@@ -48,7 +48,8 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			DBException {
 
 		ArrayList<UserDTO> udtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getUsuarios")) {
@@ -97,6 +98,12 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return udtos;
 	}
@@ -109,7 +116,8 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<TipoUsuarioDTO> tudtos = new ArrayList<TipoUsuarioDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getTiposUsuario")) {
@@ -162,6 +170,12 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return tudtos;
 	}
@@ -175,7 +189,8 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			NoLoggedException, DBException {
 
 		ArrayList<EmplazamientoDTO> edtos = new ArrayList<EmplazamientoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getEmplazamientos")) {
@@ -234,6 +249,12 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return edtos;
 	}
@@ -267,7 +288,8 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			NoLoggedException, DBException {
 
 		ArrayList<PermisoDTO> pdtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getPermisos")) {
@@ -296,6 +318,12 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return pdtos;
 	}
@@ -308,7 +336,8 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean resutl = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "setPermisos")) {
@@ -394,6 +423,12 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return resutl;
 	}

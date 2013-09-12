@@ -4,42 +4,37 @@
  */
 package com.dreamer8.yosimce.server;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
-import com.dreamer8.yosimce.server.hibernate.dao.SesionDAO;
-import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.Random;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.codec.net.QCodec;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 
-import com.dreamer8.yosimce.server.hibernate.pojo.*;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
+import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.utils.AccessControl;
-import com.dreamer8.yosimce.shared.dto.UserDTO;
-import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
-import com.dreamer8.yosimce.shared.exceptions.DBException;
-
-import java.io.ByteArrayOutputStream;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * 
@@ -53,7 +48,8 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 
 	/*
 	 * 
-	 * Session s = HibernateUtil.getSessionFactory().getCurrentSession(); try {
+	 * Session s = HibernateUtil.getSessionFactory().openSession(); try {
+ManagedSessionContext.bind(s);
 	 * AccessControl ac = getAccessControl(); if (ac.isLogged() &&
 	 * ac.isAllowed(className, "getUser")) {
 	 * 

@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
@@ -41,7 +42,6 @@ import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumento;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoId;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXIncidencia;
-import com.dreamer8.yosimce.server.hibernate.pojo.Alumno;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoXActividadXDocumento;
@@ -86,7 +86,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<ActividadPreviewDTO> apdtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -139,6 +140,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return apdtos;
 	}
@@ -151,7 +158,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Integer result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -203,6 +211,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -215,7 +229,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<SincAlumnoDTO> sadtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -271,6 +286,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return sadtos;
 	}
@@ -284,7 +305,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			DBException, ConsistencyException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -438,6 +460,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -450,7 +478,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<EvaluacionUsuarioDTO> eudtos = new ArrayList<EvaluacionUsuarioDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -508,6 +537,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return eudtos;
 	}
@@ -520,7 +555,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -598,6 +634,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -610,7 +652,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<UserDTO> udtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getExaminadores")) {
@@ -665,6 +708,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return udtos;
 	}
@@ -677,7 +726,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<TipoContingenciaDTO> tcdto = new ArrayList<TipoContingenciaDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -738,6 +788,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return tcdto;
 	}
@@ -750,7 +806,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ActividadDTO adto = new ActividadDTO();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getActividad")) {
@@ -813,6 +870,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return adto;
 	}
@@ -825,7 +888,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "actualizarActividad")) {
@@ -1043,6 +1107,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -1055,7 +1125,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getEstadosActividad")) {
@@ -1109,6 +1180,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return eadtos;
 	}
@@ -1122,7 +1199,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			DBException {
 
 		ArrayList<EvaluacionUsuarioDTO> eudtos = new ArrayList<EvaluacionUsuarioDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1184,6 +1262,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return eudtos;
 	}
@@ -1197,7 +1281,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1278,6 +1363,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -1290,7 +1381,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<EstadoSincronizacionDTO> esdtos = new ArrayList<EstadoSincronizacionDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1346,6 +1438,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return esdtos;
 	}
@@ -1359,7 +1457,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			DBException {
 
 		ArrayList<MaterialDefectuosoDTO> mddtos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1420,6 +1519,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return mddtos;
 	}
@@ -1433,7 +1538,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			NoLoggedException, DBException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1539,6 +1645,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -1551,7 +1663,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1634,6 +1747,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return result;
 	}
@@ -1647,7 +1766,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			NoLoggedException, DBException {
 
 		DocumentoDTO ddto = new DocumentoDTO();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1768,6 +1888,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (IOException e) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw new NullPointerException("No se pudo crear el archivo.");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return ddto;
 	}
@@ -1780,7 +1906,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		DocumentoDTO ddto = new DocumentoDTO();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged() && ac.isAllowed(className, "getDocumentoAlumnos")) {
@@ -1877,6 +2004,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (IOException e) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw new NullPointerException("No se pudo crear el archivo.");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return ddto;
 	}
@@ -1889,7 +2022,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<EstadoSincronizacionDTO> esdtos = new ArrayList<EstadoSincronizacionDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -1943,6 +2077,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return esdtos;
 	}
@@ -1956,7 +2096,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			NullPointerException, ConsistencyException {
 
 		ArrayList<EstadoAgendaDTO> eadtos = new ArrayList<EstadoAgendaDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
 			if (ac.isLogged()
@@ -2011,6 +2152,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
 		}
 		return eadtos;
 	}
