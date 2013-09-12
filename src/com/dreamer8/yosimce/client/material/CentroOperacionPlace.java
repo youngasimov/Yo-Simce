@@ -7,24 +7,16 @@ import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class CentroOperacionPlace extends SimcePlace {
-
-	public static final int PANEL_HIDDEN=0;
-	public static final int PANEL_ENTRADA=1;
-	public static final int PANEL_SALIDA=2;
-	public static final int PANEL_PREDESPACHO=3;
 	
-	private int panel;
 	private int centroId;
 	
 	public CentroOperacionPlace(){
 		super(-1,-1,-1);
-		panel = PANEL_HIDDEN;
 		centroId = -1;
 	}
 	
 	public CentroOperacionPlace(int aplicacionId, int nivelId, int tipoId){
 		super(aplicacionId, nivelId, tipoId);
-		panel = PANEL_HIDDEN;
 		centroId = -1;
 	}
 	
@@ -34,14 +26,6 @@ public class CentroOperacionPlace extends SimcePlace {
 
 	public void setCentroId(int centroId) {
 		this.centroId = centroId;
-	}
-
-	public int getPanel() {
-		return panel;
-	}
-
-	public void setPanel(int panel) {
-		this.panel = panel;
 	}
 
 
@@ -61,8 +45,6 @@ public class CentroOperacionPlace extends SimcePlace {
 					.get(TIPOID)) : -1);
 			pp.setCentroId((kvs.containsKey("co")) ? Integer.parseInt(kvs
 					.get("co")) : -1);
-			pp.setCentroId((kvs.containsKey("p")) ? Integer.parseInt(kvs
-					.get("p")) : PANEL_HIDDEN);
 			return pp;
 		}
 
@@ -72,7 +54,7 @@ public class CentroOperacionPlace extends SimcePlace {
 			kvs.put(APPID, place.getAplicacionId() + "");
 			kvs.put(NIVELID, place.getNivelId() + "");
 			kvs.put(TIPOID, place.getTipoId() + "");
-			kvs.put("p", place.getPanel() + "");
+			kvs.put("co", place.getCentroId() + "");
 			return TokenUtils.createKeyValuesToken(kvs);
 		}
 		

@@ -5,6 +5,7 @@
 	<ui:style>
 		.scroll{
 			width: 350px;
+			height: 100%;
 		}
 		
 		.list{
@@ -13,8 +14,8 @@
 			margin-right: auto;
 		}
 	</ui:style>
-	<g:HTMLPanel>
-		<g:ScrollPanel addStyleNames='{style.scroll}' ui:field="scroll">
+	<g:HTMLPanel ui:field="panel">
+		<g:ScrollPanel addStyleNames='{style.scroll}'>
 			<c:CellList ui:field="coList" addStyleNames='{style.list}'/> 
 		</g:ScrollPanel>
 	</g:HTMLPanel>

@@ -10,7 +10,6 @@ import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.user.client.Cookies;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.SerializedTypeViolationException;

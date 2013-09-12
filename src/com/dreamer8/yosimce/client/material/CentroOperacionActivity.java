@@ -18,6 +18,7 @@ import com.dreamer8.yosimce.shared.dto.LoteDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -239,7 +240,24 @@ public class CentroOperacionActivity extends SimceActivity implements
 	}
 	
 	private void showCoSelectorPopup(){
-		
+		final CentroOperacionSelector cos = new CentroOperacionSelector(getFactory(), cosAsociados);
+		cos.setSelectedCommand(new Command() {
+			
+			@Override
+			public void execute() {
+				CentroOperacionPlace p = new CentroOperacionPlace();
+				p.setCentroId(cos.getSelectedEmplazamiento().getId());
+				goTo(p);
+			}
+		});
+		cos.setAutoHideCommand(new Command() {
+			
+			@Override
+			public void execute() {
+				SimcePlace p = new SimcePlace();
+				goTo(p);
+			}
+		});
 	}
 	
 	private void wrap(ArrayList<MaterialDTO> list){

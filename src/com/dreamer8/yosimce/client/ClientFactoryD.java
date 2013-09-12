@@ -26,6 +26,8 @@ import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
 import com.dreamer8.yosimce.client.material.MaterialService;
 import com.dreamer8.yosimce.client.material.MaterialServiceAsync;
+import com.dreamer8.yosimce.client.material.ui.CentroOperacionSelectorView;
+import com.dreamer8.yosimce.client.material.ui.CentroOperacionSelectorViewD;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionViewD;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
@@ -97,6 +99,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final AprobarSupervisoresView aprobarSupervisoresView = new AprobarSupervisoresViewD();
 	
 	private final CentroOperacionView centroOperacionView = new CentroOperacionViewD();
+	private final CentroOperacionSelectorView centroOperacionSelectorView = new CentroOperacionSelectorViewD();
 
 	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
 	private final AdminEventosView adminEventosView = new AdminEventosViewD();
@@ -107,6 +110,7 @@ public class ClientFactoryD implements ClientFactory {
 		((ServiceDefTarget) generalService).setRpcRequestBuilder(new CustomRpcRequestBuilder(19000));
 		((ServiceDefTarget) planificacionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
 		((ServiceDefTarget) actividadService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
+		((ServiceDefTarget) materialService).setRpcRequestBuilder(new CustomRpcRequestBuilder(0));
 		((ServiceDefTarget) administracionService).setRpcRequestBuilder(new CustomRpcRequestBuilder(19000));
 	}
 	
@@ -238,6 +242,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public CentroOperacionView getCentroOperacionView() {
 		return centroOperacionView;
+	}
+	
+	@Override
+	public CentroOperacionSelectorView getCentroOperacionSelectorView() {
+		return centroOperacionSelectorView;
 	}
 
 	@Override
