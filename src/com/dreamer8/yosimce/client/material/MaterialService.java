@@ -6,6 +6,7 @@ import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
+import com.dreamer8.yosimce.shared.dto.LoteDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
@@ -31,6 +32,9 @@ public interface MaterialService extends RemoteService {
 	ArrayList<MaterialDTO> getMateriales(Integer idCo) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
+	ArrayList<MaterialDTO> getMateriales(Integer idCo,ArrayList<String> codigos) throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;
+	
 	MaterialDTO getMaterial(String codigo) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
@@ -39,4 +43,16 @@ public interface MaterialService extends RemoteService {
 	
 	DocumentoDTO exportar(ArrayList<Integer> idsMaterial) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
+	
+	Boolean IngresarMateriales(Integer idCo,ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;
+	
+	Boolean crearOEditarLote(Integer idCo,ArrayList<Integer> materiales, LoteDTO lote) throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;
+	
+	
+	Boolean DespacharMateriales(Integer idCo, ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;
+	
+	
 }

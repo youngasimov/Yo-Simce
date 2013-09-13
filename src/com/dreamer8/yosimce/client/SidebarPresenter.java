@@ -140,6 +140,11 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		boolean tipo = tipoActividad>=0;
 		
 		if(permisos == null || permisos.isEmpty()){
+			view.setGeneralVisivility(false);
+			view.setAgendamientoVisivility(false);
+			view.setActividadVisivility(false);
+			view.setAdministracionVisivility(false);
+			view.setMaterialVisivility(false);
 			return;
 		}
 		
