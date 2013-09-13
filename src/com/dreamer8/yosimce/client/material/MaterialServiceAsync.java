@@ -28,13 +28,13 @@ public interface MaterialServiceAsync {
 
 	void getMaterial(String codigo, AsyncCallback<MaterialDTO> callback);
 
-	void IngresarMateriales(Integer idCo, ArrayList<String> codigos,
+	void ingresarMateriales(Integer idCo, ArrayList<String> codigos,
 			String folio, String file, AsyncCallback<Boolean> callback);
 
 	void crearOEditarLote(Integer idCo, ArrayList<Integer> materiales,
 			LoteDTO lote, AsyncCallback<Boolean> callback);
 
-	void DespacharMateriales(Integer idCo, ArrayList<String> codigos,
+	void despacharMateriales(Integer idCo, ArrayList<String> codigos,
 			String folio, String file, AsyncCallback<Boolean> callback);
 
 	void getMateriales(Integer idCo,

@@ -44,13 +44,13 @@ public interface MaterialService extends RemoteService {
 	DocumentoDTO exportar(ArrayList<Integer> idsMaterial) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
-	Boolean IngresarMateriales(Integer idCo,ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
+	Boolean ingresarMateriales(Integer idCo,ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
 	Boolean crearOEditarLote(Integer idCo,ArrayList<Integer> materiales, LoteDTO lote) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
-	Boolean DespacharMateriales(Integer idCo, ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
+	Boolean despacharMateriales(Integer idCo, ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
 	

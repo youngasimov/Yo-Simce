@@ -385,7 +385,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	@Override
-	public Boolean IngresarMateriales(Integer idCo, ArrayList<String> codigos,
+	public Boolean ingresarMateriales(Integer idCo, ArrayList<String> codigos,
 			String folio, String file) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
@@ -403,7 +403,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	@Override
-	public Boolean DespacharMateriales(Integer idCo, ArrayList<String> codigos,
+	public Boolean despacharMateriales(Integer idCo, ArrayList<String> codigos,
 			String folio, String file) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
