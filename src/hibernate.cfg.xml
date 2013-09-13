@@ -7,9 +7,9 @@
   
   <!-- Config  local -->
   
-  <property name="hibernate.connection.password">simce</property>
-  <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/simce</property>
-  <property name="hibernate.connection.username">simce</property>
+<!--   <property name="hibernate.connection.password">simce</property> -->
+<!--   <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/simce</property> -->
+<!--   <property name="hibernate.connection.username">simce</property> -->
 
 <!--   FIN Config  local  -->
 
@@ -40,11 +40,16 @@
 
 <!--  Config  hacia el balanceador TESTING  -->
 
-<!--    <property name="hibernate.connection.password">lo.que.sea</property>  -->
-<!--    <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.12:9999/testdb</property>  -->
-<!--    <property name="hibernate.connection.username">pg_test</property> -->
+   <property name="hibernate.connection.password">lo.que.sea</property> 
+   <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.12:9999/testdb</property> 
+   <property name="hibernate.connection.username">pg_test</property>
     
 <!--  FIN Config  hacia el balanceador TESTING -->
+
+
+
+
+
 
   <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
   <property name="hibernate.show_sql">true</property>
@@ -52,6 +57,13 @@
   <property name="hibernate.order_inserts">true</property>
   <property name="hibernate.order_updates">true</property>
   <property name="hibernate.current_session_context_class">managed</property>
+  
+<!--   https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool -->
+<!-- http://www.mchange.com/projects/c3p0/ -->
+  <property name="hibernate.c3p0.min_size">3</property>
+  <property name="hibernate.c3p0.max_size">50</property>
+  <property name="hibernate.c3p0.idle_test_period">60</property>
+  
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/Aviso.hbm.xml"/>
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/RequisitoXAplicacionXUsuarioTipo.hbm.xml"/>
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/Comuna.hbm.xml"/>
