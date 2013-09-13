@@ -272,36 +272,36 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"El estado especificado no existe");
 				}
 
-				if (idAplicacion == 2
-						&& a.getAplicacionXNivelXActividadTipo()
-								.getActividadTipo().getNombre()
-								.equals(ActividadTipo.APLICACION_DIA_1)) {
-					if (itemAgenda.getFecha() != null) {
-						Actividad visitaPrevia = adao
-								.findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
-										idAplicacion, idNivel, idCurso,
-										ActividadTipo.VISITA_PREVIA);
-						if (visitaPrevia == null
-								|| !ActividadEstado.SIN_INFORMACION
-										.equals(visitaPrevia
-												.getActividadEstado()
-												.getNombre())
-								|| visitaPrevia.getFechaInicio() == null) {
-							throw new ConsistencyException(
-									"Primero debe agendarse la visita previa.");
-						}
-
-						Long diff = itemAgenda.getFecha().getTime()
-								- visitaPrevia.getFechaInicio().getTime();
-						Double dias = diff.doubleValue()
-								/ (1000 * 60 * 60 * 24);
-
-						if (dias < 7) {
-							throw new ConsistencyException(
-									"La aplicación debe realizarse al menos 7 días después de la visita previa.");
-						}
-					}
-				}
+//				if (idAplicacion == 2
+//						&& a.getAplicacionXNivelXActividadTipo()
+//								.getActividadTipo().getNombre()
+//								.equals(ActividadTipo.APLICACION_DIA_1)) {
+//					if (itemAgenda.getFecha() != null) {
+//						Actividad visitaPrevia = adao
+//								.findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
+//										idAplicacion, idNivel, idCurso,
+//										ActividadTipo.VISITA_PREVIA);
+//						if (visitaPrevia == null
+//								|| !ActividadEstado.SIN_INFORMACION
+//										.equals(visitaPrevia
+//												.getActividadEstado()
+//												.getNombre())
+//								|| visitaPrevia.getFechaInicio() == null) {
+//							throw new ConsistencyException(
+//									"Primero debe agendarse la visita previa.");
+//						}
+//
+//						Long diff = itemAgenda.getFecha().getTime()
+//								- visitaPrevia.getFechaInicio().getTime();
+//						Double dias = diff.doubleValue()
+//								/ (1000 * 60 * 60 * 24);
+//
+//						if (dias < 7) {
+//							throw new ConsistencyException(
+//									"La aplicación debe realizarse al menos 7 días después de la visita previa.");
+//						}
+//					}
+//				}
 
 				a.setFechaInicio(itemAgenda.getFecha());
 				a.setUsuario(u);
