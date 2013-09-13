@@ -403,10 +403,27 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	@Override
-	public Boolean despacharMateriales(Integer idCo, ArrayList<String> codigos,
-			String folio, String file) throws NoAllowedException,
-			NoLoggedException, DBException, NullPointerException,
-			ConsistencyException {
+	public ArrayList<EmplazamientoDTO> getCentrosOperacion()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean despacharMateriales(Integer idCo, EtapaDTO etapa,
+			String rut, ArrayList<String> codigos, String folio, String file)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean despacharMateriales(Integer idCo, Integer idCoDestino,
+			String rut, ArrayList<String> codigos, String folio, String file)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
 		// TODO Auto-generated method stub
 		return null;
 	}

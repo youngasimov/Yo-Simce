@@ -34,13 +34,20 @@ public interface MaterialServiceAsync {
 	void crearOEditarLote(Integer idCo, ArrayList<Integer> materiales,
 			LoteDTO lote, AsyncCallback<Boolean> callback);
 
-	void despacharMateriales(Integer idCo, ArrayList<String> codigos,
-			String folio, String file, AsyncCallback<Boolean> callback);
-
 	void getMateriales(Integer idCo,
 			AsyncCallback<ArrayList<MaterialDTO>> callback);
 
 	void getMaterialesByCodigos(ArrayList<String> codigos,
 			AsyncCallback<ArrayList<MaterialDTO>> callback);
+
+	void despacharMateriales(Integer idCo, EtapaDTO etapa, String rut,
+			ArrayList<String> codigos, String folio, String file,
+			AsyncCallback<Boolean> callback);
+	
+	void despacharMateriales(Integer idCo, Integer idCoDestino, String rut,
+			ArrayList<String> codigos, String folio, String file,
+			AsyncCallback<Boolean> callback);
+
+	void getCentrosOperacion(AsyncCallback<ArrayList<EmplazamientoDTO>> callback);
 
 }

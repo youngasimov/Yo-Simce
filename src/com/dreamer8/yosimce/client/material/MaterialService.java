@@ -23,6 +23,9 @@ public interface MaterialService extends RemoteService {
 	ArrayList<EmplazamientoDTO> getCentrosOperacionAsociados() throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
+	ArrayList<EmplazamientoDTO> getCentrosOperacion() throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;
+	
 	ArrayList<EtapaDTO> getEtapas() throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
@@ -50,8 +53,9 @@ public interface MaterialService extends RemoteService {
 	Boolean crearOEditarLote(Integer idCo,ArrayList<Integer> materiales, LoteDTO lote) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
-	Boolean despacharMateriales(Integer idCo, ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
-	NullPointerException, ConsistencyException;
+	Boolean despacharMateriales(Integer idCo, EtapaDTO etapa, String rut,ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;	
 	
-	
+	Boolean despacharMateriales(Integer idCo, Integer idCoDestino, String rut,ArrayList<String> codigos, String folio, String file) throws NoAllowedException, NoLoggedException, DBException,
+	NullPointerException, ConsistencyException;	
 }
