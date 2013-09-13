@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView.CentroOperacionPresenter;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
@@ -119,7 +120,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		}
 		
 		//**********************SOLO TESTING**************************//
-		
+		/*
 		ArrayList<HistorialMaterialItemDTO> historial = new ArrayList<HistorialMaterialItemDTO>();
 		UserDTO u = new UserDTO();
 		u.setNombres("Juan Diego");
@@ -155,7 +156,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		
 		material.setHistorial(historial);
 		historialDataProvider.setList(material.getHistorial());
-		
+		*/
 		
 		//**********************SOLO TESTING**************************//
 		/*
@@ -359,6 +360,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setCO(co);
 		
 		//**********************SOLO TESTING**************************//
+		/*
 		ArrayList<MaterialDTO> result = new ArrayList<MaterialDTO>();
 		for(int i = 1;i<50;i++){
 			MaterialDTO m = new MaterialDTO();
@@ -415,10 +417,11 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
 		extractLotes();
+		*/
 		//**********************SOLO TESTING**************************//
 		
 		
-		/*
+		if(Utils.hasPermisos(eventBus, getPermisos(), "MaterialService", "getMateriales"))
 		getFactory().getMaterialService().getMateriales(co.getId(), new SimceCallback<ArrayList<MaterialDTO>>(eventBus,true) {
 
 			@Override
@@ -428,7 +431,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				extractLotes();
 			}
 		});
-		*/
+		
 		getFactory().getMaterialService().getEtapas(new SimceCallback<ArrayList<EtapaDTO>>(eventBus,true) {
 
 			@Override

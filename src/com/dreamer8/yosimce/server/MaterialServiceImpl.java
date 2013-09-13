@@ -376,7 +376,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	@Override
-	public ArrayList<MaterialDTO> getMateriales(Integer idCo,
+	public ArrayList<MaterialDTO> getMaterialesByCodigos(Integer idCo,
 			ArrayList<String> codigos) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {

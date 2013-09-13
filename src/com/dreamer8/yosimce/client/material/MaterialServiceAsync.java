@@ -40,7 +40,7 @@ public interface MaterialServiceAsync {
 	void getMateriales(Integer idCo,
 			AsyncCallback<ArrayList<MaterialDTO>> callback);
 
-	void getMateriales(Integer idCo, ArrayList<String> codigos,
+	void getMaterialesByCodigos(Integer idCo, ArrayList<String> codigos,
 			AsyncCallback<ArrayList<MaterialDTO>> callback);
 
 }
