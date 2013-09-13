@@ -32,7 +32,7 @@ public interface MaterialService extends RemoteService {
 	ArrayList<MaterialDTO> getMateriales(Integer idCo) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
-	ArrayList<MaterialDTO> getMaterialesByCodigos(Integer idCo,ArrayList<String> codigos) throws NoAllowedException, NoLoggedException, DBException,
+	ArrayList<MaterialDTO> getMaterialesByCodigos(ArrayList<String> codigos) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
 	MaterialDTO getMaterial(String codigo) throws NoAllowedException, NoLoggedException, DBException,
