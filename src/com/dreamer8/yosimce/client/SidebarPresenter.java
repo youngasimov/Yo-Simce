@@ -165,8 +165,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		
 		view.setAprobarSupervisoresActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getEvaluacionSupervisores") && tipo);
 		
-		view.setMaterialVisivility(false);
-		view.setCentroOperacionViewItemVisivility(false);
+		view.setMaterialVisivility(true);
+		view.setCentroOperacionViewItemVisivility(true);
 		
 		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")) ||
 				false ||

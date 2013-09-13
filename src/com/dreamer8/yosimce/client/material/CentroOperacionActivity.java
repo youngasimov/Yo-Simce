@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client.material;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
@@ -21,6 +22,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.google.gwt.view.client.ListDataProvider;
 
 public class CentroOperacionActivity extends SimceActivity implements
@@ -115,6 +117,48 @@ public class CentroOperacionActivity extends SimceActivity implements
 		if(material.getHistorial()!=null){
 			historialDataProvider.setList(material.getHistorial());
 		}
+		
+		//**********************SOLO TESTING**************************//
+		
+		ArrayList<HistorialMaterialItemDTO> historial = new ArrayList<HistorialMaterialItemDTO>();
+		UserDTO u = new UserDTO();
+		u.setNombres("Juan Diego");
+		u.setApellidoPaterno("Jara");
+		u.setApellidoMaterno("Lillo");
+		u.setId(1);
+		u.setRut("18574996-1");
+		HistorialMaterialItemDTO h = new HistorialMaterialItemDTO();
+		h.setAutorizante(u);
+		h.setDesde("Ministerio");
+		h.setHacia("Centro");
+		h.setFecha(new Date());
+		historial.add(h);
+		
+		h = new HistorialMaterialItemDTO();
+		h.setAutorizante(u);
+		h.setDesde("Centro");
+		h.setHacia("Establecimiento");
+		Date d = new Date();
+		CalendarUtil.addDaysToDate(d, 10);
+		h.setFecha(d);
+		historial.add(h);
+		
+		h = new HistorialMaterialItemDTO();
+		h.setAutorizante(u);
+		h.setDesde("Establecimiento");
+		h.setHacia("Centro");
+		d = new Date();
+		CalendarUtil.addDaysToDate(d, 10);
+		d.setHours(d.getHours()+4);
+		h.setFecha(d);
+		historial.add(h);
+		
+		material.setHistorial(historial);
+		historialDataProvider.setList(material.getHistorial());
+		
+		
+		//**********************SOLO TESTING**************************//
+		/*
 		getFactory().getMaterialService().getHistorialMaterial(material.getMaterial().getId(), new SimceCallback<ArrayList<HistorialMaterialItemDTO>>(eventBus,false) {
 
 			@Override
@@ -128,6 +172,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				material.setHistorialUpToDate(false);
 			}
 		});
+		*/
 	}
 
 	@Override
@@ -140,18 +185,18 @@ public class CentroOperacionActivity extends SimceActivity implements
 				}
 				return;
 			}
-			MaterialDTO mat = new MaterialDTO();
-			LoteDTO l = new LoteDTO();
-			l.setId(-1);
-			l.setNombre("--------");
-			mat.setCodigo(id);
-			mat.setLote(l);
-			MaterialWrap w = new MaterialWrap();
-			w.setMaterial(mat);
-			w.setMaterialUpToDate(false);
-			w.setHistorialUpToDate(false);
-			ingresoDataProvider.getList().add(w);
 		}
+		MaterialDTO mat = new MaterialDTO();
+		LoteDTO l = new LoteDTO();
+		l.setId(-1);
+		l.setNombre("--------");
+		mat.setCodigo(id);
+		mat.setLote(l);
+		MaterialWrap w = new MaterialWrap();
+		w.setMaterial(mat);
+		w.setMaterialUpToDate(false);
+		w.setHistorialUpToDate(false);
+		ingresoDataProvider.getList().add(w);
 	}
 
 	@Override
@@ -313,6 +358,67 @@ public class CentroOperacionActivity extends SimceActivity implements
 		
 		view.setCO(co);
 		
+		//**********************SOLO TESTING**************************//
+		ArrayList<MaterialDTO> result = new ArrayList<MaterialDTO>();
+		for(int i = 1;i<50;i++){
+			MaterialDTO m = new MaterialDTO();
+			m.setCodigo("1000000"+i);
+			if(i%5 == 0){
+				m.setCurso("B");
+			}else{
+				m.setCurso("A");
+			}
+			m.setEstablecimiento("Carmelitas descalsas");
+			if(i%6 == 0){
+				m.setEtapa("Ministerio");
+			}else{
+				m.setEtapa("Centro");
+			}
+			m.setIdCentro(place.getCentroId());
+			m.setId(i);
+			m.setNivel("4 básico");
+			m.setRbd("49576");
+			if(i%13 == 0){
+				m.setTipo("Contingencia");
+			}else{
+				m.setTipo("Caja-Curso-Día");
+			}
+			result.add(m);
+		}
+		
+		for(int i = 301;i<390;i++){
+			MaterialDTO m = new MaterialDTO();
+			m.setCodigo("1000000"+i);
+			if(i%8 == 0){
+				m.setCurso("B");
+			}else{
+				m.setCurso("A");
+			}
+			m.setEstablecimiento("Colegio Altos de los andes");
+			if(i%3 == 0){
+				m.setEtapa("Ministerio");
+			}else{
+				m.setEtapa("Centro");
+			}
+			m.setIdCentro(place.getCentroId());
+			m.setId(i);
+			m.setNivel("4 básico");
+			m.setRbd("8574");
+			if(i%11 == 0){
+				m.setTipo("Contingencia");
+			}else{
+				m.setTipo("Caja-Curso-Día");
+			}
+			result.add(m);
+		}
+		materialDataProvider.setList(wrap(result));
+
+		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
+		extractLotes();
+		//**********************SOLO TESTING**************************//
+		
+		
+		/*
 		getFactory().getMaterialService().getMateriales(co.getId(), new SimceCallback<ArrayList<MaterialDTO>>(eventBus,true) {
 
 			@Override
@@ -322,7 +428,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				extractLotes();
 			}
 		});
-		
+		*/
 		getFactory().getMaterialService().getEtapas(new SimceCallback<ArrayList<EtapaDTO>>(eventBus,true) {
 
 			@Override
