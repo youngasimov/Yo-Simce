@@ -33,4 +33,12 @@ public class MaterialXLoteDAO extends
 		}
 		return res;
 	}
+
+	public void deleteByIdMaterial(Integer idMaterial) {
+
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "DELETE FROM MATERIAL_x_LOTE WHERE material_id="
+				+ SecurityFilter.escapeString(idMaterial);
+		s.createSQLQuery(query).executeUpdate();
+	}
 }

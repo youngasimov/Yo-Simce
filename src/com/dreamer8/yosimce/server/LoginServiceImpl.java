@@ -25,6 +25,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Nivel;
 import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Sesion;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
@@ -419,6 +420,13 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public Boolean keepAlive() throws NoLoggedException {
+
+		AccessControl ac = getAccessControl();
+		return ac.isLogged();
 	}
 
 }

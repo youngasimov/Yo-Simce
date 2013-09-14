@@ -1,5 +1,10 @@
 package com.dreamer8.yosimce.server;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +46,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.server.utils.StringUtils;
+import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
@@ -450,8 +456,129 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	public DocumentoDTO exportar(ArrayList<Integer> idsMaterial)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		DocumentoDTO ddto = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "exportar")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idsMaterial == null || idsMaterial.isEmpty()) {
+					throw new NullPointerException(
+							"No se han especificado materiales.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				DateFormat dateFormat = new SimpleDateFormat(
+						"dd-MM-yyyy HH.mm.ss");
+				String name = "Materiales " + dateFormat.format(new Date());
+				File file = File.createTempFile(
+						StringUtils.getDatePathSafe(name), ".csv",
+						getUploadDir());
+				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file), "ISO-8859-1"));
+				//
+				// String contenido;
+				// if (total != 0) {
+				// bw.write("RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total;Alumnos Evaluados;Alumnos Sincronizados;Cuestionarios Entregados;Cuestionarios Recibidos;Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna\r");
+				// }
+				// while (total > 0) {
+				// apdtos = adao
+				// .findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
+				// idAplicacion, idNivel, idActividadTipo,
+				// u.getId(), usuarioTipo.getNombre(), offset,
+				// lenght, filtros, getBaseURL());
+				//
+				// total -= lenght;
+				//
+				// if (apdtos != null && !apdtos.isEmpty()) {
+				// for (ActividadPreviewDTO apdto : apdtos) {
+				// contenido = apdto.getRbd() + ";";
+				// contenido += apdto.getNombreEstablecimiento() + ";";
+				// contenido += apdto.getCurso() + ";";
+				// contenido += apdto.getTipoEstablecimiento() + ";";
+				// contenido += apdto.getEstadoAgenda() + ";";
+				// contenido += apdto.getAlumnosTotales() + ";";
+				// contenido += apdto.getAlumnosEvaluados() + ";";
+				// contenido += apdto.getAlumnosSincronizados() + ";";
+				// contenido += apdto
+				// .getCuestionariosPadresApoderadosEntregados()
+				// + ";";
+				// contenido += apdto
+				// .getCuestionariosPadresApoderadosRecibidos()
+				// + ";";
+				// contenido += apdto.getContingencia() + ";";
+				// contenido += apdto.getContingenciaLimitante() + ";";
+				// contenido += apdto.getRegion() + ";";
+				// contenido += apdto.getComuna();
+				// bw.write(contenido + "\r");
+				// }
+				// }
+				// }
+				bw.close();
+
+				ArchivoDAO ardao = new ArchivoDAO();
+				Archivo archivo = new Archivo();
+				archivo.setTitulo(name);
+				archivo.setRutaArchivo(file.getAbsolutePath());
+				archivo.setMimeType("text/plain");
+				archivo.setIpServer("200.1.30.52");
+				ardao.save(archivo);
+
+				ddto = archivo.getDocumentoDTO(getBaseURL());
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (IOException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw new NullPointerException("No se pudo crear el archivo.");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return ddto;
 	}
 
 	/**
@@ -1008,8 +1135,162 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			String rut, ArrayList<String> codigos, String folio, String file)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "despacharMateriales")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el centro de operaciones.");
+				}
+
+				if (etapa == null || etapa.getId() == null) {
+					throw new NullPointerException(
+							"No se ha especificado el destino.");
+				}
+
+				if (rut == null || rut.isEmpty()) {
+					throw new NullPointerException(
+							"No se ha especificado el receptor de los materiales.");
+				}
+
+				if (codigos == null || codigos.isEmpty()) {
+					throw new NullPointerException(
+							"No se han especificado los códigos de los materiales a despachar.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				UsuarioDAO udao = new UsuarioDAO();
+				Usuario receptor = udao.findbyUsername(StringUtils
+						.formatRut(rut));
+				if (receptor == null) {
+					throw new NullPointerException(
+							"No se ha encontrado a un usuario con el rut especificado.");
+				}
+
+				CoDAO cdao = new CoDAO();
+				Co co = cdao.getById(idCo);
+				if (co == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el centro especificado.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO();
+				List<Material> ms = mdao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
+								idAplicacion, idNivel, idActividadTipo, codigos);
+
+				if (ms == null || ms.isEmpty()) {
+					throw new NullPointerException(
+							"No se encontró ningún material con los códigos especificados.");
+				}
+
+				LugarDAO ldao = new LugarDAO();
+				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
+				Lugar destino = ldao.getById(etapa.getId());
+
+				MaterialEstadoDAO medao = new MaterialEstadoDAO();
+				MaterialEstado me = medao
+						.findByNombre(MaterialEstado.EN_EL_LUGAR);
+
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				GuiaDespacho gd = null;
+				Date fecha = new Date();
+				if (folio != null && !folio.isEmpty()) {
+					gd = new GuiaDespacho();
+					gd.setFecha(new Date());
+					gd.setFecha(fecha);
+					gd.setCodigo(folio);
+					if (file != null && !file.isEmpty()) {
+						ArchivoDAO adao = new ArchivoDAO();
+						Archivo archivo = guardarArchivo(file);
+						archivo.setTitulo(folio);
+						adao.save(archivo);
+						gd.setArchivo(archivo);
+					}
+					gddao.save(gd);
+				}
+
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				MaterialHistorial mh = null;
+				MaterialHistorialId mhid = null;
+				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO();
+				MaterialXGuiaDespacho mxgd = null;
+				MaterialXLoteDAO mxldao = new MaterialXLoteDAO();
+				for (Material material : ms) {
+					mhid = new MaterialHistorialId();
+					mhid.setMaterialId(material.getId());
+					mhid.setFecha(fecha);
+					mh = new MaterialHistorial();
+					mh.setId(mhid);
+					mh.setUsuario(receptor);
+					mh.setModificadorId(u.getId());
+					mh.setLugarByDestinoId(destino);
+					mh.setLugarByOrigenId(centro);
+					mh.setMaterialEstado(me);
+					mh.setCo(co);
+					mhdao.save(mh);
+					if (gd != null) {
+						mxgd = new MaterialXGuiaDespacho();
+						mxgd.setMaterial(material);
+						mxgd.setGuiaDespacho(gd);
+						mxgd.setFecha(fecha);
+						mxgddao.save(mxgd);
+					}
+					mxldao.deleteByIdMaterial(material.getId());
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -1020,8 +1301,169 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			String rut, ArrayList<String> codigos, String folio, String file)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "despacharMateriales")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el centro de operaciones.");
+				}
+
+				if (idCoDestino == null) {
+					throw new NullPointerException(
+							"No se ha especificado el centro de destino.");
+				}
+
+				if (rut == null || rut.isEmpty()) {
+					throw new NullPointerException(
+							"No se ha especificado el receptor de los materiales.");
+				}
+
+				if (codigos == null || codigos.isEmpty()) {
+					throw new NullPointerException(
+							"No se han especificado los códigos de los materiales a despachar.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				UsuarioDAO udao = new UsuarioDAO();
+				Usuario receptor = udao.findbyUsername(StringUtils
+						.formatRut(rut));
+				if (receptor == null) {
+					throw new NullPointerException(
+							"No se ha encontrado a un usuario con el rut especificado.");
+				}
+
+				CoDAO cdao = new CoDAO();
+				Co co = cdao.getById(idCo);
+				if (co == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el centro especificado.");
+				}
+
+				Co destino = cdao.getById(idCo);
+				if (destino == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el centro de destino especificado.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO();
+				List<Material> ms = mdao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
+								idAplicacion, idNivel, idActividadTipo, codigos);
+
+				if (ms == null || ms.isEmpty()) {
+					throw new NullPointerException(
+							"No se encontró ningún material con los códigos especificados.");
+				}
+
+				LugarDAO ldao = new LugarDAO();
+				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
+
+				MaterialEstadoDAO medao = new MaterialEstadoDAO();
+				MaterialEstado me = medao
+						.findByNombre(MaterialEstado.EN_CAMINO);
+
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				GuiaDespacho gd = null;
+				Date fecha = new Date();
+				if (folio != null && !folio.isEmpty()) {
+					gd = new GuiaDespacho();
+					gd.setFecha(new Date());
+					gd.setFecha(fecha);
+					gd.setCodigo(folio);
+					if (file != null && !file.isEmpty()) {
+						ArchivoDAO adao = new ArchivoDAO();
+						Archivo archivo = guardarArchivo(file);
+						archivo.setTitulo(folio);
+						adao.save(archivo);
+						gd.setArchivo(archivo);
+					}
+					gddao.save(gd);
+				}
+
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				MaterialHistorial mh = null;
+				MaterialHistorialId mhid = null;
+				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO();
+				MaterialXGuiaDespacho mxgd = null;
+				MaterialXLoteDAO mxldao = new MaterialXLoteDAO();
+				for (Material material : ms) {
+					mhid = new MaterialHistorialId();
+					mhid.setMaterialId(material.getId());
+					mhid.setFecha(fecha);
+					mh = new MaterialHistorial();
+					mh.setId(mhid);
+					mh.setUsuario(receptor);
+					mh.setModificadorId(u.getId());
+					mh.setLugarByDestinoId(centro);
+					mh.setLugarByOrigenId(centro);
+					mh.setMaterialEstado(me);
+					mh.setCo(co);
+					mhdao.save(mh);
+					material.setCo(destino);
+					mdao.update(material);
+					if (gd != null) {
+						mxgd = new MaterialXGuiaDespacho();
+						mxgd.setMaterial(material);
+						mxgd.setGuiaDespacho(gd);
+						mxgd.setFecha(fecha);
+						mxgddao.save(mxgd);
+					}
+					mxldao.deleteByIdMaterial(material.getId());
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -1031,8 +1473,89 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	public Boolean eliminarLote(Integer idCo, Integer loteId)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "eliminarLote")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el centro de operaciones.");
+				}
+
+				if (loteId == null || loteId == -1) {
+					throw new NullPointerException(
+							"No se ha especificado el lote.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				CoDAO cdao = new CoDAO();
+				Co destino = cdao.getById(idCo);
+				if (destino == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el centro de destino especificado.");
+				}
+
+				LoteDAO ldao = new LoteDAO();
+				Lote l = ldao.getById(loteId);
+
+				if (l == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el lote especificado.");
+				}
+
+				ldao.delete(l);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 
 }
