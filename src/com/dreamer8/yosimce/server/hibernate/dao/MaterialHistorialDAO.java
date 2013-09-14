@@ -30,13 +30,19 @@ public class MaterialHistorialDAO extends
 		mhs = q.list();
 		return mhs;
 	}
-	
-	public MaterialHistorial findLastByIdMaterial(Integer idMaterial){
-		
+
+	public MaterialHistorial findLastByIdMaterial(Integer idMaterial) {
+
 		MaterialHistorial mh = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT mh.material_id,MAX(mh.fecha) as fecha,mh.actividad_id,"
-				+ "mh.origen_id,mh.destino_id,mh.centro_id,mh.material_estado_id, FROM MATERIAL_HISTORIAL mh";
+				+ "mh.origen_id,mh.destino_id,mh.centro_id,mh.material_estado_id,mh.receptor_id,mh.modificador_id"
+				+ " FROM MATERIAL_HISTORIAL mh"
+				+ " WHERE mh.material_id="
+				+ SecurityFilter.escapeString(idMaterial)
+				+ " GROUP BY mh.material_id,mh.actividad_id,"
+				+ "mh.origen_id,mh.destino_id,mh.centro_id,"
+				+ "mh.material_estado_id,mh.receptor_id,mh.modificador_id";
 		Query q = s.createSQLQuery(query).addEntity(MaterialHistorial.class);
 		mh = ((MaterialHistorial) q.uniqueResult());
 		return mh;

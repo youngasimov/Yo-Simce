@@ -26,14 +26,18 @@ public class Co implements java.io.Serializable {
 	private String propietarioTelefono;
 	private String propietarioCelular;
 	private Integer modificadorId;
-	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(0);
-	private List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos = new ArrayList<AplicacionXNivelXUsuarioTipoXCo>(0);
-	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(0);
+	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(
+			0);
+	private List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos = new ArrayList<AplicacionXNivelXUsuarioTipoXCo>(
+			0);
+	private List<UsuarioPreseleccion> usuarioPreseleccions = new ArrayList<UsuarioPreseleccion>(
+			0);
 	private List<Material> materials = new ArrayList<Material>(0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
 	private List<JoXCo> joXCos = new ArrayList<JoXCo>(0);
 	private List<UsuarioXCo> usuarioXCos = new ArrayList<UsuarioXCo>(0);
-	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(
+			0);
 	private List<Ruta> rutas = new ArrayList<Ruta>(0);
 
 	public Co() {
@@ -43,14 +47,25 @@ public class Co implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Co(Integer id, Zona zona, Comuna comuna, String nombre,
-			String direccion, BigDecimal direccionLatitud,
-			BigDecimal direccionLongitud, String propietarioNombre,
-			String propietarioRut, String propietarioEmail,
-			String propietarioTelefono, String propietarioCelular,
-			Integer modificadorId, List<CoXEstablecimiento> coXEstablecimientos,
-			List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos, List<UsuarioPreseleccion> usuarioPreseleccions,
-			List<Material> materials, List<SuplenteXCo> suplenteXCos, List<JoXCo> joXCos, List<UsuarioXCo> usuarioXCos,
+	public Co(
+			Integer id,
+			Zona zona,
+			Comuna comuna,
+			String nombre,
+			String direccion,
+			BigDecimal direccionLatitud,
+			BigDecimal direccionLongitud,
+			String propietarioNombre,
+			String propietarioRut,
+			String propietarioEmail,
+			String propietarioTelefono,
+			String propietarioCelular,
+			Integer modificadorId,
+			List<CoXEstablecimiento> coXEstablecimientos,
+			List<AplicacionXNivelXUsuarioTipoXCo> aplicacionXNivelXUsuarioTipoXCos,
+			List<UsuarioPreseleccion> usuarioPreseleccions,
+			List<Material> materials, List<SuplenteXCo> suplenteXCos,
+			List<JoXCo> joXCos, List<UsuarioXCo> usuarioXCos,
 			List<MaterialHistorial> materialHistorials, List<Ruta> rutas) {
 		this.id = id;
 		this.zona = zona;
@@ -184,7 +199,8 @@ public class Co implements java.io.Serializable {
 		return this.coXEstablecimientos;
 	}
 
-	public void setCoXEstablecimientos(List<CoXEstablecimiento> coXEstablecimientos) {
+	public void setCoXEstablecimientos(
+			List<CoXEstablecimiento> coXEstablecimientos) {
 		this.coXEstablecimientos = coXEstablecimientos;
 	}
 
@@ -201,7 +217,8 @@ public class Co implements java.io.Serializable {
 		return this.usuarioPreseleccions;
 	}
 
-	public void setUsuarioPreseleccions(List<UsuarioPreseleccion> usuarioPreseleccions) {
+	public void setUsuarioPreseleccions(
+			List<UsuarioPreseleccion> usuarioPreseleccions) {
 		this.usuarioPreseleccions = usuarioPreseleccions;
 	}
 
@@ -251,6 +268,31 @@ public class Co implements java.io.Serializable {
 
 	public void setRutas(List<Ruta> rutas) {
 		this.rutas = rutas;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Co other = (Co) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	public EmplazamientoDTO getEmplazamientoDTO() {

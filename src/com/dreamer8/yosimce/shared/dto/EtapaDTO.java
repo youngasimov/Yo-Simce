@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class EtapaDTO implements Serializable {
 
-	
+	public static final String MINISTERIO = "Ministerio";
+	public static final String IMPRENTA = "Imprenta";
+	public static final String CENTRO_DE_DISTRIBUCION = "Centro de Distribución";
+	public static final String CENTRO_DE_OPERACIONES = "Centro de Operaciones";
+	public static final String ESTABLECIMIENTO = "Establecimiento";
 	
 	private Integer id;
 	private String etapa;
