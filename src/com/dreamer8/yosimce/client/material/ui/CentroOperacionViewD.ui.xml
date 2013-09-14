@@ -25,9 +25,11 @@
 		display:block;
 		text-align: left;
 		padding-left: 50px;
-		font-size: 18px;
-		font-weight: bolder;
+		font-size: 15px;
+		font-weight: bold;
 		border-bottom: 1px solid black;
+		background: #BBBBBB;
+		color: #333333;
 	}
 	
 	.data{
@@ -56,6 +58,24 @@
 		display:inline-block;
 	}
 	
+	.keyColumn{
+		font-size: 10px;
+		font-weight: normal;
+	}
+	
+	.valueColumn{
+		font-size: 13px;
+		font-weight: bold;
+	}
+	
+	.parRow{
+		background: white;
+	}
+	
+	.inparRow{
+		background: #DEDEDE;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -72,14 +92,30 @@
      				<g:header size='10'>Material</g:header>
      				<g:SplitLayoutPanel>
      					<g:south size='200'>
-	     					<g:DockLayoutPanel unit="PX">
-	     						<g:north size='30'>
-									<g:Label addStyleNames='{style.subtitle}' text="Historial"/>
-								</g:north>
-	     						<g:center size='200'>
-	     							<c:DataGrid addStyleNames='{style.data}' ui:field="historialGrid"/>
+	     					<g:SplitLayoutPanel >
+	     						<g:east size='450'>
+	     							<g:DockLayoutPanel unit='PX'>
+	     								<g:north size='20'>
+	     									<g:Label addStyleNames='{style.subtitle}' text="Detalles"/>
+	     								</g:north>
+	     								<g:center>
+	     									<g:FlowPanel>
+	     										<g:FlexTable addStyleNames='{style.data}' ui:field="detallesGrid"/>
+	     									</g:FlowPanel>
+	     								</g:center>
+	     							</g:DockLayoutPanel>
+	     						</g:east>
+	     						<g:center>
+	     							<g:DockLayoutPanel unit='PX'>
+			     						<g:north size='20'>
+											<g:Label addStyleNames='{style.subtitle}' text="Historial"/>
+										</g:north>
+			     						<g:center>
+			     							<c:DataGrid addStyleNames='{style.data}' ui:field="historialGrid"/>
+			     						</g:center>
+		     						</g:DockLayoutPanel>
 	     						</g:center>
-	     					</g:DockLayoutPanel>
+	     					</g:SplitLayoutPanel>
      					</g:south>
      					<g:center>
 	     					<g:DockLayoutPanel unit="PX">
@@ -111,8 +147,7 @@
 	       									<td><g:Label ui:field='totalIngresoLabel'/></td>
 	       								</tr>
 	       								<tr>
-	       									<td>Folio:</td>
-	       									<td><my:PlaceHolderTextBox tabIndex="3" placeholder='Folio documento' width="170px" ui:field='ingresoFolioBox'/></td>
+	       									<td colspan='2'><my:PlaceHolderTextBox tabIndex="3" placeholder='Folio documento' width="170px" ui:field='ingresoFolioBox'/></td>
 	       								</tr>
 	       								<tr>
 	       									<td colspan='2'><u:SingleUploaderModal ui:field="ingresoUploader"/></td>
@@ -187,17 +222,17 @@
        									</tr>
        									<tr>
        										<td> <g:Label ui:field='coLabel'/></td>
-       										<td> <g:Button tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="90px"/> </td>
+       										<td> <my:ImageButton tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="90px"/> </td>
        									</tr>
        									<tr>
-       										<td> <my:PlaceHolderTextBox tabIndex="6" placeholder='Rut de quien retira' ui:field='rutRetiranteBox' width='170px'/> </td>
+       										<td> <my:PlaceHolderTextBox tabIndex="6" placeholder='Rut del receptor' ui:field='rutRetiranteBox' width='150px'/> </td>
        										<td> <my:ImageButton width="110px" tabIndex="7" resource='{res.gear}' ui:field='retiranteButton' text='Comprobar'/></td>
        									</tr>
        									<tr>
        										<td colspan='2'> <g:Label ui:field='retiranteLabel'/> </td>
        									</tr>
        									<tr>
-	       									<td colspan='2'><my:PlaceHolderTextBox tabIndex="8" placeholder='Folio documento' width="170px" ui:field='despachoFolioBox'/></td>
+	       									<td colspan='2'><my:PlaceHolderTextBox tabIndex="8" placeholder='Folio documento' width="150px" ui:field='despachoFolioBox'/></td>
 	       								</tr>
        									<tr>
        										<td><u:SingleUploaderModal ui:field="despachoUploader"/> </td>

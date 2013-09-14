@@ -1,9 +1,7 @@
 package com.dreamer8.yosimce.client.material;
 
-import java.util.ArrayList;
 
-import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
-import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
+import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -18,10 +16,7 @@ public class MaterialWrap {
 	};
 	
 	private MaterialDTO material;
-	private ArrayList<HistorialMaterialItemDTO> historial;
-	private ArrayList<DocumentoDTO> documentos;
-	
-	private boolean materialUpToDate;
+	private DetallesMaterialDTO detalles;
 	
 	
 	public MaterialDTO getMaterial() {
@@ -30,22 +25,10 @@ public class MaterialWrap {
 	public void setMaterial(MaterialDTO material) {
 		this.material = material;
 	}
-	public ArrayList<HistorialMaterialItemDTO> getHistorial() {
-		return historial;
+	public DetallesMaterialDTO getDetalles() {
+		return detalles;
 	}
-	public void setHistorial(ArrayList<HistorialMaterialItemDTO> historial) {
-		this.historial = historial;
-	}
-	public ArrayList<DocumentoDTO> getDocumentos() {
-		return documentos;
-	}
-	public void setDocumentos(ArrayList<DocumentoDTO> documentos) {
-		this.documentos = documentos;
-	}
-	public boolean isMaterialUpToDate() {
-		return materialUpToDate;
-	}
-	public void setMaterialUpToDate(boolean materialUpToDate) {
-		this.materialUpToDate = materialUpToDate;
+	public void setDetalles(DetallesMaterialDTO detalles) {
+		this.detalles = detalles;
 	}
 }
