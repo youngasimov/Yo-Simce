@@ -3,7 +3,6 @@ package com.dreamer8.yosimce.shared.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-
 @SuppressWarnings("serial")
 public class HistorialMaterialItemDTO implements Serializable {
 
@@ -13,8 +12,8 @@ public class HistorialMaterialItemDTO implements Serializable {
 	private Date fecha;
 	private String desde;
 	private String hacia;
-	private UserDTO autorizante;
-	
+	private UserDTO receptor;
+
 	/**
 	 * 
 	 */
@@ -54,12 +53,12 @@ public class HistorialMaterialItemDTO implements Serializable {
 		this.hacia = hacia;
 	}
 
-	public UserDTO getAutorizante() {
-		return autorizante;
+	public UserDTO getReceptor() {
+		return receptor;
 	}
 
-	public void setAutorizante(UserDTO autorizante) {
-		this.autorizante = autorizante;
+	public void setReceptor(UserDTO receptor) {
+		this.receptor = receptor;
 	}
 
 	@Override

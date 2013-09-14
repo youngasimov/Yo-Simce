@@ -85,13 +85,13 @@ public class YoSimceSetup {
 		// ids.add(10);
 		// asignarUsuario(16361209, 2, ids, 1);
 		// asignarUsuario(16370885, 2, ids, 1);
-		// initPermisos();
+		 initPermisos();
 
 		// cargarAlumnosTic("titulares.csv", EstablecimientoTipo.SELECCIONADO);
 		// cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
 		// cargarAlumnosTic("reemplazos2.csv", EstablecimientoTipo.REEMPLAZO_2);
 
-		loadLaWeaDeCapacitacion();
+//		loadLaWeaDeCapacitacion();
 		System.out.println("fin :P");
 	}
 

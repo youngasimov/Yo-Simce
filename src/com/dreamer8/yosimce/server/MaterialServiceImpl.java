@@ -506,44 +506,33 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(file), "ISO-8859-1"));
-				//
-				// String contenido;
-				// if (total != 0) {
-				// bw.write("RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total;Alumnos Evaluados;Alumnos Sincronizados;Cuestionarios Entregados;Cuestionarios Recibidos;Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna\r");
-				// }
-				// while (total > 0) {
-				// apdtos = adao
-				// .findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
-				// idAplicacion, idNivel, idActividadTipo,
-				// u.getId(), usuarioTipo.getNombre(), offset,
-				// lenght, filtros, getBaseURL());
-				//
-				// total -= lenght;
-				//
-				// if (apdtos != null && !apdtos.isEmpty()) {
-				// for (ActividadPreviewDTO apdto : apdtos) {
-				// contenido = apdto.getRbd() + ";";
-				// contenido += apdto.getNombreEstablecimiento() + ";";
-				// contenido += apdto.getCurso() + ";";
-				// contenido += apdto.getTipoEstablecimiento() + ";";
-				// contenido += apdto.getEstadoAgenda() + ";";
-				// contenido += apdto.getAlumnosTotales() + ";";
-				// contenido += apdto.getAlumnosEvaluados() + ";";
-				// contenido += apdto.getAlumnosSincronizados() + ";";
-				// contenido += apdto
-				// .getCuestionariosPadresApoderadosEntregados()
-				// + ";";
-				// contenido += apdto
-				// .getCuestionariosPadresApoderadosRecibidos()
-				// + ";";
-				// contenido += apdto.getContingencia() + ";";
-				// contenido += apdto.getContingenciaLimitante() + ";";
-				// contenido += apdto.getRegion() + ";";
-				// contenido += apdto.getComuna();
-				// bw.write(contenido + "\r");
-				// }
-				// }
-				// }
+
+				MaterialDAO mdao = new MaterialDAO();
+				List<MaterialDTO> mdtos = mdao
+						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDIdMateriales(
+								idAplicacion, idNivel, idActividadTipo,
+								idsMaterial);
+
+				if (mdtos == null || mdtos.isEmpty()) {
+					throw new NullPointerException(
+							"No se encontraron los materiales especificados.");
+				}
+				String contenido;
+				bw.write("Código;Tipo Material;RBD;Establecimiento;Nivel;Curso;Destino;Lote\r");
+
+				for (MaterialDTO mdto : mdtos) {
+					contenido = mdto.getCodigo() + ";";
+					contenido += mdto.getTipo() + ";";
+					contenido += mdto.getRbd() + ";";
+					contenido += mdto.getEstablecimiento() + ";";
+					contenido += mdto.getNivel() + ";";
+					contenido += mdto.getCurso() + ";";
+					contenido += mdto.getEtapa() + ";";
+					contenido += mdto.getLote() + ";";
+					bw.write(contenido + "\r");
+
+				}
+
 				bw.close();
 
 				ArchivoDAO ardao = new ArchivoDAO();
