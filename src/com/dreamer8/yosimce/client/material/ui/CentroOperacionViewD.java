@@ -6,17 +6,20 @@ import gwtupload.client.SingleUploaderModal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Map;
 
 import com.dreamer8.yosimce.client.material.MaterialWrap;
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.PlaceHolderTextBox;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
+import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
+import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.ActionCell.Delegate;
@@ -33,6 +36,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -42,9 +46,11 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -62,8 +68,16 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	interface CentroOperacionViewDUiBinder extends
 			UiBinder<Widget, CentroOperacionViewD> {
 	}
-
 	
+	interface Style extends CssResource{
+		String keyColumn();
+		String valueColumn();
+		String parRow();
+		String inparRow();
+		
+	}
+	
+	@UiField Style style;
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
 	@UiField MenuItem cosItem;
@@ -72,6 +86,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	
 	@UiField TabLayoutPanel tabPanel;
 	@UiField(provided=true) DataGrid<HistorialMaterialItemDTO> historialGrid;
+	@UiField FlexTable detallesGrid;
 	@UiField(provided=true) DataGrid<MaterialWrap> materialGrid;
 	@UiField(provided=true) DataGrid<MaterialWrap> ingresoGrid;
 	@UiField(provided=true) DataGrid<MaterialWrap> predespachoGrid;
@@ -97,7 +112,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField Button predespachoButton;
 	@UiField Button addLoteButton;
 	@UiField Button despachoButton;
-	@UiField Button changeCoButton;
+	@UiField ImageButton changeCoButton;
 	@UiField ImageButton ingresarButton;
 	@UiField ImageButton removeLoteButton;
 	@UiField ImageButton addOrEditLoteButton;
@@ -139,6 +154,13 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			@Override
 			public void execute() {
 				presenter.toggleMenu();
+			}
+		});
+		exportarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onExportarClick();
 			}
 		});
 		
@@ -267,21 +289,25 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@Override
 	public void setMaterialVisivility(boolean visible) {
 		tabPanel.getTabWidget(0).setVisible(visible);
+		tabPanel.getWidget(0).setVisible(visible);
 	}
 	
 	@Override
 	public void setIngresoVisivility(boolean visible) {
 		tabPanel.getTabWidget(1).setVisible(visible);
+		tabPanel.getWidget(1).setVisible(visible);
 	}
 	
 	@Override
 	public void setPredespachoVisivility(boolean visible) {
 		tabPanel.getTabWidget(2).setVisible(visible);
+		tabPanel.getWidget(2).setVisible(visible);
 	}
 	
 	@Override
 	public void setDespachoVisivility(boolean visible) {
 		tabPanel.getTabWidget(3).setVisible(visible);
+		tabPanel.getWidget(3).setVisible(visible);
 	}
 	
 	@Override
@@ -371,6 +397,43 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		configureSortHandler(despachoGrid, handler);
 	}
 
+	@Override
+	public void setDetallesMaterial(MaterialDTO m,  DetallesMaterialDTO detalles) {
+		detallesGrid.clear();
+		if(m == null){
+			return;
+		}
+		detallesGrid.getColumnFormatter().setStyleName(0, style.keyColumn());
+		detallesGrid.getColumnFormatter().setStyleName(1, style.valueColumn());
+		detallesGrid.setWidget(0, 0, new Label("Etapa:"));
+		detallesGrid.setWidget(0, 1, new Label(m.getEtapa()));
+		detallesGrid.getRowFormatter().setStyleName(0, style.parRow());
+		
+		detallesGrid.setWidget(1, 0, new Label("Lote:"));
+		detallesGrid.setWidget(1, 1, new Label((m.getLote()!=null)?m.getLote().getNombre():""));
+		detallesGrid.getRowFormatter().setStyleName(1, style.inparRow());
+		
+		if(detalles == null){
+			return;
+		}
+		detallesGrid.setWidget(2, 0, new Label("C.O. asignado:"));
+		detallesGrid.setWidget(2, 1, new Label(detalles.getNombreCentroOperacion()));
+		detallesGrid.getRowFormatter().setStyleName(2, style.parRow());
+		if(detalles.getDocumentos()!=null && !detalles.getDocumentos().isEmpty()){
+			int i = 3;
+			for(Map.Entry<String,DocumentoDTO> entry:detalles.getDocumentos().entrySet()){
+				Anchor a = new Anchor("#Folio:"+entry.getKey());
+				if(entry.getValue()!=null){
+					a.setHref(entry.getValue().getUrl());
+				}
+				detallesGrid.setWidget(i, 0, a);
+				detallesGrid.getFlexCellFormatter().setColSpan(i, 0, 2);
+				detallesGrid.getFlexCellFormatter().setStyleName(i, 0, (i%2==0)?style.parRow():style.inparRow());
+				
+			}
+		}
+	}
+	
 	@Override
 	public void clearIngresoFolioBox() {
 		ingresoFolioBox.setValue(null);
@@ -538,8 +601,8 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		
 		historialGrid.setAutoHeaderRefreshDisabled(true);		
 		historialGrid.setAutoFooterRefreshDisabled(true);
-		materialGrid.setPageSize(50);
-		materialGrid.setPageStart(0);
+		historialGrid.setPageSize(50);
+		historialGrid.setPageStart(0);
 		historialGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		
 		DateTimeFormat dtf = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);

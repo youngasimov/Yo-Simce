@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.client.material.MaterialWrap;
+import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
+import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -33,6 +35,8 @@ public interface CentroOperacionView extends IsWidget {
 	void setPredespachoSortHandler(ListHandler<MaterialWrap> handler);
 	HasData<MaterialWrap> getDespachoDataDisplay();
 	void setDespachoSortHandler(ListHandler<MaterialWrap> handler);
+	
+	void setDetallesMaterial(MaterialDTO m, DetallesMaterialDTO d);
 	
 	void clearIngresoFolioBox();
 	void clearDespachoFolioBox();
@@ -97,6 +101,6 @@ public interface CentroOperacionView extends IsWidget {
 		void onChangeSelectedStageCo();
 		void onRutRetiranteChange(String rut);
 		
-		
+		void onExportarClick();
 	}
 }
