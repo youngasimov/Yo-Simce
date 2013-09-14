@@ -68,7 +68,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + " JOIN CO ON m.centro_id=co.id"
 				+ " JOIN MATERIAL_TIPO mt ON m.material_tipo_id=mt.id"
 				+ " LEFT JOIN MATERIAL_x_LOTE mxl ON m.id=mxl.material_id"
-				+ " LEFT JOIN lote l ON mxl.lote_id=id"
+				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
 				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
@@ -121,7 +121,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + " JOIN CO ON m.centro_id=co.id"
 				+ " JOIN MATERIAL_TIPO mt ON m.material_tipo_id=mt.id"
 				+ " LEFT JOIN MATERIAL_x_LOTE mxl ON m.id=mxl.material_id"
-				+ " LEFT JOIN lote l ON mxl.lote_id=id"
+				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
 				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
@@ -179,7 +179,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + " JOIN CO ON m.centro_id=co.id"
 				+ " JOIN MATERIAL_TIPO mt ON m.material_tipo_id=mt.id"
 				+ " LEFT JOIN MATERIAL_x_LOTE mxl ON m.id=mxl.material_id"
-				+ " LEFT JOIN lote l ON mxl.lote_id=id"
+				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
 				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
@@ -253,7 +253,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + " JOIN CO ON m.centro_id=co.id"
 				+ " JOIN MATERIAL_TIPO mt ON m.material_tipo_id=mt.id"
 				+ " LEFT JOIN MATERIAL_x_LOTE mxl ON m.id=mxl.material_id"
-				+ " LEFT JOIN lote l ON mxl.lote_id=id"
+				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
 				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
@@ -327,7 +327,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + " JOIN CO ON m.centro_id=co.id"
 				+ " JOIN MATERIAL_TIPO mt ON m.material_tipo_id=mt.id"
 				+ " LEFT JOIN MATERIAL_x_LOTE mxl ON m.id=mxl.material_id"
-				+ " LEFT JOIN lote l ON mxl.lote_id=id"
+				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
 				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
