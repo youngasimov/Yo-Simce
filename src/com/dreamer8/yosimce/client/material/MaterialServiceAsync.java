@@ -50,4 +50,7 @@ public interface MaterialServiceAsync {
 	void getDetallesMaterial(Integer idMaterial,
 			AsyncCallback<DetallesMaterialDTO> callback);
 
+	void eliminarLote(Integer idCo, Integer loteId,
+			AsyncCallback<Boolean> callback);
+
 }

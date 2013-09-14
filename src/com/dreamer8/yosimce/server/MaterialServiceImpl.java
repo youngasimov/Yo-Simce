@@ -726,4 +726,12 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	@Override
+	public Boolean eliminarLote(Integer idCo, Integer loteId)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
