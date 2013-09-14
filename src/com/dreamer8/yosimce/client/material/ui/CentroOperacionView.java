@@ -51,6 +51,7 @@ public interface CentroOperacionView extends IsWidget {
 	void setDespachoDocumento(DocumentoDTO doc);
 	
 	void setLotes(ArrayList<LoteDTO> lotes);
+	void selectLote(int loteId);
 	
 	void setAddByLote(boolean addByLote);
 	boolean getAddByLote();
@@ -85,6 +86,7 @@ public interface CentroOperacionView extends IsWidget {
 		void onDespachoDocUploaded(DocumentoDTO doc);
 		
 		void onRealizarIngresoStackActualClick();
+		void guardarLote();
 		void onRealizarDespachoStackActualClick();
 		
 		void onCrearLote(String nuevoLote);

@@ -190,20 +190,21 @@
        										<td> <my:ImageButton tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="90px"/> </td>
        									</tr>
        									<tr>
-       										<td colspan='2' > <my:PlaceHolderTextBox tabIndex="6" placeholder='Rut de quien retira' ui:field='rutRetiranteBox' width='220px'/> </td>
+       										<td> <my:PlaceHolderTextBox tabIndex="6" placeholder='Rut de quien retira' ui:field='rutRetiranteBox' width='170px'/> </td>
+       										<td> <my:ImageButton width="110px" tabIndex="7" resource='{res.gear}' ui:field='retiranteButton' text='Comprobar'/></td>
        									</tr>
        									<tr>
        										<td colspan='2'> <g:Label ui:field='retiranteLabel'/> </td>
        									</tr>
        									<tr>
-	       									<td colspan='2'><my:PlaceHolderTextBox tabIndex="7" placeholder='Folio documento' width="170px" ui:field='despachoFolioBox'/></td>
+	       									<td colspan='2'><my:PlaceHolderTextBox tabIndex="8" placeholder='Folio documento' width="170px" ui:field='despachoFolioBox'/></td>
 	       								</tr>
        									<tr>
        										<td><u:SingleUploaderModal ui:field="despachoUploader"/> </td>
        									</tr>
        									<tr>
        										<td> <g:Label ui:field='salidaDocLabel'/> </td>
-       										<td> <my:ImageButton width="110px" tabIndex="9" resource='{res.gear}' ui:field='despacharButton' text='Despachar'/> </td>
+       										<td> <my:ImageButton width="110px" tabIndex="10" resource='{res.gear}' ui:field='despacharButton' text='Despachar'/> </td>
        									</tr>
 	       							</table>
 	       						</g:HTMLPanel>

@@ -99,7 +99,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField ImageButton ingresarButton;
 	@UiField ImageButton addLoteButton;
 	@UiField ImageButton removeLoteButton;
+	@UiField ImageButton addOrEditLoteButton;
 	@UiField ImageButton changeCoButton;
+	@UiField ImageButton retiranteButton;
 	@UiField ImageButton despacharButton;
 	@UiField ListBox lotesBox;
 	@UiField ListBox destinoDespachoBox;
@@ -230,7 +232,14 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 	
 	@UiHandler("rutRetiranteBox")
-	void onRutRetiranteChange(ChangeEvent event){
+	void onRutRetiranteKeyUp(KeyUpEvent event){
+		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			presenter.onRutRetiranteChange(rutRetiranteBox.getValue());
+		}
+	}
+	
+	@UiHandler("retiranteButton")
+	void onRetiranteButtonClick(ChangeEvent event){
 		presenter.onRutRetiranteChange(rutRetiranteBox.getValue());
 	}
 	
@@ -246,8 +255,13 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	
 	@Override
 	public void setCO(EmplazamientoDTO emplazamiento) {
-		idCentro = emplazamiento.getId();
-		cosItem.setText(emplazamiento.getNombre());
+		if(emplazamiento!=null){
+			idCentro = emplazamiento.getId();
+			cosItem.setText(emplazamiento.getNombre());
+		}else{
+			idCentro  = -1;
+			cosItem.setText("-----");
+		}
 	}
 	
 	@Override
@@ -460,6 +474,20 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		lotesBox.addItem("----------","-1");
 		for(LoteDTO lote:lotes){
 			lotesBox.addItem(lote.getNombre(),lote.getId()+"");
+		}
+	}
+	
+	@Override
+	public void selectLote(int loteId) {
+		if(loteId == -1){
+			lotesBox.setSelectedIndex(0);
+		}else{
+			for(int i = 0;i<lotesBox.getItemCount(); i++){
+				int id = Integer.parseInt(lotesBox.getValue(i));
+				if(id == loteId){
+					lotesBox.setSelectedIndex(i);
+				}
+			}
 		}
 	}
 
@@ -677,17 +705,6 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		tipoColumn.setSortable(true);
 		d.addColumn(tipoColumn,"Tipo");
 		
-		Column<MaterialWrap,String> coColumn = new Column<MaterialWrap,String>(new TextCell()){
-
-			@Override
-			public String getValue(MaterialWrap o) {
-				return (o.getMaterial().getNombreCentro()!=null)?o.getMaterial().getNombreCentro():"";
-			}
-		};
-		coColumn.setSortable(true);
-		d.addColumn(coColumn,"C.O.");
-		d.setColumnWidth(warningColumn, "50px");
-		
 		Column<MaterialWrap,String> rbdColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
@@ -742,7 +759,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		});
 		
-		h.setComparator( d.getColumn(4), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(3), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
@@ -750,21 +767,21 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		});
 		
-		h.setComparator( d.getColumn(5), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(4), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
 				return o1.getMaterial().getEstablecimiento().compareTo(o2.getMaterial().getEstablecimiento());
 			}
 		});
-		h.setComparator( d.getColumn(6), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(5), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
 				return o1.getMaterial().getNivel().compareTo(o2.getMaterial().getNivel());
 			}
 		});
-		h.setComparator( d.getColumn(7), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(6), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
