@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.dreamer8.yosimce.server.hibernate.pojo.Lugar;
 import com.dreamer8.yosimce.server.hibernate.pojo.Material;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
@@ -89,7 +90,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			mdto.setEstablecimiento((String) o[5]);
 			mdto.setCurso((String) o[6]);
 			mdto.setNivel((String) o[7]);
-			mdto.setEtapa((String) o[8]);
+			mdto.setEtapa((o[8] == null) ? Lugar.IMPRENTA : (String) o[8]);
 			if (o[9] != null) {
 				ldto = new LoteDTO();
 				ldto.setId((Integer) o[9]);
@@ -162,7 +163,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			mdto.setEstablecimiento((String) o[5]);
 			mdto.setCurso((String) o[6]);
 			mdto.setNivel((String) o[7]);
-			mdto.setEtapa((String) o[8]);
+			mdto.setEtapa((o[8] == null) ? Lugar.IMPRENTA : (String) o[8]);
 			if (o[9] != null) {
 				ldto = new LoteDTO();
 				ldto.setId((Integer) o[9]);
@@ -220,7 +221,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			mdto.setEstablecimiento((String) o[5]);
 			mdto.setCurso((String) o[6]);
 			mdto.setNivel((String) o[7]);
-			mdto.setEtapa((String) o[8]);
+			mdto.setEtapa((o[8] == null) ? Lugar.IMPRENTA : (String) o[8]);
 			if (o[9] != null) {
 				ldto = new LoteDTO();
 				ldto.setId((Integer) o[9]);

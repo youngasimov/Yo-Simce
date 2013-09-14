@@ -24,6 +24,8 @@ public class LugarDAO extends AbstractHibernateDAO<Lugar, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " OR l.aplicacion_id IS NULL) AND l.nombre !='"
 				+ SecurityFilter.escapeString(Lugar.CENTRO_DE_OPERACIONES)
+				+ "' AND l.nombre !='"
+				+ SecurityFilter.escapeString(Lugar.CENTRO_DE_DISTRIBUCION)
 				+ "'";
 		Query q = s.createSQLQuery(query).addEntity(Lugar.class);
 		ls = q.list();

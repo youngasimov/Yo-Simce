@@ -29,7 +29,7 @@ public interface MaterialServiceAsync {
 			String folio, String file, AsyncCallback<Boolean> callback);
 
 	void crearOEditarLote(Integer idCo, ArrayList<Integer> materiales,
-			LoteDTO lote, AsyncCallback<Boolean> callback);
+			LoteDTO lote, AsyncCallback<Integer> callback);
 
 	void getMateriales(Integer idCo,
 			AsyncCallback<ArrayList<MaterialDTO>> callback);

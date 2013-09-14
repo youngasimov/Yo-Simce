@@ -1,5 +1,8 @@
 package com.dreamer8.yosimce.server.hibernate.pojo;
 
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
+
 // Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1
 
 /**
@@ -110,6 +113,29 @@ public class MaterialHistorial implements java.io.Serializable {
 
 	public void setModificadorId(Integer modificadorId) {
 		this.modificadorId = modificadorId;
+	}
+
+	/**
+	 * @return
+	 */
+	public HistorialMaterialItemDTO getHistorialMaterialItemDTO() {
+		HistorialMaterialItemDTO hmidto = new HistorialMaterialItemDTO();
+		hmidto.setId(id.getMaterialId());
+		hmidto.setFecha(id.getFecha());
+		if (lugarByOrigenId != null) {
+			hmidto.setDesde(lugarByOrigenId.getNombre());
+		}
+		if (lugarByDestinoId != null) {
+			hmidto.setHacia(lugarByDestinoId.getNombre());
+		}
+		UsuarioDAO udao = new UsuarioDAO();
+		if (modificadorId != null) {
+			Usuario u = udao.getById(modificadorId);
+			if (u != null) {
+				hmidto.setAutorizante(u.getUserDTO());
+			}
+		}
+		return hmidto;
 	}
 
 }

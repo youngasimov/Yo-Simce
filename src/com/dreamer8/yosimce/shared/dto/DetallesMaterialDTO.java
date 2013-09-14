@@ -4,16 +4,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 @SuppressWarnings("serial")
 public class DetallesMaterialDTO implements Serializable {
 
-	
-	
 	private String NombreCentroOperacion;
 	private ArrayList<HistorialMaterialItemDTO> historial;
+	// String corresponde al folio de la guía de despacho
+	private HashMap<String, DocumentoDTO> documentos;
 	
-	private HashMap<String,DocumentoDTO> documentos;
+	/**
+	 * 
+	 */
+	public DetallesMaterialDTO() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getNombreCentroOperacion() {
 		return NombreCentroOperacion;

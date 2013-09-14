@@ -12,9 +12,12 @@ import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.LugarDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MaterialDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialHistorialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Lugar;
+import com.dreamer8.yosimce.server.hibernate.pojo.Material;
+import com.dreamer8.yosimce.server.hibernate.pojo.MaterialHistorial;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
@@ -23,6 +26,7 @@ import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
+import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -588,8 +592,90 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	public DetallesMaterialDTO getDetallesMaterial(Integer idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		DetallesMaterialDTO dmdto = new DetallesMaterialDTO();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getDetallesMaterial")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idMaterial == null) {
+					throw new NullPointerException(
+							"No se ha especificado un material.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO();
+				Material m = mdao.getById(idMaterial);
+				if (m == null) {
+					throw new NullPointerException(
+							"El material especificado no existe.");
+				}
+				dmdto.setNombreCentroOperacion(m.getCo().getNombre());
+
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				List<MaterialHistorial> mhs = mhdao
+						.findByIdMaterial(idMaterial);
+				ArrayList<HistorialMaterialItemDTO> hmidto = new ArrayList<HistorialMaterialItemDTO>();
+
+				if (mhs != null && !mhs.isEmpty()) {
+					for (MaterialHistorial mh : mhs) {
+						hmidto.add(mh.getHistorialMaterialItemDTO());
+					}
+				}
+				
+				
+				
+				dmdto.setHistorial(hmidto);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return dmdto;
 	}
 
 	/**
@@ -608,7 +694,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso crearOEditarLote
 	 */
 	@Override
-	public Boolean crearOEditarLote(Integer idCo,
+	public Integer crearOEditarLote(Integer idCo,
 			ArrayList<Integer> materiales, LoteDTO lote)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
