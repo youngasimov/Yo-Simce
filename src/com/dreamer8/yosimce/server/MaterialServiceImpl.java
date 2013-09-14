@@ -19,10 +19,10 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.server.utils.StringUtils;
+import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
-import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -354,17 +354,6 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	/**
-	 * @permiso getHistorialMaterial
-	 */
-	@Override
-	public ArrayList<HistorialMaterialItemDTO> getHistorialMaterial(
-			Integer idMaterial) throws NoAllowedException, NoLoggedException,
-			DBException, NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
 	 * @permiso exportar
 	 */
 	@Override
@@ -422,6 +411,14 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public Boolean despacharMateriales(Integer idCo, Integer idCoDestino,
 			String rut, ArrayList<String> codigos, String folio, String file)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DetallesMaterialDTO getDetallesMaterial(Integer idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
 		// TODO Auto-generated method stub

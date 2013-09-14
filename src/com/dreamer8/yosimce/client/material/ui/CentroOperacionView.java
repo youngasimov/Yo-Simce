@@ -9,7 +9,6 @@ import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
 import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
-import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -18,6 +17,11 @@ import com.google.gwt.view.client.HasData;
 public interface CentroOperacionView extends IsWidget {
 
 	void setCO(EmplazamientoDTO emplazamiento);
+	
+	void setMaterialVisivility(boolean visible);
+	void setIngresoVisivility(boolean visible);
+	void setPredespachoVisivility(boolean visible);
+	void setDespachoVisivility(boolean visible);
 	
 	HasData<HistorialMaterialItemDTO> getHistorialDataDisplay();
 	void setHistorialSortHandler(ListHandler<HistorialMaterialItemDTO> handler);
@@ -30,15 +34,14 @@ public interface CentroOperacionView extends IsWidget {
 	HasData<MaterialWrap> getDespachoDataDisplay();
 	void setDespachoSortHandler(ListHandler<MaterialWrap> handler);
 	
-	void clearCodigoIngresoBox();
-	void clearCodigoPredespachoBox();
-	void clearCodigoDespachoBox();
+	void clearIngresoFolioBox();
+	void clearDespachoFolioBox();
 	void clearRutRetiranteBox();
 	void clearNuevoLoteBox();
 	
-	void setFocusOnIngresoCodigoBox();
-	void setFocusOnPredespachoCodigoBox();
-	void setFocusOnDespachoCodigoBox();
+	void setFocusOnIngresoCodigoBox(boolean cleanFirst);
+	void setFocusOnPredespachoCodigoBox(boolean cleanFirst);
+	void setFocusOnDespachoCodigoBox(boolean cleanFirst);
 	
 	void setTotalMaterialIngresando(int total);
 	void setTotalMaterialEnLote(int total);
@@ -52,6 +55,9 @@ public interface CentroOperacionView extends IsWidget {
 	void setAddByLote(boolean addByLote);
 	boolean getAddByLote();
 	
+	String getIngresoFolio();
+	String getDespachoFolio();
+	
 	void setEtapas(ArrayList<EtapaDTO> etapas);
 	void setChangeCoButtonVisivility(boolean visible);
 	void setSelectedCo(EmplazamientoDTO co);
@@ -61,6 +67,11 @@ public interface CentroOperacionView extends IsWidget {
 	
 	public interface CentroOperacionPresenter extends SimcePresenter{
 		void onMaterialSelected(MaterialWrap material);
+		
+		void onMaterialTabSelected();
+		void onIngresoTabSelected();
+		void onPredespachoTabSelected();
+		void onDespachoTabSelected();
 		
 		void onMaterialAddedToIngresoStack(String id);
 		void onMaterialAddedToPredespachoStack(String id);

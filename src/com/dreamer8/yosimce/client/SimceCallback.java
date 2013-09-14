@@ -9,6 +9,7 @@ public abstract class SimceCallback<T> implements AsyncCallback<T> {
 	private EventBus eventBus;
 	private boolean blocking;
 	private boolean finish;
+	private boolean manageThrows;
 	
 	public SimceCallback(EventBus eventbus){
 		this(eventbus,true);
@@ -19,9 +20,14 @@ public abstract class SimceCallback<T> implements AsyncCallback<T> {
 	}
 	
 	public SimceCallback(EventBus eventbus, boolean blocking, int timeout){
+		this(eventbus,blocking,timeout,true);
+	}
+	
+	public SimceCallback(EventBus eventbus, boolean blocking, int timeout,boolean manageThrows){
 		finish = false;
 		this.eventBus = eventbus;
 		this.blocking = blocking;
+		this.manageThrows = manageThrows;
 		if(timeout>0){
 			Timer t = new Timer() {
 				
@@ -37,12 +43,16 @@ public abstract class SimceCallback<T> implements AsyncCallback<T> {
 		eventbus.fireEvent(new WaitEvent(true,blocking));
 	}
 	
+	
+	
 	@Override
 	public void onFailure(Throwable caught) {
 		if(!finish){
 			finish = true;
 			eventBus.fireEvent(new WaitEvent(false,blocking));
-			eventBus.fireEvent(new ErrorEvent(caught));
+			if(manageThrows){
+				eventBus.fireEvent(new ErrorEvent(caught));
+			}
 			failure(caught);
 		}
 	}

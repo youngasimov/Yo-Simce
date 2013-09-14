@@ -22,8 +22,6 @@ public class MaterialWrap {
 	private ArrayList<DocumentoDTO> documentos;
 	
 	private boolean materialUpToDate;
-	private boolean historialUpToDate;
-	private boolean documentosUpToDate;
 	
 	
 	public MaterialDTO getMaterial() {
@@ -49,17 +47,5 @@ public class MaterialWrap {
 	}
 	public void setMaterialUpToDate(boolean materialUpToDate) {
 		this.materialUpToDate = materialUpToDate;
-	}
-	public boolean isHistorialUpToDate() {
-		return historialUpToDate;
-	}
-	public void setHistorialUpToDate(boolean historialUpToDate) {
-		this.historialUpToDate = historialUpToDate;
-	}
-	public boolean isDocumentosUpToDate() {
-		return documentosUpToDate;
-	}
-	public void setDocumentosUpToDate(boolean documentosUpToDate) {
-		this.documentosUpToDate = documentosUpToDate;
 	}
 }

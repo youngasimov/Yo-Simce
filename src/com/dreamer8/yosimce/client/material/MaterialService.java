@@ -2,10 +2,10 @@ package com.dreamer8.yosimce.client.material;
 
 import java.util.ArrayList;
 
+import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.EtapaDTO;
-import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -41,7 +41,7 @@ public interface MaterialService extends RemoteService {
 	MaterialDTO getMaterial(String codigo) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
-	ArrayList<HistorialMaterialItemDTO> getHistorialMaterial(Integer idMaterial) throws NoAllowedException, NoLoggedException, DBException,
+	DetallesMaterialDTO getDetallesMaterial(Integer idMaterial) throws NoAllowedException, NoLoggedException, DBException,
 	NullPointerException, ConsistencyException;
 	
 	DocumentoDTO exportar(ArrayList<Integer> idsMaterial) throws NoAllowedException, NoLoggedException, DBException,

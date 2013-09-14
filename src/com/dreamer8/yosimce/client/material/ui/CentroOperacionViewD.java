@@ -21,11 +21,15 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.ActionCell.Delegate;
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -44,6 +48,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -65,6 +70,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField MenuItem filtrosItem;
 	@UiField MenuItem exportarItem;
 	
+	@UiField TabLayoutPanel tabPanel;
 	@UiField(provided=true) DataGrid<HistorialMaterialItemDTO> historialGrid;
 	@UiField(provided=true) DataGrid<MaterialWrap> materialGrid;
 	@UiField(provided=true) DataGrid<MaterialWrap> ingresoGrid;
@@ -81,9 +87,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField Label retiranteLabel;
 	@UiField Label salidaDocLabel;
 	@UiField PlaceHolderTextBox ingresoBox;
+	@UiField PlaceHolderTextBox ingresoFolioBox;
 	@UiField PlaceHolderTextBox nuevoLoteBox;
 	@UiField PlaceHolderTextBox predespachoBox;
 	@UiField PlaceHolderTextBox despachoBox;
+	@UiField PlaceHolderTextBox despachoFolioBox;
 	@UiField PlaceHolderTextBox rutRetiranteBox;
 	@UiField Button ingresoAddButton;
 	@UiField Button predespachoButton;
@@ -102,6 +110,8 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	private HandlerRegistration ingresoHandlerRegistration;
 	private HandlerRegistration predespachoHandlerRegistration;
 	private HandlerRegistration despachoHandlerRegistration;
+	
+	private int idCentro;
 	
 	
 	private CentroOperacionPresenter presenter;
@@ -135,6 +145,33 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		buildIngresoGrid();
 		buildPreDespachoTable();
 		buildDespachoTable();
+		
+	}
+	
+	@UiHandler("tabPanel")
+	void onTabSelected(SelectionEvent<Integer> event){
+		int x = tabPanel.getSelectedIndex();
+		switch(x){
+		case 0:
+			presenter.onMaterialTabSelected();
+			break;
+		case 1:
+			presenter.onIngresoTabSelected();
+			break;
+		case 2:
+			presenter.onPredespachoTabSelected();
+			break;
+		case 3:
+			presenter.onDespachoTabSelected();
+			break;
+		}
+	}
+	
+	@UiHandler("ingresoBox")
+	void onIngresoBoxKeyUp(KeyUpEvent event){
+		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			presenter.onMaterialAddedToIngresoStack(ingresoBox.getValue());
+		}
 	}
 	
 	@UiHandler("ingresoAddButton")
@@ -162,9 +199,19 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		presenter.onDeleteLote(Integer.parseInt(lotesBox.getValue(lotesBox.getSelectedIndex())));
 	}
 	
+	@UiHandler("predespachoBox")
+	void onPredespachoBoxKeyUp(KeyUpEvent event){
+		presenter.onMaterialAddedToPredespachoStack(predespachoBox.getValue());
+	}
+	
 	@UiHandler("predespachoButton")
 	void onPredespachoButtonClick(ClickEvent event){
 		presenter.onMaterialAddedToPredespachoStack(predespachoBox.getValue());
+	}
+	
+	@UiHandler("despachoBox")
+	void onDespachoBoxKeyUp(KeyUpEvent event){
+		presenter.onMaterialAddedToDespachoStack(despachoBox.getValue());
 	}
 	
 	@UiHandler("despachoButton")
@@ -199,7 +246,28 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	
 	@Override
 	public void setCO(EmplazamientoDTO emplazamiento) {
+		idCentro = emplazamiento.getId();
 		cosItem.setText(emplazamiento.getNombre());
+	}
+	
+	@Override
+	public void setMaterialVisivility(boolean visible) {
+		tabPanel.getTabWidget(0).setVisible(visible);
+	}
+	
+	@Override
+	public void setIngresoVisivility(boolean visible) {
+		tabPanel.getTabWidget(1).setVisible(visible);
+	}
+	
+	@Override
+	public void setPredespachoVisivility(boolean visible) {
+		tabPanel.getTabWidget(2).setVisible(visible);
+	}
+	
+	@Override
+	public void setDespachoVisivility(boolean visible) {
+		tabPanel.getTabWidget(3).setVisible(visible);
 	}
 	
 	@Override
@@ -290,20 +358,15 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public void clearCodigoIngresoBox() {
-		ingresoBox.setValue("");
+	public void clearIngresoFolioBox() {
+		ingresoFolioBox.setValue(null);
 	}
-
+	
 	@Override
-	public void clearCodigoPredespachoBox() {
-		predespachoBox.setValue("");
+	public void clearDespachoFolioBox() {
+		despachoFolioBox.setValue(null);
 	}
-
-	@Override
-	public void clearCodigoDespachoBox() {
-		despachoBox.setValue("");
-	}
-
+	
 	@Override
 	public void clearRutRetiranteBox() {
 		rutRetiranteBox.setValue("");
@@ -315,7 +378,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public void setFocusOnIngresoCodigoBox() {
+	public void setFocusOnIngresoCodigoBox(boolean cleanFirst) {
+		if(cleanFirst){
+			ingresoBox.setValue(null);
+		}
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 			
 			@Override
@@ -326,7 +392,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public void setFocusOnPredespachoCodigoBox() {
+	public void setFocusOnPredespachoCodigoBox(boolean cleanFirst) {
+		if(cleanFirst){
+			predespachoBox.setValue(null);
+		}
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 			
 			@Override
@@ -337,7 +406,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public void setFocusOnDespachoCodigoBox() {
+	public void setFocusOnDespachoCodigoBox(boolean cleanFirst) {
+		if(cleanFirst){
+			despachoBox.setValue(null);
+		}
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
 			
 			@Override
@@ -345,6 +417,16 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 				despachoBox.setFocus(true);
 			}
 		});
+	}
+	
+	@Override
+	public String getIngresoFolio() {
+		return ingresoFolioBox.getValue();
+	}
+	
+	@Override
+	public String getDespachoFolio() {
+		return despachoFolioBox.getValue();
 	}
 
 	@Override
@@ -413,7 +495,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 	@Override
 	public void setRetirante(UserDTO user) {
-		retiranteLabel.setText(ViewUtils.limitarString(user.getNombres()+" "+user.getApellidoPaterno()+" "+user.getApellidoMaterno(), 25));
+		retiranteLabel.setText(ViewUtils.limitarString(user.getNombres()+" "+user.getApellidoPaterno()+" "+user.getApellidoMaterno(), 30));
 	}
 	
 	private void buildHistorialTable(){
@@ -510,6 +592,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		removeColumn.setSortable(false);
 		ingresoGrid.addColumn(removeColumn,"");
+		ingresoGrid.setColumnWidth(removeColumn, "90px");
 	}
 	
 	private void buildPreDespachoTable(){
@@ -530,6 +613,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		removeColumn.setSortable(false);
 		predespachoGrid.addColumn(removeColumn,"");
+		predespachoGrid.setColumnWidth(removeColumn, "90px");
 	}
 	
 	private void buildDespachoTable(){
@@ -550,6 +634,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		removeColumn.setSortable(false);
 		despachoGrid.addColumn(removeColumn,"");
+		despachoGrid.setColumnWidth(removeColumn, "90px");
 	}
 	
 	private void buildTable(DataGrid<MaterialWrap> d){
@@ -558,6 +643,18 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		d.setAutoHeaderRefreshDisabled(true);
 		d.setPageSize(50);
 		d.setPageStart(0);
+		
+		Column<MaterialWrap,String> warningColumn = new Column<MaterialWrap,String>(new ImageCell()){
+
+			@Override
+			public String getValue(MaterialWrap o) {
+				return(o.getMaterial().getIdCentro() != idCentro)?"/images/warning.png":"";
+			}
+		};
+		warningColumn.setSortable(false);
+		d.addColumn(warningColumn,"");
+		d.setColumnWidth(warningColumn, "35px");
+		
 		
 		Column<MaterialWrap,String> idColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -568,6 +665,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		idColumn.setSortable(false);
 		d.addColumn(idColumn,"Id");
+		d.setColumnWidth(idColumn, "40px");
 		
 		Column<MaterialWrap,String> tipoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -579,6 +677,17 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		tipoColumn.setSortable(true);
 		d.addColumn(tipoColumn,"Tipo");
 		
+		Column<MaterialWrap,String> coColumn = new Column<MaterialWrap,String>(new TextCell()){
+
+			@Override
+			public String getValue(MaterialWrap o) {
+				return (o.getMaterial().getNombreCentro()!=null)?o.getMaterial().getNombreCentro():"";
+			}
+		};
+		coColumn.setSortable(true);
+		d.addColumn(coColumn,"C.O.");
+		d.setColumnWidth(warningColumn, "50px");
+		
 		Column<MaterialWrap,String> rbdColumn = new Column<MaterialWrap,String>(new TextCell()){
 
 			@Override
@@ -588,6 +697,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		rbdColumn.setSortable(true);
 		d.addColumn(rbdColumn,"RBD");
+		d.setColumnWidth(warningColumn, "50px");
 		
 		Column<MaterialWrap,String> establecimientoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -608,6 +718,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		nivelColumn.setSortable(true);
 		d.addColumn(nivelColumn,"Nivel");
+		d.setColumnWidth(warningColumn, "90px");
 		
 		Column<MaterialWrap,String> cursoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -618,11 +729,12 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		cursoColumn.setSortable(true);
 		d.addColumn(cursoColumn,"Curso");
+		d.setColumnWidth(warningColumn, "60px");
 	}
 	
 	private void configureSortHandler(DataGrid<MaterialWrap> d, ListHandler<MaterialWrap> h){
 		
-		h.setComparator( d.getColumn(1), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(2), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
@@ -630,7 +742,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		});
 		
-		h.setComparator( d.getColumn(2), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(4), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
@@ -638,21 +750,21 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		});
 		
-		h.setComparator( d.getColumn(3), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(5), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
 				return o1.getMaterial().getEstablecimiento().compareTo(o2.getMaterial().getEstablecimiento());
 			}
 		});
-		h.setComparator( d.getColumn(4), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(6), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
 				return o1.getMaterial().getNivel().compareTo(o2.getMaterial().getNivel());
 			}
 		});
-		h.setComparator( d.getColumn(5), new Comparator<MaterialWrap>() {
+		h.setComparator( d.getColumn(7), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
