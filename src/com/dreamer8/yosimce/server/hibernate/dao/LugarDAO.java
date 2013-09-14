@@ -31,4 +31,15 @@ public class LugarDAO extends AbstractHibernateDAO<Lugar, Integer> {
 		ls = q.list();
 		return ls;
 	}
+
+	public Lugar findByNombre(String nombre) {
+
+		Lugar l = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT l.* FROM LUGAR l" + " WHERE l.nombre='"
+				+ SecurityFilter.escapeString(nombre) + "'";
+		Query q = s.createSQLQuery(query).addEntity(Lugar.class);
+		l = ((Lugar) q.uniqueResult());
+		return l;
+	}
 }

@@ -3,25 +3,18 @@ package com.dreamer8.yosimce.shared.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.google.gwt.view.client.ProvidesKey;
 
 @SuppressWarnings("serial")
 public class HistorialMaterialItemDTO implements Serializable {
 
-	public static final ProvidesKey<HistorialMaterialItemDTO> KEY_PROVIDER = new ProvidesKey<HistorialMaterialItemDTO>() {
 
-		@Override
-		public Object getKey(HistorialMaterialItemDTO item) {
-			return (item == null) ? null : item.getFecha();
-		}
-	};
 
 	private Integer id;
 	private Date fecha;
 	private String desde;
 	private String hacia;
-	private UserDTO receptor;
-
+	private UserDTO autorizante;
+	
 	/**
 	 * 
 	 */
@@ -61,12 +54,12 @@ public class HistorialMaterialItemDTO implements Serializable {
 		this.hacia = hacia;
 	}
 
-	public UserDTO getReceptor() {
-		return receptor;
+	public UserDTO getAutorizante() {
+		return autorizante;
 	}
 
-	public void setReceptor(UserDTO receptor) {
-		this.receptor = receptor;
+	public void setAutorizante(UserDTO autorizante) {
+		this.autorizante = autorizante;
 	}
 
 	@Override

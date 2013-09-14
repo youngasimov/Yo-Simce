@@ -1,22 +1,28 @@
 package com.dreamer8.yosimce.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.material.MaterialService;
 import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.GuiaDespachoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.LugarDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MaterialDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialEstadoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MaterialHistorialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
+import com.dreamer8.yosimce.server.hibernate.pojo.GuiaDespacho;
 import com.dreamer8.yosimce.server.hibernate.pojo.Lugar;
 import com.dreamer8.yosimce.server.hibernate.pojo.Material;
+import com.dreamer8.yosimce.server.hibernate.pojo.MaterialEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.MaterialHistorial;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
@@ -651,10 +657,21 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 						hmidto.add(mh.getHistorialMaterialItemDTO());
 					}
 				}
-				
-				
-				
+
 				dmdto.setHistorial(hmidto);
+
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				List<GuiaDespacho> gds = gddao.findByIdMaterial(idMaterial);
+				HashMap<String, DocumentoDTO> docs = new HashMap<String, DocumentoDTO>();
+				DocumentoDTO ddto = null;
+				if (gds != null && !gds.isEmpty()) {
+					for (GuiaDespacho gd : gds) {
+						ddto = gd.getDocumentoDTO(getBaseURL());
+						docs.put(gd.getCodigo(), ddto);
+					}
+				}
+
+				dmdto.setDocumentos(docs);
 
 				s.getTransaction().commit();
 			}
@@ -686,8 +703,99 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			String folio, String file) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "ingresarMateriales")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el centro de operaciones.");
+				}
+
+				if (codigos == null || codigos.isEmpty()) {
+					throw new NullPointerException(
+							"No se han especificado los códigos.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				CoDAO cdao = new CoDAO();
+				Co co = cdao.getById(idCo);
+				if (co == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el centro especificado.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO();
+				List<Material> ms = mdao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
+								idAplicacion, idNivel, idActividadTipo, codigos);
+
+				if (ms == null || ms.isEmpty()) {
+					throw new NullPointerException(
+							"No se encontró ningún material con los códigos especificados.");
+				}
+
+				LugarDAO ldao = new LugarDAO();
+				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
+				Lugar imprenta = ldao.findByNombre(Lugar.IMPRENTA);
+
+				MaterialEstadoDAO medao = new MaterialEstadoDAO();
+				MaterialEstado me = medao
+						.findByNombre(MaterialEstado.EN_EL_LUGAR);
+				
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -726,6 +834,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso eliminarLote
+	 */
 	@Override
 	public Boolean eliminarLote(Integer idCo, Integer loteId)
 			throws NoAllowedException, NoLoggedException, DBException,

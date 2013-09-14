@@ -575,7 +575,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public String getValue(HistorialMaterialItemDTO object) {
-				return (object.getAutorizante()!=null)?object.getAutorizante().getNombres()+" "+object.getAutorizante().getApellidoPaterno()+" "+object.getAutorizante().getApellidoMaterno():"";
+				return (object.getReceptor()!=null)?object.getReceptor().getNombres()+" "+object.getReceptor().getApellidoPaterno()+" "+object.getReceptor().getApellidoMaterno():"";
 			}
 		};
 		historialGrid.addColumn(usuarioColumn,"Usuario autorizante");

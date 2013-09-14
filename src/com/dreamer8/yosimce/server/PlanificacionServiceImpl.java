@@ -789,7 +789,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 					if (filas != null && !filas.isEmpty()) {
 						for (String contenido : filas) {
-							bw.write(contenido + "\n\r");
+							bw.write(contenido + "\r");
 						}
 					}
 				}
