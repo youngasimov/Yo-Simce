@@ -61,7 +61,7 @@
 <!--   https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool -->
 <!-- http://www.mchange.com/projects/c3p0/ -->
   <property name="hibernate.c3p0.min_size">3</property>
-  <property name="hibernate.c3p0.max_size">50</property>
+  <property name="hibernate.c3p0.max_size">8</property>
   <property name="hibernate.c3p0.idle_test_period">60</property>
   
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/Aviso.hbm.xml"/>

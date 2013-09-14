@@ -12,6 +12,12 @@ import com.dreamer8.yosimce.shared.dto.EtapaDTO;
  */
 public class Lugar implements java.io.Serializable {
 
+	public static final String MINISTERIO = "Ministerio";
+	public static final String IMPRENTA = "Imprenta";
+	public static final String CENTRO_DE_DISTRIBUCION = "Centro de Distribución";
+	public static final String CENTRO_DE_OPERACIONES = "Centro de Operaciones";
+	public static final String ESTABLECIMIENTO = "Establecimiento";
+
 	private Integer id;
 	private Aplicacion aplicacion;
 	private String nombre;

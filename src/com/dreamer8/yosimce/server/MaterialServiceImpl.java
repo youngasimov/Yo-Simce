@@ -121,7 +121,6 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	public ArrayList<EtapaDTO> getEtapas() throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
-		
 
 		ArrayList<EtapaDTO> edtos = new ArrayList<EtapaDTO>();
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -165,7 +164,6 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 						edtos.add(lugar.getEtapaDTO());
 					}
 				}
-				
 
 				s.getTransaction().commit();
 			}
@@ -275,9 +273,8 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	public ArrayList<MaterialDTO> getMateriales(Integer idCo)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		
 
-		ArrayList<MaterialDTO> mdtos = new ArrayList<MaterialDTO>();
+		ArrayList<MaterialDTO> mdtos = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		ManagedSessionContext.bind(s);
 		try {
@@ -301,9 +298,10 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado el tipo de la actividad.");
 				}
-				
+
 				if (idCo == null) {
-					throw new NullPointerException("No se ha especificado el centro de operación.");
+					throw new NullPointerException(
+							"No se ha especificado el centro de operación.");
 				}
 
 				Usuario u = getUsuarioActual();
@@ -316,9 +314,10 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				
 				MaterialDAO mdao = new MaterialDAO();
-				
+				mdtos = (ArrayList<MaterialDTO>) mdao
+						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCo(
+								idAplicacion, idNivel, idActividadTipo, idCo);
 
 				s.getTransaction().commit();
 			}
@@ -349,8 +348,76 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 	public MaterialDTO getMaterial(String codigo) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		MaterialDTO mdto = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getMaterial")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (codigo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el código del material.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO();
+				mdto = mdao
+						.findDTOByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigo(
+								idAplicacion, idNivel, idActividadTipo, codigo);
+				if (mdto == null) {
+					throw new NullPointerException(
+							"No se encontró un material con el código especificado.");
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return mdto;
 	}
 
 	/**
@@ -364,15 +431,170 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso getCentrosOperacion
+	 */
 	@Override
-	public ArrayList<MaterialDTO> getMaterialesByCodigos(ArrayList<String> codigos)
-			throws NoAllowedException,
+	public ArrayList<EmplazamientoDTO> getCentrosOperacion()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+
+		ArrayList<EmplazamientoDTO> edtos = new ArrayList<EmplazamientoDTO>();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getCentrosOperacion")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				CoDAO cdao = new CoDAO();
+				List<Co> cos = cdao.findByIdAplicacion(idAplicacion);
+				if (cos != null && !cos.isEmpty()) {
+					for (Co co : cos) {
+						edtos.add(co.getEmplazamientoDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return edtos;
+	}
+
+	/**
+	 * @permiso getMaterialesByCodigos
+	 */
+	@Override
+	public ArrayList<MaterialDTO> getMaterialesByCodigos(
+			ArrayList<String> codigos) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
+
+		ArrayList<MaterialDTO> mdtos = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getMaterialesByCodigos")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (mdtos == null || mdtos.isEmpty()) {
+					throw new NullPointerException(
+							"No se han especificado códigos de materiales.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO();
+				mdtos = (ArrayList<MaterialDTO>) mdao
+						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
+								idAplicacion, idNivel, idActividadTipo, codigos);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return mdtos;
+	}
+
+	/**
+	 * @permiso getDetallesMaterial
+	 */
+	@Override
+	public DetallesMaterialDTO getDetallesMaterial(Integer idMaterial)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/**
+	 * @permiso ingresarMateriales
+	 */
 	@Override
 	public Boolean ingresarMateriales(Integer idCo, ArrayList<String> codigos,
 			String folio, String file) throws NoAllowedException,
@@ -382,6 +604,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso crearOEditarLote
+	 */
 	@Override
 	public Boolean crearOEditarLote(Integer idCo,
 			ArrayList<Integer> materiales, LoteDTO lote)
@@ -391,14 +616,9 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
-	@Override
-	public ArrayList<EmplazamientoDTO> getCentrosOperacion()
-			throws NoAllowedException, NoLoggedException, DBException,
-			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	/**
+	 * @permiso despacharMateriales
+	 */
 	@Override
 	public Boolean despacharMateriales(Integer idCo, EtapaDTO etapa,
 			String rut, ArrayList<String> codigos, String folio, String file)
@@ -408,17 +628,12 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
+	/**
+	 * @permiso despacharMateriales
+	 */
 	@Override
 	public Boolean despacharMateriales(Integer idCo, Integer idCoDestino,
 			String rut, ArrayList<String> codigos, String folio, String file)
-			throws NoAllowedException, NoLoggedException, DBException,
-			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DetallesMaterialDTO getDetallesMaterial(Integer idMaterial)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
 		// TODO Auto-generated method stub
