@@ -239,7 +239,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 	
 	@UiHandler("retiranteButton")
-	void onRetiranteButtonClick(ChangeEvent event){
+	void onRetiranteButtonClick(ClickEvent event){
 		presenter.onRutRetiranteChange(rutRetiranteBox.getValue());
 	}
 	

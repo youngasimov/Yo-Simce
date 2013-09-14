@@ -261,32 +261,6 @@ public class CentroOperacionActivity extends SimceActivity implements
 			historialDataProvider.setList(material.getHistorial());
 		}
 
-		// **********************SOLO TESTING**************************//
-		/*
-		 * ArrayList<HistorialMaterialItemDTO> historial = new
-		 * ArrayList<HistorialMaterialItemDTO>(); UserDTO u = new UserDTO();
-		 * u.setNombres("Juan Diego"); u.setApellidoPaterno("Jara");
-		 * u.setApellidoMaterno("Lillo"); u.setId(1); u.setRut("18574996-1");
-		 * HistorialMaterialItemDTO h = new HistorialMaterialItemDTO();
-		 * h.setAutorizante(u); h.setDesde("Ministerio"); h.setHacia("Centro");
-		 * h.setFecha(new Date()); historial.add(h);
-		 * 
-		 * h = new HistorialMaterialItemDTO(); h.setAutorizante(u);
-		 * h.setDesde("Centro"); h.setHacia("Establecimiento"); Date d = new
-		 * Date(); CalendarUtil.addDaysToDate(d, 10); h.setFecha(d);
-		 * historial.add(h);
-		 * 
-		 * h = new HistorialMaterialItemDTO(); h.setAutorizante(u);
-		 * h.setDesde("Establecimiento"); h.setHacia("Centro"); d = new Date();
-		 * CalendarUtil.addDaysToDate(d, 10); d.setHours(d.getHours()+4);
-		 * h.setFecha(d); historial.add(h);
-		 * 
-		 * material.setHistorial(historial);
-		 * historialDataProvider.setList(material.getHistorial());
-		 */
-
-		// **********************SOLO TESTING**************************//
-
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
 				"getDetallesMaterial")) {
 			getFactory().getMaterialService().getDetallesMaterial(
@@ -693,34 +667,6 @@ public class CentroOperacionActivity extends SimceActivity implements
 	private void initialize() {
 
 		view.setCO(co);
-
-		// **********************SOLO TESTING**************************//
-		/*
-		 * ArrayList<MaterialDTO> result = new ArrayList<MaterialDTO>(); for(int
-		 * i = 1;i<50;i++){ MaterialDTO m = new MaterialDTO();
-		 * m.setCodigo("1000000"+i); if(i%5 == 0){ m.setCurso("B"); }else{
-		 * m.setCurso("A"); } m.setEstablecimiento("Carmelitas descalsas");
-		 * if(i%6 == 0){ m.setEtapa("Ministerio"); }else{ m.setEtapa("Centro");
-		 * } m.setIdCentro(place.getCentroId()); m.setId(i);
-		 * m.setNivel("4 básico"); m.setRbd("49576"); if(i%13 == 0){
-		 * m.setTipo("Contingencia"); }else{ m.setTipo("Caja-Curso-Día"); }
-		 * result.add(m); }
-		 * 
-		 * for(int i = 301;i<390;i++){ MaterialDTO m = new MaterialDTO();
-		 * m.setCodigo("1000000"+i); if(i%8 == 0){ m.setCurso("B"); }else{
-		 * m.setCurso("A"); }
-		 * m.setEstablecimiento("Colegio Altos de los andes"); if(i%3 == 0){
-		 * m.setEtapa("Ministerio"); }else{ m.setEtapa("Centro"); }
-		 * m.setIdCentro(place.getCentroId()); m.setId(i);
-		 * m.setNivel("4 básico"); m.setRbd("8574"); if(i%11 == 0){
-		 * m.setTipo("Contingencia"); }else{ m.setTipo("Caja-Curso-Día"); }
-		 * result.add(m); } materialDataProvider.setList(wrap(result));
-		 * 
-		 * view.setMaterialSortHandler(new
-		 * ListHandler<MaterialWrap>(materialDataProvider.getList()));
-		 * extractLotes();
-		 */
-		// **********************SOLO TESTING**************************//
 
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
 				"getMateriales")) {
