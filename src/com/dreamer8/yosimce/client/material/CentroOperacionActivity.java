@@ -19,12 +19,14 @@ import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.view.client.ListDataProvider;
 
 public class CentroOperacionActivity extends SimceActivity implements
@@ -235,24 +237,26 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setTotalMaterialDespachando(0);
 		selectedEtapa = null;
 		selectedCo = null;
+		view.getFiltroMenu().setSubMenu(null);
 		super.onStop();
 	}
 
 	@Override
 	public void onExportarClick() {
-		
-		ArrayList<Integer> mat = new ArrayList<Integer>();
-		for(MaterialWrap mw : materialDataProvider.getList() ){
-			mat.add(mw.getMaterial().getId());
-		}
-		getFactory().getMaterialService().exportar(mat, new SimceCallback<DocumentoDTO>(eventBus,true,0) {
-
-			@Override
-			public void success(DocumentoDTO result) {
-				Window.open(result.getUrl(), "_blank", "");
+		if(Utils.hasPermisos(eventBus, getPermisos(), "MaterialService", "exportar")){
+			ArrayList<Integer> mat = new ArrayList<Integer>();
+			for(MaterialWrap mw : materialDataProvider.getList() ){
+				mat.add(mw.getMaterial().getId());
 			}
-			
-		});
+			getFactory().getMaterialService().exportar(mat, new SimceCallback<DocumentoDTO>(eventBus,true,0) {
+	
+				@Override
+				public void success(DocumentoDTO result) {
+					Window.open(result.getUrl(), "_blank", "");
+				}
+				
+			});
+		}
 	}
 	
 	@Override
@@ -306,7 +310,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setFocusOnIngresoCodigoBox(true);
 
 		for (MaterialWrap m : materiales) {
-			if (m.getMaterial().getCodigo().equals(id)) {
+			if (m.getMaterial().getCodigo().equals(id) && m.getMaterial().getEtapa()!=null && !m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)) {
 				if (!ingresoDataProvider.getList().contains(m)) {
 					ingresoDataProvider.getList().add(m);
 					view.setTotalMaterialIngresando(ingresoDataProvider
@@ -316,6 +320,11 @@ public class CentroOperacionActivity extends SimceActivity implements
 							"El código ingresado ya esta en la lista",
 							MensajeEvent.MSG_WARNING, true));
 				}
+				return;
+			}else if(m.getMaterial().getCodigo().equals(id) && (m.getMaterial().getEtapa()==null || m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES))){
+				eventBus.fireEvent(new MensajeEvent(
+						"El código ingresado pertenece a un material que ya esta marcado como en el centro de operaciones",
+						MensajeEvent.MSG_WARNING, true));
 				return;
 			}
 		}
@@ -347,7 +356,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			return;
 		}
 		for (MaterialWrap m : materiales) {
-			if (m.getMaterial().getCodigo().equals(id)) {
+			if (m.getMaterial().getCodigo().equals(id) && m.getMaterial().getEtapa()!=null && m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)) {
 				if (!predespachoDataProvider.getList().contains(m)) {
 					predespachoDataProvider.getList().add(m);
 					view.setTotalMaterialEnLote(predespachoDataProvider
@@ -361,7 +370,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			}
 		}
 		eventBus.fireEvent(new MensajeEvent(
-				"El código ingresado no pertenece a un material asociado a su centro",
+				"El código ingresado no pertenece a un material que esté marcado como en el centro de operaciones o no esta asociado a este asociado este centro",
 				MensajeEvent.MSG_WARNING, true));
 	}
 
@@ -370,7 +379,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setFocusOnDespachoCodigoBox(true);
 		MaterialWrap mat = null;
 		for (MaterialWrap m : materiales) {
-			if (m.getMaterial().getCodigo().equals(id)) {
+			if (m.getMaterial().getCodigo().equals(id) && m.getMaterial().getEtapa()!=null && m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)) {
 				mat = m;
 				if (!despachoDataProvider.getList().contains(m)) {
 					despachoDataProvider.getList().add(m);
@@ -390,7 +399,14 @@ public class CentroOperacionActivity extends SimceActivity implements
 				}
 			}
 		}
-		view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
+		
+		if(mat == null){
+			eventBus.fireEvent(new MensajeEvent(
+					"El código ingresado no pertenece a un material que esté marcado como en el centro de operaciones o no esta asociado a este asociado este centro",
+					MensajeEvent.MSG_WARNING, true));
+		}else{
+			view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
+		}
 
 	}
 
@@ -696,10 +712,11 @@ public class CentroOperacionActivity extends SimceActivity implements
 						@Override
 						public void success(ArrayList<MaterialDTO> result) {
 							materiales = wrap(result);
-							materialDataProvider.setList(new ArrayList<MaterialWrap>(materiales));
+							materialDataProvider.setList(materiales);
 							view.setMaterialSortHandler(new ListHandler<MaterialWrap>(
 									materialDataProvider.getList()));
 							extractLotes();
+							buildFiltro();
 						}
 					});
 		}
@@ -874,4 +891,82 @@ public class CentroOperacionActivity extends SimceActivity implements
 		}
 	}
 
+	private void executeFiltro(String key, String value){
+		ArrayList<MaterialWrap> filtro = new ArrayList<MaterialWrap>();
+		for(MaterialWrap mw:materiales){
+			if(key.equals("Tipos de material") && mw.getMaterial().getTipo()!=null && mw.getMaterial().getTipo().equals(value)){
+				filtro.add(mw);
+			}else if(key.equals("Niveles") && mw.getMaterial().getNivel()!=null && mw.getMaterial().getNivel().equals(value)){
+				filtro.add(mw);
+			}else if(key.equals("Etapas") && mw.getMaterial().getEtapa()!=null && mw.getMaterial().getEtapa().equals(value)){
+				filtro.add(mw);
+			}
+		}
+		materialDataProvider.setList(filtro);
+	}
+	
+	private void buildFiltro(){
+		ArrayList<String> tipos = new ArrayList<String>();
+		ArrayList<String> niveles = new ArrayList<String>();
+		ArrayList<String> etapas = new ArrayList<String>();
+		for(MaterialWrap mw:materiales){
+			if(mw.getMaterial().getTipo()!=null && !tipos.contains(mw.getMaterial().getTipo())){
+				tipos.add(mw.getMaterial().getTipo());
+			}
+			if(mw.getMaterial().getNivel()!=null && !niveles.contains(mw.getMaterial().getNivel())){
+				niveles.add(mw.getMaterial().getNivel());
+			}
+			if(mw.getMaterial().getEtapa()!=null && !etapas.contains(mw.getMaterial().getEtapa())){
+				etapas.add(mw.getMaterial().getEtapa());
+			}
+		}
+		
+		MenuBar submenu = new MenuBar(true);
+		view.getFiltroMenu().setSubMenu(submenu);
+		if(!tipos.isEmpty()){
+			MenuBar tiposMenuBar = new MenuBar(true);
+			for(final String tipo:tipos){
+				tiposMenuBar.addItem(tipo, new Scheduler.ScheduledCommand() {
+					
+					@Override
+					public void execute() {
+						executeFiltro("Tipos de material", tipo);
+					}
+				});
+			}
+		}
+		if(!niveles.isEmpty()){
+			MenuBar nivelesMenuBar = new MenuBar(true);
+			for(final String nivel:niveles){
+				nivelesMenuBar.addItem(nivel, new Scheduler.ScheduledCommand() {
+					
+					@Override
+					public void execute() {
+						executeFiltro("Niveles", nivel);
+					}
+				});
+			}
+		}
+		if(!etapas.isEmpty()){
+			MenuBar etapasMenuBar = new MenuBar(true);
+			for(final String etapa:etapas){
+				etapasMenuBar.addItem(etapa, new Scheduler.ScheduledCommand() {
+					
+					@Override
+					public void execute() {
+						executeFiltro("Etapas", etapa);
+					}
+				});
+			}
+		}
+		submenu.addSeparator();
+		submenu.addItem("Limpiar", new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				materialDataProvider.setList(materiales);
+			}
+		});
+		
+	}
 }

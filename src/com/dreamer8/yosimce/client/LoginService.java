@@ -40,4 +40,6 @@ public interface LoginService extends RemoteService {
 			NullPointerException, ConsistencyException;
 
 	public Boolean logout();
+	
+	public Boolean keepAlive() throws NoLoggedException;
 }

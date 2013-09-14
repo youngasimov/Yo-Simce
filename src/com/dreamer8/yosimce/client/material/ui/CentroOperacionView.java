@@ -14,10 +14,13 @@ import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.view.client.HasData;
 
 public interface CentroOperacionView extends IsWidget {
 
+	MenuItem getFiltroMenu();
+	
 	void setCO(EmplazamientoDTO emplazamiento);
 	
 	void setMaterialVisivility(boolean visible);
@@ -72,7 +75,6 @@ public interface CentroOperacionView extends IsWidget {
 	
 	public interface CentroOperacionPresenter extends SimcePresenter{
 		void onMaterialSelected(MaterialWrap material);
-		
 		void onMaterialTabSelected();
 		void onIngresoTabSelected();
 		void onPredespachoTabSelected();

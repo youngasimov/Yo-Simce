@@ -26,4 +26,6 @@ public interface LoginServiceAsync {
 
 	void logout(AsyncCallback<Boolean> callback);
 
+	void keepAlive(AsyncCallback<Boolean> callback);
+
 }

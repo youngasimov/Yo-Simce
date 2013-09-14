@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.SerializedTypeViolationException;
@@ -79,6 +80,32 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void bind(){
+		
+		Timer t = new Timer(){
+
+			@Override
+			public void run() {
+				factory.getLoginService().keepAlive(new AsyncCallback<Boolean>() {
+					
+					@Override
+					public void onSuccess(Boolean result) {
+						
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						if(caught instanceof NoLoggedException && !notLogged){
+							logger.log(Level.SEVERE, caught.getLocalizedMessage());
+							notLogged = true;
+							view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />",
+									"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
+						}else{
+							logger.log(Level.SEVERE, caught.getLocalizedMessage());
+						}
+					}
+				});
+			}};
+		t.scheduleRepeating(1500000);
 		/*
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			
@@ -98,6 +125,7 @@ public class AppPresenter implements AppView.AppPresenter {
 			    return e;  
 			  }
 		});*/
+		
 		
 		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
 

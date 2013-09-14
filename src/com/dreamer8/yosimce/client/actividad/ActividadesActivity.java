@@ -156,7 +156,6 @@ public class ActividadesActivity extends SimceActivity implements
 		}
 	}
 	
-
 	@Override
 	public void onCancelarFiltroClick() {
 		updateFiltros();

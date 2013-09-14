@@ -54,6 +54,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
@@ -85,6 +86,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField MenuItem exportarItem;
 	
 	@UiField TabLayoutPanel tabPanel;
+	@UiField SplitLayoutPanel materialPanel;
+	@UiField SplitLayoutPanel ingresoPanel;
+	@UiField SplitLayoutPanel predespachoPanel;
+	@UiField SplitLayoutPanel despachoPanel;
 	@UiField(provided=true) DataGrid<HistorialMaterialItemDTO> historialGrid;
 	@UiField FlexTable detallesGrid;
 	@UiField(provided=true) DataGrid<MaterialWrap> materialGrid;
@@ -276,6 +281,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 	
 	@Override
+	public MenuItem getFiltroMenu() {
+		return filtrosItem;
+	}
+	
+	@Override
 	public void setCO(EmplazamientoDTO emplazamiento) {
 		if(emplazamiento!=null){
 			idCentro = emplazamiento.getId();
@@ -289,25 +299,25 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@Override
 	public void setMaterialVisivility(boolean visible) {
 		tabPanel.getTabWidget(0).setVisible(visible);
-		tabPanel.getWidget(0).setVisible(visible);
+		materialPanel.setVisible(visible);
 	}
 	
 	@Override
 	public void setIngresoVisivility(boolean visible) {
 		tabPanel.getTabWidget(1).setVisible(visible);
-		tabPanel.getWidget(1).setVisible(visible);
+		ingresoPanel.setVisible(visible);
 	}
 	
 	@Override
 	public void setPredespachoVisivility(boolean visible) {
 		tabPanel.getTabWidget(2).setVisible(visible);
-		tabPanel.getWidget(2).setVisible(visible);
+		predespachoPanel.setVisible(visible);
 	}
 	
 	@Override
 	public void setDespachoVisivility(boolean visible) {
 		tabPanel.getTabWidget(3).setVisible(visible);
-		tabPanel.getWidget(3).setVisible(visible);
+		despachoPanel.setVisible(visible);
 	}
 	
 	@Override

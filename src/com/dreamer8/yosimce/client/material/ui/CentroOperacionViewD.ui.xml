@@ -7,7 +7,7 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style>
+	<ui:style type='com.dreamer8.yosimce.client.material.ui.CentroOperacionViewD.Style'>
 	
 	.title {
 		font-size: 20px;
@@ -90,7 +90,7 @@
 			<g:TabLayoutPanel ui:field='tabPanel' animationVertical='false' animationDuration='200' barUnit='PX' barHeight='30'>
 				<g:tab>
      				<g:header size='10'>Material</g:header>
-     				<g:SplitLayoutPanel>
+     				<g:SplitLayoutPanel ui:field="materialPanel">
      					<g:south size='200'>
 	     					<g:SplitLayoutPanel >
 	     						<g:east size='450'>
@@ -133,7 +133,7 @@
      			</g:tab>
 				<g:tab> 
        				<g:header size='10'>Ingreso</g:header>
-       				<g:SplitLayoutPanel>
+       				<g:SplitLayoutPanel ui:field="ingresoPanel">
        					<g:west size='300'>
        						<g:DecoratorPanel addStyleNames='{style.actionsPanel}'>
 	       						<g:HTMLPanel>
@@ -167,29 +167,29 @@
      			</g:tab>
      			<g:tab> 
        				<g:header size='10'>Pre despacho</g:header> 
-       				<g:SplitLayoutPanel>
+       				<g:SplitLayoutPanel ui:field="predespachoPanel">
        					<g:west size='300'>
        						<g:DecoratorPanel addStyleNames='{style.actionsPanel}'>
 	       						<g:HTMLPanel>
 	       							<table class='{style.actions}'>
 	       								<tr>
-	       									<td><my:PlaceHolderTextBox tabIndex="1" placeholder='Nombre lote' width="170px" ui:field='nuevoLoteBox'/> </td>
-	       									<td> <g:Button tabIndex="2" ui:field="addLoteButton" width='90px' text='Crear'/> </td>
+	       									<td><my:PlaceHolderTextBox tabIndex="1" placeholder='Nombre lote' width="150px" ui:field='nuevoLoteBox'/> </td>
+	       									<td> <g:Button tabIndex="2" ui:field="addLoteButton" width='110px' text='Crear'/> </td>
 	       								</tr>
 	       								<tr>
-	       									<td> <g:ListBox tabIndex="3" ui:field="lotesBox" width="170px" /> </td>
+	       									<td> <g:ListBox tabIndex="3" ui:field="lotesBox" width="150px" /> </td>
 	       									<td> <my:ImageButton tabIndex="4" ui:field="removeLoteButton" width='90px' text='Eliminar' resource='{res.gear}'/> </td>
 	       								</tr>
 	       								<tr>
-	       									<td> <my:PlaceHolderTextBox tabIndex="5" placeholder='Código material' width="170px"  ui:field="predespachoBox"/> </td>
-	       									<td> <g:Button tabIndex="6" ui:field="predespachoButton" width="90px"  text='Añadir'/> </td>
+	       									<td> <my:PlaceHolderTextBox tabIndex="5" placeholder='Código material' width="150px"  ui:field="predespachoBox"/> </td>
+	       									<td> <g:Button tabIndex="6" ui:field="predespachoButton" width="110px"  text='Añadir'/> </td>
 	       								</tr>
 	       								<tr>
 		       								<td>Tamaño lote: <g:Label addStyleNames="{style.inline}" ui:field='totalLoteLabel'/></td>
 	       								</tr>
 	       								<tr>
 	       									<td></td>
-		       								<td><my:ImageButton tabIndex="7" ui:field="addOrEditLoteButton" width='90px' text='Actualizar' resource='{res.gear}'/> </td>
+		       								<td><my:ImageButton tabIndex="7" ui:field="addOrEditLoteButton" width='110px' text='Actualizar' resource='{res.gear}'/> </td>
 	       								</tr>
 	       							</table>
 	       						</g:HTMLPanel>
@@ -202,7 +202,7 @@
      			</g:tab>
      			<g:tab> 
        				<g:header size='10'>Despacho</g:header> 
-       				<g:SplitLayoutPanel>
+       				<g:SplitLayoutPanel ui:field="despachoPanel">
        					<g:west size='300'>
        						<g:DecoratorPanel addStyleNames='{style.actionsPanel}'>
 	       						<g:HTMLPanel>
@@ -222,7 +222,7 @@
        									</tr>
        									<tr>
        										<td> <g:Label ui:field='coLabel'/></td>
-       										<td> <my:ImageButton tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="90px"/> </td>
+       										<td> <my:ImageButton tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="110px"/> </td>
        									</tr>
        									<tr>
        										<td> <my:PlaceHolderTextBox tabIndex="6" placeholder='Rut del receptor' ui:field='rutRetiranteBox' width='150px'/> </td>
