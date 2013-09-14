@@ -95,12 +95,12 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField PlaceHolderTextBox rutRetiranteBox;
 	@UiField Button ingresoAddButton;
 	@UiField Button predespachoButton;
+	@UiField Button addLoteButton;
 	@UiField Button despachoButton;
+	@UiField Button changeCoButton;
 	@UiField ImageButton ingresarButton;
-	@UiField ImageButton addLoteButton;
 	@UiField ImageButton removeLoteButton;
 	@UiField ImageButton addOrEditLoteButton;
-	@UiField ImageButton changeCoButton;
 	@UiField ImageButton retiranteButton;
 	@UiField ImageButton despacharButton;
 	@UiField ListBox lotesBox;
@@ -472,8 +472,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	public void setLotes(ArrayList<LoteDTO> lotes) {
 		lotesBox.clear();
 		lotesBox.addItem("----------","-1");
-		for(LoteDTO lote:lotes){
-			lotesBox.addItem(lote.getNombre(),lote.getId()+"");
+		if(lotes!=null){
+			for(LoteDTO lote:lotes){
+				lotesBox.addItem(lote.getNombre(),lote.getId()+"");
+			}
 		}
 	}
 	
@@ -505,8 +507,10 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	public void setEtapas(ArrayList<EtapaDTO> etapas) {
 		destinoDespachoBox.clear();
 		destinoDespachoBox.addItem("-------------","-1");
-		for(EtapaDTO etapa:etapas){
-			destinoDespachoBox.addItem(etapa.getEtapa(),etapa.getId()+"");
+		if(etapas!=null){
+			for(EtapaDTO etapa:etapas){
+				destinoDespachoBox.addItem(etapa.getEtapa(),etapa.getId()+"");
+			}
 		}
 		destinoDespachoBox.addItem("Trasferencia a C.O.","-2");
 	}
@@ -518,12 +522,16 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 	@Override
 	public void setSelectedCo(EmplazamientoDTO co) {
-		coLabel.setText(co.getNombre()+" - "+co.getTipoEmplazamiento());
+		coLabel.setText((co!=null)?co.getNombre()+" - "+co.getTipoEmplazamiento():"");
 	}
 
 	@Override
 	public void setRetirante(UserDTO user) {
-		retiranteLabel.setText(ViewUtils.limitarString(user.getNombres()+" "+user.getApellidoPaterno()+" "+user.getApellidoMaterno(), 30));
+		if(user!=null){
+			retiranteLabel.setText(ViewUtils.limitarString(user.getNombres()+" "+user.getApellidoPaterno()+" "+user.getApellidoMaterno(), 30));
+		}else{
+			retiranteLabel.setText("");
+		}
 	}
 	
 	private void buildHistorialTable(){

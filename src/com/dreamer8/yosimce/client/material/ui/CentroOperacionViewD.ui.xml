@@ -187,7 +187,7 @@
        									</tr>
        									<tr>
        										<td> <g:Label ui:field='coLabel'/></td>
-       										<td> <my:ImageButton tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="90px"/> </td>
+       										<td> <g:Button tabIndex="5" visible="false"  resource='{res.popup}' ui:field="changeCoButton" text='Cambiar' width="90px"/> </td>
        									</tr>
        									<tr>
        										<td> <my:PlaceHolderTextBox tabIndex="6" placeholder='Rut de quien retira' ui:field='rutRetiranteBox' width='170px'/> </td>
