@@ -10,9 +10,15 @@ import java.util.List;
  */
 public class MaterialEstado implements java.io.Serializable {
 
+	public static final String EN_CAMINO = "En Camino";
+	public static final String EN_EL_LUGAR = "En el Lugar";
+	public static final String MARCADO_PARA_SALIR = "Marcado para Salir";
+	public static final String DESAPARECIDA = "Desaparecida";
+
 	private Integer id;
 	private String nombre;
-	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(
+			0);
 
 	public MaterialEstado() {
 	}
@@ -21,7 +27,8 @@ public class MaterialEstado implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public MaterialEstado(Integer id, String nombre, List<MaterialHistorial> materialHistorials) {
+	public MaterialEstado(Integer id, String nombre,
+			List<MaterialHistorial> materialHistorials) {
 		this.id = id;
 		this.nombre = nombre;
 		this.materialHistorials = materialHistorials;

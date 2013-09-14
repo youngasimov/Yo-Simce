@@ -45,6 +45,53 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 		return ms;
 	}
 
+	public List<Material> findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			List<String> codigos) {
+
+		List<Material> ms = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT m.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				// + " AND axn.nivel_id="
+				// + SecurityFilter.escapeString(idNivel)
+//				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+//				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
+				+ " JOIN MATERIAL m ON mxa.material_id=m.id"
+				// + " JOIN CO ON m.centro_id=co.id"
+				+ " JOIN MATERIAL_TIPO mt ON m.material_tipo_id=mt.id"
+				+ " LEFT JOIN MATERIAL_x_LOTE mxl ON m.id=mxl.material_id"
+				+ " LEFT JOIN lote l ON mxl.lote_id=id"
+				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
+				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
+				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
+
+		String where = "";
+		if (codigos != null && !codigos.isEmpty()) {
+			for (String codigo : codigos) {
+				if (!where.equals("")) {
+					where += " OR ";
+				}
+				if (codigo != null && !codigo.isEmpty()) {
+					where += "m.codigo='" + SecurityFilter.escapeString(codigo)
+							+ "'";
+				}
+			}
+			if (!where.equals("")) {
+				query += " WHERE " + where;
+			}
+		}
+		Query q = s.createSQLQuery(query).addEntity(Material.class);
+		ms = q.list();
+		return ms;
+	}
+
 	public List<MaterialDTO> findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCo(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCo) {
@@ -59,8 +106,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
+//				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+//				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
@@ -117,8 +164,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
+//				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+//				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
@@ -189,8 +236,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
+//				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+//				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"

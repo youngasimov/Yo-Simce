@@ -1826,7 +1826,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				String contenido;
 				if (total != 0) {
-					bw.write("RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total;Alumnos Evaluados;Alumnos Sincronizados;Cuestionarios Entregados;Cuestionarios Recibidos;Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna\n\r");
+					bw.write("RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total;Alumnos Evaluados;Alumnos Sincronizados;Cuestionarios Entregados;Cuestionarios Recibidos;Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna\r");
 				}
 				while (total > 0) {
 					apdtos = adao
@@ -1857,7 +1857,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							contenido += apdto.getContingenciaLimitante() + ";";
 							contenido += apdto.getRegion() + ";";
 							contenido += apdto.getComuna();
-							bw.write(contenido + "\n\r");
+							bw.write(contenido + "\r");
 						}
 					}
 				}
@@ -1973,7 +1973,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 					if (filas != null && !filas.isEmpty()) {
 						for (String contenido : filas) {
-							bw.write(contenido + "\n\r");
+							bw.write(contenido + "\r");
 						}
 					}
 				}

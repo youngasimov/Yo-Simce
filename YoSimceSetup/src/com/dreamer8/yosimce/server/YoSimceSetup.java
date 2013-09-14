@@ -438,8 +438,8 @@ public class YoSimceSetup {
 			for (int i = 1; i < 62; i++) {
 				lineaOut += ";P" + StringUtils.forceTwoDigits(i);
 			}
-			System.out.println(lineaOut);
-			bw.write(lineaOut + "\n\r");
+//			System.out.println(lineaOut);
+			bw.write(lineaOut + "\r");
 
 			while ((line = br.readLine()) != null) {
 				row = line.split(";");
@@ -471,8 +471,8 @@ public class YoSimceSetup {
 						for (int i = 0; i < 61; i++) {
 							lineaOut += ";" + row[4 + i];
 						}
-						System.out.println(lineaOut);
-						bw.write(lineaOut + "\n\r");
+//						System.out.println(lineaOut);
+						bw.write(lineaOut + "\r");
 					}
 				}
 				rowCounter++;
