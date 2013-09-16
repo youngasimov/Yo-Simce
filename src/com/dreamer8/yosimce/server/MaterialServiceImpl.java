@@ -528,7 +528,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					contenido += mdto.getNivel() + ";";
 					contenido += mdto.getCurso() + ";";
 					contenido += mdto.getEtapa() + ";";
-					contenido += mdto.getLote() + ";";
+					contenido += mdto.getLote().getNombre() + ";";
 					bw.write(contenido + "\r");
 
 				}

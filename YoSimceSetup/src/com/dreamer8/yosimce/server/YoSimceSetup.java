@@ -468,9 +468,9 @@ public class YoSimceSetup {
 				row = line.split(";");
 				if (rowCounter != 0) {
 					a = actividadDAO
-							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCurso(
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
 									idAplicacion, idNivel, at.getId(),
-									Integer.valueOf(row[3]), row[5] + row[6]);
+									Integer.valueOf(row[3]), row[5] + row[6],Integer.valueOf(row[2]));
 					if (a == null) {
 						if ((row[1].toUpperCase().matches(".*CONTINGENCIA.*"))) {
 							if (eCont == null) {

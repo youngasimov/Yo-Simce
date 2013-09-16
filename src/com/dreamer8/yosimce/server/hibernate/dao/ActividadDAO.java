@@ -85,9 +85,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
-	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCurso(
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idEstablecimiento, String nombreCurso) {
+			Integer idEstablecimiento, String nombreCurso, Integer dia) {
 
 		Actividad a = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -104,7 +104,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " WHERE c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
 				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
-				+ "'";
+				+ "' AND a.dia=" + SecurityFilter.escapeString(dia);
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
