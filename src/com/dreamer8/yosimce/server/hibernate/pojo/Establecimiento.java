@@ -13,6 +13,8 @@ import com.dreamer8.yosimce.shared.dto.EstablecimientoDTO;
  */
 public class Establecimiento implements java.io.Serializable {
 
+	public static final Integer CONTINGENCIA_ID = -10000;
+
 	private Integer id;
 	private AreaGeografica areaGeografica;
 	private Comuna comuna;
@@ -26,11 +28,15 @@ public class Establecimiento implements java.io.Serializable {
 	private BigDecimal direccionLongitud;
 	private String directorNombre;
 	private String email;
-	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(0);
-	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(0);
+	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(
+			0);
+	private List<CoXEstablecimiento> coXEstablecimientos = new ArrayList<CoXEstablecimiento>(
+			0);
 	private List<Curso> cursos = new ArrayList<Curso>(0);
-	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(0);
-	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(0);
+	private List<AplicacionXEstablecimiento> aplicacionXEstablecimientos = new ArrayList<AplicacionXEstablecimiento>(
+			0);
+	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(
+			0);
 
 	public Establecimiento() {
 	}
@@ -45,9 +51,11 @@ public class Establecimiento implements java.io.Serializable {
 			EstablecimientoDependencia establecimientoDependencia,
 			String nombre, String telefono, String direccion,
 			BigDecimal direccionLatitud, BigDecimal direccionLongitud,
-			String directorNombre, String email, List<UsuarioXEstablecimiento> usuarioXEstablecimientos,
+			String directorNombre, String email,
+			List<UsuarioXEstablecimiento> usuarioXEstablecimientos,
 			List<CoXEstablecimiento> coXEstablecimientos, List<Curso> cursos,
-			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos, List<RutaXEstablecimiento> rutaXEstablecimientos) {
+			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos,
+			List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.id = id;
 		this.areaGeografica = areaGeografica;
 		this.comuna = comuna;
@@ -179,7 +187,8 @@ public class Establecimiento implements java.io.Serializable {
 		return this.usuarioXEstablecimientos;
 	}
 
-	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
+	public void setUsuarioXEstablecimientos(
+			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
 
@@ -187,7 +196,8 @@ public class Establecimiento implements java.io.Serializable {
 		return this.coXEstablecimientos;
 	}
 
-	public void setCoXEstablecimientos(List<CoXEstablecimiento> coXEstablecimientos) {
+	public void setCoXEstablecimientos(
+			List<CoXEstablecimiento> coXEstablecimientos) {
 		this.coXEstablecimientos = coXEstablecimientos;
 	}
 
@@ -203,7 +213,8 @@ public class Establecimiento implements java.io.Serializable {
 		return this.aplicacionXEstablecimientos;
 	}
 
-	public void setAplicacionXEstablecimientos(List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
+	public void setAplicacionXEstablecimientos(
+			List<AplicacionXEstablecimiento> aplicacionXEstablecimientos) {
 		this.aplicacionXEstablecimientos = aplicacionXEstablecimientos;
 	}
 
@@ -211,7 +222,8 @@ public class Establecimiento implements java.io.Serializable {
 		return this.rutaXEstablecimientos;
 	}
 
-	public void setRutaXEstablecimientos(List<RutaXEstablecimiento> rutaXEstablecimientos) {
+	public void setRutaXEstablecimientos(
+			List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 

@@ -31,6 +31,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXNivelXActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoXPermisoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ContactoCargoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
@@ -60,6 +61,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXNivelXActividadTipo
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.CarreraEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
@@ -92,13 +94,20 @@ public class YoSimceSetup {
 		// ids.add(10);
 		// asignarUsuario(16361209, 2, ids, 1);
 		// asignarUsuario(16370885, 2, ids, 1);
-		initPermisos();
+		// initPermisos();
 
 		// cargarAlumnosTic("titulares.csv", EstablecimientoTipo.SELECCIONADO);
 		// cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
 		// cargarAlumnosTic("reemplazos2.csv", EstablecimientoTipo.REEMPLAZO_2);
 
 		// loadLaWeaDeCapacitacion();
+
+		actualizarAgendamientoTIC();
+		cargarMateriales("MECANIZADO_CAJA4B_CargaDemo.csv", 1, 4,
+				ActividadTipo.APLICACION_DIA_1);
+		cargarMateriales("MECANIZADO_SOBRE4B_CargaDemo.csv", 1, 4,
+				ActividadTipo.VISITA_PREVIA);
+
 		System.out.println("fin :P");
 	}
 
@@ -437,6 +446,8 @@ public class YoSimceSetup {
 			s.beginTransaction();
 			Actividad a = null;
 			ActividadDAO actividadDAO = new ActividadDAO();
+			ActividadTipoDAO atdao = new ActividadTipoDAO();
+			ActividadTipo at = atdao.finByNombre(tipoActividad);
 			MaterialDAO mdao = new MaterialDAO();
 			Material m = null;
 			MaterialTipoDAO mtdao = new MaterialTipoDAO();
@@ -446,10 +457,58 @@ public class YoSimceSetup {
 			MaterialXActividadDAO mxadao = new MaterialXActividadDAO();
 			MaterialXActividad mxa = null;
 			MaterialXActividadId mxaid = null;
+			EstablecimientoDAO edao = new EstablecimientoDAO();
+			Establecimiento eCont = edao
+					.getById(Establecimiento.CONTINGENCIA_ID);
+			Curso cCont = null;
+			CursoDAO cdao = new CursoDAO();
+			Co co = null;
+			CoDAO codao = new CoDAO();
 			while ((line = br.readLine()) != null) {
 				row = line.split(";");
 				if (rowCounter != 0) {
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCurso(
+									idAplicacion, idNivel, at.getId(),
+									Integer.valueOf(row[3]), row[5] + row[6]);
+					if (a == null) {
+						if ((row[1].toUpperCase().matches(".*CONTINGENCIA.*"))) {
+							if (eCont == null) {
+								eCont = new Establecimiento();
+								eCont.setId(Establecimiento.CONTINGENCIA_ID);
+								eCont.setNombre("CONTINGENCIA");
 
+								// Continuará
+							}
+						} else {
+							// throw new NullPointerException("El curso " +
+							// row[5]
+							// + row[6] + " del " + row[3]
+							// + " no tiene actividad");
+							System.err.println("El curso " + row[5] + row[6]
+									+ " del " + row[3] + " no tiene actividad");
+						}
+					} else {
+						m = new Material();
+						m.setCodigo(row[0]);
+						m.setMaterialTipo((at
+								.equals(ActividadTipo.VISITA_PREVIA)) ? complementario
+								: caja);
+						m.setContingencia((row[1].toUpperCase()
+								.matches(".*CONTINGENCIA.*")));
+						co = codao
+								.findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+										idAplicacion, idNivel,
+										Integer.valueOf(row[3]));
+						m.setCo(co);
+						mdao.save(m);
+						mxaid = new MaterialXActividadId();
+						mxaid.setActividadId(a.getId());
+						mxaid.setMaterialId(m.getId());
+						mxa = new MaterialXActividad();
+						mxa.setId(mxaid);
+						mxadao.save(mxa);
+					}
 				}
 				rowCounter++;
 			}
@@ -470,7 +529,7 @@ public class YoSimceSetup {
 			HibernateUtil.rollback(s);
 		}
 	}
-	
+
 	public static void actualizarAgendamientoTIC() {
 		DataInputStream in;
 		FileInputStream fstream;
@@ -487,30 +546,48 @@ public class YoSimceSetup {
 			Actividad a = null;
 			ActividadDAO actividadDAO = new ActividadDAO();
 			ActividadTipoDAO atdao = new ActividadTipoDAO();
-			ActividadTipo visitaPrevia = atdao.finByNombre(ActividadTipo.VISITA_PREVIA);
-			ActividadTipo aplicacionD1 = atdao.finByNombre(ActividadTipo.APLICACION_DIA_1);
+			ActividadTipo visitaPrevia = atdao
+					.finByNombre(ActividadTipo.VISITA_PREVIA);
+			ActividadTipo aplicacionD1 = atdao
+					.finByNombre(ActividadTipo.APLICACION_DIA_1);
+			ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+			ActividadEstado ae = aedao
+					.findByNombre(ActividadEstado.POR_CONFIRMAR);
 			Calendar calendar = Calendar.getInstance();
 			String[] fecha = null;
 			while ((line = br.readLine()) != null) {
 				row = line.split(";");
 				if (rowCounter != 0) {
-					a = actividadDAO.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(2, 10, visitaPrevia.getId(), Integer.valueOf(row[0]));
-					if(a == null){
-						throw new NullPointerException("No se encontró visita previa para "+ row[0]);
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(
+									2, 10, visitaPrevia.getId(),
+									Integer.valueOf(row[0]));
+					if (a == null) {
+						throw new NullPointerException(
+								"No se encontró visita previa para " + row[0]);
 					}
-					fecha= row[32].split("-");
+					fecha = row[32].split("-");
 					calendar.set(Integer.valueOf(fecha[0]),
 							Integer.valueOf(fecha[1]) - 1,
-							Integer.valueOf(fecha[2]));
-					
-					a = actividadDAO.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(2, 10, aplicacionD1.getId(), Integer.valueOf(row[0]));
-					if(a == null){
-						throw new NullPointerException("No se encontró aplicación para "+ row[0]);
+							Integer.valueOf(fecha[2]), 10, 0);
+					a.setFechaInicio(calendar.getTime());
+					a.setActividadEstado(ae);
+					actividadDAO.update(a);
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(
+									2, 10, aplicacionD1.getId(),
+									Integer.valueOf(row[0]));
+					if (a == null) {
+						throw new NullPointerException(
+								"No se encontró aplicación para " + row[0]);
 					}
-					fecha= row[30].split("-");
+					fecha = row[30].split("-");
 					calendar.set(Integer.valueOf(fecha[0]),
 							Integer.valueOf(fecha[1]) - 1,
-							Integer.valueOf(fecha[2]));
+							Integer.valueOf(fecha[2]), 10, 0);
+					a.setFechaInicio(calendar.getTime());
+					a.setActividadEstado(ae);
+					actividadDAO.update(a);
 				}
 				rowCounter++;
 			}

@@ -16,6 +16,7 @@ public class Material implements java.io.Serializable {
 	private Co co;
 	private MaterialTipo materialTipo;
 	private String codigo;
+	private Boolean contingencia;
 	private List<Cc> ccs = new ArrayList<Cc>(0);
 	private List<Lote> lotes = new ArrayList<Lote>(0);
 	private List<Actividad> actividads = new ArrayList<Actividad>(0);
@@ -79,6 +80,14 @@ public class Material implements java.io.Serializable {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+
+	public Boolean getContingencia() {
+		return contingencia;
+	}
+
+	public void setContingencia(Boolean contingencia) {
+		this.contingencia = contingencia;
 	}
 
 	public List<Cc> getCcs() {

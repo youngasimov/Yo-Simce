@@ -22,7 +22,7 @@ public class GuiaDespachoDAO extends
 		List<GuiaDespacho> gds = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT gd.* FROM  MATERIAL_x_GUIA_DESPACHO mxgd"
-				+ " JOIN GUIA_DESPACHO gd ON mxgd.guia_despacho_id=gd.id AND mxdg.material_id="
+				+ " JOIN GUIA_DESPACHO gd ON mxgd.guia_despacho_id=gd.id AND mxgd.material_id="
 				+ SecurityFilter.escapeString(idMaterial);
 		Query q = s.createSQLQuery(query).addEntity(GuiaDespacho.class);
 		gds = q.list();
