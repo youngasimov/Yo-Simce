@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.MaterialXActividad" table="material_x_actividad" schema="public">
+        <composite-id name="id" class="com.dreamer8.yosimce.server.hibernate.pojo.MaterialXActividadId">
+            <key-property name="materialId" type="int">
+                <column name="material_id" />
+            </key-property>
+            <key-property name="actividadId" type="int">
+                <column name="actividad_id" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

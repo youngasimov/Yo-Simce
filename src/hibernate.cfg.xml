@@ -61,7 +61,7 @@
 <!--   https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool -->
 <!-- http://www.mchange.com/projects/c3p0/ -->
   <property name="hibernate.c3p0.min_size">3</property>
-  <property name="hibernate.c3p0.max_size">18</property>
+  <property name="hibernate.c3p0.max_size">12</property>
   <property name="hibernate.c3p0.timeout">900</property>
   <property name="hibernate.c3p0.idle_test_period">120</property>
   
@@ -181,5 +181,6 @@
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/Test.hbm.xml"/>
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/ActividadXDocumento.hbm.xml"/>
   <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/MaterialXLote.hbm.xml"/>
+  <mapping resource="com/dreamer8/yosimce/server/hibernate/pojo/MaterialXActividad.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

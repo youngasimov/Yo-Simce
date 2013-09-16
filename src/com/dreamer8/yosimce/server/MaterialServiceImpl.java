@@ -678,7 +678,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de la actividad.");
 				}
 
-				if (mdtos == null || mdtos.isEmpty()) {
+				if (codigos == null || codigos.isEmpty()) {
 					throw new NullPointerException(
 							"No se han especificado códigos de materiales.");
 				}
@@ -697,6 +697,11 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				mdtos = (ArrayList<MaterialDTO>) mdao
 						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
 								idAplicacion, idNivel, idActividadTipo, codigos);
+
+				if (mdtos == null || mdtos.isEmpty()) {
+					throw new NullPointerException(
+							"Los códigos especificados no han entregado ningún resultado.");
+				}
 
 				s.getTransaction().commit();
 			}

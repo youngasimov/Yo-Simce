@@ -36,6 +36,9 @@ import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialTipoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.NivelDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.PermisoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.SexoDAO;
@@ -61,6 +64,10 @@ import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
 import com.dreamer8.yosimce.server.hibernate.pojo.EstablecimientoTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.Material;
+import com.dreamer8.yosimce.server.hibernate.pojo.MaterialTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.MaterialXActividad;
+import com.dreamer8.yosimce.server.hibernate.pojo.MaterialXActividadId;
 import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Sexo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
@@ -85,13 +92,13 @@ public class YoSimceSetup {
 		// ids.add(10);
 		// asignarUsuario(16361209, 2, ids, 1);
 		// asignarUsuario(16370885, 2, ids, 1);
-		 initPermisos();
+		initPermisos();
 
 		// cargarAlumnosTic("titulares.csv", EstablecimientoTipo.SELECCIONADO);
 		// cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
 		// cargarAlumnosTic("reemplazos2.csv", EstablecimientoTipo.REEMPLAZO_2);
 
-//		loadLaWeaDeCapacitacion();
+		// loadLaWeaDeCapacitacion();
 		System.out.println("fin :P");
 	}
 
@@ -414,6 +421,117 @@ public class YoSimceSetup {
 		}
 	}
 
+	public static void cargarMateriales(String doc, Integer idAplicacion,
+			Integer idNivel, String tipoActividad) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+			MaterialDAO mdao = new MaterialDAO();
+			Material m = null;
+			MaterialTipoDAO mtdao = new MaterialTipoDAO();
+			MaterialTipo caja = mtdao.findByNombre(MaterialTipo.CAJA_CURSO_DIA);
+			MaterialTipo complementario = mtdao
+					.findByNombre(MaterialTipo.COMPLEMENTARIO);
+			MaterialXActividadDAO mxadao = new MaterialXActividadDAO();
+			MaterialXActividad mxa = null;
+			MaterialXActividadId mxaid = null;
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+
+				}
+				rowCounter++;
+			}
+
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+	
+	public static void actualizarAgendamientoTIC() {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+
+			fstream = new FileInputStream("Agendamiento_1_Todo.csv");
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+			ActividadTipoDAO atdao = new ActividadTipoDAO();
+			ActividadTipo visitaPrevia = atdao.finByNombre(ActividadTipo.VISITA_PREVIA);
+			ActividadTipo aplicacionD1 = atdao.finByNombre(ActividadTipo.APLICACION_DIA_1);
+			Calendar calendar = Calendar.getInstance();
+			String[] fecha = null;
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					a = actividadDAO.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(2, 10, visitaPrevia.getId(), Integer.valueOf(row[0]));
+					if(a == null){
+						throw new NullPointerException("No se encontró visita previa para "+ row[0]);
+					}
+					fecha= row[32].split("-");
+					calendar.set(Integer.valueOf(fecha[0]),
+							Integer.valueOf(fecha[1]) - 1,
+							Integer.valueOf(fecha[2]));
+					
+					a = actividadDAO.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(2, 10, aplicacionD1.getId(), Integer.valueOf(row[0]));
+					if(a == null){
+						throw new NullPointerException("No se encontró aplicación para "+ row[0]);
+					}
+					fecha= row[30].split("-");
+					calendar.set(Integer.valueOf(fecha[0]),
+							Integer.valueOf(fecha[1]) - 1,
+							Integer.valueOf(fecha[2]));
+				}
+				rowCounter++;
+			}
+
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+
 	public static void loadLaWeaDeCapacitacion() {
 		DataInputStream in;
 		FileInputStream fstream;
@@ -438,7 +556,7 @@ public class YoSimceSetup {
 			for (int i = 1; i < 62; i++) {
 				lineaOut += ";P" + StringUtils.forceTwoDigits(i);
 			}
-//			System.out.println(lineaOut);
+			// System.out.println(lineaOut);
 			bw.write(lineaOut + "\r");
 
 			while ((line = br.readLine()) != null) {
@@ -446,16 +564,16 @@ public class YoSimceSetup {
 				if (rowCounter != 0) {
 					u = udao.getById(Integer.valueOf(row[2]));
 					if (u == null) {
-//						System.out.println("No se encontró el examinador "
-//								+ row[2]);
+						// System.out.println("No se encontró el examinador "
+						// + row[2]);
 					} else {
 						lineaOut = row[2] + ";" + u.getApellidoPaterno() + ";"
 								+ u.getApellidoMaterno() + ";" + u.getNombres()
 								+ ";";
 
 						if (u.getSexo() != null) {
-							lineaOut += (u.getSexo().getNombre().equals(Sexo.MASCULINO) ? "H"
-									: "M");
+							lineaOut += (u.getSexo().getNombre()
+									.equals(Sexo.MASCULINO) ? "H" : "M");
 						}
 						lineaOut += ";"
 								+ edad(u.getFechaNacimiento())
@@ -471,7 +589,7 @@ public class YoSimceSetup {
 						for (int i = 0; i < 61; i++) {
 							lineaOut += ";" + row[4 + i];
 						}
-//						System.out.println(lineaOut);
+						// System.out.println(lineaOut);
 						bw.write(lineaOut + "\r");
 					}
 				}
