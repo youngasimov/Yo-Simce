@@ -325,6 +325,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 						@Override
 						public void success(DetallesMaterialDTO result) {
 							material.setDetalles(result);
+							view.setDetallesMaterial(material.getMaterial(), material.getDetalles());
 							if (result.getHistorial() != null) {
 								historialDataProvider.setList(material.getDetalles().getHistorial());
 							}
@@ -1068,7 +1069,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		
 		MenuBar submenu = new MenuBar(true);
 		view.getFiltroMenu().setSubMenu(submenu);
-		if(!tipos.isEmpty()){
+		if(tipos.size()>1){
 			MenuBar tiposMenuBar = new MenuBar(true);
 			for(final String tipo:tipos){
 				tiposMenuBar.addItem(tipo, new Scheduler.ScheduledCommand() {
@@ -1079,8 +1080,9 @@ public class CentroOperacionActivity extends SimceActivity implements
 					}
 				});
 			}
+			submenu.addItem("Tipos de material", tiposMenuBar);
 		}
-		if(!niveles.isEmpty()){
+		if(niveles.size()>1){
 			MenuBar nivelesMenuBar = new MenuBar(true);
 			for(final String nivel:niveles){
 				nivelesMenuBar.addItem(nivel, new Scheduler.ScheduledCommand() {
@@ -1091,8 +1093,9 @@ public class CentroOperacionActivity extends SimceActivity implements
 					}
 				});
 			}
+			submenu.addItem("Niveles", nivelesMenuBar);
 		}
-		if(!etapas.isEmpty()){
+		if(etapas.size()>1){
 			MenuBar etapasMenuBar = new MenuBar(true);
 			for(final String etapa:etapas){
 				etapasMenuBar.addItem(etapa, new Scheduler.ScheduledCommand() {
@@ -1103,6 +1106,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 					}
 				});
 			}
+			submenu.addItem("Etapas", etapasMenuBar);
 		}
 		submenu.addSeparator();
 		submenu.addItem("Limpiar", new Scheduler.ScheduledCommand() {

@@ -600,7 +600,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 	@Override
 	public void setSelectedCo(EmplazamientoDTO co) {
-		coLabel.setText((co!=null)?co.getNombre()+" - "+co.getTipoEmplazamiento():"");
+		coLabel.setText((co!=null)?co.getTipoEmplazamiento()+" - "+co.getNombre():"");
 	}
 
 	@Override
@@ -686,11 +686,14 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		etapaColumn.setSortable(true);
 		materialGrid.addColumn(etapaColumn,"Etapa");
+		
+		buildUpdateColumn(materialGrid);
 	}
 	
 	private void buildIngresoGrid(){
 		ingresoGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		buildTable(ingresoGrid);
+		buildUpdateColumn(ingresoGrid);
 		Column<MaterialWrap,MaterialWrap> removeColumn = new Column<MaterialWrap,MaterialWrap>(new ActionCell<MaterialWrap>("Eliminar", new Delegate<MaterialWrap>() {
 
 			@Override
@@ -712,6 +715,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	private void buildPreDespachoTable(){
 		predespachoGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		buildTable(predespachoGrid);
+		buildUpdateColumn(predespachoGrid);
 		Column<MaterialWrap,MaterialWrap> removeColumn = new Column<MaterialWrap,MaterialWrap>(new ActionCell<MaterialWrap>("Eliminar", new Delegate<MaterialWrap>() {
 
 			@Override
@@ -733,6 +737,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	private void buildDespachoTable(){
 		despachoGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		buildTable(despachoGrid);
+		buildUpdateColumn(despachoGrid);
 		Column<MaterialWrap,MaterialWrap> removeColumn = new Column<MaterialWrap,MaterialWrap>(new ActionCell<MaterialWrap>("Eliminar", new Delegate<MaterialWrap>() {
 
 			@Override
@@ -778,8 +783,8 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		};
 		idColumn.setSortable(false);
-		d.addColumn(idColumn,"Id");
-		d.setColumnWidth(idColumn, "60px");
+		d.addColumn(idColumn,"Código");
+		d.setColumnWidth(idColumn, "90px");
 		
 		Column<MaterialWrap,String> tipoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -833,7 +838,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		cursoColumn.setSortable(true);
 		d.addColumn(cursoColumn,"Curso");
 		d.setColumnWidth(cursoColumn, "60px");
-		
+	}
+	
+	private void buildUpdateColumn(DataGrid<MaterialWrap> d){
 		Column<MaterialWrap,String> updateColumn = new Column<MaterialWrap,String>(new ButtonCell()){
 
 			@Override
