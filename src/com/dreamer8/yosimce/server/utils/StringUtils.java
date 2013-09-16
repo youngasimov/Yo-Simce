@@ -44,7 +44,7 @@ public class StringUtils {
 		if (!isRut(rut)) {
 			return rut;
 		}
-		rut = rut.replaceAll("[,.;_-]", "");
+		rut = rut.replaceAll("[,.;_-]", "").toUpperCase();
 		String tmp = null;
 		if (rut.length() < 8) {
 			return rut;
@@ -72,7 +72,7 @@ public class StringUtils {
 		if (!isRut(rut)) {
 			return rut;
 		}
-		rut = rut.replaceAll("[,.;_-]", "");
+		rut = rut.replaceAll("[,.;_-]", "").toUpperCase();
 		String tmp = null;
 		int end = 0;
 		if (rut.length() >= 8) {

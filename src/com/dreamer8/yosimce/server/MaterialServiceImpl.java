@@ -1098,6 +1098,8 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 						mxldao.save(mxl);
 					}
 				}
+				
+				result = l.getId();
 
 				s.getTransaction().commit();
 			}
