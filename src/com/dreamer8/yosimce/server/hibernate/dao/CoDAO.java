@@ -60,4 +60,22 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 		cos = q.list();
 		return cos;
 	}
+
+	public Co findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
+
+		Co co = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT co.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN CO_x_ESTABLECIMIENTO cxe ON axn.id=cxe.aplicacion_x_nivel_id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND cxe.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " JOIN CO co ON cxe.co_id=co.id";
+
+		Query q = s.createSQLQuery(query).addEntity(Co.class);
+		co = ((Co) q.uniqueResult());
+		return co;
+	}
 }

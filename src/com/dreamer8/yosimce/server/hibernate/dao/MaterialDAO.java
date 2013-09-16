@@ -56,8 +56,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				// +
-				// " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
+//				+ "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
@@ -107,8 +107,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				// +
-				// " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
+//				+ "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
@@ -166,8 +166,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				// +
-				// " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
+//				+ "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
@@ -240,8 +240,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				// +
-				// " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
+//				+ "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
@@ -312,8 +312,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				// +
-				// " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
+//				+ "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"

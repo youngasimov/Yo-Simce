@@ -17,6 +17,9 @@
         <property name="codigo" type="string">
             <column name="codigo" />
         </property>
+        <property name="contingencia" type="boolean">
+            <column name="contingencia" not-null="true" />
+        </property>
         <bag name="ccs" table="material_x_cc" inverse="false" lazy="true" fetch="select">
             <key>
                 <column name="material_id" not-null="true" />

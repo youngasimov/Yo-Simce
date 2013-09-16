@@ -22,10 +22,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/c3p0-0.9.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-4.2.3.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.3.4.jar"/>
-	<classpathentry kind="lib" path="/Users/camiloveracortes/SkyDrive/workspace/YoSimce/war/WEB-INF/lib/gwt-storage-1.1.jar" sourcepath="/Users/camiloveracortes/SkyDrive/workspace/YoSimce/war/WEB-INF/lib/gwt-storage-1.1-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/camiloveracortes/SkyDrive/workspace/YoSimce/war/WEB-INF/lib/gwt-storage-1.1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-storage-1.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

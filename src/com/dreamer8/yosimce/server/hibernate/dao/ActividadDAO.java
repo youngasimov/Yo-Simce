@@ -85,6 +85,32 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCurso(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idEstablecimiento, String nombreCurso) {
+
+		Actividad a = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
+				+ "'";
+
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		a = ((Actividad) q.uniqueResult());
+		return a;
+	}
+
 	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
