@@ -17,7 +17,7 @@ public class MaterialWrap {
 	
 	private MaterialDTO material;
 	private DetallesMaterialDTO detalles;
-	
+	private boolean updating;
 	
 	public MaterialDTO getMaterial() {
 		return material;
@@ -31,4 +31,11 @@ public class MaterialWrap {
 	public void setDetalles(DetallesMaterialDTO detalles) {
 		this.detalles = detalles;
 	}
+	public boolean isUpdating() {
+		return updating;
+	}
+	public void setUpdating(boolean updating) {
+		this.updating = updating;
+	}
+	
 }

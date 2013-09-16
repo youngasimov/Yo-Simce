@@ -14,6 +14,14 @@
 	<inherits name="com.google.gwt.logging.Logging" />
 	
 	<inherits name="gwtupload.GWTUpload"/>
+	<inherits name="com.seanchenxi.gwt.storage.Storage" />
+	
+	<!-- 
+    	By default, a simple memory cache is enabled 
+    	for avoiding long time serialization/deserialization,
+    	you can disable it, by adding the following line
+  	-->
+	<set-property name="storage.cache" value="false" />
 	
 	<extend-property name="locale" values="es" />
 	<set-property-fallback name="locale" value="es" />
@@ -30,7 +38,7 @@
 	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
 	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
 	
-	<set-property name="gwt.logging.logLevel" value="WARNING" />            
+	<set-property name="gwt.logging.logLevel" value="INFO" />            
 	<set-property name="gwt.logging.enabled" value="TRUE" />
 	<set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />
 	<set-property name="gwt.logging.systemHandler" value="DISABLED" />

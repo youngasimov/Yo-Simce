@@ -24,6 +24,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.seanchenxi.gwt.storage.client.StorageExt;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -72,8 +73,10 @@ public class YoSimce implements EntryPoint {
 		String token = "";
 		if(Window.Location.getHost().contains("localhost") || Window.Location.getHost().contains("127.0.0.1") || Window.Location.getPath().contains("demo")){
 			token = Cookies.getCookie(TOKEN_COOKIE_DEMO);
+			Cookies.removeCookie(TOKEN_COOKIE);
 		}else{
 			token = Cookies.getCookie(TOKEN_COOKIE);
+			Cookies.removeCookie(TOKEN_COOKIE_DEMO);
 		}
 		
 		if(token == null || token.length()==0){
@@ -167,6 +170,10 @@ public class YoSimce implements EntryPoint {
 	}
 	
 	private void notLogged(){
+		StorageExt storage = StorageExt.getLocalStorage();
+		if(storage!=null){
+			storage.clear();
+		}
 		if(Window.Location.getHost().contains("localhost") || Window.Location.getHost().contains("127.0.0.1") || Window.Location.getPath().contains("demo")){
 			LoginView login = new LoginView();
 			login.setPresenter(new LoginView.LoginPresenter() {
@@ -192,6 +199,7 @@ public class YoSimce implements EntryPoint {
 			});
 			panel.setWidget(login);
 		}else{
+			Cookies.removeCookie(TOKEN_COOKIE_DEMO);
 			Window.open("http://www.yosimce.cl", "_self", "");
 		}
 	}	

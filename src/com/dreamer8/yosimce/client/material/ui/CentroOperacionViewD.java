@@ -23,7 +23,9 @@ import com.dreamer8.yosimce.shared.dto.MaterialDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.ActionCell.Delegate;
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.DateCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
@@ -230,7 +232,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	
 	@UiHandler("predespachoBox")
 	void onPredespachoBoxKeyUp(KeyUpEvent event){
-		presenter.onMaterialAddedToPredespachoStack(predespachoBox.getValue());
+		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			presenter.onMaterialAddedToPredespachoStack(predespachoBox.getValue());
+		}
 	}
 	
 	@UiHandler("predespachoButton")
@@ -240,7 +244,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	
 	@UiHandler("despachoBox")
 	void onDespachoBoxKeyUp(KeyUpEvent event){
-		presenter.onMaterialAddedToDespachoStack(despachoBox.getValue());
+		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			presenter.onMaterialAddedToDespachoStack(despachoBox.getValue());
+		}
 	}
 	
 	@UiHandler("despachoButton")
@@ -757,12 +763,12 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public String getValue(MaterialWrap o) {
-				return(o.getMaterial().getIdCentro() != idCentro)?"/images/warning.png":"";
+				return(o.getMaterial().getIdCentro() == null || o.getMaterial().getIdCentro() != idCentro)?"/images/warning.png":"";
 			}
 		};
 		warningColumn.setSortable(false);
 		d.addColumn(warningColumn,"");
-		d.setColumnWidth(warningColumn, "35px");
+		d.setColumnWidth(warningColumn, "45px");
 		
 		
 		Column<MaterialWrap,String> idColumn = new Column<MaterialWrap,String>(new TextCell()){
@@ -774,7 +780,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		idColumn.setSortable(false);
 		d.addColumn(idColumn,"Id");
-		d.setColumnWidth(idColumn, "40px");
+		d.setColumnWidth(idColumn, "60px");
 		
 		Column<MaterialWrap,String> tipoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -795,7 +801,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		rbdColumn.setSortable(true);
 		d.addColumn(rbdColumn,"RBD");
-		d.setColumnWidth(warningColumn, "50px");
+		d.setColumnWidth(rbdColumn, "70px");
 		
 		Column<MaterialWrap,String> establecimientoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -816,7 +822,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		nivelColumn.setSortable(true);
 		d.addColumn(nivelColumn,"Nivel");
-		d.setColumnWidth(warningColumn, "90px");
+		d.setColumnWidth(nivelColumn, "90px");
 		
 		Column<MaterialWrap,String> cursoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -827,7 +833,26 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		cursoColumn.setSortable(true);
 		d.addColumn(cursoColumn,"Curso");
-		d.setColumnWidth(warningColumn, "60px");
+		d.setColumnWidth(cursoColumn, "60px");
+		
+		Column<MaterialWrap,String> updateColumn = new Column<MaterialWrap,String>(new ButtonCell()){
+
+			@Override
+			public String getValue(MaterialWrap o) {
+				return (o.isUpdating())?"Actualizando...":
+						(o.getMaterial().getId() == null)?"Actualizar":"Actualizado";
+			}
+		};
+		updateColumn.setSortable(false);
+		updateColumn.setFieldUpdater(new FieldUpdater<MaterialWrap, String>() {
+			
+			@Override
+			public void update(int index, MaterialWrap object, String value) {
+				presenter.actualizarMaterial(object);
+			}
+		});
+		d.addColumn(updateColumn,"");
+		d.setColumnWidth(updateColumn, "110px");
 	}
 	
 	private void configureSortHandler(DataGrid<MaterialWrap> d, ListHandler<MaterialWrap> h){

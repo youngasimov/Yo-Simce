@@ -80,6 +80,8 @@ public interface CentroOperacionView extends IsWidget {
 		void onPredespachoTabSelected();
 		void onDespachoTabSelected();
 		
+		void actualizarMaterial(MaterialWrap material);
+		
 		void onMaterialAddedToIngresoStack(String id);
 		void onMaterialAddedToPredespachoStack(String id);
 		void onMaterialAddedToDespachoStack(String id);

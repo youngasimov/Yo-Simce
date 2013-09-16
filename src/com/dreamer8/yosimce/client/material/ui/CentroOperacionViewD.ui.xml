@@ -178,7 +178,7 @@
 	       								</tr>
 	       								<tr>
 	       									<td> <g:ListBox tabIndex="3" ui:field="lotesBox" width="150px" /> </td>
-	       									<td> <my:ImageButton tabIndex="4" ui:field="removeLoteButton" width='90px' text='Eliminar' resource='{res.gear}'/> </td>
+	       									<td> <my:ImageButton tabIndex="4" ui:field="removeLoteButton" width='110px' text='Eliminar' resource='{res.gear}'/> </td>
 	       								</tr>
 	       								<tr>
 	       									<td> <my:PlaceHolderTextBox tabIndex="5" placeholder='Código material' width="150px"  ui:field="predespachoBox"/> </td>

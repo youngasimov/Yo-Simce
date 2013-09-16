@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.Utils;
+import com.dreamer8.yosimce.client.YoSimce;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView.CentroOperacionPresenter;
 import com.dreamer8.yosimce.shared.dto.DetallesMaterialDTO;
@@ -23,7 +24,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -42,8 +43,6 @@ public class CentroOperacionActivity extends SimceActivity implements
 	private ListDataProvider<MaterialWrap> predespachoDataProvider;
 	private ListDataProvider<MaterialWrap> despachoDataProvider;
 
-	private ArrayList<MaterialWrap> outdated;
-
 	private ArrayList<MaterialWrap> materiales;
 	private ArrayList<EmplazamientoDTO> cosAsociados;
 	private ArrayList<EmplazamientoDTO> allCos;
@@ -51,13 +50,14 @@ public class CentroOperacionActivity extends SimceActivity implements
 	private ArrayList<LoteDTO> lotes;
 	private LoteDTO selectedLote;
 	private ArrayList<EtapaDTO> etapas;
-	private int intentos;
 	private String ingresoFile;
 	private String despachoFile;
 	private EtapaDTO selectedEtapa;
 	private EmplazamientoDTO selectedCo;
 	private String selectedRetiranteRut;
-	private HashMap<String, UserDTO> users;
+	private LocalMaterialService localService;
+	private String userKey;
+	
 
 	public CentroOperacionActivity(ClientFactory factory,
 			CentroOperacionPlace place,
@@ -83,9 +83,6 @@ public class CentroOperacionActivity extends SimceActivity implements
 				new ArrayList<MaterialWrap>(), MaterialWrap.KEY_PROVIDER);
 		despachoDataProvider.addDataDisplay(view.getDespachoDataDisplay());
 		materiales = new ArrayList<MaterialWrap>();
-		outdated = new ArrayList<MaterialWrap>();
-		users = new HashMap<String, UserDTO>();
-		intentos = 0;
 		view.setTotalMaterialIngresando(0);
 		view.setTotalMaterialEnLote(0);
 		view.setTotalMaterialDespachando(0);
@@ -97,14 +94,24 @@ public class CentroOperacionActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
-
-		intentos = 0;
+		localService = new LocalMaterialService(eventBus);
 		view.setTotalMaterialIngresando(0);
 		view.setTotalMaterialEnLote(0);
 		view.setTotalMaterialDespachando(0);
 		selectedEtapa = null;
 		selectedCo = null;
-
+		
+		userKey= Cookies.getCookie(YoSimce.TOKEN_COOKIE);
+		if(userKey == null || userKey.length() == 0){
+			userKey = Cookies.getCookie(YoSimce.TOKEN_COOKIE_DEMO);
+		}
+		if(userKey==null){
+			userKey = "";
+		}else{
+			userKey = userKey+Cookies.getCookie("a")+"-"+Cookies.getCookie("n")+"-"+Cookies.getCookie("t");
+		}
+		
+		
 		view.setMaterialVisivility(Utils.hasPermisos(getPermisos(),
 				"MaterialService", "getMateriales"));
 		view.setIngresoVisivility(Utils.hasPermisos(getPermisos(),
@@ -114,96 +121,92 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setDespachoVisivility(Utils.hasPermisos(getPermisos(),
 				"MaterialService", "despacharMateriales"));
 
-		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
-				"getCentrosOperacionAsociados")) {
-			getFactory().getMaterialService().getCentrosOperacionAsociados(
-					new SimceCallback<ArrayList<EmplazamientoDTO>>(eventBus,
-							true) {
+		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService","getCentrosOperacionAsociados")) {
+			getFactory().getMaterialService().getCentrosOperacionAsociados(new MaterialCallback<ArrayList<EmplazamientoDTO>>(eventBus,true,userKey) {
+				@Override
+				public void saveOnLocalStorage(String key,ArrayList<EmplazamientoDTO> value) {
+					localService.setCentrosOperacionAsociados(key, value);		
+				};
+				
+				@Override
+				public ArrayList<EmplazamientoDTO> tryFromLocalStorage(
+						String key) {
+					return localService.getCentrosOperacionAsociados(key);
+				}
+				
+				@Override
+				public void success(ArrayList<EmplazamientoDTO> result) {
+					setEmplazamientosAsociados(result);
+				}
 
-						@Override
-						public void success(ArrayList<EmplazamientoDTO> result) {
-							cosAsociados = result;
+				@Override
+				public void failure(Throwable caught) {
+					goTo(new SimcePlace());
+				}
 
-							if (cosAsociados.isEmpty()) {
-								CentroOperacionActivity.this.eventBus
-										.fireEvent(new MensajeEvent(
-												"No tiene ningun centro de operación asociado",
-												MensajeEvent.MSG_WARNING, true));
-								goTo(new SimcePlace());
-							} else if (cosAsociados.size() == 1) {
-								if (place.getCentroId() == cosAsociados.get(0)
-										.getId()) {
-									co = cosAsociados.get(0);
-									initialize();
-								} else {
-									CentroOperacionPlace p = new CentroOperacionPlace();
-									p.setCentroId(cosAsociados.get(0).getId());
-									goTo(p);
-								}
-							} else {
-								EmplazamientoDTO selected = null;
-								for (EmplazamientoDTO empl : cosAsociados) {
-									if (empl.getId() == place.getCentroId()) {
-										selected = empl;
-										break;
-									}
-								}
-								if (selected != null) {
-									co = selected;
-									initialize();
-								} else {
-									showCoSelectorPopup();
-								}
-							}
-						}
-
-						@Override
-						public void failure(Throwable caught) {
-							goTo(new SimcePlace());
-						}
-
-					});
+			});
 		} else {
 			goTo(new SimcePlace());
 		}
 
 		if (Utils.hasPermisos(getPermisos(), "MaterialService",
 				"getCentrosOperacion")) {
-			getFactory().getMaterialService().getCentrosOperacion(
-					new SimceCallback<ArrayList<EmplazamientoDTO>>(eventBus,
-							true) {
-
-						@Override
-						public void success(ArrayList<EmplazamientoDTO> result) {
-							allCos = result;
-						}
-						
-						@Override
-						public void failure(Throwable caught) {
-							allCos = new ArrayList<EmplazamientoDTO>();
-						}
-
-					});
+			
+			allCos = localService.getCentrosOperacion(userKey);
+			if(allCos == null || allCos.isEmpty()){
+				getFactory().getMaterialService().getCentrosOperacion(
+						new MaterialCallback<ArrayList<EmplazamientoDTO>>(eventBus,true,userKey) {
+							
+							@Override
+							public void saveOnLocalStorage(String key, ArrayList<EmplazamientoDTO> result) {
+								localService.setCentrosOperacion(key, result);
+							};
+							
+							@Override
+							public void success(ArrayList<EmplazamientoDTO> result) {
+								allCos = result;
+							}
+							
+							@Override
+							public void failure(Throwable caught) {
+								allCos = new ArrayList<EmplazamientoDTO>();
+							}
+	
+						});
+			}
 		}else{
 			allCos = new ArrayList<EmplazamientoDTO>();
 		}
-
+		
 		if (Utils.hasPermisos(getPermisos(), "MaterialService",
 				"getEtapas")) {
-			getFactory().getMaterialService().getEtapas(
-					new SimceCallback<ArrayList<EtapaDTO>>(eventBus, true) {
-
-						@Override
-						public void success(ArrayList<EtapaDTO> result) {
-							etapas = result;
-							view.setEtapas(etapas);
-						}
-						
-						@Override
-						public void failure(Throwable caught) {
-							etapas = new ArrayList<EtapaDTO>();
-						}
-					});
+			etapas = localService.getEtapas(userKey);
+			if(etapas!=null){
+				view.setEtapas(etapas);
+			}
+			else{
+				getFactory().getMaterialService().getEtapas(
+						new MaterialCallback<ArrayList<EtapaDTO>>(eventBus, true,userKey) {
+	
+							
+							@Override
+							public void saveOnLocalStorage(String key,
+									ArrayList<EtapaDTO> result) {
+								localService.setEtapas(key, result);
+							}
+							
+							@Override
+							public void success(ArrayList<EtapaDTO> result) {
+								etapas = result;
+								view.setEtapas(etapas);
+							}
+							
+							@Override
+							public void failure(Throwable caught) {
+								etapas = new ArrayList<EtapaDTO>();
+							}
+						});
+			}
 		}else{
 			etapas = new ArrayList<EtapaDTO>();
 		}
@@ -267,6 +270,20 @@ public class CentroOperacionActivity extends SimceActivity implements
 	@Override
 	public void onIngresoTabSelected() {
 		view.setFocusOnIngresoCodigoBox(true);
+		
+		ArrayList<String> codigos = localService.getLastIngreso(userKey+"-"+place.getCentroId());
+		if(codigos!=null && !codigos.isEmpty()){
+			ArrayList<MaterialWrap> ms = new ArrayList<MaterialWrap>();
+			for(MaterialWrap mw:materiales){
+				if(codigos.contains(mw.getMaterial().getCodigo())){
+					ms.add(mw);
+				}
+			}
+			ingresoDataProvider.setList(ms);
+			view.setTotalMaterialIngresando(ingresoDataProvider
+					.getList().size());
+			eventBus.fireEvent(new MensajeEvent("Materiales cargados desde copia local",MensajeEvent.MSG_WARNING,true));
+		}
 	}
 
 	@Override
@@ -277,6 +294,18 @@ public class CentroOperacionActivity extends SimceActivity implements
 	@Override
 	public void onDespachoTabSelected() {
 		view.setFocusOnDespachoCodigoBox(true);
+		ArrayList<String> codigos = localService.getLastDespacho(userKey+"-"+place.getCentroId());
+		if(codigos!=null && !codigos.isEmpty()){
+			ArrayList<MaterialWrap> ms = new ArrayList<MaterialWrap>();
+			for(MaterialWrap mw:materiales){
+				if(codigos.contains(mw.getMaterial().getCodigo())){
+					ms.add(mw);
+				}
+			}
+			despachoDataProvider.setList(ms);
+			view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
+			eventBus.fireEvent(new MensajeEvent("Materiales cargados desde copia local",MensajeEvent.MSG_WARNING,true));
+		}
 	}
 
 	@Override
@@ -304,6 +333,13 @@ public class CentroOperacionActivity extends SimceActivity implements
 		}
 	}
 
+	@Override
+	public void actualizarMaterial(MaterialWrap material) {
+		if(!material.isUpdating()){
+			updateMaterial(material);
+		}
+	}
+	
 	@Override
 	public void onMaterialAddedToIngresoStack(String id) {
 
@@ -338,12 +374,10 @@ public class CentroOperacionActivity extends SimceActivity implements
 		mat.setRbd("-------");
 		MaterialWrap w = new MaterialWrap();
 		w.setMaterial(mat);
+		w.setUpdating(false);
 		ingresoDataProvider.getList().add(w);
 		view.setTotalMaterialIngresando(ingresoDataProvider.getList().size());
-		outdated.add(w);
-
-		updateMateriales(true);
-
+		updateMaterial(w);
 	}
 
 	@Override
@@ -402,7 +436,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		
 		if(mat == null){
 			eventBus.fireEvent(new MensajeEvent(
-					"El código ingresado no pertenece a un material que esté marcado como en el centro de operaciones o no esta asociado a este asociado este centro",
+					"El código ingresado no pertenece a un material que esté marcado como en el centro de operaciones o no esta asociado a este centro",
 					MensajeEvent.MSG_WARNING, true));
 		}else{
 			view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
@@ -430,21 +464,28 @@ public class CentroOperacionActivity extends SimceActivity implements
 		String folio = view.getIngresoFolio();
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
 				"ingresarMateriales")) {
-			getFactory().getMaterialService().ingresarMateriales(
-					place.getCentroId(), codigos, folio, ingresoFile,
-					new SimceCallback<Boolean>(eventBus, true) {
-
-						@Override
-						public void success(Boolean result) {
-							ingresoDataProvider.getList().clear();
-							ingresoFile = null;
-							view.setFocusOnIngresoCodigoBox(true);
-							view.clearIngresoFolioBox();
-							eventBus.fireEvent(new MensajeEvent(
-									"El ingreso se realizó exitosamente",
-									MensajeEvent.MSG_OK, true));
-						}
-					});
+			
+			localService.setIngreso(userKey+"-"+place.getCentroId(), codigos);
+			
+			getFactory().getMaterialService().ingresarMateriales(place.getCentroId(), codigos, folio, ingresoFile,new MaterialCallback<Boolean>(eventBus, true,userKey+"-"+place.getCentroId()) {
+					
+				@Override
+				public void success(Boolean result) {
+					localService.removeLastIngreso(getKey());
+					ingresoDataProvider.getList().clear();
+					ingresoFile = null;
+					view.setFocusOnIngresoCodigoBox(true);
+					view.clearIngresoFolioBox();
+					eventBus.fireEvent(new MensajeEvent(
+							"El ingreso se realizó exitosamente",
+							MensajeEvent.MSG_OK, true));
+				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					eventBus.fireEvent(new MensajeEvent("Los materiales en la lista de ingreso se guardaron localmente.<br />Consulte a un encargado para solucionar el problema antes de realizar otro despacho"));
+				}
+			});
 		}
 	}
 
@@ -468,18 +509,21 @@ public class CentroOperacionActivity extends SimceActivity implements
 			codigos.add(mw.getMaterial().getCodigo());
 		}
 		String folio = view.getDespachoFolio();
-
 		if (selectedEtapa == null
 				&& selectedCo != null
 				&& Utils.hasPermisos(eventBus, getPermisos(),
 						"MaterialService", "despacharMateriales")) {
+			
+			localService.setDespacho(userKey+"-"+place.getCentroId(), codigos);
+			
 			getFactory().getMaterialService().despacharMateriales(
 					place.getCentroId(), selectedCo.getId(),
 					selectedRetiranteRut, codigos, folio, despachoFile,
-					new SimceCallback<Boolean>(eventBus, true) {
+					new MaterialCallback<Boolean>(eventBus, true, userKey+"-"+place.getCentroId()) {
 
 						@Override
 						public void success(Boolean result) {
+							localService.removeLastDespacho(getKey());
 							despachoDataProvider.getList().clear();
 							despachoFile = null;
 							view.setFocusOnDespachoCodigoBox(true);
@@ -621,6 +665,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 	public void onEtapaChange(int etapaId) {
 		view.setChangeCoButtonVisivility(false);
 		selectedCo = null;
+		view.setSelectedCo(null);
 		if (etapaId == -1) {
 			selectedEtapa = null;
 		} else if (etapaId == -2) {
@@ -665,6 +710,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			public void execute() {
 				selectedCo = cos.getSelectedEmplazamiento();
 				view.setSelectedCo(selectedCo);
+				cos.hide();
 			}
 		});
 		cos.show();
@@ -677,51 +723,97 @@ public class CentroOperacionActivity extends SimceActivity implements
 			return;
 		}
 		selectedRetiranteRut = rut;
-
-		if (users.containsKey(selectedRetiranteRut)) {
-			view.setRetirante(users.get(selectedRetiranteRut));
-			eventBus.fireEvent(new MensajeEvent(
-					"El retirante pertenece al proceso YoSimce",
-					MensajeEvent.MSG_OK, true));
-		} else if (Utils.hasPermisos(eventBus, getPermisos(),
+		if (Utils.hasPermisos(eventBus, getPermisos(),
 				"MaterialService", "getUser")) {
-			getFactory().getMaterialService().getUser(rut,
-					new SimceCallback<UserDTO>(eventBus, false) {
-
-						@Override
-						public void success(UserDTO result) {
-							users.put(selectedRetiranteRut, result);
-							view.setRetirante(result);
-							eventBus.fireEvent(new MensajeEvent(
-									"El retirante pertenece al proceso YoSimce",
-									MensajeEvent.MSG_OK, true));
-						}
-					});
+			UserDTO u = localService.getRetirante(userKey+"-"+rut);
+			if(u!=null){
+				view.setRetirante(u);
+				eventBus.fireEvent(new MensajeEvent(
+						"El receptor pertenece al proceso YoSimce",
+						MensajeEvent.MSG_OK, true));
+			}else{
+				getFactory().getMaterialService().getUser(rut,
+						new MaterialCallback<UserDTO>(eventBus, false,userKey+"-"+rut) {
+	
+							@Override
+							public void success(UserDTO result) {
+								localService.setRetirante(getKey(), result);
+								view.setRetirante(result);
+								eventBus.fireEvent(new MensajeEvent(
+										"El receptor pertenece al proceso YoSimce",
+										MensajeEvent.MSG_OK, true));
+							}
+						});
+			}
 		}
 	}
 
 	private void initialize() {
-
 		view.setCO(co);
 
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
 				"getMateriales")) {
-			getFactory().getMaterialService().getMateriales(co.getId(),
-					new SimceCallback<ArrayList<MaterialDTO>>(eventBus, true) {
-
-						@Override
-						public void success(ArrayList<MaterialDTO> result) {
-							materiales = wrap(result);
-							materialDataProvider.setList(materiales);
-							view.setMaterialSortHandler(new ListHandler<MaterialWrap>(
-									materialDataProvider.getList()));
-							extractLotes();
-							buildFiltro();
-						}
-					});
+			getFactory().getMaterialService().getMateriales(co.getId(),new MaterialCallback<ArrayList<MaterialDTO>>(eventBus, true,userKey+"-"+co.getId()) {
+						
+				@Override
+				public void saveOnLocalStorage(String key,
+						ArrayList<MaterialDTO> result) {
+					localService.setMateriales(key, result);
+				}
+				
+				@Override
+				public ArrayList<MaterialDTO> tryFromLocalStorage(String key) {
+					return localService.getMateriales(key);
+				}
+				
+				@Override
+				public void success(ArrayList<MaterialDTO> result) {
+					materiales = wrap(result);
+					materialDataProvider.setList(materiales);
+					view.setMaterialSortHandler(new ListHandler<MaterialWrap>(
+							materialDataProvider.getList()));
+					extractLotes();
+					buildFiltro();
+				}
+			});
 		}
 	}
-
+	
+	private void setEmplazamientosAsociados(ArrayList<EmplazamientoDTO> emplazamientos){
+		cosAsociados = emplazamientos;
+		if (cosAsociados.isEmpty()) {
+			CentroOperacionActivity.this.eventBus
+					.fireEvent(new MensajeEvent(
+							"No tiene ningun centro de operación asociado",
+							MensajeEvent.MSG_WARNING, true));
+			goTo(new SimcePlace());
+		} else if (cosAsociados.size() == 1) {
+			if (place.getCentroId() == cosAsociados.get(0)
+					.getId()) {
+				co = cosAsociados.get(0);
+				initialize();
+			} else {
+				CentroOperacionPlace p = new CentroOperacionPlace();
+				p.setCentroId(cosAsociados.get(0).getId());
+				goTo(p);
+			}
+		} else {
+			EmplazamientoDTO selected = null;
+			for (EmplazamientoDTO empl : cosAsociados) {
+				if (empl.getId() == place.getCentroId()) {
+					selected = empl;
+					break;
+				}
+			}
+			if (selected != null) {
+				co = selected;
+				initialize();
+			} else {
+				showCoSelectorPopup();
+			}
+		}
+	}
+	
 	private void removeLoteOnClient(int loteId) {
 		for (LoteDTO l : lotes) {
 			if (l.getId() == loteId) {
@@ -773,6 +865,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		for (MaterialDTO m : list) {
 			MaterialWrap w = new MaterialWrap();
 			w.setMaterial(m);
+			w.setUpdating(false);
 			wrap.add(w);
 		}
 		return wrap;
@@ -792,36 +885,71 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setLotes(lotes);
 	}
 
-	private void updateMateriales(boolean blockThrows) {
-		ArrayList<String> mList = new ArrayList<String>();
-
-		for (MaterialWrap mwAux : outdated) {
-			mList.add(mwAux.getMaterial().getCodigo());
-		}
+	private void updateMaterial(final MaterialWrap mw) {
+		
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
 				"getMaterialesByCodigos")) {
-			getFactory().getMaterialService().getMaterialesByCodigos(
-					mList,
-					new SimceCallback<ArrayList<MaterialDTO>>(eventBus, false,
-							20000, !blockThrows) {
+			
+			ArrayList<String> mList = new ArrayList<String>();
+			mList.add(mw.getMaterial().getCodigo());
+			mw.setUpdating(true);
+			if(materiales.contains(mw)){
+				materiales.get(materiales.indexOf(mw)).setUpdating(true);
+			}
+			if (materialDataProvider.getList()
+					.contains(mw)) {
+				int index = materialDataProvider
+						.getList().indexOf(mw);
+				materialDataProvider.getList()
+						.get(index).setUpdating(true);
+				materialDataProvider.getList().set(
+						index, mw);
+			}
+			if (ingresoDataProvider.getList()
+					.contains(mw)) {
+				int index = ingresoDataProvider
+						.getList().indexOf(mw);
+				ingresoDataProvider.getList()
+						.get(index).setUpdating(true);
+				ingresoDataProvider.getList().set(
+						index, mw);
+			}
+			if (predespachoDataProvider.getList()
+					.contains(mw)) {
+				int index = predespachoDataProvider
+						.getList().indexOf(mw);
+				predespachoDataProvider.getList()
+						.get(index).setUpdating(true);
+				predespachoDataProvider.getList()
+						.set(index, mw);
+			}
+			if (despachoDataProvider.getList()
+					.contains(mw)) {
+				int index = despachoDataProvider
+						.getList().indexOf(mw);
+				despachoDataProvider.getList()
+						.get(index).setUpdating(true);
+				despachoDataProvider.getList().set(
+						index, mw);
+			}
+			
+			getFactory().getMaterialService().getMaterialesByCodigos(mList,new SimceCallback<ArrayList<MaterialDTO>>(eventBus, false) {
 
 						@Override
 						public void success(ArrayList<MaterialDTO> result) {
-							intentos = 0;
 							for (MaterialDTO m : result) {
-								for (MaterialWrap mw : outdated) {
-									if (mw.getMaterial().getCodigo()
-											.equals(m.getCodigo())) {
-										outdated.remove(mw);
+									if (mw.getMaterial().getCodigo().equals(m.getCodigo())) {
+										mw.setUpdating(false);
 										if(materiales.contains(mw)){
 											materiales.get(materiales.indexOf(mw)).setMaterial(m);
+											materiales.get(materiales.indexOf(mw)).setUpdating(false);
 										}
 										if (materialDataProvider.getList()
 												.contains(mw)) {
 											int index = materialDataProvider
 													.getList().indexOf(mw);
-											materialDataProvider.getList()
-													.get(index).setMaterial(m);
+											materialDataProvider.getList().get(index).setMaterial(m);
+											materialDataProvider.getList().get(index).setUpdating(false);
 											materialDataProvider.getList().set(
 													index, mw);
 										}
@@ -829,8 +957,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 												.contains(mw)) {
 											int index = ingresoDataProvider
 													.getList().indexOf(mw);
-											ingresoDataProvider.getList()
-													.get(index).setMaterial(m);
+											ingresoDataProvider.getList().get(index).setMaterial(m);
+											ingresoDataProvider.getList().get(index).setUpdating(false);
 											ingresoDataProvider.getList().set(
 													index, mw);
 										}
@@ -838,8 +966,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 												.contains(mw)) {
 											int index = predespachoDataProvider
 													.getList().indexOf(mw);
-											predespachoDataProvider.getList()
-													.get(index).setMaterial(m);
+											predespachoDataProvider.getList().get(index).setMaterial(m);
+											predespachoDataProvider.getList().get(index).setUpdating(false);
 											predespachoDataProvider.getList()
 													.set(index, mw);
 										}
@@ -847,46 +975,59 @@ public class CentroOperacionActivity extends SimceActivity implements
 												.contains(mw)) {
 											int index = despachoDataProvider
 													.getList().indexOf(mw);
-											despachoDataProvider.getList()
-													.get(index).setMaterial(m);
-											despachoDataProvider.getList().set(
-													index, mw);
+											despachoDataProvider.getList().get(index).setMaterial(m);
+											despachoDataProvider.getList().get(index).setUpdating(false);
+											despachoDataProvider.getList().set(index, mw);
 										}
 										break;
 									}
 								}
-							}
 						}
 
 						@Override
 						public void failure(Throwable caught) {
-
-							if (outdated.isEmpty()) {
-								return;
+							mw.setUpdating(false);
+							if(materiales.contains(mw)){
+								materiales.get(materiales.indexOf(mw)).setUpdating(false);
 							}
-
-							intentos++;
-							if (intentos < 5) {
-								Timer t = new Timer() {
-
-									@Override
-									public void run() {
-										updateMateriales(true);
-									}
-								};
-								t.schedule((int) (Math.pow(5, intentos) * 1000));
-							} else {
-								updateMateriales(false);
-								Timer t = new Timer() {
-
-									@Override
-									public void run() {
-										updateMateriales(false);
-									}
-								};
-								t.schedule((int) (30000));
+							if (materialDataProvider.getList()
+									.contains(mw)) {
+								int index = materialDataProvider
+										.getList().indexOf(mw);
+								materialDataProvider.getList()
+										.get(index).setUpdating(false);
+								materialDataProvider.getList().set(
+										index, mw);
+							}
+							if (ingresoDataProvider.getList()
+									.contains(mw)) {
+								int index = ingresoDataProvider
+										.getList().indexOf(mw);
+								ingresoDataProvider.getList()
+										.get(index).setUpdating(false);
+								ingresoDataProvider.getList().set(
+										index, mw);
+							}
+							if (predespachoDataProvider.getList()
+									.contains(mw)) {
+								int index = predespachoDataProvider
+										.getList().indexOf(mw);
+								predespachoDataProvider.getList()
+										.get(index).setUpdating(false);
+								predespachoDataProvider.getList()
+										.set(index, mw);
+							}
+							if (despachoDataProvider.getList()
+									.contains(mw)) {
+								int index = despachoDataProvider
+										.getList().indexOf(mw);
+								despachoDataProvider.getList()
+										.get(index).setUpdating(false);
+								despachoDataProvider.getList().set(
+										index, mw);
 							}
 						}
+
 					});
 		}
 	}
