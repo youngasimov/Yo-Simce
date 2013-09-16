@@ -528,7 +528,8 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					contenido += mdto.getNivel() + ";";
 					contenido += mdto.getCurso() + ";";
 					contenido += mdto.getEtapa() + ";";
-					contenido += mdto.getLote().getNombre() + ";";
+					contenido += (mdto.getLote() != null) ? mdto.getLote()
+							.getNombre() : "" + ";";
 					bw.write(contenido + "\r");
 
 				}
@@ -1098,7 +1099,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 						mxldao.save(mxl);
 					}
 				}
-				
+
 				result = l.getId();
 
 				s.getTransaction().commit();
