@@ -591,7 +591,6 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 				destinoDespachoBox.addItem(etapa.getEtapa(),etapa.getId()+"");
 			}
 		}
-		destinoDespachoBox.addItem("Trasferencia a C.O.","-2");
 	}
 
 	@Override

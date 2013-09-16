@@ -509,7 +509,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 			codigos.add(mw.getMaterial().getCodigo());
 		}
 		String folio = view.getDespachoFolio();
-		if (selectedEtapa == null
+		if (selectedEtapa != null
+				&& selectedEtapa.getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)
 				&& selectedCo != null
 				&& Utils.hasPermisos(eventBus, getPermisos(),
 						"MaterialService", "despacharMateriales")) {
@@ -537,13 +538,15 @@ public class CentroOperacionActivity extends SimceActivity implements
 		} else if (selectedEtapa != null
 				&& Utils.hasPermisos(eventBus, getPermisos(),
 						"MaterialService", "despacharMateriales")) {
+			localService.setDespacho(userKey+"-"+place.getCentroId(), codigos);
 			getFactory().getMaterialService().despacharMateriales(
-					place.getCentroId(), selectedEtapa.getId(),
+					place.getCentroId(), selectedEtapa,
 					selectedRetiranteRut, codigos, folio, despachoFile,
-					new SimceCallback<Boolean>(eventBus, true) {
+					new MaterialCallback<Boolean>(eventBus, true,userKey+"-"+place.getCentroId()) {
 
 						@Override
 						public void success(Boolean result) {
+							localService.removeLastDespacho(getKey());
 							despachoDataProvider.getList().clear();
 							despachoFile = null;
 							view.setFocusOnDespachoCodigoBox(true);
@@ -668,17 +671,18 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setSelectedCo(null);
 		if (etapaId == -1) {
 			selectedEtapa = null;
-		} else if (etapaId == -2) {
-			selectedEtapa = null;
-			view.setChangeCoButtonVisivility(true);
-			onChangeSelectedStageCo();
-		} else {
+		}else {
 			for (EtapaDTO etapa : etapas) {
 				if (etapa.getId() == etapaId) {
 					selectedEtapa = etapa;
 					break;
 				}
 			}
+		}
+		if(selectedEtapa !=null && selectedEtapa.getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)){
+			selectedEtapa = null;
+			view.setChangeCoButtonVisivility(true);
+			onChangeSelectedStageCo();
 		}
 	}
 
