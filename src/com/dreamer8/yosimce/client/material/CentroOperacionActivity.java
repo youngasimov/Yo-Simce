@@ -264,7 +264,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 	
 	@Override
 	public void onMaterialTabSelected() {
-
+		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(
+				materialDataProvider.getList()));
 	}
 
 	@Override
@@ -282,6 +283,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 			ingresoDataProvider.setList(ms);
 			view.setTotalMaterialIngresando(ingresoDataProvider
 					.getList().size());
+			view.setIngresoSortHandler(new ListHandler<MaterialWrap>(
+					ingresoDataProvider.getList()));
 			eventBus.fireEvent(new MensajeEvent("Materiales cargados desde copia local",MensajeEvent.MSG_WARNING,true));
 		}
 	}
@@ -304,6 +307,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 			}
 			despachoDataProvider.setList(ms);
 			view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
+			view.setDespachoSortHandler(new ListHandler<MaterialWrap>(
+					despachoDataProvider.getList()));
 			eventBus.fireEvent(new MensajeEvent("Materiales cargados desde copia local",MensajeEvent.MSG_WARNING,true));
 		}
 	}
@@ -352,6 +357,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 					ingresoDataProvider.getList().add(m);
 					view.setTotalMaterialIngresando(ingresoDataProvider
 							.getList().size());
+					view.setIngresoSortHandler(new ListHandler<MaterialWrap>(
+							ingresoDataProvider.getList()));
 				} else {
 					eventBus.fireEvent(new MensajeEvent(
 							"El código ingresado ya esta en la lista",
@@ -396,6 +403,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 					predespachoDataProvider.getList().add(m);
 					view.setTotalMaterialEnLote(predespachoDataProvider
 							.getList().size());
+					view.setPredespachoSortHandler(new ListHandler<MaterialWrap>(
+							predespachoDataProvider.getList()));
 				} else {
 					eventBus.fireEvent(new MensajeEvent(
 							"El código ingresado ya esta en la lista",
@@ -426,7 +435,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		if (view.getAddByLote() && mat != null
 				&& mat.getMaterial().getLote() != null) {
 			for (MaterialWrap m : materiales) {
-				if (m.getMaterial().getLote().getId() == mat.getMaterial()
+				if (m.getMaterial().getLote()!= null && m.getMaterial().getLote().getId() == mat.getMaterial()
 						.getLote().getId()) {
 					if (!despachoDataProvider.getList().contains(m)) {
 						despachoDataProvider.getList().add(m);
@@ -440,6 +449,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 					"El código ingresado no pertenece a un material que esté marcado como en el centro de operaciones o no esta asociado a este centro",
 					MensajeEvent.MSG_WARNING, true));
 		}else{
+			view.setDespachoSortHandler(new ListHandler<MaterialWrap>(
+					despachoDataProvider.getList()));
 			view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
 		}
 
@@ -457,7 +468,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	@Override
 	public void onRealizarIngresoStackActualClick() {
-		ArrayList<String> codigos = new ArrayList<String>();
+		final ArrayList<String> codigos = new ArrayList<String>();
 
 		for (MaterialWrap mw : ingresoDataProvider.getList()) {
 			codigos.add(mw.getMaterial().getCodigo());
@@ -480,6 +491,9 @@ public class CentroOperacionActivity extends SimceActivity implements
 					eventBus.fireEvent(new MensajeEvent(
 							"El ingreso se realizó exitosamente",
 							MensajeEvent.MSG_OK, true));
+					
+					updateMateriales(codigos);
+					
 				}
 				
 				@Override
@@ -504,7 +518,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			return;
 		}
 
-		ArrayList<String> codigos = new ArrayList<String>();
+		final ArrayList<String> codigos = new ArrayList<String>();
 
 		for (MaterialWrap mw : despachoDataProvider.getList()) {
 			codigos.add(mw.getMaterial().getCodigo());
@@ -530,6 +544,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 							despachoFile = null;
 							view.setFocusOnDespachoCodigoBox(true);
 							view.clearDespachoFolioBox();
+							updateMateriales(codigos);
 							eventBus.fireEvent(new MensajeEvent(
 									"El despacho se realizó exitosamente",
 									MensajeEvent.MSG_OK, true));
@@ -552,6 +567,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 							despachoFile = null;
 							view.setFocusOnDespachoCodigoBox(true);
 							view.clearDespachoFolioBox();
+							updateMateriales(codigos);
 							eventBus.fireEvent(new MensajeEvent(
 									"El despacho se realizó exitosamente",
 									MensajeEvent.MSG_OK, true));
@@ -615,11 +631,13 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 		ArrayList<MaterialWrap> lote = new ArrayList<MaterialWrap>();
 		for (MaterialWrap m : materiales) {
-			if (m.getMaterial().getLote().getId() == selectedLote.getId()) {
+			if (m.getMaterial().getLote() != null && m.getMaterial().getLote().getId() == selectedLote.getId()) {
 				lote.add(m);
 			}
 		}
 		predespachoDataProvider.setList(lote);
+		view.setPredespachoSortHandler(new ListHandler<MaterialWrap>(
+				predespachoDataProvider.getList()));
 		view.setTotalMaterialEnLote(lote.size());
 	}
 
@@ -691,18 +709,27 @@ public class CentroOperacionActivity extends SimceActivity implements
 	public void onRemoveIngresoItem(MaterialWrap material) {
 		ingresoDataProvider.getList().remove(material);
 		view.setTotalMaterialIngresando(ingresoDataProvider.getList().size());
+		view.setIngresoSortHandler(new ListHandler<MaterialWrap>(
+				ingresoDataProvider.getList()));
+		view.setFocusOnIngresoCodigoBox(true);
 	}
 
 	@Override
 	public void onRemovePredespachoItem(MaterialWrap material) {
 		predespachoDataProvider.getList().remove(material);
 		view.setTotalMaterialEnLote(predespachoDataProvider.getList().size());
+		view.setPredespachoSortHandler(new ListHandler<MaterialWrap>(
+				predespachoDataProvider.getList()));
+		view.setFocusOnPredespachoCodigoBox(true);
 	}
 
 	@Override
 	public void onRemoveDespachoItem(MaterialWrap material) {
 		despachoDataProvider.getList().remove(material);
 		view.setTotalMaterialDespachando(despachoDataProvider.getList().size());
+		view.setDespachoSortHandler(new ListHandler<MaterialWrap>(
+				despachoDataProvider.getList()));
+		view.setFocusOnDespachoCodigoBox(true);
 	}
 
 	@Override
@@ -728,6 +755,9 @@ public class CentroOperacionActivity extends SimceActivity implements
 			return;
 		}
 		selectedRetiranteRut = rut;
+		
+		selectedRetiranteRut = selectedRetiranteRut.replace('k', 'K');
+		
 		if (Utils.hasPermisos(eventBus, getPermisos(),
 				"MaterialService", "getUser")) {
 			UserDTO u = localService.getRetirante(userKey+"-"+rut);
@@ -890,6 +920,160 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setLotes(lotes);
 	}
 
+	private void updateMateriales(ArrayList<String> codigos){
+		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
+				"getMaterialesByCodigos")) {
+			
+			for(MaterialWrap mw:materiales){
+				if(codigos.contains(mw.getMaterial().getCodigo())){
+					mw.setUpdating(true);
+					if(materiales.contains(mw)){
+						materiales.get(materiales.indexOf(mw)).setUpdating(true);
+					}
+					if (materialDataProvider.getList()
+							.contains(mw)) {
+						int index = materialDataProvider
+								.getList().indexOf(mw);
+						materialDataProvider.getList()
+								.get(index).setUpdating(true);
+						materialDataProvider.getList().set(
+								index, mw);
+					}
+					if (ingresoDataProvider.getList()
+							.contains(mw)) {
+						int index = ingresoDataProvider
+								.getList().indexOf(mw);
+						ingresoDataProvider.getList()
+								.get(index).setUpdating(true);
+						ingresoDataProvider.getList().set(
+								index, mw);
+					}
+					if (predespachoDataProvider.getList()
+							.contains(mw)) {
+						int index = predespachoDataProvider
+								.getList().indexOf(mw);
+						predespachoDataProvider.getList()
+								.get(index).setUpdating(true);
+						predespachoDataProvider.getList()
+								.set(index, mw);
+					}
+					if (despachoDataProvider.getList()
+							.contains(mw)) {
+						int index = despachoDataProvider
+								.getList().indexOf(mw);
+						despachoDataProvider.getList()
+								.get(index).setUpdating(true);
+						despachoDataProvider.getList().set(
+								index, mw);
+					}
+				}
+			}
+			
+			getFactory().getMaterialService().getMaterialesByCodigos(codigos,new SimceCallback<ArrayList<MaterialDTO>>(eventBus, false) {
+
+				@Override
+				public void success(ArrayList<MaterialDTO> result) {
+					for (MaterialDTO m : result) {
+						for(MaterialWrap mw:materiales){
+							if (mw.getMaterial().getCodigo().equals(m.getCodigo())) {
+								mw.setUpdating(false);
+								if(materiales.contains(mw)){
+									materiales.get(materiales.indexOf(mw)).setMaterial(m);
+									materiales.get(materiales.indexOf(mw)).setUpdating(false);
+								}
+								if (materialDataProvider.getList().contains(mw)) {
+									int index = materialDataProvider.getList().indexOf(mw);
+									materialDataProvider.getList().get(index).setMaterial(m);
+									materialDataProvider.getList().get(index).setUpdating(false);
+									materialDataProvider.getList().set(index, mw);
+								}
+								if (ingresoDataProvider.getList()
+										.contains(mw)) {
+									int index = ingresoDataProvider
+											.getList().indexOf(mw);
+									ingresoDataProvider.getList().get(index).setMaterial(m);
+									ingresoDataProvider.getList().get(index).setUpdating(false);
+									ingresoDataProvider.getList().set(
+											index, mw);
+								}
+								if (predespachoDataProvider.getList()
+										.contains(mw)) {
+									int index = predespachoDataProvider
+											.getList().indexOf(mw);
+									predespachoDataProvider.getList().get(index).setMaterial(m);
+									predespachoDataProvider.getList().get(index).setUpdating(false);
+									predespachoDataProvider.getList()
+											.set(index, mw);
+								}
+								if (despachoDataProvider.getList()
+										.contains(mw)) {
+									int index = despachoDataProvider
+											.getList().indexOf(mw);
+									despachoDataProvider.getList().get(index).setMaterial(m);
+									despachoDataProvider.getList().get(index).setUpdating(false);
+									despachoDataProvider.getList().set(index, mw);
+								}
+								break;
+							}
+						}
+					}
+					view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
+					view.setIngresoSortHandler(new ListHandler<MaterialWrap>(ingresoDataProvider.getList()));
+					view.setPredespachoSortHandler(new ListHandler<MaterialWrap>(predespachoDataProvider.getList()));
+					view.setDespachoSortHandler(new ListHandler<MaterialWrap>(despachoDataProvider.getList()));
+					buildFiltro();
+				}
+
+				@Override
+				public void failure(Throwable caught) {
+					for(MaterialWrap mw:materiales){
+						mw.setUpdating(false);
+						if(materiales.contains(mw)){
+							materiales.get(materiales.indexOf(mw)).setUpdating(false);
+						}
+						if (materialDataProvider.getList()
+								.contains(mw)) {
+							int index = materialDataProvider
+									.getList().indexOf(mw);
+							materialDataProvider.getList()
+									.get(index).setUpdating(false);
+							materialDataProvider.getList().set(
+									index, mw);
+						}
+						if (ingresoDataProvider.getList()
+								.contains(mw)) {
+							int index = ingresoDataProvider
+									.getList().indexOf(mw);
+							ingresoDataProvider.getList()
+									.get(index).setUpdating(false);
+							ingresoDataProvider.getList().set(
+									index, mw);
+						}
+						if (predespachoDataProvider.getList()
+								.contains(mw)) {
+							int index = predespachoDataProvider
+									.getList().indexOf(mw);
+							predespachoDataProvider.getList()
+									.get(index).setUpdating(false);
+							predespachoDataProvider.getList()
+									.set(index, mw);
+						}
+						if (despachoDataProvider.getList()
+								.contains(mw)) {
+							int index = despachoDataProvider
+									.getList().indexOf(mw);
+							despachoDataProvider.getList()
+									.get(index).setUpdating(false);
+							despachoDataProvider.getList().set(
+									index, mw);
+						}
+					}
+				}
+			});
+			
+		}
+	}
+	
 	private void updateMaterial(final MaterialWrap mw) {
 		
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
@@ -1049,6 +1233,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			}
 		}
 		materialDataProvider.setList(filtro);
+		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
 	}
 	
 	private void buildFiltro(){
@@ -1114,6 +1299,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			@Override
 			public void execute() {
 				materialDataProvider.setList(materiales);
+				view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
 			}
 		});
 		

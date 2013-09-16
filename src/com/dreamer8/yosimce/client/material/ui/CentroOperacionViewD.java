@@ -242,6 +242,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		presenter.onMaterialAddedToPredespachoStack(predespachoBox.getValue());
 	}
 	
+	@UiHandler("addOrEditLoteButton")
+	void onAddOrEditLoteButtonClick(ClickEvent event){
+		presenter.guardarLote();
+	}
+	
 	@UiHandler("despachoBox")
 	void onDespachoBoxKeyUp(KeyUpEvent event){
 		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
@@ -361,11 +366,15 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		materialHandlerRegistration = materialGrid.addColumnSortHandler(handler);
 		configureSortHandler(materialGrid, handler);
 		
-		handler.setComparator( materialGrid.getColumn(6), new Comparator<MaterialWrap>() {
+		handler.setComparator( materialGrid.getColumn(7), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
-				return o1.getMaterial().getEtapa().compareTo(o2.getMaterial().getEtapa());
+				if(o1.getMaterial().getEtapa()!=null){
+					return o1.getMaterial().getEtapa().compareTo(o2.getMaterial().getEtapa());
+				}else{
+					return -1;
+				}
 			}
 		});
 		
@@ -858,7 +867,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		});
 		d.addColumn(updateColumn,"");
-		d.setColumnWidth(updateColumn, "110px");
+		d.setColumnWidth(updateColumn, "120px");
 	}
 	
 	private void configureSortHandler(DataGrid<MaterialWrap> d, ListHandler<MaterialWrap> h){
@@ -867,7 +876,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
-				return o1.getMaterial().getTipo().compareTo(o2.getMaterial().getTipo());
+				if(o1.getMaterial().getTipo()!=null){
+					return o1.getMaterial().getTipo().compareTo(o2.getMaterial().getTipo());
+				}else{
+					return -1;
+				}
 			}
 		});
 		
@@ -875,7 +888,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
-				return o1.getMaterial().getRbd().compareTo(o2.getMaterial().getRbd());
+				if(o1.getMaterial().getRbd()!=null){
+					return o1.getMaterial().getRbd().compareTo(o2.getMaterial().getRbd());
+				}else{
+					return -1;
+				}
 			}
 		});
 		
@@ -883,21 +900,33 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
-				return o1.getMaterial().getEstablecimiento().compareTo(o2.getMaterial().getEstablecimiento());
+				if(o1.getMaterial().getEstablecimiento()!=null){
+					return o1.getMaterial().getEstablecimiento().compareTo(o2.getMaterial().getEstablecimiento());
+				}else{
+					return -1;
+				}
 			}
 		});
 		h.setComparator( d.getColumn(5), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
-				return o1.getMaterial().getNivel().compareTo(o2.getMaterial().getNivel());
+				if(o1.getMaterial().getNivel()!=null){
+					return o1.getMaterial().getNivel().compareTo(o2.getMaterial().getNivel());
+				}else{
+					return -1;
+				}
 			}
 		});
 		h.setComparator( d.getColumn(6), new Comparator<MaterialWrap>() {
 
 			@Override
 			public int compare(MaterialWrap o1, MaterialWrap o2) {
-				return o1.getMaterial().getCurso().compareTo(o2.getMaterial().getCurso());
+				if(o1.getMaterial().getCurso()!=null){
+					return o1.getMaterial().getCurso().compareTo(o2.getMaterial().getCurso());
+				}else{
+					return -1;
+				}
 			}
 		});
 	}
