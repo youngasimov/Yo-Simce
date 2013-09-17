@@ -20,6 +20,7 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadHistorialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AlumnoEstadoDAO;
@@ -49,6 +50,8 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXAplicacionXNivelDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadHistorial;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadHistorialId;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Alumno;
 import com.dreamer8.yosimce.server.hibernate.pojo.AlumnoEstado;
@@ -103,10 +106,10 @@ public class YoSimceSetup {
 		// loadLaWeaDeCapacitacion();
 
 		actualizarAgendamientoTIC();
-		cargarMateriales("MECANIZADO_CAJA4B_CargaDemo.csv", 1, 4,
-				ActividadTipo.APLICACION_DIA_1);
-		cargarMateriales("MECANIZADO_SOBRE4B_CargaDemo.csv", 1, 4,
-				ActividadTipo.VISITA_PREVIA);
+		// cargarMateriales("MECANIZADO_CAJA4B_CargaDemo.csv", 1, 4,
+		// ActividadTipo.APLICACION_DIA_1);
+		// cargarMateriales("MECANIZADO_SOBRE4B_CargaDemo.csv", 1, 4,
+		// ActividadTipo.VISITA_PREVIA);
 
 		System.out.println("fin :P");
 	}
@@ -470,7 +473,8 @@ public class YoSimceSetup {
 					a = actividadDAO
 							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
 									idAplicacion, idNivel, at.getId(),
-									Integer.valueOf(row[3]), row[5] + row[6],Integer.valueOf(row[2]));
+									Integer.valueOf(row[3]), row[5] + row[6],
+									Integer.valueOf(row[2]));
 					if (a == null) {
 						if ((row[1].toUpperCase().matches(".*CONTINGENCIA.*"))) {
 							if (eCont == null) {
@@ -555,6 +559,10 @@ public class YoSimceSetup {
 					.findByNombre(ActividadEstado.POR_CONFIRMAR);
 			Calendar calendar = Calendar.getInstance();
 			String[] fecha = null;
+			ActividadHistorial ah = null;
+			ActividadHistorialId ahid = null;
+			ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+			Date fechaMod = new Date();
 			while ((line = br.readLine()) != null) {
 				row = line.split(";");
 				if (rowCounter != 0) {
@@ -569,10 +577,19 @@ public class YoSimceSetup {
 					fecha = row[32].split("-");
 					calendar.set(Integer.valueOf(fecha[0]),
 							Integer.valueOf(fecha[1]) - 1,
-							Integer.valueOf(fecha[2]), 10, 0);
+							Integer.valueOf(fecha[2]), 10, 0, 0);
 					a.setFechaInicio(calendar.getTime());
 					a.setActividadEstado(ae);
 					actividadDAO.update(a);
+					ahid = new ActividadHistorialId();
+					ahid.setActividadId(a.getId());
+					ahid.setFecha(fechaMod);
+					ah = new ActividadHistorial();
+					ah.setId(ahid);
+					ah.setActividadEstado(a.getActividadEstado());
+					ah.setFechaInicio(a.getFechaInicio());
+					ah.setFechaTermino(a.getFechaTermino());
+					ahdao.save(ah);
 					a = actividadDAO
 							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(
 									2, 10, aplicacionD1.getId(),
@@ -584,10 +601,19 @@ public class YoSimceSetup {
 					fecha = row[30].split("-");
 					calendar.set(Integer.valueOf(fecha[0]),
 							Integer.valueOf(fecha[1]) - 1,
-							Integer.valueOf(fecha[2]), 10, 0);
+							Integer.valueOf(fecha[2]), 10, 0, 0);
 					a.setFechaInicio(calendar.getTime());
 					a.setActividadEstado(ae);
 					actividadDAO.update(a);
+					ahid = new ActividadHistorialId();
+					ahid.setActividadId(a.getId());
+					ahid.setFecha(fechaMod);
+					ah = new ActividadHistorial();
+					ah.setId(ahid);
+					ah.setActividadEstado(a.getActividadEstado());
+					ah.setFechaInicio(a.getFechaInicio());
+					ah.setFechaTermino(a.getFechaTermino());
+					ahdao.save(ah);
 				}
 				rowCounter++;
 			}

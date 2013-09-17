@@ -28,7 +28,8 @@ public class ActividadEstadoDAO extends
 		List<ActividadEstado> aes = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae"
-				+ " WHERE ae.id > 1 AND ae.id < 4";
+//				+ " WHERE ae.id > 1 AND ae.id < 4";
+				+ " WHERE ae.id = 3";
 		Query q = s.createSQLQuery(query).addEntity(ActividadEstado.class);
 		aes = q.list();
 		return aes;
@@ -39,7 +40,7 @@ public class ActividadEstadoDAO extends
 		List<ActividadEstado> aes = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae"
-				+ " WHERE ae.id > 3";
+				+ " WHERE ae.id > 3 AND ae.id < 6";
 		Query q = s.createSQLQuery(query).addEntity(ActividadEstado.class);
 		aes = q.list();
 		return aes;

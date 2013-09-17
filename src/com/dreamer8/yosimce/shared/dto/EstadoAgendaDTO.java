@@ -10,6 +10,7 @@ public class EstadoAgendaDTO implements Serializable {
 	public static final String CONFIRMADO = "Confirmado";
 	public static final String REALIZADA = "Realizada";
 	public static final String ANULADA = "Anulada";
+	public static final String CONFIRMADO_CON_CAMBIOS = "Confirmado con Cambios";
 
 	private Integer id;
 	private String estado;

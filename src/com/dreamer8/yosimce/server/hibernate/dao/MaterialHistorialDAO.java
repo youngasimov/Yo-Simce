@@ -35,14 +35,12 @@ public class MaterialHistorialDAO extends
 
 		MaterialHistorial mh = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT mh.material_id,MAX(mh.fecha) as fecha,mh.actividad_id,"
-				+ "mh.origen_id,mh.destino_id,mh.centro_id,mh.material_estado_id,mh.receptor_id,mh.modificador_id"
+		String query = "SELECT mh.*  FROM MATERIAL_HISTORIAL mh"
+				+ " JOIN (SELECT mh.material_id,MAX(mh.fecha) as fecha"
 				+ " FROM MATERIAL_HISTORIAL mh"
 				+ " WHERE mh.material_id="
 				+ SecurityFilter.escapeString(idMaterial)
-				+ " GROUP BY mh.material_id,mh.actividad_id,"
-				+ "mh.origen_id,mh.destino_id,mh.centro_id,"
-				+ "mh.material_estado_id,mh.receptor_id,mh.modificador_id";
+				+ " GROUP BY mh.material_id) mh_max ON mh.material_id=mh_max.material_id AND mh.fecha=mh_max.fecha";
 		Query q = s.createSQLQuery(query).addEntity(MaterialHistorial.class);
 		mh = ((MaterialHistorial) q.uniqueResult());
 		return mh;
