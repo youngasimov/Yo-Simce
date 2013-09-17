@@ -6,12 +6,10 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class MaterialDTO implements Serializable {
 
-
-	
-	
 	private Integer id;
 	private Integer idCentro;
-	//private String nombreCentro;
+	private Integer idNivel;
+	private Integer idTipoActividad;
 	private String codigo;
 	private String tipo;
 	private String rbd;
@@ -40,15 +38,24 @@ public class MaterialDTO implements Serializable {
 		this.idCentro = idCentro;
 	}
 
-	
-//	public String getNombreCentro() {
-//		return nombreCentro;
-//	}
-//
-//
-//	public void setNombreCentro(String nombreCentro) {
-//		this.nombreCentro = nombreCentro;
-//	}
+	public Integer getIdNivel() {
+		return idNivel;
+	}
+
+
+	public void setIdNivel(Integer idNivel) {
+		this.idNivel = idNivel;
+	}
+
+
+	public Integer getIdTipoActividad() {
+		return idTipoActividad;
+	}
+
+
+	public void setIdTipoActividad(Integer idTipoActividad) {
+		this.idTipoActividad = idTipoActividad;
+	}
 
 
 	public String getCodigo() {

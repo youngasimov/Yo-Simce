@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.hibernate.context.internal.ManagedSessionContext;
 import com.dreamer8.yosimce.client.planificacion.PlanificacionService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadHistorialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ContactoCargoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
@@ -27,6 +29,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadHistorial;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
@@ -264,44 +267,69 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					throw new NullPointerException(
 							"No existe una actividad para este curso en el nivel seleccionado");
 				}
+
+				ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+				ActividadHistorial ah = ahdao.findLastByIdActividad(a.getId());
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
-				ActividadEstado ae = aedao.getById(itemAgenda.getEstado()
-						.getId());
+				ActividadEstado ae = aedao
+						.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
+				
+				if (ah != null && ah.getFechaInicio() != null) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(itemAgenda.getFecha());
+					int yearNew = calendar.get(Calendar.YEAR);
+					int monthNew = calendar.get(Calendar.MONTH);
+					int dayNew = calendar.get(Calendar.DAY_OF_MONTH);
+					int hourNew = calendar.get(Calendar.HOUR_OF_DAY);
+					int minNew = calendar.get(Calendar.MINUTE);
+					calendar.setTime(ah.getFechaInicio());
+					int yearHist = calendar.get(Calendar.YEAR);
+					int monthHist = calendar.get(Calendar.MONTH);
+					int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+					int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+					int minHist = calendar.get(Calendar.MINUTE);
+
+					if (yearHist == yearNew && monthHist == monthNew
+							&& dayHist == dayNew && hourHist == hourNew
+							&& minHist == minNew) {
+						ae = aedao.getById(itemAgenda.getEstado().getId());
+					}
+				}
 				if (ae == null) {
 					throw new NullPointerException(
 							"El estado especificado no existe");
 				}
 
-//				if (idAplicacion == 2
-//						&& a.getAplicacionXNivelXActividadTipo()
-//								.getActividadTipo().getNombre()
-//								.equals(ActividadTipo.APLICACION_DIA_1)) {
-//					if (itemAgenda.getFecha() != null) {
-//						Actividad visitaPrevia = adao
-//								.findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
-//										idAplicacion, idNivel, idCurso,
-//										ActividadTipo.VISITA_PREVIA);
-//						if (visitaPrevia == null
-//								|| !ActividadEstado.SIN_INFORMACION
-//										.equals(visitaPrevia
-//												.getActividadEstado()
-//												.getNombre())
-//								|| visitaPrevia.getFechaInicio() == null) {
-//							throw new ConsistencyException(
-//									"Primero debe agendarse la visita previa.");
-//						}
-//
-//						Long diff = itemAgenda.getFecha().getTime()
-//								- visitaPrevia.getFechaInicio().getTime();
-//						Double dias = diff.doubleValue()
-//								/ (1000 * 60 * 60 * 24);
-//
-//						if (dias < 7) {
-//							throw new ConsistencyException(
-//									"La aplicación debe realizarse al menos 7 días después de la visita previa.");
-//						}
-//					}
-//				}
+				// if (idAplicacion == 2
+				// && a.getAplicacionXNivelXActividadTipo()
+				// .getActividadTipo().getNombre()
+				// .equals(ActividadTipo.APLICACION_DIA_1)) {
+				// if (itemAgenda.getFecha() != null) {
+				// Actividad visitaPrevia = adao
+				// .findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
+				// idAplicacion, idNivel, idCurso,
+				// ActividadTipo.VISITA_PREVIA);
+				// if (visitaPrevia == null
+				// || !ActividadEstado.SIN_INFORMACION
+				// .equals(visitaPrevia
+				// .getActividadEstado()
+				// .getNombre())
+				// || visitaPrevia.getFechaInicio() == null) {
+				// throw new ConsistencyException(
+				// "Primero debe agendarse la visita previa.");
+				// }
+				//
+				// Long diff = itemAgenda.getFecha().getTime()
+				// - visitaPrevia.getFechaInicio().getTime();
+				// Double dias = diff.doubleValue()
+				// / (1000 * 60 * 60 * 24);
+				//
+				// if (dias < 7) {
+				// throw new ConsistencyException(
+				// "La aplicación debe realizarse al menos 7 días después de la visita previa.");
+				// }
+				// }
+				// }
 
 				a.setFechaInicio(itemAgenda.getFecha());
 				a.setUsuario(u);

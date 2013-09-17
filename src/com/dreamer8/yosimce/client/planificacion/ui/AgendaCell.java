@@ -26,7 +26,8 @@ public class AgendaCell extends AbstractCell<AgendaItemDTO> {
 	@Override
 	public void render(com.google.gwt.cell.client.Cell.Context context,AgendaItemDTO value, SafeHtmlBuilder sb) {
 		renderer.render(sb,dateFormat.format(value.getFecha())+" a las "+timeFormat.format(value.getFecha()), value.getEstado().getEstado(),
-				value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno(), value.getComentario());
+				((value.getCreador() != null)?value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno():""),
+				((value.getComentario() != null)?value.getComentario():""));
 	}
 	
 	
