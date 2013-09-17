@@ -1236,17 +1236,26 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
 	}
 	
+	private void setOrUpdateMaterialesList(){
+		
+		ArrayList<MaterialWrap> mwList = new ArrayList<MaterialWrap>();
+		//for(materiales)
+		
+		materialDataProvider.setList(materiales);
+		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
+	}
+	
 	private void buildFiltro(){
 		ArrayList<String> tipos = new ArrayList<String>();
-		ArrayList<String> niveles = new ArrayList<String>();
+		//ArrayList<String> niveles = new ArrayList<String>();
 		ArrayList<String> etapas = new ArrayList<String>();
 		for(MaterialWrap mw:materiales){
 			if(mw.getMaterial().getTipo()!=null && !tipos.contains(mw.getMaterial().getTipo())){
 				tipos.add(mw.getMaterial().getTipo());
 			}
-			if(mw.getMaterial().getNivel()!=null && !niveles.contains(mw.getMaterial().getNivel())){
+			/*if(mw.getMaterial().getNivel()!=null && !niveles.contains(mw.getMaterial().getNivel())){
 				niveles.add(mw.getMaterial().getNivel());
-			}
+			}*/
 			if(mw.getMaterial().getEtapa()!=null && !etapas.contains(mw.getMaterial().getEtapa())){
 				etapas.add(mw.getMaterial().getEtapa());
 			}
@@ -1267,7 +1276,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			}
 			submenu.addItem("Tipos de material", tiposMenuBar);
 		}
-		if(niveles.size()>1){
+		/*if(niveles.size()>1){
 			MenuBar nivelesMenuBar = new MenuBar(true);
 			for(final String nivel:niveles){
 				nivelesMenuBar.addItem(nivel, new Scheduler.ScheduledCommand() {
@@ -1279,7 +1288,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				});
 			}
 			submenu.addItem("Niveles", nivelesMenuBar);
-		}
+		}*/
 		if(etapas.size()>1){
 			MenuBar etapasMenuBar = new MenuBar(true);
 			for(final String etapa:etapas){
@@ -1298,8 +1307,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			
 			@Override
 			public void execute() {
-				materialDataProvider.setList(materiales);
-				view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
+				setOrUpdateMaterialesList();
 			}
 		});
 		

@@ -78,7 +78,7 @@ public class ClientFactoryD implements ClientFactory {
 			.create(MaterialService.class);
 	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync) GWT
 			.create(AdministracionService.class);
-
+	
 	private final LoadView loadView = new LoadViewD();
 	private final AppView appView = new AppViewD();
 	private final HeaderView headerView = new HeaderViewD();

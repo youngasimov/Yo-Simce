@@ -91,9 +91,9 @@
 				<g:tab>
      				<g:header size='10'>Material</g:header>
      				<g:SplitLayoutPanel ui:field="materialPanel">
-     					<g:south size='200'>
+     					<g:south size='150'>
 	     					<g:SplitLayoutPanel >
-	     						<g:east size='450'>
+	     						<g:east size='250'>
 	     							<g:DockLayoutPanel unit='PX'>
 	     								<g:north size='20'>
 	     									<g:Label addStyleNames='{style.subtitle}' text="Detalles"/>
@@ -169,6 +169,7 @@
        				<g:header size='10'>Pre despacho</g:header> 
        				<g:SplitLayoutPanel ui:field="predespachoPanel">
        					<g:west size='300'>
+       						<g:ScrollPanel>
        						<g:DecoratorPanel addStyleNames='{style.actionsPanel}'>
 	       						<g:HTMLPanel>
 	       							<table class='{style.actions}'>
@@ -194,6 +195,7 @@
 	       							</table>
 	       						</g:HTMLPanel>
        						</g:DecoratorPanel>
+       						</g:ScrollPanel>
        					</g:west>
        					<g:center>
        						<c:DataGrid addStyleNames='{style.data}' ui:field="predespachoGrid"/>
@@ -204,6 +206,7 @@
        				<g:header size='10'>Despacho</g:header> 
        				<g:SplitLayoutPanel ui:field="despachoPanel">
        					<g:west size='300'>
+       						<g:ScrollPanel>
        						<g:DecoratorPanel addStyleNames='{style.actionsPanel}'>
 	       						<g:HTMLPanel>
 	       							<table class='{style.actions}'>
@@ -244,6 +247,7 @@
 	       							</table>
 	       						</g:HTMLPanel>
        						</g:DecoratorPanel>
+       						</g:ScrollPanel>
        					</g:west>
        					<g:center>
        						<c:DataGrid addStyleNames='{style.data}' ui:field="despachoGrid"/>

@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.ui;
 
+import com.dreamer8.yosimce.client.GATracker;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
@@ -41,6 +42,7 @@ public class AppViewD extends Composite implements AppView {
 	@UiField SimpleLayoutPanel sidebarPanel;
 	@UiField SimpleLayoutPanel contentPanel;
 	@UiField Image barload;
+	@UiField Image dreamerImage;
 	@UiField FocusPanel logout;
 	@UiField AnchorElement manual;
 	
@@ -75,9 +77,16 @@ public class AppViewD extends Composite implements AppView {
 		messages = 0;
 	}
 	
+	
+	
 	@UiHandler("sidebarFocusPanel")
 	void onSidebarMouseOut(MouseOutEvent event){
 		presenter.onMouseOutFromPanel();
+	}
+	
+	@UiHandler("dreamerImage")
+	void onDreamerClick(ClickEvent event){
+		GATracker.trackEvent("link","dreamer.com");
 	}
 	
 	@UiHandler("logout")

@@ -32,7 +32,6 @@ import com.google.web.bindery.event.shared.EventBus;
 public interface ClientFactory {
 
 	boolean onTesting();
-	
 	EventBus getEventBus();
 	PlaceController getPlaceController();
 	PlaceHistoryMapper getPlaceHistoryMapper();

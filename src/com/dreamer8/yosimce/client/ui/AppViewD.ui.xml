@@ -129,7 +129,7 @@
     	<g:south size='30'>
     		<g:HTMLPanel addStyleNames='{style.footer}'>
     			<g:Image addStyleNames='{style.imageCenter}' resource='{res.barLoad}' ui:field="barload" />
-    			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageLeft}'><g:Image resource='{res.dreamer}'/></a>
+    			<a href='http://www.dreamer8.com' target="_blank" class='{style.imageLeft}'><g:Image ui:field="dreamerImage" resource='{res.dreamer}'/></a>
     			<a ui:field='manual' target="_blank" class='{style.imageLeft}' title='manual de usuario'><g:Image resource='{res.pdfDownload}'  altText="manual de usuario" /></a>
     			<g:FocusPanel addStyleNames='{style.logout}' ui:field='logout' title="Cerrar sesión">
     				<g:HTMLPanel>

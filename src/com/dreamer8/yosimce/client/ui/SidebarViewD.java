@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client.ui;
 
+import com.dreamer8.yosimce.client.GATracker;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
@@ -72,66 +73,79 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiHandler("detalleCursoViewItem")
 	void onDetalleCursoViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Detalle curso");
 		presenter.goTo(new DetalleCursoPlace());
 	}
 	
 	@UiHandler("agendamientosViewItem")
 	void onAgendamientosViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Lista agendamientos");
 		presenter.goTo(new AgendamientosPlace());
 	}
 	
 	@UiHandler("detalleAgendaViewItem")
 	void onDetalleAgendaViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Detalles de agenda");
 		presenter.goTo(new DetalleAgendaPlace());
 	}
 	
 	@UiHandler("agendarVisitaActionItem")
 	void onAgendarVisitaActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Agendar visita");
 		presenter.goTo(new AgendarVisitaPlace());
 	}
 	
 	@UiHandler("actividadesViewItem")
 	void onActividadesViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Lista de actividades");
 		presenter.goTo(new ActividadesPlace());
 	}
 	
 	@UiHandler("formularioActividadActionItem")
 	void onFormularioActividadActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Formulario actividad");
 		presenter.goTo(new FormActividadPlace());
 	}
 	
 	@UiHandler("sincronizacionActionItem")
 	void onSincronizacionActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Sincronización");
 		presenter.goTo(new SincronizacionPlace());
 	}
 	
 	@UiHandler("materialDefectuosoActionItem")
 	void onMaterialDefectousoActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Material defectuoso");
 		presenter.goTo(new MaterialDefectuosoPlace());
 	}
 	
 	@UiHandler("aprobarSupervisoresActionItem")
 	void onAprobarSupervisoresActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Evaluación supervisores");
 		presenter.goTo(new AprobarSupervisoresPlace());
 	}
 	
 	@UiHandler("centroOperacionViewItem")
 	void onCentroOperacionViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Centro operación");
 		presenter.goTo(new CentroOperacionPlace());
 	}
 	
 	@UiHandler("administrarUsuariosActionItem")
 	void onAdministrarUsuariosActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Administrar usuarios");
 		presenter.goTo(new AdminUsuariosPlace());
 	}
 	
 	@UiHandler("administrarEventosActionItem")
 	void onAdministrarEventosActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Administrar eventos");
 		presenter.goTo(new AdminEventosPlace());
 	}
 	
 	@UiHandler("administrarPermisosActionItem")
 	void onAdministrarPermisosActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Administrar permisos");
 		presenter.goTo(new PermisosPlace());
 	}
 	

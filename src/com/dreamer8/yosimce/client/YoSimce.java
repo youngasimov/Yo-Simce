@@ -48,6 +48,8 @@ public class YoSimce implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		
+		
+		
 		defaultPlace = new SimcePlace();
 		loginService = (LoginServiceAsync)GWT.create(LoginService.class);
 		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(10000));
@@ -82,7 +84,7 @@ public class YoSimce implements EntryPoint {
 		if(token == null || token.length()==0){
 			loadView.setMessage("Usuario no registrado");
 			user = null;
-			loadApp();
+			notLogged();
 		}else{
 			
 			loginService.getUser(token, new AsyncCallback<UserDTO>() {
@@ -150,6 +152,11 @@ public class YoSimce implements EntryPoint {
 		
 		factory = GWT.create(ClientFactory.class);
 		
+		
+		GATracker.setSessionCookieTimeout(0);
+		GATracker.setSiteSpeedSampleRate(5);
+		GATracker.trackPageview();
+		
 		AppPresenter app = new AppPresenter(factory);
 		app.setDisplay(panel);
 		
@@ -168,6 +175,8 @@ public class YoSimce implements EntryPoint {
 		historyHandler.register(factory.getPlaceController(), factory.getEventBus(), defaultPlace);
 		historyHandler.handleCurrentHistory();
 	}
+	
+	
 	
 	private void notLogged(){
 		StorageExt storage = StorageExt.getLocalStorage();

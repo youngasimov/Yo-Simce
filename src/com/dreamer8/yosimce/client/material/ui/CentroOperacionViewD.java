@@ -695,7 +695,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		etapaColumn.setSortable(true);
 		materialGrid.addColumn(etapaColumn,"Etapa");
-		
+		materialGrid.setColumnWidth(etapaColumn, "100px");
 		buildUpdateColumn(materialGrid);
 	}
 	
@@ -804,6 +804,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		tipoColumn.setSortable(true);
 		d.addColumn(tipoColumn,"Tipo");
+		d.setColumnWidth(tipoColumn, "160px");
 		
 		Column<MaterialWrap,String> rbdColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -825,6 +826,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		establecimientoColumn.setSortable(true);
 		d.addColumn(establecimientoColumn,"Establecimiento");
+		d.setColumnWidth(establecimientoColumn, "240px");
 		
 		Column<MaterialWrap,String> nivelColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -835,7 +837,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		};
 		nivelColumn.setSortable(true);
 		d.addColumn(nivelColumn,"Nivel");
-		d.setColumnWidth(nivelColumn, "90px");
+		d.setColumnWidth(nivelColumn, "100px");
 		
 		Column<MaterialWrap,String> cursoColumn = new Column<MaterialWrap,String>(new TextCell()){
 
@@ -867,7 +869,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			}
 		});
 		d.addColumn(updateColumn,"");
-		d.setColumnWidth(updateColumn, "120px");
+		d.setColumnWidth(updateColumn, "110px");
 	}
 	
 	private void configureSortHandler(DataGrid<MaterialWrap> d, ListHandler<MaterialWrap> h){
