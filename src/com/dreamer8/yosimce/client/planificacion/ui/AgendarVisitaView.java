@@ -17,6 +17,8 @@ public interface AgendarVisitaView extends IsWidget {
 	
 	HasData<AgendaItemDTO> getDataDisplay();
 	
+	void setUltimoEstado(AgendaItemDTO item);
+	
 	void setNombreEstablecimiento(String establecimiento);
 	
 	void setEstadosAgenda(ArrayList<EstadoAgendaDTO> estados);

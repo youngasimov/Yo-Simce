@@ -124,9 +124,13 @@ public class AgendarVisitaActivity extends SimceActivity implements
 						view.getDataDisplay().setRowCount(result.getItems().size());
 						
 						Collections.reverse(agenda.getItems());
-	
+						
 						view.getDataDisplay().setVisibleRange(0,result.getItems().size());
 						view.getDataDisplay().setRowData(0, result.getItems());
+						
+						if(agenda.getItems() != null && !agenda.getItems().isEmpty()){
+							view.setUltimoEstado(agenda.getItems().get(0));
+						}
 					}
 				});
 			}
@@ -175,10 +179,13 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			return;
 		}
 		
-		if(view.getComentario() == null || view.getComentario().isEmpty()){
-			view.setFocusOnComment();
-			eventBus.fireEvent(new MensajeEvent("Debe ingresar comentario",MensajeEvent.MSG_WARNING,false));
-			return;
+		if(agenda.getItems()!=null && !agenda.getItems().isEmpty()){
+			AgendaItemDTO ai = agenda.getItems().get(0);
+			if(!ai.getFecha().equals(view.getFechaHoraSeleccionada()) && (view.getComentario() == null || view.getComentario().isEmpty())){
+				view.setFocusOnComment();
+				eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario",MensajeEvent.MSG_WARNING,false));
+				return;
+			}
 		}
 		
 		AgendaItemDTO aidto = new AgendaItemDTO();

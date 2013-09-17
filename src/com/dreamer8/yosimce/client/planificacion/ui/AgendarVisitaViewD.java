@@ -80,6 +80,8 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	private ContactoDTO director;
 	private ArrayList<CargoDTO> cargos;
 	
+	private AgendaItemDTO lastItem;
+	
 	public AgendarVisitaViewD() {
 		cell = new AgendaCell();
 		agendaList = new CellList<AgendaItemDTO>(cell);
@@ -306,6 +308,20 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	public HasData<AgendaItemDTO> getDataDisplay() {
 		return agendaList;
 	}
+	
+	@Override
+	public void setUltimoEstado(AgendaItemDTO item) {
+		lastItem = item;
+		fechaPicker.setValue(item.getFecha());
+		fechaLabel.setText(format.format(item.getFecha()));
+		timeBox.setValue(item.getFecha().getTime());
+		for(int i=0; i<estadoBox.getItemCount(); i++){
+			if(Integer.parseInt(estadoBox.getValue(i)) == item.getEstado().getId()){
+				estadoBox.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
 
 	@Override
 	public void setNombreEstablecimiento(String establecimiento) {
@@ -317,6 +333,14 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		 estadoBox.clear();
 		 for(EstadoAgendaDTO ea:estados){
 			 estadoBox.addItem(ea.getEstado(),ea.getId()+"");
+		 }
+		 if(lastItem != null){
+			 for(int i=0; i<estadoBox.getItemCount(); i++){
+				if(Integer.parseInt(estadoBox.getValue(i)) == lastItem.getEstado().getId()){
+					estadoBox.setSelectedIndex(i);
+					break;
+				}
+			 }
 		 }
 	}
 
