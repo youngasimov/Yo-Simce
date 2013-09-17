@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client.material;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
@@ -44,6 +46,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 	private ListDataProvider<MaterialWrap> despachoDataProvider;
 
 	private ArrayList<MaterialWrap> materiales;
+	private ArrayList<MaterialWrap> materialesVisibles;
 	private ArrayList<EmplazamientoDTO> cosAsociados;
 	private ArrayList<EmplazamientoDTO> allCos;
 	private EmplazamientoDTO co;
@@ -57,6 +60,21 @@ public class CentroOperacionActivity extends SimceActivity implements
 	private String selectedRetiranteRut;
 	private LocalMaterialService localService;
 	private String userKey;
+	private Comparator<MaterialWrap> comparator = new Comparator<MaterialWrap>() {
+
+		@Override
+		public int compare(MaterialWrap o1, MaterialWrap o2) {
+			if(o1.getMaterial().getNivel()!=null && !o1.getMaterial().getNivel().equals(o2.getMaterial().getNivel())){
+				return o1.getMaterial().getNivel().compareToIgnoreCase(o2.getMaterial().getNivel());
+			}else if(o1.getMaterial().getTipo()!=null && !o1.getMaterial().getTipo().equals(o2.getMaterial().getTipo())){
+				return o1.getMaterial().getTipo().compareToIgnoreCase(o2.getMaterial().getTipo());
+			}else if(o1.getMaterial().getEstablecimiento()!=null && !o1.getMaterial().getEstablecimiento().equals(o2.getMaterial().getEstablecimiento())){
+				return o1.getMaterial().getEstablecimiento().compareToIgnoreCase(o2.getMaterial().getEstablecimiento());
+			}else{
+				return o1.getMaterial().getCodigo().compareToIgnoreCase(o2.getMaterial().getCodigo());
+			}
+		}
+	};
 	
 
 	public CentroOperacionActivity(ClientFactory factory,
@@ -83,6 +101,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				new ArrayList<MaterialWrap>(), MaterialWrap.KEY_PROVIDER);
 		despachoDataProvider.addDataDisplay(view.getDespachoDataDisplay());
 		materiales = new ArrayList<MaterialWrap>();
+		materialesVisibles = new ArrayList<MaterialWrap>();
 		view.setTotalMaterialIngresando(0);
 		view.setTotalMaterialEnLote(0);
 		view.setTotalMaterialDespachando(0);
@@ -300,7 +319,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		ArrayList<String> codigos = localService.getLastDespacho(userKey+"-"+place.getCentroId());
 		if(codigos!=null && !codigos.isEmpty()){
 			ArrayList<MaterialWrap> ms = new ArrayList<MaterialWrap>();
-			for(MaterialWrap mw:materiales){
+			for(MaterialWrap mw:materialesVisibles){
 				if(codigos.contains(mw.getMaterial().getCodigo())){
 					ms.add(mw);
 				}
@@ -399,17 +418,21 @@ public class CentroOperacionActivity extends SimceActivity implements
 		}
 		for (MaterialWrap m : materiales) {
 			if (m.getMaterial().getCodigo().equals(id) && m.getMaterial().getEtapa()!=null && m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)) {
-				if (!predespachoDataProvider.getList().contains(m)) {
+				if(!materialesVisibles.contains(m)){
+					eventBus.fireEvent(new MensajeEvent(
+							"Este material no esta asignado al nivel o tipo de actividad seleccionado",
+							MensajeEvent.MSG_WARNING, true));
+				}else if(predespachoDataProvider.getList().contains(m)){
+					eventBus.fireEvent(new MensajeEvent(
+							"El código ingresado ya esta en la lista",
+							MensajeEvent.MSG_WARNING, true));
+				}else {
 					predespachoDataProvider.getList().add(m);
 					view.setTotalMaterialEnLote(predespachoDataProvider
 							.getList().size());
 					view.setPredespachoSortHandler(new ListHandler<MaterialWrap>(
 							predespachoDataProvider.getList()));
-				} else {
-					eventBus.fireEvent(new MensajeEvent(
-							"El código ingresado ya esta en la lista",
-							MensajeEvent.MSG_WARNING, true));
-				}
+				} 
 				return;
 			}
 		}
@@ -424,9 +447,17 @@ public class CentroOperacionActivity extends SimceActivity implements
 		MaterialWrap mat = null;
 		for (MaterialWrap m : materiales) {
 			if (m.getMaterial().getCodigo().equals(id) && m.getMaterial().getEtapa()!=null && m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)) {
-				mat = m;
-				if (!despachoDataProvider.getList().contains(m)) {
-					despachoDataProvider.getList().add(m);
+				
+				if(!materialesVisibles.contains(m)){
+					eventBus.fireEvent(new MensajeEvent(
+							"Este material no esta asignado al nivel o tipo de actividad seleccionado",
+							MensajeEvent.MSG_WARNING, true));
+					return;
+				}else{
+					mat = m;
+					if (!despachoDataProvider.getList().contains(m)) {
+						despachoDataProvider.getList().add(m);
+					}
 				}
 				break;
 			}
@@ -434,7 +465,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 		if (view.getAddByLote() && mat != null
 				&& mat.getMaterial().getLote() != null) {
-			for (MaterialWrap m : materiales) {
+			for (MaterialWrap m : materialesVisibles) {
 				if (m.getMaterial().getLote()!= null && m.getMaterial().getLote().getId() == mat.getMaterial()
 						.getLote().getId()) {
 					if (!despachoDataProvider.getList().contains(m)) {
@@ -578,6 +609,16 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	@Override
 	public void onCrearLote(String nuevoLote) {
+		for(LoteDTO l:lotes){
+			if(l.getId() == -2){
+				eventBus.fireEvent(new MensajeEvent(
+						"Hay un lote anterior que no se a guardado en el servidor, Guardelo antes de crear otro lote",
+						MensajeEvent.MSG_WARNING, true));
+				view.selectLote(-2);
+				onLoteSelected(-2);
+				return;
+			}
+		}
 		LoteDTO l = new LoteDTO();
 		l.setNombre(nuevoLote);
 		l.setId(-2);
@@ -630,7 +671,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		}
 
 		ArrayList<MaterialWrap> lote = new ArrayList<MaterialWrap>();
-		for (MaterialWrap m : materiales) {
+		for (MaterialWrap m : materialesVisibles) {
 			if (m.getMaterial().getLote() != null && m.getMaterial().getLote().getId() == selectedLote.getId()) {
 				lote.add(m);
 			}
@@ -804,11 +845,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 				@Override
 				public void success(ArrayList<MaterialDTO> result) {
 					materiales = wrap(result);
-					materialDataProvider.setList(materiales);
-					view.setMaterialSortHandler(new ListHandler<MaterialWrap>(
-							materialDataProvider.getList()));
+					setOrUpdateMaterialesList();
 					extractLotes();
-					buildFiltro();
 				}
 			});
 		}
@@ -856,7 +894,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				break;
 			}
 		}
-		for (MaterialWrap mw : materiales) {
+		for (MaterialWrap mw : materialesVisibles) {
 			if (mw.getMaterial().getLote() != null
 					&& mw.getMaterial().getLote().getId() == loteId) {
 				mw.getMaterial().setLote(null);
@@ -911,7 +949,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			lotes = new ArrayList<LoteDTO>();
 		}
 		lotes.clear();
-		for (MaterialWrap m : materiales) {
+		for (MaterialWrap m : materialesVisibles) {
 			if (m.getMaterial().getLote() != null
 					&& !lotes.contains(m.getMaterial().getLote())) {
 				lotes.add(m.getMaterial().getLote());
@@ -1223,33 +1261,46 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	private void executeFiltro(String key, String value){
 		ArrayList<MaterialWrap> filtro = new ArrayList<MaterialWrap>();
-		for(MaterialWrap mw:materiales){
+		for(MaterialWrap mw:materialesVisibles){
 			if(key.equals("Tipos de material") && mw.getMaterial().getTipo()!=null && mw.getMaterial().getTipo().equals(value)){
 				filtro.add(mw);
-			}else if(key.equals("Niveles") && mw.getMaterial().getNivel()!=null && mw.getMaterial().getNivel().equals(value)){
+			}/*else if(key.equals("Niveles") && mw.getMaterial().getNivel()!=null && mw.getMaterial().getNivel().equals(value)){
 				filtro.add(mw);
-			}else if(key.equals("Etapas") && mw.getMaterial().getEtapa()!=null && mw.getMaterial().getEtapa().equals(value)){
+			}*/else if(key.equals("Etapas") && mw.getMaterial().getEtapa()!=null && mw.getMaterial().getEtapa().equals(value)){
 				filtro.add(mw);
 			}
 		}
+		
+		Collections.sort(filtro, comparator);
+		
 		materialDataProvider.setList(filtro);
 		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
 	}
 	
 	private void setOrUpdateMaterialesList(){
+		materialesVisibles.clear();
+		for(MaterialWrap mw:materiales){
+			if(mw.getMaterial().getIdNivel() != null &&
+					mw.getMaterial().getIdTipoActividad() != null &&
+					mw.getMaterial().getIdCentro() == place.getCentroId() &&
+					mw.getMaterial().getIdTipoActividad() == place.getTipoId()){
+				materialesVisibles.add(mw);
+			}
+		}
 		
-		ArrayList<MaterialWrap> mwList = new ArrayList<MaterialWrap>();
-		//for(materiales)
+		Collections.sort(materialesVisibles, comparator);
 		
-		materialDataProvider.setList(materiales);
+		materialDataProvider.setList(materialesVisibles);
 		view.setMaterialSortHandler(new ListHandler<MaterialWrap>(materialDataProvider.getList()));
+		extractLotes();
+		buildFiltro();
 	}
 	
 	private void buildFiltro(){
 		ArrayList<String> tipos = new ArrayList<String>();
 		//ArrayList<String> niveles = new ArrayList<String>();
 		ArrayList<String> etapas = new ArrayList<String>();
-		for(MaterialWrap mw:materiales){
+		for(MaterialWrap mw:materialesVisibles){
 			if(mw.getMaterial().getTipo()!=null && !tipos.contains(mw.getMaterial().getTipo())){
 				tipos.add(mw.getMaterial().getTipo());
 			}
