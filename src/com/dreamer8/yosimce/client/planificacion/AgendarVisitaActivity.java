@@ -173,23 +173,12 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	@Override
 	public void onModificarAgendaClick() {
 		
-		if(!agenda.getItems().isEmpty() && agenda.getItems().get(0).getEstado().getId()==view.getIdEstadoAgendaSeleccionado()){
-			view.setFocusOnEstado();
-			eventBus.fireEvent(new MensajeEvent("El estado debe ser distinto al último estado agendado",MensajeEvent.MSG_WARNING,false));
-			return;
-		}
-		
-		if(agenda.getItems()!=null && !agenda.getItems().isEmpty()){
-			AgendaItemDTO ai = agenda.getItems().get(0);
-			if(!ai.getFecha().equals(view.getFechaHoraSeleccionada()) && (view.getComentario() == null || view.getComentario().isEmpty())){
-				view.setFocusOnComment();
-				eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario",MensajeEvent.MSG_WARNING,false));
-				return;
-			}
+		AgendaItemDTO last = null;
+		if(!agenda.getItems().isEmpty()){
+			last = agenda.getItems().get(0);
 		}
 		
 		AgendaItemDTO aidto = new AgendaItemDTO();
-		
 		for(EstadoAgendaDTO eadto:estados){
 			if(eadto.getId() == view.getIdEstadoAgendaSeleccionado()){
 				aidto.setEstado(eadto);
@@ -197,8 +186,49 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			}
 		}
 		aidto.setFecha(view.getFechaHoraSeleccionada());
-		
 		aidto.setComentario(view.getComentario());
+		
+		if(last == null){
+			updateAgenda(aidto);
+			return;
+		}
+		if(last.getEstado().getId() == aidto.getEstado().getId() && (aidto.getComentario() == null || aidto.getComentario().isEmpty())){
+			eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario",MensajeEvent.MSG_WARNING,true));
+			return;
+		}
+		if(last.getEstado().getId() == aidto.getEstado().getId() && !last.getFecha().equals(aidto.getFecha())){
+			eventBus.fireEvent(new MensajeEvent("La fecha no puede ser modificada al agendar para el mismo estado anterior",MensajeEvent.MSG_WARNING,false));
+			view.setUltimoEstado(last);
+			return;
+		}
+		if(last.getEstado().getId() == aidto.getEstado().getId() &&
+				last.getFecha().equals(aidto.getFecha()) &&
+				aidto.getComentario() != null &&
+				!aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		if(last.getEstado().getId() != aidto.getEstado().getId() &&
+				!last.getFecha().equals(aidto.getFecha()) &&
+				(aidto.getComentario() == null ||
+				aidto.getComentario().isEmpty())){
+			eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario que justifique el cambio de fecha",MensajeEvent.MSG_WARNING,false));
+			return;
+		}
+		if(last.getEstado().getId() != aidto.getEstado().getId()){
+			updateAgenda(aidto);
+			return;
+		}
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		view.clear();
+		agenda = null;
+	}
+	
+	private void updateAgenda(AgendaItemDTO aidto){
 		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "AgendarVisita")){
 			getFactory().getPlanificacionService().AgendarVisita(place.getCursoId(), aidto,new SimceCallback<AgendaItemDTO>(eventBus,true) {
 	
@@ -211,12 +241,5 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				}
 			});
 		}
-	}
-	
-	@Override
-	public void onStop() {
-		super.onStop();
-		view.clear();
-		agenda = null;
 	}
 }
