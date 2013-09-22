@@ -46,7 +46,7 @@ public class MensajeEvent extends GwtEvent<MensajeEvent.MensajeHandler> {
 	}
 
 	@Override
-	public com.google.gwt.event.shared.GwtEvent.Type<MensajeHandler> getAssociatedType() {
+	public Type<MensajeHandler> getAssociatedType() {
 		return TYPE;
 	}
 

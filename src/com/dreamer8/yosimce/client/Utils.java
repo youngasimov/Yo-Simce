@@ -12,8 +12,10 @@ public class Utils {
 	}
 	
 	public static boolean hasPermisos(EventBus eventBus, HashMap<String,ArrayList<String>> permisos, String modulo, String permiso){
-		if(permisos.get(modulo).contains(permiso)){
-			GATracker.trackEvent("rpc call",modulo, permiso);
+		if(permisos.containsKey(modulo) && permisos.get(modulo).contains(permiso)){
+			if(eventBus!=null){
+				GATracker.trackEvent("rpc call",modulo, permiso);
+			}
 			return true;
 		}else if(eventBus != null){
 			eventBus.fireEvent(new MensajeEvent("No tiene los permisos suficientes para "+permiso+ " en "+modulo , MensajeEvent.MSG_PERMISOS, true));
