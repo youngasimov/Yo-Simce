@@ -35,7 +35,7 @@ public class SincronizacionActivity extends SimceActivity implements
 	
 	public SincronizacionActivity(ClientFactory factory, SincronizacionPlace place,
 			HashMap<String, ArrayList<String>> permisos) {
-		super(factory, place, permisos,true);
+		super(factory, place, permisos);
 		this.place = place;
 		this.view = getFactory().getSincronizacionView();
 		this.view.setPresenter(this);

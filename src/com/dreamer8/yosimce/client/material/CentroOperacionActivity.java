@@ -80,7 +80,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 	public CentroOperacionActivity(ClientFactory factory,
 			CentroOperacionPlace place,
 			HashMap<String, ArrayList<String>> permisos) {
-		super(factory, place, permisos, true);
+		super(factory, place, permisos);
 		this.place = place;
 		this.view = getFactory().getCentroOperacionView();
 		this.view.setPresenter(this);

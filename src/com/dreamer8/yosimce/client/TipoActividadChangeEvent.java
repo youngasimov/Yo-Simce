@@ -27,7 +27,7 @@ public class TipoActividadChangeEvent extends Event<TipoActividadChangeEvent.Tip
 
 
 	@Override
-	public com.google.web.bindery.event.shared.Event.Type<TipoActividadChangeHandler> getAssociatedType() {
+	public Type<TipoActividadChangeHandler> getAssociatedType() {
 		return TYPE;
 	}
 

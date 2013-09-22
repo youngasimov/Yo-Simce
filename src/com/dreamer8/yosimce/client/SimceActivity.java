@@ -22,19 +22,12 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 	
 	private EventBus eventBus;
 	
-	private boolean requiereTipo;
-	
 	private int tipoActividadId;
 	
 	public SimceActivity(ClientFactory factory, SimcePlace place,HashMap<String,ArrayList<String>> permisos){
-		this(factory,place,permisos,true);
-	}
-	
-	public SimceActivity(ClientFactory factory, SimcePlace place,HashMap<String,ArrayList<String>> permisos, boolean requiereTipo){
 		this.factory = factory;
 		this.permisos = permisos;
 		this.place = place;
-		this.requiereTipo = requiereTipo;
 		init = false;
 	}
 	
@@ -75,7 +68,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 			@Override
 			public void onPermisos(PermisosEvent event) {
 				permisos = event.getPermisos();
-				if(permisos!=null && ((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo))){
+				if(permisos!=null && !init && tipoActividadId>=0){
 					init = true;
 					init(panel,eventBus);
 				}
@@ -87,7 +80,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 			@Override
 			public void onTipoActividadChange(TipoActividadChangeEvent event) {
 				tipoActividadId = event.getIdTipo();
-				if(permisos!=null && ((!init && requiereTipo && tipoActividadId>=0) || (!init && !requiereTipo))){
+				if(permisos!=null && !init && tipoActividadId>=0){
 					init = true;
 					init(panel,eventBus);
 				}
@@ -96,7 +89,7 @@ public abstract class SimceActivity extends AbstractActivity implements SimcePre
 		
 		
 		
-		if((requiereTipo && tipoActividadId>=0 && permisos != null && !init) || (!requiereTipo && permisos != null && !init)){
+		if(!init && tipoActividadId>=0 && permisos != null){
 			init = true;
 			init(panel,eventBus);
 		}

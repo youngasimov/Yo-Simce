@@ -14,7 +14,7 @@ public class MenuActivity extends SimceActivity implements MenuPresenter {
 	
 	public MenuActivity(ClientFactory factory, SimcePlace place,
 			HashMap<String, ArrayList<String>> permisos) {
-		super(factory, place, permisos,true);
+		super(factory, place, permisos);
 		view = factory.getMenuView();
 		view.setPresenter(this);
 	}

@@ -22,7 +22,7 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	private EventBus eventBus; 
 	
 	public AprobarSupervisoresActivity(ClientFactory factory, SimcePlace place,HashMap<String, ArrayList<String>> permisos) {
-		super(factory, place, permisos,true);
+		super(factory, place, permisos);
 		this.view = getFactory().getAprobarSupervisoresView();
 		this.view.setPresenter(this);
 	}
