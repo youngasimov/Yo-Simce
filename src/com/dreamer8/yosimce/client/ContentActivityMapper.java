@@ -13,10 +13,6 @@ import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoActivity;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionActivity;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.administracion.AdminEventosActivity;
-import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
-import com.dreamer8.yosimce.client.administracion.AdminUsuariosActivity;
-import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosActivity;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
@@ -72,10 +68,6 @@ public class ContentActivityMapper implements ActivityMapper {
 			return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 		}else if(place instanceof CentroOperacionPlace){
 			return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
-		}else if(place instanceof AdminUsuariosPlace){
-			return new AdminUsuariosActivity(factory, (AdminUsuariosPlace)place, permisos);
-		}else if(place instanceof AdminEventosPlace){
-			return new AdminEventosActivity(factory, (AdminEventosPlace)place, permisos);
 		}else if(place instanceof PermisosPlace){
 			return new PermisosActivity(factory, (PermisosPlace)place, permisos);
 		}else if(place instanceof SimcePlace){

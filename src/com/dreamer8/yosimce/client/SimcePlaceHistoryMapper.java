@@ -5,9 +5,8 @@ import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
-import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
+import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -28,8 +27,7 @@ import com.google.gwt.place.shared.WithTokenizers;
 		MaterialDefectuosoPlace.Tokenizer.class,
 		AprobarSupervisoresPlace.Tokenizer.class,
 		CentroOperacionPlace.Tokenizer.class,
-		AdminUsuariosPlace.Tokenizer.class,
-		AdminEventosPlace.Tokenizer.class,
+		ReportesPlace.Tokenizer.class,
 		PermisosPlace.Tokenizer.class})
 public interface SimcePlaceHistoryMapper extends PlaceHistoryMapper {
 }

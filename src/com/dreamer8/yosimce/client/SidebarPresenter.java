@@ -8,9 +8,8 @@ import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
-import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
+import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -104,10 +103,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setAprobarSupervisoresActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof CentroOperacionPlace){
 					view.setCentroOperacionViewItemSelected(true);
-				}else if(event.getNewPlace() instanceof AdminUsuariosPlace){
-					view.setAdministrarUsuariosActionItemItemSelected(true);
-				}else if(event.getNewPlace() instanceof AdminEventosPlace){
-					view.setAdministrarEventosActionItemItemSelected(true);
+				}else if(event.getNewPlace() instanceof ReportesPlace){
+					view.setReportesActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof PermisosPlace){
 					view.setAdministrarPermisosActionItemItemSelected(true);
 				}else{
@@ -173,11 +170,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setMaterialVisivility(Utils.hasPermisos(permisos,"MaterialService","getCentrosOperacionAsociados") && Utils.hasPermisos(permisos,"MaterialService","getMateriales") && tipo);
 		view.setCentroOperacionViewItemVisivility(Utils.hasPermisos(permisos,"MaterialService","getCentrosOperacionAsociados") && Utils.hasPermisos(permisos,"MaterialService","getMateriales") && tipo);
 		
-		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")) ||
-				false ||
-				false);
-		view.setAdministrarUsuariosActionItemVisivility(false);
-		view.setAdministrarEventosActionItemVisivility(false);
+		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")));
+		view.setReportesActionItemVisivility(false);
 		view.setAdministrarPermisosActionItemVisivility(Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos"));
 	}
 }

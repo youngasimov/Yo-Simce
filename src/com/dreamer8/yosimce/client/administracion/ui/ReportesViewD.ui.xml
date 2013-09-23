@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	<ui:style>
+		.title {
+		font-size: 20px;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	
+	.title2{
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
+	}
+
+	.data{
+		font-size: 12px;
+	}
+	</ui:style>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Reportes</div> ></g:MenuItem>
+			</my:OverMenuBar>	
+		</g:north>
+		<g:center>
+			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}' />
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

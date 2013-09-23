@@ -1279,12 +1279,20 @@ public class CentroOperacionActivity extends SimceActivity implements
 	
 	private void setOrUpdateMaterialesList(){
 		materialesVisibles.clear();
-		for(MaterialWrap mw:materiales){
-			if(mw.getMaterial().getIdNivel() != null &&
-					mw.getMaterial().getIdTipoActividad() != null &&
-					mw.getMaterial().getIdCentro() == place.getCentroId() &&
-					mw.getMaterial().getIdTipoActividad() == place.getTipoId()){
-				materialesVisibles.add(mw);
+		
+		//********SIMCE TIC************
+		if(place.getAplicacionId() == 2){
+			materialesVisibles.addAll(materiales);
+		}
+		//********SIMCE TIC************
+		else{
+			for(MaterialWrap mw:materiales){
+				if(mw.getMaterial().getIdNivel() != null &&
+						mw.getMaterial().getIdTipoActividad() != null &&
+						mw.getMaterial().getIdCentro() == place.getCentroId() &&
+						mw.getMaterial().getIdTipoActividad() == place.getTipoId()){
+					materialesVisibles.add(mw);
+				}
 			}
 		}
 		

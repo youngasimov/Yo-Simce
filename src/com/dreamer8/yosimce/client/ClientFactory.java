@@ -7,8 +7,6 @@ import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
-import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
-import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
@@ -66,8 +64,6 @@ public interface ClientFactory {
 	CentroOperacionView getCentroOperacionView();
 	CentroOperacionSelectorView getCentroOperacionSelectorView();
 	
-	AdminUsuariosView getAdminUsuariosView();
-	AdminEventosView getAdminEventosView();
 	PermisosView getPermisosView();
 	
 	

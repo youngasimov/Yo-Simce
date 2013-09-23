@@ -310,6 +310,19 @@ public class FormActividadActivity extends SimceActivity implements
 		if(a.getDetalleUsoMaterialContingencia()!=null){view.setDetalleUsoMaterialContingencia(a.getDetalleUsoMaterialContingencia());}
 		if(a.getEvaluacionProcedimientos()!=null){view.setEvaluacionGeneral(a.getEvaluacionProcedimientos());}
 		view.setHyperlink(a.getDocumento());
+		
+		//***************Simce TIC***********************
+		view.setTotalAlumnosEnabled(place.getAplicacionId() != 2);
+		view.setAlumnosDSEnabled(place.getAplicacionId() != 2);
+		view.showUsoMaterialComplementarioPanel(place.getAplicacionId() != 2);
+		
+		view.setCuestionariosTotalesEnabled(!(place.getAplicacionId() == 2 && place.getTipoId() == 2));
+		view.setCuestionariosEntregadosEnabled(!(place.getAplicacionId() == 2 && place.getTipoId() == 2));
+		
+		
+		//***************Simce TIC***********************
+		
+		
 		onEstadoChange(a.getEstadoAplicacion().getId());
 	}
 	

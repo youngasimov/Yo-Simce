@@ -745,4 +745,34 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		contingenciasTable.setColumnWidth(deleteColumn, "90px");
 		
 	}
+
+
+	@Override
+	public void setTotalAlumnosEnabled(boolean enabled) {
+		totalAlumnosBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void setAlumnosDSEnabled(boolean enabled) {
+		alumnosDsBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void setCuestionariosTotalesEnabled(boolean enabled) {
+		cuestionariosTotalesBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void setCuestionariosEntregadosEnabled(boolean enabled) {
+		cuestionariosEntregadosBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void showUsoMaterialComplementarioPanel(boolean visible) {
+		contingenciasPanel.setVisible(visible);
+	}
 }

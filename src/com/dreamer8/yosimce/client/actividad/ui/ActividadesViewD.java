@@ -101,7 +101,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		private Header<String> formEntregadosHeader = new TextHeader("Entregados");
 		private Header<String> formRecibidosHeader = new TextHeader("Recibidos");
 		
-		private Header<String> contingenciaHeader = new TextHeader("Momentanea");
+		private Header<String> contingenciaHeader = new TextHeader("Momentánea");
 		private Header<String> contingenciaLimitanteHeader = new TextHeader("Limitante");
 		
 		private Header<String> regionHeader = new TextHeader("Región");

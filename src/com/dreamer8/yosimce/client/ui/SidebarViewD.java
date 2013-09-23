@@ -6,9 +6,8 @@ import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
-import com.dreamer8.yosimce.client.administracion.AdminEventosPlace;
-import com.dreamer8.yosimce.client.administracion.AdminUsuariosPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
+import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -60,8 +59,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiField Anchor centroOperacionViewItem;
 	
-	@UiField Anchor administrarUsuariosActionItem;
-	@UiField Anchor administrarEventosActionItem;
+	@UiField Anchor reportesActionItem;
 	@UiField Anchor administrarPermisosActionItem;
 	
 	private SidebarPresenter presenter;
@@ -131,16 +129,10 @@ public class SidebarViewD extends Composite implements SidebarView{
 		presenter.goTo(new CentroOperacionPlace());
 	}
 	
-	@UiHandler("administrarUsuariosActionItem")
-	void onAdministrarUsuariosActionItemClick(ClickEvent event){
-		GATracker.trackEvent("sidebar menu","Administrar usuarios");
-		presenter.goTo(new AdminUsuariosPlace());
-	}
-	
-	@UiHandler("administrarEventosActionItem")
-	void onAdministrarEventosActionItemClick(ClickEvent event){
-		GATracker.trackEvent("sidebar menu","Administrar eventos");
-		presenter.goTo(new AdminEventosPlace());
+	@UiHandler("reportesActionItem")
+	void onReportesActionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Reportes");
+		presenter.goTo(new ReportesPlace());
 	}
 	
 	@UiHandler("administrarPermisosActionItem")
@@ -262,17 +254,18 @@ public class SidebarViewD extends Composite implements SidebarView{
 			administracion.addClassName(style.hide());
 		}
 	}
-
+	
 	@Override
-	public void setAdministrarUsuariosActionItemVisivility(boolean visible) {
-		administrarUsuariosActionItem.setVisible(visible);
+	public void setReportesActionItemVisivility(boolean visible) {
+		reportesActionItem.setVisible(visible);
 	}
-
-
+	
 	@Override
-	public void setAdministrarEventosActionItemVisivility(boolean visible) {
-		administrarEventosActionItem.setVisible(visible);
+	public void setAdministrarPermisosActionItemVisivility(boolean visible) {
+		administrarPermisosActionItem.setVisible(visible);
 	}
+	
+	
 
 	@Override
 	public void setDetalleCursoViewItemSelected(boolean selected) {
@@ -353,20 +346,20 @@ public class SidebarViewD extends Composite implements SidebarView{
 			centroOperacionViewItem.addStyleName(style.selected());
 		}
 	}
-
+	
 	@Override
-	public void setAdministrarUsuariosActionItemItemSelected(boolean selected) {
+	public void setReportesActionItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
-			administrarUsuariosActionItem.addStyleName(style.selected());
+			reportesActionItem.addStyleName(style.selected());
 		}
 	}
-
+	
 	@Override
-	public void setAdministrarEventosActionItemItemSelected(boolean selected) {
+	public void setAdministrarPermisosActionItemItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
-			administrarEventosActionItem.addStyleName(style.selected());
+			administrarPermisosActionItem.addStyleName(style.selected());
 		}
 	}
 	
@@ -382,21 +375,6 @@ public class SidebarViewD extends Composite implements SidebarView{
 		materialDefectuosoActionItem.removeStyleName(style.selected());
 		aprobarSupervisoresActionItem.removeStyleName(style.selected());
 		centroOperacionViewItem.removeStyleName(style.selected());
-		administrarUsuariosActionItem.removeStyleName(style.selected());
-		administrarEventosActionItem.removeStyleName(style.selected());
 		administrarPermisosActionItem.removeStyleName(style.selected());
-	}
-
-	@Override
-	public void setAdministrarPermisosActionItemVisivility(boolean visible) {
-		administrarPermisosActionItem.setVisible(visible);
-	}
-
-	@Override
-	public void setAdministrarPermisosActionItemItemSelected(boolean selected) {
-		removeSeleccion();
-		if(selected){
-			administrarPermisosActionItem.addStyleName(style.selected());
-		}
 	}
 }

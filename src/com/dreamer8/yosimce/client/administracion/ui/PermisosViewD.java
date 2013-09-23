@@ -28,6 +28,40 @@ import com.google.gwt.view.client.HasData;
 
 public class PermisosViewD extends Composite implements PermisosView {
 
+	public class PermisoColumn extends Column<PermisoDTO, Boolean>{
+
+		private int idTipoUsuario;
+		private PermisosPresenter presenter; 
+		
+		public PermisoColumn(CheckboxCell cell, int tipoUsuarioId, PermisosPresenter presenter) {
+			super(cell);
+			idTipoUsuario = tipoUsuarioId;
+			this.presenter = presenter;
+			setFieldUpdater(new FieldUpdater<PermisoDTO, Boolean>() {
+
+				@Override
+				public void update(int index, PermisoDTO object, Boolean value) {
+					if(!PermisoColumn.this.presenter.hasUpdatePermisos()){
+						return;
+					}
+					if(value && !object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
+						object.getIdTiposUsuariosPermitidos().add(idTipoUsuario);
+						PermisoColumn.this.presenter.permisoActualizado(object);
+					}else if(!value && object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
+						object.getIdTiposUsuariosPermitidos().remove(new Integer(idTipoUsuario));
+						PermisoColumn.this.presenter.permisoActualizado(object);
+					}
+				}
+			});
+		}
+
+		@Override
+		public Boolean getValue(PermisoDTO p) {
+			return p.getIdTiposUsuariosPermitidos().contains(idTipoUsuario);
+		}
+		
+	}
+	
 	private static PermisosViewDUiBinder uiBinder = GWT
 			.create(PermisosViewDUiBinder.class);
 
@@ -45,6 +79,8 @@ public class PermisosViewD extends Composite implements PermisosView {
 	
 	private Column<PermisoDTO, String> moduloColumn;
 	private Column<PermisoDTO, String> permisoColumn;
+	private Column<PermisoDTO, String> moduloColumnFinal;
+	private Column<PermisoDTO, String> permisoColumnFinal;
 	private ArrayList<PermisoColumn> columns;
 	
 	public PermisosViewD() {
@@ -100,6 +136,8 @@ public class PermisosViewD extends Composite implements PermisosView {
 		dataGrid.setRowCount(0);
 		if(moduloColumn!=null){dataGrid.removeColumn(moduloColumn);}
 		if(permisoColumn!=null){dataGrid.removeColumn(permisoColumn);}
+		if(moduloColumnFinal!=null){dataGrid.removeColumn(moduloColumnFinal);}
+		if(permisoColumnFinal!=null){dataGrid.removeColumn(permisoColumnFinal);}
 		for(PermisoColumn c:columns){
 			dataGrid.removeColumn(c);
 		}
@@ -118,6 +156,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 			dataGrid.addColumn(hasPermisoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant(tiposUsuario.get(i).getTipoUsuario())));
 	        dataGrid.setColumnWidth(hasPermisoColumn, 150, Unit.PX);
 		}
+		buildStaticFinalsColumns();
 		//dataGrid.redraw();
 	}
 	
@@ -144,38 +183,26 @@ public class PermisosViewD extends Composite implements PermisosView {
         dataGrid.setColumnWidth(permisoColumn, 220, Unit.PX);
 	}
 	
-	public class PermisoColumn extends Column<PermisoDTO, Boolean>{
-
-		private int idTipoUsuario;
-		private PermisosPresenter presenter; 
+	private void buildStaticFinalsColumns(){
+		permisoColumnFinal =new Column<PermisoDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(PermisoDTO object) {
+                return object.getMetodo();
+            }
+        };
+        permisoColumnFinal.setSortable(false);
+        dataGrid.addColumn(permisoColumnFinal, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Permiso")));
+        dataGrid.setColumnWidth(permisoColumnFinal, 220, Unit.PX);
 		
-		public PermisoColumn(CheckboxCell cell, int tipoUsuarioId, PermisosPresenter presenter) {
-			super(cell);
-			idTipoUsuario = tipoUsuarioId;
-			this.presenter = presenter;
-			setFieldUpdater(new FieldUpdater<PermisoDTO, Boolean>() {
-
-				@Override
-				public void update(int index, PermisoDTO object, Boolean value) {
-					if(!PermisoColumn.this.presenter.hasUpdatePermisos()){
-						return;
-					}
-					if(value && !object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
-						object.getIdTiposUsuariosPermitidos().add(idTipoUsuario);
-						PermisoColumn.this.presenter.permisoActualizado(object);
-					}else if(!value && object.getIdTiposUsuariosPermitidos().contains(idTipoUsuario)){
-						object.getIdTiposUsuariosPermitidos().remove(new Integer(idTipoUsuario));
-						PermisoColumn.this.presenter.permisoActualizado(object);
-					}
-				}
-			});
-		}
-
-		@Override
-		public Boolean getValue(PermisoDTO p) {
-			return p.getIdTiposUsuariosPermitidos().contains(idTipoUsuario);
-		}
-		
+		moduloColumnFinal =new Column<PermisoDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(PermisoDTO object) {
+                return object.getClase();
+            }
+        };
+        moduloColumnFinal.setSortable(false);
+        dataGrid.addColumn(moduloColumnFinal, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Modulo")));
+        dataGrid.setColumnWidth(moduloColumnFinal, 200, Unit.PX);
 	}
 
 	@Override

@@ -116,8 +116,7 @@
 				<li><g:Anchor ui:field="centroOperacionViewItem" text="Centro operación"/></li>
 			</ul>
 			<ul class='{style.margin}' ui:field="administracion">
-				<li><g:Anchor ui:field="administrarUsuariosActionItem" text="Administrar usuarios"/></li>
-				<li><g:Anchor ui:field="administrarEventosActionItem" text="Administrar eventos"/></li>
+				<li><g:Anchor ui:field="reportesActionItem" text="Reportes"/></li>
 				<li><g:Anchor ui:field="administrarPermisosActionItem" text="Administrar permisos"/></li>
 			</ul>
 		</g:HTMLPanel>

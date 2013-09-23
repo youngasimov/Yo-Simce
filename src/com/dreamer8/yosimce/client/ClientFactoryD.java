@@ -14,10 +14,6 @@ import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionViewD;
 import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
-import com.dreamer8.yosimce.client.administracion.ui.AdminEventosView;
-import com.dreamer8.yosimce.client.administracion.ui.AdminEventosViewD;
-import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosView;
-import com.dreamer8.yosimce.client.administracion.ui.AdminUsuariosViewD;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosViewD;
 import com.dreamer8.yosimce.client.general.GeneralService;
@@ -101,8 +97,6 @@ public class ClientFactoryD implements ClientFactory {
 	private final CentroOperacionView centroOperacionView = new CentroOperacionViewD();
 	private final CentroOperacionSelectorView centroOperacionSelectorView = new CentroOperacionSelectorViewD();
 
-	private final AdminUsuariosView adminUsuariosView = new AdminUsuariosViewD();
-	private final AdminEventosView adminEventosView = new AdminEventosViewD();
 	private final PermisosView permisosView = new PermisosViewD();
 
 	public ClientFactoryD(){
@@ -247,16 +241,6 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public CentroOperacionSelectorView getCentroOperacionSelectorView() {
 		return centroOperacionSelectorView;
-	}
-
-	@Override
-	public AdminUsuariosView getAdminUsuariosView() {
-		return adminUsuariosView;
-	}
-
-	@Override
-	public AdminEventosView getAdminEventosView() {
-		return adminEventosView;
 	}
 
 	@Override

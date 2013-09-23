@@ -73,6 +73,12 @@ public interface FormActividadView extends IsWidget {
 	
 	void setSaveVisibility(boolean visible);
 	
+	void setTotalAlumnosEnabled(boolean enabled);
+	void setAlumnosDSEnabled(boolean enabled);
+	void setCuestionariosTotalesEnabled(boolean enabled);
+	void setCuestionariosEntregadosEnabled(boolean enabled);
+	void showUsoMaterialComplementarioPanel(boolean visible);
+	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
 		void guardarFormulario();

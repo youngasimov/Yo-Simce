@@ -36,11 +36,9 @@ public interface SidebarView extends IsWidget {
 	void setCentroOperacionViewItemSelected(boolean selected);
 	
 	void setAdministracionVisivility(boolean visible);
-	void setAdministrarUsuariosActionItemVisivility(boolean visible);
-	void setAdministrarEventosActionItemVisivility(boolean visible);
+	void setReportesActionItemVisivility(boolean visible);
+	void setReportesActionItemSelected(boolean selected);
 	void setAdministrarPermisosActionItemVisivility(boolean visible);
-	void setAdministrarUsuariosActionItemItemSelected(boolean selected);
-	void setAdministrarEventosActionItemItemSelected(boolean selected);
 	void setAdministrarPermisosActionItemItemSelected(boolean selected);
 	
 	void removeSeleccion();
