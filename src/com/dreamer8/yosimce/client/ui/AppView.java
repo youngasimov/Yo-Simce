@@ -20,6 +20,8 @@ public interface AppView extends IsWidget {
 	void showPermisoMessage(String message,boolean autoclose);
 	void openLoginPopup(String mensaje1, String mensaje2);
 	
+	void setManualHref(String href);
+	
 	void setPresenter(AppPresenter presenter);
 	
 	public interface AppPresenter extends Presenter{

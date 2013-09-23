@@ -58,7 +58,6 @@ public class AppViewD extends Composite implements AppView {
 
 	public AppViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
-		manual.setHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual.pdf");
 		sidebarPanel.setVisible(true);
 		barload.setVisible(false);
 		popup = new PopupPanel(false, true);
@@ -97,6 +96,11 @@ public class AppViewD extends Composite implements AppView {
 	@Override
 	public void setPresenter(AppPresenter presenter) {
 		this.presenter = presenter;
+	}
+	
+	@Override
+	public void setManualHref(String href) {
+		manual.setHref(href);
 	}
 	
 	@Override
