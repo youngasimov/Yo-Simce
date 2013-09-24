@@ -26,6 +26,9 @@ public interface HeaderView extends IsWidget {
 	
 	void setUserName(String user);
 	
+	void setHelperVisivility(boolean visible);
+	void setHelperHTML(String html);
+	
 	public interface HeaderPresenter extends Presenter{
 		void onAplicacionChange(int aplicacion);
 		void onNivelChange(int nivel);

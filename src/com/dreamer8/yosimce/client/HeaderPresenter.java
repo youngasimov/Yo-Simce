@@ -98,7 +98,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 					view.setAplicacionBoxVisivility(false);
 					view.setNivelBoxVisivility(false);
 					view.setTipoBoxVisivility(false);
-					
+					view.setHelperVisivility(false);
 					if(event.getNewPlace() instanceof SimcePlace){
 						place = (SimcePlace)event.getNewPlace();
 						aplicacionId = place.getAplicacionId();
@@ -171,6 +171,8 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 					}
 				});
 			}
+		}else{
+			showAplicacionHelp();
 		}
 	}
 	
@@ -229,6 +231,8 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 					}
 				});
 			}
+		}else{
+			showNivelHelp();
 		}
 	}
 	
@@ -261,8 +265,25 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			Date d = new Date();
 			CalendarUtil.addMonthsToDate(d, 1);
 			Cookies.setCookie("t", tipoId+"",d);
+		}else{
+			showTipoHelp();
 		}
 		factory.getEventBus().fireEvent(new TipoActividadChangeEvent(tipoId));
+	}
+	
+	private void showAplicacionHelp(){
+		view.setHelperVisivility(true);
+		view.setHelperHTML("Seleccione LA APLICACIÓN<br />en la cual desea trabajar");
+	}
+	
+	private void showNivelHelp(){
+		view.setHelperVisivility(true);
+		view.setHelperHTML("Seleccione EL NIVEL<br />en el cual desea trabajar");
+	}
+	
+	private void showTipoHelp(){
+		view.setHelperVisivility(true);
+		view.setHelperHTML("Seleccione EL TIPO DE ACTIVIDAD<br />en la cual desea trabajar");
 	}
 	
 }

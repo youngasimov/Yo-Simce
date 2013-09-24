@@ -7,12 +7,16 @@ import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HeaderViewD extends Composite implements HeaderView  {
@@ -23,16 +27,35 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	interface HeaderViewDUiBinder extends
 			UiBinder<Widget, HeaderViewD> {
 	}
+	
+	interface Style extends CssResource {
+		String helperTransition();
+		String helperTransition2();
+		String helper();
+	}
 
+	@UiField Style style;
 	@UiField ListBox actividadBox;
 	@UiField ListBox nivelBox;
 	@UiField ListBox tipoBox;
 	@UiField HTML username;
 	
+	
 	private HeaderPresenter presenter;
+	private PopupPanel pop;
+	private HTML helperText;
+	private Timer t;
 	
 	public HeaderViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
+		pop = new PopupPanel(false,false);
+		pop.setAnimationEnabled(true);
+		pop.setGlassEnabled(false);
+		pop.setWidth("250px");
+		pop.setPopupPosition(Window.getClientWidth()-380, 45);
+		helperText = new HTML();
+		pop.setWidget(helperText);
+		helperText.addStyleName(style.helper());
 	}
 	
 	@Override
@@ -136,6 +159,42 @@ public class HeaderViewD extends Composite implements HeaderView  {
 	@Override
 	public void setUserName(String user) {
 		username.setText(user);
+	}
+
+	@Override
+	public void setHelperVisivility(boolean visible) {
+		if(visible){
+			pop.show();
+			t = new Timer() {
+				
+				@Override
+				public void run() {
+					helperText.addStyleName(style.helperTransition());
+					helperText.removeStyleName(style.helperTransition2());
+					Timer t2 = new Timer() {
+						
+						@Override
+						public void run() {
+							helperText.removeStyleName(style.helperTransition());
+							helperText.addStyleName(style.helperTransition2());
+						}
+					};
+					t2.schedule(400);
+				}
+			};
+			t.scheduleRepeating(3000);
+		}else{
+			if(t!=null){
+				t.cancel();
+				t = null;
+			}
+			pop.hide();
+		}
+	}
+
+	@Override
+	public void setHelperHTML(String html) {
+		helperText.setHTML(html);
 	}
 
 }
