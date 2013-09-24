@@ -84,6 +84,7 @@
 				<g:MenuItem enabled="false" ui:field="cosItem" text='-------'/>
 				<g:MenuItem ui:field="filtrosItem" text='Filtros' />
 				<g:MenuItem ui:field="exportarItem" text='Exportar' />
+				<g:MenuItem ui:field="manualOperacionItem" text='Manual Operación CO' />
 			</my:OverMenuBar>
 		</g:north>
 		<g:center>

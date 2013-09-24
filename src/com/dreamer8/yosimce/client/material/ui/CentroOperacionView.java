@@ -71,6 +71,8 @@ public interface CentroOperacionView extends IsWidget {
 	void setSelectedCo(EmplazamientoDTO co);
 	void setRetirante(UserDTO user);
 	
+	void setManualOperacionVisible(boolean visible);
+	
 	void setPresenter(CentroOperacionPresenter presenter);
 	
 	public interface CentroOperacionPresenter extends SimcePresenter{
@@ -106,5 +108,7 @@ public interface CentroOperacionView extends IsWidget {
 		void onRutRetiranteChange(String rut);
 		
 		void onExportarClick();
+		
+		void onManualOperacionClick();
 	}
 }

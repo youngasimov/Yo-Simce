@@ -86,6 +86,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@UiField MenuItem cosItem;
 	@UiField MenuItem filtrosItem;
 	@UiField MenuItem exportarItem;
+	@UiField MenuItem manualOperacionItem;
 	
 	@UiField TabLayoutPanel tabPanel;
 	@UiField SplitLayoutPanel materialPanel;
@@ -155,6 +156,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		materialPager = new SimplePager(TextLocation.CENTER, pagerResources,true, 0, true);
 		initWidget(uiBinder.createAndBindUi(this));
 		menu.insertSeparator(2);
+		menu.insertSeparator(4);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
 			
@@ -168,6 +170,14 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			@Override
 			public void execute() {
 				presenter.onExportarClick();
+			}
+		});
+		
+		manualOperacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				presenter.onManualOperacionClick();
 			}
 		});
 		
@@ -619,6 +629,11 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		}else{
 			retiranteLabel.setText("");
 		}
+	}
+	
+	@Override
+	public void setManualOperacionVisible(boolean visible) {
+		manualOperacionItem.setVisible(visible);
 	}
 	
 	private void buildHistorialTable(){

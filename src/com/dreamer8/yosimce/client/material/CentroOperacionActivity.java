@@ -107,6 +107,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setTotalMaterialDespachando(0);
 		selectedEtapa = null;
 		selectedCo = null;
+		
+		view.setManualOperacionVisible(place.getAplicacionId()==1);
 	}
 
 	@Override
@@ -278,6 +280,15 @@ public class CentroOperacionActivity extends SimceActivity implements
 				}
 				
 			});
+		}
+	}
+	
+	@Override
+	public void onManualOperacionClick() {
+		if(place.getAplicacionId()==1){
+			Window.open(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_operativo_co.pdf", "_blank", "");
+		}else{
+			eventBus.fireEvent(new MensajeEvent("Esta aplicación no tiene un manual operativo"));
 		}
 	}
 	
