@@ -1,8 +1,10 @@
 package com.dreamer8.yosimce.client.planificacion;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
@@ -210,18 +212,19 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 	
 	private void updateFiltros(){
-		
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
 		filtros.clear();
 		if(place.getDesdeTimestamp()!=-1){
 			Date d = new Date(place.getDesdeTimestamp());
-			filtros.put(PlanificacionService.FKEY_DESDE, d.toString());
+			filtros.put(PlanificacionService.FKEY_DESDE, df.format(d));
+			//Window.alert(df.format(d));
 			view.setDesde(d);
 		}else{
 			view.setDesde(null);
 		}
 		if(place.getHastaTimestamp()!=-1){
 			Date d = new Date(place.getHastaTimestamp());
-			filtros.put(PlanificacionService.FKEY_HASTA, d.toString());
+			filtros.put(PlanificacionService.FKEY_HASTA, df.format(d));
 			view.setHasta(d);
 		}else{
 			view.setHasta(null);
