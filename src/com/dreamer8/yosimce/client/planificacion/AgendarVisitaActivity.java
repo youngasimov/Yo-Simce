@@ -188,26 +188,29 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		aidto.setFecha(view.getFechaHoraSeleccionada());
 		aidto.setComentario(view.getComentario());
 		
-		if(last == null){
+		//Si no Existe información, se permite agregar un inte sin complicaciones
+		if(last == null || last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION)){
+			if(aidto.getComentario() == null || aidto.getComentario().isEmpty()){
+				aidto.setComentario("Planificación inicial");
+			}
 			updateAgenda(aidto);
 			return;
 		}
+		
+		if(!last.getEstado().getEstado().equals(EstadoAgendaDTO.POR_CONFIRMAR) &&
+				!last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION) &&
+				(aidto.getComentario() == null || aidto.getComentario().isEmpty())){
+			eventBus.fireEvent(new MensajeEvent("Si trata de cambiar una agenda ya confirmada, debe ingresar un comentario del cambio",MensajeEvent.MSG_WARNING,true));
+			return;
+		}
+		
+		//Si se esta intentando registrar otro item de agenda, con el mismo estado, se exige un comentario
 		if(last.getEstado().getId() == aidto.getEstado().getId() && (aidto.getComentario() == null || aidto.getComentario().isEmpty())){
 			eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario",MensajeEvent.MSG_WARNING,true));
 			return;
 		}
-		if(last.getEstado().getId() == aidto.getEstado().getId() && !last.getFecha().equals(aidto.getFecha())){
-			eventBus.fireEvent(new MensajeEvent("La fecha no puede ser modificada al agendar para el mismo estado anterior",MensajeEvent.MSG_WARNING,false));
-			view.setUltimoEstado(last);
-			return;
-		}
-		if(last.getEstado().getId() == aidto.getEstado().getId() &&
-				last.getFecha().equals(aidto.getFecha()) &&
-				aidto.getComentario() != null &&
-				!aidto.getComentario().isEmpty()){
-			updateAgenda(aidto);
-			return;
-		}
+		
+		//Si se cambia el estado y la fecha, se debe ingresar un comentario
 		if(last.getEstado().getId() != aidto.getEstado().getId() &&
 				!last.getFecha().equals(aidto.getFecha()) &&
 				(aidto.getComentario() == null ||
@@ -215,6 +218,22 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario que justifique el cambio de fecha",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
+		
+		//Si el estado es 'por confirmar', se permite modificar la agenda simpre que tenga un comentario
+		if(aidto.getEstado().getEstado().equals(EstadoAgendaDTO.POR_CONFIRMAR) && aidto.getComentario() != null && !aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		
+		//Si el estado y la fecha no se han modificado, y hay un comentario, se permite agendar
+		if(last.getEstado().getId() == aidto.getEstado().getId() &&
+				last.getFecha().equals(aidto.getFecha()) &&
+				aidto.getComentario() != null &&
+				!aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		//si el estado anterior es distinto al actual, se permite modificar la agenda
 		if(last.getEstado().getId() != aidto.getEstado().getId()){
 			updateAgenda(aidto);
 			return;
