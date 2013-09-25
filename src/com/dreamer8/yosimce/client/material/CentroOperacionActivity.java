@@ -654,7 +654,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 							"MaterialService", "eliminarLote")) {
 				getFactory().getMaterialService().eliminarLote(
 						place.getCentroId(), loteId,
-						new SimceCallback<Boolean>(eventBus, true) {
+						new SimceCallback<Boolean>(eventBus, true,60000) {
 
 							@Override
 							public void success(Boolean result) {
@@ -716,7 +716,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 				"crearOEditarLote")) {
 			getFactory().getMaterialService().crearOEditarLote(
 					place.getCentroId(), mList, selectedLote,
-					new SimceCallback<Integer>(eventBus, true) {
+					new SimceCallback<Integer>(eventBus, true,60000) {
 
 						@Override
 						public void success(Integer result) {
