@@ -36,6 +36,7 @@ public class AccessControl {
 	public static final String APLICACION_COOKIE_NAME = "a";
 	public static final String NIVEL_COOKIE_NAME = "n";
 	public static final String ACTIVIDAD_TIPO_COOKIE_NAME = "t";
+	public static final String USUARIO_TIPO_COOKIE_NAME = "ut";
 	private HttpSession session = null;
 	private HttpServletRequest request = null;
 	private Integer idAplicacion = null;
@@ -59,27 +60,27 @@ public class AccessControl {
 			return true;
 		}
 
-//		Cookie cookie = null;
-//		for (Cookie c : this.request.getCookies()) {
-//			if (c.getName().equals(TOKEN_COOKIE_NAME)) {
-//				cookie = c;
-//				break;
-//			}
-//		}
-//		if (cookie != null && cookie.getValue() != null) {
-//			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-//			s.beginTransaction();
-//			SesionDAO sdao = new SesionDAO();
-//			List<Sesion> ss = sdao.findBySessionId(cookie.getValue());
-//			if (!ss.isEmpty()) {
-//				usuario = ss.get(0).getUsuario();
-//				this.session.setAttribute("usuario", usuario);
-//			}
-//			s.getTransaction().commit();
-//			if (usuario != null) {
-//				return true;
-//			}
-//		}
+		// Cookie cookie = null;
+		// for (Cookie c : this.request.getCookies()) {
+		// if (c.getName().equals(TOKEN_COOKIE_NAME)) {
+		// cookie = c;
+		// break;
+		// }
+		// }
+		// if (cookie != null && cookie.getValue() != null) {
+		// Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		// s.beginTransaction();
+		// SesionDAO sdao = new SesionDAO();
+		// List<Sesion> ss = sdao.findBySessionId(cookie.getValue());
+		// if (!ss.isEmpty()) {
+		// usuario = ss.get(0).getUsuario();
+		// this.session.setAttribute("usuario", usuario);
+		// }
+		// s.getTransaction().commit();
+		// if (usuario != null) {
+		// return true;
+		// }
+		// }
 
 		throw new NoLoggedException();
 	}
@@ -146,12 +147,29 @@ public class AccessControl {
 
 	public UsuarioTipo getUsuarioTipo() {
 		if (usuarioTipo == null) {
-			Usuario usuario = (Usuario) this.session.getAttribute("usuario");
-			UsuarioTipoDAO utdao = new UsuarioTipoDAO();
-			UsuarioTipo ut = utdao.findByIdAplicacionANDIdNivelANDIdUsuario(
-					idAplicacion, idNivel, usuario.getId());
-			if (ut != null) {
-				usuarioTipo = ut;
+			Cookie cookie = null;
+			for (Cookie c : this.request.getCookies()) {
+				if (c.getName().equals(USUARIO_TIPO_COOKIE_NAME)) {
+					cookie = c;
+					break;
+				}
+			}
+			if (cookie != null) {
+				Usuario usuario = (Usuario) this.session
+						.getAttribute("usuario");
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				try {
+					Integer idUsuarioTipo = Integer.parseInt(cookie.getValue());
+					UsuarioTipo ut = utdao
+							.findByIdAplicacionANDIdNivelANDIdUsuarioANDIdTipoUsuario(
+									idAplicacion, idNivel, usuario.getId(),
+									idUsuarioTipo);
+					if (ut != null) {
+						usuarioTipo = ut;
+					}
+				} catch (NumberFormatException ex) {
+				}
+
 			}
 		}
 		return usuarioTipo;

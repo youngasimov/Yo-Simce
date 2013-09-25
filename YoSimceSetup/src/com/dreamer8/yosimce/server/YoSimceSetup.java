@@ -106,8 +106,8 @@ public class YoSimceSetup {
 		// loadLaWeaDeCapacitacion();
 
 		// actualizarAgendamientoTIC();
-		cargarMateriales("4caja.csv", 1, 4, ActividadTipo.APLICACION_DIA_1);
-		cargarMateriales("4sobre.csv", 1, 4, ActividadTipo.VISITA_PREVIA);
+		// cargarMateriales("4caja.csv", 1, 4, ActividadTipo.APLICACION_DIA_1);
+		// cargarMateriales("4sobre.csv", 1, 4, ActividadTipo.VISITA_PREVIA);
 
 		// asignarEstablecimientoTipo("titulares.csv",
 		// EstablecimientoTipo.SELECCIONADO);
@@ -117,6 +117,9 @@ public class YoSimceSetup {
 		// EstablecimientoTipo.REEMPLAZO_2);
 
 		// cargarEmailDirector("email_est.csv");
+
+		actualizarAgendamientoSimce("agendamiento_4to_8va.csv");
+		actualizarAgendamientoSimce("agendamiento_4to_rm.csv");
 
 		System.out.println("fin :P");
 	}
@@ -731,6 +734,132 @@ public class YoSimceSetup {
 		} catch (Exception e) {
 			System.err.println(e);
 			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static void actualizarAgendamientoSimce(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String line = null;
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+			ActividadTipoDAO atdao = new ActividadTipoDAO();
+			ActividadTipo visitaPrevia = atdao
+					.finByNombre(ActividadTipo.VISITA_PREVIA);
+			ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+			ActividadEstado ae = aedao
+					.findByNombre(ActividadEstado.POR_CONFIRMAR);
+			Calendar calendar = Calendar.getInstance();
+			String[] fecha = null;
+			String[] hora = null;
+			ActividadHistorial ah = null;
+			ActividadHistorialId ahid = null;
+			ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+			Date fechaMod = new Date();
+			String[] cursos = null;
+			Integer nivel = null;
+			CursoDAO cdao = new CursoDAO();
+			List<Curso> cs = null;
+			Integer rbd = null;
+			Boolean todosLosCursos = false;
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					rbd = Integer.valueOf(row[1]);
+					nivel = Integer.valueOf(row[2]);
+					if (row.length > 3 && row[3] != null && !row[3].isEmpty()) {
+						cursos = row[3].replaceAll(" ", "").split("-");
+						todosLosCursos = false;
+					} else {
+						todosLosCursos = true;
+						cs = cdao
+								.findByIdAplicacionANDIdNivelANIdEstablecimiento(
+										1, nivel, rbd);
+						if (cs != null && !cs.isEmpty()) {
+							cursos = new String[cs.size()];
+							for (int i = 0; i < cs.size(); i++) {
+								cursos[i] = cs.get(i).getNombre();
+							}
+						} else {
+							cursos = new String[0];
+						}
+					}
+					for (String curso : cursos) {
+						a = actividadDAO
+								.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+										1,
+										nivel,
+										visitaPrevia.getId(),
+										rbd,
+										(todosLosCursos) ? curso
+												: (nivel + curso.toUpperCase()),
+										null);
+						if (a == null) {
+							System.err
+									.println("No se encontró visita previa para "
+											+ line);
+						} else {
+							if (row.length > 4 && row[4] != null
+									&& !row[4].isEmpty()) {
+								fecha = row[4].split("-");
+								if (row.length < 6 || row[5] == null
+										|| row[5].replaceAll(" ", "").isEmpty()) {
+									hora = new String[2];
+									hora[0] = "10";
+									hora[1] = "0";
+								} else {
+									hora = row[5].split(":");
+								}
+								calendar.set(Integer.valueOf(fecha[2]),
+										Integer.valueOf(fecha[1]) - 1,
+										Integer.valueOf(fecha[0]),
+										Integer.valueOf(hora[0]),
+										Integer.valueOf(hora[1]), 0);
+								a.setFechaInicio(calendar.getTime());
+								a.setActividadEstado(ae);
+								actividadDAO.update(a);
+								ahid = new ActividadHistorialId();
+								ahid.setActividadId(a.getId());
+								ahid.setFecha(fechaMod);
+								ah = new ActividadHistorial();
+								ah.setId(ahid);
+								ah.setActividadEstado(a.getActividadEstado());
+								ah.setFechaInicio(a.getFechaInicio());
+								ah.setFechaTermino(a.getFechaTermino());
+								ahdao.save(ah);
+							}
+						}
+					}
+				}
+				rowCounter++;
+			}
+
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			System.err.println(line);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+			System.err.println(line);
 		}
 	}
 

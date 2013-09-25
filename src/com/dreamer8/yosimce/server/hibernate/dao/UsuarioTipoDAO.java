@@ -23,8 +23,29 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 	 * @param id
 	 * @return
 	 */
-	public UsuarioTipo findByIdAplicacionANDIdNivelANDIdUsuario(
+	public List<UsuarioTipo> findByIdAplicacionANDIdNivelANDIdUsuario(
 			Integer idAplicacion, Integer idNivel, Integer idUsuario) {
+
+		List<UsuarioTipo> uts = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT ut.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn"
+				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ ")"
+				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
+				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
+				+ " WHERE uxaxn.usuario_id="
+				+ SecurityFilter.escapeString(idUsuario);
+		Query q = s.createSQLQuery(query).addEntity(UsuarioTipo.class);
+		uts = q.list();
+		return uts;
+	}
+
+	public UsuarioTipo findByIdAplicacionANDIdNivelANDIdUsuarioANDIdTipoUsuario(
+			Integer idAplicacion, Integer idNivel, Integer idUsuario,
+			Integer idTipoUsuario) {
 
 		UsuarioTipo ut = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -35,7 +56,8 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
-				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
+				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND us.usuario_tipo_id="
+				+ SecurityFilter.escapeString(idTipoUsuario)
 				+ " WHERE uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(UsuarioTipo.class);
