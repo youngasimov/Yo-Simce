@@ -461,11 +461,6 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un nivel.");
 				}
 
-				Integer idActividadTipo = ac.getIdActividadTipo();
-				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
-				}
 
 				Usuario u = getUsuarioActual();
 

@@ -33,8 +33,8 @@ public class RegionDAO extends AbstractHibernateDAO<Region, Integer> {
 				+ " JOIN APLICACION a ON axnxat.id=a.aplicacion_x_nivel_actividad_tipo_id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA co ON e.comuna_id=co.id"
-				+ " JOIN PROVINCIA p ON co.provincia_id=p.id"
+				+ " JOIN COMUNA com ON e.comuna_id=com.id"
+				+ " JOIN PROVINCIA p ON com.provincia_id=p.id"
 				+ " JOIN REGION r ON p.region_id=r.id";
 		Query q = s.createSQLQuery(query).addEntity(Region.class);
 		rs = q.list();
@@ -67,7 +67,7 @@ public class RegionDAO extends AbstractHibernateDAO<Region, Integer> {
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
 			} else {
-				query += " JOIN CO co ON coxe.co_id=co.co_id";
+				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
 					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
@@ -89,8 +89,8 @@ public class RegionDAO extends AbstractHibernateDAO<Region, Integer> {
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
-		query += " JOIN COMUNA co ON e.comuna_id=co.id"
-				+ " JOIN PROVINCIA p ON co.provincia_id=p.id"
+		query += " JOIN COMUNA com ON e.comuna_id=com.id"
+				+ " JOIN PROVINCIA p ON com.provincia_id=p.id"
 				+ " JOIN REGION r ON p.region_id=r.id";
 		Query q = s.createSQLQuery(query).addEntity(Region.class);
 		rs = q.list();
