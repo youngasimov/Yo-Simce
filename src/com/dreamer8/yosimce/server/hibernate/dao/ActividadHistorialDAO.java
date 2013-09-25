@@ -31,4 +31,19 @@ public class ActividadHistorialDAO extends
 		ah = ((ActividadHistorial) q.uniqueResult());
 		return ah;
 	}
+	
+	public ActividadHistorial findFirstByIdActividad(Integer idActividad) {
+
+		ActividadHistorial ah = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT ah.* FROM  ACTIVIDAD_HISTORIAL ah"
+				+ " JOIN (SELECT ah.actividad_id,MIN(ah.fecha) as fecha"
+				+ " FROM ACTIVIDAD_HISTORIAL ah"
+				+ " WHERE ah.actividad_id="
+				+ SecurityFilter.escapeString(idActividad)
+				+ " GROUP BY ah.actividad_id) ah_max ON ah.actividad_id=ah_max.actividad_id AND ah.fecha=ah_max.fecha";
+		Query q = s.createSQLQuery(query).addEntity(ActividadHistorial.class);
+		ah = ((ActividadHistorial) q.uniqueResult());
+		return ah;
+	}
 }

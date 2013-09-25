@@ -4,14 +4,21 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import javax.mail.MessagingException;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -249,6 +256,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"Faltan datos para realizar el agendamiento");
 				}
 
+				Boolean enviarMail = false;
+
 				Usuario u = getUsuarioActual();
 
 				s.beginTransaction();
@@ -269,35 +278,44 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
-				ActividadHistorial ah = ahdao.findLastByIdActividad(a.getId());
+				ActividadHistorial ah = ahdao.findFirstByIdActividad(a.getId());
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
-				ActividadEstado ae = aedao
-						.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
-				
-				if (ah != null && ah.getFechaInicio() != null) {
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(itemAgenda.getFecha());
-					int yearNew = calendar.get(Calendar.YEAR);
-					int monthNew = calendar.get(Calendar.MONTH);
-					int dayNew = calendar.get(Calendar.DAY_OF_MONTH);
-					int hourNew = calendar.get(Calendar.HOUR_OF_DAY);
-					int minNew = calendar.get(Calendar.MINUTE);
-					calendar.setTime(ah.getFechaInicio());
-					int yearHist = calendar.get(Calendar.YEAR);
-					int monthHist = calendar.get(Calendar.MONTH);
-					int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
-					int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
-					int minHist = calendar.get(Calendar.MINUTE);
+				ActividadEstado ae = aedao.getById(itemAgenda.getEstado()
+						.getId());
 
-					if (yearHist == yearNew && monthHist == monthNew
-							&& dayHist == dayNew && hourHist == hourNew
-							&& minHist == minNew) {
-						ae = aedao.getById(itemAgenda.getEstado().getId());
-					}
-				}
 				if (ae == null) {
 					throw new NullPointerException(
 							"El estado especificado no existe");
+				}
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(itemAgenda.getFecha());
+				int yearNew = calendar.get(Calendar.YEAR);
+				int monthNew = calendar.get(Calendar.MONTH);
+				SimpleDateFormat sdf = new SimpleDateFormat("MMMM",
+						Locale.forLanguageTag("es"));
+				String month = sdf.format(itemAgenda.getFecha());
+				int dayNew = calendar.get(Calendar.DAY_OF_MONTH);
+				int hourNew = calendar.get(Calendar.HOUR_OF_DAY);
+				int minNew = calendar.get(Calendar.MINUTE);
+
+				if (ae.getNombre().equals(ActividadEstado.CONFIRMADO)) {
+					enviarMail = true;
+					if (ah != null && ah.getFechaInicio() != null) {
+
+						calendar.setTime(ah.getFechaInicio());
+						int yearHist = calendar.get(Calendar.YEAR);
+						int monthHist = calendar.get(Calendar.MONTH);
+						int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+						int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+						int minHist = calendar.get(Calendar.MINUTE);
+
+						if (yearHist != yearNew || monthHist != monthNew
+								|| dayHist != dayNew || hourHist != hourNew
+								|| minHist != minNew) {
+							ae = aedao
+									.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
+						}
+					}
 				}
 
 				// if (idAplicacion == 2
@@ -341,7 +359,48 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				u = udao.getById(u.getId());
 				itemAgenda.setCreador(u.getUserDTO());
 
+				String dirMail = null;
+				String contMail = a.getContactoEmail();
+
+				Usuario firm = null;
+				String firmante = null;
+				if (enviarMail) {
+					if (a.getContactoCargo() != null
+							&& a.getContactoCargo().getNombre()
+									.equals(ContactoCargo.DIRECTOR)) {
+						dirMail = contMail;
+						contMail = null;
+					} else {
+						EstablecimientoDAO edao = new EstablecimientoDAO();
+						Establecimiento e = edao.findByIdActividad(a.getId());
+						if (e != null) {
+							dirMail = e.getEmail();
+						}
+					}
+
+					firm = udao.findJOByIdAplicacionANDIdNivelANDIdActividad(
+							idAplicacion, idNivel, a.getId());
+
+					firmante = (firm != null) ? StringUtils
+							.nombreInicialSegundo(firm.getNombres())
+							+ " "
+							+ firm.getApellidoPaterno() : "";
+
+				}
 				s.getTransaction().commit();
+
+				if (enviarMail && dirMail != null && !dirMail.isEmpty()) {
+					if (idAplicacion == 1) {
+						sendEmailDirector(dirMail, contMail, firmante, dayNew
+								+ " de " + month,
+								StringUtils.forceTwoDigits(hourNew) + ":"
+										+ StringUtils.forceTwoDigits(minNew),
+								StringUtils.forceTwoDigits(hourNew + 2) + ":"
+										+ StringUtils.forceTwoDigits(minNew));
+					} else {
+						// sendEmailDirectorTIC();
+					}
+				}
 			}
 		} catch (HibernateException ex) {
 			System.err.println(ex);
@@ -353,6 +412,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
+
 		} finally {
 			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
 			if (s.isOpen()) {
@@ -1129,5 +1189,168 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			}
 		}
 		return eadtos;
+	}
+
+	public void sendEmailDirectorTIC() {
+
+		URL url;
+		try {
+			url = this.getServletContext().getResource(
+					"/Orientaciones_al_Director.pdf");
+
+			EnviarCorreoDirTICThread t = new EnviarCorreoDirTICThread(
+					url.getPath());
+			t.start();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	private class EnviarCorreoDirTICThread extends Thread {
+		private String path;
+
+		/**
+		 * @param path
+		 */
+		public EnviarCorreoDirTICThread(String path) {
+			super();
+			this.path = path;
+		}
+
+		public void run() {
+
+			enviarArchivo("jflores@dreamer8.com",
+					"Orientaciones al Director.pdf", path, "application/pdf");
+		}
+
+		public String getPath() {
+			return path;
+		}
+
+		public void setPath(String path) {
+			this.path = path;
+		};
+
+	}
+
+	public void sendEmailDirector(String dirMail, String contactoMail,
+			String firmante, String fecha, String horaInicio, String horaTermino) {
+
+		String[] destinatarios = new String[(dirMail.equals(contactoMail) || contactoMail == null) ? 2
+				: 3];
+		destinatarios[0] = dirMail.toLowerCase();
+		destinatarios[1] = "simce@usm.cl";
+		if (!dirMail.equals(contactoMail) && contactoMail != null
+				&& !contactoMail.isEmpty()) {
+			destinatarios[2] = contactoMail.toLowerCase();
+		}
+		EnviarCorreoDirThread t = new EnviarCorreoDirThread(destinatarios,
+				fecha, horaInicio, horaTermino, firmante);
+		t.start();
+
+	}
+
+	private class EnviarCorreoDirThread extends Thread {
+		private String[] destinatarios;
+		private String fecha;
+		private String horaInicio;
+		private String horaTermino;
+		private String firmante;
+
+		/**
+		 * @param path
+		 * @param destinatarios
+		 * @param fecha
+		 * @param horaInicio
+		 * @param horaTermino
+		 * @param firmante
+		 */
+		public EnviarCorreoDirThread(String[] destinatarios, String fecha,
+				String horaInicio, String horaTermino, String firmante) {
+			super();
+			this.destinatarios = destinatarios;
+			this.fecha = fecha;
+			this.horaInicio = horaInicio;
+			this.horaTermino = horaTermino;
+			this.firmante = firmante;
+		}
+
+		public void run() {
+
+			String mensaje = "Estimado Director(a) o Jefe de UTP:\n"
+					+ "Junto con saludarlo(a), y según lo conversado telefónicamente le recuerdo que la visita previa se realizará\n"
+					+ "el día "
+					+ fecha
+					+ " entre las "
+					+ horaInicio
+					+ " y las "
+					+ horaTermino
+					+ ".\n"
+					+ "En este proceso participará un examinador y un supervisor.\n\n"
+					+ "Algunas de las actividades de la visita previa son:\n"
+					+ "* Verificar la información de la lista del curso.\n"
+					+ "* Informarle el cronograma de aplicación.\n"
+					+ "* Entregar los cuestionarios, si corresponde.\n"
+					+ "* Visitar la sala donde se realizara la aplicación.\n\n"
+					+ "Durante este proceso se requiere de su colaboración para brindar el apoyo necesario que permita agilizar\n"
+					+ "los procedimientos establecidos para la aplicación de la prueba SIMCE.\n\n"
+					+ "Para consultas comuníquese al teléfono:2-2353 1247\n"
+					+ "Mail: yosimce@usm.cl\n\n" + "Se despide cordialmente\n"
+					+ firmante;
+
+			try {
+				sendMail(mensaje, "Notificación de actividades Simce",
+						destinatarios);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		public String[] getDestinatarios() {
+			return destinatarios;
+		}
+
+		public void setDestinatarios(String[] destinatarios) {
+			this.destinatarios = destinatarios;
+		}
+
+		public String getFecha() {
+			return fecha;
+		}
+
+		public void setFecha(String fecha) {
+			this.fecha = fecha;
+		}
+
+		public String getHoraInicio() {
+			return horaInicio;
+		}
+
+		public void setHoraInicio(String horaInicio) {
+			this.horaInicio = horaInicio;
+		}
+
+		public String getHoraTermino() {
+			return horaTermino;
+		}
+
+		public void setHoraTermino(String horaTermino) {
+			this.horaTermino = horaTermino;
+		}
+
+		public String getFirmante() {
+			return firmante;
+		}
+
+		public void setFirmante(String firmante) {
+			this.firmante = firmante;
+		};
+
 	}
 }

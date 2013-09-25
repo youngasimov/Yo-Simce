@@ -39,7 +39,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -112,5 +112,25 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 			break;
 		}
 		return dcdto;
+	}
+
+	public Curso findByIdAplicacionANDIdNivelANIdEstablecimientoDANDNombreCurso(
+			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento,
+			String nombreCurso) {
+
+		Curso c = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT c.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN CURSO c ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=c.aplicacion_x_nivel_id)"
+				+ " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
+				+ "'";
+		Query q = s.createSQLQuery(query).addEntity(Curso.class);
+		c = ((Curso) q.uniqueResult());
+		return c;
 	}
 }

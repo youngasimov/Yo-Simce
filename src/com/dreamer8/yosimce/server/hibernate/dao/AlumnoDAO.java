@@ -94,7 +94,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -285,7 +285,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {

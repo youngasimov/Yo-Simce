@@ -46,7 +46,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 					+ SecurityFilter.escapeString(idUsuario)
 					+ ") AND joxco.activo=TRUE";
 		} else if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-			query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+			query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 					+ SecurityFilter.escapeString(idUsuario)
 					+ ") AND jzxz.activo=TRUE";
 		} else if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)) {
@@ -73,6 +73,21 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ " AND cxe.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
 				+ " JOIN CO co ON cxe.co_id=co.id";
+
+		Query q = s.createSQLQuery(query).addEntity(Co.class);
+		co = ((Co) q.uniqueResult());
+		return co;
+	}
+
+	public Co findByIdAplicacionANDNombre(Integer idAplicacion, String nombre) {
+
+		Co co = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT co.* FROM  CENTRO_REGIONAL cr "
+				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + ")"
+				+ " JOIN CO co ON z.id=co.zona_id" + " WHERE co.nombre='"
+				+ SecurityFilter.escapeString(nombre) + "'";
 
 		Query q = s.createSQLQuery(query).addEntity(Co.class);
 		co = ((Co) q.uniqueResult());

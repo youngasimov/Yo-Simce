@@ -255,4 +255,25 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 		u = (Usuario) q.uniqueResult();
 		return u;
 	}
+
+	public Usuario findJOByIdAplicacionANDIdNivelANDIdActividad(
+			Integer idAplicacion, Integer idNivel, Integer idActividad) {
+
+		Usuario u = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT u.* FROM ACTIVIDAD a"
+				+ " JOIN CURSO c ON a.curso_id=c.id AND a.id="
+				+ SecurityFilter.escapeString(idActividad)
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " JOIN CO_x_ESTABLECIMIENTO coxe ON e.id=coxe.establecimiento_id"
+				+ " JOIN APLICACION_x_NIVEL axn ON coxe.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " JOIN JO_x_CO jxc ON coxe.co_id=jxc.co_id AND jxc.activo = true"
+				+ " JOIN USUARIO u ON jxc.jo_id=u.id";
+		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
+		u = ((Usuario) q.uniqueResult());
+		return u;
+	}
 }

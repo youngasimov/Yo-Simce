@@ -212,7 +212,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 	
 	private void updateFiltros(){
-		DateTimeFormat df = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
+		DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 		filtros.clear();
 		if(place.getDesdeTimestamp()!=-1){
 			Date d = new Date(place.getDesdeTimestamp());

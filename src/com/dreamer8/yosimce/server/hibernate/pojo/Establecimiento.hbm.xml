@@ -4,9 +4,9 @@
 <!-- Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento" table="establecimiento" schema="public">
-        <id name="id" type="int">
+         <id name="id" type="int">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="assigned" />
         </id>
         <many-to-one name="areaGeografica" class="com.dreamer8.yosimce.server.hibernate.pojo.AreaGeografica" fetch="select">
             <column name="area_geografica_id" />

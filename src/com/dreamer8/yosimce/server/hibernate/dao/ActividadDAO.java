@@ -104,7 +104,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " WHERE c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
 				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
-				+ "' AND a.dia=" + SecurityFilter.escapeString(dia);
+				+ "'";
+		if (dia != null) {
+			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
+		}
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
@@ -187,7 +190,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -350,7 +353,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -476,7 +479,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -626,7 +629,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -752,7 +755,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -943,7 +946,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {

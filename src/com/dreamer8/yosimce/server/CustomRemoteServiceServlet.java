@@ -8,7 +8,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -49,9 +51,8 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 	/*
 	 * 
 	 * Session s = HibernateUtil.getSessionFactory().openSession(); try {
-ManagedSessionContext.bind(s);
-	 * AccessControl ac = getAccessControl(); if (ac.isLogged() &&
-	 * ac.isAllowed(className, "getUser")) {
+	 * ManagedSessionContext.bind(s); AccessControl ac = getAccessControl(); if
+	 * (ac.isLogged() && ac.isAllowed(className, "getUser")) {
 	 * 
 	 * if ( == null) { throw new NullPointerException(
 	 * "No se ha especificado un ."); }
@@ -87,19 +88,14 @@ ManagedSessionContext.bind(s);
 		 * "gestion@araujo.cl"; String password = "arauj_2012"; String port =
 		 * "25";
 		 */
-		// ConfiguracionDAO cdao = new ConfiguracionDAO();
-		// List<Configuracion> cs = cdao.findAll();
-		// Configuracion c = (cs != null && !cs.isEmpty()) ? cs.get(0) : null;
-		// if (c != null) {
-		// String fromAddr = c.getFromAddrSmtp();
-		// String fromName = c.getFromNameSmtp();
-		// String smtp = c.getHostSmtp();
-		// String username = c.getUserSmtp();
-		// String password = c.getPasswordSmtp();
-		// String port = c.getPortSmtp().toString();
-		// sendMail(message, subject, toAddr, fromAddr, fromName, smtp,
-		// username, password, port);
-		// }
+		String fromAddr = "simce@usm.cl";
+		String fromName = "SIMCE";
+		String smtp = "smtp.usm.cl";
+		String username = "simce@usm.cl";
+		String password = "nza46aeh";
+		String port = "587";
+		sendMail(message, subject, toAddr, fromAddr, fromName, smtp, username,
+				password, port);
 	}
 
 	protected void sendMail(String message, String subject, String toAddr,
@@ -112,7 +108,11 @@ ManagedSessionContext.bind(s);
 			prop.put("mail.smtp.user", username);
 			prop.put("mail.smtp.password", password);
 			prop.put("mail.smtp.port", port);
-			prop.put("mail.smtp.auth", true);
+			prop.put("mail.smtp.auth", "true");
+			prop.put("mail.smtp.ehlo", "true");
+			prop.put("mail.smtp.starttls.enable", "true");
+			prop.put("mail.smtp.ssl.trust", smtp);
+			// prop.put("mail.debug", "true");
 			javax.mail.Session mailSession = javax.mail.Session
 					.getDefaultInstance(prop, new CustomAuthenticator(username,
 							password));
@@ -120,6 +120,59 @@ ManagedSessionContext.bind(s);
 			m.setFrom(new InternetAddress(fromAddr, fromName));
 			m.setRecipient(Message.RecipientType.TO,
 					new InternetAddress(toAddr));
+			// m.addRecipient(Message.RecipientType.BCC, new
+			// InternetAddress("simce@usm.cl"));
+			m.setSubject(subject);
+			m.setText(message);
+			Transport.send(m);
+		}
+	}
+	
+	protected void sendMail(String message, String subject, String[] toAddrs)
+			throws MessagingException, UnsupportedEncodingException {
+		/*
+		 * String fromAddr = "gestion@araujo.cl"; String fromName = "Gestión
+		 * Araujo"; String smtp = "mail.araujo.cl"; String username =
+		 * "gestion@araujo.cl"; String password = "arauj_2012"; String port =
+		 * "25";
+		 */
+		String fromAddr = "simce@usm.cl";
+		String fromName = "SIMCE";
+		String smtp = "smtp.usm.cl";
+		String username = "simce@usm.cl";
+		String password = "nza46aeh";
+		String port = "587";
+		sendMail(message, subject, toAddrs, fromAddr, fromName, smtp, username,
+				password, port);
+	}
+
+	protected void sendMail(String message, String subject, String[] toAddrs,
+			String fromAddr, String fromName, String smtp, String username,
+			String password, String port) throws MessagingException,
+			UnsupportedEncodingException {
+		if (toAddrs != null && toAddrs.length != 0) {
+			Properties prop = System.getProperties();
+			prop.put("mail.smtp.host", smtp);
+			prop.put("mail.smtp.user", username);
+			prop.put("mail.smtp.password", password);
+			prop.put("mail.smtp.port", port);
+			prop.put("mail.smtp.auth", "true");
+			prop.put("mail.smtp.ehlo", "true");
+			prop.put("mail.smtp.starttls.enable", "true");
+			prop.put("mail.smtp.ssl.trust", smtp);
+			// prop.put("mail.debug", "true");
+			javax.mail.Session mailSession = javax.mail.Session
+					.getDefaultInstance(prop, new CustomAuthenticator(username,
+							password));
+			Message m = new MimeMessage(mailSession);
+			m.setFrom(new InternetAddress(fromAddr, fromName));
+			InternetAddress[] addresses = new InternetAddress[toAddrs.length];
+			for (int i = 0; i < toAddrs.length; i++) {
+				addresses[i] = new InternetAddress(toAddrs[i]);
+			}
+			m.setRecipients(Message.RecipientType.TO, addresses);
+			// m.addRecipient(Message.RecipientType.BCC, new
+			// InternetAddress("simce@usm.cl"));
 			m.setSubject(subject);
 			m.setText(message);
 			Transport.send(m);
@@ -136,20 +189,15 @@ ManagedSessionContext.bind(s);
 		 * "gestion@araujo.cl"; String password = "arauj_2012"; String port =
 		 * "25";
 		 */
-		// ConfiguracionDAO cdao = new ConfiguracionDAO();
-		// List<Configuracion> cs = cdao.findAll();
-		// Configuracion c = (cs != null && !cs.isEmpty()) ? cs.get(0) : null;
-		// if (c != null) {
-		// String fromAddr = c.getFromAddrSmtp();
-		// String fromName = c.getFromNameSmtp();
-		// String smtp = c.getHostSmtp();
-		// String username = c.getUserSmtp();
-		// String password = c.getPasswordSmtp();
-		// String port = c.getPortSmtp().toString();
-		// sendMailWithAttachment(message, subject, toAddr, attachmentName,
-		// attachmentPath, attachmentMime, fromAddr, fromName, smtp,
-		// username, password, port);
-		// }
+		String fromAddr = "simce@usm.cl";
+		String fromName = "SIMCE";
+		String smtp = "smtp.usm.cl";
+		String username = "simce@usm.cl";
+		String password = "nza46aeh";
+		String port = "587";
+		sendMailWithAttachment(message, subject, toAddr, attachmentName,
+				attachmentPath, attachmentMime, fromAddr, fromName, smtp,
+				username, password, port);
 	}
 
 	protected void sendMailWithAttachment(String message, String subject,
@@ -163,7 +211,11 @@ ManagedSessionContext.bind(s);
 			prop.put("mail.smtp.user", username);
 			prop.put("mail.smtp.password", password);
 			prop.put("mail.smtp.port", port);
-			prop.put("mail.smtp.auth", true);
+			prop.put("mail.smtp.auth", "true");
+			prop.put("mail.smtp.ehlo", "true");
+			prop.put("mail.smtp.starttls.enable", "true");
+			prop.put("mail.smtp.ssl.trust", smtp);
+			// prop.put("mail.debug", "true");
 			javax.mail.Session mailSession = javax.mail.Session
 					.getDefaultInstance(prop, new CustomAuthenticator(username,
 							password));
@@ -171,6 +223,75 @@ ManagedSessionContext.bind(s);
 			m.setFrom(new InternetAddress(fromAddr, fromName));
 			m.setRecipient(Message.RecipientType.TO,
 					new InternetAddress(toAddr));
+			// m.addRecipient(Message.RecipientType.BCC, new
+			// InternetAddress("simce@usm.cl"));
+			m.setSubject(subject);
+			MimeBodyPart mbp = new MimeBodyPart();
+			mbp.setText(message);
+			Multipart mp = new MimeMultipart();
+			mp.addBodyPart(mbp);
+			File f = new File(attachmentPath);
+			if (f != null) {
+				DataSource ds = new FileDataSource(f);
+				mbp = new MimeBodyPart();
+				mbp.setDataHandler(new DataHandler(ds));
+				mbp.setFileName(attachmentName);
+				mp.addBodyPart(mbp);
+			}
+			m.setContent(mp);
+			Transport.send(m);
+		}
+	}
+
+	protected void sendMailWithAttachment(String message, String subject,
+			String[] toAddrs, String attachmentName, String attachmentPath,
+			String attachmentMime) throws MessagingException,
+			UnsupportedEncodingException {
+		/*
+		 * String fromAddr = "gestion@araujo.cl"; String fromName = "Gestión
+		 * Araujo"; String smtp = "mail.araujo.cl"; String username =
+		 * "gestion@araujo.cl"; String password = "arauj_2012"; String port =
+		 * "25";
+		 */
+		String fromAddr = "simce@usm.cl";
+		String fromName = "SIMCE";
+		String smtp = "smtp.usm.cl";
+		String username = "simce@usm.cl";
+		String password = "nza46aeh";
+		String port = "587";
+		sendMailWithAttachment(message, subject, toAddrs, attachmentName,
+				attachmentPath, attachmentMime, fromAddr, fromName, smtp,
+				username, password, port);
+	}
+
+	protected void sendMailWithAttachment(String message, String subject,
+			String[] toAddrs, String attachmentName, String attachmentPath,
+			String attachmentMime, String fromAddr, String fromName,
+			String smtp, String username, String password, String port)
+			throws MessagingException, UnsupportedEncodingException {
+		if (toAddrs != null && toAddrs.length != 0) {
+			Properties prop = System.getProperties();
+			prop.put("mail.smtp.host", smtp);
+			prop.put("mail.smtp.user", username);
+			prop.put("mail.smtp.password", password);
+			prop.put("mail.smtp.port", port);
+			prop.put("mail.smtp.auth", "true");
+			prop.put("mail.smtp.ehlo", "true");
+			prop.put("mail.smtp.starttls.enable", "true");
+			prop.put("mail.smtp.ssl.trust", smtp);
+			// prop.put("mail.debug", "true");
+			javax.mail.Session mailSession = javax.mail.Session
+					.getDefaultInstance(prop, new CustomAuthenticator(username,
+							password));
+			Message m = new MimeMessage(mailSession);
+			m.setFrom(new InternetAddress(fromAddr, fromName));
+			InternetAddress[] addresses = new InternetAddress[toAddrs.length];
+			for (int i = 0; i < toAddrs.length; i++) {
+				addresses[i] = new InternetAddress(toAddrs[i]);
+			}
+			m.setRecipients(Message.RecipientType.TO, addresses);
+			// m.addRecipient(Message.RecipientType.BCC, new
+			// InternetAddress("simce@usm.cl"));
 			m.setSubject(subject);
 			MimeBodyPart mbp = new MimeBodyPart();
 			mbp.setText(message);
@@ -344,7 +465,7 @@ ManagedSessionContext.bind(s);
 		return a;
 	}
 
-	public static File getUploadDir(){
-		return new File("/tmp");
+	public static File getUploadDir() {
+		return new File("/var/lib/tomcat6/archivos_subidos");
 	}
 }

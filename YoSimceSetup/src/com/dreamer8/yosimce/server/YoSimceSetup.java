@@ -105,11 +105,18 @@ public class YoSimceSetup {
 
 		// loadLaWeaDeCapacitacion();
 
-		actualizarAgendamientoTIC();
-		// cargarMateriales("MECANIZADO_CAJA4B_CargaDemo.csv", 1, 4,
-		// ActividadTipo.APLICACION_DIA_1);
-		// cargarMateriales("MECANIZADO_SOBRE4B_CargaDemo.csv", 1, 4,
-		// ActividadTipo.VISITA_PREVIA);
+		// actualizarAgendamientoTIC();
+		cargarMateriales("4caja.csv", 1, 4, ActividadTipo.APLICACION_DIA_1);
+		cargarMateriales("4sobre.csv", 1, 4, ActividadTipo.VISITA_PREVIA);
+
+		// asignarEstablecimientoTipo("titulares.csv",
+		// EstablecimientoTipo.SELECCIONADO);
+		// asignarEstablecimientoTipo("reemplazos1.csv",
+		// EstablecimientoTipo.REEMPLAZO_1);
+		// asignarEstablecimientoTipo("reemplazos2.csv",
+		// EstablecimientoTipo.REEMPLAZO_2);
+
+		// cargarEmailDirector("email_est.csv");
 
 		System.out.println("fin :P");
 	}
@@ -313,7 +320,6 @@ public class YoSimceSetup {
 			ActividadEstadoDAO actividadEstadoDAO = new ActividadEstadoDAO();
 			ActividadEstado actividadEstado = actividadEstadoDAO
 					.findByNombre(ActividadEstado.SIN_INFORMACION);
-			Establecimiento e = null;
 			ContactoCargoDAO ccdao = new ContactoCargoDAO();
 			ContactoCargo cc = ccdao.findByName(ContactoCargo.DIRECTOR);
 			AlumnoEstadoDAO aedao = new AlumnoEstadoDAO();
@@ -438,12 +444,14 @@ public class YoSimceSetup {
 		DataInputStream in;
 		FileInputStream fstream;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
 
+		String line = "";
+		try {
+			Integer dia = (tipoActividad.equals(ActividadTipo.VISITA_PREVIA)) ? null
+					: 1;
 			fstream = new FileInputStream(doc);
 			in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			String line;
 			int rowCounter = 0;
 			String[] row;
 			s.beginTransaction();
@@ -463,60 +471,150 @@ public class YoSimceSetup {
 			EstablecimientoDAO edao = new EstablecimientoDAO();
 			Establecimiento eCont = edao
 					.getById(Establecimiento.CONTINGENCIA_ID);
-			Curso cCont = null;
+			Establecimiento e = null;
 			CursoDAO cdao = new CursoDAO();
+			Curso cCont = null;
+			if (eCont != null) {
+				cCont = cdao
+						.findByIdAplicacionANDIdNivelANIdEstablecimientoDANDNombreCurso(
+								idAplicacion, idNivel, eCont.getId(), "CONT");
+			}
+			Curso curso = null;
 			Co co = null;
 			CoDAO codao = new CoDAO();
+			AplicacionXNivelDAO axndao = new AplicacionXNivelDAO();
+			AplicacionXNivel axn = axndao.findByIdAplicacionANDIdNivel(
+					idAplicacion, idNivel);
+			ActividadEstadoDAO actividadEstadoDAO = new ActividadEstadoDAO();
+			ActividadEstado actividadEstado = actividadEstadoDAO
+					.findByNombre(ActividadEstado.SIN_INFORMACION);
+			ContactoCargoDAO ccdao = new ContactoCargoDAO();
+			ContactoCargo cc = ccdao.findByName(ContactoCargo.DIRECTOR);
+			int totalCursosNuevos = 0;
 			while ((line = br.readLine()) != null) {
 				row = line.split(";");
 				if (rowCounter != 0) {
-					a = actividadDAO
-							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
-									idAplicacion, idNivel, at.getId(),
-									Integer.valueOf(row[3]), row[5] + row[6],
-									Integer.valueOf(row[2]));
+					a = null;
+					if (row[2] != null && !row[2].equals("")) {
+						a = actividadDAO
+								.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+										idAplicacion,
+										idNivel,
+										at.getId(),
+										Integer.valueOf(row[2]),
+										row[4].replaceAll(" ", "")
+												+ row[5].replaceAll(" ", ""),
+										dia);
+					}
 					if (a == null) {
 						if ((row[1].toUpperCase().matches(".*CONTINGENCIA.*"))) {
 							if (eCont == null) {
 								eCont = new Establecimiento();
 								eCont.setId(Establecimiento.CONTINGENCIA_ID);
 								eCont.setNombre("CONTINGENCIA");
-
-								// Continuará
+								edao.save(eCont);
 							}
+							if (cCont == null) {
+								cCont = new Curso();
+								cCont.setAplicacionXNivel(axn);
+								cCont.setNombre("CONT");
+								cCont.setEstablecimiento(eCont);
+								cdao.save(cCont);
+
+								for (AplicacionXNivelXActividadTipo axnxat : axn
+										.getAplicacionXNivelXActividadTipos()) {
+									a = new Actividad();
+									a.setCurso(cCont);
+									a.setAplicacionXNivelXActividadTipo(axnxat);
+									a.setActividadEstado(actividadEstado);
+									a.setFechaInicio(axnxat.getFechaInicio());
+									a.setFechaTermino(axnxat.getFechaTermino());
+									a.setDia(dia);
+									actividadDAO.save(a);
+								}
+
+							}
+							a = actividadDAO
+									.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+											idAplicacion, idNivel, at.getId(),
+											eCont.getId(), cCont.getNombre(),
+											dia);
 						} else {
 							// throw new NullPointerException("El curso " +
 							// row[5]
 							// + row[6] + " del " + row[3]
 							// + " no tiene actividad");
-							System.err.println("El curso " + row[5] + row[6]
-									+ " del " + row[3] + " no tiene actividad");
+							System.err.println("El curso " + row[4] + row[5]
+									+ " del " + row[2] + " no tiene actividad");
+
+							e = edao.getById(Integer.valueOf(row[2]));
+							if (e == null) {
+								throw new NullPointerException(
+										"No existe el establecimiento de rbd "
+												+ row[2]);
+							}
+							curso = cdao
+									.findByIdAplicacionANDIdNivelANIdEstablecimientoDANDNombreCurso(
+											idAplicacion,
+											idNivel,
+											e.getId(),
+											row[4].replaceAll(" ", "")
+													+ row[5].replaceAll(" ", ""));
+							if (curso == null) {
+								curso = new Curso();
+								curso.setAplicacionXNivel(axn);
+								curso.setNombre(row[4].replaceAll(" ", "")
+										+ row[5].replaceAll(" ", ""));
+								curso.setEstablecimiento(e);
+								cdao.save(curso);
+								totalCursosNuevos++;
+								for (AplicacionXNivelXActividadTipo axnxat : axn
+										.getAplicacionXNivelXActividadTipos()) {
+									a = new Actividad();
+									a.setCurso(curso);
+									a.setAplicacionXNivelXActividadTipo(axnxat);
+									a.setActividadEstado(actividadEstado);
+									a.setContactoNombre(e.getDirectorNombre());
+									a.setContactoEmail(e.getEmail());
+									a.setContactoTelefono(e.getTelefono());
+									a.setContactoCargo(cc);
+									a.setFechaInicio(axnxat.getFechaInicio());
+									a.setFechaTermino(axnxat.getFechaTermino());
+									a.setDia(dia);
+									actividadDAO.save(a);
+								}
+							}
+							a = actividadDAO
+									.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+											idAplicacion, idNivel, at.getId(),
+											e.getId(), curso.getNombre(), dia);
 						}
-					} else {
-						m = new Material();
-						m.setCodigo(row[0]);
-						m.setMaterialTipo((at
-								.equals(ActividadTipo.VISITA_PREVIA)) ? complementario
-								: caja);
-						m.setContingencia((row[1].toUpperCase()
-								.matches(".*CONTINGENCIA.*")));
-						co = codao
-								.findByIdAplicacionANDIdNivelANDIdEstablecimiento(
-										idAplicacion, idNivel,
-										Integer.valueOf(row[3]));
-						m.setCo(co);
-						mdao.save(m);
-						mxaid = new MaterialXActividadId();
-						mxaid.setActividadId(a.getId());
-						mxaid.setMaterialId(m.getId());
-						mxa = new MaterialXActividad();
-						mxa.setId(mxaid);
-						mxadao.save(mxa);
 					}
+					m = new Material();
+					m.setCodigo(row[0]);
+					m.setMaterialTipo((at.getNombre()
+							.equals(ActividadTipo.VISITA_PREVIA)) ? complementario
+							: caja);
+					m.setContingencia((row[1].toUpperCase()
+							.matches(".*CONTINGENCIA.*")));
+					// co = codao
+					// .findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+					// idAplicacion, idNivel,
+					// Integer.valueOf(row[3]));
+					co = codao.findByIdAplicacionANDNombre(idAplicacion,
+							row[6].replaceAll(" ", ""));
+					m.setCo(co);
+					mdao.save(m);
+					mxaid = new MaterialXActividadId();
+					mxaid.setActividadId(a.getId());
+					mxaid.setMaterialId(m.getId());
+					mxa = new MaterialXActividad();
+					mxa.setId(mxaid);
+					mxadao.save(mxa);
 				}
 				rowCounter++;
 			}
-
+			System.err.println("Total cursos nuevos " + totalCursosNuevos);
 			System.out.println("Ingresados " + rowCounter + " materiales.");
 			s.getTransaction().commit();
 
@@ -531,6 +629,7 @@ public class YoSimceSetup {
 		} catch (Exception e) {
 			System.err.println(e);
 			HibernateUtil.rollback(s);
+			System.err.println(line);
 		}
 	}
 
@@ -731,5 +830,141 @@ public class YoSimceSetup {
 			age--;
 		}
 		return age;
+	}
+
+	public static void asignarEstablecimientoTipo(String doc,
+			String tipoEstablecimiento) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			String rbd = null;
+			AplicacionDAO aplicacionDAO = new AplicacionDAO();
+			Aplicacion aplicacion = aplicacionDAO.getById(2);
+			EstablecimientoDAO edao = new EstablecimientoDAO();
+			Establecimiento establecimiento = null;
+			AplicacionXEstablecimientoDAO axedao = new AplicacionXEstablecimientoDAO();
+			AplicacionXEstablecimiento axe = null;
+			EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
+			EstablecimientoTipo et = etdao.findByNombre(tipoEstablecimiento);
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					if (!row[0].equals(rbd)) {
+						rbd = row[0];
+						establecimiento = edao.getById(Integer.valueOf(rbd));
+						if (establecimiento == null) {
+							throw new NullPointerException(
+									"No se encontró el establecimiento " + rbd);
+						}
+						axe = axedao.findByIdAplicacionANDIdEstablecimiento(2,
+								establecimiento.getId());
+						if (axe == null) {
+							axe = new AplicacionXEstablecimiento();
+							axe.setEstablecimiento(establecimiento);
+							axe.setAplicacion(aplicacion);
+						}
+						axe.setEstablecimientoTipo(et);
+						axedao.saveOrUpdate(axe);
+					}
+
+				}
+				rowCounter++;
+			}
+
+			System.out.println("Ingresados " + rowCounter
+					+ " establecimientos.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static void cargarEmailDirector(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			String rbd = null;
+			EstablecimientoDAO edao = new EstablecimientoDAO();
+			Establecimiento establecimiento = null;
+
+			ActividadDAO adao = new ActividadDAO();
+			List<Curso> cs = null;
+			List<Actividad> as = null;
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					if (!row[0].equals(rbd)) {
+						rbd = row[0];
+						establecimiento = edao.getById(Integer.valueOf(rbd));
+						if (establecimiento == null) {
+							throw new NullPointerException(
+									"No se encontró el establecimiento " + rbd);
+						}
+						establecimiento.setEmail(row[15]);
+						edao.update(establecimiento);
+						cs = establecimiento.getCursos();
+						if (cs != null && !cs.isEmpty()) {
+							for (Curso curso : cs) {
+								as = curso.getActividads();
+								if (as != null && !as.isEmpty()) {
+									for (Actividad actividad : as) {
+										actividad.setContactoEmail(row[15]);
+										adao.update(actividad);
+									}
+								}
+							}
+						}
+					}
+
+				}
+				rowCounter++;
+			}
+
+			System.out.println("Ingresados " + rowCounter
+					+ " establecimientos.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
 	}
 }

@@ -50,21 +50,21 @@ public class StringUtils {
 			return rut;
 		}
 		if (rut.length() == 9) {
-            tmp = rut.substring(0, 2) + ".";
-            tmp += rut.substring(2, 5) + ".";
-            tmp += rut.substring(5, 8) + "-";
-            rut = tmp + rut.substring(8);
-        } else if (rut.length() > 9) {
-            tmp = rut.substring(0, 3) + ".";
-            tmp += rut.substring(3, 6) + ".";
-            tmp += rut.substring(6, 9) + "-";
-            rut = tmp + rut.substring(9);
-        } else {
-            tmp = rut.substring(0, 1) + ".";
-            tmp += rut.substring(1, 4) + ".";
-            tmp += rut.substring(4, 7) + "-";
-            rut = tmp + rut.substring(7);
-        }
+			tmp = rut.substring(0, 2) + ".";
+			tmp += rut.substring(2, 5) + ".";
+			tmp += rut.substring(5, 8) + "-";
+			rut = tmp + rut.substring(8);
+		} else if (rut.length() > 9) {
+			tmp = rut.substring(0, 3) + ".";
+			tmp += rut.substring(3, 6) + ".";
+			tmp += rut.substring(6, 9) + "-";
+			rut = tmp + rut.substring(9);
+		} else {
+			tmp = rut.substring(0, 1) + ".";
+			tmp += rut.substring(1, 4) + ".";
+			tmp += rut.substring(4, 7) + "-";
+			rut = tmp + rut.substring(7);
+		}
 		return rut;
 	}
 
@@ -125,5 +125,27 @@ public class StringUtils {
 
 	public static String getDatePathSafe(String date) {
 		return date.replaceAll(" ", "_").replaceAll(":", "");
+	}
+
+	public static String formartFromUSAToISODate(String date) {
+		if (!date.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,2}")) {
+			return date;
+		}
+		String[] ds = date.split("/");
+		String prefixYear = (Integer.valueOf(ds[2]) < 30) ? "20" : "19";
+		return prefixYear + forceTwoDigits(Integer.valueOf(ds[2])) + "-"
+				+ forceTwoDigits(Integer.valueOf(ds[0])) + "-"
+				+ forceTwoDigits(Integer.valueOf(ds[1]));
+	}
+
+	public static String nombreInicialSegundo(String nombres) {
+		if (nombres == null) {
+			return "";
+		}
+		String[] noms = nombres.split(" ");
+		if (noms.length < 2) {
+			return nombres;
+		}
+		return noms[0] + " " + noms[1].substring(0, 1) + ".";
 	}
 }

@@ -20,7 +20,6 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
 public class EstablecimientoDAO extends
 		AbstractHibernateDAO<Establecimiento, Integer> {
 
-
 	public List<Establecimiento> findEstablecimientosByActividadANDRbd(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario, String usuarioTipo, String rbd) {
@@ -49,7 +48,7 @@ public class EstablecimientoDAO extends
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.co_id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz=zona_id AND jzxz.jz_id="
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
@@ -73,5 +72,18 @@ public class EstablecimientoDAO extends
 		Query q = s.createSQLQuery(query).addEntity(Establecimiento.class);
 		es = q.list();
 		return es;
+	}
+
+	public Establecimiento findByIdActividad(Integer idActividad) {
+
+		Establecimiento e = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT e.* FROM ACTIVIDAD a"
+				+ " JOIN CURSO c ON a.curso_id=c.id AND a.id="
+				+ SecurityFilter.escapeString(idActividad)
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
+		Query q = s.createSQLQuery(query).addEntity(Establecimiento.class);
+		e = ((Establecimiento) q.uniqueResult());
+		return e;
 	}
 }
