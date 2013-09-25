@@ -1,10 +1,10 @@
 package com.dreamer8.yosimce.client.planificacion;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
@@ -212,7 +212,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 	
 	private void updateFiltros(){
-		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US);
+		DateTimeFormat df = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 		filtros.clear();
 		if(place.getDesdeTimestamp()!=-1){
 			Date d = new Date(place.getDesdeTimestamp());
