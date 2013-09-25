@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
+import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -27,5 +28,7 @@ public interface LoginServiceAsync {
 	void logout(AsyncCallback<Boolean> callback);
 
 	void keepAlive(AsyncCallback<Boolean> callback);
+
+	void getUsuarioTipos(AsyncCallback<ArrayList<TipoUsuarioDTO>> callback);
 
 }

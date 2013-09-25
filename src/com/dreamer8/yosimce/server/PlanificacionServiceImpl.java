@@ -388,8 +388,14 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				}
 				s.getTransaction().commit();
-
-				if (enviarMail && dirMail != null && !dirMail.isEmpty()) {
+				
+				if (enviarMail
+						&& ((dirMail != null && !dirMail.isEmpty()) || (contMail != null && !contMail
+								.isEmpty()))) {
+					if (dirMail == null || dirMail.isEmpty()) {
+						dirMail = contMail;
+						contMail = null;
+					}
 					if (idAplicacion == 1) {
 						sendEmailDirector(dirMail, contMail, firmante, dayNew
 								+ " de " + month,

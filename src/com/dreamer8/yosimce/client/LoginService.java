@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
+import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("loginservice")
 public interface LoginService extends RemoteService {
+	public static final String USUARIO_TIPO_COOKIE_NAME = "ut";
 
 	public UserDTO getUser(String token) throws NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
@@ -40,6 +42,10 @@ public interface LoginService extends RemoteService {
 			NullPointerException, ConsistencyException;
 
 	public Boolean logout();
-	
+
 	public Boolean keepAlive() throws NoLoggedException;
+	
+	public ArrayList<TipoUsuarioDTO> getUsuarioTipos()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
 }

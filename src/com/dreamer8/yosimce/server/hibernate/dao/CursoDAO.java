@@ -133,4 +133,21 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 		c = ((Curso) q.uniqueResult());
 		return c;
 	}
+
+	public List<Curso> findByIdAplicacionANDIdNivelANIdEstablecimiento(
+			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
+
+		List<Curso> cs = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT c.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN CURSO c ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=c.aplicacion_x_nivel_id)"
+				+ " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento);
+		Query q = s.createSQLQuery(query).addEntity(Curso.class);
+		cs = q.list();
+		return cs;
+	}
 }
