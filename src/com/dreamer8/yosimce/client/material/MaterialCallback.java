@@ -22,7 +22,7 @@ public abstract class MaterialCallback<T> implements AsyncCallback<T> {
 	}
 	
 	public MaterialCallback(EventBus eventbus, boolean blocking){
-		this(eventbus,blocking,60000);
+		this(eventbus,blocking,0);
 	}
 	
 	public MaterialCallback(EventBus eventbus, boolean blocking, int timeout){
@@ -30,7 +30,7 @@ public abstract class MaterialCallback<T> implements AsyncCallback<T> {
 	}
 	
 	public MaterialCallback(EventBus eventbus, boolean blocking, String key){
-		this(eventbus,blocking,60000,key,true);
+		this(eventbus,blocking,0,key,true);
 	}
 	
 	public MaterialCallback(EventBus eventbus, boolean blocking, int timeout,String key,boolean manageThrows){
