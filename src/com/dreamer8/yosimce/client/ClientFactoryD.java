@@ -46,12 +46,14 @@ import com.dreamer8.yosimce.client.ui.MenuView;
 import com.dreamer8.yosimce.client.ui.MenuViewD;
 import com.dreamer8.yosimce.client.ui.SidebarView;
 import com.dreamer8.yosimce.client.ui.SidebarViewD;
+import com.dreamer8.yosimce.client.ui.TipoUsuarioSelectorViewD;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
+import com.dreamer8.yosimce.client.ui.TipoUsuarioSelectorView;
 
 public class ClientFactoryD implements ClientFactory {
 
@@ -81,6 +83,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final SidebarView sidebarView = new SidebarViewD();
 	private final CursoSelectorView cursoSelectorView = new CursoSelectorViewD();
 	private final MenuView menuView = new MenuViewD();
+	private final TipoUsuarioSelectorView TipoUsuarioSelectorView = new TipoUsuarioSelectorViewD();
 	
 	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
 
@@ -186,6 +189,10 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public MenuView getMenuView() {
 		return menuView;
+	}
+	
+	public TipoUsuarioSelectorView getTipoUsuarioSelectorView() {
+		return TipoUsuarioSelectorView;
 	}
 
 	@Override

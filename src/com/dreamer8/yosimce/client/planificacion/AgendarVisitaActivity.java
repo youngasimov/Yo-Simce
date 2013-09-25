@@ -257,6 +257,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 					view.getDataDisplay().setRowCount(agenda.getItems().size());
 					view.getDataDisplay().setVisibleRange(0,agenda.getItems().size());
 					view.getDataDisplay().setRowData(0, agenda.getItems());
+					view.setUltimoEstado(result);
 				}
 			});
 		}

@@ -23,6 +23,7 @@ import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.dreamer8.yosimce.client.ui.MenuView;
 import com.dreamer8.yosimce.client.ui.SidebarView;
+import com.dreamer8.yosimce.client.ui.TipoUsuarioSelectorView;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryMapper;
 import com.google.web.bindery.event.shared.EventBus;
@@ -41,10 +42,12 @@ public interface ClientFactory {
 	MaterialServiceAsync getMaterialService();
 	AdministracionServiceAsync getAdministracionService();
 	
+	
 	AppView getAppView();
 	LoadView getLoadView();
 	HeaderView getHeaderView();
 	SidebarView getSidebarView();
+	TipoUsuarioSelectorView getTipoUsuarioSelectorView();
 	
 	MenuView getMenuView();
 	

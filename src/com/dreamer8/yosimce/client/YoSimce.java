@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,6 +8,7 @@ import java.util.logging.Logger;
 import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.LoginView;
+import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.EntryPoint;
@@ -15,6 +17,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -93,8 +96,8 @@ public class YoSimce implements EntryPoint {
 				@Override
 				public void onSuccess(UserDTO result) {
 					user = result;
-					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Cargando aplicación...");
-					loadApp();
+					loadView.setMessage(result.getNombres()+" "+result.getApellidoPaterno()+",<br />Comprobando tipos de usuario registrados...");
+					getTiposUsuarios();
 				}
 				
 				@Override
@@ -176,7 +179,61 @@ public class YoSimce implements EntryPoint {
 		historyHandler.handleCurrentHistory();
 	}
 	
-	
+	private void getTiposUsuarios(){
+		
+		loginService.getUsuarioTipos(new AsyncCallback<ArrayList<TipoUsuarioDTO>>() {
+
+			@Override
+			public void onSuccess(ArrayList<TipoUsuarioDTO> result) {
+				if(result== null || result.isEmpty()){
+					loadView.setMessage("no tiene asignado ningun tipo de usuario, contactese con el encargado de informática para correguir su situación");
+					logger.log(Level.WARNING, " no tiene asignado ningun tipo de usuario, contactese con el encargado de informática para correguir su situación");
+				}else if(result.size() == 1){
+					Cookies.setCookie(LoginService.USUARIO_TIPO_COOKIE_NAME, result.get(0).getId()+"");
+					loadView.setMessage(user.getNombres()+" "+user.getApellidoPaterno()+",<br />Cargando aplicación...");
+					loadApp();
+				}else{
+					final TipoUsuarioSelector tus = new TipoUsuarioSelector(factory, result);
+					tus.setSelectedCommand(new Command() {
+						
+						@Override
+						public void execute() {
+							TipoUsuarioDTO s = tus.getSelectedTipoUsuario();
+							Cookies.setCookie(LoginService.USUARIO_TIPO_COOKIE_NAME, s.getId()+"");
+							tus.hide();
+							loadView.setMessage(user.getNombres()+" "+user.getApellidoPaterno()+",<br />Cargando aplicación...");
+							loadApp();
+						}
+					});
+					tus.show();
+				}
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof RequestTimeoutException){
+					Window.Location.reload();
+				}else if(caught instanceof IncompatibleRemoteServiceException){
+					loadView.setMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio");
+					logger.log(Level.WARNING, caught.getLocalizedMessage());
+				}else{
+					loadView.setMessage(caught.getMessage());
+					logger.log(Level.WARNING, caught.getLocalizedMessage());
+					user = null;
+					Cookies.removeCookie(TOKEN_COOKIE);
+					Cookies.removeCookie(TOKEN_COOKIE_DEMO);
+					Timer t = new Timer(){
+
+						@Override
+						public void run() {
+							notLogged();
+						}
+					};
+					t.schedule(3000);
+				}
+			}
+		});
+	}
 	
 	private void notLogged(){
 		StorageExt storage = StorageExt.getLocalStorage();
