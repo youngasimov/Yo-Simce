@@ -60,11 +60,12 @@ public class TipoUsuarioSelectorViewD extends Composite implements TipoUsuarioSe
 		coList.setSelectionModel(selectionModel);
 		coList.setPageSize(300);
 		initWidget(uiBinder.createAndBindUi(this));
-		popup = new PopupPanel(true, true);
+		popup = new PopupPanel(false, true);
 		popup.setAnimationEnabled(true);
 		popup.setAutoHideOnHistoryEventsEnabled(false);
 		popup.setGlassEnabled(false);
 		popup.setModal(true);
+		popup.setAutoHideEnabled(false);
 		popup.setWidget(this);
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler(){
 

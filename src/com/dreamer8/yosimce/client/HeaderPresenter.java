@@ -8,9 +8,11 @@ import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
 import com.dreamer8.yosimce.shared.dto.NivelDTO;
+import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
@@ -205,34 +207,65 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 			Date d = new Date();
 			CalendarUtil.addMonthsToDate(d, 1);
 			Cookies.setCookie("n", nivelId+"",d);
-			
-			if(permisos.containsKey(aplicacionId+":"+nivelId)){
-				factory.getEventBus().fireEvent(new PermisosEvent(permisos.get(aplicacionId+":"+nivelId)));
-			}else{
-				factory.getLoginService().getUsuarioPermisos(new SimceCallback<HashMap<String,ArrayList<String>>>(factory.getEventBus(),false) {
-	
-					@Override
-					public void success(HashMap<String, ArrayList<String>> result) {
-						permisos.put(aplicacionId+":"+nivelId, result);
-						factory.getEventBus().fireEvent(new PermisosEvent(result));
-					}
-				});
-			}
-			
-			if(tipos.containsKey(aplicacionId+":"+nivelId)){
-				selectTipo();
-			}else{
-				factory.getLoginService().getActividadTipos(new SimceCallback<ArrayList<ActividadTipoDTO>>(factory.getEventBus(),false) {
+			factory.getLoginService().getUsuarioTipos(new SimceCallback<ArrayList<TipoUsuarioDTO>>(factory.getEventBus(),true) {
 
-					@Override
-					public void success(ArrayList<ActividadTipoDTO> result) {
-						tipos.put(aplicacionId+":"+nivelId, result);
-						selectTipo();
+				@Override
+				public void success(ArrayList<TipoUsuarioDTO> result) {
+					if(result== null || result.isEmpty()){
+						
+					}else if(result.size() == 1){
+						Cookies.setCookie(LoginService.USUARIO_TIPO_COOKIE_NAME, result.get(0).getId()+"");
+						afterTipoUsuarioSelected();
+					}else{
+						final TipoUsuarioSelector tus = new TipoUsuarioSelector(factory, result);
+						tus.setSelectedCommand(new Command() {
+							
+							@Override
+							public void execute() {
+								TipoUsuarioDTO s = tus.getSelectedTipoUsuario();
+								Cookies.setCookie(LoginService.USUARIO_TIPO_COOKIE_NAME, s.getId()+"");
+								tus.hide();
+								afterTipoUsuarioSelected();
+							}
+						});
+						tus.show();
 					}
-				});
-			}
+				}
+			});
+			
+			
 		}else{
 			showNivelHelp();
+		}
+	}
+	
+	private void afterTipoUsuarioSelected(){
+		
+		
+		if(permisos.containsKey(aplicacionId+":"+nivelId)){
+			factory.getEventBus().fireEvent(new PermisosEvent(permisos.get(aplicacionId+":"+nivelId)));
+		}else{
+			factory.getLoginService().getUsuarioPermisos(new SimceCallback<HashMap<String,ArrayList<String>>>(factory.getEventBus(),false) {
+
+				@Override
+				public void success(HashMap<String, ArrayList<String>> result) {
+					permisos.put(aplicacionId+":"+nivelId, result);
+					factory.getEventBus().fireEvent(new PermisosEvent(result));
+				}
+			});
+		}
+		
+		if(tipos.containsKey(aplicacionId+":"+nivelId)){
+			selectTipo();
+		}else{
+			factory.getLoginService().getActividadTipos(new SimceCallback<ArrayList<ActividadTipoDTO>>(factory.getEventBus(),false) {
+
+				@Override
+				public void success(ArrayList<ActividadTipoDTO> result) {
+					tipos.put(aplicacionId+":"+nivelId, result);
+					selectTipo();
+				}
+			});
 		}
 	}
 	
