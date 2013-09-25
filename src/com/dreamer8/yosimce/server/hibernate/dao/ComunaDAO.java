@@ -22,7 +22,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 
 		List<Comuna> cs = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT co.* FROM  APLICACION_x_NIVEL axn "
+		String query = "SELECT DISTINCT com.* FROM  APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -33,7 +33,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 				+ " JOIN APLICACION a ON axnxat.id=a.aplicacion_x_nivel_actividad_tipo_id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA co ON e.comuna_id=co.id";
+				+ " JOIN COMUNA com ON e.comuna_id=com.id";
 		Query q = s.createSQLQuery(query).addEntity(Comuna.class);
 		cs = q.list();
 		return cs;
@@ -65,7 +65,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
 			} else {
-				query += " JOIN CO co ON coxe.co_id=co.co_id";
+				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
 					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
@@ -98,7 +98,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idProvincia) {
 		List<Comuna> cs = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT co.* FROM  APLICACION_x_NIVEL axn "
+		String query = "SELECT DISTINCT com.* FROM  APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -109,8 +109,8 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 				+ " JOIN APLICACION a ON axnxat.id=a.aplicacion_x_nivel_actividad_tipo_id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA co ON e.comuna_id=co.id"
-				+ " WHERE co.provincia_id="
+				+ " JOIN COMUNA com ON e.comuna_id=com.id"
+				+ " WHERE com.provincia_id="
 				+ SecurityFilter.escapeString(idProvincia);
 		Query q = s.createSQLQuery(query).addEntity(Comuna.class);
 		cs = q.list();
@@ -143,7 +143,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
 			} else {
-				query += " JOIN CO co ON coxe.co_id=co.co_id";
+				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
 					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
@@ -178,7 +178,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idRegion) {
 		List<Comuna> cs = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT co.* FROM  APLICACION_x_NIVEL axn "
+		String query = "SELECT DISTINCT com.* FROM  APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -189,8 +189,8 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 				+ " JOIN APLICACION a ON axnxat.id=a.aplicacion_x_nivel_actividad_tipo_id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA co ON e.comuna_id=co.id"
-				+ " JOIN PROVINCIA p ON co.provincia_id=p.id"
+				+ " JOIN COMUNA com ON e.comuna_id=com.id"
+				+ " JOIN PROVINCIA p ON com.provincia_id=p.id"
 				+ " WHERE p.region_id=" + SecurityFilter.escapeString(idRegion);
 		Query q = s.createSQLQuery(query).addEntity(Comuna.class);
 		cs = q.list();
@@ -223,7 +223,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
 			} else {
-				query += " JOIN CO co ON coxe.co_id=co.co_id";
+				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
 					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
