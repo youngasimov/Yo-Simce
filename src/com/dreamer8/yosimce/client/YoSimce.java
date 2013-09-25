@@ -70,6 +70,7 @@ public class YoSimce implements EntryPoint {
 		Cookies.removeCookie("a");
 		Cookies.removeCookie("n");
 		Cookies.removeCookie("t");
+		Cookies.removeCookie(LoginService.USUARIO_TIPO_COOKIE_NAME);
 		
 		loadView.setMessage("Comprobando permisos de usuario...");
 		String token = "";
