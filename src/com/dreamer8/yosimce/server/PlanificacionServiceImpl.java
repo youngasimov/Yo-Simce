@@ -391,6 +391,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				}
 				s.getTransaction().commit();
+				
+				if(getBaseURL().contains("127.0.0.1") || getBaseURL().contains("demo")){
+					enviarMail = false;
+					System.out.println("Trabajando em local o demo, no se debería mandar correo");
+				}
 
 				if (enviarMail
 						&& ((dirMail != null && !dirMail.isEmpty()) || (contMail != null && !contMail
