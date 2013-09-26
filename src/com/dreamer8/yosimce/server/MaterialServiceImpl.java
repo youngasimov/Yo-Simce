@@ -874,6 +874,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se han especificado los códigos.");
 				}
 
+				for (String string : codigos) {
+					if (string == null || string.isEmpty()) {
+						throw new NullPointerException(
+								"Se ha ingresado un código inválido.");
+					}
+				}
+
 				Usuario u = getUsuarioActual();
 
 				s.beginTransaction();
@@ -904,6 +911,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				LugarDAO ldao = new LugarDAO();
 				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
 				Lugar imprenta = ldao.findByNombre(Lugar.IMPRENTA);
+				List<Lugar> lugares = ldao.findAll();
 
 				MaterialEstadoDAO medao = new MaterialEstadoDAO();
 				MaterialEstado me = medao
@@ -930,11 +938,25 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
 				MaterialHistorial mh = null;
 				MaterialHistorialId mhid = null;
-				MaterialHistorial mhLast = null;
+				HistorialMaterialItemDTO mhLast = null;
 				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO();
 				MaterialXGuiaDespacho mxgd = null;
+				List<HistorialMaterialItemDTO> mhLasts = mhdao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
+								idAplicacion, idNivel, idActividadTipo, codigos);
 				for (Material material : ms) {
-					mhLast = mhdao.findLastByIdMaterial(material.getId());
+					mhLast = null;
+					// mhLast = mhdao.findLastByIdMaterial(material.getId());
+					if (mhLasts != null && !mhLasts.isEmpty()) {
+						for (HistorialMaterialItemDTO materialHistorial : mhLasts) {
+							if (material.getId().equals(
+									materialHistorial.getId())) {
+								mhLast = materialHistorial;
+								mhLasts.remove(materialHistorial);
+								break;
+							}
+						}
+					}
 					mhid = new MaterialHistorialId();
 					mhid.setMaterialId(material.getId());
 					mhid.setFecha(fecha);
@@ -943,8 +965,19 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					mh.setUsuario(u);
 					mh.setModificadorId(u.getId());
 					mh.setLugarByDestinoId(centro);
-					mh.setLugarByOrigenId((mhLast == null) ? imprenta : mhLast
-							.getLugarByDestinoId());
+					if (mhLast == null || mhLast.getIdOrigen() == null) {
+						mh.setLugarByOrigenId(imprenta);
+					} else {
+						for (Lugar lugar : lugares) {
+							if (lugar.getId().equals(mhLast.getIdOrigen())) {
+								mh.setLugarByOrigenId(lugar);
+								break;
+							}
+						}
+					}
+					// mh.setLugarByOrigenId((mhLast == null) ? imprenta :
+					// mhLast
+					// .getLugarByDestinoId());
 					mh.setMaterialEstado(me);
 					mh.setCo(co);
 					mhdao.save(mh);

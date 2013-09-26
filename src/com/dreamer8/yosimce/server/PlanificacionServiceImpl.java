@@ -288,7 +288,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"El estado especificado no existe");
 				}
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(itemAgenda.getFecha());
+				Date fecha = StringUtils.getDate(itemAgenda.getFecha());
+				if(fecha == null){
+					throw new NullPointerException(
+							"La fecha de agendamiento ingresada no es válida");
+				}
+				calendar.setTime(fecha);
 				int yearNew = calendar.get(Calendar.YEAR);
 				int monthNew = calendar.get(Calendar.MONTH);
 				SimpleDateFormat sdf = new SimpleDateFormat("MMMM",
@@ -349,7 +354,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				// }
 				// }
 
-				a.setFechaInicio(itemAgenda.getFecha());
+				a.setFechaInicio(fecha);
 				a.setUsuario(u);
 				a.setComentario(itemAgenda.getComentario());
 				a.setActividadEstado(ae);

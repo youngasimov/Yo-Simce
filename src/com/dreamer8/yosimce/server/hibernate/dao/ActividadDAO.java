@@ -280,7 +280,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setRegionName((String) o[6]);
 			apdto.setComunaName((String) o[8]);
 			aidto = new AgendaItemDTO();
-			aidto.setFecha((Date) o[9]);
+			aidto.setFecha(StringUtils.getDateString((Date) o[9]));
 			aidto.setComentario((String) o[10]);
 			udto = new UserDTO();
 			udto.setId((Integer) o[11]);

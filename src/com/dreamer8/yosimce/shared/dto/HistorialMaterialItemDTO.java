@@ -20,6 +20,8 @@ public class HistorialMaterialItemDTO implements Serializable {
 	private Date fecha;
 	private String desde;
 	private String hacia;
+	private Integer idOrigen;
+	private Integer idDestino;
 	private UserDTO receptor;
 
 	/**
@@ -67,6 +69,22 @@ public class HistorialMaterialItemDTO implements Serializable {
 
 	public void setReceptor(UserDTO receptor) {
 		this.receptor = receptor;
+	}
+
+	public Integer getIdOrigen() {
+		return idOrigen;
+	}
+
+	public void setIdOrigen(Integer idOrigen) {
+		this.idOrigen = idOrigen;
+	}
+
+	public Integer getIdDestino() {
+		return idDestino;
+	}
+
+	public void setIdDestino(Integer idDestino) {
+		this.idDestino = idDestino;
 	}
 
 	@Override

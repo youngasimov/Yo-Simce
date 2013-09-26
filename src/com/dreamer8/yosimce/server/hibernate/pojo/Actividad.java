@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXIncidenciaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.DocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoTipoDAO;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
@@ -480,7 +481,7 @@ public class Actividad implements java.io.Serializable {
 		AgendaItemDTO aidto = new AgendaItemDTO();
 		aidto.setEstado(actividadEstado.getEstadoAgendaDTO());
 		aidto.setComentario(comentario);
-		aidto.setFecha(fechaInicio);
+		aidto.setFecha(StringUtils.getDateString(fechaInicio));
 		if (usuario != null) {
 			aidto.setCreador(usuario.getUserDTO());
 		}
