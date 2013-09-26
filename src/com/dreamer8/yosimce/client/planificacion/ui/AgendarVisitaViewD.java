@@ -91,7 +91,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
 		idCurso = -1;
-		format2 = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
+		format2 = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 		menu.insertSeparator(2);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {

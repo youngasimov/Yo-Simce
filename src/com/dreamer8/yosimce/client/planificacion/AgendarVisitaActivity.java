@@ -41,7 +41,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		this.place = place;
 		this.view = factory.getAgendarVisitaView();
 		view.setPresenter(this);
-		format =DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT);
+		format =DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
 	}
 	
 	@Override

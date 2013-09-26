@@ -91,7 +91,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
 		filtrosDialogBox.setWidget(filtrosPanel);
 		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
-		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
+		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 		menu.insertSeparator(1);
 		menu.insertSeparator(4);
 		

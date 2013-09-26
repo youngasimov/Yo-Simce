@@ -22,7 +22,7 @@ public class AgendaCell extends AbstractCell<AgendaItemDTO> {
 	private DateTimeFormat dateFormat;
 	private DateTimeFormat timeFormat;
 	public AgendaCell() {
-		xFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
+		xFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 		dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_FULL);
 		timeFormat = DateTimeFormat.getFormat(PredefinedFormat.TIME_SHORT);
 	}
