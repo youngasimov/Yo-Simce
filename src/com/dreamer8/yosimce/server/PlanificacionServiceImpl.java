@@ -298,7 +298,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				int monthNew = calendar.get(Calendar.MONTH);
 				SimpleDateFormat sdf = new SimpleDateFormat("MMMM",
 						Locale.forLanguageTag("es"));
-				String month = sdf.format(itemAgenda.getFecha());
+				String month = sdf.format(fecha);
 				int dayNew = calendar.get(Calendar.DAY_OF_MONTH);
 				int hourNew = calendar.get(Calendar.HOUR_OF_DAY);
 				int minNew = calendar.get(Calendar.MINUTE);
