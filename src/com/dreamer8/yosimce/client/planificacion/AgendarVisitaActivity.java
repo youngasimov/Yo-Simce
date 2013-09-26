@@ -19,6 +19,7 @@ import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -32,7 +33,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	private AgendaDTO agenda;
 	
 	private ArrayList<EstadoAgendaDTO> estados;
-	
+	private DateTimeFormat format;
 	
 	
 	public AgendarVisitaActivity(ClientFactory factory,AgendarVisitaPlace place, HashMap<String, ArrayList<String>> permisos) {
@@ -40,6 +41,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 		this.place = place;
 		this.view = factory.getAgendarVisitaView();
 		view.setPresenter(this);
+		format =DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT);
 	}
 	
 	@Override
@@ -185,8 +187,11 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				break;
 			}
 		}
-		aidto.setFecha(view.getFechaHoraSeleccionada());
+		aidto.setFecha(format.format(view.getFechaHoraSeleccionada()));
 		aidto.setComentario(view.getComentario());
+		
+		
+		
 		
 		//Si no Existe información, se permite agregar un inte sin complicaciones
 		if(last == null || last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION)){
