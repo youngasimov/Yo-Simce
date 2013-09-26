@@ -28,12 +28,18 @@ public class AgendaCell extends AbstractCell<AgendaItemDTO> {
 	}
 	@Override
 	public void render(com.google.gwt.cell.client.Cell.Context context,AgendaItemDTO value, SafeHtmlBuilder sb) {
+		if(value.getFecha()!=null && !value.getFecha().isEmpty()){
+			Date d = xFormat.parse(value.getFecha());
+			renderer.render(sb,dateFormat.format(d)+" a las "+timeFormat.format(d), value.getEstado().getEstado(),
+					((value.getCreador() != null)?value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno():""),
+					((value.getComentario() != null)?value.getComentario():""));
+		}else{
+			renderer.render(sb," Sin información", value.getEstado().getEstado(),
+					((value.getCreador() != null)?value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno():""),
+					((value.getComentario() != null)?value.getComentario():""));
+		}
 		
-		Date d = xFormat.parse(value.getFecha());
 		
-		renderer.render(sb,dateFormat.format(d)+" a las "+timeFormat.format(d), value.getEstado().getEstado(),
-				((value.getCreador() != null)?value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno():""),
-				((value.getComentario() != null)?value.getComentario():""));
 	}
 	
 	

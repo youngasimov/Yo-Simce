@@ -314,9 +314,11 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public void setUltimoEstado(AgendaItemDTO item) {
 		lastItem = item;
-		fechaPicker.setValue(format2.parse(item.getFecha()));
-		fechaLabel.setText(format.format(format2.parse(item.getFecha())));
-		timeBox.setValue(format2.parse(item.getFecha()).getTime());
+		if(item.getFecha() != null && !item.getFecha().isEmpty()){
+			fechaPicker.setValue(format2.parse(item.getFecha()));
+			fechaLabel.setText(format.format(format2.parse(item.getFecha())));
+			timeBox.setValue(format2.parse(item.getFecha()).getTime());
+		}
 		for(int i=0; i<estadoBox.getItemCount(); i++){
 			if(Integer.parseInt(estadoBox.getValue(i)) == item.getEstado().getId()){
 				estadoBox.setSelectedIndex(i);

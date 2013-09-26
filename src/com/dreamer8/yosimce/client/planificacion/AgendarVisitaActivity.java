@@ -187,7 +187,9 @@ public class AgendarVisitaActivity extends SimceActivity implements
 				break;
 			}
 		}
-		aidto.setFecha(format.format(view.getFechaHoraSeleccionada()));
+		if(view.getFechaHoraSeleccionada() !=null){
+			aidto.setFecha(format.format(view.getFechaHoraSeleccionada()));
+		}
 		aidto.setComentario(view.getComentario());
 		
 		
