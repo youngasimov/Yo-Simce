@@ -438,7 +438,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         Column<AgendaPreviewDTO, Date> dateColumn =new Column<AgendaPreviewDTO, Date>(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM))) {
             @Override
             public Date getValue(AgendaPreviewDTO object) {
-                return (object.getAgendaItemActual()!=null)?format.parse(object.getAgendaItemActual().getFecha()):null;
+                return (object.getAgendaItemActual()==null || object.getAgendaItemActual().getFecha() == null || object.getAgendaItemActual().getFecha().isEmpty())?null:format.parse(object.getAgendaItemActual().getFecha());
             }
         };
         dateColumn.setSortable(false);
