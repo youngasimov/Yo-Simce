@@ -82,6 +82,8 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	private AgendaItemDTO lastItem;
 	
+	private DateTimeFormat format2;
+	
 	public AgendarVisitaViewD() {
 		cell = new AgendaCell();
 		agendaList = new CellList<AgendaItemDTO>(cell);
@@ -89,7 +91,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
 		idCurso = -1;
-		
+		format2 = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 		menu.insertSeparator(2);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
@@ -312,9 +314,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public void setUltimoEstado(AgendaItemDTO item) {
 		lastItem = item;
-		fechaPicker.setValue(item.getFecha());
-		fechaLabel.setText(format.format(item.getFecha()));
-		timeBox.setValue(item.getFecha().getTime());
+		fechaPicker.setValue(format2.parse(item.getFecha()));
+		fechaLabel.setText(format.format(format2.parse(item.getFecha())));
+		timeBox.setValue(format2.parse(item.getFecha()).getTime());
 		for(int i=0; i<estadoBox.getItemCount(); i++){
 			if(Integer.parseInt(estadoBox.getValue(i)) == item.getEstado().getId()){
 				estadoBox.setSelectedIndex(i);

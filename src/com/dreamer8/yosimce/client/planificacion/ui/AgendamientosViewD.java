@@ -80,6 +80,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	private boolean modificarAgendaVisible;
 	private boolean detalleVisible;
 	private boolean informacionVisible;
+	private DateTimeFormat format;
+	
 	
 	public AgendamientosViewD() {
 		dataGrid = new DataGrid<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
@@ -89,7 +91,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
 		filtrosDialogBox.setWidget(filtrosPanel);
 		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
-		
+		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT);
 		menu.insertSeparator(1);
 		menu.insertSeparator(4);
 		
@@ -436,7 +438,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         Column<AgendaPreviewDTO, Date> dateColumn =new Column<AgendaPreviewDTO, Date>(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM))) {
             @Override
             public Date getValue(AgendaPreviewDTO object) {
-                return (object.getAgendaItemActual()!=null)?object.getAgendaItemActual().getFecha():null;
+                return (object.getAgendaItemActual()!=null)?format.parse(object.getAgendaItemActual().getFecha()):null;
             }
         };
         dateColumn.setSortable(false);
