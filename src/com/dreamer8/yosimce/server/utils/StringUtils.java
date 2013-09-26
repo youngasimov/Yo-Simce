@@ -47,16 +47,17 @@ public class StringUtils {
 	public static Date getDate(String dateString) {
 		if (dateString == null
 				|| !dateString
-						.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}")) {
+						.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:*[0-9]{0,2}")) {
 			return null;
 		}
 		String[] dateParts = dateString.split(" ");
 		String[] date = dateParts[0].split("/");
 		String[] time = dateParts[1].split(":");
 		Calendar calendar = Calendar.getInstance();
+		Integer sec = (time.length == 3) ? Integer.valueOf(time[2]) : 0;
 		calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
 				Integer.valueOf(date[0]), Integer.valueOf(time[0]),
-				Integer.valueOf(time[1]), Integer.valueOf(time[2]));
+				Integer.valueOf(time[1]), sec);
 		return calendar.getTime();
 	}
 
@@ -183,5 +184,12 @@ public class StringUtils {
 			return nombres;
 		}
 		return noms[0] + " " + noms[1].substring(0, 1) + ".";
+	}
+
+	public static String getMes(int mes) {
+		String[] meses = { "enero", "febrero", "marzo", "abril", "mayo",
+				"junio", "julio", "agosto", "septiembre", "octubre",
+				"noviembre", "diciembre" };
+		return meses[mes % 12];
 	}
 }

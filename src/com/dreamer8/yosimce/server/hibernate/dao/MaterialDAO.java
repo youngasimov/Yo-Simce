@@ -4,7 +4,9 @@
 package com.dreamer8.yosimce.server.hibernate.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -364,5 +366,46 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			mdto.setIdTipoActividad((Integer) o[12]);
 		}
 		return mdto;
+	}
+
+	public Map<String, List<Integer>> findRepetidos() {
+
+		Map<String, List<Integer>> ms = new HashMap<String, List<Integer>>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "select m.codigo,m.id as m_id,m1.id as m1_id from material m join material m1 on m.codigo=m1.codigo where m.id != m1.id;";
+		Query q = s.createSQLQuery(query);
+		List<Integer> ids = null;
+		List<Object[]> os = q.list();
+		for (Object[] o : os) {
+			if (!ms.containsKey((String) o[0])) {
+				ids = new ArrayList<Integer>();
+				ids.add((Integer) o[1]);
+				ids.add((Integer) o[2]);
+				ms.put((String) o[0], ids);
+			}
+		}
+		return ms;
+	}
+
+	public Map<Integer, Integer> findEnCentroEquivocado() {
+
+		Map<Integer, Integer> ms = new HashMap<Integer, Integer>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "select m.id,cxe.co_id from material m"
+				+ " join material_x_actividad mxa on m.id=mxa.material_id"
+				+ " join actividad a on mxa.actividad_id=a.id"
+				+ " join curso c on a.curso_id=c.id"
+				+ " join establecimiento e on c.establecimiento_id=e.id"
+				+ " join co_x_establecimiento cxe on e.id=cxe.establecimiento_id and c.aplicacion_x_nivel_id=cxe.aplicacion_x_nivel_id"
+				+ " where m.centro_id != cxe.co_id"
+				+ " order by cxe.co_id asc ";
+		Query q = s.createSQLQuery(query);
+		List<Object[]> os = q.list();
+		for (Object[] o : os) {
+			if (!ms.containsKey((Integer) o[0])) {
+				ms.put((Integer) o[0], (Integer) o[1]);
+			}
+		}
+		return ms;
 	}
 }
