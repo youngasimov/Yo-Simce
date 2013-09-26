@@ -289,16 +289,14 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				}
 				Calendar calendar = Calendar.getInstance();
 				Date fecha = StringUtils.getDate(itemAgenda.getFecha());
-				if(fecha == null){
+				if (fecha == null) {
 					throw new NullPointerException(
 							"La fecha de agendamiento ingresada no es válida");
 				}
 				calendar.setTime(fecha);
 				int yearNew = calendar.get(Calendar.YEAR);
 				int monthNew = calendar.get(Calendar.MONTH);
-				SimpleDateFormat sdf = new SimpleDateFormat("MMMM",
-						Locale.forLanguageTag("es"));
-				String month = sdf.format(fecha);
+				String month = StringUtils.getMes(monthNew);
 				int dayNew = calendar.get(Calendar.DAY_OF_MONTH);
 				int hourNew = calendar.get(Calendar.HOUR_OF_DAY);
 				int minNew = calendar.get(Calendar.MINUTE);
@@ -393,7 +391,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				}
 				s.getTransaction().commit();
-				
+
 				if (enviarMail
 						&& ((dirMail != null && !dirMail.isEmpty()) || (contMail != null && !contMail
 								.isEmpty()))) {
@@ -423,7 +421,10 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
-
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
 		} finally {
 			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
 			if (s.isOpen()) {
