@@ -1402,7 +1402,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado el centro especificado.");
 				}
 
-				Co destino = cdao.getById(idCo);
+				Co destino = cdao.getById(idCoDestino);
 				if (destino == null) {
 					throw new NullPointerException(
 							"No se ha encontrado el centro de destino especificado.");

@@ -1,12 +1,11 @@
 package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @SuppressWarnings("serial")
 public class AgendaItemDTO implements Serializable {
 
-	private Date fecha;
+	private String fecha;
 	private String comentario;
 	private UserDTO creador;
 	private EstadoAgendaDTO estado;
@@ -18,11 +17,11 @@ public class AgendaItemDTO implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Date getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 

@@ -50,8 +50,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 					+ SecurityFilter.escapeString(idUsuario)
 					+ ") AND jzxz.activo=TRUE";
 		} else if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)) {
-			query += " JOIN ZONA z ON co.zona_id=z.id"
-					+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
+			query +=  " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
 					+ SecurityFilter.escapeString(idUsuario)
 					+ ") AND jrxcr.activo=TRUE";
 		}

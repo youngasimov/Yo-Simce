@@ -5,6 +5,7 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class AgendaPreviewDTO implements Serializable {
 
+
 	private Integer cursoId;
 	private String establecimientoName;
 	private String rbd;

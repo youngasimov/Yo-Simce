@@ -4,6 +4,9 @@
  */
 package com.dreamer8.yosimce.server.utils;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * 
  * @author jorge
@@ -22,6 +25,39 @@ public class StringUtils {
 			str = "" + num;
 		}
 		return str;
+	}
+
+	public static String getDateString(Date date) {
+		if (date == null) {
+			return "";
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int min = calendar.get(Calendar.MINUTE);
+		int sec = calendar.get(Calendar.SECOND);
+		return forceTwoDigits(day) + "/" + forceTwoDigits(month + 1) + "/"
+				+ year + " " + forceTwoDigits(hour) + ":" + forceTwoDigits(min)
+				+ ":" + forceTwoDigits(sec);
+	}
+
+	public static Date getDate(String dateString) {
+		if (dateString == null
+				|| !dateString
+						.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}")) {
+			return null;
+		}
+		String[] dateParts = dateString.split(" ");
+		String[] date = dateParts[0].split("/");
+		String[] time = dateParts[1].split(":");
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
+				Integer.valueOf(date[0]), Integer.valueOf(time[0]),
+				Integer.valueOf(time[1]), Integer.valueOf(time[2]));
+		return calendar.getTime();
 	}
 
 	public static Boolean isRut(String rut) {
@@ -44,27 +80,27 @@ public class StringUtils {
 		if (!isRut(rut)) {
 			return rut;
 		}
-		rut = rut.replaceAll("[,.;_-]", "");
+		rut = rut.replaceAll("[,.;_-]", "").toUpperCase();
 		String tmp = null;
 		if (rut.length() < 8) {
 			return rut;
 		}
 		if (rut.length() == 9) {
-            tmp = rut.substring(0, 2) + ".";
-            tmp += rut.substring(2, 5) + ".";
-            tmp += rut.substring(5, 8) + "-";
-            rut = tmp + rut.substring(8);
-        } else if (rut.length() > 9) {
-            tmp = rut.substring(0, 3) + ".";
-            tmp += rut.substring(3, 6) + ".";
-            tmp += rut.substring(6, 9) + "-";
-            rut = tmp + rut.substring(9);
-        } else {
-            tmp = rut.substring(0, 1) + ".";
-            tmp += rut.substring(1, 4) + ".";
-            tmp += rut.substring(4, 7) + "-";
-            rut = tmp + rut.substring(7);
-        }
+			tmp = rut.substring(0, 2) + ".";
+			tmp += rut.substring(2, 5) + ".";
+			tmp += rut.substring(5, 8) + "-";
+			rut = tmp + rut.substring(8);
+		} else if (rut.length() > 9) {
+			tmp = rut.substring(0, 3) + ".";
+			tmp += rut.substring(3, 6) + ".";
+			tmp += rut.substring(6, 9) + "-";
+			rut = tmp + rut.substring(9);
+		} else {
+			tmp = rut.substring(0, 1) + ".";
+			tmp += rut.substring(1, 4) + ".";
+			tmp += rut.substring(4, 7) + "-";
+			rut = tmp + rut.substring(7);
+		}
 		return rut;
 	}
 
@@ -72,7 +108,7 @@ public class StringUtils {
 		if (!isRut(rut)) {
 			return rut;
 		}
-		rut = rut.replaceAll("[,.;_-]", "");
+		rut = rut.replaceAll("[,.;_-]", "").toUpperCase();
 		String tmp = null;
 		int end = 0;
 		if (rut.length() >= 8) {
@@ -125,5 +161,27 @@ public class StringUtils {
 
 	public static String getDatePathSafe(String date) {
 		return date.replaceAll(" ", "_").replaceAll(":", "");
+	}
+
+	public static String formartFromUSAToISODate(String date) {
+		if (!date.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{1,2}")) {
+			return date;
+		}
+		String[] ds = date.split("/");
+		String prefixYear = (Integer.valueOf(ds[2]) < 30) ? "20" : "19";
+		return prefixYear + forceTwoDigits(Integer.valueOf(ds[2])) + "-"
+				+ forceTwoDigits(Integer.valueOf(ds[0])) + "-"
+				+ forceTwoDigits(Integer.valueOf(ds[1]));
+	}
+
+	public static String nombreInicialSegundo(String nombres) {
+		if (nombres == null) {
+			return "";
+		}
+		String[] noms = nombres.split(" ");
+		if (noms.length < 2) {
+			return nombres;
+		}
+		return noms[0] + " " + noms[1].substring(0, 1) + ".";
 	}
 }

@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -118,8 +119,12 @@ public class YoSimceSetup {
 
 		// cargarEmailDirector("email_est.csv");
 
-		actualizarAgendamientoSimce("agendamiento_4to_8va.csv");
-		actualizarAgendamientoSimce("agendamiento_4to_rm.csv");
+		// actualizarAgendamientoSimce("agendamiento_4to_8va.csv");
+		// actualizarAgendamientoSimce("agendamiento_4to_rm.csv");
+
+		// elimiarRepetidos();
+//		cambiarDeCentroMalCargado();
+		actualizarAgendamientoTICConfirmando("agendamiento_tic.csv");
 
 		System.out.println("fin :P");
 	}
@@ -1081,6 +1086,290 @@ public class YoSimceSetup {
 
 			System.out.println("Ingresados " + rowCounter
 					+ " establecimientos.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static void elimiarRepetidos() {
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			s.beginTransaction();
+			Integer total = 0;
+			MaterialDAO mdao = new MaterialDAO();
+			Map<String, List<Integer>> repetidos = mdao.findRepetidos();
+			List<Integer> ids = null;
+			if (repetidos != null && !repetidos.isEmpty()) {
+				System.err.println("total de repetidos: " + repetidos.size());
+				for (String codigo : repetidos.keySet()) {
+					ids = repetidos.get(codigo);
+					if (ids != null && !ids.isEmpty() && ids.size() == 2) {
+						mdao.deleteById(ids.get(1));
+						total++;
+					}
+				}
+			}
+
+			s.getTransaction().commit();
+
+			System.err.println("Se borraron " + total);
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static void cambiarDeCentroMalCargado() {
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			s.beginTransaction();
+			Integer total = 0;
+			MaterialDAO mdao = new MaterialDAO();
+			Material m = null;
+			Map<Integer, Integer> cambiados = mdao.findEnCentroEquivocado();
+			CoDAO cdao = new CoDAO();
+			Co co = null;
+			Integer prevCo = null;
+			if (cambiados != null && !cambiados.isEmpty()) {
+				System.err.println("total cambiados: " + cambiados.size());
+				for (Integer idMat : cambiados.keySet()) {
+					m = mdao.getById(idMat);
+					if (m != null) {
+						if (!cambiados.get(idMat).equals(prevCo)) {
+							prevCo = cambiados.get(idMat);
+							co = cdao.getById(prevCo);
+						}
+						if (co != null) {
+							m.setCo(co);
+							mdao.update(m);
+							total++;
+						}
+					}
+				}
+			}
+
+			s.getTransaction().commit();
+
+			System.err.println("Se cambiaron " + total);
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static void actualizarAgendamientoTICConfirmando(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+			ActividadTipoDAO atdao = new ActividadTipoDAO();
+			ActividadTipo visitaPrevia = atdao
+					.finByNombre(ActividadTipo.VISITA_PREVIA);
+			ActividadTipo aplicacionD1 = atdao
+					.finByNombre(ActividadTipo.APLICACION_DIA_1);
+			ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+			ActividadEstado confirmado = aedao
+					.findByNombre(ActividadEstado.CONFIRMADO);
+			ActividadEstado confirmadoConCambios = aedao
+					.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
+			ActividadEstado porConfirmar = aedao
+					.findByNombre(ActividadEstado.POR_CONFIRMAR);
+			Calendar calendar = Calendar.getInstance();
+			String[] fecha = null;
+			ActividadHistorial ah = null;
+			ActividadHistorialId ahid = null;
+			ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+			Date fechaMod = new Date();
+			String[] time;
+			String[] date;
+			String[] dateParts;
+			int yearHist;
+			int monthHist;
+			int dayHist;
+			int hourHist;
+			int minHist;
+			int yearNew;
+			int monthNew;
+			int dayNew;
+			int hourNew;
+			int minNew;
+			Date fechaOriginal;
+			Boolean actualizado = false;
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(
+									2, 10, visitaPrevia.getId(),
+									Integer.valueOf(row[0]));
+					if (a == null) {
+						throw new NullPointerException(
+								"No se encontró visita previa para " + row[0]);
+					}
+					if (a.getActividadEstado().equals(porConfirmar)) {
+						actualizado = false;
+						fechaOriginal = a.getFechaInicio();
+						calendar.setTime(a.getFechaInicio());
+						yearHist = calendar.get(Calendar.YEAR);
+						monthHist = calendar.get(Calendar.MONTH);
+						dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+						hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+						minHist = calendar.get(Calendar.MINUTE);
+						dateParts = row[1].replaceAll("\\.[0-9]{1,3}", "")
+								.split(" ");
+						date = dateParts[0].split("-");
+						time = dateParts[1].split(":");
+						calendar.set(Integer.valueOf(date[0]),
+								Integer.valueOf(date[1]) - 1,
+								Integer.valueOf(date[2]),
+								Integer.valueOf(time[0]),
+								Integer.valueOf(time[1]),
+								Integer.valueOf(time[2]));
+						yearNew = calendar.get(Calendar.YEAR);
+						monthNew = calendar.get(Calendar.MONTH);
+						dayNew = calendar.get(Calendar.DAY_OF_MONTH);
+						hourNew = calendar.get(Calendar.HOUR_OF_DAY);
+						minNew = calendar.get(Calendar.MINUTE);
+						a.setFechaInicio(calendar.getTime());
+						if (row[2].equals("1")) {
+							actualizado = true;
+							if (yearHist != yearNew || monthHist != monthNew
+									|| dayHist != dayNew || hourHist != hourNew
+									|| minHist != minNew) {
+								a.setActividadEstado(confirmadoConCambios);
+								System.err.println(line
+										+ " vp confirmado con cambios " + fechaOriginal);
+							} else {
+								a.setActividadEstado(confirmado);
+								System.err.println(line + " confirmado");
+							}
+						} else {
+							if (yearHist != yearNew || monthHist != monthNew
+									|| dayHist != dayNew || hourHist != hourNew
+									|| minHist != minNew) {
+								actualizado = true;
+							}
+						}
+						if (row.length > 5 && !row[5].equals("0") && !row[5].equals("")) {
+							a.setComentario(row[5]);
+							actualizado = true;
+						}
+						if (actualizado) {
+							actividadDAO.update(a);
+							ahid = new ActividadHistorialId();
+							ahid.setActividadId(a.getId());
+							ahid.setFecha(fechaMod);
+							ah = new ActividadHistorial();
+							ah.setId(ahid);
+							ah.setActividadEstado(a.getActividadEstado());
+							ah.setFechaInicio(a.getFechaInicio());
+							ah.setFechaTermino(a.getFechaTermino());
+							ahdao.save(ah);
+						}
+					}
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(
+									2, 10, aplicacionD1.getId(),
+									Integer.valueOf(row[0]));
+					if (a == null) {
+						throw new NullPointerException(
+								"No se encontró aplicación para " + row[0]);
+					}
+					if (a.getActividadEstado().equals(porConfirmar)) {
+						actualizado = false;
+						fechaOriginal = a.getFechaInicio();
+						calendar.setTime(a.getFechaInicio());
+						yearHist = calendar.get(Calendar.YEAR);
+						monthHist = calendar.get(Calendar.MONTH);
+						dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+						hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+						minHist = calendar.get(Calendar.MINUTE);
+						dateParts = row[3].replaceAll("\\.[0-9]{1,3}", "")
+								.split(" ");
+						date = dateParts[0].split("-");
+						time = dateParts[1].split(":");
+						calendar.set(Integer.valueOf(date[0]),
+								Integer.valueOf(date[1]) - 1,
+								Integer.valueOf(date[2]),
+								Integer.valueOf(time[0]),
+								Integer.valueOf(time[1]),
+								Integer.valueOf(time[2]));
+						yearNew = calendar.get(Calendar.YEAR);
+						monthNew = calendar.get(Calendar.MONTH);
+						dayNew = calendar.get(Calendar.DAY_OF_MONTH);
+						hourNew = calendar.get(Calendar.HOUR_OF_DAY);
+						minNew = calendar.get(Calendar.MINUTE);
+						a.setFechaInicio(calendar.getTime());
+						if (row[4].equals("1")) {
+							actualizado = true;
+							if (yearHist != yearNew || monthHist != monthNew
+									|| dayHist != dayNew || hourHist != hourNew
+									|| minHist != minNew) {
+								a.setActividadEstado(confirmadoConCambios);
+								System.err.println(line
+										+ " a confirmado con cambios " + fechaOriginal);
+							} else {
+								a.setActividadEstado(confirmado);
+								System.err.println(line + " confirmado");
+							}
+						} else {
+							if (yearHist != yearNew || monthHist != monthNew
+									|| dayHist != dayNew || hourHist != hourNew
+									|| minHist != minNew) {
+								actualizado = true;
+							}
+						}
+						if (row.length > 5 && !row[5].equals("0") && !row[5].equals("")) {
+							a.setComentario(row[5]);
+							actualizado = true;
+						}
+						if (actualizado) {
+							actividadDAO.update(a);
+							ahid = new ActividadHistorialId();
+							ahid.setActividadId(a.getId());
+							ahid.setFecha(fechaMod);
+							ah = new ActividadHistorial();
+							ah.setId(ahid);
+							ah.setActividadEstado(a.getActividadEstado());
+							ah.setFechaInicio(a.getFechaInicio());
+							ah.setFechaTermino(a.getFechaTermino());
+							ahdao.save(ah);
+						}
+					}
+				}
+				rowCounter++;
+			}
+
+			System.out.println("Ingresados " + rowCounter + " materiales.");
 			s.getTransaction().commit();
 
 		} catch (HibernateException ex) {
