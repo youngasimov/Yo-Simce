@@ -41,7 +41,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
 				+ " JOIN CO co ON z.id=co.zona_id";
 
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN JO_x_CO joxco ON (co.id=joxco.co_id AND joxco.jo_id="
 					+ SecurityFilter.escapeString(idUsuario)
 					+ ") AND joxco.activo=TRUE";

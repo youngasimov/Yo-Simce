@@ -72,9 +72,9 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON e.id=coxe.establecimiento_id";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
