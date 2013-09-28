@@ -27,6 +27,13 @@ public class StringUtils {
 		return str;
 	}
 
+	public static String limpiarString(String str) {
+		if (str == null) {
+			return null;
+		}
+		return str.replaceAll("[\\n\\r]", " ").replaceAll("[;,]", ".");
+	}
+
 	public static String getDateString(Date date) {
 		if (date == null) {
 			return "";

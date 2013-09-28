@@ -393,7 +393,8 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				a.setFechaInicio(fecha);
 				a.setUsuario(u);
-				a.setComentario(itemAgenda.getComentario());
+				a.setComentario(StringUtils.limpiarString(itemAgenda
+						.getComentario()));
 				a.setActividadEstado(ae);
 				adao.update(a);
 
@@ -404,7 +405,6 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				String dirMail = null;
 				String contMail = a.getContactoEmail();
 
-				
 				System.err.println("Se enviaría correo " + enviarMail);
 				// ///// No se envían correos automáticamente;
 				enviarMail = false;
