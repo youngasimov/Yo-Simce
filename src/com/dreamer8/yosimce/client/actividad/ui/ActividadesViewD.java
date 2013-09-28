@@ -807,7 +807,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		contingenciaColumn.setSortable(false);
 		dataGrid.addColumn(contingenciaColumn);
-		dataGrid.setColumnWidth(10, 90, Unit.PX);
+		dataGrid.setColumnWidth(10, 100, Unit.PX);
 
 		contingenciaLimitanteColumn = new Column<ActividadPreviewDTO, String>(
 				new ImageCell()) {
