@@ -302,21 +302,60 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				int minNew = calendar.get(Calendar.MINUTE);
 
 				if (ae.getNombre().equals(ActividadEstado.CONFIRMADO)) {
-					enviarMail = true;
-					if (ah != null && ah.getFechaInicio() != null) {
 
-						calendar.setTime(ah.getFechaInicio());
+					if (ah != null && ah.getFechaInicio() != null) {
+						if (a.getActividadEstado() != null) {
+							String estadoActualNombre = a.getActividadEstado()
+									.getNombre();
+							enviarMail = (!ActividadEstado.CONFIRMADO
+									.equals(estadoActualNombre) && !ActividadEstado.CONFIRMADO_CON_CAMBIOS
+									.equals(estadoActualNombre));
+
+							calendar.setTime(ah.getFechaInicio());
+							int yearHist = calendar.get(Calendar.YEAR);
+							int monthHist = calendar.get(Calendar.MONTH);
+							int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+							int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+							int minHist = calendar.get(Calendar.MINUTE);
+
+							if (yearHist != yearNew || monthHist != monthNew
+									|| dayHist != dayNew || hourHist != hourNew
+									|| minHist != minNew) {
+								ae = aedao
+										.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
+								enviarMail = (!ActividadEstado.CONFIRMADO_CON_CAMBIOS
+										.equals(estadoActualNombre));
+							}
+						}
+					}
+				}
+				if (a.getActividadEstado() != null
+						&& a.getFechaInicio() != null) {
+					String estadoActualNombre = a.getActividadEstado()
+							.getNombre();
+					if (!ActividadEstado.POR_CONFIRMAR
+							.equals(estadoActualNombre)
+							&& !ActividadEstado.SIN_INFORMACION
+									.equals(estadoActualNombre)) {
+						calendar.setTime(a.getFechaInicio());
 						int yearHist = calendar.get(Calendar.YEAR);
 						int monthHist = calendar.get(Calendar.MONTH);
 						int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
 						int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
 						int minHist = calendar.get(Calendar.MINUTE);
-
-						if (yearHist != yearNew || monthHist != monthNew
-								|| dayHist != dayNew || hourHist != hourNew
-								|| minHist != minNew) {
-							ae = aedao
-									.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
+						estadoActualNombre = ae.getNombre();
+						if (yearHist != yearNew
+								|| monthHist != monthNew
+								|| dayHist != dayNew
+								|| hourHist != hourNew
+								|| minHist != minNew
+								|| (!ActividadEstado.CONFIRMADO
+										.equals(estadoActualNombre) && !ActividadEstado.CONFIRMADO_CON_CAMBIOS
+										.equals(estadoActualNombre))) {
+							if (usuarioTipo.getId() > 6) {
+								throw new ConsistencyException(
+										"No se puede cambiar la fecha de agendamiento, debido a que la actividad ya ha sido confirmada");
+							}
 						}
 					}
 				}
@@ -365,6 +404,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				String dirMail = null;
 				String contMail = a.getContactoEmail();
 
+				
+				System.err.println("Se enviaría correo " + enviarMail);
+				// ///// No se envían correos automáticamente;
+				enviarMail = false;
+
 				Usuario firm = null;
 				String firmante = null;
 				if (enviarMail) {
@@ -391,10 +435,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				}
 				s.getTransaction().commit();
-				
-				if(getBaseURL().contains("127.0.0.1") || getBaseURL().contains("demo")){
+
+				if (getBaseURL().contains("127.0.0.1")
+						|| getBaseURL().contains("demo")) {
 					enviarMail = false;
-					System.out.println("Trabajando em local o demo, no se debería mandar correo");
+					System.out
+							.println("Trabajando em local o demo, no se debería mandar correo");
 				}
 
 				if (enviarMail
