@@ -94,5 +94,26 @@ public class PermisosActivity extends SimceActivity implements
 			permisosModificados.add(permiso);
 		}
 	}
+	
+	@Override
+	public void onProgramarUpdate(String date) {
+		if(date == null || date.isEmpty()){
+			getFactory().getLoginService().setActualizacionDate(null, new SimceCallback<Boolean>(eventBus,true) {
+
+				@Override
+				public void success(Boolean result) {
+					eventBus.fireEvent(new MensajeEvent("La actualización del sistema se ha cancelado",MensajeEvent.MSG_OK,true));
+				}
+			});
+		}else{
+			getFactory().getLoginService().setActualizacionDate(date, new SimceCallback<Boolean>(eventBus,true) {
+
+				@Override
+				public void success(Boolean result) {
+					eventBus.fireEvent(new MensajeEvent("LA fecha de actualización del sistema se ha actualizado con éxito",MensajeEvent.MSG_OK,true));
+				}
+			});
+		}
+	}
 
 }

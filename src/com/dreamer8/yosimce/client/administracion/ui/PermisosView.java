@@ -21,11 +21,14 @@ public interface PermisosView extends IsWidget {
 	void setActualizarPermisosVisivility(boolean visible);
 	void setActualizarTablaVisivility(boolean visible);
 	
+	void setUpdateTime(String update);
+	
 	
 	public interface PermisosPresenter extends SimcePresenter{
 		void onUpdatePermisosClick();
 		void onUpdateTablaClick();
 		void permisoActualizado(PermisoDTO permiso);
+		void onProgramarUpdate(String date);
 		boolean hasUpdatePermisos();
 	}
 }

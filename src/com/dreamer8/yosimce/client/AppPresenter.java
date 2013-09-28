@@ -1,5 +1,6 @@
 package com.dreamer8.yosimce.client;
 
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +10,7 @@ import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.http.client.RequestTimeoutException;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
@@ -31,6 +33,12 @@ public class AppPresenter implements AppView.AppPresenter {
 	private boolean notLogged;
 	private boolean menuOpen;
 	
+	private Date update;
+	
+	private DateTimeFormat format;
+	
+	private Timer t2;
+	
 	private Logger logger = Logger.getLogger("");
 	
 	public AppPresenter(ClientFactory factory){
@@ -41,6 +49,7 @@ public class AppPresenter implements AppView.AppPresenter {
 		nonBlockingEvents = 0;
 		notLogged = false;
 		menuOpen = false;
+		format = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
 		bind();
 	}
 	
@@ -80,6 +89,7 @@ public class AppPresenter implements AppView.AppPresenter {
 				"<br /><br />Para volver a ingresar diríjase a YoSimce");
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void bind(){
 		
 		Timer t = new Timer(){
@@ -90,12 +100,66 @@ public class AppPresenter implements AppView.AppPresenter {
 					
 					@Override
 					public void onSuccess(Integer result) {
+						
+						if(result == LoginService.SESION_ACTIVA){
+							update = null;
+						}
+						
 						if(result == LoginService.SESION_INACTIVA && !notLogged){
 							notLogged = true;
+							update = null;
 							view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />",
 									"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
-						}else if(result == LoginService.PRONTA_ACTUALIZACION){
-							
+						}else if(result == LoginService.PRONTA_ACTUALIZACION && update == null){
+							factory.getLoginService().getActualizacionDate(new AsyncCallback<String>(){
+
+								@Override
+								public void onFailure(Throwable caught) {
+									logger.log(Level.SEVERE, caught.getLocalizedMessage());
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									if(result == null || result.isEmpty()){
+										update = null;
+									}else{
+										update = format.parse(result);
+										t2 = new Timer() {
+											
+											@Override
+											public void run() {
+												
+												if(update == null){
+													t2.cancel();
+													return;
+													
+												}
+												
+												Date d = new Date();
+												if(d.compareTo(update)<1){
+													int days = update.getDay() - d.getDay();
+													int hours = update.getHours() - d.getHours();
+													int mins = update. getMinutes() - d.getMinutes();
+													factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking para dentro de <br />"+days+" días, <br />"+hours+" horas, <br />"+mins+" minutos,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
+												}else{
+													factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
+												}
+											}
+										};
+										t2.scheduleRepeating(30000);
+										
+										Date d = new Date();
+										if(d.compareTo(update)<1){
+											int days = update.getDay() - d.getDay();
+											int hours = update.getHours() - d.getHours();
+											int mins = update. getMinutes() - d.getMinutes();
+											factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking para dentro de <br />"+days+" días, <br />"+hours+" horas, <br />"+mins+" minutos,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
+										}else{
+											factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
+										}
+									}
+								}
+							});
 						}
 					}
 					

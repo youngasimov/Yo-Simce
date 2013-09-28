@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.administracion.ui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
@@ -14,6 +15,9 @@ import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -23,6 +27,7 @@ import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 
@@ -72,6 +77,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 	@UiField MenuItem menuItem;
 	@UiField MenuItem updatePermisosItem;
 	@UiField MenuItem updateViewItem;
+	@UiField MenuItem programarActualizacionItem;
 	
 	@UiField(provided = true) DataGrid<PermisoDTO> dataGrid;
 	
@@ -83,10 +89,16 @@ public class PermisosViewD extends Composite implements PermisosView {
 	private Column<PermisoDTO, String> permisoColumnFinal;
 	private ArrayList<PermisoColumn> columns;
 	
+	private PopupPanel programarUpdatePopup;
+	private UpdateProgramarViewD programarUpdatePanel;
+	
+	private DateTimeFormat format;
+	
 	public PermisosViewD() {
 		dataGrid = new DataGrid<PermisoDTO>(PermisoDTO.KEY_PROVIDER);
 		dataGrid.setPageSize(500);
 		initWidget(uiBinder.createAndBindUi(this));
+		format = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
 		columns = new ArrayList<PermisosViewD.PermisoColumn>();
 		menu.insertSeparator(1);
 		menu.setOverItem(menuItem);
@@ -110,6 +122,47 @@ public class PermisosViewD extends Composite implements PermisosView {
 			@Override
 			public void execute() {
 				presenter.onUpdateTablaClick();
+			}
+		});
+		
+		programarActualizacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				openUpdateProgramerView();
+			}
+		});
+		
+		programarUpdatePanel = new UpdateProgramarViewD();
+		programarUpdatePopup = new PopupPanel(true, false);
+		programarUpdatePopup.setAnimationEnabled(true);
+		programarUpdatePopup.setGlassEnabled(false);
+		programarUpdatePopup.setWidget(programarUpdatePanel);
+		
+		programarUpdatePanel.cerrarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				programarUpdatePopup.hide();
+			}
+		});
+		
+		programarUpdatePanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				presenter.onProgramarUpdate("");
+				setUpdateTime(new Date());
+				programarUpdatePopup.hide();
+			}
+		});
+		
+		programarUpdatePanel.programarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				presenter.onProgramarUpdate(format.format(new Date(programarUpdatePanel.timeBox.getTime())));
+				programarUpdatePopup.hide();
 			}
 		});
 		
@@ -222,5 +275,26 @@ public class PermisosViewD extends Composite implements PermisosView {
 			return pc.idTipoUsuario;
 		}
 		return 0;
+	}
+	
+	@Override
+	public void setUpdateTime(String update) {
+		Date d = null;
+		if(update == null || update.isEmpty()){
+			 d = new Date();
+			
+		}else{
+			d = format.parse(update);
+		}
+		setUpdateTime(d);
+	}
+	
+	private void setUpdateTime(Date d){
+		programarUpdatePanel.dateBox.setValue(d);
+		programarUpdatePanel.timeBox.setValue(d.getTime());
+	}
+	
+	private void openUpdateProgramerView(){
+		programarUpdatePopup.center();
 	}
 }
