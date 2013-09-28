@@ -45,7 +45,7 @@ public class SecurityFilter {
 	    str = str.replaceAll("[^0-9.,-]", "");
 	}
 	
-	return str.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\"").replaceAll("\'", "\\\'");
+	return str.replaceAll("\\\'", "\\\'\\\'").replaceAll("\\\\", "\\\\\\\\").replaceAll("\\\"", "\\\\\\\"");
     }
 
     public static String escapeLikeString(Object object,String escapeChar){
