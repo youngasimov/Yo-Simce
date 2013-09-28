@@ -315,7 +315,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				udto.setNombres((String) o[28]);
 				udto.setApellidoPaterno((String) o[29]);
 				udto.setApellidoMaterno((String) o[30]);
-				apdto.setExaminador(udto);
+				apdto.setSupervisor(udto);
 			}
 			apdto.setTotalAlumnos((Integer) o[31]);
 			apdtos.add(apdto);
