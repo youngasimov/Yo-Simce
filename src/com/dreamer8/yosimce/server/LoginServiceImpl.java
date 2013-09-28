@@ -30,6 +30,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Sesion;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.server.utils.MantencionUtils;
 import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AplicacionDTO;
@@ -427,10 +428,15 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	}
 
 	@Override
-	public Boolean keepAlive() throws NoLoggedException {
+	public Integer keepAlive() throws NoLoggedException {
 
 		AccessControl ac = getAccessControl();
-		return ac.isLogged();
+		Integer result = SESION_INACTIVA;
+		if (ac.isLogged()) {
+			result = (MantencionUtils.isMantencionAgendada()) ? PRONTA_ACTUALIZACION
+					: SESION_ACTIVA;
+		}
+		return result;
 	}
 
 	/**
@@ -440,7 +446,6 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	public ArrayList<TipoUsuarioDTO> getUsuarioTipos()
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		
 
 		ArrayList<TipoUsuarioDTO> tudtos = new ArrayList<TipoUsuarioDTO>();
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -461,20 +466,19 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un nivel.");
 				}
 
-
 				Usuario u = getUsuarioActual();
 
 				s.beginTransaction();
 
-				
 				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
-				List<UsuarioTipo> uts = utdao.findByIdAplicacionANDIdNivelANDIdUsuario(idAplicacion, idNivel, u.getId());
+				List<UsuarioTipo> uts = utdao
+						.findByIdAplicacionANDIdNivelANDIdUsuario(idAplicacion,
+								idNivel, u.getId());
 				if (uts != null && !uts.isEmpty()) {
 					for (UsuarioTipo usuarioTipo : uts) {
 						tudtos.add(usuarioTipo.getTipoUsuarioDTO());
 					}
 				}
-				
 
 				s.getTransaction().commit();
 			}
@@ -496,6 +500,23 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			}
 		}
 		return tudtos;
+	}
+
+	/**
+	 * @permiso getActualizacionDate
+	 */
+	@Override
+	public String getActualizacionDate() {
+		return MantencionUtils.getFechaMantencionString();
+	}
+
+	/**
+	 * @permiso setActualizacionDate
+	 */
+	@Override
+	public Boolean setActualizacionDate(String date) {
+		MantencionUtils.setFechaMantencion(StringUtils.getDate(date));
+		return true;
 	}
 
 }
