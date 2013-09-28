@@ -18,6 +18,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("loginservice")
 public interface LoginService extends RemoteService {
 	public static final String USUARIO_TIPO_COOKIE_NAME = "ut";
+	
+	public static final int SESION_ACTIVA = 0;
+	public static final int SESION_INACTIVA = 1;
+	public static final int PRONTA_ACTUALIZACION = 2;
+	
 
 	public UserDTO getUser(String token) throws NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
@@ -43,9 +48,13 @@ public interface LoginService extends RemoteService {
 
 	public Boolean logout();
 
-	public Boolean keepAlive() throws NoLoggedException;
+	public Integer keepAlive() throws NoLoggedException;
 	
 	public ArrayList<TipoUsuarioDTO> getUsuarioTipos()
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
+	
+	public String getActualizacionDate();
+	
+	public Boolean setActualizacionDate(String date);
 }

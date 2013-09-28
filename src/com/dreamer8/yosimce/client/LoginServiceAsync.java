@@ -27,8 +27,12 @@ public interface LoginServiceAsync {
 
 	void logout(AsyncCallback<Boolean> callback);
 
-	void keepAlive(AsyncCallback<Boolean> callback);
+	void keepAlive(AsyncCallback<Integer> callback);
 
 	void getUsuarioTipos(AsyncCallback<ArrayList<TipoUsuarioDTO>> callback);
+
+	void getActualizacionDate(AsyncCallback<String> callback);
+
+	void setActualizacionDate(String date, AsyncCallback<Boolean> callback);
 
 }

@@ -31,6 +31,7 @@
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Permisos</div> ></g:MenuItem>
 				<g:MenuItem ui:field="updatePermisosItem" text='Actualizar permisos'/>
 				<g:MenuItem ui:field="updateViewItem" text='Actualizar tabla' />
+				<g:MenuItem ui:field="programarActualizacionItem" text='Programar Actualización de sistema' />
 			</my:OverMenuBar>	
 		</g:north>
 		<g:center>

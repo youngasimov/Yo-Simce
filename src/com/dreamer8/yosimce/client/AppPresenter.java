@@ -86,27 +86,26 @@ public class AppPresenter implements AppView.AppPresenter {
 
 			@Override
 			public void run() {
-				factory.getLoginService().keepAlive(new AsyncCallback<Boolean>() {
+				factory.getLoginService().keepAlive(new AsyncCallback<Integer>() {
 					
 					@Override
-					public void onSuccess(Boolean result) {
-						
+					public void onSuccess(Integer result) {
+						if(result == LoginService.SESION_INACTIVA && !notLogged){
+							notLogged = true;
+							view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />",
+									"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
+						}else if(result == LoginService.PRONTA_ACTUALIZACION){
+							
+						}
 					}
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						if(caught instanceof NoLoggedException && !notLogged){
-							logger.log(Level.SEVERE, caught.getLocalizedMessage());
-							notLogged = true;
-							view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />",
-									"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
-						}else{
-							logger.log(Level.SEVERE, caught.getLocalizedMessage());
-						}
+						logger.log(Level.SEVERE, caught.getLocalizedMessage());
 					}
 				});
 			}};
-		t.scheduleRepeating(1500000);
+		t.scheduleRepeating(300000);
 		/*
 		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			
