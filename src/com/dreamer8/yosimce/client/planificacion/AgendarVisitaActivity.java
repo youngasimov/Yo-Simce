@@ -232,6 +232,14 @@ public class AgendarVisitaActivity extends SimceActivity implements
 			return;
 		}
 		
+		//Si el estado es 'confirmado' o posterior, se permite modificar la agenda simpre que tenga un comentario
+		if(!last.getEstado().getEstado().equals(EstadoAgendaDTO.POR_CONFIRMAR) &&
+				!last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION) &&
+				aidto.getComentario() != null && !aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		
 		//Si el estado y la fecha no se han modificado, y hay un comentario, se permite agendar
 		if(last.getEstado().getId() == aidto.getEstado().getId() &&
 				last.getFecha().equals(aidto.getFecha()) &&
