@@ -38,7 +38,7 @@ public class PermisosActivity extends SimceActivity implements
 		view.setActualizarPermisosVisivility(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "setPermisos"));
 		view.setActualizarTablaVisivility(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getTiposUsuario") && Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getPermisos"));
 		updateTable();
-		if(Utils.hasPermisos(getPermisos(), "LoginService", "getActualizacionDate")){
+		if(Utils.hasPermisos(getPermisos(), "AdministracionService", "setPermisos")){
 			view.setUpdateProgramerVisivility(true);
 			getFactory().getLoginService().getActualizacionDate(new SimceCallback<String>(eventBus) {
 
@@ -109,7 +109,7 @@ public class PermisosActivity extends SimceActivity implements
 	
 	@Override
 	public void onProgramarUpdate(String date) {
-		if(Utils.hasPermisos(getPermisos(), "LoginService", "setActualizacionDate")){
+		if(Utils.hasPermisos(getPermisos(), "AdministracionService", "setPermisos")){
 			if(date == null || date.isEmpty()){
 				getFactory().getLoginService().setActualizacionDate(null, new SimceCallback<Boolean>(eventBus,true) {
 	

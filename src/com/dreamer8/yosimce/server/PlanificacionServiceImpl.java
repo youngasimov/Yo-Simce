@@ -329,7 +329,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 						}
 					}
 				}
-				if (a.getActividadEstado() != null
+				if (idAplicacion == 1 && a.getActividadEstado() != null
 						&& a.getFechaInicio() != null) {
 					String estadoActualNombre = a.getActividadEstado()
 							.getNombre();
@@ -352,7 +352,11 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 								|| (!ActividadEstado.CONFIRMADO
 										.equals(estadoActualNombre) && !ActividadEstado.CONFIRMADO_CON_CAMBIOS
 										.equals(estadoActualNombre))) {
-							if (usuarioTipo.getId() > 6) {
+							if (usuarioTipo.getId() > 6
+									&& !UsuarioTipo.OPERADOR_CENTRO_LLAMADOS
+											.equals(usuarioTipo.getNombre())
+									&& !UsuarioTipo.LOGISTICA_Y_SOPORTE
+											.equals(usuarioTipo.getNombre())) {
 								throw new ConsistencyException(
 										"No se puede cambiar la fecha de agendamiento, debido a que la actividad ya ha sido confirmada");
 							}
@@ -405,7 +409,6 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				String dirMail = null;
 				String contMail = a.getContactoEmail();
 
-				System.err.println("Se enviaría correo " + enviarMail);
 				// ///// No se envían correos automáticamente;
 				enviarMail = false;
 
@@ -908,17 +911,25 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				ActividadDAO adao = new ActividadDAO();
-				Integer total = adao
-						.countAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
-								idAplicacion, idNivel, u.getId(),
-								usuarioTipo.getNombre(), filtros);
+				Integer total = null;
+				if (idAplicacion == 2) {
+					total = adao
+							.countAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
+									idAplicacion, idNivel, u.getId(),
+									usuarioTipo.getNombre(), filtros);
+				} else {
+					total = adao
+							.countAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
+									idAplicacion, idNivel, idAplicacion,
+									u.getId(), usuarioTipo.getNombre(), filtros);
+				}
 				if (total == null || total == 0) {
 					throw new NullPointerException(
 							"No se han obtenido resultados con el filtro especificado.");
 				}
 
 				Integer offset = 0;
-				Integer lenght = 1000;
+				Integer lenght = 10000;
 				List<String> filas = null;
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
@@ -931,11 +942,19 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 						new FileOutputStream(file), "ISO-8859-1"));
 
 				while (total > 0) {
-					filas = adao
-							.findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
-									idAplicacion, idNivel, u.getId(),
-									usuarioTipo.getNombre(), offset, lenght,
-									filtros);
+					if (idAplicacion == 2) {
+						filas = adao
+								.findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
+										idAplicacion, idNivel, u.getId(),
+										usuarioTipo.getNombre(), offset,
+										lenght, filtros);
+					} else {
+						filas = adao
+								.findAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
+										idAplicacion, idNivel, idActividadTipo,
+										u.getId(), usuarioTipo.getNombre(),
+										offset, lenght, filtros);
+					}
 					total -= lenght;
 
 					if (filas != null && !filas.isEmpty()) {

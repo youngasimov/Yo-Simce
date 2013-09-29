@@ -299,13 +299,13 @@ public class AppPresenter implements AppView.AppPresenter {
 			String s = "Se ha programado una actualización del sistema Tracking para dentro de";
 			
 			if(days > 0){
-				s = s+ "<br />"+days+" días, ";
+				s = s+ "<br />"+days+" días. ";
 			}else if(hours > 0){
-				s = s+ "<br />"+hours+" horas, ";
+				s = s+ "<br />"+hours+" horas. ";
 			}else{
-				s = s+ "<br />"+mins+" minutos,";
+				s = s+ "<br />"+mins+" minutos.";
 			}
-			s = s+ "<br /> si presenta problemas, refresque el navegador para actualizar la aplicación";
+			s = s+ "<br />Si presenta problemas, refresque el navegador para actualiazar la aplicación";
 			
 			if (mins>5){
 				if(updateLoops%4==0){
@@ -319,7 +319,7 @@ public class AppPresenter implements AppView.AppPresenter {
 			
 			
 		}else if(!updateSoonAlert){
-			factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,false));
+			factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse.<br />Si presenta problemas, refresque el navegador para actuliazar la aplicación",MensajeEvent.MSG_WARNING,false));
 			updateSoonAlert = true;
 		}
 	}

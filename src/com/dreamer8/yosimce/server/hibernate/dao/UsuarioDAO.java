@@ -265,7 +265,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN CURSO c ON a.curso_id=c.id AND a.id="
 				+ SecurityFilter.escapeString(idActividad)
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN CO_x_ESTABLECIMIENTO coxe ON e.id=coxe.establecimiento_id"
+				+ " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)"
 				+ " JOIN APLICACION_x_NIVEL axn ON coxe.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
