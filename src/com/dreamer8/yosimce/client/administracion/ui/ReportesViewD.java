@@ -130,8 +130,21 @@ public class ReportesViewD extends Composite implements ReportesView {
 
 	@Override
 	public int getSelectedReporte() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Integer.parseInt(reporteBox.getValue(reporteBox.getSelectedIndex()));
+	}
+	
+	@Override
+	public void clear() {
+		if(regionBox.getItemCount()>0){
+			regionBox.setSelectedIndex(0);
+		}
+		if(comunaBox.getItemCount()>0){
+			comunaBox.setSelectedIndex(0);
+		}
+		desdeBox.setValue(null);
+		if(reporteBox.getItemCount()>0){
+			reporteBox.setSelectedIndex(0);
+		}
 	}
 
 }

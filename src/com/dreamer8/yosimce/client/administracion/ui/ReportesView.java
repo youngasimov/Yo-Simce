@@ -21,6 +21,8 @@ public interface ReportesView extends IsWidget {
 	String getSelectedDate();
 	int getSelectedReporte();
 	
+	void clear();
+	
 	public interface ReportesPresenter extends SimcePresenter{
 		void onGenerarReporte();
 		void onRegionChange(int region);

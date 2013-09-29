@@ -53,10 +53,13 @@ public class ReportesActivity extends SimceActivity implements
 					view.setRegiones(result);
 				}
 			});
-		}
-		
-		
-		
+		}	
+	}
+	
+	@Override
+	public void onStop() {
+		view.clear();
+		super.onStop();
 	}
 
 	@Override
