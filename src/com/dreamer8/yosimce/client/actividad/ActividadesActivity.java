@@ -139,11 +139,11 @@ public class ActividadesActivity extends SimceActivity implements
 	
 	@Override
 	public void onExportarAlumnosClick() {
-		
+		/*
 		if(total > 200 && place.getRegionId() == -1){
 			eventBus.fireEvent(new MensajeEvent("La lista seleccionada es muy grande para descargarla completamente, filtre por atributo y vuelva a intentarlo",MensajeEvent.MSG_WARNING,false));
 			return;
-		}
+		}*/
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getDocumentoAlumnos")){
 			getFactory().getActividadService().getDocumentoAlumnos(filtros, new SimceCallback<DocumentoDTO>(eventBus,true,0) {
