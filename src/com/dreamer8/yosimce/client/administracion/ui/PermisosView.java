@@ -31,5 +31,8 @@ public interface PermisosView extends IsWidget {
 		void permisoActualizado(PermisoDTO permiso);
 		void onProgramarUpdate(String date);
 		boolean hasUpdatePermisos();
+		
+		void onEnviarCorreosSimceClick();
+		void onEnviarCorreosSimceTicClick();
 	}
 }

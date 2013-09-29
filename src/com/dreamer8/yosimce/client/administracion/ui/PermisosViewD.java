@@ -139,7 +139,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 			
 			@Override
 			public void execute() {
-				
+				presenter.onEnviarCorreosSimceClick();
 			}
 		});
 		
@@ -147,7 +147,7 @@ public class PermisosViewD extends Composite implements PermisosView {
 			
 			@Override
 			public void execute() {
-				
+				presenter.onEnviarCorreosSimceTicClick();
 			}
 		});
 		

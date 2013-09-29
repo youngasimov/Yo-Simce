@@ -130,4 +130,26 @@ public class PermisosActivity extends SimceActivity implements
 		}
 	}
 
+	@Override
+	public void onEnviarCorreosSimceClick() {
+		getFactory().getAdministracionService().enviarCorreosSimce(new SimceCallback<Boolean>(eventBus,true) {
+
+			@Override
+			public void success(Boolean result) {
+				eventBus.fireEvent(new MensajeEvent("El proceso de envio de mails se ha iniciado",MensajeEvent.MSG_OK,true));
+			}
+		});
+	}
+
+	@Override
+	public void onEnviarCorreosSimceTicClick() {
+		getFactory().getAdministracionService().enviarCorreosSimceTic(new SimceCallback<Boolean>(eventBus,true) {
+
+			@Override
+			public void success(Boolean result) {
+				eventBus.fireEvent(new MensajeEvent("El proceso de envio de mails se ha iniciado",MensajeEvent.MSG_OK,true));
+			}
+		});
+	}
+
 }
