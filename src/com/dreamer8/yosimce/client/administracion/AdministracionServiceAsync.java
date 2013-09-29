@@ -32,5 +32,9 @@ public interface AdministracionServiceAsync {
 	void getReporte(Integer tipo, Integer region, Integer comuna, String desde,
 			AsyncCallback<DocumentoDTO> callback);
 
+	void enviarCorreosSimceTic(AsyncCallback<Boolean> callback);
+
+	void enviarCorreosSimce(AsyncCallback<Boolean> callback);
+
 
 }

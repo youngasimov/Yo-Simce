@@ -51,5 +51,11 @@ public interface AdministracionService extends RemoteService {
 			ConsistencyException, NullPointerException;
 	
 	public DocumentoDTO getReporte(Integer tipo, Integer region, Integer comuna, String desde);
+	
+	public Boolean enviarCorreosSimceTic() throws NoAllowedException, NoLoggedException, DBException,
+	ConsistencyException, NullPointerException;;
+	
+	public Boolean enviarCorreosSimce() throws NoAllowedException, NoLoggedException, DBException,
+	ConsistencyException, NullPointerException;;
 
 }

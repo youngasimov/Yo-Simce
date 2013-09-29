@@ -31,7 +31,15 @@
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Permisos</div> ></g:MenuItem>
 				<g:MenuItem ui:field="updatePermisosItem" text='Actualizar permisos'/>
 				<g:MenuItem ui:field="updateViewItem" text='Actualizar tabla' />
-				<g:MenuItem ui:field="programarActualizacionItem" text='Programar Actualización de sistema' />
+				<g:MenuItem> Más acciones
+					<g:MenuBar vertical="true">
+						<g:MenuItem ui:field="programarActualizacionItem" text='Programar Actualización de sistema' />
+						<g:MenuItem ui:field="enviarCorreosSimceItem" text='Enviar Correos para Simce'/>
+						<g:MenuItem ui:field="enviarCorreosSimceTicItem" text='Enviar Correos para Simce Tic'/>
+					</g:MenuBar>
+				</g:MenuItem>
+				
+				
 			</my:OverMenuBar>	
 		</g:north>
 		<g:center>

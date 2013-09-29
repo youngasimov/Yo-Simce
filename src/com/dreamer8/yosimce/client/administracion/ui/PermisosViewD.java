@@ -78,6 +78,8 @@ public class PermisosViewD extends Composite implements PermisosView {
 	@UiField MenuItem updatePermisosItem;
 	@UiField MenuItem updateViewItem;
 	@UiField MenuItem programarActualizacionItem;
+	@UiField MenuItem enviarCorreosSimceItem;
+	@UiField MenuItem enviarCorreosSimceTicItem;
 	
 	@UiField(provided = true) DataGrid<PermisoDTO> dataGrid;
 	
@@ -130,6 +132,22 @@ public class PermisosViewD extends Composite implements PermisosView {
 			@Override
 			public void execute() {
 				openUpdateProgramerView();
+			}
+		});
+		
+		enviarCorreosSimceItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				
+			}
+		});
+		
+		enviarCorreosSimceTicItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				
 			}
 		});
 		
