@@ -38,6 +38,18 @@ public class PermisosActivity extends SimceActivity implements
 		view.setActualizarPermisosVisivility(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "setPermisos"));
 		view.setActualizarTablaVisivility(Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getTiposUsuario") && Utils.hasPermisos(eventBus,getPermisos(), "AdministracionService", "getPermisos"));
 		updateTable();
+		if(Utils.hasPermisos(getPermisos(), "LoginService", "getActualizacionDate")){
+			view.setUpdateProgramerVisivility(true);
+			getFactory().getLoginService().getActualizacionDate(new SimceCallback<String>(eventBus) {
+
+				@Override
+				public void success(String result) {
+					view.setUpdateTime(result);
+				}
+			});
+		}else{
+			view.setUpdateProgramerVisivility(false);
+		}
 	}
 
 	@Override
@@ -97,22 +109,24 @@ public class PermisosActivity extends SimceActivity implements
 	
 	@Override
 	public void onProgramarUpdate(String date) {
-		if(date == null || date.isEmpty()){
-			getFactory().getLoginService().setActualizacionDate(null, new SimceCallback<Boolean>(eventBus,true) {
-
-				@Override
-				public void success(Boolean result) {
-					eventBus.fireEvent(new MensajeEvent("La actualización del sistema se ha cancelado",MensajeEvent.MSG_OK,true));
-				}
-			});
-		}else{
-			getFactory().getLoginService().setActualizacionDate(date, new SimceCallback<Boolean>(eventBus,true) {
-
-				@Override
-				public void success(Boolean result) {
-					eventBus.fireEvent(new MensajeEvent("LA fecha de actualización del sistema se ha actualizado con éxito",MensajeEvent.MSG_OK,true));
-				}
-			});
+		if(Utils.hasPermisos(getPermisos(), "LoginService", "setActualizacionDate")){
+			if(date == null || date.isEmpty()){
+				getFactory().getLoginService().setActualizacionDate(null, new SimceCallback<Boolean>(eventBus,true) {
+	
+					@Override
+					public void success(Boolean result) {
+						eventBus.fireEvent(new MensajeEvent("La actualización del sistema se ha cancelado",MensajeEvent.MSG_OK,true));
+					}
+				});
+			}else{
+				getFactory().getLoginService().setActualizacionDate(date, new SimceCallback<Boolean>(eventBus,true) {
+	
+					@Override
+					public void success(Boolean result) {
+						eventBus.fireEvent(new MensajeEvent("LA fecha de actualización del sistema se ha actualizado con éxito",MensajeEvent.MSG_OK,true));
+					}
+				});
+			}
 		}
 	}
 

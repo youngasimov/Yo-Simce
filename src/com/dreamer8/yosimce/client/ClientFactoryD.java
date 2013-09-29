@@ -16,6 +16,8 @@ import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.client.administracion.AdministracionServiceAsync;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosView;
 import com.dreamer8.yosimce.client.administracion.ui.PermisosViewD;
+import com.dreamer8.yosimce.client.administracion.ui.ReportesView;
+import com.dreamer8.yosimce.client.administracion.ui.ReportesViewD;
 import com.dreamer8.yosimce.client.general.GeneralService;
 import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
@@ -101,6 +103,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final CentroOperacionSelectorView centroOperacionSelectorView = new CentroOperacionSelectorViewD();
 
 	private final PermisosView permisosView = new PermisosViewD();
+	private final ReportesView reportesView = new ReportesViewD();
 
 	public ClientFactoryD(){
 		((ServiceDefTarget) loginService).setRpcRequestBuilder(new CustomRpcRequestBuilder(19000));
@@ -253,5 +256,10 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public PermisosView getPermisosView() {
 		return permisosView;
+	}
+
+	@Override
+	public ReportesView getReportesView() {
+		return reportesView;
 	}
 }

@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.administracion;
 
 import java.util.ArrayList;
 
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
@@ -15,6 +16,10 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("administracionservice")
 public interface AdministracionService extends RemoteService {
+	
+	public static final int MOVIMIENTO_MATERIAL = 1;
+	public static final int TRACKING_POR_CO = 2;
+	
 	public ArrayList<UserDTO> getUsuarios(String filtro, Integer offset,
 			Integer length) throws NoAllowedException, NoLoggedException,
 			DBException, ConsistencyException;
@@ -44,5 +49,7 @@ public interface AdministracionService extends RemoteService {
 	public Boolean setPermisos(ArrayList<PermisoDTO> permisos)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException;
+	
+	public DocumentoDTO getReporte(Integer tipo, Integer region, Integer comuna, String desde);
 
 }

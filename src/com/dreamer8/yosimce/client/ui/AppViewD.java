@@ -138,23 +138,23 @@ public class AppViewD extends Composite implements AppView {
 	}
 
 	@Override
-	public void showErrorMessage(String message, boolean autoclose) {
-		showMessage(SimceResources.INSTANCE.msgError(), message, autoclose);
+	public void showErrorMessage(String message, boolean autoclose, int tiempo) {
+		showMessage(SimceResources.INSTANCE.msgError(), message, autoclose,tiempo);
 	}
 
 	@Override
-	public void showWarningMessage(String message, boolean autoclose) {
-		showMessage(SimceResources.INSTANCE.msgWarning(), message, autoclose);
+	public void showWarningMessage(String message, boolean autoclose, int tiempo) {
+		showMessage(SimceResources.INSTANCE.msgWarning(), message, autoclose,tiempo);
 	}
 
 	@Override
-	public void showOkMessage(String message, boolean autoclose) {
-		showMessage(SimceResources.INSTANCE.msgOk(), message, autoclose);
+	public void showOkMessage(String message, boolean autoclose, int tiempo) {
+		showMessage(SimceResources.INSTANCE.msgOk(), message, autoclose,tiempo);
 	}
 
 	@Override
-	public void showPermisoMessage(String message, boolean autoclose) {
-		showMessage(SimceResources.INSTANCE.msgLocked(), message, autoclose);
+	public void showPermisoMessage(String message, boolean autoclose, int tiempo) {
+		showMessage(SimceResources.INSTANCE.msgLocked(), message, autoclose,tiempo);
 	}
 	
 	@Override
@@ -179,12 +179,12 @@ public class AppViewD extends Composite implements AppView {
 		//sidebarPanel.setVisible(true);
 	}
 	
-	private void showMessage(ImageResource i,String message, boolean autoclose){
+	private void showMessage(ImageResource i,String message, boolean autoclose, int tiempo){
 		messages++;
 		MessagePanel mp = new MessagePanel(messages, i, message, messagesContainer);
 		mp.setAutoClose(autoclose);
 		if(autoclose){
-			mp.setOpenTime(6000);
+			mp.setOpenTime(tiempo);
 		}
 		mp.setCloseCommand(new Command() {
 			

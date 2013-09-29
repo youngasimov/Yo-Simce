@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.administracion;
 
 import java.util.ArrayList;
 
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
@@ -27,6 +28,9 @@ public interface AdministracionServiceAsync {
 
 	void setPermisos(ArrayList<PermisoDTO> permisos,
 			AsyncCallback<Boolean> callback);
+
+	void getReporte(Integer tipo, Integer region, Integer comuna, String desde,
+			AsyncCallback<DocumentoDTO> callback);
 
 
 }

@@ -289,6 +289,11 @@ public class PermisosViewD extends Composite implements PermisosView {
 		setUpdateTime(d);
 	}
 	
+	@Override
+	public void setUpdateProgramerVisivility(boolean visible) {
+		programarActualizacionItem.setVisible(visible);
+	}
+	
 	private void setUpdateTime(Date d){
 		programarUpdatePanel.dateBox.setValue(d);
 		programarUpdatePanel.timeBox.setValue(d.getTime());

@@ -25,6 +25,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Zona;
 import com.dreamer8.yosimce.server.utils.AccessControl;
+import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EmplazamientoDTO;
 import com.dreamer8.yosimce.shared.dto.PermisoDTO;
 import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
@@ -431,5 +432,11 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			}
 		}
 		return resutl;
+	}
+
+	@Override
+	public DocumentoDTO getReporte(Integer tipo, Integer region, Integer comuna ,String date) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -20,6 +20,7 @@ public interface PermisosView extends IsWidget {
 	
 	void setActualizarPermisosVisivility(boolean visible);
 	void setActualizarTablaVisivility(boolean visible);
+	void setUpdateProgramerVisivility(boolean visible);
 	
 	void setUpdateTime(String update);
 	

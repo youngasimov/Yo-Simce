@@ -39,6 +39,9 @@ public class AppPresenter implements AppView.AppPresenter {
 	
 	private Timer t2;
 	
+	private boolean updateSoonAlert;
+	private int updateLoops;
+	
 	private Logger logger = Logger.getLogger("");
 	
 	public AppPresenter(ClientFactory factory){
@@ -50,6 +53,7 @@ public class AppPresenter implements AppView.AppPresenter {
 		notLogged = false;
 		menuOpen = false;
 		format = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
+		updateSoonAlert = false;
 		bind();
 	}
 	
@@ -89,7 +93,6 @@ public class AppPresenter implements AppView.AppPresenter {
 				"<br /><br />Para volver a ingresar diríjase a YoSimce");
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void bind(){
 		
 		Timer t = new Timer(){
@@ -103,6 +106,8 @@ public class AppPresenter implements AppView.AppPresenter {
 						
 						if(result == LoginService.SESION_ACTIVA){
 							update = null;
+							updateLoops = 0;
+							updateSoonAlert = false;
 						}
 						
 						if(result == LoginService.SESION_INACTIVA && !notLogged){
@@ -128,35 +133,18 @@ public class AppPresenter implements AppView.AppPresenter {
 											
 											@Override
 											public void run() {
-												
+												updateLoops = 0;
 												if(update == null){
 													t2.cancel();
 													return;
-													
 												}
+												showUpdateMessage();
 												
-												Date d = new Date();
-												if(d.compareTo(update)<1){
-													int days = update.getDay() - d.getDay();
-													int hours = update.getHours() - d.getHours();
-													int mins = update. getMinutes() - d.getMinutes();
-													factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking para dentro de <br />"+days+" días, <br />"+hours+" horas, <br />"+mins+" minutos,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
-												}else{
-													factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
-												}
+												
 											}
 										};
 										t2.scheduleRepeating(30000);
-										
-										Date d = new Date();
-										if(d.compareTo(update)<1){
-											int days = update.getDay() - d.getDay();
-											int hours = update.getHours() - d.getHours();
-											int mins = update. getMinutes() - d.getMinutes();
-											factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking para dentro de <br />"+days+" días, <br />"+hours+" horas, <br />"+mins+" minutos,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
-										}else{
-											factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,true));
-										}
+										showUpdateMessage();
 									}
 								}
 							});
@@ -223,13 +211,13 @@ public class AppPresenter implements AppView.AppPresenter {
 			@Override
 			public void onMensaje(MensajeEvent event) {
 				if(event.getTipo() == MensajeEvent.MSG_OK){
-					view.showOkMessage(event.getMensaje(), event.isAutoClose());
+					view.showOkMessage(event.getMensaje(), event.isAutoClose(),event.getTiempo());
 				}else if(event.getTipo() == MensajeEvent.MSG_WARNING){
-					view.showWarningMessage(event.getMensaje(), event.isAutoClose());
+					view.showWarningMessage(event.getMensaje(), event.isAutoClose(),event.getTiempo());
 				}else if(event.getTipo() == MensajeEvent.MSG_ERROR){
-					view.showErrorMessage(event.getMensaje(), event.isAutoClose());
+					view.showErrorMessage(event.getMensaje(), event.isAutoClose(),event.getTiempo());
 				}else if(event.getTipo() == MensajeEvent.MSG_PERMISOS){
-					view.showPermisoMessage(event.getMensaje(), event.isAutoClose());
+					view.showPermisoMessage(event.getMensaje(), event.isAutoClose(),event.getTiempo());
 				}
 			}
 		});
@@ -258,36 +246,36 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void errorHandler(Throwable e){
-		
+		int tiempo = 7000;
 		if(e instanceof IncompatibleRemoteServiceException){
-			view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false);
+			view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false, tiempo);
 			logger.log(Level.WARNING, e.getLocalizedMessage());
 		}else if(e instanceof NullPointerException){
-			view.showErrorMessage(e.getLocalizedMessage(), true);
+			view.showErrorMessage(e.getLocalizedMessage(), true,tiempo);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof InvocationException){
-			view.showErrorMessage("La petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no está disponible", false);
+			view.showErrorMessage("La petición al servidor presentó problemas, esto puede deberse a:<br />1)No hay conexión al servidor<br />2)El servidor no está disponible", false,tiempo);
 			logger.log(Level.WARNING, e.getLocalizedMessage());
 		}else if(e instanceof SerializedTypeViolationException){
-			view.showErrorMessage("Tipo de dato inesperado", true);
+			view.showErrorMessage("Tipo de dato inesperado", true, tiempo);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof StatusCodeException){
-			view.showErrorMessage("El código del mensaje HTTP es inválido<br />"+e.getLocalizedMessage(), true);
+			view.showErrorMessage("El código del mensaje HTTP es inválido<br />"+e.getLocalizedMessage(), true, tiempo);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof NoAllowedException){
-			view.showPermisoMessage(e.getLocalizedMessage(), true);
+			view.showPermisoMessage(e.getLocalizedMessage(), true, tiempo);
 			logger.log(Level.INFO, e.getLocalizedMessage());
 		}else if(e instanceof DBException){
-			view.showErrorMessage(e.getLocalizedMessage(), false);
+			view.showErrorMessage(e.getLocalizedMessage(), false, tiempo);
 			logger.log(Level.WARNING, e.getLocalizedMessage());
 		}else if(e instanceof RequestTimeoutException){
-			view.showErrorMessage("El tiempo máximo de espera de respuesta se ha excedido", true);
+			view.showErrorMessage("El tiempo máximo de espera de respuesta se ha excedido", true, tiempo);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof TimeoutException){
-			view.showErrorMessage(e.getLocalizedMessage(), true);
+			view.showErrorMessage(e.getLocalizedMessage(), true, tiempo);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof ConsistencyException){
-			view.showWarningMessage(e.getMessage(), false);
+			view.showWarningMessage(e.getMessage(), true, 10000);
 			logger.log(Level.INFO, e.getLocalizedMessage());
 		}else if(e instanceof NoLoggedException && !notLogged){
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
@@ -296,6 +284,43 @@ public class AppPresenter implements AppView.AppPresenter {
 					"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
 		}else{
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void showUpdateMessage(){
+		Date d = new Date();
+		updateLoops++;
+		if(d.compareTo(update)<1){
+			updateSoonAlert = false;
+			int mins = update.getMinutes() - d.getMinutes();
+			int days = mins/1440;
+			int hours = mins/60;
+			String s = "Se ha programado una actualización del sistema Tracking para dentro de";
+			
+			if(days > 0){
+				s = s+ "<br />"+days+" días, ";
+			}else if(hours > 0){
+				s = s+ "<br />"+hours+" horas, ";
+			}else{
+				s = s+ "<br />"+mins+" minutos,";
+			}
+			s = s+ "<br /> si presenta problemas, refresque el navegador para actualizar la aplicación";
+			
+			if (mins>5){
+				if(updateLoops%4==0){
+					factory.getEventBus().fireEvent(new MensajeEvent(s ,MensajeEvent.MSG_WARNING,15000));
+				}
+			}else{
+				factory.getEventBus().fireEvent(new MensajeEvent(s ,MensajeEvent.MSG_WARNING,30000));
+			}
+			
+			
+			
+			
+		}else if(!updateSoonAlert){
+			factory.getEventBus().fireEvent(new MensajeEvent("Se ha programado una actualización del sistema Tracking que debería estar pronta a realizarse,<br /> si presenta problemas, refresque el navegador para actulizar la aplicación",MensajeEvent.MSG_WARNING,false));
+			updateSoonAlert = true;
 		}
 	}
 

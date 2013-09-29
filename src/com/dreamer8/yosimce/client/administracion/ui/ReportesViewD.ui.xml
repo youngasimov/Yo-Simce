@@ -2,6 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	<ui:style>
 		.title {
@@ -16,8 +17,11 @@
 		text-align: center;
 	}
 
-	.data{
-		font-size: 12px;
+	
+	
+	.actionPanel{
+		display:inline-block;
+		margin: 30px;
 	}
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
@@ -27,7 +31,39 @@
 			</my:OverMenuBar>	
 		</g:north>
 		<g:center>
-			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}' />
+			<g:FlowPanel>
+				<g:DecoratorPanel ui:field="reportesPanel" addStyleNames='{style.actionPanel}'>
+					<g:HTMLPanel>
+						<table>
+							<tr>
+								<th colspan='2'>Generador de reportes</th>
+							</tr>
+							<tr>
+								<td>Región:</td>
+								<td> <g:ListBox ui:field='regionBox'/> </td>
+							</tr>
+							<tr>
+								<td>Comuna:</td>
+								<td> <g:ListBox ui:field='comunaBox'/> </td>
+							</tr>
+							<tr>
+								<td>Desde:</td>
+								<td> <d:DateBox ui:field='desdeBox'/> </td>
+							</tr>
+							<tr>
+								<td>Reporte:</td>
+								<td> <g:ListBox ui:field='reporteBox'/> </td>
+							</tr>
+							<tr>
+								<td></td>
+								<td> <g:Button text="Generar reporte" ui:field='generarButton' /> </td>
+							</tr>
+							
+						
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+			</g:FlowPanel>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

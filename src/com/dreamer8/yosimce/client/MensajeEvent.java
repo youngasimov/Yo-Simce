@@ -16,6 +16,7 @@ public class MensajeEvent extends GwtEvent<MensajeEvent.MensajeHandler> {
 	
 	private String mensaje;
 	private int tipo;
+	private int tiempo;
 	private boolean autoClose;
 
 	public MensajeEvent(String mensaje) {
@@ -31,6 +32,15 @@ public class MensajeEvent extends GwtEvent<MensajeEvent.MensajeHandler> {
 		this.mensaje = mensaje;
 		this.tipo = tipo;
 		this.autoClose = autoclose;
+		this.tiempo = 7000;
+	}
+	
+	public MensajeEvent(String mensaje, int tipo, int tiempo) {
+		super();
+		this.mensaje = mensaje;
+		this.tipo = tipo;
+		autoClose = true;
+		this.tiempo =tiempo;  
 	}
 
 	public String getMensaje() {
@@ -43,6 +53,10 @@ public class MensajeEvent extends GwtEvent<MensajeEvent.MensajeHandler> {
 	
 	public boolean isAutoClose(){
 		return autoClose;
+	}
+
+	public int getTiempo() {
+		return tiempo;
 	}
 
 	@Override

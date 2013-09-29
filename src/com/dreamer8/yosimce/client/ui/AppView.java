@@ -14,10 +14,10 @@ public interface AppView extends IsWidget {
 	
 	void setCirularLoadVisibility(boolean visible);
 	
-	void showErrorMessage(String message,boolean autoclose);
-	void showWarningMessage(String message,boolean autoclose);
-	void showOkMessage(String message,boolean autoclose);
-	void showPermisoMessage(String message,boolean autoclose);
+	void showErrorMessage(String message,boolean autoclose, int tiempo);
+	void showWarningMessage(String message,boolean autoclose, int tiempo);
+	void showOkMessage(String message,boolean autoclose, int tiempo);
+	void showPermisoMessage(String message,boolean autoclose,int tiempo);
 	void openLoginPopup(String mensaje1, String mensaje2);
 	
 	void setManualHref(String href);
