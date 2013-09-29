@@ -248,7 +248,7 @@ public class AppPresenter implements AppView.AppPresenter {
 	private void errorHandler(Throwable e){
 		int tiempo = 7000;
 		if(e instanceof IncompatibleRemoteServiceException){
-			view.showErrorMessage("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio", false, tiempo);
+			view.showErrorMessage("Hemos echo algunas mejoras en la aplicación<br />recargue el sitio para poder obtenerlas", false, tiempo);
 			logger.log(Level.WARNING, e.getLocalizedMessage());
 		}else if(e instanceof NullPointerException){
 			view.showErrorMessage(e.getLocalizedMessage(), true,tiempo);
