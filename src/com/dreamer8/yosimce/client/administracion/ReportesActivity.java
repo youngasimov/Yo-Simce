@@ -37,6 +37,7 @@ public class ReportesActivity extends SimceActivity implements
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
+		this.eventBus = eventBus; 
 		
 		reportes.clear();
 		reportes.put(AdministracionService.MOVIMIENTO_MATERIAL, "Movimiento de material");
