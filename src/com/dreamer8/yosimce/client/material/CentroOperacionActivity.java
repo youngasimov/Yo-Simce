@@ -1298,10 +1298,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 		//********SIMCE TIC************
 		else{
 			for(MaterialWrap mw:materiales){
-				if(mw.getMaterial().getIdNivel() != null &&
-						mw.getMaterial().getIdTipoActividad() != null &&
-						mw.getMaterial().getIdCentro() == place.getCentroId() &&
-						mw.getMaterial().getIdTipoActividad() == place.getTipoId()){
+				if((mw.getMaterial().getIdNivel() == null || mw.getMaterial().getIdNivel() == place.getNivelId()) &&
+						(mw.getMaterial().getIdTipoActividad() == null || mw.getMaterial().getIdTipoActividad() == place.getTipoId())){
 					materialesVisibles.add(mw);
 				}
 			}
