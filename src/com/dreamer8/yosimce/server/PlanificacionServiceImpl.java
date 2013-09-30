@@ -956,6 +956,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 										offset, lenght, filtros);
 					}
 					total -= lenght;
+					offset += lenght;
 
 					if (filas != null && !filas.isEmpty()) {
 						for (String contenido : filas) {

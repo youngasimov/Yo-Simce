@@ -1836,6 +1836,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 									lenght, filtros, getBaseURL());
 
 					total -= lenght;
+					offset += lenght;
 
 					if (apdtos != null && !apdtos.isEmpty()) {
 						for (ActividadPreviewDTO apdto : apdtos) {
@@ -1951,7 +1952,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				Integer offset = 0;
-				Integer lenght = 1000;
+				Integer lenght = 10000;
 				List<String> filas = null;
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
@@ -1963,6 +1964,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(file), "ISO-8859-1"));
 
+				bw.write("rbd;establecimiento_nombre;establecimiento_tipo;región;comuna;tipo_actividad;total_alumnos;"
+						+ "rut;apellido_paterno;apellido_materno;nombres;tipo_alumno;estado_alumno;pendrive;estado_pendrive;cuestionario_entregado\r");
 				while (total > 0) {
 					filas = adao
 							.findAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
@@ -1970,6 +1973,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 									u.getId(), usuarioTipo.getNombre(), offset,
 									lenght, filtros);
 					total -= lenght;
+					offset += lenght;
 
 					if (filas != null && !filas.isEmpty()) {
 						for (String contenido : filas) {

@@ -439,4 +439,26 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/**
+	 * @permiso enviarCorreosSimceTic
+	 */
+	@Override
+	public Boolean enviarCorreosSimceTic() throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso enviarCorreosSimce
+	 */
+	@Override
+	public Boolean enviarCorreosSimce() throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -46,7 +46,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
 				+ "at.nombre as act_tipo_nombre,a.total_alumnos,al.rut,al.nombres,al.apellido_paterno,al.apellido_materno,"
 				+ "alt.nombre as al_tipo,ale.nombre as al_estado,d_pendrive.codigo,de_pendrive.nombre as pendrive_estado,"
-				+ "axaxd_cuest.entregado"
+				+ "axaxd_cuest.entregado,axa.id"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -202,7 +202,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 			}
 
 		}
-		query += " ORDER BY COMUNA.id,e.id,c.id,al.apellido_paterno,al.apellido_materno,al.nombres,al.rut";
+		query += " ORDER BY COMUNA.id,e.id,c.id,axa.id";
 		Query q = s.createSQLQuery(query);
 		if (offset != null) {
 			q.setFirstResult(offset);
@@ -213,8 +213,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		List<Object[]> os = q.list();
 		String linea = null;
 		if (os != null && !os.isEmpty()) {
-			csv.add("rbd;establecimiento_nombre;establecimiento_tipo;región;comuna;tipo_actividad;total_alumnos;"
-					+ "rut;apellido_paterno;apellido_materno;nombres;tipo_alumno;estado_alumno;pendrive;estado_pendrive;cuestionario_entregado");
+			
 			for (Object[] o : os) {
 				linea = Integer.toString((Integer) o[1]) + ";"
 						+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
