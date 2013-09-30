@@ -20,8 +20,8 @@
         <many-to-one name="usuario" class="com.dreamer8.yosimce.server.hibernate.pojo.Usuario" fetch="select">
             <column name="modificador_id" />
         </many-to-one>
-        <property name="asistencia" type="boolean">
-            <column name="asistencia" not-null="true" />
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="asistencia"/>
         </property>
         <property name="notaPresentacionPersonal" type="java.lang.Integer">
             <column name="nota_presentacion_personal" />

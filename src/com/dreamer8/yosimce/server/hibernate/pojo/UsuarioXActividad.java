@@ -14,7 +14,7 @@ public class UsuarioXActividad implements java.io.Serializable {
 	private Actividad actividad;
 	private UsuarioEstado usuarioEstado;
 	private Usuario usuario;
-	private boolean asistencia;
+	private Boolean asistencia;
 	private Integer notaPresentacionPersonal;
 	private Integer notaPuntualidad;
 	private Integer notaLlenadoFormularios;
@@ -24,14 +24,14 @@ public class UsuarioXActividad implements java.io.Serializable {
 	public UsuarioXActividad() {
 	}
 
-	public UsuarioXActividad(Integer id, boolean asistencia) {
+	public UsuarioXActividad(Integer id, Boolean asistencia) {
 		this.id = id;
 		this.asistencia = asistencia;
 	}
 
 	public UsuarioXActividad(Integer id, UsuarioSeleccion usuarioSeleccion,
 			Actividad actividad, UsuarioEstado usuarioEstado, Usuario usuario,
-			boolean asistencia, Integer notaPresentacionPersonal,
+			Boolean asistencia, Integer notaPresentacionPersonal,
 			Integer notaPuntualidad, Integer notaLlenadoFormularios,
 			Integer notaDespempeno, String comentario) {
 		this.id = id;
@@ -87,11 +87,11 @@ public class UsuarioXActividad implements java.io.Serializable {
 		this.usuario = usuario;
 	}
 
-	public boolean isAsistencia() {
+	public Boolean isAsistencia() {
 		return this.asistencia;
 	}
 
-	public void setAsistencia(boolean asistencia) {
+	public void setAsistencia(Boolean asistencia) {
 		this.asistencia = asistencia;
 	}
 
