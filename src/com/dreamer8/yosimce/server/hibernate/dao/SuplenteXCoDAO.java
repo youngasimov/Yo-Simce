@@ -20,7 +20,7 @@ public class SuplenteXCoDAO extends AbstractHibernateDAO<SuplenteXCo, Integer> {
 
 		SuplenteXCo sco = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT sco.* FROM FROM APLICACION_x_NIVEL axn "
+		String query = "SELECT sco.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
