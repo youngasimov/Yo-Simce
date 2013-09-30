@@ -60,8 +60,8 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 	@Override
 	public void setSupervisores(ArrayList<EvaluacionUsuarioDTO> supervisores) {
 		dataGrid.setPageSize(supervisores.size()+1);
-		dataGrid.setRowCount(supervisores.size());
 		dataGrid.setVisibleRange(0, supervisores.size()+1);
+		dataGrid.setRowCount(supervisores.size());
 		dataGrid.setRowData(supervisores);
 	}
 	
