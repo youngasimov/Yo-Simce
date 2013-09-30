@@ -134,7 +134,7 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 
 			@Override
 			public Boolean getValue(EvaluacionUsuarioDTO o) {
-				return o.getPuntualidad()>0;
+				return o.getPuntualidad() != null && o.getPuntualidad()>0;
 			}
 		};
 		puntualidadColumn.setSortable(false);
@@ -144,7 +144,7 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 
 			@Override
 			public Boolean getValue(EvaluacionUsuarioDTO o) {
-				return o.getPresentacionPersonal()>0;
+				return o.getPresentacionPersonal()!=null && o.getPresentacionPersonal()>0;
 			}
 		};
 		presentacionColumn.setSortable(false);
@@ -154,7 +154,7 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 
 			@Override
 			public Boolean getValue(EvaluacionUsuarioDTO o) {
-				return o.getFormulario()>0;
+				return o.getFormulario()!= null && o.getFormulario()>0;
 			}
 		};
 		formColumn.setSortable(false);
@@ -164,7 +164,7 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 
 			@Override
 			public Boolean getValue(EvaluacionUsuarioDTO o) {
-				return o.getGeneral()>0;
+				return o.getGeneral()!= null && o.getGeneral()>0;
 			}
 		};
 		generalColumn.setSortable(false);
