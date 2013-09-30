@@ -50,28 +50,39 @@ public class Usuario implements java.io.Serializable {
 	private boolean credentialsExpired;
 	private Date credentialsExpireAt;
 	private List<UsuarioXTest> usuarioXTests = new ArrayList<UsuarioXTest>(0);
-	private List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions = new ArrayList<UsuarioXFaseXAplicacion>(0);
-	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(0);
+	private List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions = new ArrayList<UsuarioXFaseXAplicacion>(
+			0);
+	private List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels = new ArrayList<UsuarioXAplicacionXNivel>(
+			0);
 	private List<Nivel> nivels = new ArrayList<Nivel>(0);
 	private List<UsuarioXCo> usuarioXCos = new ArrayList<UsuarioXCo>(0);
-	private List<HistorialCambios> historialCambios = new ArrayList<HistorialCambios>(0);
+	private List<HistorialCambios> historialCambios = new ArrayList<HistorialCambios>(
+			0);
 	private List<Aviso> avisos = new ArrayList<Aviso>(0);
-	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(0);
+	private List<UsuarioXRequisito> usuarioXRequisitos = new ArrayList<UsuarioXRequisito>(
+			0);
 	private List<Transporte> transportes = new ArrayList<Transporte>(0);
 	private List<Actividad> actividads = new ArrayList<Actividad>(0);
-	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(0);
-	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(0);
+	private List<MaterialHistorial> materialHistorials = new ArrayList<MaterialHistorial>(
+			0);
+	private List<RutaXEstablecimiento> rutaXEstablecimientos = new ArrayList<RutaXEstablecimiento>(
+			0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
-	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(0);
+	private List<JrXCentroRegional> jrXCentroRegionals = new ArrayList<JrXCentroRegional>(
+			0);
 	private List<Mensaje> mensajes = new ArrayList<Mensaje>(0);
 	private List<Sesion> sesions = new ArrayList<Sesion>(0);
-	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(0);
-	private List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions = new ArrayList<UsuarioXCcCapacitacion>(0);
-	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
+	private List<UsuarioXComuna> usuarioXComunas = new ArrayList<UsuarioXComuna>(
+			0);
+	private List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions = new ArrayList<UsuarioXCcCapacitacion>(
+			0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
+			0);
 	private List<JzXZona> jzXZonas = new ArrayList<JzXZona>(0);
 	private List<Ruta> rutas = new ArrayList<Ruta>(0);
 	private List<JoXCo> joXCos = new ArrayList<JoXCo>(0);
-	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(0);
+	private List<UsuarioXEstablecimiento> usuarioXEstablecimientos = new ArrayList<UsuarioXEstablecimiento>(
+			0);
 
 	public Usuario() {
 	}
@@ -110,14 +121,21 @@ public class Usuario implements java.io.Serializable {
 			Date lastLogin, boolean locked, boolean expired, Date expiresAt,
 			String confirmationToken, Date passwordRequestedAt, String roles,
 			boolean credentialsExpired, Date credentialsExpireAt,
-			List<UsuarioXTest> usuarioXTests, List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions,
-			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels, List<Nivel> nivels, List<UsuarioXCo> usuarioXCos,
-			List<HistorialCambios> historialCambios, List<Aviso> avisos, List<UsuarioXRequisito> usuarioXRequisitos,
-			List<Transporte> transportes, List<Actividad> actividads, List<MaterialHistorial> materialHistorials,
-			List<RutaXEstablecimiento> rutaXEstablecimientos, List<SuplenteXCo> suplenteXCos,
-			List<JrXCentroRegional> jrXCentroRegionals, List<Mensaje> mensajes, List<Sesion> sesions,
-			List<UsuarioXComuna> usuarioXComunas, List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions,
-			List<UsuarioXActividad> usuarioXActividads, List<JzXZona> jzXZonas, List<Ruta> rutas, List<JoXCo> joXCos,
+			List<UsuarioXTest> usuarioXTests,
+			List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions,
+			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels,
+			List<Nivel> nivels, List<UsuarioXCo> usuarioXCos,
+			List<HistorialCambios> historialCambios, List<Aviso> avisos,
+			List<UsuarioXRequisito> usuarioXRequisitos,
+			List<Transporte> transportes, List<Actividad> actividads,
+			List<MaterialHistorial> materialHistorials,
+			List<RutaXEstablecimiento> rutaXEstablecimientos,
+			List<SuplenteXCo> suplenteXCos,
+			List<JrXCentroRegional> jrXCentroRegionals, List<Mensaje> mensajes,
+			List<Sesion> sesions, List<UsuarioXComuna> usuarioXComunas,
+			List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions,
+			List<UsuarioXActividad> usuarioXActividads, List<JzXZona> jzXZonas,
+			List<Ruta> rutas, List<JoXCo> joXCos,
 			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.id = id;
 		this.companiaTelefono = companiaTelefono;
@@ -462,7 +480,8 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXFaseXAplicacions;
 	}
 
-	public void setUsuarioXFaseXAplicacions(List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions) {
+	public void setUsuarioXFaseXAplicacions(
+			List<UsuarioXFaseXAplicacion> usuarioXFaseXAplicacions) {
 		this.usuarioXFaseXAplicacions = usuarioXFaseXAplicacions;
 	}
 
@@ -470,7 +489,8 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXAplicacionXNivels;
 	}
 
-	public void setUsuarioXAplicacionXNivels(List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
+	public void setUsuarioXAplicacionXNivels(
+			List<UsuarioXAplicacionXNivel> usuarioXAplicacionXNivels) {
 		this.usuarioXAplicacionXNivels = usuarioXAplicacionXNivels;
 	}
 
@@ -542,7 +562,8 @@ public class Usuario implements java.io.Serializable {
 		return this.rutaXEstablecimientos;
 	}
 
-	public void setRutaXEstablecimientos(List<RutaXEstablecimiento> rutaXEstablecimientos) {
+	public void setRutaXEstablecimientos(
+			List<RutaXEstablecimiento> rutaXEstablecimientos) {
 		this.rutaXEstablecimientos = rutaXEstablecimientos;
 	}
 
@@ -590,7 +611,8 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXCcCapacitacions;
 	}
 
-	public void setUsuarioXCcCapacitacions(List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions) {
+	public void setUsuarioXCcCapacitacions(
+			List<UsuarioXCcCapacitacion> usuarioXCcCapacitacions) {
 		this.usuarioXCcCapacitacions = usuarioXCcCapacitacions;
 	}
 
@@ -630,7 +652,8 @@ public class Usuario implements java.io.Serializable {
 		return this.usuarioXEstablecimientos;
 	}
 
-	public void setUsuarioXEstablecimientos(List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
+	public void setUsuarioXEstablecimientos(
+			List<UsuarioXEstablecimiento> usuarioXEstablecimientos) {
 		this.usuarioXEstablecimientos = usuarioXEstablecimientos;
 	}
 
@@ -643,6 +666,7 @@ public class Usuario implements java.io.Serializable {
 		udto.setApellidoPaterno(apellidoPaterno);
 		udto.setApellidoMaterno(apellidoMaterno);
 		udto.setTelefono(celular);
+		udto.setRut(username);
 		return udto;
 	}
 
@@ -653,6 +677,7 @@ public class Usuario implements java.io.Serializable {
 		sdto.setNombres(nombres);
 		sdto.setApellidoPaterno(apellidoPaterno);
 		sdto.setApellidoMaterno(apellidoMaterno);
+		sdto.setRut(username);
 		return sdto;
 	}
 
