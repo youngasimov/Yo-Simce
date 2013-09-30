@@ -4,8 +4,12 @@
  */
 package com.dreamer8.yosimce.server.utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -198,5 +202,16 @@ public class StringUtils {
 				"junio", "julio", "agosto", "septiembre", "octubre",
 				"noviembre", "diciembre" };
 		return meses[mes % 12];
+	}
+	
+	public static List<String> extractMails(String str) {
+		List<String> mails = new ArrayList<String>();
+		String regex = "[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}";
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(str);
+		while (m.find()) {
+			mails.add(m.group());
+		}
+		return mails;
 	}
 }

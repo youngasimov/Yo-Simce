@@ -34,6 +34,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.DocumentoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.IncidenciaTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MotivoFallaDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.SuplenteXCoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
@@ -51,6 +52,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.IncidenciaTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.MotivoFalla;
+import com.dreamer8.yosimce.server.hibernate.pojo.SuplenteXCo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
@@ -515,7 +517,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
 				List<UsuarioXActividad> uxas = uxadao
-						.findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+						.findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
 								idAplicacion, idNivel, idActividadTipo,
 								u.getId(), usuarioTipo.getNombre());
 
@@ -1329,6 +1331,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
 				UsuarioXActividad uxa = null;
 				UserDTO udto = null;
+				SuplenteXCoDAO sxcDAO = new SuplenteXCoDAO();
+				SuplenteXCo sxc = null;
+				ActividadDAO adao = new ActividadDAO();
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
 				for (EvaluacionUsuarioDTO eudto : evaluaciones) {
 					udto = eudto.getUsuario();
 					if (udto != null && udto.getId() != null) {
@@ -1337,17 +1345,56 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 										idAplicacion, idNivel, idActividadTipo,
 										idCurso, udto.getId());
 						if (uxa == null) {
-							throw new ConsistencyException("El examinador ("
-									+ udto.getRut() + ") " + udto.getNombres()
-									+ " " + udto.getApellidoPaterno()
-									+ " no está asociado a esta actividad.");
+							if (eudto.getEstado().equals(
+									EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE)) {
+								sxc = sxcDAO
+										.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
+												idAplicacion, idNivel,
+												idActividadTipo, udto.getId());
+								if (sxc != null) {
+									sxc.setReemplazando(true);
+									sxc.setAsistencia(true);
+									sxcDAO.update(sxc);
+
+									uxa = new UsuarioXActividad();
+									uxa.setUsuarioSeleccion(sxc
+											.getUsuarioSeleccion());
+									uxa.setActividad(a);
+								} else {
+									throw new ConsistencyException(
+											"El usuario ("
+													+ udto.getRut()
+													+ ") "
+													+ udto.getNombres()
+													+ " "
+													+ udto.getApellidoPaterno()
+													+ " no ha sido asignado como suplente.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+								}
+
+							} else {
+								throw new ConsistencyException(
+										"El examinador ("
+												+ udto.getRut()
+												+ ") "
+												+ udto.getNombres()
+												+ " "
+												+ udto.getApellidoPaterno()
+												+ " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+							}
 						}
-						uxa.setNotaPuntualidad(eudto.getPuntualidad());
-						uxa.setNotaLlenadoFormularios(eudto.getFormulario());
-						uxa.setNotaPresentacionPersonal(eudto
-								.getPresentacionPersonal());
-						uxa.setNotaDespempeno(eudto.getGeneral());
-						uxadao.update(uxa);
+						if (eudto.getEstado().equals(
+								EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
+							uxa.setAsistencia(false);
+						} else {
+							uxa.setNotaPuntualidad(eudto.getPuntualidad());
+							uxa.setNotaLlenadoFormularios(eudto.getFormulario());
+							uxa.setNotaPresentacionPersonal(eudto
+									.getPresentacionPersonal());
+							uxa.setNotaDespempeno(eudto.getGeneral());
+							uxa.setAsistencia(true);
+						}
+						uxa.setUsuario(u);
+						uxadao.saveOrUpdate(uxa);
 					}
 				}
 

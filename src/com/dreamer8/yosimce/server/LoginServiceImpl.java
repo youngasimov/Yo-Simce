@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.server;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +72,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				throw new NullPointerException(
 						"No se ha especificado un usuario.");
 			}
+
 
 			s.beginTransaction();
 			SesionDAO sdao = new SesionDAO();

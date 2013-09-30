@@ -224,11 +224,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
 						where += " a.fecha_inicio >='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
@@ -390,11 +390,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
 						where += " a.fecha_inicio >='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
@@ -519,11 +519,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
 						where += " a.fecha_inicio >='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
@@ -672,11 +672,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
 						where += " a.fecha_inicio >='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
@@ -802,11 +802,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
 						where += " a.fecha_inicio >='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
@@ -937,11 +937,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
 						where += " a.fecha_inicio >='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						where += " a.fecha_inicio <='"
 								+ SecurityFilter.escapeString(filtros.get(key))
-								+ "'";
+								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
 								+ SecurityFilter.escapeString(filtros.get(key));
@@ -1361,5 +1361,25 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
 		return a;
+	}
+
+	public List<Actividad> findAgendadasParaMañanaByIdAplicacionANDIdNivelANDIdActividadTipo(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
+
+		List<Actividad> as = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "select a.* FROM ACTIVIDAD a "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (a.aplicacion_x_nivel_x_actividad_tipo_id=axnxat.id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN APLICACION_x_NIVEL axn ON (axnxat.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ ")"
+				+ " WHERE a.fecha_inicio > now() and a.fecha_inicio < (now()+interval'1 day') and a.actividad_estado_id > 2  ";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		as = q.list();
+		return as;
 	}
 }

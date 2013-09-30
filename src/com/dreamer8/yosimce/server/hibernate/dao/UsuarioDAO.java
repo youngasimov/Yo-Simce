@@ -66,6 +66,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			udto.setApellidoPaterno((String) o[3]);
 			udto.setApellidoMaterno((String) o[4]);
 			udto.setUsername((String) o[5]);
+			udto.setRut((String) o[5]);
 			tudto = new TipoUsuarioDTO();
 			tudto.setId((Integer) o[6]);
 			tudto.setTipoUsuario((String) o[7]);
@@ -81,7 +82,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
+		String query = "SELECT u.id as u_id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id as ut_id,ut.nombre as ut_nom FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON (us.usuario_tipo_id=ut.id AND (ut.nombre='"
 				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
 				+ "' OR ut.nombre='"
@@ -121,6 +122,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			udto.setApellidoPaterno((String) o[3]);
 			udto.setApellidoMaterno((String) o[4]);
 			udto.setUsername((String) o[5]);
+			udto.setRut((String) o[5]);
 			tudto = new TipoUsuarioDTO();
 			tudto.setId((Integer) o[6]);
 			tudto.setTipoUsuario((String) o[7]);
@@ -170,6 +172,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			udto.setApellidoPaterno((String) o[3]);
 			udto.setApellidoMaterno((String) o[4]);
 			udto.setUsername((String) o[5]);
+			udto.setRut((String) o[5]);
 			tudto = new TipoUsuarioDTO();
 			tudto.setId((Integer) o[6]);
 			tudto.setTipoUsuario((String) o[7]);

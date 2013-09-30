@@ -1274,15 +1274,33 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		return eadtos;
 	}
 
-	public void sendEmailDirectorTIC() {
+	public void sendEmailDirectorTIC(String dirMail, String contactoMail,
+			String fechaVisitaPrevia, String horaInicioVisitaPrevia,
+			String fechaAplicacion, String horaInicioAplicacion,
+			String horaTerminoAplicacion, String firmante, String examinador,
+			String supervisor, Integer region) {
 
 		URL url;
 		try {
 			url = this.getServletContext().getResource(
 					"/Orientaciones_al_Director.pdf");
 
+			String[] destinatarios = new String[(dirMail.equals(contactoMail) || contactoMail == null) ? 3
+					: 4];
+			destinatarios[0] = dirMail.toLowerCase();
+			destinatarios[1] = "simce@usm.cl";
+			destinatarios[1] = "encargado.tic" + region + "@usm.cl";
+			if (!dirMail.equals(contactoMail) && contactoMail != null
+					&& !contactoMail.isEmpty()) {
+				destinatarios[3] = contactoMail.toLowerCase();
+			}
+
 			EnviarCorreoDirTICThread t = new EnviarCorreoDirTICThread(
-					url.getPath());
+					url.getPath(), destinatarios, fechaVisitaPrevia,
+					horaInicioVisitaPrevia, fechaAplicacion,
+					horaInicioAplicacion, horaTerminoAplicacion, examinador,
+					supervisor);
+
 			t.start();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -1293,19 +1311,103 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 	private class EnviarCorreoDirTICThread extends Thread {
 		private String path;
+		private String[] destinatarios;
+		private String fechaVisitaPrevia;
+		private String horaInicioVisitaPrevia;
+		private String fechaAplicacion;
+		private String horaInicioAplicacion;
+		private String horaTerminoAplicacion;
+		private String examinador;
+		private String supervisor;
 
 		/**
 		 * @param path
+		 * @param destinatarios
+		 * @param fechaVisitaPrevia
+		 * @param horaInicioVisitaPrevia
+		 * @param fechaAplicacion
+		 * @param horaInicioAplicacion
+		 * @param horaTerminoAplicacion
+		 * @param examinador
+		 * @param supervisor
 		 */
-		public EnviarCorreoDirTICThread(String path) {
+		public EnviarCorreoDirTICThread(String path, String[] destinatarios,
+				String fechaVisitaPrevia, String horaInicioVisitaPrevia,
+				String fechaAplicacion, String horaInicioAplicacion,
+				String horaTerminoAplicacion, String examinador,
+				String supervisor) {
 			super();
 			this.path = path;
+			this.destinatarios = destinatarios;
+			this.fechaVisitaPrevia = fechaVisitaPrevia;
+			this.horaInicioVisitaPrevia = horaInicioVisitaPrevia;
+			this.fechaAplicacion = fechaAplicacion;
+			this.horaInicioAplicacion = horaInicioAplicacion;
+			this.horaTerminoAplicacion = horaTerminoAplicacion;
+			this.examinador = examinador;
+			this.supervisor = supervisor;
 		}
 
 		public void run() {
 
-			enviarArchivo("jflores@dreamer8.com",
-					"Orientaciones al Director.pdf", path, "application/pdf");
+			String mensaje = "Estimado Director(a) o Jefe de UTP:\n\n"
+
+					+ "Junto con saludarlo(a), y según lo conversado telefónicamente le recuerdo que la visita previa se realizará\n"
+					+ "el día "
+					+ fechaVisitaPrevia
+					+ " a las "
+					+ horaInicioVisitaPrevia
+					+ ".\n"
+					+ "En este proceso participará "
+					+ examinador
+					+ ", Examinador de SIMCE TIC, el Encargado técnico\n"
+					+ " y quien le escribe "
+					+ supervisor
+					+ ", Supervisor de la aplicación.\n\n"
+
+					+ "La visita previa tiene como objetivo:\n"
+					+ "* Seleccionar la sala o laboratorio de computación del establecimiento que se utilizará para la aplicación\n"
+					+ "del SIMCE TIC.\n"
+					+ "* Informar a los estudiantes de segundo medio seleccionados para rendir la prueba.\n"
+					+ "* Verificar con los libros de clases de segundo año medio el registro de los estudiantes seleccionados\n"
+					+ "para rendir la prueba.\n"
+					+ "* Realizar reemplazos de estudiantes en caso de ser necesario.\n"
+					+ "* Realizar una charla informativa a los estudiantes, el Director y el Jefe de UTP.\n"
+					+ "* Entregar el Cuestionario para Padres y/o Apoderados.\n"
+					+ "* Identificar vías de escape ante eventuales emergencias.\n\n"
+
+					+ "Durante este proceso se requiere de su colaboración para brindar el apoyo necesario que permita agilizar\n"
+					+ "los procedimientos establecidos para la aplicación de la prueba SIMCE TIC.\n\n"
+
+					+ "Antes de la visita previa le solicitamos revisar el documento adjunto “Orientaciones al Director”, el cual\n"
+					+ "sintetiza los procesos y actividades a realizar.\n\n"
+
+					+ "Finalmente, le informamos que la aplicación de SIMCE TIC se realizará el día\n"
+					+ fechaAplicacion
+					+ " desde las "
+					+ horaInicioAplicacion
+					+ " hasta las "
+					+ horaTerminoAplicacion
+					+ " aproximadamente.\n\n"
+
+					+ "Para consultas comuníquese al teléfono: 2-2353 1247\n"
+					+ "Mail: simce@usm.cl\n\n"
+					+ "Se despide cordialmente\n"
+					+ supervisor + "\nSupervisor";
+
+			try {
+				sendMailWithAttachment(mensaje,
+						"Notificación de actividades SIMCE TIC", destinatarios,
+						"Orientaciones al Director.pdf", path,
+						"application/pdf");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 
 		public String getPath() {
@@ -1314,7 +1416,71 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 		public void setPath(String path) {
 			this.path = path;
-		};
+		}
+
+		public String[] getDestinatarios() {
+			return destinatarios;
+		}
+
+		public void setDestinatarios(String[] destinatarios) {
+			this.destinatarios = destinatarios;
+		}
+
+		public String getFechaVisitaPrevia() {
+			return fechaVisitaPrevia;
+		}
+
+		public void setFechaVisitaPrevia(String fechaVisitaPrevia) {
+			this.fechaVisitaPrevia = fechaVisitaPrevia;
+		}
+
+		public String getHoraInicioVisitaPrevia() {
+			return horaInicioVisitaPrevia;
+		}
+
+		public void setHoraInicioVisitaPrevia(String horaInicioVisitaPrevia) {
+			this.horaInicioVisitaPrevia = horaInicioVisitaPrevia;
+		}
+
+		public String getFechaAplicacion() {
+			return fechaAplicacion;
+		}
+
+		public void setFechaAplicacion(String fechaAplicacion) {
+			this.fechaAplicacion = fechaAplicacion;
+		}
+
+		public String getHoraInicioAplicacion() {
+			return horaInicioAplicacion;
+		}
+
+		public void setHoraInicioAplicacion(String horaInicioAplicacion) {
+			this.horaInicioAplicacion = horaInicioAplicacion;
+		}
+
+		public String getHoraTerminoAplicacion() {
+			return horaTerminoAplicacion;
+		}
+
+		public void setHoraTerminoAplicacion(String horaTerminoAplicacion) {
+			this.horaTerminoAplicacion = horaTerminoAplicacion;
+		}
+
+		public String getExaminador() {
+			return examinador;
+		}
+
+		public void setExaminador(String examinador) {
+			this.examinador = examinador;
+		}
+
+		public String getSupervisor() {
+			return supervisor;
+		}
+
+		public void setSupervisor(String supervisor) {
+			this.supervisor = supervisor;
+		}
 
 	}
 

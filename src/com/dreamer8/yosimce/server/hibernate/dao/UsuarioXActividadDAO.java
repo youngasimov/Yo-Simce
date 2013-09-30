@@ -47,7 +47,7 @@ public class UsuarioXActividadDAO extends
 		return uxas;
 	}
 
-	public List<UsuarioXActividad> findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+	public List<UsuarioXActividad> findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario, String usuarioTipo) {
 
@@ -116,7 +116,7 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
-				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.usuario_id="
+				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
 		uxa = (UsuarioXActividad) q.uniqueResult();
@@ -140,7 +140,7 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
-				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.usuario_id="
+				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
 		uxas = q.list();
