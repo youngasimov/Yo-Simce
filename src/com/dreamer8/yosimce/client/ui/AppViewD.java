@@ -6,6 +6,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
@@ -74,6 +76,14 @@ public class AppViewD extends Composite implements AppView {
 		messagePopup.setWidget(messagesContainer);
 		
 		messages = 0;
+		appPanel.addDomHandler(new MouseMoveHandler() {
+			
+			@Override
+			public void onMouseMove(MouseMoveEvent event) {
+				presenter.onMouseMoveOnWindow();
+			}
+		}, MouseMoveEvent.getType());
+		
 	}
 	
 	

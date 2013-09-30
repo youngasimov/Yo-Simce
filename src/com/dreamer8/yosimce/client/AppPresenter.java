@@ -26,6 +26,7 @@ public class AppPresenter implements AppView.AppPresenter {
 
 	private final ClientFactory factory;
 	private final AppView view;
+	private SimcePlace currentPlace;
 	
 	private int blockingEvents;
 	private int nonBlockingEvents;
@@ -70,6 +71,15 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	@Override
+	public void onMouseMoveOnWindow() {	
+		if(currentPlace!=null){
+			Cookies.setCookie("a", currentPlace.getAplicacionId()+"");
+			Cookies.setCookie("n", currentPlace.getNivelId()+"");
+			Cookies.setCookie("t", currentPlace.getTipoId()+"");
+		}
+	}
+	
+	@Override
 	public void onLogout() {
 		factory.getLoginService().logout(new AsyncCallback<Boolean>() {
 			
@@ -94,6 +104,7 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void bind(){
+		
 		
 		Timer t = new Timer(){
 
@@ -187,10 +198,10 @@ public class AppPresenter implements AppView.AppPresenter {
 				view.setSidebarPanelState(menuOpen);
 				
 				if(event.getNewPlace() instanceof SimcePlace){
-					SimcePlace sp = (SimcePlace)event.getNewPlace();
-					if(sp.getAplicacionId()==1){
+					currentPlace = (SimcePlace)event.getNewPlace();
+					if(currentPlace .getAplicacionId()==1){
 						view.setManualHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_simce.pdf");
-					}else if(sp.getAplicacionId()==2){
+					}else if(currentPlace .getAplicacionId()==2){
 						view.setManualHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_simce_tic.pdf");
 					}
 				}
