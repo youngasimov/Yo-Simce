@@ -142,6 +142,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 		view.setDespachoVisivility(Utils.hasPermisos(getPermisos(),
 				"MaterialService", "despacharMateriales"));
 
+		view.setAddByLote(true);
+		
 		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService","getCentrosOperacionAsociados")) {
 			getFactory().getMaterialService().getCentrosOperacionAsociados(new MaterialCallback<ArrayList<EmplazamientoDTO>>(eventBus,true,userKey) {
 				@Override
@@ -553,7 +555,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 					"Seleccione la etapa hacia donde se dirigen los materiales",
 					MensajeEvent.MSG_WARNING, true));
 			return;
-		} else if (selectedRetiranteRut == null) {
+		} else if (selectedRetiranteRut == null || selectedRetiranteRut.isEmpty()) {
 			eventBus.fireEvent(new MensajeEvent(
 					"Ingrese el RUT de la persona que retira, o el suyo si la persona que retira no pertenece al proceso",
 					MensajeEvent.MSG_WARNING, true));
@@ -586,7 +588,11 @@ public class CentroOperacionActivity extends SimceActivity implements
 							despachoFile = null;
 							view.setFocusOnDespachoCodigoBox(true);
 							view.clearDespachoFolioBox();
+							view.clearRutRetiranteBox();
+							view.setRetirante(null);
+							selectedRetiranteRut = null;
 							updateMateriales(codigos);
+							extractLotes();
 							eventBus.fireEvent(new MensajeEvent(
 									"El despacho se realizó exitosamente",
 									MensajeEvent.MSG_OK, true));
@@ -620,6 +626,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	@Override
 	public void onCrearLote(String nuevoLote) {
+		view.clearNuevoLoteBox();
 		for(LoteDTO l:lotes){
 			if(l.getId() == -2){
 				eventBus.fireEvent(new MensajeEvent(

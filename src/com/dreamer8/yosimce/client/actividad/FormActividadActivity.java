@@ -39,6 +39,8 @@ public class FormActividadActivity extends SimceActivity implements
 	private ArrayList<EstadoAgendaDTO> estados;
 	private ActividadDTO a;
 	
+	private ArrayList<EvaluacionUsuarioDTO> examinadores;
+	
 	public FormActividadActivity(ClientFactory factory, FormActividadPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
 		this.place = place;
@@ -104,6 +106,17 @@ public class FormActividadActivity extends SimceActivity implements
 
 					@Override
 					public void success(ArrayList<EvaluacionUsuarioDTO> result) {
+						examinadores = new ArrayList<EvaluacionUsuarioDTO>();
+						for(EvaluacionUsuarioDTO u:result){
+							EvaluacionUsuarioDTO aux = new EvaluacionUsuarioDTO();
+							aux.setUsuario(u.getUsuario());
+							aux.setFormulario(u.getFormulario());
+							aux.setGeneral(u.getGeneral());
+							aux.setPresentacionPersonal(u.getPresentacionPersonal());
+							aux.setPuntualidad(u.getPuntualidad());
+							aux.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
+							examinadores.add(aux);
+						}
 						view.setExaminadores(result);
 					}
 
@@ -200,8 +213,27 @@ public class FormActividadActivity extends SimceActivity implements
 				}
 			});
 		}
+		
 		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
-			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),view.getExaminadores(), new SimceCallback<Boolean>(eventBus,false) {
+			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = view.getExaminadores();
+			
+			for(EvaluacionUsuarioDTO e:examinadoresCorregido){
+				e.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE);
+				for(EvaluacionUsuarioDTO x:examinadores){
+					if(e.getUsuario().getId() == x.getUsuario().getId()){
+						e.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+						x.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+						break;
+					}
+				}
+			}
+			
+			for(EvaluacionUsuarioDTO x:examinadores){
+				if(x.getEstado() == EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
+					examinadoresCorregido.add(x);
+				}
+			}
+			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),examinadoresCorregido, new SimceCallback<Boolean>(eventBus,false) {
 	
 				@Override
 				public void success(Boolean result) {

@@ -32,6 +32,14 @@ public class ScoreSelector extends Composite implements HasValue<Integer> {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
+	public void setGroupName(String name){
+		reallyBadButton.setName(name);
+		badButton.setName(name);
+		okButton.setName(name);
+		goodButton.setName(name);
+		remarkableButton.setName(name);
+	}
+	
 	@UiHandler("reallyBadButton")
 	void onReallyBadButtonValueChange(ValueChangeEvent<Boolean> event){
 		if(event.getValue()){

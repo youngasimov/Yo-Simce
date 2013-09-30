@@ -9,7 +9,7 @@
 	        <tr>
 	            <td> <g:RadioButton ui:field="reallyBadButton" text="0" name="score" formValue="0" /> </td>
 	            <td> <g:RadioButton ui:field="badButton" text="1" name="score" formValue="1"/> </td>
-	            <td> <g:RadioButton ui:field="okButton" text="2" name="score" formValue="2"/> </td>
+	            <td> <g:RadioButton ui:field="okButton" text="2" name="score"  formValue="2"/> </td>
 	            <td> <g:RadioButton ui:field="goodButton" text="3" name="score" formValue="3"/> </td>
 	            <td> <g:RadioButton ui:field="remarkableButton" text="4" name="score" formValue="4"/> </td>
 	        </tr>

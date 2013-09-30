@@ -85,31 +85,45 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			this.selector = s;
 			handlers = new ArrayList<HandlerRegistration>();
 			table = new FlexTable();
-			nombre = new HTML(evaluacion.getUsuario().getNombres()+" "+evaluacion.getUsuario().getApellidoPaterno()+" "+evaluacion.getUsuario().getApellidoMaterno());
+			String name = "";
+			if(evaluacion.getUsuario().getNombres()!=null){
+				name = evaluacion.getUsuario().getNombres();
+			}
+			if(evaluacion.getUsuario().getApellidoPaterno()!=null){
+				name = name+" "+evaluacion.getUsuario().getApellidoPaterno();
+			}
+			if(evaluacion.getUsuario().getApellidoMaterno()!=null){
+				name = name+" "+evaluacion.getUsuario().getApellidoMaterno();
+			}
+			nombre = new HTML(name);
 			table.setWidget(0, 0, nombre);
-			rut = new HTML(evaluacion.getUsuario().getRut());
+			rut = new HTML((evaluacion.getUsuario().getRut()!=null)?evaluacion.getUsuario().getRut():"");
 			table.setWidget(1, 0, rut);
 			cambiarButton = new Button("Cambiar");
 			table.setWidget(0, 1, cambiarButton);
 			table.getFlexCellFormatter().setRowSpan(0, 1, 2);
 			
 			presentacionPersonalScoreSelector = new ScoreSelector();
-			presentacionPersonalScoreSelector.setValue(evaluacion.getPresentacionPersonal());
+			presentacionPersonalScoreSelector.setGroupName("presentacionPersonal"+e.getUsuario().getId());
+			presentacionPersonalScoreSelector.setValue((evaluacion.getPresentacionPersonal()!=null)?evaluacion.getPresentacionPersonal():0);
 			table.setWidget(2, 0, new HTML("Presentación personal:"));
 			table.setWidget(2, 1, presentacionPersonalScoreSelector);
 			
 			puntualidadScoreSelector = new ScoreSelector();
-			puntualidadScoreSelector.setValue(evaluacion.getPuntualidad());
+			puntualidadScoreSelector.setGroupName("puntualidad"+e.getUsuario().getId());
+			puntualidadScoreSelector.setValue((evaluacion.getPuntualidad()!=null)?evaluacion.getPuntualidad():0);
 			table.setWidget(3, 0, new HTML("Puntualidad:"));
 			table.setWidget(3, 1, puntualidadScoreSelector);
 			
 			formularioScoreSelector = new ScoreSelector();
-			formularioScoreSelector.setValue(evaluacion.getFormulario());
+			formularioScoreSelector.setGroupName("formulario"+e.getUsuario().getId());
+			formularioScoreSelector.setValue((evaluacion.getFormulario()!=null)?evaluacion.getFormulario():0);
 			table.setWidget(4, 0, new HTML("Llenado de formulario:"));
 			table.setWidget(4, 1, formularioScoreSelector);
 			
 			generalScoreSelector = new ScoreSelector();
-			generalScoreSelector.setValue(evaluacion.getGeneral());
+			generalScoreSelector.setGroupName("general"+e.getUsuario().getId());
+			generalScoreSelector.setValue((evaluacion.getGeneral()!=null)?evaluacion.getGeneral():0);
 			table.setWidget(5, 0, new HTML("General:"));
 			table.setWidget(5, 1, generalScoreSelector);
 			
@@ -263,6 +277,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
 		initWidget(uiBinder.createAndBindUi(this));
+		procedimientoScoreSelector.setGroupName("procedimiento");
 		examinadorSelector = new ExaminadorSelectorViewD();
 		estadoBox.addItem("seleccione estado actividad","-1");
 		uploading = false;
@@ -436,14 +451,14 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 
 	@Override
-	public void setExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluaciones) {
+	public void setExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluacionesUsuario) {
 		
 		for(EvaluacionExaminador ex:this.evaluaciones){
 			ex.clear();
 		}
 		evaluaciones.clear();
 		examinadoresPanel.clear();
-		for(EvaluacionUsuarioDTO e:evaluaciones){
+		for(EvaluacionUsuarioDTO e:evaluacionesUsuario){
 			EvaluacionExaminador ex = new EvaluacionExaminador(e, examinadorSelector);
 			examinadoresPanel.add(ex.asWidget());
 		}

@@ -146,6 +146,7 @@
 					</g:HTMLPanel>
 				</g:DecoratorPanel>
 				<g:HTMLPanel ui:field="formPanel" >
+				
 				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
 					<g:FlowPanel addStyleNames='{style.panel2}' ui:field="examinadoresPanel" />
 				</g:DecoratorPanel>

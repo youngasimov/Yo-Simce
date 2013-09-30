@@ -482,6 +482,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	@Override
 	public void clearRutRetiranteBox() {
 		rutRetiranteBox.setValue("");
+		
 	}
 
 	@Override

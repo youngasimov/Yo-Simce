@@ -4,8 +4,13 @@ import java.io.Serializable;
 
 import com.google.gwt.view.client.ProvidesKey;
 
+@SuppressWarnings("serial")
 public class EvaluacionUsuarioDTO implements Serializable {
 
+	
+	public static final int ESTADO_TITULAR = 1;
+	public static final int ESTADO_REMPLAZANTE = 2;
+	public static final int ESTADO_REMPLAZADO = 3;
 	
 	public static final ProvidesKey<EvaluacionUsuarioDTO> KEY_PROVIDER = new ProvidesKey<EvaluacionUsuarioDTO>() {
 
@@ -21,6 +26,7 @@ public class EvaluacionUsuarioDTO implements Serializable {
 	Integer puntualidad;
 	Integer formulario;
 	Integer general;
+	Integer estado;
 	
 	public EvaluacionUsuarioDTO() {
 		// TODO Auto-generated constructor stub
@@ -65,7 +71,12 @@ public class EvaluacionUsuarioDTO implements Serializable {
 	public void setGeneral(Integer general) {
 		this.general = general;
 	}
-	
-	
 
+	public Integer getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Integer estado) {
+		this.estado = estado;
+	}
 }
