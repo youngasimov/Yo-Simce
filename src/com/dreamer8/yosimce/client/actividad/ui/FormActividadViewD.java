@@ -460,6 +460,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		examinadoresPanel.clear();
 		for(EvaluacionUsuarioDTO e:evaluacionesUsuario){
 			EvaluacionExaminador ex = new EvaluacionExaminador(e, examinadorSelector);
+			evaluaciones.add(ex);
 			examinadoresPanel.add(ex.asWidget());
 		}
 	}
