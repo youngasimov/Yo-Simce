@@ -1,7 +1,8 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui"
+	xmlns:m="urn:import:com.google.gwt.media.client">
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
@@ -140,6 +141,8 @@
     	</g:south>
     	<g:center>
     		<g:HTMLPanel>
+    		    <m:Audio ui:field="notificationSound" />
+				<m:Audio ui:field="errorSound" />
     			<div class='{style.sidebarContainer}' ui:field="sidebarContainer">
 		    		<g:FocusPanel addStyleNames='{style.content}' ui:field="sidebarFocusPanel"><g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="sidebarPanel"/></g:FocusPanel>
 	 			</div>

@@ -189,6 +189,17 @@ public class AppPresenter implements AppView.AppPresenter {
 			  }
 		});*/
 		
+		factory.getEventBus().addHandler(SoundNotificationEvent.TYPE, new SoundNotificationEvent.SoundNotificationHandler() {
+			
+			@Override
+			public void onSoundNotification(SoundNotificationEvent event) {
+				if(event.getTipo() == SoundNotificationEvent.ERROR){
+					view.getErrorSound().play();
+				}else if(event.getTipo() == SoundNotificationEvent.NOTIFICACION){
+					view.getNotificationSound().play();
+				}
+			}
+		});
 		
 		factory.getEventBus().addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
 

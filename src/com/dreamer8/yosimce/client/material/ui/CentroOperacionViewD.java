@@ -154,6 +154,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		despachoUploader.setAutoSubmit(true);
 		SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
 		materialPager = new SimplePager(TextLocation.CENTER, pagerResources,true, 0, true);
+		
+		
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		menu.insertSeparator(2);
 		menu.insertSeparator(4);
@@ -186,6 +189,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		buildIngresoGrid();
 		buildPreDespachoTable();
 		buildDespachoTable();
+		
+		
+        
 		
 	}
 	

@@ -29,6 +29,18 @@
 	<replace-with class="com.dreamer8.yosimce.client.ClientFactoryD">
 		<when-type-is class="com.dreamer8.yosimce.client.ClientFactory" />
 	</replace-with>
+	
+	<replace-with class="com.dreamer8.yosimce.client.ui.SoundContainer">
+  		<when-type-is class="com.dreamer8.yosimce.client.ui.SoundContainer"/>
+	</replace-with>
+
+	<replace-with class="com.dreamer8.yosimce.client.ui.SoundContainerFF">
+  		<when-type-is class="com.dreamer8.yosimce.client.ui.SoundContainer" />
+  		<any>
+      		<when-property-is name="user.agent" value="gecko"/>
+      		<when-property-is name="user.agent" value="gecko1_8" />
+   		</any>
+	</replace-with>
 
 	<!-- Inherit the default GWT style sheet. You can change -->
 	<!-- the theme of your GWT application by uncommenting -->

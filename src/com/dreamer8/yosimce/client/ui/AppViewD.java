@@ -9,6 +9,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.media.client.Audio;
+import com.google.gwt.media.client.MediaBase;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -48,6 +50,9 @@ public class AppViewD extends Composite implements AppView {
 	@UiField FocusPanel logout;
 	@UiField AnchorElement manual;
 	
+	@UiField(provided=true) Audio notificationSound;
+	@UiField(provided=true) Audio errorSound;
+	
 	private MessageContainer messagesContainer;
 	
 	private PopupPanel popup;
@@ -59,6 +64,12 @@ public class AppViewD extends Composite implements AppView {
 	private int messages;
 
 	public AppViewD() {
+		
+		SoundContainer sc = GWT.create(SoundContainer.class);
+		
+		notificationSound = sc.getNotificationSound();
+        errorSound = sc.getErrorSound();
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		sidebarPanel.setVisible(true);
 		barload.setVisible(false);
@@ -146,6 +157,16 @@ public class AppViewD extends Composite implements AppView {
 			popup.hide();
 		}
 	}
+	
+	@Override
+	public MediaBase getNotificationSound(){
+        return notificationSound;
+    }
+    
+	@Override
+	public MediaBase getErrorSound(){
+        return errorSound;
+    }
 
 	@Override
 	public void showErrorMessage(String message, boolean autoclose, int tiempo) {

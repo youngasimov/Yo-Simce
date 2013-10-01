@@ -10,6 +10,7 @@ import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
+import com.dreamer8.yosimce.client.SoundNotificationEvent;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.YoSimce;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView;
@@ -391,20 +392,37 @@ public class CentroOperacionActivity extends SimceActivity implements
 							.getList().size());
 					view.setIngresoSortHandler(new ListHandler<MaterialWrap>(
 							ingresoDataProvider.getList()));
+					if(m.getMaterial().getIdCentro() == place.getCentroId()){
+						eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.NOTIFICACION));
+					}else{
+						eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
+					}
 				} else {
 					eventBus.fireEvent(new MensajeEvent(
 							"El código ingresado ya esta en la lista",
 							MensajeEvent.MSG_WARNING, true));
+					eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 				}
 				return;
 			}else if(m.getMaterial().getCodigo().equals(id) && (m.getMaterial().getEtapa()==null || m.getMaterial().getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES))){
 				eventBus.fireEvent(new MensajeEvent(
 						"El código ingresado pertenece a un material que ya esta marcado como en el centro de operaciones",
 						MensajeEvent.MSG_WARNING, true));
+				eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 				return;
 			}
 		}
 
+		for(MaterialWrap mw:ingresoDataProvider.getList()){
+			if(mw.getMaterial().getCodigo().equals(id)){
+				eventBus.fireEvent(new MensajeEvent(
+						"El código ingresado ya esta en la lista",
+						MensajeEvent.MSG_WARNING, true));
+				eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
+				return;
+			}
+		}
+		
 		MaterialDTO mat = new MaterialDTO();
 		mat.setCodigo(id);
 		mat.setCurso("-");
@@ -417,6 +435,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		w.setUpdating(false);
 		ingresoDataProvider.getList().add(w);
 		view.setTotalMaterialIngresando(ingresoDataProvider.getList().size());
+		eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 		updateMaterial(w);
 	}
 
@@ -427,6 +446,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			eventBus.fireEvent(new MensajeEvent(
 					"Seleccione un lote al cual ingresar el material y vuelva a intentarlo",
 					MensajeEvent.MSG_WARNING, true));
+			eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 			return;
 		}
 		for (MaterialWrap m : materiales) {
@@ -435,16 +455,19 @@ public class CentroOperacionActivity extends SimceActivity implements
 					eventBus.fireEvent(new MensajeEvent(
 							"Este material no esta asignado al nivel o tipo de actividad seleccionado",
 							MensajeEvent.MSG_WARNING, true));
+					eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 				}else if(predespachoDataProvider.getList().contains(m)){
 					eventBus.fireEvent(new MensajeEvent(
 							"El código ingresado ya esta en la lista",
 							MensajeEvent.MSG_WARNING, true));
+					eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 				}else {
 					predespachoDataProvider.getList().add(m);
 					view.setTotalMaterialEnLote(predespachoDataProvider
 							.getList().size());
 					view.setPredespachoSortHandler(new ListHandler<MaterialWrap>(
 							predespachoDataProvider.getList()));
+					eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.NOTIFICACION));
 				} 
 				return;
 			}
@@ -452,6 +475,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		eventBus.fireEvent(new MensajeEvent(
 				"El código ingresado no pertenece a un material que esté marcado como en el centro de operaciones o no esta asociado a este asociado este centro",
 				MensajeEvent.MSG_WARNING, true));
+		eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 	}
 
 	@Override
@@ -465,11 +489,13 @@ public class CentroOperacionActivity extends SimceActivity implements
 					eventBus.fireEvent(new MensajeEvent(
 							"Este material no esta asignado al nivel o tipo de actividad seleccionado",
 							MensajeEvent.MSG_WARNING, true));
+					eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 					return;
 				}else{
 					mat = m;
 					if (!despachoDataProvider.getList().contains(m)) {
 						despachoDataProvider.getList().add(m);
+						eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.NOTIFICACION));
 					}
 				}
 				break;
