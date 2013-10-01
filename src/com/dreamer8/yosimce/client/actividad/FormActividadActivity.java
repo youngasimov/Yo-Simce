@@ -361,6 +361,19 @@ public class FormActividadActivity extends SimceActivity implements
 	private void clear(){
 		contingencias.clear();
 		view.setContingencias(contingencias);
+		view.setInicioActividad(null);
+		view.setInicioPrueba(null);
+		view.setTerminoPrueba(null);
+		view.setTotalAlumnos(0);
+		view.setAlumnosAusentes(0);
+		view.setAlumnosDS(0);
+		view.setCuestionariosTotales(0);
+		view.setCuestionariosEntregados(0);
+		view.setCuestionariosRecibidos(0);
+		view.setUsoMaterialContingencia(false);
+		view.setDetalleUsoMaterialContingencia("");
+		view.setEvaluacionGeneral(0);
+		view.setHyperlink(null);
 		a = null;
 		view.showForm(false);
 	}
