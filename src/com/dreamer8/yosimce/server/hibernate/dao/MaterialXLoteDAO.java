@@ -27,9 +27,9 @@ public class MaterialXLoteDAO extends
 		String query = "SELECT mxl.material_id FROM  MATERIAL_x_LOTE mxl"
 				+ " WHERE mxl.lote_id=" + SecurityFilter.escapeString(idLote);
 		Query q = s.createSQLQuery(query);
-		List<Object[]> os = q.list();
-		for (Object[] o : os) {
-			res.add((Integer) o[0]);
+		List<Integer> os = q.list();
+		for (Integer o : os) {
+			res.add(o);
 		}
 		return res;
 	}
