@@ -66,7 +66,10 @@ public class StringUtils {
 		String[] time = dateParts[1].split(":");
 		Calendar calendar = Calendar.getInstance();
 		Integer sec = (time.length == 3) ? Integer.valueOf(time[2]) : 0;
-		calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
+		// calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
+		// Integer.valueOf(date[0]), Integer.valueOf(time[0]),
+		// Integer.valueOf(time[1]), sec);
+		calendar.set(2013, Integer.valueOf(date[1]) - 1,
 				Integer.valueOf(date[0]), Integer.valueOf(time[0]),
 				Integer.valueOf(time[1]), sec);
 		return calendar.getTime();
@@ -186,16 +189,23 @@ public class StringUtils {
 				+ forceTwoDigits(Integer.valueOf(ds[1]));
 	}
 
-	public static String nombreInicialSegundo(String nombres) {
-		if (nombres == null) {
-			return "";
-		}
-		String[] noms = nombres.split(" ");
-		if (noms.length < 2) {
-			return nombres;
-		}
-		return noms[0] + " " + noms[1].substring(0, 1) + ".";
-	}
+    public static String nombreInicialSegundo(String nombres) {
+        if (nombres == null) {
+            return "";
+        }
+        String[] noms = nombres.split(" ");
+        if (noms.length < 2) {
+            return nombres;
+        }
+        String segNom = null;
+        for (int i = 1; i < noms.length; i++) {
+            if (noms[i] != null && !noms[i].isEmpty()) {
+                segNom = noms[i];
+                break;
+            }
+        }
+        return noms[0] + " " + segNom.substring(0, 1) + ".";
+    }
 
 	public static String getMes(int mes) {
 		String[] meses = { "enero", "febrero", "marzo", "abril", "mayo",
@@ -203,7 +213,7 @@ public class StringUtils {
 				"noviembre", "diciembre" };
 		return meses[mes % 12];
 	}
-	
+
 	public static List<String> extractMails(String str) {
 		List<String> mails = new ArrayList<String>();
 		String regex = "[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}";

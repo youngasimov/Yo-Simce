@@ -1014,9 +1014,64 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				axdt.setTotalRecibidos(actividad.getCuestionariosRecibidos());
 				axdtdao.saveOrUpdate(axdt);
 
+				// Visita Previa
+				if (idActividadTipo == 1) {
+					Actividad aplicacion = adao
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+									idAplicacion, idNivel, 2, a.getCurso()
+											.getId());
+					if (aplicacion != null) {
+						axdt = axdtdao.findByIdActividadANDDocumentoTipo(
+								aplicacion.getId(),
+								DocumentoTipo.CUESTIONARIO_PADRE);
+
+						if (axdt == null) {
+							axdt = new ActividadXDocumentoTipo();
+							axdt.setActividad(aplicacion);
+							DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+							DocumentoTipo dt = dtdao
+									.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
+							axdt.setDocumentoTipo(dt);
+						}
+
+						axdt.setTotal(actividad.getTotalCuestionarios());
+						axdt.setTotalEntregados(actividad
+								.getCuestionariosEntregados());
+						axdtdao.saveOrUpdate(axdt);
+
+						if (idAplicacion == 1) {
+							aplicacion = adao
+									.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+											idAplicacion, idNivel, 3, a
+													.getCurso().getId());
+							if (aplicacion != null) {
+								axdt = axdtdao
+										.findByIdActividadANDDocumentoTipo(
+												aplicacion.getId(),
+												DocumentoTipo.CUESTIONARIO_PADRE);
+
+								if (axdt == null) {
+									axdt = new ActividadXDocumentoTipo();
+									axdt.setActividad(aplicacion);
+									DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+									DocumentoTipo dt = dtdao
+											.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
+									axdt.setDocumentoTipo(dt);
+								}
+
+								axdt.setTotal(actividad.getTotalCuestionarios());
+								axdt.setTotalEntregados(actividad
+										.getCuestionariosEntregados());
+								axdtdao.saveOrUpdate(axdt);
+							}
+						}
+					}
+				}
+
 				a.setDetalleUsoMaterialContingencia(actividad
 						.getDetalleUsoMaterialContingencia());
-				a.setMaterialContingencia(actividad.getMaterialContingencia());
+				a.setMaterialContingencia((actividad.getMaterialContingencia() != null && actividad
+						.getMaterialContingencia()));
 
 				Documento d = null;
 				if (actividad.getDocumento() != null) {

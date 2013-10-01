@@ -1005,13 +1005,29 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON axdt_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
 				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
 				+ "'"
-				+ " LEFT JOIN ACTIVIDAD_x_DOCUMENTO axd_form ON a.id=axd_form.actividad_id"
+
+				/*
+				 * +
+				 * " LEFT JOIN ACTIVIDAD_x_DOCUMENTO axd_form ON a.id=axd_form.actividad_id"
+				 * +
+				 * " LEFT JOIN DOCUMENTO d_form ON axd_form.documento_id=d_form.id"
+				 * +
+				 * " LEFT JOIN DOCUMENTO_TIPO dt_form ON d_form.documento_tipo_id=dt_form.id AND dt_form.nombre='"
+				 * + SecurityFilter
+				 * .escapeString(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION)
+				 * + "'" +
+				 * " LEFT JOIN ARCHIVO arc_form ON d_form.archivo_id=arc_form.id"
+				 */
+
+				+ " LEFT JOIN (SELECT axd_form.actividad_id,MAX(arc_form.id) as archivo_id FROM ACTIVIDAD_x_DOCUMENTO axd_form"
 				+ " LEFT JOIN DOCUMENTO d_form ON axd_form.documento_id=d_form.id"
 				+ " LEFT JOIN DOCUMENTO_TIPO dt_form ON d_form.documento_tipo_id=dt_form.id AND dt_form.nombre='"
 				+ SecurityFilter
 						.escapeString(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION)
 				+ "'"
-				+ " LEFT JOIN ARCHIVO arc_form ON d_form.archivo_id=arc_form.id"
+				+ " LEFT JOIN ARCHIVO arc_form ON d_form.archivo_id=arc_form.id GROUP BY axd_form.actividad_id) axd_form ON a.id=axd_form.actividad_id"
+				+ " LEFT JOIN ARCHIVO arc_form ON axd_form.archivo_id=arc_form.id"
+
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
