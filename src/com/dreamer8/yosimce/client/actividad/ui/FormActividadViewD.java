@@ -179,6 +179,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 							String n= (evaluacion.getUsuario().getNombres()!=null)?evaluacion.getUsuario().getNombres():"";
 							n = n+" ";
 							n= (evaluacion.getUsuario().getApellidoPaterno()!=null)?n+evaluacion.getUsuario().getApellidoPaterno():n;
+							n = n+" ";
 							n = (evaluacion.getUsuario().getApellidoMaterno()!=null)?n+evaluacion.getUsuario().getApellidoMaterno():n;
 							nombre.setHTML(n);
 							rut.setHTML((evaluacion.getUsuario().getRut()!=null)?evaluacion.getUsuario().getRut():"");
@@ -502,7 +503,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	@Override
 	public void setInicioActividad(Date hora) {
-		this.inicioActividadBox.setValue(hora.getTime());
+		this.inicioActividadBox.setValue((hora==null)?0:hora.getTime());
 	}
 
 
@@ -514,7 +515,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	@Override
 	public void setInicioPrueba(Date hora) {
-		this.inicioPruebaBox.setValue(hora.getTime());
+		this.inicioPruebaBox.setValue((hora==null)?0:hora.getTime());
 	}
 
 
@@ -526,7 +527,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	@Override
 	public void setTerminoPrueba(Date hora) {
-		this.terminoPruebaBox.setValue(hora.getTime());
+		this.terminoPruebaBox.setValue((hora==null)?0:hora.getTime());
 	}
 
 

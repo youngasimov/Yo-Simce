@@ -148,7 +148,17 @@
 				<g:HTMLPanel ui:field="formPanel" >
 				
 				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
-					<g:FlowPanel addStyleNames='{style.panel2}' ui:field="examinadoresPanel" />
+					<g:HTMLPanel>
+						<table>
+						<tr>
+							<th><my:HelperLabel text='Evaluación de examinadores' help='Evalúe a los examinadores asociados a esta actividad en base a cuatro criterios. Si un examinador no asistió, remplacelo por el que tomó su lugar y evalúe al reemplazante' /></th>
+						</tr>
+						<tr>
+							<td><g:FlowPanel addStyleNames='{style.panel2}' ui:field="examinadoresPanel" /></td>
+						</tr>
+						
+						</table>
+					</g:HTMLPanel>
 				</g:DecoratorPanel>
 				
 				<g:DecoratorPanel ui:field="horasActividadPanel" addStyleNames='{style.formPanel}'>

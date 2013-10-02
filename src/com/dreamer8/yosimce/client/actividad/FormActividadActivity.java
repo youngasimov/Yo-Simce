@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client.actividad;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
@@ -296,6 +297,7 @@ public class FormActividadActivity extends SimceActivity implements
 		super.onStop();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void setActividad(){
 		view.setNombreEstablecimiento((a.getNombreEstablecimiento()!=null)?a.getNombreEstablecimiento():"");
 		view.setRbd((a.getRbd()!=null)?a.getRbd():"");
@@ -329,9 +331,10 @@ public class FormActividadActivity extends SimceActivity implements
 			a.setContingencias( new ArrayList<ContingenciaDTO>());
 		}
 		view.setContingencias(a.getContingencias());
-		if(a.getInicioActividad()!=null){view.setInicioActividad(a.getInicioActividad());}
-		if(a.getInicioPrueba()!=null){view.setInicioPrueba(a.getInicioPrueba());}
-		if(a.getTerminoPrueba()!=null){view.setTerminoPrueba(a.getTerminoPrueba());}
+		Date b = new Date();
+		view.setInicioActividad((a.getInicioActividad()!=null)?a.getInicioActividad():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
+		view.setInicioPrueba((a.getInicioPrueba()!=null)?a.getInicioPrueba():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
+		view.setTerminoPrueba((a.getTerminoPrueba()!=null)?a.getTerminoPrueba():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
 		if(a.getAlumnosTotal()!=null){view.setTotalAlumnos(a.getAlumnosTotal());}
 		if(a.getAlumnosAusentes()!=null){view.setAlumnosAusentes(a.getAlumnosAusentes());}
 		if(a.getAlumnosDs()!=null){view.setAlumnosDS(a.getAlumnosDs());}
@@ -358,12 +361,14 @@ public class FormActividadActivity extends SimceActivity implements
 		onEstadoChange(a.getEstadoAplicacion().getId());
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void clear(){
 		contingencias.clear();
+		Date b = new Date();
 		view.setContingencias(contingencias);
-		view.setInicioActividad(null);
-		view.setInicioPrueba(null);
-		view.setTerminoPrueba(null);
+		view.setInicioActividad(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
+		view.setInicioPrueba(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
+		view.setTerminoPrueba(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));;
 		view.setTotalAlumnos(0);
 		view.setAlumnosAusentes(0);
 		view.setAlumnosDS(0);
