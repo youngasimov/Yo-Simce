@@ -70,6 +70,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private class EvaluacionExaminador implements IsWidget{
 		private FlexTable table;
 		private Button cambiarButton;
+		private Button eliminarAgregarButton;
 		private HTML nombre;
 		private HTML rut;
 		private ScoreSelector presentacionPersonalScoreSelector;
@@ -79,10 +80,13 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		private EvaluacionUsuarioDTO evaluacion;
 		private ExaminadorSelectorViewD selector;
 		private ArrayList<HandlerRegistration> handlers;
+		private boolean eliminado;
+		private int prevState;
 		
 		public EvaluacionExaminador(EvaluacionUsuarioDTO e, ExaminadorSelectorViewD s){
 			this.evaluacion = e;
 			this.selector = s;
+			eliminado = false;
 			handlers = new ArrayList<HandlerRegistration>();
 			table = new FlexTable();
 			String name = "";
@@ -100,32 +104,39 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			rut = new HTML((evaluacion.getUsuario().getRut()!=null)?evaluacion.getUsuario().getRut():"");
 			table.setWidget(1, 0, rut);
 			cambiarButton = new Button("Cambiar");
+			eliminarAgregarButton = new Button("Eliminar");
 			table.setWidget(0, 1, cambiarButton);
 			table.getFlexCellFormatter().setRowSpan(0, 1, 2);
+			table.setWidget(0, 2, eliminarAgregarButton);
+			table.getFlexCellFormatter().setRowSpan(0, 2, 2);
 			
 			presentacionPersonalScoreSelector = new ScoreSelector();
 			presentacionPersonalScoreSelector.setGroupName("presentacionPersonal"+e.getUsuario().getId());
 			presentacionPersonalScoreSelector.setValue((evaluacion.getPresentacionPersonal()!=null)?evaluacion.getPresentacionPersonal():0);
 			table.setWidget(2, 0, new HTML("Presentación personal:"));
 			table.setWidget(2, 1, presentacionPersonalScoreSelector);
+			table.getFlexCellFormatter().setColSpan(2, 1, 2);
 			
 			puntualidadScoreSelector = new ScoreSelector();
 			puntualidadScoreSelector.setGroupName("puntualidad"+e.getUsuario().getId());
 			puntualidadScoreSelector.setValue((evaluacion.getPuntualidad()!=null)?evaluacion.getPuntualidad():0);
 			table.setWidget(3, 0, new HTML("Puntualidad:"));
 			table.setWidget(3, 1, puntualidadScoreSelector);
+			table.getFlexCellFormatter().setColSpan(3, 1, 2);
 			
 			formularioScoreSelector = new ScoreSelector();
 			formularioScoreSelector.setGroupName("formulario"+e.getUsuario().getId());
 			formularioScoreSelector.setValue((evaluacion.getFormulario()!=null)?evaluacion.getFormulario():0);
 			table.setWidget(4, 0, new HTML("Llenado de formulario:"));
 			table.setWidget(4, 1, formularioScoreSelector);
+			table.getFlexCellFormatter().setColSpan(4, 1, 2);
 			
 			generalScoreSelector = new ScoreSelector();
 			generalScoreSelector.setGroupName("general"+e.getUsuario().getId());
 			generalScoreSelector.setValue((evaluacion.getGeneral()!=null)?evaluacion.getGeneral():0);
 			table.setWidget(5, 0, new HTML("General:"));
 			table.setWidget(5, 1, generalScoreSelector);
+			table.getFlexCellFormatter().setColSpan(5, 1, 2);
 			
 			handlers.add(presentacionPersonalScoreSelector.addValueChangeHandler(new ValueChangeHandler<Integer>() {
 				
@@ -159,6 +170,35 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 				}
 			}));
 			
+			handlers.add(eliminarAgregarButton.addClickHandler(new ClickHandler() {
+				
+				@Override
+				public void onClick(ClickEvent event) {
+					eliminado = !eliminado;
+					if(eliminado){
+						evaluacion.setPresentacionPersonal(0);
+						evaluacion.setPuntualidad(0);
+						evaluacion.setFormulario(0);
+						evaluacion.setGeneral(0);
+						prevState = evaluacion.getEstado();
+						evaluacion.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
+						eliminarAgregarButton.setText("Deshacer");
+						presentacionPersonalScoreSelector.setValue(0);
+						puntualidadScoreSelector.setValue(0);
+						formularioScoreSelector.setValue(0);
+						generalScoreSelector.setValue(0);
+					}else{
+						evaluacion.setEstado(prevState);
+						eliminarAgregarButton.setText("Eliminar");
+					}
+					cambiarButton.setEnabled(!eliminado);
+					presentacionPersonalScoreSelector.setVisible(!eliminado);
+					puntualidadScoreSelector.setVisible(!eliminado);
+					formularioScoreSelector.setVisible(!eliminado);
+					generalScoreSelector.setVisible(!eliminado);
+				}
+			}));
+			
 			handlers.add(cambiarButton.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -172,6 +212,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 							evaluacion.setPuntualidad(0);
 							evaluacion.setFormulario(0);
 							evaluacion.setGeneral(0);
+							evaluacion.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE);
 							presentacionPersonalScoreSelector.setValue((evaluacion.getPresentacionPersonal()!=null)?evaluacion.getPresentacionPersonal():0);
 							puntualidadScoreSelector.setValue((evaluacion.getPuntualidad()!=null)?evaluacion.getPuntualidad():0);
 							formularioScoreSelector.setValue((evaluacion.getFormulario()!=null)?evaluacion.getFormulario():0);

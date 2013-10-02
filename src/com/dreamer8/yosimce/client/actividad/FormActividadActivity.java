@@ -116,6 +116,7 @@ public class FormActividadActivity extends SimceActivity implements
 							aux.setPresentacionPersonal(u.getPresentacionPersonal());
 							aux.setPuntualidad(u.getPuntualidad());
 							aux.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
+							u.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
 							examinadores.add(aux);
 						}
 						view.setExaminadores(result);
@@ -219,13 +220,17 @@ public class FormActividadActivity extends SimceActivity implements
 			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = view.getExaminadores();
 			
 			for(EvaluacionUsuarioDTO e:examinadoresCorregido){
-				e.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE);
-				for(EvaluacionUsuarioDTO x:examinadores){
-					if(e.getUsuario().getId() == x.getUsuario().getId()){
-						e.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
-						x.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
-						break;
+				if(e.getEstado()!=EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
+					e.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE);
+					for(EvaluacionUsuarioDTO x:examinadores){
+						if(e.getUsuario().getId() == x.getUsuario().getId()){
+							e.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+							x.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+							break;
+						}
 					}
+				}else{
+					examinadoresCorregido.remove(e);
 				}
 			}
 			
