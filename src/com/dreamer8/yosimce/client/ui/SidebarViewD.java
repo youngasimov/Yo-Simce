@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
+import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -47,6 +48,8 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField UListElement administracion;
 	
 	@UiField Anchor detalleCursoViewItem;
+	@UiField Anchor centroControlViewItem;
+	
 	@UiField Anchor agendamientosViewItem;
 	@UiField Anchor detalleAgendaViewItem;
 	@UiField Anchor agendarVisitaActionItem;
@@ -67,6 +70,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	public SidebarViewD() {
 		
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@UiHandler("centroControlViewItem")
+	void onCentroControlViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Centro control");
+		presenter.goTo(new CentroControlPlace());
 	}
 	
 	@UiHandler("detalleCursoViewItem")
@@ -160,7 +169,19 @@ public class SidebarViewD extends Composite implements SidebarView{
 			general.addClassName(style.hide());
 		}
 	}
-
+	
+	@Override
+	public void setCentroControlViewItemVisivility(boolean visible){
+		centroControlViewItem.setVisible(visible);
+	}
+	
+	@Override
+	public void setCentroControlViewItemSelected(boolean selected){
+		removeSeleccion();
+		if(selected){
+			centroControlViewItem.addStyleName(style.selected());
+		}
+	}
 
 	@Override
 	public void setDetalleCursoViewItemVisivility(boolean visible) {
@@ -365,6 +386,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@Override
 	public void removeSeleccion(){
+		centroControlViewItem.removeStyleName(style.selected());
 		detalleCursoViewItem.removeStyleName(style.selected());
 		agendamientosViewItem.removeStyleName(style.selected());
 		detalleAgendaViewItem.removeStyleName(style.selected());

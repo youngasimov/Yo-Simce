@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
 import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
+import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -17,6 +18,7 @@ import com.google.gwt.place.shared.WithTokenizers;
 
 @WithTokenizers({
 		SimcePlace.Tokenizer.class,
+		CentroControlPlace.Tokenizer.class,
 		AgendamientosPlace.Tokenizer.class,
 		AgendarVisitaPlace.Tokenizer.class,
 		DetalleAgendaPlace.Tokenizer.class,

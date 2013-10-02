@@ -20,6 +20,8 @@ import com.dreamer8.yosimce.client.administracion.ui.ReportesView;
 import com.dreamer8.yosimce.client.administracion.ui.ReportesViewD;
 import com.dreamer8.yosimce.client.general.GeneralService;
 import com.dreamer8.yosimce.client.general.GeneralServiceAsync;
+import com.dreamer8.yosimce.client.general.ui.CentroControlView;
+import com.dreamer8.yosimce.client.general.ui.CentroControlViewD;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
 import com.dreamer8.yosimce.client.material.MaterialService;
@@ -88,6 +90,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final TipoUsuarioSelectorView TipoUsuarioSelectorView = new TipoUsuarioSelectorViewD();
 	
 	private final DetalleCursoView detalleCursoView = new DetalleCursoViewD();
+	private final CentroControlView centroControlView = new CentroControlViewD();
 
 	private final AgendamientosView agendamientosView = new AgendamientosViewD();
 	private final AgendarVisitaView agendarVisitaView = new AgendarVisitaViewD();
@@ -201,6 +204,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public DetalleCursoView getDetalleCursoView() {
 		return detalleCursoView;
+	}
+	
+	@Override
+	public CentroControlView getCentroControlView() {
+		return centroControlView;
 	}
 
 	@Override
