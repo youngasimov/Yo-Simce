@@ -1124,12 +1124,38 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					}
 				}
 
+				ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO();
+				List<ActividadXIncidencia> axis = axidao
+						.findByIdActividadANDIncidenciaTipo(a.getId(),
+								IncidenciaTipo.CONTINGENCIA);
+				MotivoFallaDAO mfdao = new MotivoFallaDAO();
+				MotivoFalla mf = null;
+
+				if (axis != null && !axis.isEmpty()) {
+					Boolean encontrado = false;
+					for (ActividadXIncidencia axi : axis) {
+						encontrado = false;
+						if (actividad.getContingencias() != null
+								&& !actividad.getContingencias().isEmpty()) {
+							for (ContingenciaDTO cdto : actividad
+									.getContingencias()) {
+								if (axi.getMotivoFalla()
+										.getId()
+										.equals(cdto.getTipoContingencia()
+												.getId())) {
+									encontrado = true;
+								}
+							}
+						}
+						if (!encontrado) {
+							axidao.delete(axi);
+						}
+					}
+				}
+
 				if (actividad.getContingencias() != null
 						&& !actividad.getContingencias().isEmpty()) {
-					ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO();
 					ActividadXIncidencia axi = null;
-					MotivoFallaDAO mfdao = new MotivoFallaDAO();
-					MotivoFalla mf = null;
 					for (ContingenciaDTO cdto : actividad.getContingencias()) {
 						if (cdto.getTipoContingencia() != null
 								&& cdto.getTipoContingencia().getId() != null) {
