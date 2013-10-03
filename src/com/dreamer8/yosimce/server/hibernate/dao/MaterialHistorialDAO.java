@@ -27,7 +27,8 @@ public class MaterialHistorialDAO extends
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT mh.* FROM  MATERIAL_HISTORIAL mh"
 				+ " WHERE mh.material_id="
-				+ SecurityFilter.escapeString(idMaterial);
+				+ SecurityFilter.escapeString(idMaterial)
+				+ " ORDER BY mh.fecha ASC";
 		Query q = s.createSQLQuery(query).addEntity(MaterialHistorial.class);
 		mhs = q.list();
 		return mhs;

@@ -969,7 +969,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 						mh.setLugarByOrigenId(imprenta);
 					} else {
 						for (Lugar lugar : lugares) {
-							if (lugar.getId().equals(mhLast.getIdOrigen())) {
+							if (lugar.getId().equals(mhLast.getIdDestino())) {
 								mh.setLugarByOrigenId(lugar);
 								break;
 							}
@@ -1210,14 +1210,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se han especificado los códigos de los materiales a despachar.");
 				}
-				
+
 				for (String string : codigos) {
 					if (string == null || string.isEmpty()) {
 						throw new NullPointerException(
 								"Se ha ingresado un código inválido.");
 					}
 				}
-
 
 				Usuario u = getUsuarioActual();
 
@@ -1384,14 +1383,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se han especificado los códigos de los materiales a despachar.");
 				}
-				
+
 				for (String string : codigos) {
 					if (string == null || string.isEmpty()) {
 						throw new NullPointerException(
 								"Se ha ingresado un código inválido.");
 					}
 				}
-
 
 				Usuario u = getUsuarioActual();
 
