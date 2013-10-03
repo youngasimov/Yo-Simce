@@ -1396,10 +1396,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un curso.");
 				}
 
-				if (evaluaciones == null || evaluaciones.isEmpty()) {
-					throw new NullPointerException(
-							"No se han especificado las evaluaciones.");
-				}
+				// if (evaluaciones == null || evaluaciones.isEmpty()) {
+				// throw new NullPointerException(
+				// "No se han especificado las evaluaciones.");
+				// }
 
 				Usuario u = getUsuarioActual();
 
@@ -1420,64 +1420,72 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
-				for (EvaluacionUsuarioDTO eudto : evaluaciones) {
-					udto = eudto.getUsuario();
-					if (udto != null && udto.getId() != null) {
-						uxa = uxadao
-								.findExaminadoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDIdUsuario(
-										idAplicacion, idNivel, idActividadTipo,
-										idCurso, udto.getId());
-						if (uxa == null) {
-							if (eudto.getEstado().equals(
-									EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE)) {
-								sxc = sxcDAO
-										.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
-												idAplicacion, idNivel,
-												idActividadTipo, udto.getId());
-								if (sxc != null) {
-									sxc.setReemplazando(true);
-									sxc.setAsistencia(true);
-									sxcDAO.update(sxc);
 
-									uxa = new UsuarioXActividad();
-									uxa.setUsuarioSeleccion(sxc
-											.getUsuarioSeleccion());
-									uxa.setActividad(a);
+				if (evaluaciones != null && !evaluaciones.isEmpty()) {
+
+					for (EvaluacionUsuarioDTO eudto : evaluaciones) {
+						udto = eudto.getUsuario();
+						if (udto != null && udto.getId() != null) {
+							uxa = uxadao
+									.findExaminadoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDIdUsuario(
+											idAplicacion, idNivel,
+											idActividadTipo, idCurso,
+											udto.getId());
+							if (uxa == null) {
+								if (eudto
+										.getEstado()
+										.equals(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE)) {
+									sxc = sxcDAO
+											.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
+													idAplicacion, idNivel,
+													idActividadTipo,
+													udto.getId());
+									if (sxc != null) {
+										sxc.setReemplazando(true);
+										sxc.setAsistencia(true);
+										sxcDAO.update(sxc);
+
+										uxa = new UsuarioXActividad();
+										uxa.setUsuarioSeleccion(sxc
+												.getUsuarioSeleccion());
+										uxa.setActividad(a);
+									} else {
+										throw new ConsistencyException(
+												"El usuario ("
+														+ udto.getRut()
+														+ ") "
+														+ udto.getNombres()
+														+ " "
+														+ udto.getApellidoPaterno()
+														+ " no ha sido asignado como suplente.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+									}
+
 								} else {
 									throw new ConsistencyException(
-											"El usuario ("
+											"El examinador ("
 													+ udto.getRut()
 													+ ") "
 													+ udto.getNombres()
 													+ " "
 													+ udto.getApellidoPaterno()
-													+ " no ha sido asignado como suplente.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+													+ " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
 								}
-
-							} else {
-								throw new ConsistencyException(
-										"El examinador ("
-												+ udto.getRut()
-												+ ") "
-												+ udto.getNombres()
-												+ " "
-												+ udto.getApellidoPaterno()
-												+ " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
 							}
+							if (eudto.getEstado().equals(
+									EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
+								uxa.setAsistencia(false);
+							} else {
+								uxa.setNotaPuntualidad(eudto.getPuntualidad());
+								uxa.setNotaLlenadoFormularios(eudto
+										.getFormulario());
+								uxa.setNotaPresentacionPersonal(eudto
+										.getPresentacionPersonal());
+								uxa.setNotaDespempeno(eudto.getGeneral());
+								uxa.setAsistencia(true);
+							}
+							uxa.setUsuario(u);
+							uxadao.saveOrUpdate(uxa);
 						}
-						if (eudto.getEstado().equals(
-								EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
-							uxa.setAsistencia(false);
-						} else {
-							uxa.setNotaPuntualidad(eudto.getPuntualidad());
-							uxa.setNotaLlenadoFormularios(eudto.getFormulario());
-							uxa.setNotaPresentacionPersonal(eudto
-									.getPresentacionPersonal());
-							uxa.setNotaDespempeno(eudto.getGeneral());
-							uxa.setAsistencia(true);
-						}
-						uxa.setUsuario(u);
-						uxadao.saveOrUpdate(uxa);
 					}
 				}
 
