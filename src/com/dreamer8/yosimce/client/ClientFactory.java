@@ -21,7 +21,6 @@ import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView;
 import com.dreamer8.yosimce.client.planificacion.ui.DetalleAgendaView;
 import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.CursoSelectorView;
-import com.dreamer8.yosimce.client.ui.LoadView;
 import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.dreamer8.yosimce.client.ui.MenuView;
 import com.dreamer8.yosimce.client.ui.SidebarView;
@@ -46,7 +45,6 @@ public interface ClientFactory {
 	
 	
 	AppView getAppView();
-	LoadView getLoadView();
 	HeaderView getHeaderView();
 	SidebarView getSidebarView();
 	TipoUsuarioSelectorView getTipoUsuarioSelectorView();
