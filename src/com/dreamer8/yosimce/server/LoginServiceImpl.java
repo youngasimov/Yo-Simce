@@ -12,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.context.internal.ManagedSessionContext;
 
@@ -72,7 +73,6 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				throw new NullPointerException(
 						"No se ha especificado un usuario.");
 			}
-
 
 			s.beginTransaction();
 			SesionDAO sdao = new SesionDAO();
@@ -525,16 +525,135 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public UserDTO getYoSimceUser() throws NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+		UserDTO udto = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			try {
+				AccessControl ac = getAccessControl();
+				if (ac.isLogged()) {
+					udto = getUsuarioActual().getUserDTO();
+				}
+			} catch (NoLoggedException ex) {
+
+			}
+
+			if (udto == null) {
+				String token;
+				Cookie cookie = null;
+				for (Cookie c : this.getThreadLocalRequest().getCookies()) {
+					if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
+						cookie = c;
+						break;
+					}
+				}
+				token = cookie.getValue();
+				if (token == null) {
+					throw new NullPointerException(
+							"No se ha especificado un usuario.");
+				}
+
+				s.beginTransaction();
+				SesionDAO sdao = new SesionDAO();
+				List<Sesion> ss = sdao.findBySessionId(token);
+				if (ss == null || ss.isEmpty()) {
+					throw new NullPointerException(
+							"No se ha encontrado el usuario especificado");
+				}
+
+				Usuario u = ss.get(0).getUsuario();
+
+				if (u == null) {
+					throw new NullPointerException(
+							"No se ha encontrado el usuario especificado");
+				}
+
+				this.getThreadLocalRequest().getSession()
+						.setAttribute("usuario", u);
+
+				udto = u.getUserDTO();
+
+				s.getTransaction().commit();
+			}
+
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return udto;
 	}
 
 	@Override
 	public UserDTO getTrackingUser(String user, String password)
 			throws NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		UserDTO udto = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			try {
+				AccessControl ac = getAccessControl();
+				if (ac.isLogged()) {
+					udto = getUsuarioActual().getUserDTO();
+				}
+			} catch (NoLoggedException ex) {
+
+			}
+
+			if (udto == null) {
+
+				s.beginTransaction();
+
+				UsuarioDAO udao = new UsuarioDAO();
+				Usuario u = udao.findbyUsername(StringUtils.formatRut(user));
+				if (u == null) {
+					throw new NoLoggedException(
+							"Usuario y/o contraseña incorrectos.");
+				}
+				if (checkPassword(u.getPassword(), password, u.getSalt())) {
+					this.getThreadLocalRequest().getSession()
+							.setAttribute("usuario", u);
+
+					udto = u.getUserDTO();
+				} else {
+					throw new NoLoggedException(
+							"Usuario y/o contraseña incorrectos.");
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return udto;
 	}
 
 }

@@ -127,7 +127,7 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 			Transport.send(m);
 		}
 	}
-	
+
 	protected void sendMail(String message, String subject, String[] toAddrs)
 			throws MessagingException, UnsupportedEncodingException {
 		/*
@@ -345,12 +345,22 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 		return false;
 	}
 
+	protected Boolean checkPassword(String saltedPassword, String password,
+			String salt) {
+		if (saltedPassword != null && !saltedPassword.isEmpty()) {
+			return (saltedPassword.equals(getPasswordHash(
+					(password == null) ? "" : password, (salt == null) ? ""
+							: salt)));
+		}
+		return false;
+	}
+
 	public static String getPasswordHash(String password, String salt) {
 		String salted = password + "{" + salt + "}";
 		byte[] saltedBytes = salted.getBytes();
 		byte[] digest = DigestUtils.sha512(saltedBytes);
 		ByteArrayOutputStream baos = null;
-		for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < 5000; i++) {
 			baos = new ByteArrayOutputStream();
 			baos.write(digest, 0, digest.length);
 			baos.write(saltedBytes, 0, saltedBytes.length);
@@ -467,5 +477,9 @@ public class CustomRemoteServiceServlet extends RemoteServiceServlet {
 
 	public static File getUploadDir() {
 		return new File("/var/lib/tomcat6/archivos_subidos");
+	}
+
+	public static File getUploadDirForTmpFiles() {
+		return new File("/var/lib/tomcat6/archivos_subidos/tmp");
 	}
 }
