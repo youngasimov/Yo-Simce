@@ -276,11 +276,26 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 				@Override
 				public void success(AgendaItemDTO result) {
-					agenda.getItems().add(0, result);
-					view.getDataDisplay().setRowCount(agenda.getItems().size());
-					view.getDataDisplay().setVisibleRange(0,agenda.getItems().size());
-					view.getDataDisplay().setRowData(0, agenda.getItems());
-					view.setUltimoEstado(result);
+					if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getAgendaCurso")){
+						getFactory().getPlanificacionService().getAgendaCurso(place.getCursoId(), new SimceCallback<AgendaDTO>(eventBus,true) {
+							
+							@Override
+							public void success(AgendaDTO result) {
+								agenda = result;
+								view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+								view.getDataDisplay().setRowCount(result.getItems().size());
+								
+								Collections.reverse(agenda.getItems());
+								
+								view.getDataDisplay().setVisibleRange(0,result.getItems().size());
+								view.getDataDisplay().setRowData(0, result.getItems());
+								
+								if(agenda.getItems() != null && !agenda.getItems().isEmpty()){
+									view.setUltimoEstado(agenda.getItems().get(0));
+								}
+							}
+						});
+					}
 				}
 			});
 		}
