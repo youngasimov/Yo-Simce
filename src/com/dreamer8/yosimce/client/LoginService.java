@@ -57,4 +57,10 @@ public interface LoginService extends RemoteService {
 	public String getActualizacionDate();
 	
 	public Boolean setActualizacionDate(String date);
+	
+	public UserDTO getYoSimceUser() throws NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+	
+	public UserDTO getTrackingUser(String user, String password) throws NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;;
 }

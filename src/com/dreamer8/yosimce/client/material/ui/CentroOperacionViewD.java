@@ -687,7 +687,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 				return (object.getReceptor()!=null)?object.getReceptor().getNombres()+" "+object.getReceptor().getApellidoPaterno()+" "+object.getReceptor().getApellidoMaterno():"";
 			}
 		};
-		historialGrid.addColumn(usuarioColumn,"Usuario autorizante");
+		historialGrid.addColumn(usuarioColumn,"Usuario receptor");
 	}
 	
 	private void buildMaterialTable(){

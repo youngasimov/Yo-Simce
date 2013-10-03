@@ -35,4 +35,9 @@ public interface LoginServiceAsync {
 
 	void setActualizacionDate(String date, AsyncCallback<Boolean> callback);
 
+	void getYoSimceUser(AsyncCallback<UserDTO> callback);
+
+	void getTrackingUser(String user, String password,
+			AsyncCallback<UserDTO> callback);
+
 }

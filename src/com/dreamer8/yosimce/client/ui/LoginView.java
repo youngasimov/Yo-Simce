@@ -1,13 +1,16 @@
 package com.dreamer8.yosimce.client.ui;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class LoginView extends Composite {
@@ -18,11 +21,23 @@ public class LoginView extends Composite {
 	interface LoginViewUiBinder extends UiBinder<Widget, LoginView> {
 	}
 	
-	public interface LoginPresenter{
-		void onLogin(String username);
+	interface Style extends CssResource {
+		String showLogin();
+		String showLoad();
 	}
 	
-	@UiField TextBox usernameBox;
+	public interface LoginPresenter{
+		void onLogin(String username, String password);
+		void start(SimplePanel panel);
+	}
+	
+	
+	@UiField Style style;
+	@UiField DivElement div;
+	@UiField PlaceHolderTextBox usernameBox;
+	@UiField PlaceHolderTextBox passwordBox;
+	@UiField HTML message;
+	@UiField HTML message2;
 	@UiField Button loginButton;
 	
 	private LoginPresenter presenter;
@@ -37,7 +52,21 @@ public class LoginView extends Composite {
 	
 	@UiHandler("loginButton")
 	void onLoginClick(ClickEvent event){
-		presenter.onLogin(usernameBox.getValue());
+		presenter.onLogin(usernameBox.getValue(), passwordBox.getValue());
+	}
+	
+	public void showLogin(){
+		div.replaceClassName(style.showLoad(), style.showLogin());
+		passwordBox.setValue("");
+	}
+	
+	public void showLoad(){
+		div.replaceClassName(style.showLogin(), style.showLoad());
+	}
+	
+	public void setMensaje(String mensaje){
+		message.setHTML(mensaje);
+		message2.setHTML(mensaje);
 	}
 
 }

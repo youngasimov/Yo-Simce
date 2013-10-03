@@ -522,4 +522,19 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		return true;
 	}
 
+	@Override
+	public UserDTO getYoSimceUser() throws NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserDTO getTrackingUser(String user, String password)
+			throws NoLoggedException, DBException, NullPointerException,
+			ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

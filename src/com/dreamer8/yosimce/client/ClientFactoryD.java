@@ -42,8 +42,6 @@ import com.dreamer8.yosimce.client.ui.AppView;
 import com.dreamer8.yosimce.client.ui.AppViewD;
 import com.dreamer8.yosimce.client.ui.CursoSelectorView;
 import com.dreamer8.yosimce.client.ui.CursoSelectorViewD;
-import com.dreamer8.yosimce.client.ui.LoadView;
-import com.dreamer8.yosimce.client.ui.LoadViewD;
 import com.dreamer8.yosimce.client.ui.HeaderViewD;
 import com.dreamer8.yosimce.client.ui.HeaderView;
 import com.dreamer8.yosimce.client.ui.MenuView;
@@ -81,7 +79,6 @@ public class ClientFactoryD implements ClientFactory {
 	private final AdministracionServiceAsync administracionService = (AdministracionServiceAsync) GWT
 			.create(AdministracionService.class);
 	
-	private final LoadView loadView = new LoadViewD();
 	private final AppView appView = new AppViewD();
 	private final HeaderView headerView = new HeaderViewD();
 	private final SidebarView sidebarView = new SidebarViewD();
@@ -165,11 +162,6 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public AdministracionServiceAsync getAdministracionService() {
 		return administracionService;
-	}
-
-	@Override
-	public LoadView getLoadView() {
-		return loadView;
 	}
 
 	@Override
