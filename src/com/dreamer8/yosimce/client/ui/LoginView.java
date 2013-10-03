@@ -3,6 +3,8 @@ package com.dreamer8.yosimce.client.ui;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -45,6 +47,7 @@ public class LoginView extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		usernameBox.setWidth("190px");
 		passwordBox.setWidth("190px");
+		usernameBox.setFocus(true);
 	}
 	
 	public void setPresenter(LoginPresenter presenter){
@@ -56,8 +59,23 @@ public class LoginView extends Composite {
 		presenter.onLogin(usernameBox.getValue(), passwordBox.getValue());
 	}
 	
+	@UiHandler("passwordBox")
+	void onPasswordBoxKeyUp(KeyUpEvent event){
+		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			presenter.onLogin(usernameBox.getValue(), passwordBox.getValue());
+		}
+	}
+	
+	@UiHandler("usernameBox")
+	void onUsernameBoxKeyUp(KeyUpEvent event){
+		if(event.getNativeKeyCode() == KeyCodes.KEY_ENTER){
+			passwordBox.setFocus(true);
+		}
+	}
+	
 	public void showLogin(){
 		div.addClassName(style.showLogin());
+		usernameBox.setFocus(true);
 		passwordBox.setValue("");
 	}
 	
