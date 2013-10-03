@@ -52,7 +52,8 @@ public class DocumentoDAO extends AbstractHibernateDAO<Documento, Integer> {
 				+ SecurityFilter.escapeString(idActividad) + ")"
 				+ " JOIN DOCUMENTO_TIPO dt ON d.documento_tipo_id=dt.id"
 				+ " WHERE dt.nombre='"
-				+ SecurityFilter.escapeString(documentoTipo) + "'";
+				+ SecurityFilter.escapeString(documentoTipo) + "'"
+						+ " ORDER BY d.id ASC";
 		Query q = s.createSQLQuery(query).addEntity(Documento.class);
 		axds = q.list();
 		return axds;

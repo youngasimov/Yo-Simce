@@ -567,7 +567,8 @@ public class Actividad implements java.io.Serializable {
 				DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION);
 
 		if (ds != null && !ds.isEmpty()) {
-			adto.setDocumento(ds.get(0).getArchivo().getDocumentoDTO(baseURL));
+			adto.setDocumento(ds.get(ds.size() - 1).getArchivo()
+					.getDocumentoDTO(baseURL));
 		}
 		return adto;
 	}
