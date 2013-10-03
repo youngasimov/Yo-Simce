@@ -34,7 +34,7 @@ public class NotLoggedPanel extends Composite {
 	
 	@UiHandler("trackingButton")
 	void onIrATrackingClick(ClickEvent event){
-		Window.open(Window.Location.getProtocol()+"//"+Window.Location.getHost(), "_self", "");
+		Window.open(Window.Location.getProtocol()+"//"+Window.Location.getHost()+Window.Location.getPath(), "_self", "");
 	}
 
 }
