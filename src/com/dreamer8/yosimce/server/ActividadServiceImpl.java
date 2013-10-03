@@ -20,6 +20,7 @@ import org.hibernate.context.internal.ManagedSessionContext;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXIncidenciaDAO;
@@ -39,6 +40,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumento;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoId;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoTipo;
@@ -1916,12 +1918,17 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				Integer offset = 0;
 				Integer lenght = 10000;
 				List<ActividadPreviewDTO> apdtos = null;
+
+				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipo at = atdao.getById(idActividadTipo);
+
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
-				String name = "Actividades " + dateFormat.format(new Date());
+				String name = "Actividades " + at.getNombre() + " "
+						+ dateFormat.format(new Date());
 				File file = File.createTempFile(
 						StringUtils.getDatePathSafe(name), ".csv",
-						getUploadDir());
+						getUploadDirForTmpFiles());
 				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(file), "ISO-8859-1"));
@@ -2052,16 +2059,19 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se han obtenido resultados con el filtro especificado.");
 				}
+				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipo at = atdao.getById(idActividadTipo);
 
 				Integer offset = 0;
 				Integer lenght = 10000;
 				List<String> filas = null;
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
-				String name = "Alumnos " + dateFormat.format(new Date());
+				String name = "Alumnos " + at.getNombre() + " "
+						+ dateFormat.format(new Date());
 				File file = File.createTempFile(
 						StringUtils.getDatePathSafe(name), ".csv",
-						getUploadDir());
+						getUploadDirForTmpFiles());
 				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(file), "ISO-8859-1"));

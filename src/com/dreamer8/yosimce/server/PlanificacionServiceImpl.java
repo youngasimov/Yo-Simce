@@ -936,7 +936,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				String name = "Agendamiento " + dateFormat.format(new Date());
 				File file = File.createTempFile(
 						StringUtils.getDatePathSafe(name), ".csv",
-						getUploadDir());
+						getUploadDirForTmpFiles());
 				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(file), "ISO-8859-1"));
