@@ -68,9 +68,32 @@
 			transition: all 500ms ease;
 		}
 		
+		.logoYoSimce{
+			top: 24px;
+			left: 150px;
+			position: absolute;
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+	        -ms-transition: all 500ms ease;
+	        -o-transition: all 500ms ease;
+			transition: all 500ms ease;
+		}
+		
+		.showLogin .logoYoSimce{
+			top: 24px;
+			left: 240px;
+			position: absolute;
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+	        -ms-transition: all 500ms ease;
+	        -o-transition: all 500ms ease;
+			transition: all 500ms ease;
+		}
+		
 	</ui:style>
 	<g:HTMLPanel>
 	    <div ui:field="div" class ='{style.content}'>
+	    	<g:Image resource='{res.logoSimceGrande}' addStyleNames='{style.logoYoSimce}'/>
 	    	<g:DecoratorPanel addStyleNames='{style.login}'>
 				<g:HTMLPanel>
 					<table>
@@ -94,7 +117,6 @@
 					</table>
 				</g:HTMLPanel>    	
 		    </g:DecoratorPanel>
-	    
 	    
 		    <g:HTMLPanel addStyleNames='{style.load}'>
 				<table>

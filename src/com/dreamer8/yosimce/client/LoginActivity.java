@@ -12,6 +12,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -36,22 +37,30 @@ public class LoginActivity implements LoginPresenter {
 	}
 	
 	@Override
-	public void onLogin(String username, String password) {
+	public void onLogin(final String username,final String password) {
 		view.showLoad();
 		view.setMensaje("Comprobando usuario registrado...");
-		service.getTrackingUser(username, password, new AsyncCallback<UserDTO>() {
-
+		Timer t = new Timer() {
+			
 			@Override
-			public void onFailure(Throwable caught) {
-				loginError(caught);
-			}
+			public void run() {
+				service.getTrackingUser(username, password, new AsyncCallback<UserDTO>() {
 
-			@Override
-			public void onSuccess(UserDTO result) {
-				user =result;
-				loadApp();
+					@Override
+					public void onFailure(Throwable caught) {
+						loginError(caught);
+					}
+
+					@Override
+					public void onSuccess(UserDTO result) {
+						user =result;
+						loadApp();
+					}
+				});
 			}
-		});
+		};
+		t.schedule(700);
+		
 	}
 
 	@Override
@@ -138,6 +147,7 @@ public class LoginActivity implements LoginPresenter {
 		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(factory.getPlaceHistoryMapper());
 		historyHandler.register(factory.getPlaceController(), factory.getEventBus(), defaultPlace);
 		historyHandler.handleCurrentHistory();
+		view.showLoad();
 	}
 
 }
