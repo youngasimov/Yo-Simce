@@ -19,6 +19,13 @@
 			display:block;
 			width: 260px;
 			position:absolute;
+			opacity: 1;
+			left: 0px;
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+	        -ms-transition: all 500ms ease;
+	        -o-transition: all 500ms ease;
+			transition: all 500ms ease;
 		}
 		
 		.loadimage {
@@ -32,47 +39,38 @@
 			display:block;
 			width: 260px; 
 			position:absolute;
-		}
-		
-		.showLogin{
-			-webkit-transition: all 200ms ease;
-			-moz-transition: all 200ms ease;
-	        -ms-transition: all 200ms ease;
-	        -o-transition: all 200ms ease;
-			transition: all 200ms ease;
+			opacity: 0;
+			left: -400px;
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+	        -ms-transition: all 500ms ease;
+	        -o-transition: all 500ms ease;
+			transition: all 500ms ease;
 		}
 		
 		.showLogin .login{
 			opacity: 1;
 			left: 0px;
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+	        -ms-transition: all 500ms ease;
+	        -o-transition: all 500ms ease;
+			transition: all 500ms ease;
 		}
 		
 		.showLogin .load{
 			opacity: 0;
-			left: 500px;
-		}
-		
-		.showLoad{
-			-webkit-transition: all 200ms ease;
-			-moz-transition: all 200ms ease;
-	        -ms-transition: all 200ms ease;
-	        -o-transition: all 200ms ease;
-			transition: all 200ms ease;
-		}
-		
-		.showLoad .login{
-			opacity: 0;
-			left: -500px;
-		}
-		
-		.showLoad .load{
-			opacity: 1;
-			left: 0px;
+			left: 400px;
+			-webkit-transition: all 500ms ease;
+			-moz-transition: all 500ms ease;
+	        -ms-transition: all 500ms ease;
+	        -o-transition: all 500ms ease;
+			transition: all 500ms ease;
 		}
 		
 	</ui:style>
 	<g:HTMLPanel>
-	    <div ui:field="div" class ='{style.content} {style.showLoad}'>
+	    <div ui:field="div" class ='{style.content}'>
 	    	<g:DecoratorPanel addStyleNames='{style.login}'>
 				<g:HTMLPanel>
 					<table>
@@ -82,7 +80,7 @@
 						</tr>
 						<tr>
 							<td>Contraseña:</td>
-							<td> <my:PlaceHolderTextBox placeholder='contraseña yosimce' ui:field="passwordBox"/> </td>
+							<td> <my:PlaceHolderPasswordBox placeholder='contraseña yosimce' ui:field="passwordBox"/> </td>
 						</tr>
 						<tr>
 							<td></td>

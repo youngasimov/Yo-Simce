@@ -75,7 +75,7 @@
 			</div>
 		</div>
 		<div class='{style.bottomPanel}'>
-		    <g:Button text="Ir a Tracking" addStyleNames='{style.button}' ui:field="trackingButton"/>
+		    <my:ImageButton text="Reingresar a Tracking" addStyleNames='{style.button}' resource='{res.update}' ui:field="trackingButton"/>
 			<my:ImageButton text="Ir a YoSimce" addStyleNames='{style.button}' resource='{res.logoSimce}' ui:field="yosimceButton"/>
 		</div>
 	</g:HTMLPanel>

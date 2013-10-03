@@ -23,7 +23,6 @@ public class LoginView extends Composite {
 	
 	interface Style extends CssResource {
 		String showLogin();
-		String showLoad();
 	}
 	
 	public interface LoginPresenter{
@@ -35,7 +34,7 @@ public class LoginView extends Composite {
 	@UiField Style style;
 	@UiField DivElement div;
 	@UiField PlaceHolderTextBox usernameBox;
-	@UiField PlaceHolderTextBox passwordBox;
+	@UiField PlaceHolderPasswordBox passwordBox;
 	@UiField HTML message;
 	@UiField HTML message2;
 	@UiField Button loginButton;
@@ -44,6 +43,8 @@ public class LoginView extends Composite {
 
 	public LoginView() {
 		initWidget(uiBinder.createAndBindUi(this));
+		usernameBox.setWidth("190px");
+		passwordBox.setWidth("190px");
 	}
 	
 	public void setPresenter(LoginPresenter presenter){
@@ -56,12 +57,12 @@ public class LoginView extends Composite {
 	}
 	
 	public void showLogin(){
-		div.replaceClassName(style.showLoad(), style.showLogin());
+		div.addClassName(style.showLogin());
 		passwordBox.setValue("");
 	}
 	
 	public void showLoad(){
-		div.replaceClassName(style.showLogin(), style.showLoad());
+		div.removeClassName(style.showLogin());
 	}
 	
 	public void setMensaje(String mensaje){
