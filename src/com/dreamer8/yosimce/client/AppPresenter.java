@@ -96,6 +96,11 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void logout(){
+		Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
+		Cookies.removeCookie("a");
+		Cookies.removeCookie("n");
+		Cookies.removeCookie("t");
+		Cookies.removeCookie(LoginService.USUARIO_TIPO_COOKIE_NAME);
 		notLogged = true;
 		view.openLoginPopup("<br /><br />Su sesión se ha cerrado con éxito<br /><br />",
 				"<br /><br />");
