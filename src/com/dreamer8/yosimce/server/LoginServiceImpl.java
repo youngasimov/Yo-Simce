@@ -415,6 +415,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				}
 			}
 			HttpSession session = this.getThreadLocalRequest().getSession();
+			session.setAttribute("usuario", null);
 			session.invalidate();
 		} catch (Exception e) {
 			result = false;

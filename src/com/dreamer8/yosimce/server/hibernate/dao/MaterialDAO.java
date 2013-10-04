@@ -13,6 +13,7 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.server.hibernate.pojo.Lugar;
 import com.dreamer8.yosimce.server.hibernate.pojo.Material;
+import com.dreamer8.yosimce.server.hibernate.pojo.MaterialEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
 import com.dreamer8.yosimce.shared.dto.LoteDTO;
@@ -130,7 +131,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
-				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id"
+				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
 				+ "  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -155,9 +156,14 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
 				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id"
-				+ " WHERE m.centro_id="
+				+ " LEFT JOIN MATERIAL_ESTADO me ON mh.material_estado_id=me.id"
+				+ " WHERE (m.centro_id="
 				+ SecurityFilter.escapeString(idCo)
-				+ " OR (mh.centro_id IS NOT NULL AND mh.centro_id="
+				+ " AND (mh.centro_id IS NULL OR  mh.centro_id="
+				+ SecurityFilter.escapeString(idCo)
+				+ ")) OR (m.centro_id !="
+				+ SecurityFilter.escapeString(idCo)
+				+ " AND mh.centro_id="
 				+ SecurityFilter.escapeString(idCo) + ")";
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
@@ -182,6 +188,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			}
 			mdto.setIdNivel((Integer) o[11]);
 			mdto.setIdTipoActividad((Integer) o[12]);
+			mdto.setTransicion((o[13] == null || MaterialEstado.EN_EL_LUGAR
+					.equals(o[13])) ? "En " : "Hacia ");
 			mdtos.add(mdto);
 		}
 		return mdtos;
@@ -195,7 +203,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
-				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id"
+				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
 				+ "  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -217,7 +225,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
-				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
+				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id"
+				+ " LEFT JOIN MATERIAL_ESTADO me ON mh.material_estado_id=me.id";
 
 		String where = "";
 		if (codigos != null && !codigos.isEmpty()) {
@@ -257,6 +266,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			}
 			mdto.setIdNivel((Integer) o[11]);
 			mdto.setIdTipoActividad((Integer) o[12]);
+			mdto.setTransicion((o[13] == null || MaterialEstado.EN_EL_LUGAR
+					.equals(o[13])) ? "En " : "Hacia ");
 			mdtos.add(mdto);
 		}
 		return mdtos;
@@ -270,7 +281,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
-				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id"
+				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
 				+ "  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -292,7 +303,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
-				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
+				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id"
+				+ " LEFT JOIN MATERIAL_ESTADO me ON mh.material_estado_id=me.id";
 
 		String where = "";
 		if (idMateriales != null && !idMateriales.isEmpty()) {
@@ -331,6 +343,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			}
 			mdto.setIdNivel((Integer) o[11]);
 			mdto.setIdTipoActividad((Integer) o[12]);
+			mdto.setTransicion((o[13] == null || MaterialEstado.EN_EL_LUGAR
+					.equals(o[13])) ? "En " : "Hacia ");
 			mdtos.add(mdto);
 		}
 		return mdtos;
@@ -343,7 +357,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
-				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id"
+				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
 				+ "  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -367,7 +381,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ " LEFT JOIN lote l ON mxl.lote_id=l.id"
 				+ " LEFT JOIN (SELECT material_id, MAX(fecha) as fecha FROM MATERIAL_HISTORIAL GROUP BY material_id) mh_max ON m.id=mh_max.material_id"
 				+ " LEFT JOIN MATERIAL_HISTORIAL mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha"
-				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id";
+				+ " LEFT JOIN LUGAR l_dest ON mh.destino_id=l_dest.id"
+				+ " LEFT JOIN MATERIAL_ESTADO me ON mh.material_estado_id=me.id";
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
 
@@ -391,6 +406,8 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			}
 			mdto.setIdNivel((Integer) o[11]);
 			mdto.setIdTipoActividad((Integer) o[12]);
+			mdto.setTransicion((o[13] == null || MaterialEstado.EN_EL_LUGAR
+					.equals(o[13])) ? "En " : "Hacia ");
 		}
 		return mdto;
 	}
