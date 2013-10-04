@@ -1184,6 +1184,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			}
 		} catch (HibernateException ex) {
 			System.err.println(ex);
+			ex.printStackTrace();
 			HibernateUtil.rollback(s);
 			throw new DBException();
 		} catch (ConsistencyException ex) {
