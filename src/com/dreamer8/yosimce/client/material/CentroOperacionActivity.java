@@ -501,6 +501,14 @@ public class CentroOperacionActivity extends SimceActivity implements
 				break;
 			}
 		}
+		
+		if(mat == null){
+			eventBus.fireEvent(new MensajeEvent(
+					"Este material no esta registrado en el centro de operaciones",
+					MensajeEvent.MSG_WARNING, true));
+			eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
+			return;
+		}
 
 		if (view.getAddByLote() && mat != null
 				&& mat.getMaterial().getLote() != null) {
@@ -576,7 +584,10 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	@Override
 	public void onRealizarDespachoStackActualClick() {
-		if (selectedEtapa == null && selectedCo == null) {
+		
+		
+		
+		if (selectedEtapa == null) {
 			eventBus.fireEvent(new MensajeEvent(
 					"Seleccione la etapa hacia donde se dirigen los materiales",
 					MensajeEvent.MSG_WARNING, true));
@@ -586,7 +597,13 @@ public class CentroOperacionActivity extends SimceActivity implements
 					"Ingrese el RUT de la persona que retira, o el suyo si la persona que retira no pertenece al proceso",
 					MensajeEvent.MSG_WARNING, true));
 			return;
+		}else if (selectedEtapa.getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES) && selectedCo == null) {
+			eventBus.fireEvent(new MensajeEvent(
+					"Seleccione el Centro de operación destino",
+					MensajeEvent.MSG_WARNING, true));
+			return;
 		}
+		
 
 		final ArrayList<String> codigos = new ArrayList<String>();
 
@@ -784,7 +801,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			}
 		}
 		if(selectedEtapa !=null && selectedEtapa.getEtapa().equals(EtapaDTO.CENTRO_DE_OPERACIONES)){
-			selectedEtapa = null;
+			//selectedEtapa = null;
 			view.setChangeCoButtonVisivility(true);
 			onChangeSelectedStageCo();
 		}
