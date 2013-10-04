@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client.ui;
 
 import com.dreamer8.yosimce.client.GATracker;
+import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
@@ -47,6 +48,8 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField UListElement material;
 	@UiField UListElement administracion;
 	
+	@UiField Anchor menuItem;
+	
 	@UiField Anchor detalleCursoViewItem;
 	@UiField Anchor centroControlViewItem;
 	
@@ -70,6 +73,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	public SidebarViewD() {
 		
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@UiHandler("menuItem")
+	void onMenuCLick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Menu");
+		presenter.goTo(new SimcePlace());
 	}
 	
 	@UiHandler("centroControlViewItem")

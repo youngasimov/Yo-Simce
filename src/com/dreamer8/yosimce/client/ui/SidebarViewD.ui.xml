@@ -95,7 +95,7 @@
 	<g:ScrollPanel ui:field="scroll">
 		<g:HTMLPanel addStyleNames='{style.sidebar}'>
 			<div class="{style.menu}">
-				Menu
+				<g:Anchor ui:field="menuItem" text="Menu"/>
 			</div>
 			<ul ui:field="general">
 			    <li><g:Anchor ui:field="centroControlViewItem" text="Centro de control"/></li>

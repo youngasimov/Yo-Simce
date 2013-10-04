@@ -22,11 +22,13 @@
 	
 	.help{
 		display:block;
-		width: 300px;
+		width: 250px;
 		float: left;
-		position:relative;
-		top: 20px;
-		left: 125px;
+		position:absolute;
+		top: 15px;
+		left: 105px;
+		background: rgba(255,255,255,0.7);
+		padding: 5px;
 	}
 	
 	.puntero{
@@ -38,15 +40,222 @@
 		font-weight: bolder;
 		font-size: 30px;
 	}
+	
+	.stackheader{
+		width: 100%;
+		text-align: center;
+	}
+	
+	.stackcontent{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		min-width: 600px;
+		max-width: 1000px;
+		text-align: justify;
+	}
 	</ui:style>
-	<g:HTMLPanel>
-	    <my:OverMenuBar addStyleNames='{style.menu}' ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
-			<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Menu</div> ></g:MenuItem>
-		</my:OverMenuBar>
-		<div class='{style.help}'>
-			<div class='{style.puntero}'>^</div>
-			Mantenga el puntero sobre el nombre de la sección para acceder al menu lateral
-		</div>
-		
-	</g:HTMLPanel>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+			<my:OverMenuBar addStyleNames='{style.menu}' ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Menu</div> ></g:MenuItem>
+			</my:OverMenuBar>
+		</g:north>
+		<g:center>
+			<g:HTMLPanel>
+			<g:StackLayoutPanel unit="PX" width="100%" height="100%">
+				<g:stack>
+			    	<g:header size="35"><div class='{style.stackheader}'>Información Tracking</div></g:header>
+		    		<g:ScrollPanel>
+		    			<g:HTMLPanel width="80%" addStyleNames='{style.stackcontent}'>
+		    				<p>En esta sección se informará de todos los cambios o mejoras a la plataforma tracking.
+		    				Es importante que si usted tiene alguna duda acerca del funcionamiento de algun botón o acción en particular,
+		    				consulte esta guía antes de realizar cualquier otra cosa.</p>
+		    				<p>
+		    				Si la información no la encuentra en este lugar, envie un correo electronico a <b>server.simce@usm.cl</b> con el asunto <b>CONSULTA TRACKING</b></p>
+		    				
+		    				<p>
+		    					Recuerde siempre antes de hacer cualquier acción que signifique ingreso de datos al sistema,
+		    					asegurarse que tiene seleccionada la aplicación, nivel y tipo de actividad correspondiente,
+		    					indicadas en la parte superior derecha de la aplicación.<br />
+		    					
+		    					(En algunos casos, puede que solo se le desplieguen algunos campos, significa que los otros fueron seleccionados automaticamente)
+		    				</p>
+		    				
+		    				<p>
+		    				Como regla general, si usted recibe alguna notificación de error al realizar una acción en el sistema siga los siguientes pasos:<br />
+		    				<ul>
+		    					<li>1) Compruebe si tiene conexión a internet</li>
+		    					<li>2) Refresque la página del navegador para comprobar si su sesión esta activa</li>
+		    					<li>3) si el problema se mantiene despues de realizar los pasos anteriores,
+		    					envie un Correo a <b>server.simce@usm.cl</b> con el asunto <b>PROBLEMA TRACKING</b>
+		    					indicando su rut, perfil dentro del sistema (examinador, supervisor Jefe de centro, etc),
+		    					y cualquier información relevante para poder replicar el problema (código de caja que no puede ingresar, rut de examinador que no puede cambiar,
+		    					rbd del colegio al cual no puede ingresar, etc)
+		    					</li>
+		    				</ul>
+		    				</p>
+		    				
+		    				<p>Todas los días se realizan mejoras al sistema Tracking, por lo que si usted informó un error de la manera indicada anteriormente,
+		    				es muy probable que esto se encuentre solucionado durante los próximos días</p>
+		    				
+		    			</g:HTMLPanel>
+		    		</g:ScrollPanel>
+			  	</g:stack>
+			  	<g:stack>
+			    	<g:header size="35"><div class='{style.stackheader}'>Agendamiento</div></g:header>
+		    		<g:ScrollPanel>
+		    			<g:HTMLPanel width="80%" addStyleNames='{style.stackcontent}'>
+		    				<h2>Lista de agendamiento</h2>
+		    				<p>
+		    					Lista de todos los cursos y el detalle de su agendamiento.<br />En esta sección podra seleccionar un curso y ver o modificar la agenda dependiendo de los permisos que 
+		    					tenga dentro de la plataforma. Para ello seleccione el curso en la lista, el nombre del curso seleccionado se desplegara en la barra de menu superior,
+		    					seleccione el curso desde la barra de menú superior, se le desplegara una lista de las acciones que puede realizar a ese curso
+		    					(Modificar agenda, Ver Detalles agenda, ver información general de curso).
+		    				</p>
+		    				<h2>Modificación de agenda</h2>
+		    				<p>
+		    					Al modificar la agenda, lo primero que tiene que hacer es seleccionar el estado en que desea que quiere la agenda, si usted esta proponiendo una
+		    					fecha para la realización de una visita previa, o prueba, el estado debe ser <b>POR CONFIRMAR</b>, si por el contrario, usted ya conversó y acordó con el director o 
+		    					contacto del establecimiento una fecha, entonces debe seleccionar el estado <b>CONFIRMADO</b>.
+		    				</p>
+		    				<p>
+		    					Si usted desea Confirmar para una fecha distinta a la propuesta, deberá ingresar una comentario que explique su acción<br />
+		    					Si no hay ninguna fecha "por confirmar" es importante que usted defina esa fecha seleccionado el dia en el colendario y la hora propuesta.
+		    				</p>
+		    				<p>
+		    					Simpre que se comunique con un establecimiento, confirme los datos de contacto que se le despliegan en la parte superior del historial de agenda, y modifiquelos
+		    					si estos estan incompletos o erroneos.
+		    				</p>
+		    			</g:HTMLPanel>
+		    		</g:ScrollPanel>
+			  	</g:stack>
+			  	<g:stack>
+			    	<g:header size="35"><div class='{style.stackheader}'>Actividad</div></g:header>
+		    		<g:ScrollPanel>
+		    			<g:HTMLPanel width="80%" addStyleNames='{style.stackcontent}'>
+		    				<h2>Lista de actividades</h2>
+		    				<p>
+		    					
+		    				</p>
+		    				<h2>Formulario de actividad</h2>
+		    				<p>
+		    					
+		    				</p>
+		    			</g:HTMLPanel>
+		    		</g:ScrollPanel>
+			  	</g:stack>
+			  	<g:stack>
+			    	<g:header size="35"><div class='{style.stackheader}'>Centro de operación</div></g:header>
+		    		<g:ScrollPanel>
+		    			<g:HTMLPanel width="80%" addStyleNames='{style.stackcontent}'>
+		    				<h2>Ingreso de material</h2>
+		    				<ul>
+		    					<li>1) ir a la pestaña "Ingreso"</li>
+		    					<li>2) comprobar que el cursor este marcado sobre el campo de texto "Código material"</li>
+		    					<li>3) marcar el material recepcionado usando el lector de códigos</li>
+		    					<li>4) ingresar el folio del documento recibido del transportista al recibir el material</li>
+		    					<li>5) seleccionar el botón "Ingresar"</li>
+		    					<li>6) el material debería cambiar de Etapa a "Centro de operación" en la lista general de materiales</li>
+		    				</ul>
+		    				<h2>Lotes de material</h2>
+		    				<p>Los lotes sirven cuando se deben despachar muchas cajas a una misma persona en un tiempo limitado,
+		    				para facilitar la operación, se permite agrupar cajas en lotes, luego, el despachar una caja de un lote,
+		    				se marcan todas las que pertenecen a ese mismo lote, agilizando el proceso de entrega de material.</p>
+
+							<p>Los lotes deben realizarse sobre cajas que se encuentran en la etapa "Centro de operación"</p>
+							<h3>Crear Lote</h3>
+		    				<ul>
+		    					<li>1) ir a la pestaña "pre-despacho"</li>
+		    					<li>2) asignar un nombre descriptivo al lote, puede ser el nombre de la ruta si están relacionados, del supervisor que retira, u otro. luego apretar el botón "Crear"</li>
+		    					<li>3) comprobar que el nombre del lote recién creado quede seleccionado en la lista de lotes</li>
+		    					<li>4) seleccionar el campo de  texto "Código material" y marcar las cajas que se desean agrupar utilizando el lector de códigos</li>
+		    					<li>5) una ves realizado el lote, presionar "Actualizar"</li>
+		    				</ul>
+		    				<p>Tenga en consideración que una caja puede estar asignada a un solo lote, por lo tanto,
+		    				si agrega una caja asignada a otro lote previamente, se eliminará del grupo anterior.</p>
+		    				<h3>Modificar lote</h3>
+		    				<ul>
+		    					<li>1) ir a la pestaña "pre-despacho"</li>
+								<li>2) seleccione el lote de la lista disponible</li>
+								<li>3) agregue o elimine material del lote</li>
+								<li>4) presione "actualizar"</li>
+		    				</ul>
+		    				<h3>Eliminar lote</h3>
+		    				<ul>
+		    					<li>1) ir a la pestaña "pre-despacho"</li>
+								<li>2) seleccione el lote de la lista disponible</li>
+								<li>3) presione "Eliminar"</li>
+		    				</ul>
+							<h2>Despacho de material</h2>
+		    				<ul>
+		    					<li>1) ir a la pestaña "despacho"</li>
+								<li>2) si desea agregar material por lote, seleccione la casilla "Añadir lote"</li>
+								<li>2) comprobar que el cursor este marcado sobre el campo de texto "Código material"</li>
+								<li>3) marcar el material a despachar usando el lector de códigos (en caso de que se este despachando por lote, deberían agregarse a la lista todas las cajas del lote al que pertenece la caja marcada)</li>
+								<li>4) puede ingresar más de un lote a la vez o ingresar un lote, y luego remover cajas de forma selectiva.</li>
+								<li>5) finalizada la selección de cajas a despachar, seleccionar de la lista inferior la etapa a la cual se enviará el material (Establecimiento, Ministerio, Imprenta, etc)</li>
+								<li>6) ingresar el Rut de la persona que retira las cajas, si esta persona esta registrada en YoSimce, se desplegara el nombre, si no, deberá ingresar su propio rut para permitir el despacho.</li>
+								<li>7) ingresar el folio del documento recibido del transportista al despachar el material al ministerio o imprenta</li>
+								<li>8) Presionar Despachar</li>
+		    				</ul>
+		    				
+		    				<h2>Despacho de material entre centros</h2>
+		    				<p>Este es un caso especial en donde se recibió material perteneciente a otro centro y
+		    				debe ser trasladado al centro operacional correspondiente, para realizar esto siga los siguientes pasos:</p>
+		    				<ul>
+		    					<li>1) ingresar el material en el centro en el cual se recibieron los materiales</li>
+								<li>2) separar los materiales que pertenezcan a otro centro de operación</li>
+								<li>3) despachar el material, con la salvedad que al seleccionar la etapa, seleccionar "Centro de operación"</li>
+								<li>4) de desplegara una lista de centros, debe seleccionar el centro al cual desea enviar el material</li>
+								<li>5) continual con el proceso de despacho</li>
+								<li>6) en la lista de materiales, ahora el material despacho debera estar en la etapa <b>"hacia centro de operaciones"</b></li>
+								<li>7) El centro de operación destino debe ingresar los materiales normalmente.</li>
+		    				</ul>
+							<p>Los materiales trasladados desaparecerán del centro que realizó el despacho una vez que el centro de destino los ingrese correctamente</p>
+							
+							<h2>Problemas frecuentes</h2>
+		    				<ul>
+		    					<li>
+		    						1) Los procesos de ingreso o despacho se demoran mucho.
+		    						<ul>
+			    						<li>
+			    							<b>R:</b> Esto es normal cuando se están ingresando muchas cajas
+			    						</li>
+		    						</ul>
+		    					</li>
+		    					
+		    					<li>
+		    						2) Para que sirven los otros tipos de actividad "Sesión complementaria" y "retiro de formulario"?
+		    						<ul>
+			    						<li>
+			    							<b>R:</b>La sesión complementaria es una actividad extra que se agenda para tomar pruebas de
+			    							cualquier nivel en los colegios que por alguna razón, fue imposible realizar la prueba el día que correspondía.
+			    							El "Retiro de formulario" es una actividad en donde se planifica ir a buscar formularios Padres y apoderados rezagados.
+			    							Puede que estas actividades nunca se hagan, ademas NO SE RECIBE material de estas actividades.
+			    						</li>
+		    						</ul>
+		    					</li>
+		    					
+								 <li>
+		    						3) El material complementario se ingresa seleccionando "Sesión complementaria"?
+		    						<ul>
+			    						<li>
+			    							<b>R:</b> No, hay material complementario para cada nivel y tipo de actividad, por lo tanto recibirá cajas de material
+			    							complementario para visitas previas y pruebas de cada nivel, y deben registrarse en el nivel y tipo de actividad que correspondan.
+			    						</li>
+		    						</ul>
+		    					</li>		    					 
+		    				</ul>
+		    			</g:HTMLPanel>
+		    		</g:ScrollPanel>
+			  	</g:stack>
+			</g:StackLayoutPanel>
+			<div class='{style.help}'>
+				<div class='{style.puntero}'>^</div>
+				Mantenga el puntero sobre el nombre de la sección para acceder al menu lateral
+			</div>
+			</g:HTMLPanel>
+		</g:center>
+	</g:DockLayoutPanel>	
 </ui:UiBinder> 
