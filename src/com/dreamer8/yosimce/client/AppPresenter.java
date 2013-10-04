@@ -96,7 +96,6 @@ public class AppPresenter implements AppView.AppPresenter {
 	}
 	
 	private void logout(){
-		Cookies.removeCookie(YoSimce.TOKEN_COOKIE);
 		Cookies.removeCookie("a");
 		Cookies.removeCookie("n");
 		Cookies.removeCookie("t");
