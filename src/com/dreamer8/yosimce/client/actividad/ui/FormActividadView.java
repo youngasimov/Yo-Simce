@@ -31,6 +31,7 @@ public interface FormActividadView extends IsWidget {
 	ArrayList<EvaluacionUsuarioDTO> getExaminadores();
 	void setExaminadoresSuplentes(ArrayList<UserDTO> examinadores);
 	
+	
 	void setInicioActividad(Date hora);
 	Date getInicioActividad();
 	void setInicioPrueba(Date hora);
@@ -78,6 +79,7 @@ public interface FormActividadView extends IsWidget {
 	void setCuestionariosTotalesEnabled(boolean enabled);
 	void setCuestionariosEntregadosEnabled(boolean enabled);
 	void showUsoMaterialComplementarioPanel(boolean visible);
+	void showHelpMensaje(boolean show);
 	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();

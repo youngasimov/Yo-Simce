@@ -2,13 +2,14 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
 	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka"
 	xmlns:u="urn:import:gwtupload.client"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style>
+	<ui:style type='com.dreamer8.yosimce.client.actividad.ui.FormActividadViewD.Style'>
 	
 	.title {
 		font-size: 20px;
@@ -70,6 +71,38 @@
 		width: 4em;
 	}
 	
+	.helper{
+			display:block;
+			position:relative;
+			width: 250px;
+			padding:40px;
+			border: 2px solid #ffa84c;
+			text-align: center;
+			font-size: 18px;
+			font-weight: bold;
+			background: white;
+		}
+		
+		
+		
+		.helperTransition{
+			top: -10px;
+			-webkit-transition: all 100ms ease-in-out;
+			-moz-transition: all 100ms ease-in-out;
+	        -ms-transition: all 100ms ease-in-out;
+	        -o-transition: all 100ms ease-in-out;
+			transition: all 100ms ease-in-out;
+		}
+		
+		.helperTransition2{
+			top: 0;
+			-webkit-transition: all 100ms ease-in-out;
+			-moz-transition: all 100ms ease-in-out;
+	        -ms-transition: all 100ms ease-in-out;
+	        -o-transition: all 100ms ease-in-out;
+			transition: all 100ms ease-in-out;
+		}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -122,11 +155,11 @@
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>
 							<tr>
-								<th colspan='2'>Estado de la actividad</th>
+								<th colspan='3'>Estado de la actividad</th>
 							</tr>
 							<tr>
 								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la aplicación' /> </td>
-								<td colspan='3'> <g:ListBox ui:field="estadoBox" /> </td>
+								<td colspan='3'> <g:ListBox ui:field="estadoBox" /></td>
 							</tr>
 							<tr>
 								<th>Tipo contingencia</th>

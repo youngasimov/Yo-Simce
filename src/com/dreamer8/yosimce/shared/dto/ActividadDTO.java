@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+@SuppressWarnings("serial")
 public class ActividadDTO implements Serializable {
 
 	private String nombreEstablecimiento;

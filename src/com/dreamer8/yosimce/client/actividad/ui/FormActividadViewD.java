@@ -35,6 +35,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -65,6 +66,12 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	interface FormActividadViewDUiBinder extends
 			UiBinder<Widget, FormActividadViewD> {
+	}
+	
+	interface Style extends CssResource {
+		String helperTransition();
+		String helperTransition2();
+		String helper();
 	}
 	
 	private class EvaluacionExaminador implements IsWidget{
@@ -257,6 +264,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		
 	}
 
+	@UiField Style style;
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
 	@UiField MenuItem cursoItem;
@@ -525,6 +533,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setEstados(ArrayList<EstadoAgendaDTO> estados) {
 		this.estadoBox.clear();
+		this.estadoBox.addItem("Seleccionar estado...", "-1");
 		for(EstadoAgendaDTO estado:estados){
 			this.estadoBox.addItem(estado.getEstado(),estado.getId()+"");
 		}
@@ -540,7 +549,6 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			}
 		}
 	}
-
 
 	@Override
 	public void setInicioActividad(Date hora) {
@@ -832,5 +840,16 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void showUsoMaterialComplementarioPanel(boolean visible) {
 		contingenciasPanel.setVisible(visible);
+	}
+	
+	@Override
+	public void showHelpMensaje(boolean show) {
+		/*
+		if(show){
+			pop.showRelativeTo(estadoBox);
+		}else{
+			pop.hide();
+		}
+		*/
 	}
 }

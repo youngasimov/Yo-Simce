@@ -39,6 +39,7 @@ public class FormActividadActivity extends SimceActivity implements
 	private ArrayList<TipoContingenciaDTO> tipos;
 	private ArrayList<EstadoAgendaDTO> estados;
 	private ActividadDTO a;
+	private boolean estadoSelected;
 	
 	private ArrayList<EvaluacionUsuarioDTO> examinadores;
 	
@@ -55,7 +56,7 @@ public class FormActividadActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
-		
+		estadoSelected = false;
 		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
 		
 		selector = new CursoSelector(getFactory(),eventBus);
@@ -81,7 +82,6 @@ public class FormActividadActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					//goTo(new ActividadPlace());
 					goTo(new SimcePlace());
 				}
 			});
@@ -148,9 +148,6 @@ public class FormActividadActivity extends SimceActivity implements
 					public void success(ArrayList<EstadoAgendaDTO> result) {
 						estados = result;
 						if(a != null){
-							if(!estados.contains(a.getEstadoAplicacion())){
-								estados.add(a.getEstadoAplicacion());
-							}
 							view.setEstados(result);
 							view.selectEstado(a.getEstadoAplicacion());
 							onEstadoChange(a.getEstadoAplicacion().getId());
@@ -185,6 +182,10 @@ public class FormActividadActivity extends SimceActivity implements
 			eventBus.fireEvent(new MensajeEvent("Espere a que se termine la carga del documento antes de guardar el formulario",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
+		if(!estadoSelected){
+			eventBus.fireEvent(new MensajeEvent("Debe seleccionar el estado de la actividad antes de guardar el formulario",MensajeEvent.MSG_WARNING,false));
+			return;
+		}
 		
 		a.setInicioActividad(view.getInicioActividad());
 		a.setInicioPrueba(view.getInicioPrueba());
@@ -216,7 +217,8 @@ public class FormActividadActivity extends SimceActivity implements
 			});
 		}
 		
-		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
+		if(a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.REALIZADA) &&
+				Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
 			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = view.getExaminadores();
 			
 			for(EvaluacionUsuarioDTO e:examinadoresCorregido){
@@ -286,14 +288,19 @@ public class FormActividadActivity extends SimceActivity implements
 	@Override
 	public void onEstadoChange(Integer estadoId) {
 		EstadoAgendaDTO selected = null;
+		
 		for(EstadoAgendaDTO estado:estados){
 			if(estado.getId() == estadoId){
 				selected = estado;
 				break;
 			}
 		}
-		a.setEstadoAplicacion(selected);
-		view.showForm(selected.getEstado().equals(EstadoAgendaDTO.REALIZADA));
+		
+		estadoSelected = (selected != null);
+		if(selected != null){
+			a.setEstadoAplicacion(selected);
+		}
+		view.showForm(selected!=null && selected.getEstado().equals(EstadoAgendaDTO.REALIZADA));
 	}
 	
 	@Override
@@ -304,22 +311,20 @@ public class FormActividadActivity extends SimceActivity implements
 	
 	@SuppressWarnings("deprecation")
 	private void setActividad(){
+		
+		view.showForm(false);
 		view.setNombreEstablecimiento((a.getNombreEstablecimiento()!=null)?a.getNombreEstablecimiento():"");
 		view.setRbd((a.getRbd()!=null)?a.getRbd():"");
 		view.setCurso((a.getCurso()!=null)?a.getCurso():"");
 		view.setTipoCurso((a.getTipoEstablecimiento()!=null)?a.getTipoEstablecimiento():"");
 		view.setRegion((a.getRegion()!=null)?a.getRegion():"");
 		view.setComuna((a.getComuna()!=null)?a.getComuna():"");
-		if(estados == null && a.getEstadoAplicacion() != null){
-			estados = new ArrayList<EstadoAgendaDTO>();
-			estados.add(a.getEstadoAplicacion());
-		}else if(a.getEstadoAplicacion()!=null && !estados.contains(a.getEstadoAplicacion())){
-			estados.add(a.getEstadoAplicacion());
-		}else if(estados == null && a.getEstadoAplicacion() == null){
+		if(estados == null){
 			estados = new ArrayList<EstadoAgendaDTO>();
 		}
 		view.setEstados(estados);
-		if(a.getEstadoAplicacion()!=null){
+		estadoSelected = false;
+		if(a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.REALIZADA) || a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.ANULADA)){
 			view.selectEstado(a.getEstadoAplicacion());
 			onEstadoChange(a.getEstadoAplicacion().getId());
 		}
@@ -361,9 +366,6 @@ public class FormActividadActivity extends SimceActivity implements
 		
 		
 		//***************Simce TIC***********************
-		
-		
-		onEstadoChange(a.getEstadoAplicacion().getId());
 	}
 	
 	@SuppressWarnings("deprecation")
