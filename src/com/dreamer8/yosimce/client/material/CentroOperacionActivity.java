@@ -48,6 +48,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	private ArrayList<MaterialWrap> materiales;
 	private ArrayList<MaterialWrap> materialesVisibles;
+	private ArrayList<MaterialWrap> materialesNuevos;
 	private ArrayList<EmplazamientoDTO> cosAsociados;
 	private ArrayList<EmplazamientoDTO> allCos;
 	private EmplazamientoDTO co;
@@ -61,6 +62,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 	private String selectedRetiranteRut;
 	private LocalMaterialService localService;
 	private String userKey;
+	
 	private Comparator<MaterialWrap> comparator = new Comparator<MaterialWrap>() {
 
 		@Override
@@ -103,6 +105,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		despachoDataProvider.addDataDisplay(view.getDespachoDataDisplay());
 		materiales = new ArrayList<MaterialWrap>();
 		materialesVisibles = new ArrayList<MaterialWrap>();
+		materialesNuevos = new ArrayList<MaterialWrap>();
 		view.setTotalMaterialIngresando(0);
 		view.setTotalMaterialEnLote(0);
 		view.setTotalMaterialDespachando(0);
@@ -435,7 +438,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 		w.setUpdating(false);
 		ingresoDataProvider.getList().add(w);
 		view.setTotalMaterialIngresando(ingresoDataProvider.getList().size());
-		eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
+		materialesNuevos.add(w);
 		updateMaterial(w);
 	}
 
@@ -562,6 +565,8 @@ public class CentroOperacionActivity extends SimceActivity implements
 				@Override
 				public void success(Boolean result) {
 					localService.removeLastIngreso(getKey());
+					materiales.addAll(materialesNuevos);
+					materialesNuevos.clear();
 					ingresoDataProvider.getList().clear();
 					ingresoFile = null;
 					view.setFocusOnIngresoCodigoBox(true);
@@ -569,14 +574,17 @@ public class CentroOperacionActivity extends SimceActivity implements
 					eventBus.fireEvent(new MensajeEvent(
 							"El ingreso se realizó exitosamente",
 							MensajeEvent.MSG_OK, true));
-					
+					setOrUpdateMaterialesList();
 					updateMateriales(codigos);
 					
 				}
 				
 				@Override
 				public void failure(Throwable caught) {
-					eventBus.fireEvent(new MensajeEvent("Los materiales en la lista de ingreso se guardaron localmente.<br />Consulte a un encargado para solucionar el problema antes de realizar otro despacho"));
+					eventBus.fireEvent(new MensajeEvent("Los materiales en la lista de ingreso se guardaron localmente." +
+							"<br />1)Compruebe su conexión a internet."+
+							"<br />2)Compruebe que puede realizar otras acciones en el sistema (intente ingresando nuevamente por el menú lateral para forzar a cargar los materiales del centro)"+
+							"<br />3) Si todo lo anterior funciona normalmente, consulte a un encargado para solucionar el problema"));
 				}
 			});
 		}
@@ -640,6 +648,14 @@ public class CentroOperacionActivity extends SimceActivity implements
 									"El despacho se realizó exitosamente",
 									MensajeEvent.MSG_OK, true));
 						}
+						
+						@Override
+						public void failure(Throwable caught) {
+							eventBus.fireEvent(new MensajeEvent("Los materiales en la lista de despacho se guardaron localmente." +
+									"<br />1)Compruebe su conexión a internet."+
+									"<br />2)Compruebe que puede realizar otras acciones en el sistema (intente ingresando nuevamente por el menú lateral para forzar a cargar los materiales del centro)"+
+									"<br />3) Si todo lo anterior funciona normalmente, consulte a un encargado para solucionar el problema"));
+						}
 
 					});
 		} else if (selectedEtapa != null
@@ -663,6 +679,15 @@ public class CentroOperacionActivity extends SimceActivity implements
 									"El despacho se realizó exitosamente",
 									MensajeEvent.MSG_OK, true));
 						}
+						
+						@Override
+						public void failure(Throwable caught) {
+							eventBus.fireEvent(new MensajeEvent("Los materiales en la lista de despacho se guardaron localmente." +
+									"<br />1)Compruebe su conexión a internet."+
+									"<br />2)Compruebe que puede realizar otras acciones en el sistema (intente ingresando nuevamente por el menú lateral para forzar a cargar los materiales del centro)"+
+									"<br />3) Si todo lo anterior funciona normalmente, consulte a un encargado para solucionar el problema"));
+						}
+						
 					});
 		}
 	}
@@ -810,6 +835,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 	@Override
 	public void onRemoveIngresoItem(MaterialWrap material) {
 		ingresoDataProvider.getList().remove(material);
+		materialesNuevos.remove(material);
 		view.setTotalMaterialIngresando(ingresoDataProvider.getList().size());
 		view.setIngresoSortHandler(new ListHandler<MaterialWrap>(
 				ingresoDataProvider.getList()));
@@ -1228,6 +1254,10 @@ public class CentroOperacionActivity extends SimceActivity implements
 							for (MaterialDTO m : result) {
 									if (mw.getMaterial().getCodigo().equals(m.getCodigo())) {
 										mw.setUpdating(false);
+										if(materialesNuevos.contains(mw)){
+											materialesNuevos.get(materialesNuevos.indexOf(mw)).setMaterial(m);
+											materialesNuevos.get(materialesNuevos.indexOf(mw)).setUpdating(false);
+										}
 										if(materiales.contains(mw)){
 											materiales.get(materiales.indexOf(mw)).setMaterial(m);
 											materiales.get(materiales.indexOf(mw)).setUpdating(false);
@@ -1274,6 +1304,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 						@Override
 						public void failure(Throwable caught) {
+							eventBus.fireEvent(new SoundNotificationEvent(SoundNotificationEvent.ERROR));
 							mw.setUpdating(false);
 							if(materiales.contains(mw)){
 								materiales.get(materiales.indexOf(mw)).setUpdating(false);

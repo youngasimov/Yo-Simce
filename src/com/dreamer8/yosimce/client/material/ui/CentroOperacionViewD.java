@@ -712,12 +712,15 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public String getValue(MaterialWrap o) {
-				return o.getMaterial().getEtapa();
+				if(o.getMaterial().getTransicion() == null){
+					o.getMaterial().setTransicion("En ");
+				}
+				return o.getMaterial().getTransicion()+o.getMaterial().getEtapa();
 			}
 		};
 		etapaColumn.setSortable(true);
 		materialGrid.addColumn(etapaColumn,"Etapa");
-		materialGrid.setColumnWidth(etapaColumn, "100px");
+		materialGrid.setColumnWidth(etapaColumn, "110px");
 		buildUpdateColumn(materialGrid);
 	}
 	
