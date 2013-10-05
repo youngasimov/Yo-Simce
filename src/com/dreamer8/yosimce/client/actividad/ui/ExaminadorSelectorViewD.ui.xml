@@ -25,11 +25,11 @@
 		}
 		
 		.list{
-			width: 310px;
+			display:block;
+			width: 320px;
+			height: 250px;
 			margin-left: auto;
 			margin-right: auto;
-			min-height:200px;
-			max-height: 300px;
 		}
 	</ui:style>
 	<g:DialogBox animationEnabled="true" autoHideEnabled="false" autoHideOnHistoryEventsEnabled="true" glassEnabled="true" modal="true"  ui:field="panel">
@@ -43,11 +43,15 @@
 					<td><g:TextBox ui:field="examinadorBox" addStyleNames='{style.buscar}'/></td>
 				</tr>
 				<tr>
-					<td colspan='2'> <c:CellList ui:field="examinadoresList" addStyleNames='{style.list}'/> </td>
+					<td colspan='2'>
+					<g:ScrollPanel addStyleNames='{style.list}'>
+					<c:CellList ui:field="examinadoresList" width="310"/>
+					</g:ScrollPanel>
+					 </td>
 				</tr>
 				<tr>
 					<td colspan='2'>
-						<g:Button addStyleNames='{style.button}' ui:field="seleccionarBox" text="Reemplazar"/>
+						<g:Button addStyleNames='{style.button}' ui:field="seleccionarBox" text="Agregar"/>
 						<g:Button addStyleNames='{style.button}' ui:field="cancelBox" text="Cancelar"/>
 					</td>
 				</tr>

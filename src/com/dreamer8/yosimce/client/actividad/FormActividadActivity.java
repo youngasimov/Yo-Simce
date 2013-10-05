@@ -116,6 +116,9 @@ public class FormActividadActivity extends SimceActivity implements
 							examinadores = new ArrayList<EvaluacionUsuarioDTO>();
 							view.setRealizadaPorSupervisor(true);
 							onActividadRealizadaPorSupervisor(true);
+						}else{
+							view.setRealizadaPorSupervisor(false);
+							onActividadRealizadaPorSupervisor(false);
 						}
 						titularesIds = new ArrayList<Integer>();
 						for(EvaluacionUsuarioDTO u:examinadores){
@@ -418,6 +421,20 @@ public class FormActividadActivity extends SimceActivity implements
 			view.enableExaminadorActions(false);
 		}else{
 			view.setNombreExaminadorSelected(eval.getUsuario().getNombres()+" "+eval.getUsuario().getApellidoPaterno()+" "+eval.getUsuario().getApellidoMaterno());
+			
+			if(eval.getPresentacionPersonal()==null){
+				eval.setPresentacionPersonal(0);
+			}
+			if(eval.getPuntualidad()==null){
+				eval.setPuntualidad(0);
+			}
+			if(eval.getFormulario()==null){
+				eval.setFormulario(0);
+			}
+			if(eval.getGeneral()==null){
+				eval.setGeneral(0);
+			}
+			
 			view.setEvaluacion(eval.getPresentacionPersonal(),eval.getPuntualidad(), eval.getFormulario(), eval.getGeneral());
 			view.enableExaminadorActions(true);
 		}

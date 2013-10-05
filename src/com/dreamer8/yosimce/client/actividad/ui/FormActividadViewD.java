@@ -556,8 +556,13 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluacionesUsuario) {
 		examinadoresProvider.setList(evaluacionesUsuario);
-		examinadoresSelectionModel.clear();
-		presenter.onExaminadorSelected(null);
+		if(evaluacionesUsuario == null || evaluacionesUsuario.isEmpty()){
+			examinadoresSelectionModel.clear();
+			presenter.onExaminadorSelected(null);
+		}else{
+			examinadoresSelectionModel.setSelected(evaluacionesUsuario.get(0), true);
+		}
+		
 		/*
 		for(EvaluacionExaminador ex:this.evaluaciones){
 			ex.clear();
