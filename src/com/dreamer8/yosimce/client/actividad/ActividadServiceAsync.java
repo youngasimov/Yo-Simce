@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -79,5 +80,12 @@ public interface ActividadServiceAsync {
 
 	void getEstadosActividadFiltro(
 			AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
+
+	void updateEvaluacionSupervisor(
+			EvaluacionSupervisorDTO evaluaciones,
+			AsyncCallback<Boolean> callback);
+
+	void getEvaluacionSupervisores2(
+			AsyncCallback<ArrayList<EvaluacionSupervisorDTO>> callback);
 
 }

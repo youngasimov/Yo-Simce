@@ -10,7 +10,7 @@ import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView.AprobarSupervisoresPresenter;
-import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -32,21 +32,10 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		
-		view.setFormularioFieldUpdater(new FieldUpdater<EvaluacionUsuarioDTO, Boolean>() {
+		view.setPresentacionFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
 			
 			@Override
-			public void update(int index, EvaluacionUsuarioDTO object, Boolean value) {
-				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
-					object.setFormulario((value)?4:0);
-					sinc(object);
-				}
-			}
-		});
-		
-		view.setPresentacionFieldUpdater(new FieldUpdater<EvaluacionUsuarioDTO, Boolean>() {
-			
-			@Override
-			public void update(int index, EvaluacionUsuarioDTO object, Boolean value) {
+			public void update(int index, EvaluacionSupervisorDTO object, Boolean value) {
 				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 					object.setPresentacionPersonal((value)?4:0);
 					sinc(object);
@@ -54,10 +43,10 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 			}
 		});
 		
-		view.setPuntualidadFieldUpdater(new FieldUpdater<EvaluacionUsuarioDTO, Boolean>() {
+		view.setPuntualidadFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
 			
 			@Override
-			public void update(int index, EvaluacionUsuarioDTO object, Boolean value) {
+			public void update(int index, EvaluacionSupervisorDTO object, Boolean value) {
 				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 					object.setPuntualidad((value)?4:0);
 					sinc(object);
@@ -65,10 +54,10 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 			}
 		});
 		
-		view.setGeneralFieldUpdater(new FieldUpdater<EvaluacionUsuarioDTO, Boolean>() {
+		view.setGeneralFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
 			
 			@Override
-			public void update(int index, EvaluacionUsuarioDTO object, Boolean value) {
+			public void update(int index, EvaluacionSupervisorDTO object, Boolean value) {
 				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 					object.setGeneral((value)?4:0);
 					sinc(object);
@@ -81,23 +70,23 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	
 	private void updateSupervisores(boolean block){
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEvaluacionSupervisores")){
-			getFactory().getActividadService().getEvaluacionSupervisores(new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus,block) {
+			getFactory().getActividadService().getEvaluacionSupervisores2(new SimceCallback<ArrayList<EvaluacionSupervisorDTO>>(eventBus,block) {
 
 				@Override
-				public void success(ArrayList<EvaluacionUsuarioDTO> result) {
+				public void success(ArrayList<EvaluacionSupervisorDTO> result) {
 					view.setSupervisores(result);
 				}
 				@Override
 				public void failure(Throwable caught) {
-					view.setSupervisores(new ArrayList<EvaluacionUsuarioDTO>());
+					view.setSupervisores(new ArrayList<EvaluacionSupervisorDTO>());
 				}
 			});
 		}else{
-			view.setSupervisores(new ArrayList<EvaluacionUsuarioDTO>());
+			view.setSupervisores(new ArrayList<EvaluacionSupervisorDTO>());
 		}
 	}
 	
-	private void sinc(EvaluacionUsuarioDTO sup){
+	private void sinc(EvaluacionSupervisorDTO sup){
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 			getFactory().getActividadService().updateEvaluacionSupervisor(sup, new SimceCallback<Boolean>(eventBus,false) {
 	

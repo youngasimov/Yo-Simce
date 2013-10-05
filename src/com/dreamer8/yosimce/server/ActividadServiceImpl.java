@@ -69,6 +69,7 @@ import com.dreamer8.yosimce.shared.dto.ContingenciaDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -2377,6 +2378,23 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			}
 		}
 		return eadtos;
+	}
+
+	@Override
+	public ArrayList<EvaluacionSupervisorDTO> getEvaluacionSupervisores2()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean updateEvaluacionSupervisor(
+			EvaluacionSupervisorDTO evaluaciones)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

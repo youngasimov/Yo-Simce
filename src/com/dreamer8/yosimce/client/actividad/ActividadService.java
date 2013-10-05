@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -59,6 +60,7 @@ public interface ActividadService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
 
+	/*----------obsoleto---------------*/
 	ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
@@ -66,6 +68,16 @@ public interface ActividadService extends RemoteService {
 	Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
+	/*----------obsoleto---------------*/
+	
+	ArrayList<EvaluacionSupervisorDTO> getEvaluacionSupervisores2()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+
+	Boolean updateEvaluacionSupervisor(EvaluacionSupervisorDTO evaluaciones)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+	
 
 	ArrayList<UserDTO> getExaminadores(String search)
 			throws NoAllowedException, NoLoggedException, DBException,
