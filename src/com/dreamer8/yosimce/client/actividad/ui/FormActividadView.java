@@ -79,7 +79,17 @@ public interface FormActividadView extends IsWidget {
 	void setCuestionariosTotalesEnabled(boolean enabled);
 	void setCuestionariosEntregadosEnabled(boolean enabled);
 	void showUsoMaterialComplementarioPanel(boolean visible);
-	void showHelpMensaje(boolean show);
+	
+	void setNombreExaminadorSelected(String nombre);
+	void setRealizadaPorSupervisor(boolean realizada);
+	void setEvaluacion(int pp, int pu, int lf, int ge);
+	int getEvaluacionPresentacionPersonal();
+	int getEvaluacionPuntualidad();
+	int getEvaluacionLlenadoFormulario();
+	int getEvaluacionGeneralExaminador();
+	void showEvaluacionExaminadores(boolean show);
+	void enableExaminadorActions(boolean enable);
+	
 	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
@@ -89,5 +99,11 @@ public interface FormActividadView extends IsWidget {
 		void onEstadoChange(Integer estadoId);
 		void getExaminadoresSuplentes(String Search);
 		void onDocumentoUploaded(String documento);
+		void onExaminadorSelected(EvaluacionUsuarioDTO eval);
+		void setSelectedExaminadorAusente();
+		void updateEvaluacionExaminador();
+		void onActividadRealizadaPorSupervisor(boolean realizadaPorSupervisor);
+		void onAddExaminador(EvaluacionUsuarioDTO examinador);
+		
 	}
 }

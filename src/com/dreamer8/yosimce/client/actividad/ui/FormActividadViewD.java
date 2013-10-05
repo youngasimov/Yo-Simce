@@ -31,15 +31,12 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Command;
@@ -48,16 +45,15 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 public class FormActividadViewD extends Composite implements FormActividadView {
 
@@ -68,12 +64,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			UiBinder<Widget, FormActividadViewD> {
 	}
 	
-	interface Style extends CssResource {
-		String helperTransition();
-		String helperTransition2();
-		String helper();
-	}
-	
+	/*
 	private class EvaluacionExaminador implements IsWidget{
 		private FlexTable table;
 		private Button cambiarButton;
@@ -262,9 +253,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		}
 		
 		
-	}
+	}*/
 
-	@UiField Style style;
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
 	@UiField MenuItem cursoItem;
@@ -285,7 +275,18 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField  Button contingenciaButton;
 	@UiField(provided=true) DataGrid<ContingenciaDTO> contingenciasTable;
 	@UiField DecoratorPanel datosExaminadorPanel;
-	@UiField FlowPanel examinadoresPanel;
+	//@UiField FlowPanel examinadoresPanel;
+	@UiField CheckBox realizadaPorSupervisorBox;
+	@UiField Button agregarExaminadorButton;
+	@UiField Button ausenteButton;
+	@UiField Button updateEvaluacionButton;
+	@UiField(provided=true) CellList<EvaluacionUsuarioDTO> examinadoresList;
+	@UiField HTMLPanel evaluacionExaminadorPanel;
+	@UiField Label examinadorSeleccionadoLabel;
+	@UiField ScoreSelector ppScoreSelector;
+	@UiField ScoreSelector puScoreSelector;
+	@UiField ScoreSelector lfScoreSelector;
+	@UiField ScoreSelector geScoreSelector;
 	@UiField DecoratorPanel horasActividadPanel;
 	@UiField HTMLPanel formPanel;
 	@UiField(provided=true) TimeBox inicioActividadBox;
@@ -313,8 +314,10 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private ExaminadorSelectorViewD examinadorSelector;
 	private boolean uploading;
 	private boolean fileUploaded;
-	private ArrayList<EvaluacionExaminador> evaluaciones;
+	//private ArrayList<EvaluacionExaminador> evaluaciones;
 	private String file;
+	private ListDataProvider<EvaluacionUsuarioDTO> examinadoresProvider;
+	private SingleSelectionModel<EvaluacionUsuarioDTO> examinadoresSelectionModel;
 	
 	private Logger logger = Logger.getLogger("");
 	
@@ -326,13 +329,29 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		inicioPruebaBox = new TimeBox(new Date(0),false);
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
+		examinadoresList = new CellList<EvaluacionUsuarioDTO>(new EvaluacionUsuarioCell());
+		examinadoresProvider = new ListDataProvider<EvaluacionUsuarioDTO>();
+		examinadoresProvider.addDataDisplay(examinadoresList);
+		examinadoresSelectionModel = new SingleSelectionModel<EvaluacionUsuarioDTO>();
+		examinadoresList.setSelectionModel(examinadoresSelectionModel);
 		initWidget(uiBinder.createAndBindUi(this));
+		ppScoreSelector.setGroupName("pp");
+		puScoreSelector.setGroupName("pu");
+		lfScoreSelector.setGroupName("lf");
+		geScoreSelector.setGroupName("ge");
 		procedimientoScoreSelector.setGroupName("procedimiento");
 		examinadorSelector = new ExaminadorSelectorViewD();
 		estadoBox.addItem("seleccione estado actividad","-1");
 		uploading = false;
 		fileUploaded= false;
-		evaluaciones = new ArrayList<FormActividadViewD.EvaluacionExaminador>();
+		//evaluaciones = new ArrayList<FormActividadViewD.EvaluacionExaminador>();
+		examinadoresSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				presenter.onExaminadorSelected(examinadoresSelectionModel.getSelectedObject());
+			}
+		});
 		menu.insertSeparator(2);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
@@ -424,6 +443,40 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		presenter.onAgregarContingencia(c);
 	}
 	
+	@UiHandler("agregarExaminadorButton")
+	void onAgregarExaminadorClick(ClickEvent event){
+		examinadorSelector.show(new Command() {
+			
+			@Override
+			public void execute() {
+				UserDTO u = examinadorSelector.getSelectedUser();
+				EvaluacionUsuarioDTO eval = new EvaluacionUsuarioDTO();
+				eval.setUsuario(u);
+				eval.setFormulario(0);
+				eval.setGeneral(0);
+				eval.setPresentacionPersonal(0);
+				eval.setPuntualidad(0);
+				presenter.onAddExaminador(eval);
+				examinadorSelector.hide();
+			}
+		});
+	}
+	
+	@UiHandler("realizadaPorSupervisorBox")
+	void onEealizadaPorSupervisorBoxChange(ValueChangeEvent<Boolean> event){
+		presenter.onActividadRealizadaPorSupervisor(event.getValue());
+	}
+	
+	@UiHandler("ausenteButton")
+	void onAusenteButtonClick(ClickEvent event){
+		presenter.setSelectedExaminadorAusente();
+	}
+	
+	@UiHandler("updateEvaluacionButton")
+	void onUpdateEvaluacionButtonClick(ClickEvent event){
+		presenter.updateEvaluacionExaminador();
+	}
+	
 	@Override
 	public void setSaveVisibility(boolean visible) {
 		saveItem.setVisible(visible);
@@ -502,7 +555,10 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	@Override
 	public void setExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluacionesUsuario) {
-		
+		examinadoresProvider.setList(evaluacionesUsuario);
+		examinadoresSelectionModel.clear();
+		presenter.onExaminadorSelected(null);
+		/*
 		for(EvaluacionExaminador ex:this.evaluaciones){
 			ex.clear();
 		}
@@ -513,15 +569,18 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			evaluaciones.add(ex);
 			examinadoresPanel.add(ex.asWidget());
 		}
+		*/
 	}
 	
 	@Override
 	public ArrayList<EvaluacionUsuarioDTO> getExaminadores() {
+		/*
 		ArrayList<EvaluacionUsuarioDTO> es = new ArrayList<EvaluacionUsuarioDTO>();
 		for(EvaluacionExaminador ex:evaluaciones){
 			es.add(ex.getEvaluacion());
 		}
-		return es;
+		return es;*/
+		return (ArrayList<EvaluacionUsuarioDTO>)examinadoresProvider.getList();
 	}
 	
 	@Override
@@ -752,6 +811,35 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	public void showForm(boolean show) {
 		formPanel.setVisible(show);
 	}
+
+	@Override
+	public void setTotalAlumnosEnabled(boolean enabled) {
+		totalAlumnosBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void setAlumnosDSEnabled(boolean enabled) {
+		alumnosDsBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void setCuestionariosTotalesEnabled(boolean enabled) {
+		cuestionariosTotalesBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void setCuestionariosEntregadosEnabled(boolean enabled) {
+		cuestionariosEntregadosBox.setEnabled(enabled);
+	}
+
+
+	@Override
+	public void showUsoMaterialComplementarioPanel(boolean visible) {
+		contingenciasPanel.setVisible(visible);
+	}
 	
 	private void buildTable(){
 		Column<ContingenciaDTO,String> contingenciaColumn = new Column<ContingenciaDTO, String>(new TextCell()) {
@@ -814,42 +902,61 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 
 	@Override
-	public void setTotalAlumnosEnabled(boolean enabled) {
-		totalAlumnosBox.setEnabled(enabled);
+	public void setEvaluacion(int pp, int pu, int lf, int ge) {
+		ppScoreSelector.setValue(pp);
+		puScoreSelector.setValue(pu);
+		lfScoreSelector.setValue(lf);
+		geScoreSelector.setValue(ge);
 	}
 
 
 	@Override
-	public void setAlumnosDSEnabled(boolean enabled) {
-		alumnosDsBox.setEnabled(enabled);
+	public int getEvaluacionPresentacionPersonal() {
+		return ppScoreSelector.getValue();
 	}
 
 
 	@Override
-	public void setCuestionariosTotalesEnabled(boolean enabled) {
-		cuestionariosTotalesBox.setEnabled(enabled);
+	public int getEvaluacionPuntualidad() {
+		return puScoreSelector.getValue();
 	}
 
 
 	@Override
-	public void setCuestionariosEntregadosEnabled(boolean enabled) {
-		cuestionariosEntregadosBox.setEnabled(enabled);
+	public int getEvaluacionLlenadoFormulario() {
+		return lfScoreSelector.getValue();
 	}
 
 
 	@Override
-	public void showUsoMaterialComplementarioPanel(boolean visible) {
-		contingenciasPanel.setVisible(visible);
+	public int getEvaluacionGeneralExaminador() {
+		return geScoreSelector.getValue();
+	}
+
+
+	@Override
+	public void showEvaluacionExaminadores(boolean show) {
+		agregarExaminadorButton.setVisible(show);
+		examinadoresList.setVisible(show);
+		evaluacionExaminadorPanel.setVisible(show);
+		
+	}
+
+
+	@Override
+	public void setNombreExaminadorSelected(String nombre) {
+		examinadorSeleccionadoLabel.setText(nombre);
+	}
+
+
+	@Override
+	public void enableExaminadorActions(boolean enabled) {
+		ausenteButton.setEnabled(enabled);
+		updateEvaluacionButton.setEnabled(enabled);
 	}
 	
 	@Override
-	public void showHelpMensaje(boolean show) {
-		/*
-		if(show){
-			pop.showRelativeTo(estadoBox);
-		}else{
-			pop.hide();
-		}
-		*/
+	public void setRealizadaPorSupervisor(boolean realizada) {
+		realizadaPorSupervisorBox.setValue(realizada);
 	}
 }

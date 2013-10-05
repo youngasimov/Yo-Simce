@@ -73,4 +73,7 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/logout.png")
 	public ImageResource logout();
+	
+	@Source("images/star.png")
+	public ImageResource star();
 }

@@ -40,8 +40,11 @@ public class FormActividadActivity extends SimceActivity implements
 	private ArrayList<EstadoAgendaDTO> estados;
 	private ActividadDTO a;
 	private boolean estadoSelected;
+	private EvaluacionUsuarioDTO selected;
 	
 	private ArrayList<EvaluacionUsuarioDTO> examinadores;
+	private ArrayList<Integer> titularesIds;
+	private boolean realizadaPorSupervisor;
 	
 	public FormActividadActivity(ClientFactory factory, FormActividadPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -57,6 +60,7 @@ public class FormActividadActivity extends SimceActivity implements
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		estadoSelected = false;
+		view.enableExaminadorActions(false);
 		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
 		
 		selector = new CursoSelector(getFactory(),eventBus);
@@ -107,19 +111,13 @@ public class FormActividadActivity extends SimceActivity implements
 
 					@Override
 					public void success(ArrayList<EvaluacionUsuarioDTO> result) {
-						examinadores = new ArrayList<EvaluacionUsuarioDTO>();
-						for(EvaluacionUsuarioDTO u:result){
-							EvaluacionUsuarioDTO aux = new EvaluacionUsuarioDTO();
-							aux.setUsuario(u.getUsuario());
-							aux.setFormulario(u.getFormulario());
-							aux.setGeneral(u.getGeneral());
-							aux.setPresentacionPersonal(u.getPresentacionPersonal());
-							aux.setPuntualidad(u.getPuntualidad());
-							aux.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
+						titularesIds = new ArrayList<Integer>();
+						examinadores = result;
+						for(EvaluacionUsuarioDTO u:examinadores){
+							titularesIds.add(u.getUsuario().getId());
 							u.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
-							examinadores.add(aux);
 						}
-						view.setExaminadores(result);
+						view.setExaminadores(examinadores);
 					}
 
 				});
@@ -219,7 +217,7 @@ public class FormActividadActivity extends SimceActivity implements
 		
 		if(a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.REALIZADA) &&
 				Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
-			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = view.getExaminadores();
+			/*ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = view.getExaminadores();
 			
 			for(EvaluacionUsuarioDTO e:examinadoresCorregido){
 				if(e.getEstado()!=EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
@@ -240,6 +238,16 @@ public class FormActividadActivity extends SimceActivity implements
 				if(x.getEstado() == EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
 					examinadoresCorregido.add(x);
 				}
+			}*/
+			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = new ArrayList<EvaluacionUsuarioDTO>();
+			if(realizadaPorSupervisor){
+				for(EvaluacionUsuarioDTO eu:examinadores){
+					if(eu.getEstado() == EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
+						examinadoresCorregido.add(eu);
+					}
+				}
+			}else{
+				examinadoresCorregido.addAll(examinadores);
 			}
 			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),examinadoresCorregido, new SimceCallback<Boolean>(eventBus,false) {
 	
@@ -388,5 +396,76 @@ public class FormActividadActivity extends SimceActivity implements
 		view.setHyperlink(null);
 		a = null;
 		view.showForm(false);
+	}
+
+	@Override
+	public void onExaminadorSelected(EvaluacionUsuarioDTO eval) {
+		selected = eval;
+		if(eval == null){
+			view.setNombreExaminadorSelected("");
+			view.setEvaluacion(0,0, 0, 0);
+			view.enableExaminadorActions(false);
+		}else{
+			view.setNombreExaminadorSelected(eval.getUsuario().getNombres()+" "+eval.getUsuario().getApellidoPaterno()+" "+eval.getUsuario().getApellidoMaterno());
+			view.setEvaluacion(eval.getPresentacionPersonal(),eval.getPuntualidad(), eval.getFormulario(), eval.getGeneral());
+			view.enableExaminadorActions(true);
+		}
+	}
+
+	@Override
+	public void setSelectedExaminadorAusente() {
+		if(titularesIds.contains(selected.getUsuario().getId())){
+			selected.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
+			eventBus.fireEvent(new MensajeEvent("El examinador se registrará como ausente",MensajeEvent.MSG_WARNING,true));
+		}else{
+			examinadores.remove(selected);
+		}
+		setExaminadores();
+		
+	}
+
+	@Override
+	public void updateEvaluacionExaminador() {
+		selected.setPresentacionPersonal(view.getEvaluacionPresentacionPersonal());
+		selected.setPuntualidad(view.getEvaluacionPuntualidad());
+		selected.setFormulario(view.getEvaluacionLlenadoFormulario());
+		selected.setGeneral(view.getEvaluacionGeneralExaminador());
+		eventBus.fireEvent(new MensajeEvent("Evaluación de examinador actualizada",MensajeEvent.MSG_OK,true));
+		setExaminadores();
+	}
+
+	@Override
+	public void onActividadRealizadaPorSupervisor(boolean realizadaPorSupervisor) {
+		this.realizadaPorSupervisor = realizadaPorSupervisor;
+		view.showEvaluacionExaminadores(!realizadaPorSupervisor);
+	}
+	
+	@Override
+	public void onAddExaminador(EvaluacionUsuarioDTO examinador) {
+		
+		if(titularesIds.contains(examinador.getUsuario().getId())){
+			examinador.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+		}else{
+			examinador.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE);
+		}
+		
+		for(EvaluacionUsuarioDTO eu:examinadores){
+			if(eu.getUsuario().getId() == examinador.getUsuario().getId()){
+				return;
+			}
+		}
+		examinadores.add(examinador);
+		setExaminadores();
+		eventBus.fireEvent(new MensajeEvent("Examinador agregado",MensajeEvent.MSG_OK,true));
+	}
+	
+	private void setExaminadores(){
+		ArrayList<EvaluacionUsuarioDTO> aux = new ArrayList<EvaluacionUsuarioDTO>();
+		for(EvaluacionUsuarioDTO eu:examinadores){
+			if(eu.getEstado() != EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
+				aux.add(eu);
+			}
+		}
+		view.setExaminadores(aux);
 	}
 }

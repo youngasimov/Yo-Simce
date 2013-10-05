@@ -1,0 +1,85 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field='name' type='java.lang.String'/>
+	<ui:with field='rut' type='java.lang.String'/>
+	<ui:with field='pp' type='java.lang.String'/>
+	<ui:with field='pu' type='java.lang.String'/>
+	<ui:with field='lf' type='java.lang.String'/>
+	<ui:with field='ge' type='java.lang.String'/>
+	
+	<ui:style>
+		.cell{
+			
+			
+		}
+		.max{
+			width: 100%;
+		}
+		.name{
+			text-align: center;
+			font-weight: bold;
+		}
+		
+		.rut{
+			text-align: center;
+			font-weight: normal;
+		}
+		
+		.score{
+			display:block;
+			position:relative;
+			width: 32px;
+			height: 32px;
+			float: left;
+		}
+		
+		.score span{
+			position: absolute;
+			top: 7px;
+			left: 11px;
+			font-weight: bold;
+		}
+		.score img{
+			position: absolute;
+		}
+		
+	</ui:style>
+	<div class='{style.cell}' ui:field="cell">
+	    <table class='{style.max}'>
+	        <tr>
+	            <td colspan='4' class='{style.name}'>
+	                <ui:text from='{name}'/>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td colspan='4' class='{style.rut}'>
+	                <ui:text from='{rut}'/>
+	            </td>
+	        </tr>
+	        <tr>
+	        	<td>
+	        		<div class='{style.score}'>
+	        			<img src='images/star.png'/><span><ui:text from='{pp}'/></span>
+	        		</div>
+	        	</td>
+	        	<td>
+	        		<div class='{style.score}'>
+	        			<img src='images/star.png'/><span><ui:text from='{pu}'/></span>
+	        		</div>
+	        	</td>
+	        	<td>
+	        		<div class='{style.score}'>
+	        			<img src='images/star.png'/><span><ui:text from='{lf}'/></span>
+	        		</div>
+	        	</td>
+	        	<td>
+	        		<div class='{style.score}'>
+	        			<img src='images/star.png'/><span><ui:text from='{ge}'/></span>
+	        		</div>
+	        	</td>
+	        </tr>
+	        
+	    </table>
+	    
+	</div>
+</ui:UiBinder>

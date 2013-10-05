@@ -9,7 +9,7 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style type='com.dreamer8.yosimce.client.actividad.ui.FormActividadViewD.Style'>
+	<ui:style>
 	
 	.title {
 		font-size: 20px;
@@ -34,7 +34,7 @@
 	
 	.panel1{
 		display:block;
-		width: 520px;
+		width: 600px;
 		margin-top:40px;
 		margin-bottom:40px;
 		margin-left: auto;
@@ -47,7 +47,7 @@
 	}
 	
 	.panel2{
-		width: 500px;
+		width: 590px;
 		margin-left:auto;
 		margin-right:auto;
 	}
@@ -71,37 +71,15 @@
 		width: 4em;
 	}
 	
-	.helper{
-			display:block;
-			position:relative;
-			width: 250px;
-			padding:40px;
-			border: 2px solid #ffa84c;
-			text-align: center;
-			font-size: 18px;
-			font-weight: bold;
-			background: white;
-		}
-		
-		
-		
-		.helperTransition{
-			top: -10px;
-			-webkit-transition: all 100ms ease-in-out;
-			-moz-transition: all 100ms ease-in-out;
-	        -ms-transition: all 100ms ease-in-out;
-	        -o-transition: all 100ms ease-in-out;
-			transition: all 100ms ease-in-out;
-		}
-		
-		.helperTransition2{
-			top: 0;
-			-webkit-transition: all 100ms ease-in-out;
-			-moz-transition: all 100ms ease-in-out;
-	        -ms-transition: all 100ms ease-in-out;
-	        -o-transition: all 100ms ease-in-out;
-			transition: all 100ms ease-in-out;
-		}
+	.evalExaminTitle{
+		width: 100%;
+		text-align: center;
+		font-weight: bold;
+	}
+	
+	.examinadoresList{
+		border: 1px solid black;
+	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
@@ -118,6 +96,7 @@
 				<g:FlowPanel addStyleNames='{style.panel1}'>
 				
 				<g:DecoratorPanel addStyleNames='{style.formPanel}'>
+					
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.table}'>
 							<tr>
@@ -181,17 +160,72 @@
 				<g:HTMLPanel ui:field="formPanel" >
 				
 				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
-					<g:HTMLPanel>
-						<table>
-						<tr>
-							<th><my:HelperLabel text='Evaluación de examinadores' help='Evalue a los examinadores asociados a esta actividad en base a cuatro criterios. Si un examinador no asistió, remplacelo por el que tomó su lugar y evalue al reemplazante' /></th>
-						</tr>
+					<g:DockLayoutPanel unit='PX' width="580px" height="300px">
+						<g:north size='30'>
+							<my:HelperLabel addStyleNames="{style.evalExaminTitle}" text='Evaluación de examinadores' help='Evalue a los examinadores asociados a esta actividad en base a cuatro criterios. Si un examinador no asistió, remplacelo por el que tomó su lugar y evalue al reemplazante' />
+						</g:north>
+						<g:north size='60'>
+							<g:HTMLPanel>
+							<table>
+								<tr>
+									<td>
+										<g:CheckBox ui:field='realizadaPorSupervisorBox' text="Actividad realizada por supervisor"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<g:Button ui:field="agregarExaminadorButton" text="Agregar Examinador"/>
+									</td>
+								</tr>
+							</table>
+							</g:HTMLPanel>
+						</g:north>
+						<g:west size='250'>
+							<c:CellList addStyleNames='{style.examinadoresList}' ui:field='examinadoresList'/>
+						</g:west>
+						<g:center>
+							<g:HTMLPanel ui:field="evaluacionExaminadorPanel">
+								<table>
+									<tr>
+										<td>
+											Examinador:
+										</td>
+										<td>
+											<g:Label ui:field="examinadorSeleccionadoLabel"/>
+										</td>
+									</tr>
+									<tr>
+										<td><my:HelperLabel text='PP:' help='Presentación Personal '/></td>
+										<td> <my:ScoreSelector ui:field="ppScoreSelector" /></td>
+									</tr>
+									<tr>
+										<td><my:HelperLabel text='Pu:' help='Puntualidad '/></td>
+										<td> <my:ScoreSelector ui:field="puScoreSelector" /></td>
+									</tr>
+									<tr>
+										<td><my:HelperLabel text='LF:' help='Llenado de formulario'/></td>
+										<td> <my:ScoreSelector ui:field="lfScoreSelector" /></td>
+									</tr>
+									<tr>
+										<td><my:HelperLabel text='Ge:' help='Nota del desempeño general del examinador'/></td>
+										<td> <my:ScoreSelector ui:field="geScoreSelector" /></td>
+									</tr>
+									<tr>
+										<td><g:Button ui:field="ausenteButton" text="Eliminar"/></td>
+										<td>
+											<g:Button ui:field="updateEvaluacionButton" text="Modificar evaluación"/>
+										</td>
+									</tr>
+								</table>
+							
+							</g:HTMLPanel>
+						</g:center>
+					</g:DockLayoutPanel>
+						<!--
 						<tr>
 							<td><g:FlowPanel addStyleNames='{style.panel2}' ui:field="examinadoresPanel" /></td>
 						</tr>
-						
-						</table>
-					</g:HTMLPanel>
+						-->
 				</g:DecoratorPanel>
 				
 				<g:DecoratorPanel ui:field="horasActividadPanel" addStyleNames='{style.formPanel}'>
