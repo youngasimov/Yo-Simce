@@ -30,9 +30,11 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -149,5 +151,23 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 		Query q = s.createSQLQuery(query).addEntity(Curso.class);
 		cs = q.list();
 		return cs;
+	}
+
+	public Curso findByIdAplicacionANDIdNivelANDIdEstablecimientoANDCodigo(
+			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento,
+			String codigo) {
+
+		Curso c = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT c.* FROM CURSO c"
+				+ " JOIN APLICACION_x_NIVEL axn ON (c.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ ")" + " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " AND c.codigo='" + SecurityFilter.escapeString(codigo) + "'";
+		Query q = s.createSQLQuery(query).addEntity(Curso.class);
+		c = ((Curso) q.uniqueResult());
+		return c;
 	}
 }

@@ -72,9 +72,11 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -145,5 +147,21 @@ public class UsuarioXActividadDAO extends
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
 		uxas = q.list();
 		return uxas;
+	}
+
+	public UsuarioXActividad findByIdActividadANDIdUsuario(Integer idActividad,
+			Integer idUsuario) {
+
+		UsuarioXActividad uxa = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT uxa.* FROM USUARIO_x_ACTIVIDAD uxa"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND uxa.actividad_id="
+				+ SecurityFilter.escapeString(idActividad)
+				+ ")"
+				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
+				+ SecurityFilter.escapeString(idUsuario) + ")";
+		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
+		uxa = ((UsuarioXActividad) q.uniqueResult());
+		return uxa;
 	}
 }

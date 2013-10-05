@@ -114,6 +114,35 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDCodigoCursoANDDia(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idEstablecimiento, String nombreCurso, Integer dia) {
+
+		Actividad a = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " AND c.codigo='" + SecurityFilter.escapeString(nombreCurso)
+				+ "'";
+		if (dia != null) {
+			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
+		}
+
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		a = ((Actividad) q.uniqueResult());
+		return a;
+	}
+
 	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
@@ -1394,6 +1423,27 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " WHERE a.fecha_inicio > now() and a.fecha_inicio < (now()+interval'1 day') and a.actividad_estado_id > 2  ";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		as = q.list();
+		return as;
+	}
+
+	public List<Actividad> findByIdAplicacionANDIdNivelANDIdCursoANDBiggerThanFechaInicio(
+			Integer idAplicacion, Integer idNivel, Integer idCurso,
+			Date fechaInicio) {
+		List<Actividad> as = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "select a.* FROM ACTIVIDAD a "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON a.aplicacion_x_nivel_x_actividad_tipo_id=axnxat.id"
+				+ " JOIN APLICACION_x_NIVEL axn ON (axnxat.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ ")"
+				+ " WHERE a.fecha_inicio >  '"
+				+ SecurityFilter.escapeString(StringUtils
+						.getDateISOString(fechaInicio)) + "' AND a.curso_id="
+				+ SecurityFilter.escapeString(idCurso);
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;
