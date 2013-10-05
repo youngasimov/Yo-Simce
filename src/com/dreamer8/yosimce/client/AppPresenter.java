@@ -107,7 +107,6 @@ public class AppPresenter implements AppView.AppPresenter {
 	
 	private void bind(){
 		
-		
 		Timer t = new Timer(){
 
 			@Override
@@ -126,8 +125,8 @@ public class AppPresenter implements AppView.AppPresenter {
 						if(result == LoginService.SESION_INACTIVA && !notLogged){
 							notLogged = true;
 							update = null;
-							view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Diríjase al sitio principal de YoSimce e ingrese nuevamente.<br /><br /><br />",
-									"Si desea volver al mismo lugar, copie la URL del navegador antes de ir a YoSimce");
+							view.openLoginPopup("Al parecer no se encuentra logueado o su sesión se cerró inesperadamente.<br /><br />Ingrese nuevamente al sistema.<br /><br /><br />",
+									"Si desea volver al mismo lugar, copie la URL del navegador antes.");
 						}else if(result == LoginService.PRONTA_ACTUALIZACION && update == null){
 							factory.getLoginService().getActualizacionDate(new AsyncCallback<String>(){
 
@@ -165,8 +164,14 @@ public class AppPresenter implements AppView.AppPresenter {
 					}
 					
 					@Override
-					public void onFailure(Throwable caught) {
-						logger.log(Level.SEVERE, caught.getLocalizedMessage());
+					public void onFailure(Throwable e) {
+						if(e instanceof IncompatibleRemoteServiceException){
+							view.showErrorMessage("Hemos echo algunas mejoras en la aplicación<br />recargue el sitio para poder obtenerlas", false,0);
+							logger.log(Level.WARNING, e.getLocalizedMessage());
+						}else if(e instanceof InvocationException){
+							view.showErrorMessage("Al parecer estas teniendo problemas de conexión a internet", true,10000);
+							logger.log(Level.WARNING, e.getLocalizedMessage());
+						}
 					}
 				});
 			}};
