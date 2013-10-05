@@ -60,6 +60,7 @@ public class FormActividadActivity extends SimceActivity implements
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		estadoSelected = false;
+		view.showForm(false);
 		view.enableExaminadorActions(false);
 		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
 		
@@ -79,7 +80,6 @@ public class FormActividadActivity extends SimceActivity implements
 		view.showSeccionExaminador(Utils.hasPermisos(getPermisos(),"ActividadService","getEvaluacionExaminadores") &&
 				Utils.hasPermisos(getPermisos(),"ActividadService","updateEvaluacionExaminadores"));
 		
-		view.showForm(true);
 		
 		if(place.getIdCurso()<0){
 			selector.setOnCancelAction(new Command() {
@@ -111,8 +111,13 @@ public class FormActividadActivity extends SimceActivity implements
 
 					@Override
 					public void success(ArrayList<EvaluacionUsuarioDTO> result) {
-						titularesIds = new ArrayList<Integer>();
 						examinadores = result;
+						if(result == null || result.isEmpty()){
+							examinadores = new ArrayList<EvaluacionUsuarioDTO>();
+							view.setRealizadaPorSupervisor(true);
+							onActividadRealizadaPorSupervisor(true);
+						}
+						titularesIds = new ArrayList<Integer>();
 						for(EvaluacionUsuarioDTO u:examinadores){
 							titularesIds.add(u.getUsuario().getId());
 							u.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
@@ -350,9 +355,12 @@ public class FormActividadActivity extends SimceActivity implements
 		}
 		view.setContingencias(a.getContingencias());
 		Date b = new Date();
-		view.setInicioActividad((a.getInicioActividad()!=null)?a.getInicioActividad():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
-		view.setInicioPrueba((a.getInicioPrueba()!=null)?a.getInicioPrueba():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
-		view.setTerminoPrueba((a.getTerminoPrueba()!=null)?a.getTerminoPrueba():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
+		a.setInicioActividad((a.getInicioActividad()!=null)?a.getInicioActividad():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
+		view.setInicioActividad(a.getInicioActividad());
+		a.setInicioPrueba((a.getInicioPrueba()!=null)?a.getInicioPrueba():a.getInicioActividad());
+		view.setInicioPrueba(a.getInicioPrueba());
+		a.setTerminoPrueba((a.getTerminoPrueba()!=null)?a.getTerminoPrueba():a.getInicioPrueba());
+		view.setTerminoPrueba(a.getTerminoPrueba());
 		if(a.getAlumnosTotal()!=null){view.setTotalAlumnos(a.getAlumnosTotal());}
 		if(a.getAlumnosAusentes()!=null){view.setAlumnosAusentes(a.getAlumnosAusentes());}
 		if(a.getAlumnosDs()!=null){view.setAlumnosDS(a.getAlumnosDs());}
@@ -376,14 +384,9 @@ public class FormActividadActivity extends SimceActivity implements
 		//***************Simce TIC***********************
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void clear(){
 		contingencias.clear();
-		Date b = new Date();
 		view.setContingencias(contingencias);
-		view.setInicioActividad(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
-		view.setInicioPrueba(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
-		view.setTerminoPrueba(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));;
 		view.setTotalAlumnos(0);
 		view.setAlumnosAusentes(0);
 		view.setAlumnosDS(0);
@@ -394,6 +397,14 @@ public class FormActividadActivity extends SimceActivity implements
 		view.setDetalleUsoMaterialContingencia("");
 		view.setEvaluacionGeneral(0);
 		view.setHyperlink(null);
+		if(examinadores!=null){
+			examinadores.clear();
+			view.setExaminadores(examinadores);
+		}else{
+			view.setExaminadores(new ArrayList<EvaluacionUsuarioDTO>());
+		}
+		selected = null;
+		view.enableExaminadorActions(false);
 		a = null;
 		view.showForm(false);
 	}
