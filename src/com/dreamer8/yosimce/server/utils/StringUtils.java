@@ -55,6 +55,23 @@ public class StringUtils {
 				+ ":" + forceTwoDigits(sec);
 	}
 
+	public static String getDateISOString(Date date) {
+		if (date == null) {
+			return "";
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int min = calendar.get(Calendar.MINUTE);
+		int sec = calendar.get(Calendar.SECOND);
+		return year + "-" + forceTwoDigits(month + 1) + "-"
+				+ forceTwoDigits(day) + " " + forceTwoDigits(hour) + ":"
+				+ forceTwoDigits(min) + ":" + forceTwoDigits(sec);
+	}
+
 	public static Date getDate(String dateString) {
 		if (dateString == null
 				|| !dateString
@@ -189,23 +206,23 @@ public class StringUtils {
 				+ forceTwoDigits(Integer.valueOf(ds[1]));
 	}
 
-    public static String nombreInicialSegundo(String nombres) {
-        if (nombres == null) {
-            return "";
-        }
-        String[] noms = nombres.split(" ");
-        if (noms.length < 2) {
-            return nombres;
-        }
-        String segNom = null;
-        for (int i = 1; i < noms.length; i++) {
-            if (noms[i] != null && !noms[i].isEmpty()) {
-                segNom = noms[i];
-                break;
-            }
-        }
-        return noms[0] + " " + segNom.substring(0, 1) + ".";
-    }
+	public static String nombreInicialSegundo(String nombres) {
+		if (nombres == null) {
+			return "";
+		}
+		String[] noms = nombres.split(" ");
+		if (noms.length < 2) {
+			return nombres;
+		}
+		String segNom = null;
+		for (int i = 1; i < noms.length; i++) {
+			if (noms[i] != null && !noms[i].isEmpty()) {
+				segNom = noms[i];
+				break;
+			}
+		}
+		return noms[0] + " " + segNom.substring(0, 1) + ".";
+	}
 
 	public static String getMes(int mes) {
 		String[] meses = { "enero", "febrero", "marzo", "abril", "mayo",

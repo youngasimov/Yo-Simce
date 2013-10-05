@@ -401,19 +401,24 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		ManagedSessionContext.bind(s);
 		try {
 
+			s.beginTransaction();
+
 			SesionDAO sdao = new SesionDAO();
 			for (Cookie c : this.getThreadLocalRequest().getCookies()) {
 				if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
-					s.beginTransaction().begin();
+					
 					if (c.getValue() != null) {
 						sdao.deleteById(c.getValue());
 					}
-					s.getTransaction().commit();
+					
 					c.setMaxAge(0);
+					c.setPath("/");
+					c.setValue(null);
 					this.getThreadLocalResponse().addCookie(c);
 					break;
 				}
 			}
+			s.getTransaction().commit();
 			HttpSession session = this.getThreadLocalRequest().getSession();
 			session.setAttribute("usuario", null);
 			session.invalidate();
@@ -421,6 +426,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			result = false;
 			HibernateUtil.rollbackActiveOnly(s);
 			System.err.println(e);
+			e.printStackTrace();
 		} finally {
 			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
 			if (s.isOpen()) {
@@ -606,14 +612,14 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		ManagedSessionContext.bind(s);
 		try {
-			try {
-				AccessControl ac = getAccessControl();
-				if (ac.isLogged()) {
-					udto = getUsuarioActual().getUserDTO();
-				}
-			} catch (NoLoggedException ex) {
-
-			}
+//			try {
+//				AccessControl ac = getAccessControl();
+//				if (ac.isLogged()) {
+//					udto = getUsuarioActual().getUserDTO();
+//				}
+//			} catch (NoLoggedException ex) {
+//
+//			}
 
 			if (udto == null) {
 

@@ -37,6 +37,8 @@ import com.dreamer8.yosimce.server.hibernate.dao.IncidenciaTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MotivoFallaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.SuplenteXCoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioSeleccionDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
@@ -56,6 +58,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.IncidenciaTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.MotivoFalla;
 import com.dreamer8.yosimce.server.hibernate.pojo.SuplenteXCo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
 import com.dreamer8.yosimce.server.utils.AccessControl;
@@ -1422,7 +1425,29 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
 
+				UsuarioSeleccionDAO usdao = new UsuarioSeleccionDAO();
+				UsuarioSeleccion us = null;
+				List<Integer> idReemplazados = new ArrayList<Integer>();
+				List<Actividad> actividades = null;
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				UsuarioTipo examinadorTipo = utdao
+						.findByNombre(UsuarioTipo.EXAMINADOR);
+				UsuarioXActividad uxaNext = null;
+
 				if (evaluaciones != null && !evaluaciones.isEmpty()) {
+					for (EvaluacionUsuarioDTO eudto : evaluaciones) {
+						if (eudto.getEstado().equals(
+								EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
+							idReemplazados.add(eudto.getUsuario().getId());
+						}
+					}
+
+					if (idReemplazados != null && !idReemplazados.isEmpty()) {
+						actividades = adao
+								.findByIdAplicacionANDIdNivelANDIdCursoANDBiggerThanFechaInicio(
+										idAplicacion, idNivel, idCurso,
+										a.getFechaInicio());
+					}
 
 					for (EvaluacionUsuarioDTO eudto : evaluaciones) {
 						udto = eudto.getUsuario();
@@ -1446,20 +1471,59 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 										sxc.setAsistencia(true);
 										sxcDAO.update(sxc);
 
-										uxa = new UsuarioXActividad();
-										uxa.setUsuarioSeleccion(sxc
-												.getUsuarioSeleccion());
-										uxa.setActividad(a);
+										us = sxc.getUsuarioSeleccion();
 									} else {
-										throw new ConsistencyException(
-												"El usuario ("
-														+ udto.getRut()
-														+ ") "
-														+ udto.getNombres()
-														+ " "
-														+ udto.getApellidoPaterno()
-														+ " no ha sido asignado como suplente.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+										us = usdao
+												.findByIdAplicacionANDIdNivelANDIdUsuario(
+														idAplicacion, idNivel,
+														udto.getId());
+										if (us == null) {
+											throw new ConsistencyException(
+													"El usuario ("
+															+ udto.getRut()
+															+ ") "
+															+ udto.getNombres()
+															+ " "
+															+ udto.getApellidoPaterno()
+															+ " no ha sido asignado como examinador para este nivel.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+										}
 									}
+									uxa = new UsuarioXActividad();
+									uxa.setUsuarioSeleccion(us);
+									uxa.setActividad(a);
+
+									if (actividades != null
+											&& !actividades.isEmpty()) {
+										if (idReemplazados != null
+												&& !idReemplazados.isEmpty()) {
+											for (Actividad actividad : actividades) {
+												uxaNext = uxadao
+														.findByIdActividadANDIdUsuario(
+																actividad
+																		.getId(),
+																idReemplazados
+																		.get(0));
+												if (uxaNext != null) {
+													uxaNext.setUsuarioSeleccion(us);
+													uxaNext.setUsuario(u);
+													uxadao.update(uxaNext);
+												}
+											}
+											idReemplazados.remove(0);
+										}
+									}
+
+									// else {
+									// throw new ConsistencyException(
+									// "El usuario ("
+									// + udto.getRut()
+									// + ") "
+									// + udto.getNombres()
+									// + " "
+									// + udto.getApellidoPaterno()
+									// +
+									// " no ha sido asignado como suplente.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+									// }
 
 								} else {
 									throw new ConsistencyException(
@@ -1494,12 +1558,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			}
 		} catch (HibernateException ex) {
 			System.err.println(ex);
+			ex.printStackTrace();
 			HibernateUtil.rollback(s);
 			throw new DBException();
 		} catch (ConsistencyException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
 		} catch (NullPointerException ex) {
+			ex.printStackTrace();
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
 		} finally {

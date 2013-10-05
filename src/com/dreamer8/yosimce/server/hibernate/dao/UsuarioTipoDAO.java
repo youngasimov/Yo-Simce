@@ -17,6 +17,18 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 
+	public UsuarioTipo findByNombre(String nombre) {
+
+		UsuarioTipo ut = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT ut.* FROM USUARIO_TIPO ut"
+				+ " WHERE ut.nombre='" + SecurityFilter.escapeString(nombre)
+				+ "'";
+		Query q = s.createSQLQuery(query).addEntity(UsuarioTipo.class);
+		ut = ((UsuarioTipo) q.uniqueResult());
+		return ut;
+	}
+
 	/**
 	 * @param idAplicacion
 	 * @param idNivel
