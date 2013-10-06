@@ -102,4 +102,11 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 		}
 	}
 
+	@Override
+	public ArrayList<EvaluacionSupervisorDTO> getEvaluacionesByRbd(
+			int supervisorId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

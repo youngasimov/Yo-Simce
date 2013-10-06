@@ -6,7 +6,7 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style type='com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresViewD.Style'>
+	<ui:style type='com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresViewD.AsStyle'>
 	
 	.title {
 		font-size: 20px;

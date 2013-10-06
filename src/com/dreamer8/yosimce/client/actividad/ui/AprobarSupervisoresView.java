@@ -18,6 +18,6 @@ public interface AprobarSupervisoresView extends IsWidget {
 	void setPresenter(AprobarSupervisoresPresenter presenter);
 	
 	public interface AprobarSupervisoresPresenter extends SimcePresenter{
-		
+		ArrayList<EvaluacionSupervisorDTO> getEvaluacionesByRbd(int supervisorId);
 	}
 }
