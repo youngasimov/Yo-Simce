@@ -406,11 +406,11 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			SesionDAO sdao = new SesionDAO();
 			for (Cookie c : this.getThreadLocalRequest().getCookies()) {
 				if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
-					
+
 					if (c.getValue() != null) {
 						sdao.deleteById(c.getValue());
 					}
-					
+
 					c.setMaxAge(0);
 					c.setPath("/");
 					c.setValue(null);
@@ -612,37 +612,34 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		ManagedSessionContext.bind(s);
 		try {
-//			try {
-//				AccessControl ac = getAccessControl();
-//				if (ac.isLogged()) {
-//					udto = getUsuarioActual().getUserDTO();
-//				}
-//			} catch (NoLoggedException ex) {
-//
-//			}
+			// try {
+			// AccessControl ac = getAccessControl();
+			// if (ac.isLogged()) {
+			// udto = getUsuarioActual().getUserDTO();
+			// }
+			// } catch (NoLoggedException ex) {
+			//
+			// }
 
-			if (udto == null) {
+			s.beginTransaction();
 
-				s.beginTransaction();
-
-				UsuarioDAO udao = new UsuarioDAO();
-				Usuario u = udao.findbyUsername(StringUtils.formatRut(user));
-				if (u == null) {
-					throw new NoLoggedException(
-							"Usuario y/o contraseña incorrectos.");
-				}
-				if (checkPassword(u.getPassword(), password, u.getSalt())) {
-					this.getThreadLocalRequest().getSession()
-							.setAttribute("usuario", u);
-
-					udto = u.getUserDTO();
-				} else {
-					throw new NoLoggedException(
-							"Usuario y/o contraseña incorrectos.");
-				}
-
-				s.getTransaction().commit();
+			UsuarioDAO udao = new UsuarioDAO();
+			Usuario u = udao.findbyUsername(StringUtils.formatRut(user));
+			if (u == null) {
+				throw new NoLoggedException(
+						"Usuario y/o contraseña incorrectos.");
 			}
+			if (checkPassword(u.getPassword(), password, u.getSalt())) {
+				this.getThreadLocalRequest().getSession()
+						.setAttribute("usuario", u);
+
+				udto = u.getUserDTO();
+			} else {
+				throw new NoLoggedException(
+						"Usuario y/o contraseña incorrectos.");
+			}
+
+			s.getTransaction().commit();
 		} catch (HibernateException ex) {
 			System.err.println(ex);
 			HibernateUtil.rollback(s);

@@ -2380,21 +2380,184 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return eadtos;
 	}
 
+	/**
+	 * @permiso getEvaluacionSupervisores
+	 */
 	@Override
 	public ArrayList<EvaluacionSupervisorDTO> getEvaluacionSupervisores2()
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		ArrayList<EvaluacionSupervisorDTO> eudtos = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getEvaluacionSupervisores")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+				eudtos = (ArrayList<EvaluacionSupervisorDTO>) uxadao
+						.findEvaluacionSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
+								idAplicacion, idNivel, idActividadTipo,
+								u.getId(), usuarioTipo.getNombre());
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return eudtos;
 	}
 
+	/**
+	 * @permiso updateEvaluacionSupervisor
+	 */
 	@Override
 	public Boolean updateEvaluacionSupervisor(
-			EvaluacionSupervisorDTO evaluaciones)
-			throws NoAllowedException, NoLoggedException, DBException,
-			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			EvaluacionSupervisorDTO evaluaciones) throws NoAllowedException,
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException {
+		Boolean result = true;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "updateEvaluacionSupervisor")) {
 
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (evaluaciones == null) {
+					throw new NullPointerException(
+							"No se ha especificado la evaluación para el supervisor.");
+				}
+
+				if (evaluaciones.getCurso() == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+				if (evaluaciones.getEstablecimiento() == null) {
+					throw new NullPointerException(
+							"No se ha especificado el establecimiento.");
+				}
+
+				UserDTO udto = evaluaciones.getSupervisor();
+				if (udto == null || udto.getId() == null) {
+					throw new NullPointerException(
+							"No se ha especificado el supervisor.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+				UsuarioXActividad uxa = uxadao
+						.findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDIdEstablecimientoANDNombreCurso(
+								idAplicacion, idNivel, idActividadTipo, udto
+										.getId(), Integer.valueOf(evaluaciones
+										.getEstablecimiento()), evaluaciones
+										.getCurso());
+
+				if (uxa == null) {
+					throw new ConsistencyException("El supervisor ("
+							+ udto.getRut() + ") " + udto.getNombres() + " "
+							+ udto.getApellidoPaterno()
+							+ " no está asociado a la actividad del curso ["
+							+ evaluaciones.getEstablecimiento() + "] "
+							+ evaluaciones.getCurso() + ".");
+				}
+				uxa.setNotaPuntualidad(evaluaciones.getPuntualidad());
+				uxa.setNotaPresentacionPersonal(evaluaciones
+						.getPresentacionPersonal());
+				uxa.setNotaDespempeno(evaluaciones.getGeneral());
+				uxa.setAsistencia(true);
+				uxadao.update(uxa);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
+	}
 }
