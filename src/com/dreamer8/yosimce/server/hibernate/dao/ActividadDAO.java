@@ -1134,20 +1134,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							}
 							where += ") ";
 						}
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-						if (!opciones.equals("")) {
-							opciones += " OR ";
-						}
-						// opciones += " contingencia=true";
-						opciones += " false";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-						if (!opciones.equals("")) {
-							opciones += " OR ";
-						}
-						// opciones += " limitante=true";
-						opciones += " false";
+//					} else if (key
+//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
+//						if (!opciones.equals("")) {
+//							opciones += " OR ";
+//						}
+//						// opciones += " contingencia=true";
+//						opciones += " false";
+//					} else if (key
+//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
+//						if (!opciones.equals("")) {
+//							opciones += " OR ";
+//						}
+//						// opciones += " limitante=true";
+//						opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {
@@ -1327,20 +1327,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							}
 							where += ") ";
 						}
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-						if (!opciones.equals("")) {
-							opciones += " OR ";
-						}
-						// opciones += " contingencia=true";
-						opciones += " false";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-						if (!opciones.equals("")) {
-							opciones += " OR ";
-						}
-						// opciones += " limitante=true";
-						opciones += " false";
+//					} else if (key
+//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
+//						if (!opciones.equals("")) {
+//							opciones += " OR ";
+//						}
+//						// opciones += " contingencia=true";
+//						opciones += " false";
+//					} else if (key
+//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
+//						if (!opciones.equals("")) {
+//							opciones += " OR ";
+//						}
+//						// opciones += " limitante=true";
+//						opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {

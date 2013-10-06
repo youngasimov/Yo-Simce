@@ -17,20 +17,22 @@ public interface GeneralService extends RemoteService {
 
 	public DetalleCursoDTO getDetalleCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException,
-			ConsistencyException;
+			ConsistencyException, NullPointerException;
 
 	public ArrayList<SectorDTO> getRegiones() throws NoAllowedException,
-			NoLoggedException, DBException, ConsistencyException;
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException;
 
 	public ArrayList<SectorDTO> getComunas(SectorDTO parent)
 			throws NoAllowedException, NoLoggedException, DBException,
-			ConsistencyException;
+			ConsistencyException, NullPointerException;
 
 	public ArrayList<CursoDTO> getCursos(String rbdSeach)
 			throws NoAllowedException, NoLoggedException, DBException,
-			ConsistencyException;
+			ConsistencyException, NullPointerException;
 
 	public CursoDTO getCurso(Integer idCurso) throws NoAllowedException,
-			NoLoggedException, DBException, ConsistencyException;
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException;
 
 }
