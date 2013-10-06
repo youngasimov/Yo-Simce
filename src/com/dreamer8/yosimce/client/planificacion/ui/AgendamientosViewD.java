@@ -516,5 +516,35 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         totalAlumnosColumn.setSortable(false);
         dataGrid.addColumn(totalAlumnosColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("T. alumnos")));
         dataGrid.setColumnWidth(totalAlumnosColumn, 100, Unit.PX);
+        
+        Column<AgendaPreviewDTO, String> nombreContactoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+            	return (object.getNombreContacto()!=null)?object.getNombreContacto():"";
+            }
+        };
+        nombreContactoColumn.setSortable(false);
+        dataGrid.addColumn(nombreContactoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Nombre contacto")));
+        dataGrid.setColumnWidth(nombreContactoColumn, 200, Unit.PX);
+        
+        Column<AgendaPreviewDTO, String> telefonoContactoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+            	return (object.getTelefonoContacto()!=null)?object.getTelefonoContacto():"";
+            }
+        };
+        telefonoContactoColumn.setSortable(false);
+        dataGrid.addColumn(telefonoContactoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Teléfono contacto")));
+        dataGrid.setColumnWidth(telefonoContactoColumn, 140, Unit.PX);
+        
+        Column<AgendaPreviewDTO, String> emailContactoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+            	return (object.getMailContacto()!=null)?object.getMailContacto():"";
+            }
+        };
+        emailContactoColumn.setSortable(false);
+        dataGrid.addColumn(emailContactoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Email contacto")));
+        dataGrid.setColumnWidth(emailContactoColumn, 200, Unit.PX);
 	}
 }

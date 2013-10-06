@@ -44,6 +44,8 @@ public class FormActividadActivity extends SimceActivity implements
 	
 	private ArrayList<EvaluacionUsuarioDTO> examinadores;
 	private ArrayList<Integer> titularesIds;
+	private ArrayList<Integer> reemplazantesIds;
+	private ArrayList<Integer> reemplazadosIds;
 	private boolean realizadaPorSupervisor;
 	
 	public FormActividadActivity(ClientFactory factory, FormActividadPlace place,HashMap<String, ArrayList<String>> permisos) {
@@ -53,6 +55,9 @@ public class FormActividadActivity extends SimceActivity implements
 		this.view.setPresenter(this);
 		contingencias = new ArrayList<ContingenciaDTO>();
 		tipos = new ArrayList<TipoContingenciaDTO>();
+		titularesIds = new ArrayList<Integer>();
+		reemplazantesIds = new ArrayList<Integer>();
+		reemplazadosIds = new ArrayList<Integer>();
 	}
 	
 	@Override
@@ -62,6 +67,11 @@ public class FormActividadActivity extends SimceActivity implements
 		estadoSelected = false;
 		view.showForm(false);
 		view.enableExaminadorActions(false);
+		
+		titularesIds.clear();
+		reemplazadosIds.clear();
+		reemplazantesIds.clear();
+		
 		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
 		
 		selector = new CursoSelector(getFactory(),eventBus);
@@ -120,12 +130,11 @@ public class FormActividadActivity extends SimceActivity implements
 							view.setRealizadaPorSupervisor(false);
 							onActividadRealizadaPorSupervisor(false);
 						}
-						titularesIds = new ArrayList<Integer>();
 						for(EvaluacionUsuarioDTO u:examinadores){
-							titularesIds.add(u.getUsuario().getId());
 							u.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+							titularesIds.add(u.getUsuario().getId());
 						}
-						view.setExaminadores(examinadores);
+						setExaminadores();
 					}
 
 				});
@@ -225,37 +234,17 @@ public class FormActividadActivity extends SimceActivity implements
 		
 		if(a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.REALIZADA) &&
 				Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
-			/*ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = view.getExaminadores();
-			
-			for(EvaluacionUsuarioDTO e:examinadoresCorregido){
-				if(e.getEstado()!=EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
-					e.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZANTE);
-					for(EvaluacionUsuarioDTO x:examinadores){
-						if(e.getUsuario().getId() == x.getUsuario().getId()){
-							e.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
-							x.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
-							break;
-						}
-					}
-				}else{
-					examinadoresCorregido.remove(e);
-				}
-			}
-			
-			for(EvaluacionUsuarioDTO x:examinadores){
-				if(x.getEstado() == EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
-					examinadoresCorregido.add(x);
-				}
-			}*/
-			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = new ArrayList<EvaluacionUsuarioDTO>();
+			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = null;
 			if(realizadaPorSupervisor){
+				examinadoresCorregido = new ArrayList<EvaluacionUsuarioDTO>();
 				for(EvaluacionUsuarioDTO eu:examinadores){
-					if(eu.getEstado() == EvaluacionUsuarioDTO.ESTADO_REMPLAZADO){
+					if(titularesIds.contains(eu)){
+						eu.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
 						examinadoresCorregido.add(eu);
 					}
 				}
 			}else{
-				examinadoresCorregido.addAll(examinadores);
+				examinadoresCorregido = examinadores;
 			}
 			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),examinadoresCorregido, new SimceCallback<Boolean>(eventBus,false) {
 	
@@ -442,14 +431,13 @@ public class FormActividadActivity extends SimceActivity implements
 
 	@Override
 	public void setSelectedExaminadorAusente() {
+		
 		if(titularesIds.contains(selected.getUsuario().getId())){
 			selected.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
-			eventBus.fireEvent(new MensajeEvent("El examinador se registrará como ausente",MensajeEvent.MSG_WARNING,true));
 		}else{
 			examinadores.remove(selected);
 		}
 		setExaminadores();
-		
 	}
 
 	@Override
@@ -479,7 +467,7 @@ public class FormActividadActivity extends SimceActivity implements
 		
 		for(EvaluacionUsuarioDTO eu:examinadores){
 			if(eu.getUsuario().getId() == examinador.getUsuario().getId()){
-				return;
+				examinadores.remove(eu);
 			}
 		}
 		examinadores.add(examinador);
@@ -496,4 +484,5 @@ public class FormActividadActivity extends SimceActivity implements
 		}
 		view.setExaminadores(aux);
 	}
+	
 }

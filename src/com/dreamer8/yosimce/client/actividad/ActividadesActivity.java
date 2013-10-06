@@ -68,6 +68,25 @@ public class ActividadesActivity extends SimceActivity implements
 		view.setFormularioVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getActividad"));
 		view.setInformacionVisivility(Utils.hasPermisos(getPermisos(), "GeneralService","getDetalleCurso"));
 		
+		
+		if(place.getAplicacionId()==1){
+			view.setColumnWidth(7,"0px");
+			view.setColumnWidth(10,"0px");
+			view.setColumnWidth(2,"70px");
+		}else{
+			view.setColumnWidth(7,"90px");
+			view.setColumnWidth(10,"90px");
+			view.setColumnWidth(2,"0px");
+		}
+		
+		if(place.getAplicacionId()==2 && place.getTipoId()==1){
+			view.setColumnWidth(6,"0px");
+			view.setColumnWidth(7,"0px");
+		}else{
+			view.setColumnWidth(6,"90px");
+		}
+		
+		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getRegiones")){
 			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
 	
@@ -248,16 +267,6 @@ public class ActividadesActivity extends SimceActivity implements
 	private void updateFiltros(){
 		
 		filtros.clear();
-		
-		if(place.isActividadesContintencia()){
-			filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA, "1");
-		}
-		view.setActividadesContingencia(place.isActividadesContintencia());
-		
-		if(place.isActividadesContintenciaInhabilitante()){
-			filtros.put(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE, "1");
-		}
-		view.setActividadesContingenciaInhabilitante(place.isActividadesContintenciaInhabilitante());
 		
 		if(place.isActividadesMaterialContintencia()){
 			filtros.put(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA,"1");

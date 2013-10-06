@@ -21,8 +21,7 @@ public interface ActividadesView extends IsWidget {
 	void setEstadosActividad(ArrayList<EstadoAgendaDTO> estados);
 	
 	void setActividadesMaterialContingencia(boolean value);
-	void setActividadesContingencia(boolean value);
-	void setActividadesContingenciaInhabilitante(boolean value);
+	
 	void setActividadesSincronizadas(boolean value);
 	void setActividadesParcialementeSincronizadas(boolean value);
 	void setActividadesNoSincronizadas(boolean value);
@@ -38,6 +37,8 @@ public interface ActividadesView extends IsWidget {
 	void setSincronizacionVisivility(boolean visible);
 	void setFormularioVisivility(boolean visible);
 	void setInformacionVisivility(boolean visible);
+	
+	void setColumnWidth(int column, String width);
 	
 	public interface ActividadesPresenter extends SimcePresenter{
 		void onExportarClick();
