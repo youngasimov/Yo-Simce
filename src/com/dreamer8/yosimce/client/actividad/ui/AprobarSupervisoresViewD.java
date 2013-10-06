@@ -394,7 +394,7 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 	    pager.setDisplay(dataGrid);
 	    buildTable();
 	    //dataGrid.setTableBuilder(new CustomTableBuilder());
-	    dataGrid.setHeaderBuilder(new CustomHeaderBuilder());
+	    //dataGrid.setHeaderBuilder(new CustomHeaderBuilder());
 	    dataProvider.addDataDisplay(dataGrid);
 		
 		initWidget(uiBinder.createAndBindUi(this));
