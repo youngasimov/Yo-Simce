@@ -139,6 +139,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
 		examinadoresList = new CellList<EvaluacionUsuarioDTO>(new EvaluacionUsuarioCell());
+		examinadoresList.setPageSize(4);
+		examinadoresList.setVisibleRange(0, 4);
 		examinadoresProvider = new ListDataProvider<EvaluacionUsuarioDTO>();
 		examinadoresProvider.addDataDisplay(examinadoresList);
 		examinadoresSelectionModel = new SingleSelectionModel<EvaluacionUsuarioDTO>();
@@ -364,12 +366,18 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void setExaminadores(ArrayList<EvaluacionUsuarioDTO> evaluacionesUsuario) {
 		examinadoresProvider.setList(evaluacionesUsuario);
-		if(evaluacionesUsuario == null || evaluacionesUsuario.isEmpty()){
-			examinadoresSelectionModel.clear();
-			presenter.onExaminadorSelected(null);
-		}else{
-			examinadoresSelectionModel.setSelected(evaluacionesUsuario.get(0), true);
-		}
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(examinadoresProvider.getList() == null || examinadoresProvider.getList().isEmpty()){
+					examinadoresSelectionModel.clear();
+					presenter.onExaminadorSelected(null);
+				}else{
+					examinadoresSelectionModel.setSelected(examinadoresProvider.getList().get(0), true);
+				}
+			}
+		});
 	}
 	
 	@Override

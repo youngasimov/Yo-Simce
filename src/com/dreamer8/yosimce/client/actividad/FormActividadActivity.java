@@ -223,7 +223,7 @@ public class FormActividadActivity extends SimceActivity implements
 			
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad")){
-			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus,false) {
+			getFactory().getActividadService().actualizarActividad(a, new SimceCallback<Boolean>(eventBus,true) {
 	
 				@Override
 				public void success(Boolean result) {
@@ -246,7 +246,7 @@ public class FormActividadActivity extends SimceActivity implements
 			}else{
 				examinadoresCorregido = examinadores;
 			}
-			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),examinadoresCorregido, new SimceCallback<Boolean>(eventBus,false) {
+			getFactory().getActividadService().updateEvaluacionExaminadores(place.getIdCurso(),examinadoresCorregido, new SimceCallback<Boolean>(eventBus,true) {
 	
 				@Override
 				public void success(Boolean result) {

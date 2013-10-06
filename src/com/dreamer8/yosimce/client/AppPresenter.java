@@ -166,7 +166,7 @@ public class AppPresenter implements AppView.AppPresenter {
 					@Override
 					public void onFailure(Throwable e) {
 						if(e instanceof IncompatibleRemoteServiceException){
-							view.showErrorMessage("Hemos echo algunas mejoras en la aplicación<br />recargue el sitio para poder obtenerlas", false,0);
+							view.showErrorMessage("Hemos hecho algunas mejoras en la aplicación<br />recargue el sitio para poder obtenerlas", false,0);
 							logger.log(Level.WARNING, e.getLocalizedMessage());
 						}else if(e instanceof InvocationException){
 							view.showErrorMessage("Al parecer estas teniendo problemas de conexión a internet", true,10000);
