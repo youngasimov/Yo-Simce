@@ -26,6 +26,9 @@ public class AgendaPreviewDTO implements Serializable {
 	private UserDTO examinador;
 	private UserDTO supervisor;
 	private Integer alumnosTotal;
+	private String nombreContacto;
+	private String telefonoContacto;
+	private String mailContacto;
 
 	/**
 	 * 
@@ -122,4 +125,30 @@ public class AgendaPreviewDTO implements Serializable {
 	public void setTotalAlumnos(Integer alumnos) {
 		this.alumnosTotal = alumnos;
 	}
+
+	public String getNombreContacto() {
+		return nombreContacto;
+	}
+
+	public void setNombreContacto(String nombreContacto) {
+		this.nombreContacto = nombreContacto;
+	}
+
+	public String getTelefonoContacto() {
+		return telefonoContacto;
+	}
+
+	public void setTelefonoContacto(String telefonoContacto) {
+		this.telefonoContacto = telefonoContacto;
+	}
+
+	public String getMailContacto() {
+		return mailContacto;
+	}
+
+	public void setMailContacto(String mailContacto) {
+		this.mailContacto = mailContacto;
+	}
+	
+	
 }

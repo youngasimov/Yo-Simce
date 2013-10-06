@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.google.gwt.view.client.ProvidesKey;
 
+@SuppressWarnings("serial")
 public class ActividadPreviewDTO implements Serializable{
 
 	public static final ProvidesKey<ActividadPreviewDTO> KEY_PROVIDER = new ProvidesKey<ActividadPreviewDTO>() {
@@ -24,12 +25,19 @@ public class ActividadPreviewDTO implements Serializable{
 	private String comuna;
 	private Integer cuestionariosPadresApoderadosEntregados;
 	private Integer cuestionariosPadresApoderadosRecibidos;
+	private Integer cuestionariosPadresApoderadosRecibidosAplicados;
 	private Integer alumnosTotales;
 	private Integer alumnosEvaluados;
 	private Integer alumnosSincronizados;
 	private Integer materialDefectuoso;
 	private Boolean contingencia;
 	private DocumentoDTO documento;
+	private String nombreExaminador;
+	private String nombreSupervisor;
+	private String nombreContacto;
+	private String telefonoContacto;
+	private String mailContacto;
+	
 	
 	/**
 	 * indica si la toma de la prueba esta en riesgo en base a la contingencia detectada
@@ -209,5 +217,66 @@ public class ActividadPreviewDTO implements Serializable{
 
 	public void setDocumento(DocumentoDTO documento) {
 		this.documento = documento;
+	}
+
+
+	public String getNombreContacto() {
+		return nombreContacto;
+	}
+
+
+	public void setNombreContacto(String nombreContacto) {
+		this.nombreContacto = nombreContacto;
+	}
+
+
+	public String getTelefonoContacto() {
+		return telefonoContacto;
+	}
+
+
+	public void setTelefonoContacto(String telefonoContacto) {
+		this.telefonoContacto = telefonoContacto;
+	}
+
+
+	public String getMailContacto() {
+		return mailContacto;
+	}
+
+
+	public void setMailContacto(String mailContacto) {
+		this.mailContacto = mailContacto;
+	}
+
+
+	public Integer getCuestionariosPadresApoderadosRecibidosAplicados() {
+		return cuestionariosPadresApoderadosRecibidosAplicados;
+	}
+
+
+	public void setCuestionariosPadresApoderadosRecibidosAplicados(
+			Integer cuestionariosPadresApoderadosRecibidosAplicados) {
+		this.cuestionariosPadresApoderadosRecibidosAplicados = cuestionariosPadresApoderadosRecibidosAplicados;
+	}
+
+
+	public String getNombreExaminador() {
+		return nombreExaminador;
+	}
+
+
+	public void setNombreExaminador(String nombreExaminador) {
+		this.nombreExaminador = nombreExaminador;
+	}
+
+
+	public String getNombreSupervisor() {
+		return nombreSupervisor;
+	}
+
+
+	public void setNombreSupervisor(String nombreSupervisor) {
+		this.nombreSupervisor = nombreSupervisor;
 	}
 }
