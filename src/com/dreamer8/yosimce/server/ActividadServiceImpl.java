@@ -429,7 +429,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 								idAplicacion, idNivel, idActividadTipo, idCurso);
 				if (a != null) {
 					a.setTotalAlumnosPresentes((a.getTotalAlumnosPresentes() != null) ? a
-							.getTotalAlumnosPresentes() : 0 + 1);
+							.getTotalAlumnosPresentes() + 1 : 0);
 				}
 
 				AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
