@@ -861,10 +861,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No existe una actividad para el curso especificado.");
 				}
-				if (a.getFechaInicio() == null) {
-					throw new ConsistencyException(
-							"Esta actividad aún no ha sido agendada.");
-				}
+				// if (a.getFechaInicio() == null) {
+				// throw new ConsistencyException(
+				// "Esta actividad aún no ha sido agendada.");
+				// }
 				adto = a.getActividadDTO(idAplicacion, getBaseURL());
 				s.getTransaction().commit();
 			}
@@ -930,6 +930,11 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un curso..");
 				}
 
+				if (actividad.getFechaActividad() == null) {
+					throw new NullPointerException(
+							"No se ha especificado la fecha de la actividad.");
+				}
+
 				Usuario u = getUsuarioActual();
 
 				s.beginTransaction();
@@ -961,7 +966,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				Calendar c = Calendar.getInstance();
 
-				c.setTime(a.getFechaInicio());
+				// c.setTime(a.getFechaInicio());
+
+				c.setTime(actividad.getFechaActividad());
 
 				int year = c.get(Calendar.YEAR);
 				int month = c.get(Calendar.MONTH);

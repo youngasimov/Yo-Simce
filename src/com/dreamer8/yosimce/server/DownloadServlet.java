@@ -84,7 +84,9 @@ public class DownloadServlet extends HttpServlet {
 			ArchivoDAO adao = new ArchivoDAO();
 			Archivo a = adao.getById(id);
 
-			if (a == null || !a.getTitulo().equals(nombreArchivo)) {
+			if (a == null
+//					|| !a.getTitulo().equals(nombreArchivo)
+					) {
 				showMessage(response, "Error",
 						"No se ha encontrado el archivo.");
 				return;
