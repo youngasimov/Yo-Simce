@@ -201,7 +201,11 @@ public class FormActividadActivity extends SimceActivity implements
 			eventBus.fireEvent(new MensajeEvent("Debe seleccionar el estado de la actividad antes de guardar el formulario",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
-		
+		if(view.getFechaActividad() == null){
+			eventBus.fireEvent(new MensajeEvent("Debe ingresar la fecha en que se realizó la actividad antes de guardar el formulario",MensajeEvent.MSG_WARNING,false));
+			return;
+		}
+		a.setFechaActividad(view.getFechaActividad());
 		a.setInicioActividad(view.getInicioActividad());
 		a.setInicioPrueba(view.getInicioPrueba());
 		a.setTerminoPrueba(view.getTerminoPrueba());
@@ -347,6 +351,8 @@ public class FormActividadActivity extends SimceActivity implements
 		}
 		view.setContingencias(a.getContingencias());
 		Date b = new Date();
+		
+		view.setFechaActividad(a.getFechaActividad());
 		a.setInicioActividad((a.getInicioActividad()!=null)?a.getInicioActividad():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
 		view.setInicioActividad(a.getInicioActividad());
 		a.setInicioPrueba((a.getInicioPrueba()!=null)?a.getInicioPrueba():a.getInicioActividad());
@@ -383,6 +389,7 @@ public class FormActividadActivity extends SimceActivity implements
 		view.setTotalAlumnos(0);
 		view.setAlumnosAusentes(0);
 		view.setAlumnosDS(0);
+		view.setFechaActividad(null);
 		view.setCuestionariosTotales(0);
 		view.setCuestionariosEntregados(0);
 		view.setCuestionariosRecibidos(0);
@@ -442,17 +449,6 @@ public class FormActividadActivity extends SimceActivity implements
 		
 		setExaminadores();
 	}
-
-	/*
-	@Override
-	public void updateEvaluacionExaminador() {
-		selected.setPresentacionPersonal(view.getEvaluacionPresentacionPersonal());
-		selected.setPuntualidad(view.getEvaluacionPuntualidad());
-		selected.setFormulario(view.getEvaluacionLlenadoFormulario());
-		selected.setGeneral(view.getEvaluacionGeneralExaminador());
-		eventBus.fireEvent(new MensajeEvent("Evaluación de examinador actualizada<br />Recuerde guardar el formulario para que los cambios se reflejen en el sistema",MensajeEvent.MSG_OK,true));
-		setExaminadores();
-	}*/
 
 	@Override
 	public void onActividadRealizadaPorSupervisor(boolean realizadaPorSupervisor) {

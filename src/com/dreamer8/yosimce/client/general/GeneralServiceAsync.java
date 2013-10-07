@@ -2,8 +2,11 @@ package com.dreamer8.yosimce.client.general;
 
 import java.util.ArrayList;
 
+import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
+import com.dreamer8.yosimce.shared.dto.EtapaDTO;
+import com.dreamer8.yosimce.shared.dto.ItemReporteMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -20,5 +23,13 @@ public interface GeneralServiceAsync {
 			AsyncCallback<DetalleCursoDTO> callback);
 
 	void getCurso(Integer idCurso, AsyncCallback<CursoDTO> callback);
+
+	void getItemsReporteMaterial(Integer start, Integer max,
+			AsyncCallback<ArrayList<ItemReporteMaterialDTO>> callback);
+
+	void getCentrosOperacion(
+			AsyncCallback<ArrayList<CentroOperacionDTO>> callback);
+
+	void getEtapasMaterial(AsyncCallback<ArrayList<EtapaDTO>> callback);
 
 }

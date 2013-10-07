@@ -16,6 +16,7 @@ public class ActividadDTO implements Serializable {
 	private String comuna;
 	private EstadoAgendaDTO estadoAplicacion;
 	private ArrayList<ContingenciaDTO> contingencias;
+	private Date fechaActividad;
 	private Date inicioActividad;
 	private Date inicioPrueba;
 	private Date terminoPrueba;
@@ -112,6 +113,14 @@ public class ActividadDTO implements Serializable {
 
 	public void setInicioPrueba(Date inicioPrueba) {
 		this.inicioPrueba = inicioPrueba;
+	}
+
+	public Date getFechaActividad() {
+		return fechaActividad;
+	}
+
+	public void setFechaActividad(Date fechaActividad) {
+		this.fechaActividad = fechaActividad;
 	}
 
 	public Date getTerminoPrueba() {

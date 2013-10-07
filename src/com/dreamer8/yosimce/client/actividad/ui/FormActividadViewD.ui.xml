@@ -149,8 +149,12 @@
 								<th colspan='3'>Estado de la actividad</th>
 							</tr>
 							<tr>
-								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la aplicación' /> </td>
+								<td> <my:HelperLabel text='Estado:' help='Seleccione el estado de la actividad' /> </td>
 								<td colspan='3'> <g:ListBox ui:field="estadoBox" /></td>
+							</tr>
+							<tr>
+								<td> <my:HelperLabel text='Fecha de realización:' help='Modifique la fecha de realización si esta no esta ya ingresada' /> </td>
+								<td colspan='3'> <d:DateBox ui:field="dateBox" width="200px"/> </td>
 							</tr>
 							<tr>
 								<th>Tipo contingencia</th>

@@ -179,7 +179,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")));
 		
 		
-		//Por mientras se utiliza mismo permiso que pra editar los permisos
+		//Por mientras se utiliza mismo permiso que para editar los permisos
 		view.setReportesActionItemVisivility(Utils.hasPermisos(permisos,"AdministracionService","getPermisos"));
 		
 		

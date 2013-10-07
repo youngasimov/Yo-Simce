@@ -32,6 +32,10 @@ public interface FormActividadView extends IsWidget {
 	void setExaminadoresSuplentes(ArrayList<UserDTO> examinadores);
 	
 	
+	
+	void setFechaActividad(Date date);
+	Date getFechaActividad();
+	
 	void setInicioActividad(Date hora);
 	Date getInicioActividad();
 	void setInicioPrueba(Date hora);

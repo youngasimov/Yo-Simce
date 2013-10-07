@@ -7,6 +7,7 @@ public interface CentroControlView extends IsWidget {
 
 	
 	void setPresenter(CentroControlPresenter presenter);
+	void getChartApi();
 	
 	public interface CentroControlPresenter extends SimcePresenter{
 		

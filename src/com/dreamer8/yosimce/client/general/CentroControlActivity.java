@@ -24,6 +24,13 @@ public class CentroControlActivity extends SimceActivity implements
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(this.view.asWidget());
+		view.getChartApi();
+	}
+	
+	
+	
+	private void onReady(){
+		
 	}
 
 }

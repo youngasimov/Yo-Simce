@@ -23,5 +23,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-4.2.3.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.3.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-storage-1.1.jar"/>
+	<classpathentry kind="lib" path="/Users/camiloveracortes/workspace/yosimce/war/WEB-INF/lib/gwt-charts-0.9.9.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -32,6 +32,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -51,6 +53,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -79,6 +82,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField Label comunaLabel;
 	@UiField DecoratorPanel estadoAplicacionPanel;
 	@UiField ListBox estadoBox;
+	@UiField DateBox dateBox;
 	@UiField ListBox tipoContingenciaBox;
 	@UiField TextBox detalleContingenciaBox;
 	@UiField CheckBox inhabilitaContingenciaBox;
@@ -146,6 +150,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		examinadoresSelectionModel = new SingleSelectionModel<EvaluacionUsuarioDTO>();
 		examinadoresList.setSelectionModel(examinadoresSelectionModel);
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		dateBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG)));
+		
 		ppScoreSelector.setGroupName("pp");
 		puScoreSelector.setGroupName("pu");
 		lfScoreSelector.setGroupName("lf");
@@ -303,12 +310,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		presenter.setSelectedExaminadorAusente();
 	}
 	
-	/*
-	@UiHandler("updateEvaluacionButton")
-	void onUpdateEvaluacionButtonClick(ClickEvent event){
-		presenter.updateEvaluacionExaminador();
+	@UiHandler("dateBox")
+	void onDateChange(ValueChangeEvent<Date> event){
 	}
-	*/
 	
 	@Override
 	public void setSaveVisibility(boolean visible) {
@@ -324,6 +328,16 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public boolean isFileUploaded() {
 		return fileUploaded;
+	}
+	
+	@Override
+	public Date getFechaActividad() {
+		return dateBox.getValue();
+	}
+	
+	@Override
+	public void setFechaActividad(Date date) {
+		dateBox.setValue(date);
 	}
 	
 	@Override
