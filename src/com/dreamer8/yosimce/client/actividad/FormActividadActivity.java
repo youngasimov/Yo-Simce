@@ -487,6 +487,7 @@ public class FormActividadActivity extends SimceActivity implements
 		}else{
 			selected.setPresentacionPersonal(value);
 		}
+		view.updateEvaluacionExaminador(selected);
 	}
 
 	@Override
@@ -497,7 +498,7 @@ public class FormActividadActivity extends SimceActivity implements
 		}else{
 			selected.setPuntualidad(value);
 		}
-		setExaminadores();
+		view.updateEvaluacionExaminador(selected);
 	}
 
 	@Override
@@ -508,7 +509,7 @@ public class FormActividadActivity extends SimceActivity implements
 		}else{
 			selected.setFormulario(value);
 		}
-		setExaminadores();
+		view.updateEvaluacionExaminador(selected);
 	}
 
 	@Override
@@ -519,7 +520,7 @@ public class FormActividadActivity extends SimceActivity implements
 		}else{
 			selected.setGeneral(value);
 		}
-		setExaminadores();
+		view.updateEvaluacionExaminador(selected);
 	}
 	
 	private void setExaminadores(){

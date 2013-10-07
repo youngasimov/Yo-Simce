@@ -785,4 +785,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	public void setRealizadaPorSupervisor(boolean realizada) {
 		realizadaPorSupervisorBox.setValue(realizada);
 	}
+
+
+
+	@Override
+	public void updateEvaluacionExaminador(EvaluacionUsuarioDTO evaluacion) {
+		examinadoresProvider.getList().set(examinadoresProvider.getList().indexOf(evaluacion), evaluacion);
+	}
 }

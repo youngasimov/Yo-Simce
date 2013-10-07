@@ -48,7 +48,7 @@ public class ScoreSelector extends Composite implements HasValue<Integer> {
 		}
 	}
 	
-	@UiHandler("reallyBadButton")
+	@UiHandler("badButton")
 	void onBadButtonValueChange(ValueChangeEvent<Boolean> event){
 		if(event.getValue()){
 			value = Integer.parseInt(badButton.getFormValue());

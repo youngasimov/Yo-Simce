@@ -89,6 +89,7 @@ public interface FormActividadView extends IsWidget {
 	int getEvaluacionGeneralExaminador();
 	void showEvaluacionExaminadores(boolean show);
 	void enableExaminadorActions(boolean enable);
+	void updateEvaluacionExaminador(EvaluacionUsuarioDTO evaluacion);
 	
 	
 	public interface FormActividadPresenter extends SimcePresenter{
