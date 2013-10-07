@@ -1,14 +1,11 @@
 package com.dreamer8.yosimce.client.actividad.ui;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
-import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
+import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.ClickableTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.Cell.Context;
@@ -18,31 +15,37 @@ import com.google.gwt.dom.builder.shared.TableCellBuilder;
 import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.Style.OutlineStyle;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
-import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.AbstractCellTableBuilder;
 import com.google.gwt.user.cellview.client.AbstractHeaderOrFooterBuilder;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.cellview.client.AbstractCellTable.Style;
 import com.google.gwt.user.cellview.client.ColumnSortList.ColumnSortInfo;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
 
-public class AprobarSupervisoresViewD extends Composite implements AprobarSupervisoresView {
+public class AprobarSupervisoresViewD extends Composite implements
+		AprobarSupervisoresView {
 
 	private static AprobarSupervisoresViewDUiBinder uiBinder = GWT
 			.create(AprobarSupervisoresViewDUiBinder.class);
@@ -51,430 +54,401 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 			UiBinder<Widget, AprobarSupervisoresViewD> {
 	}
 	
-	 interface AsStyle extends CssResource {
-		 String childCell();
-		 String groupHeaderCell();
-	 }
-	 
-	 private class CustomHeaderBuilder extends
-		AbstractHeaderOrFooterBuilder<EvaluacionSupervisorDTO> {
-
-		 private Header<String> rutHeader = new TextHeader("RUT");
-		 private Header<String> nombreHeader = new TextHeader("Nombre");
-		 private Header<String> rbdHeader = new TextHeader("RBD");
-		 private Header<String> establecimientoHeader = new TextHeader("Establecimiento");
-		 private Header<String> cursoHeader = new TextHeader("Curso");
-		 private Header<String> puHeader = new TextHeader("Puntualidad");
-		 private Header<String> ppHeader = new TextHeader("Presentación personal");
-		 private Header<String> geHeader = new TextHeader("Cumplió");
-
-	public CustomHeaderBuilder() {
-		super(dataGrid, false);
-		setSortIconStartOfLine(false);
+	interface Resources extends ClientBundle {
+	    @Source("aprobarsupervisores.css")
+	    AsStyle style();
 	}
 
-	@Override
-	protected boolean buildHeaderOrFooterImpl() {
-		Style s = dataGrid.getResources().style();
-		TableRowBuilder tr = startRow();
-	      tr.startTH().colSpan(1).rowSpan(1)
-	          .className(s.header() + " " + s.firstColumnHeader());
-	      tr.endTH();
-		
-		/*
-		 * Name group header. Associated with the last name column, so
-		 * clicking on the group header sorts by last name.
+	interface AsStyle extends CssResource {
+		String evenSupervisorRowStyle();
+		String supervisorRowStyle();
+		String evenSupervisorRowStyle2();
+		String supervisorRowStyle2();
+		String selected();
+		String groupHeaderCell();
+	}
+
+	private class CustomHeaderBuilder extends
+			AbstractHeaderOrFooterBuilder<EvaluacionSupervisorDTO> {
+
+		private Header<String> rutHeader = new TextHeader("RUT");
+		private Header<String> nombreHeader = new TextHeader("Nombre");
+		private Header<String> rbdHeader = new TextHeader("RBD");
+		private Header<String> establecimientoHeader = new TextHeader(
+				"Establecimiento");
+		private Header<String> cursoHeader = new TextHeader("Curso");
+		private Header<String> puHeader = new TextHeader("Puntualidad");
+		private Header<String> ppHeader = new TextHeader(
+				"Presentación personal");
+		private Header<String> geHeader = new TextHeader("Cumplió");
+
+		public CustomHeaderBuilder() {
+			super(dataGrid, false);
+			setSortIconStartOfLine(false);
+		}
+
+		@Override
+		protected boolean buildHeaderOrFooterImpl() {
+			TableRowBuilder tr = startRow();
+
+			/*
+			 * Name group header. Associated with the last name column, so
+			 * clicking on the group header sorts by last name.
+			 */
+			TableCellBuilder th = tr.startTH().colSpan(2)
+					.className(resources.style().groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white")
+					.endStyle();
+			th.text("Supervisor").endTH();
+
+			th = tr.startTH().colSpan(3).className(resources.style().groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white")
+					.endStyle();
+			th.text("Establecimiento").endTH();
+
+			th = tr.startTH().colSpan(3).className(resources.style().groupHeaderCell());
+			th.style().trustedProperty("border-right", "10px solid white")
+					.endStyle();
+			th.text("Evaluación").endTH();
+
+			// Get information about the sorted column.
+			ColumnSortList sortList = dataGrid.getColumnSortList();
+			ColumnSortInfo sortedInfo = (sortList.size() == 0) ? null
+					: sortList.get(0);
+			Column<?, ?> sortedColumn = (sortedInfo == null) ? null
+					: sortedInfo.getColumn();
+			boolean isSortAscending = (sortedInfo == null) ? false : sortedInfo
+					.isAscending();
+
+			// Add column headers.
+			tr = startRow();
+			buildHeader(tr, rutHeader, rutColumn, sortedColumn,
+					isSortAscending, true, false);
+			buildHeader(tr, nombreHeader, nombreColumn, sortedColumn,
+					isSortAscending, false, false);
+			buildHeader(tr, rbdHeader, rbdColumn, sortedColumn,
+					isSortAscending, false, false);
+			buildHeader(tr, establecimientoHeader, establecimientoColumn,
+					sortedColumn, isSortAscending, false, false);
+			buildHeader(tr, cursoHeader, cursoColumn, sortedColumn,
+					isSortAscending, false, false);
+			buildHeader(tr, puHeader, puntualidadColumn, sortedColumn,
+					isSortAscending, false, false);
+			buildHeader(tr, ppHeader, presentacionColumn, sortedColumn,
+					isSortAscending, false, false);
+			buildHeader(tr, geHeader, generalColumn, sortedColumn,
+					isSortAscending, false, true);
+			tr.endTR();
+
+			return true;
+		}
+
+		/**
+		 * Renders the header of one column, with the given options.
+		 * 
+		 * @param out
+		 *            the table row to build into
+		 * @param header
+		 *            the {@link Header} to render
+		 * @param column
+		 *            the column to associate with the header
+		 * @param sortedColumn
+		 *            the column that is currently sorted
+		 * @param isSortAscending
+		 *            true if the sorted column is in ascending order
+		 * @param isFirst
+		 *            true if this the first column
+		 * @param isLast
+		 *            true if this the last column
 		 */
-		TableCellBuilder th = tr.startTH().colSpan(2).className(style.groupHeaderCell());
-		th.style().trustedProperty("border-right", "10px solid white").endStyle();
-		th.text("Supervisor").endTH();
+		private void buildHeader(TableRowBuilder out, Header<?> header,
+				Column<EvaluacionSupervisorDTO, ?> column,
+				Column<?, ?> sortedColumn, boolean isSortAscending,
+				boolean isFirst, boolean isLast) {
+			// Choose the classes to include with the element.
+			Style style = dataGrid.getResources().style();
+			boolean isSorted = (sortedColumn == column);
+			StringBuilder classesBuilder = new StringBuilder(style.header());
+			if (isFirst) {
+				classesBuilder.append(" " + style.firstColumnHeader());
+			}
+			if (isLast) {
+				classesBuilder.append(" " + style.lastColumnHeader());
+			}
+			if (column.isSortable()) {
+				classesBuilder.append(" " + style.sortableHeader());
+			}
+			if (isSorted) {
+				classesBuilder.append(" "
+						+ (isSortAscending ? style.sortedHeaderAscending()
+								: style.sortedHeaderDescending()));
+			}
 
-		th = tr.startTH().colSpan(3).className(style.groupHeaderCell());
-		th.style().trustedProperty("border-right", "10px solid white").endStyle();
-		th.text("Establecimiento").endTH();
+			// Create the table cell.
+			TableCellBuilder th = out.startTH().className(
+					classesBuilder.toString());
+
+			// Associate the cell with the column to enable sorting of the
+			// column.
+			enableColumnHandlers(th, column);
+
+			// Render the header.
+			Context context = new Context(0, 2, header.getKey());
+			renderSortableHeader(th, context, header, isSorted, isSortAscending);
+
+			// End the table cell.
+			th.endTH();
+		}
+	}
+
+	private class CustomTableBuilder extends
+			AbstractCellTableBuilder<EvaluacionSupervisorDTO> {
+
+		private final String rowStyle;
+		private final String rowStyleOdd;
+		private final String selectedRowStyle;
+		private final String cell;
+		private final String cellStyle;
+		private final String cellStyle2;
+		private final String cellStyleOdd;
+		private final String cellStyleOdd2;
+		private final String selectedCellStyle;
 		
-		th = tr.startTH().colSpan(3).className(style.groupHeaderCell());
-		th.style().trustedProperty("border-right", "10px solid white").endStyle();
-		th.text("Evaluación").endTH();
+		
+		private int current;
+		private boolean even;
 
-		// Get information about the sorted column.
-		ColumnSortList sortList = dataGrid.getColumnSortList();
-		ColumnSortInfo sortedInfo = (sortList.size() == 0) ? null
-				: sortList.get(0);
-		Column<?, ?> sortedColumn = (sortedInfo == null) ? null
-				: sortedInfo.getColumn();
-		boolean isSortAscending = (sortedInfo == null) ? false : sortedInfo
-				.isAscending();
+		public CustomTableBuilder() {
+			super(dataGrid);
+			even = false;
+			current = -1;
+			// Cache styles for faster access.
+			Style s = dataGrid.getResources().style();
+			rowStyle = s.evenRow();
+			rowStyleOdd = s.oddRow();
+			selectedRowStyle = " " + s.selectedRow();
+			cell =s.cell() + " " +s.evenRowCell();
+			cellStyle = s.cell() + " " +resources.style().evenSupervisorRowStyle();
+			cellStyle2 = s.cell() + " "+resources.style().evenSupervisorRowStyle2();
+			cellStyleOdd = s.cell() + " " + resources.style().supervisorRowStyle();
+			cellStyleOdd2 = s.cell() + " " + resources.style().supervisorRowStyle2();
+			selectedCellStyle =s.cell()+ " " + resources.style().selected();			
+		}
 
-		// Add column headers.
-		tr = startRow();
-		buildHeader(tr, rutHeader, rutColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, nombreHeader, nombreColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, rbdHeader, rbdColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, establecimientoHeader, establecimientoColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, cursoHeader, cursoColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, puHeader, puntualidadColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, ppHeader, presentacionColumn, sortedColumn,isSortAscending, false, false);
-		buildHeader(tr, geHeader, generalColumn, sortedColumn,isSortAscending, false, false);
-		tr.endTR();
+		@Override
+		public void buildRowImpl(EvaluacionSupervisorDTO rowValue,
+				int absRowIndex) {
+			
+			if(rowValue.getSupervisor().getId()!=current){
+				current = rowValue.getSupervisor().getId();
+				even = !even;
+			}
+			buildSupervisorRow(rowValue, absRowIndex,false);
+			
+		}
 
-		return true;
+		private void buildSupervisorRow(EvaluacionSupervisorDTO rowValue,int absRowIndex, boolean isFirst) {
+			SelectionModel<? super EvaluacionSupervisorDTO> selectionModel = dataGrid
+					.getSelectionModel();
+			boolean isSelected = (selectionModel == null || rowValue == null) ? false
+					: selectionModel.isSelected(rowValue);
+			boolean isEven = absRowIndex % 2 == 0;
+			
+			String evenCell ="";
+			String oddCell ="";
+			if(even){
+				evenCell = cellStyle;
+				oddCell = cellStyleOdd;
+			}else{
+				evenCell = cellStyle2;
+				oddCell = cellStyleOdd2;
+			}
+			
+			
+			StringBuilder trClasses = new StringBuilder();
+			String cellStyles = cell;
+			if(isEven){
+				trClasses.append(rowStyle+" "+evenCell);
+				//cellStyles = eventCell;
+			}else{
+				trClasses.append(rowStyleOdd+" "+oddCell);
+				//cellStyles = oddCell;
+			}
+			
+			if (isSelected) {
+				trClasses.append(selectedRowStyle);
+				cellStyles = selectedCellStyle;
+			}
+			
+			TableRowBuilder row = startRow();
+			row.className(trClasses.toString());
+
+			int i = -1;
+
+			TableCellBuilder td = null;			
+			// show Rut Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), rutColumn, rowValue);
+			td.endTD();
+
+			// show Nombre Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), nombreColumn, rowValue);
+			td.endTD();
+
+			// show RBD Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), rbdColumn, rowValue);
+			td.endTD();
+
+			// show Establecimiento Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), establecimientoColumn,
+					rowValue);
+			td.endTD();
+			// show curso Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), cursoColumn, rowValue);
+			td.endTD();
+
+			// show puntualidad Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), puntualidadColumn,
+					rowValue);
+			td.endTD();
+
+			// show puntualidad Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), presentacionColumn,
+					rowValue);
+			td.endTD();
+
+			// show puntualidad Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), generalColumn, rowValue);
+			td.endTD();
+			
+			row.endTR();
+		}
 	}
 
-	/**
-	 * Renders the header of one column, with the given options.
-	 * 
-	 * @param out
-	 *            the table row to build into
-	 * @param header
-	 *            the {@link Header} to render
-	 * @param column
-	 *            the column to associate with the header
-	 * @param sortedColumn
-	 *            the column that is currently sorted
-	 * @param isSortAscending
-	 *            true if the sorted column is in ascending order
-	 * @param isFirst
-	 *            true if this the first column
-	 * @param isLast
-	 *            true if this the last column
-	 */
-	private void buildHeader(TableRowBuilder out, Header<?> header,Column<EvaluacionSupervisorDTO, ?> column,
-			Column<?, ?> sortedColumn, boolean isSortAscending,
-			boolean isFirst, boolean isLast) {
-		// Choose the classes to include with the element.
-		Style style = dataGrid.getResources().style();
-		boolean isSorted = (sortedColumn == column);
-		StringBuilder classesBuilder = new StringBuilder(style.header());
-		if (isFirst) {
-			classesBuilder.append(" " + style.firstColumnHeader());
-		}
-		if (isLast) {
-			classesBuilder.append(" " + style.lastColumnHeader());
-		}
-		if (column.isSortable()) {
-			classesBuilder.append(" " + style.sortableHeader());
-		}
-		if (isSorted) {
-			classesBuilder.append(" "
-					+ (isSortAscending ? style.sortedHeaderAscending()
-							: style.sortedHeaderDescending()));
-		}
-
-		// Create the table cell.
-		TableCellBuilder th = out.startTH().className(
-				classesBuilder.toString());
-
-		// Associate the cell with the column to enable sorting of the
-		// column.
-		enableColumnHandlers(th, column);
-
-		// Render the header.
-		Context context = new Context(0, 2, header.getKey());
-		renderSortableHeader(th, context, header, isSorted, isSortAscending);
-
-		// End the table cell.
-		th.endTH();
-	}
-}
-	 
-	 /*
-	  private class CustomTableBuilder extends AbstractCellTableBuilder<EvaluacionSupervisorDTO> {
-
-	    private final String childCell = " " + style.childCell();
-	    private final String rowStyle;
-	    private final String selectedRowStyle;
-	    private final String cellStyle;
-	    private final String selectedCellStyle;
-	    private final String evenRow1Style;
-	    private final String evenRow2Style;
-	    private final String oddRow1Style;
-	    private final String oddRow2Style;
-	    
-	    private boolean even;
-
-	    @SuppressWarnings("deprecation")
-	    public CustomTableBuilder() {
-	      super(dataGrid);
-	      even = true;
-	      // Cache styles for faster access.
-	      Style style = dataGrid.getResources().style();
-	      rowStyle = style.evenRow();
-	      selectedRowStyle = " " + style.selectedRow();
-	      cellStyle = style.cell() + " " + style.evenRowCell();
-	      selectedCellStyle = " " + style.selectedRowCell();
-	      evenRow1Style = "";
-	      evenRow2Style = "";
-	      oddRow1Style = "";
-	      oddRow2Style = "";
-	    }
-
-	    @SuppressWarnings("deprecation")
-	    @Override
-	    public void buildRowImpl(EvaluacionSupervisorDTO rowValue, int absRowIndex) {
-	      buildSupervisorRow(rowValue, absRowIndex, false);
-
-	      if (presenter!=null || showingRbds.contains(rowValue.getSupervisor().getId())) {
-	        ArrayList<EvaluacionSupervisorDTO> rbds = presenter.getEvaluacionesByRbd(rowValue.getSupervisor().getId());
-	        for (EvaluacionSupervisorDTO rbd : rbds) {
-	          buildSupervisorRow(rbd, absRowIndex, true);
-	        }
-	      }
-	    }
-	    */
-	    /*
-	    private void buildSupervisorRow(EvaluacionSupervisorDTO rowValue, int absRowIndex, boolean isRbd){
-	    	SelectionModel<? super EvaluacionSupervisorDTO> selectionModel = dataGrid.getSelectionModel();
-	    	boolean isSelected =(selectionModel == null || rowValue == null) ? false : selectionModel.isSelected(rowValue);
-	    	boolean isEven = absRowIndex % 2 == 0;
-	    	StringBuilder trClasses = new StringBuilder(rowStyle);
-	    	if (isSelected) {
-	    		trClasses.append(selectedRowStyle);
-	    	}
-	    	
-	    	String cellStyles = cellStyle;
-		    if (isSelected) {
-		    	cellStyles += selectedCellStyle;
-		    }
-		    if (!isSupervisor) {
-		    	cellStyles += childCell;
-		    }
-		    TableRowBuilder row = startRow();
-		     row.className(trClasses.toString());
-		     
-		     TableCellBuilder td = row.startTD();
-		      td.className(cellStyles);
-		      if (isSupervisor) {
-		        td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-		        renderCell(td, createContext(1), viewFriendsColumn, rowValue);
-		      }
-		      td.endTD();
-	    }
-
-	    /**
-	     * Build a row.
-	     * 
-	     * @param rowValue the contact info
-	     * @param absRowIndex the absolute row index
-	     *@param isFriend true if this is a subrow, false if a top level row
-	     
-	    @SuppressWarnings("deprecation")
-	    private void buildContactRow(ContactInfo rowValue, int absRowIndex, boolean isFriend) {
-	      // Calculate the row styles.
-	      SelectionModel<? super ContactInfo> selectionModel = dataGrid.getSelectionModel();
-	      boolean isSelected =
-	          (selectionModel == null || rowValue == null) ? false : selectionModel
-	              .isSelected(rowValue);
-	      boolean isEven = absRowIndex % 2 == 0;
-	      StringBuilder trClasses = new StringBuilder(rowStyle);
-	      if (isSelected) {
-	        trClasses.append(selectedRowStyle);
-	      }
-
-	      // Calculate the cell styles.
-	      String cellStyles = cellStyle;
-	      if (isSelected) {
-	        cellStyles += selectedCellStyle;
-	      }
-	      if (isFriend) {
-	        cellStyles += childCell;
-	      }
-
-	      TableRowBuilder row = startRow();
-	      row.className(trClasses.toString());
-*/
-	      /*
-	       * Checkbox column.
-	       * 
-	       * This table will uses a checkbox column for selection. Alternatively,
-	       * you can call dataGrid.setSelectionEnabled(true) to enable mouse
-	       * selection.
-	       
-	      TableCellBuilder td = row.startTD();
-	      td.className(cellStyles);
-	      td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	      if (!isFriend) {
-	        renderCell(td, createContext(0), checkboxColumn, rowValue);
-	      }
-	      td.endTD();
-*/
-	      /*
-	       * View friends column.
-	       * 
-	       * Displays a link to "show friends". When clicked, the list of friends is
-	       * displayed below the contact.
-	       
-	      td = row.startTD();
-	      td.className(cellStyles);
-	      if (!isFriend) {
-	        td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	        renderCell(td, createContext(1), viewFriendsColumn, rowValue);
-	      }
-	      td.endTD();
-
-	      // First name column.
-	      td = row.startTD();
-	      td.className(cellStyles);
-	      td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	      if (isFriend) {
-	        td.text(rowValue.getFirstName());
-	      } else {
-	        renderCell(td, createContext(2), firstNameColumn, rowValue);
-	      }
-	      td.endTD();
-
-	      // Last name column.
-	      td = row.startTD();
-	      td.className(cellStyles);
-	      td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	      if (isFriend) {
-	        td.text(rowValue.getLastName());
-	      } else {
-	        renderCell(td, createContext(3), lastNameColumn, rowValue);
-	      }
-	      td.endTD();
-
-	      // Age column.
-	      td = row.startTD();
-	      td.className(cellStyles);
-	      td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	      td.text(NumberFormat.getDecimalFormat().format(rowValue.getAge())).endTD();
-
-	      // Category column.
-	      td = row.startTD();
-	      td.className(cellStyles);
-	      td.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	      if (isFriend) {
-	        td.text(rowValue.getCategory().getDisplayName());
-	      } else {
-	        renderCell(td, createContext(5), categoryColumn, rowValue);
-	      }
-	      td.endTD();
-
-	      // Address column.
-	      td = row.startTD();
-	      td.className(cellStyles);
-	      DivBuilder div = td.startDiv();
-	      div.style().outlineStyle(OutlineStyle.NONE).endStyle();
-	      div.text(rowValue.getAddress()).endDiv();
-	      td.endTD();
-
-	      row.endTR();
-	    }
-	  }
-	*/
-	@UiField AsStyle style;
-
-	@UiField OverMenuBar menu;
-	@UiField MenuItem menuItem;
-	@UiField(provided = true) DataGrid<EvaluacionSupervisorDTO> dataGrid;
-	@UiField(provided = true) SimplePager pager;
+	@UiField
+	OverMenuBar menu;
+	@UiField
+	MenuItem menuItem;
+	@UiField
+	SuggestBox supervisorSearchBox;
+	@UiField
+	Button clean;
+	@UiField
+	Button search;
+	@UiField(provided = true)
+	DataGrid<EvaluacionSupervisorDTO> dataGrid;
+	@UiField(provided = true)
+	SimplePager pager;
 	
-	private Column<EvaluacionSupervisorDTO,String> showRbdsColumn;
-	private Column<EvaluacionSupervisorDTO,String> rutColumn;
-	private Column<EvaluacionSupervisorDTO,String> nombreColumn;
-	private Column<EvaluacionSupervisorDTO,String> rbdColumn;
-	private Column<EvaluacionSupervisorDTO,String> establecimientoColumn;
-	private Column<EvaluacionSupervisorDTO,String> cursoColumn;
-	private Column<EvaluacionSupervisorDTO,Boolean> puntualidadColumn;
-	private Column<EvaluacionSupervisorDTO,Boolean> presentacionColumn;
-	private Column<EvaluacionSupervisorDTO,Boolean> generalColumn;
+	private Resources resources;
+
+	private Column<EvaluacionSupervisorDTO, String> rutColumn;
+	private Column<EvaluacionSupervisorDTO, String> nombreColumn;
+	private Column<EvaluacionSupervisorDTO, String> rbdColumn;
+	private Column<EvaluacionSupervisorDTO, String> establecimientoColumn;
+	private Column<EvaluacionSupervisorDTO, String> cursoColumn;
+	private Column<EvaluacionSupervisorDTO, Boolean> puntualidadColumn;
+	private Column<EvaluacionSupervisorDTO, Boolean> presentacionColumn;
+	private Column<EvaluacionSupervisorDTO, Boolean> generalColumn;
 	private ListDataProvider<EvaluacionSupervisorDTO> dataProvider;
-	
-	private final Set<Integer> showingRbds = new HashSet<Integer>();
-	
+	//private SingleSelectionModel<EvaluacionSupervisorDTO> selectionModel;
+
 	private AprobarSupervisoresPresenter presenter;
-	
+
 	public AprobarSupervisoresViewD() {
-		dataGrid = new DataGrid<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
-		dataProvider = new ListDataProvider<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
+		resources = GWT.create(Resources.class);
+	    resources.style().ensureInjected();
+		dataGrid = new DataGrid<EvaluacionSupervisorDTO>(
+				EvaluacionSupervisorDTO.KEY_PROVIDER);
+		dataGrid.setPageSize(100);
+		//selectionModel = new SingleSelectionModel<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
+		//dataGrid.setSelectionModel(selectionModel);
+		dataProvider = new ListDataProvider<EvaluacionSupervisorDTO>(
+				EvaluacionSupervisorDTO.KEY_PROVIDER);
 		dataGrid.setAutoHeaderRefreshDisabled(true);
-		SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-	    pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
-	    pager.setDisplay(dataGrid);
-	    buildTable();
-	    //dataGrid.setTableBuilder(new CustomTableBuilder());
-	    //dataGrid.setHeaderBuilder(new CustomHeaderBuilder());
-	    dataProvider.addDataDisplay(dataGrid);
+		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
+		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+		SimplePager.Resources pagerResources = GWT
+				.create(SimplePager.Resources.class);
+		pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
+				true);
+		pager.setDisplay(dataGrid);
+		buildTable();
 		
+		dataGrid.addColumn(rutColumn);
+		dataGrid.addColumn(nombreColumn);
+		dataGrid.addColumn(rbdColumn);
+		dataGrid.addColumn(establecimientoColumn);
+		dataGrid.addColumn(cursoColumn);
+		dataGrid.addColumn(puntualidadColumn);
+		dataGrid.addColumn(presentacionColumn);
+		dataGrid.addColumn(generalColumn);
+		
+		
+		dataGrid.setTableBuilder(new CustomTableBuilder());
+		dataGrid.setHeaderBuilder(new CustomHeaderBuilder());
+		
+		dataProvider.addDataDisplay(dataGrid);
 		initWidget(uiBinder.createAndBindUi(this));
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
-			
+
 			@Override
 			public void execute() {
 				presenter.toggleMenu();
 			}
 		});
+		
 	}
 	
+	@UiHandler("search")
+	void onSearchClick(ClickEvent event){
+		presenter.filter(supervisorSearchBox.getValue());
+	}
+	
+	@UiHandler("clean")
+	void onCleanFilterClick(ClickEvent event){
+		supervisorSearchBox.setValue("");
+		presenter.filter(null);
+	}
+
 	@Override
 	public void setPresenter(AprobarSupervisoresPresenter presenter) {
 		this.presenter = presenter;
 	}
-	
+
 	@Override
 	public void setSupervisores(ArrayList<EvaluacionSupervisorDTO> supervisores) {
-		dataGrid.setPageSize(supervisores.size()+1);
-		dataGrid.setVisibleRange(0, supervisores.size()+1);
-		dataGrid.setRowCount(supervisores.size());
-		dataGrid.setRowData(supervisores);
+		dataProvider.setList(supervisores);
 	}
-	
-	@Override
-	public void setGeneralFieldUpdater(
-			FieldUpdater<EvaluacionSupervisorDTO, Boolean> updater) {
-		generalColumn.setFieldUpdater(updater);
-	}
-	
-	@Override
-	public void setPuntualidadFieldUpdater(
-			FieldUpdater<EvaluacionSupervisorDTO, Boolean> updater) {
-		puntualidadColumn.setFieldUpdater(updater);
-	}
-	
-	@Override
-	public void setPresentacionFieldUpdater(
-			FieldUpdater<EvaluacionSupervisorDTO, Boolean> updater) {
-		presentacionColumn.setFieldUpdater(updater);
-	}
-	
-	private void buildTable(){
-	    SafeHtmlRenderer<String> anchorRenderer = new AbstractSafeHtmlRenderer<String>() {
-	      @Override
-	      public SafeHtml render(String object) {
-	        SafeHtmlBuilder sb = new SafeHtmlBuilder();
-	        sb.appendHtmlConstant("(<a href=\"javascript:;\">").appendEscaped(object)
-	            .appendHtmlConstant("</a>)");
-	        return sb.toSafeHtml();
-	      }
-	    };
-	    showRbdsColumn = new Column<EvaluacionSupervisorDTO, String>(new ClickableTextCell(anchorRenderer)) {
-	      @Override
-	      public String getValue(EvaluacionSupervisorDTO o) {
-	        if (showingRbds.contains(o.getSupervisor().getId())) {
-	          return "ocultar";
-	        } else {
-	          return "expandir";
-	        }
-	      }
-	    };
-	    
-	    showRbdsColumn.setFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, String>() {
-	      @Override
-	      public void update(int index, EvaluacionSupervisorDTO o, String value) {
-	        if (showingRbds.contains(o.getSupervisor().getId())) {
-	          showingRbds.remove(o.getSupervisor().getId());
-	        } else {
-	          showingRbds.add(o.getSupervisor().getId());
-	        }
-	        // Redraw the modified row.
-	        dataGrid.redrawRow(index);
-	      }
-	    });
-	    dataGrid.setColumnWidth(0, 10, Unit.EM);
+
+	private void buildTable() {
+
+		int i = -1;
 		
-	    
 		rutColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
 
 			@Override
@@ -483,19 +457,21 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 			}
 		};
 		rutColumn.setSortable(false);
-		dataGrid.setColumnWidth(1, 13, Unit.EM);
-		
-		
-		nombreColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
+		dataGrid.setColumnWidth(++i, 10, Unit.EM);
+
+		nombreColumn = new Column<EvaluacionSupervisorDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(EvaluacionSupervisorDTO o) {
-				return o.getSupervisor().getNombres()+ " "+o.getSupervisor().getApellidoPaterno()+" "+o.getSupervisor().getApellidoMaterno() ;
+				return ViewUtils.limitarString(o.getSupervisor().getNombres() + " "
+						+ o.getSupervisor().getApellidoPaterno() + " "
+						+ o.getSupervisor().getApellidoMaterno(),30);
 			}
 		};
 		nombreColumn.setSortable(false);
-		dataGrid.setColumnWidth(2, 25, Unit.EM);
-		
+		dataGrid.setColumnWidth(++i, 26, Unit.EM);
+
 		rbdColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
 
 			@Override
@@ -504,19 +480,21 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 			}
 		};
 		rbdColumn.setSortable(false);
-		dataGrid.setColumnWidth(3, 5, Unit.EM);
-		
-		establecimientoColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
+		dataGrid.setColumnWidth(++i, 5, Unit.EM);
+
+		establecimientoColumn = new Column<EvaluacionSupervisorDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(EvaluacionSupervisorDTO o) {
-				return o.getEstablecimiento();
+				return ViewUtils.limitarString(o.getEstablecimiento(),25);
 			}
 		};
 		establecimientoColumn.setSortable(false);
-		dataGrid.setColumnWidth(4, 25, Unit.EM);
-		
-		cursoColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
+		dataGrid.setColumnWidth(++i, 25, Unit.EM);
+
+		cursoColumn = new Column<EvaluacionSupervisorDTO, String>(
+				new TextCell()) {
 
 			@Override
 			public String getValue(EvaluacionSupervisorDTO o) {
@@ -524,38 +502,81 @@ public class AprobarSupervisoresViewD extends Composite implements AprobarSuperv
 			}
 		};
 		cursoColumn.setSortable(false);
-		dataGrid.setColumnWidth(5, 3, Unit.EM);
-		
-		puntualidadColumn = new Column<EvaluacionSupervisorDTO, Boolean>(new CheckboxCell()) {
+		dataGrid.setColumnWidth(++i, 6, Unit.EM);
+
+		puntualidadColumn = new Column<EvaluacionSupervisorDTO, Boolean>(
+				new CheckboxCell()) {
 
 			@Override
 			public Boolean getValue(EvaluacionSupervisorDTO o) {
-				return o.getPuntualidad() != null && o.getPuntualidad()>0;
+				return o.getPuntualidad() != null && o.getPuntualidad() > 0;
 			}
 		};
 		puntualidadColumn.setSortable(false);
-		dataGrid.setColumnWidth(6, 10, Unit.EM);
-		
-		presentacionColumn = new Column<EvaluacionSupervisorDTO, Boolean>(new CheckboxCell()) {
+		puntualidadColumn.setFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
+
+			@Override
+			public void update(int index, EvaluacionSupervisorDTO object,
+					Boolean value) {
+				object.setPuntualidad((value)?4:0);
+				presenter.sinc(object);
+				dataProvider.refresh();
+			}
+		});
+		dataGrid.setColumnWidth(++i, 8, Unit.EM);
+
+		presentacionColumn = new Column<EvaluacionSupervisorDTO, Boolean>(
+				new CheckboxCell()) {
 
 			@Override
 			public Boolean getValue(EvaluacionSupervisorDTO o) {
-				return o.getPresentacionPersonal()!=null && o.getPresentacionPersonal()>0;
+				return o.getPresentacionPersonal() != null
+						&& o.getPresentacionPersonal() > 0;
 			}
 		};
 		presentacionColumn.setSortable(false);
-		dataGrid.setColumnWidth(6, 10, Unit.EM);
-		
-		generalColumn = new Column<EvaluacionSupervisorDTO, Boolean>(new CheckboxCell()) {
+		presentacionColumn.setFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
+
+			@Override
+			public void update(int index, EvaluacionSupervisorDTO object,
+					Boolean value) {
+				object.setPresentacionPersonal((value)?4:0);
+				presenter.sinc(object);
+				dataProvider.refresh();
+				
+			}
+		});
+		dataGrid.setColumnWidth(++i, 12, Unit.EM);
+
+		generalColumn = new Column<EvaluacionSupervisorDTO, Boolean>(
+				new CheckboxCell()) {
 
 			@Override
 			public Boolean getValue(EvaluacionSupervisorDTO o) {
-				return o.getGeneral()!= null && o.getGeneral()>0;
+				return o.getGeneral() != null && o.getGeneral() > 0;
 			}
 		};
 		generalColumn.setSortable(false);
-		dataGrid.setColumnWidth(6, 10, Unit.EM);
-		
+		generalColumn.setFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
+
+			@Override
+			public void update(int index, EvaluacionSupervisorDTO object,
+					Boolean value) {
+				object.setGeneral((value)?4:0);
+				presenter.sinc(object);
+				dataProvider.refresh();
+				
+			}
+		});
+		dataGrid.setColumnWidth(++i, 7, Unit.EM);
+
+	}
+
+	@Override
+	public void setSuggestions(ArrayList<String> suggestions) {
+		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)supervisorSearchBox.getSuggestOracle();
+		mwso.clear();
+		mwso.addAll(suggestions);
 	}
 
 }

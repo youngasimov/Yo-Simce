@@ -11,7 +11,6 @@ import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView.AprobarSupervisoresPresenter;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
-import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -20,6 +19,8 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 
 	private final AprobarSupervisoresView view;
 	private EventBus eventBus; 
+	
+	private ArrayList<EvaluacionSupervisorDTO> evaluaciones;
 	
 	public AprobarSupervisoresActivity(ClientFactory factory, SimcePlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -31,41 +32,7 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
-		
-		view.setPresentacionFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
-			
-			@Override
-			public void update(int index, EvaluacionSupervisorDTO object, Boolean value) {
-				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
-					object.setPresentacionPersonal((value)?4:0);
-					sinc(object);
-				}
-			}
-		});
-		
-		view.setPuntualidadFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
-			
-			@Override
-			public void update(int index, EvaluacionSupervisorDTO object, Boolean value) {
-				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
-					object.setPuntualidad((value)?4:0);
-					sinc(object);
-				}
-			}
-		});
-		
-		view.setGeneralFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, Boolean>() {
-			
-			@Override
-			public void update(int index, EvaluacionSupervisorDTO object, Boolean value) {
-				if(Utils.hasPermisos(AprobarSupervisoresActivity.this.eventBus, getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
-					object.setGeneral((value)?4:0);
-					sinc(object);
-				}
-			}
-		});
-		
-		updateSupervisores(false);
+		updateSupervisores(true);
 	}
 	
 	private void updateSupervisores(boolean block){
@@ -74,19 +41,34 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 
 				@Override
 				public void success(ArrayList<EvaluacionSupervisorDTO> result) {
-					view.setSupervisores(result);
+					
+					evaluaciones = result;
+					view.setSupervisores(evaluaciones);
+					ArrayList<String> sugestions = new ArrayList<String>();
+					ArrayList<Integer> supervisores = new ArrayList<Integer>();
+					for(EvaluacionSupervisorDTO e:evaluaciones){
+						if(!supervisores.contains(e.getSupervisor().getId())){
+							supervisores.add(e.getSupervisor().getId());
+							sugestions.add(e.getSupervisor().getNombres()+" "+e.getSupervisor().getApellidoPaterno()+" "+e.getSupervisor().getApellidoMaterno());
+						}
+					}
+					view.setSuggestions(sugestions);
+					
 				}
 				@Override
 				public void failure(Throwable caught) {
-					view.setSupervisores(new ArrayList<EvaluacionSupervisorDTO>());
+					evaluaciones = new ArrayList<EvaluacionSupervisorDTO>();
+					view.setSupervisores(evaluaciones);
 				}
 			});
 		}else{
-			view.setSupervisores(new ArrayList<EvaluacionSupervisorDTO>());
+			evaluaciones = new ArrayList<EvaluacionSupervisorDTO>();
+			view.setSupervisores(evaluaciones);
 		}
 	}
 	
-	private void sinc(EvaluacionSupervisorDTO sup){
+	@Override
+	public void sinc(EvaluacionSupervisorDTO sup){
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 			getFactory().getActividadService().updateEvaluacionSupervisor(sup, new SimceCallback<Boolean>(eventBus,false) {
 	
@@ -103,10 +85,22 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	}
 
 	@Override
-	public ArrayList<EvaluacionSupervisorDTO> getEvaluacionesByRbd(
-			int supervisorId) {
-		// TODO Auto-generated method stub
-		return null;
+	public void filter(String filter) {
+		
+		if(filter == null || filter.isEmpty()){
+			view.setSupervisores(evaluaciones);
+			return;
+		}
+		
+		ArrayList<EvaluacionSupervisorDTO> aux = new ArrayList<EvaluacionSupervisorDTO>();
+		String name;
+		for(EvaluacionSupervisorDTO e:evaluaciones){
+			name = e.getSupervisor().getNombres()+" "+e.getSupervisor().getApellidoPaterno()+" "+e.getSupervisor().getApellidoMaterno();
+			if(name.contains(filter)){
+				aux.add(e);
+			}
+		}
+		view.setSupervisores(aux);
 	}
 
 }

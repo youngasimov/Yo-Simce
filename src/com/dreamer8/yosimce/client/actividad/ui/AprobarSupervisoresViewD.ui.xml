@@ -6,7 +6,7 @@
 	
 	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
 	
-	<ui:style type='com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresViewD.AsStyle'>
+	<ui:style>
 	
 	.title {
 		font-size: 20px;
@@ -24,19 +24,7 @@
 		font-size: 12px;
 	}
 
-	.childCell {
-  		padding-left: 30px;
-  		border: 2px solid #eee !important;
-  		background: #eee !important;
-	}
-
-	.groupHeaderCell {
-  		padding: 1px 15px;
-  		color: #4b4a4a;
-  		text-shadow: #ddf 1px 1px 0;
-  		font-size: 130%;
-  		background: #eee;
-	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -44,10 +32,22 @@
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Evaluación supervisores</div> ></g:MenuItem>
 			</my:OverMenuBar>
 		</g:north>
+		<g:north size="40">
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td>Buscar supervisor:</td>
+						<td><g:SuggestBox ui:field="supervisorSearchBox" width="400px"/> </td>
+						<td><g:Button ui:field="search" text="Buscar"/> </td>
+						<td><g:Button ui:field="clean" text="Limpiar"/> </td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
 		</g:center>
-		<g:south size="3">
+		<g:south size="30">
       		<g:HTMLPanel>
         		<table style="width:100%">
           			<tr>
