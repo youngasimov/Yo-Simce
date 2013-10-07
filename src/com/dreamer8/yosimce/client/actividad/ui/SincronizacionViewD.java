@@ -20,14 +20,17 @@ import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -53,6 +56,7 @@ public class SincronizacionViewD extends Composite implements
 	@UiField MenuItem materialDefectuosoItem;
 	@UiField(provided = true) DataGrid<SincAlumnoDTO> dataGrid;
 	@UiField HTML alumnosHtml;
+	@UiField Button saveButton;
 
 	
 	private ArrayList<SincAlumnoDTO> alumnos;
@@ -120,6 +124,11 @@ public class SincronizacionViewD extends Composite implements
 		
 		buildTable();
 	}
+	
+	@UiHandler("saveButton")
+	void onSaveButtonClick(ClickEvent event){
+		presenter.onGuardarTodoButtonClick();
+	}
 
 	@UiFactory
 	public static SimceResources getResources() {
@@ -148,6 +157,7 @@ public class SincronizacionViewD extends Composite implements
 	@Override
 	public void setGuardarButtonEnabled(boolean enabled) {
 		guardarItem.setEnabled(enabled);
+		saveButton.setEnabled(enabled);
 	}
 	
 	@Override

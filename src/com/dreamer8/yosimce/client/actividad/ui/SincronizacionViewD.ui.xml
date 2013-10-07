@@ -48,6 +48,9 @@
            				<td align='center'>
              					alumnos totales: <g:HTML addStyleNames='{style.footer}' ui:field="alumnosHtml" />
            				</td>
+           				<td align="right">
+             					<g:Button ui:field="saveButton" text="Guardar"/>
+           				</td>
          			</tr>
        			</table>
      		</g:HTMLPanel>

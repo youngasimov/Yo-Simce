@@ -183,9 +183,6 @@ public class SincronizacionActivity extends SimceActivity implements
 
 	@Override
 	public void onGuardarTodoButtonClick() {
-		for(SincAlumnoDTO x:alumnos){
-			x.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
-		}
 		
 		view.setGuardarButtonEnabled(false);
 		
@@ -221,7 +218,7 @@ public class SincronizacionActivity extends SimceActivity implements
 	
 				@Override
 				public void success(Boolean result) {
-					alumno.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
+					alumno.setSinc(SincAlumnoDTO.SINC_EXITOSA);
 					view.updateTableRow(alumno);
 				}
 				
