@@ -36,11 +36,11 @@
 		<g:HTMLPanel addStyleNames='{style.dialogbox}'>
 			<table class='{style.panel}'>
 				<tr>
-					<th colspan='2'>Selector de curso</th>
+					<th colspan='2'>Selector de Curso</th>
 				</tr>
 				<tr>
-					<td> <my:HelperLabel text='Buscar:' help='Ingrese el rbd del establecimiento que esta buscando'/> </td>
-					<td><g:TextBox ui:field="rbdBox" addStyleNames='{style.buscar}'/></td>
+					<td> <my:HelperLabel text='Buscar:' help='Ingrese el rbd o nombre del establecimiento que esta buscando'/> </td>
+					<td><my:PlaceHolderTextBox ui:field="rbdBox" addStyleNames='{style.buscar}' placeholder='Ingrese nombre establecimiento o RBD'/></td>
 				</tr>
 				<tr>
 					<td colspan='2'> <c:CellList ui:field="cursosList" addStyleNames='{style.list}'/> </td>
