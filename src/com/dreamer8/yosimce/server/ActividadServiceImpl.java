@@ -2566,10 +2566,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
 				UsuarioXActividad uxa = uxadao
 						.findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDIdEstablecimientoANDNombreCurso(
-								idAplicacion, idNivel, idActividadTipo, udto
-										.getId(), Integer.valueOf(evaluaciones
-										.getEstablecimiento()), evaluaciones
-										.getCurso());
+								idAplicacion, idNivel, idActividadTipo,
+								udto.getId(),
+								Integer.valueOf(evaluaciones.getRbd()),
+								evaluaciones.getCurso());
 
 				if (uxa == null) {
 					throw new ConsistencyException("El supervisor ("
@@ -2583,7 +2583,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				uxa.setNotaPresentacionPersonal(evaluaciones
 						.getPresentacionPersonal());
 				uxa.setNotaDespempeno(evaluaciones.getGeneral());
-				uxa.setAsistencia(true);
+				uxa.setAsistencia(evaluaciones.getGeneral() != null
+						&& evaluaciones.getGeneral() > 0);
 				uxadao.update(uxa);
 
 				s.getTransaction().commit();
