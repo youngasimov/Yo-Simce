@@ -365,6 +365,7 @@ public class FormActividadActivity extends SimceActivity implements
 		view.setHyperlink(a.getDocumento());
 		
 		//***************Simce TIC***********************
+		
 		view.setTotalAlumnosEnabled(place.getAplicacionId() != 2);
 		view.setAlumnosDSEnabled(place.getAplicacionId() != 2);
 		view.showUsoMaterialComplementarioPanel(place.getAplicacionId() != 2);
@@ -434,21 +435,24 @@ public class FormActividadActivity extends SimceActivity implements
 		
 		if(titularesIds.contains(selected.getUsuario().getId())){
 			selected.setEstado(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO);
+			eventBus.fireEvent(new MensajeEvent("El examinador se registrará como ausente<br />Recuerde guardar el formulario para que los cambios se reflejen en el sistema",MensajeEvent.MSG_OK,true));
 		}else{
 			examinadores.remove(selected);
 		}
+		
 		setExaminadores();
 	}
 
+	/*
 	@Override
 	public void updateEvaluacionExaminador() {
 		selected.setPresentacionPersonal(view.getEvaluacionPresentacionPersonal());
 		selected.setPuntualidad(view.getEvaluacionPuntualidad());
 		selected.setFormulario(view.getEvaluacionLlenadoFormulario());
 		selected.setGeneral(view.getEvaluacionGeneralExaminador());
-		eventBus.fireEvent(new MensajeEvent("Evaluación de examinador actualizada",MensajeEvent.MSG_OK,true));
+		eventBus.fireEvent(new MensajeEvent("Evaluación de examinador actualizada<br />Recuerde guardar el formulario para que los cambios se reflejen en el sistema",MensajeEvent.MSG_OK,true));
 		setExaminadores();
-	}
+	}*/
 
 	@Override
 	public void onActividadRealizadaPorSupervisor(boolean realizadaPorSupervisor) {
@@ -472,7 +476,50 @@ public class FormActividadActivity extends SimceActivity implements
 		}
 		examinadores.add(examinador);
 		setExaminadores();
-		eventBus.fireEvent(new MensajeEvent("Examinador agregado",MensajeEvent.MSG_OK,true));
+		eventBus.fireEvent(new MensajeEvent("Examinador agregado<br />Recuerde guardar el formulario para que los cambios se reflejen en el sistema",MensajeEvent.MSG_OK,true));
+	}
+	
+	@Override
+	public void onEvaluacionPresentacionPersonalChange(int value) {
+		if(selected == null){
+			eventBus.fireEvent(new MensajeEvent("Seleccione un examinador antes de realizar la evaluación",MensajeEvent.MSG_OK,true));
+			return;
+		}else{
+			selected.setPresentacionPersonal(value);
+		}
+	}
+
+	@Override
+	public void onEvaluacionPuntualidadChange(int value) {
+		if(selected == null){
+			eventBus.fireEvent(new MensajeEvent("Seleccione un examinador antes de realizar la evaluación",MensajeEvent.MSG_OK,true));
+			return;
+		}else{
+			selected.setPuntualidad(value);
+		}
+		setExaminadores();
+	}
+
+	@Override
+	public void onEvaluacionFormularioChange(int value) {
+		if(selected == null){
+			eventBus.fireEvent(new MensajeEvent("Seleccione un examinador antes de realizar la evaluación",MensajeEvent.MSG_OK,true));
+			return;
+		}else{
+			selected.setFormulario(value);
+		}
+		setExaminadores();
+	}
+
+	@Override
+	public void onEvaluacionGeneralChange(int value) {
+		if(selected == null){
+			eventBus.fireEvent(new MensajeEvent("Seleccione un examinador antes de realizar la evaluación",MensajeEvent.MSG_OK,true));
+			return;
+		}else{
+			selected.setGeneral(value);
+		}
+		setExaminadores();
 	}
 	
 	private void setExaminadores(){
@@ -484,5 +531,4 @@ public class FormActividadActivity extends SimceActivity implements
 		}
 		view.setExaminadores(aux);
 	}
-	
 }

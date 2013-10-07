@@ -88,7 +88,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField CheckBox realizadaPorSupervisorBox;
 	@UiField Button agregarExaminadorButton;
 	@UiField Button ausenteButton;
-	@UiField Button updateEvaluacionButton;
+	//@UiField Button updateEvaluacionButton;
 	@UiField(provided=true) CellList<EvaluacionUsuarioDTO> examinadoresList;
 	@UiField HTMLPanel evaluacionExaminadorPanel;
 	@UiField Label examinadorSeleccionadoLabel;
@@ -217,9 +217,30 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	}
 	
 	
+	
 	@UiFactory
 	public static SimceResources getResources() {
 		return SimceResources.INSTANCE;
+	}
+	
+	@UiHandler("ppScoreSelector")
+	void onPresentacionPersonalValueChange(ValueChangeEvent<Integer> event){
+		presenter.onEvaluacionPresentacionPersonalChange(event.getValue());
+	}
+	
+	@UiHandler("puScoreSelector")
+	void onPuntualidadValueChange(ValueChangeEvent<Integer> event){
+		presenter.onEvaluacionPuntualidadChange(event.getValue());
+	}
+	
+	@UiHandler("lfScoreSelector")
+	void onLlenadoFormularioValueChange(ValueChangeEvent<Integer> event){
+		presenter.onEvaluacionFormularioChange(event.getValue());
+	}
+	
+	@UiHandler("geScoreSelector")
+	void onGeneralValueChange(ValueChangeEvent<Integer> event){
+		presenter.onEvaluacionGeneralChange(event.getValue());
 	}
 	
 	@UiHandler("estadoBox")
@@ -282,10 +303,12 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		presenter.setSelectedExaminadorAusente();
 	}
 	
+	/*
 	@UiHandler("updateEvaluacionButton")
 	void onUpdateEvaluacionButtonClick(ClickEvent event){
 		presenter.updateEvaluacionExaminador();
 	}
+	*/
 	
 	@Override
 	public void setSaveVisibility(boolean visible) {
@@ -739,6 +762,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void showEvaluacionExaminadores(boolean show) {
 		agregarExaminadorButton.setVisible(show);
+		ausenteButton.setVisible(show);
 		examinadoresList.setVisible(show);
 		evaluacionExaminadorPanel.setVisible(show);
 		
@@ -754,7 +778,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void enableExaminadorActions(boolean enabled) {
 		ausenteButton.setEnabled(enabled);
-		updateEvaluacionButton.setEnabled(enabled);
+		//updateEvaluacionButton.setEnabled(enabled);
 	}
 	
 	@Override

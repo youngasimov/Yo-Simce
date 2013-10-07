@@ -34,7 +34,7 @@
 	
 	.panel1{
 		display:block;
-		width: 600px;
+		width: 800px;
 		margin-top:40px;
 		margin-bottom:40px;
 		margin-left: auto;
@@ -42,6 +42,7 @@
 	}
 	
 	.formPanel{
+		position:relative;
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
@@ -78,6 +79,17 @@
 	}
 	
 	.examinadoresList{
+		border: 1px solid black;
+	}
+	
+	.mensaje{
+		display: block;
+		position:absolute;
+		width:190px;
+		top: 20px;
+		left: 611px;
+		background: rgba(254,191,1,0.4);
+		padding: 4px;
 		border: 1px solid black;
 	}
 	
@@ -160,7 +172,14 @@
 				<g:HTMLPanel ui:field="formPanel" >
 				
 				<g:DecoratorPanel ui:field="datosExaminadorPanel" addStyleNames='{style.formPanel}'>
-					<g:DockLayoutPanel unit='PX' width="580px" height="300px">
+					<g:HTMLPanel>
+					<p class='{style.mensaje}'>
+							Para CAMBIAR el examinador,
+							debe seleccionar la persona que no fue,
+							eliminarlo de la lista, y luego agregar
+							al remplazante.
+					</p>
+					<g:DockLayoutPanel unit='PX' width="600px" height="300px">
 						<g:north size='30'>
 							<my:HelperLabel addStyleNames="{style.evalExaminTitle}" text='Evaluación de examinadores' help='Evalue a los examinadores asociados a esta actividad en base a cuatro criterios. Si un examinador no asistió, remplacelo por el que tomó su lugar y evalue al reemplazante' />
 						</g:north>
@@ -176,6 +195,9 @@
 									<td>
 										<g:Button ui:field="agregarExaminadorButton" text="Agregar Examinador"/>
 									</td>
+									<td>
+										<g:Button ui:field="ausenteButton" text="Eliminar examinador"/>
+									</td>
 								</tr>
 							</table>
 							</g:HTMLPanel>
@@ -188,44 +210,35 @@
 								<table>
 									<tr>
 										<td>
-											Examinador:
+											Evaluando a:
 										</td>
-										<td>
+										<th>
 											<g:Label ui:field="examinadorSeleccionadoLabel"/>
-										</td>
+										</th>
+										
 									</tr>
 									<tr>
-										<td><my:HelperLabel text='PP:' help='Presentación Personal '/></td>
+										<td><my:HelperLabel text='Presentación Personal:' help='Presentación Personal '/></td>
 										<td> <my:ScoreSelector ui:field="ppScoreSelector" /></td>
 									</tr>
 									<tr>
-										<td><my:HelperLabel text='Pu:' help='Puntualidad '/></td>
+										<td><my:HelperLabel text='Puntualidad:' help='Puntualidad '/></td>
 										<td> <my:ScoreSelector ui:field="puScoreSelector" /></td>
 									</tr>
 									<tr>
-										<td><my:HelperLabel text='LF:' help='Llenado de formulario'/></td>
+										<td><my:HelperLabel text='Llenado Formulario:' help='Llenado de formulario'/></td>
 										<td> <my:ScoreSelector ui:field="lfScoreSelector" /></td>
 									</tr>
 									<tr>
-										<td><my:HelperLabel text='Ge:' help='Nota del desempeño general del examinador'/></td>
+										<td><my:HelperLabel text='Desempeño general:' help='Nota del desempeño general del examinador'/></td>
 										<td> <my:ScoreSelector ui:field="geScoreSelector" /></td>
-									</tr>
-									<tr>
-										<td><g:Button ui:field="ausenteButton" text="Eliminar"/></td>
-										<td>
-											<g:Button ui:field="updateEvaluacionButton" text="Modificar evaluación"/>
-										</td>
 									</tr>
 								</table>
 							
 							</g:HTMLPanel>
 						</g:center>
 					</g:DockLayoutPanel>
-						<!--
-						<tr>
-							<td><g:FlowPanel addStyleNames='{style.panel2}' ui:field="examinadoresPanel" /></td>
-						</tr>
-						-->
+					</g:HTMLPanel>
 				</g:DecoratorPanel>
 				
 				<g:DecoratorPanel ui:field="horasActividadPanel" addStyleNames='{style.formPanel}'>

@@ -101,9 +101,13 @@ public interface FormActividadView extends IsWidget {
 		void onDocumentoUploaded(String documento);
 		void onExaminadorSelected(EvaluacionUsuarioDTO eval);
 		void setSelectedExaminadorAusente();
-		void updateEvaluacionExaminador();
+		//void updateEvaluacionExaminador();
 		void onActividadRealizadaPorSupervisor(boolean realizadaPorSupervisor);
 		void onAddExaminador(EvaluacionUsuarioDTO examinador);
+		void onEvaluacionPresentacionPersonalChange(int value);
+		void onEvaluacionPuntualidadChange(int value);
+		void onEvaluacionFormularioChange(int value);
+		void onEvaluacionGeneralChange(int value);
 		
 	}
 }
