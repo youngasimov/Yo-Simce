@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 
 public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
@@ -61,8 +62,16 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
-		query += " WHERE e.id=" + SecurityFilter.escapeString(rbd);
+		query += " WHERE";
+		if (StringUtils.isInt(rbd)) {
+			query += " e.id=" + SecurityFilter.escapeString(rbd);
+		} else {
+			query += " e.nombre ILIKE '%"
+					+ SecurityFilter.escapeLikeString(rbd, "~")
+					+ "%' ESCAPE '~'";
+		}
 		Query q = s.createSQLQuery(query).addEntity(Curso.class);
+		q.setMaxResults(10);
 		ca = q.list();
 		return ca;
 	}

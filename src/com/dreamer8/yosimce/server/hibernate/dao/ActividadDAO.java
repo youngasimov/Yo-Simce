@@ -178,7 +178,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "u.email,u.nombres,u.apellido_paterno,u.apellido_materno,ae.id as act_est_id,ae.nombre as act_est_nombre,"
 				+ "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
 				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
-				+ "a.total_alumnos"
+				+ "a.total_alumnos,a.contacto_nombre, a.contacto_telefono, a.contacto_email"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -349,6 +349,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				apdto.setSupervisor(udto);
 			}
 			apdto.setTotalAlumnos((Integer) o[31]);
+			apdto.setNombreContacto((String) o[32]);
+			apdto.setTelefonoContacto((String) o[33]);
+			apdto.setMailContacto((String) o[34]);
 			apdtos.add(apdto);
 		}
 
@@ -458,9 +461,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 	}
 
 	public List<String> findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idUsuario,
-			String usuarioTipo, Integer offset, Integer lenght,
-			Map<String, String> filtros) {
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idUsuario, String usuarioTipo, Integer offset,
+			Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -472,14 +475,16 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "a.aplicacion_x_nivel_x_actividad_tipo_id,"
 				+ "u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
 				+ "u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
-				+ "a.total_alumnos"
+				+ "a.total_alumnos,apd1.fecha_inicio as fecha_aplicacion,apd1_est.nombre as estado_agendamiento_aplicacion, apd1.comentario as comentario_aplicacion"
 				+ " FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.id=axnxat.aplicacion_x_nivel_id"
+				// + " AND axn.aplicacion_id="
+				// + SecurityFilter.escapeString(idAplicacion)
+				// + " AND axn.nivel_id="
+				// + SecurityFilter.escapeString(idNivel)
+				+ " AND axnxat.actividad_tipo_id=1"
 				+ ")"
+
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " LEFT JOIN CONTACTO_CARGO cc ON a.contacto_cargo_id=cc.id"
@@ -503,8 +508,18 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " LEFT JOIN USUARIO_x_ACTIVIDAD uxa_sup ON (a.id=uxa_sup.actividad_id AND (uxa_sup.asistencia != false OR uxa_sup.asistencia IS NULL) AND uxa_sup.usuario_seleccion_id IS NOT NULL AND (uxa_sup.usuario_tipo_id=9 OR uxa_sup.usuario_tipo_id=10))"
 				+ " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa_sup.usuario_seleccion_id=us_sup.id AND (us_sup.usuario_tipo_id=9 OR us_sup.usuario_tipo_id=10))"
 				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
-				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
-		;
+				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id"
+
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO apd1_axnxat ON (axn.id=apd1_axnxat.aplicacion_x_nivel_id"
+				// + " AND axn.aplicacion_id="
+				// + SecurityFilter.escapeString(idAplicacion)
+				// + " AND axn.nivel_id="
+				// + SecurityFilter.escapeString(idNivel)
+				+ " AND apd1_axnxat.actividad_tipo_id=2"
+				+ ")"
+				+ " JOIN ACTIVIDAD apd1 ON apd1_axnxat.id=apd1.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id=apd1.curso_id"
+				+ " JOIN ACTIVIDAD_ESTADO apd1_est ON apd1.actividad_estado_id=apd1_est.id";
+
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
@@ -538,20 +553,33 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
+
+		String where = " axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel);
+
 		if (filtros != null && !filtros.isEmpty()) {
-			String where = "";
+
 			for (String key : filtros.keySet()) {
 				if (!filtros.get(key).equals("")) {
 					if (!where.equals("")) {
 						where += " AND ";
 					}
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
-						where += " a.fecha_inicio >='"
-								+ SecurityFilter.escapeString(filtros.get(key))
+						if (idActividadTipo == 1) {
+							where += " a.fecha_inicio >='";
+						} else {
+							where += " apd1.fecha_inicio >='";
+						}
+						where += SecurityFilter.escapeString(filtros.get(key))
 								+ " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio <='"
-								+ SecurityFilter.escapeString(filtros.get(key))
+						if (idActividadTipo == 1) {
+							where += " a.fecha_inicio <='";
+						} else {
+							where += " apd1.fecha_inicio <='";
+						}
+						where += SecurityFilter.escapeString(filtros.get(key))
 								+ " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
 						where += " e.comuna_id ="
@@ -565,9 +593,13 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								if (idActividadTipo == 1) {
+									where += "a.actividad_estado_id=";
+								} else {
+									where += "apd1.actividad_estado_id=";
+								}
+								where += SecurityFilter
+										.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -577,9 +609,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					}
 				}
 			}
-			if (!where.equals("")) {
-				query += " WHERE " + where;
-			}
+		}
+
+		if (!where.equals("")) {
+			query += " WHERE " + where;
 		}
 		query += " ORDER BY COMUNA.id,e.id,c.id,a.aplicacion_x_nivel_x_actividad_tipo_id";
 		Query q = s.createSQLQuery(query);
@@ -590,8 +623,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			q.setMaxResults(lenght);
 		}
 		List<Object[]> os = q.list();
-		Integer idCursoAnterior = null;
-		Integer idCurso = null;
+
 		String linea = null;
 		String visitaPrevia = null;
 		String aplic = null;
@@ -604,35 +636,28 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ "fecha_aplicación;estado_agendamiento_aplicación;comentario_aplicación;"
 					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto;examinador;supervisor");
 			for (Object[] o : os) {
-				idCurso = (Integer) o[0];
-				if (!idCurso.equals(idCursoAnterior)) {
-					idCursoAnterior = idCurso;
-					linea = Integer.toString((Integer) o[1]) + ";"
-							+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
-							+ ((String) o[4]) + ";" + ((String) o[6]) + ";"
-							+ (Integer) o[22];
-					contacto = ";" + ((String) o[11]) + ";" + ((String) o[14])
-							+ ";" + ((String) o[12]) + ";" + ((String) o[13]);
-					visitaPrevia = null;
-					aplic = null;
-					examinador = ";" + ((String) o[16]) + " "
-							+ ((String) o[17]) + " " + ((String) o[18]);
-					supervisor = ";" + ((String) o[19]) + " "
-							+ ((String) o[20]) + " " + ((String) o[21]);
+				linea = Integer.toString((Integer) o[1]) + ";"
+						+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
+						+ ((String) o[4]) + ";" + ((String) o[6]) + ";"
+						+ (Integer) o[22];
+				contacto = ";" + ((String) o[11]) + ";" + ((String) o[14])
+						+ ";" + ((String) o[12]) + ";" + ((String) o[13]);
 
-				}
-				if (ActividadTipo.VISITA_PREVIA.equals((String) o[7])) {
-					visitaPrevia = ";" + ((Date) o[8]) + ";" + ((String) o[10])
-							+ ";" + ((String) o[9]);
-				} else if (ActividadTipo.APLICACION_DIA_1.equals((String) o[7])) {
-					aplic = ";" + ((Date) o[8]) + ";" + ((String) o[10]) + ";"
-							+ ((String) o[9]);
-				}
-				if (visitaPrevia != null && aplic != null) {
-					linea += visitaPrevia + aplic + contacto + examinador
-							+ supervisor;
-					csv.add(linea);
-				}
+				examinador = ";" + ((String) o[16]) + " " + ((String) o[17])
+						+ " " + ((String) o[18]);
+
+				supervisor = ";" + ((String) o[19]) + " " + ((String) o[20])
+						+ " " + ((String) o[21]);
+
+				visitaPrevia = ";" + ((Date) o[8]) + ";" + ((String) o[10])
+						+ ";" + ((String) o[9]);
+
+				aplic = ";" + ((Date) o[23]) + ";" + ((String) o[24]) + ";"
+						+ ((String) o[25]);
+
+				linea += visitaPrevia + aplic + contacto + examinador
+						+ supervisor;
+				csv.add(linea);
 			}
 		}
 		return csv;
@@ -1134,20 +1159,22 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							}
 							where += ") ";
 						}
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " contingencia=true";
-//						opciones += " false";
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " limitante=true";
-//						opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " contingencia=true";
+						// opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " limitante=true";
+						// opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {
@@ -1327,20 +1354,22 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 							}
 							where += ") ";
 						}
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " contingencia=true";
-//						opciones += " false";
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " limitante=true";
-//						opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " contingencia=true";
+						// opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " limitante=true";
+						// opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {

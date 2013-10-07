@@ -945,9 +945,9 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					if (idAplicacion == 2) {
 						filas = adao
 								.findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
-										idAplicacion, idNivel, u.getId(),
-										usuarioTipo.getNombre(), offset,
-										lenght, filtros);
+										idAplicacion, idNivel, idActividadTipo,
+										u.getId(), usuarioTipo.getNombre(),
+										offset, lenght, filtros);
 					} else {
 						filas = adao
 								.findAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
