@@ -211,11 +211,46 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ ")"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
-//				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
+				// + " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				+ " WHERE (uxa.asistencia IS NULL OR uxa.asistencia=true) AND (ut.nombre='"
+				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
+				+ "' OR ut.nombre='"
+				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_NEE)
+				+ "' OR ut.nombre='"
+				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_SUPLENTE)
+				+ "')";
+
+		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
+		us = q.list();
+		return us;
+	}
+
+	public List<Usuario> findExaminadoresAusentesByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idCurso) {
+		List<Usuario> us = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT u.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
+				+ SecurityFilter.escapeString(idCurso)
+				+ ")"
+				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
+				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				// + " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
+				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
+				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
+				+ " WHERE (uxa.asistencia=false) AND (ut.nombre='"
 				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
 				+ "' OR ut.nombre='"
 				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_NEE)
@@ -246,7 +281,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ ")"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
-//				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
+				// + " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"

@@ -233,9 +233,10 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				Usuario u = getUsuarioActual();
 
-				if (rbdSeach == null || !StringUtils.isInt(rbdSeach)) {
+				// if (rbdSeach == null || !StringUtils.isInt(rbdSeach)) {
+				if (rbdSeach == null || rbdSeach.isEmpty()) {
 					throw new NullPointerException(
-							"No se ha especificado un RBD válido.");
+							"No se ha especificado un campo válido de búsqueda.");
 				}
 
 				s.beginTransaction();

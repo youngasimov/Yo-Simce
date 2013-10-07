@@ -429,7 +429,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 								idAplicacion, idNivel, idActividadTipo, idCurso);
 				if (a != null) {
 					a.setTotalAlumnosPresentes((a.getTotalAlumnosPresentes() != null) ? a
-							.getTotalAlumnosPresentes() : 0 + 1);
+							.getTotalAlumnosPresentes() + 1 : 0);
 				}
 
 				AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
@@ -1434,12 +1434,25 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				UsuarioTipo examinadorTipo = utdao
 						.findByNombre(UsuarioTipo.EXAMINADOR);
 				UsuarioXActividad uxaNext = null;
+				UsuarioDAO udao = new UsuarioDAO();
+				List<Usuario> usuariosAusentes = null;
 
 				if (evaluaciones != null && !evaluaciones.isEmpty()) {
 					for (EvaluacionUsuarioDTO eudto : evaluaciones) {
 						if (eudto.getEstado().equals(
 								EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
 							idReemplazados.add(eudto.getUsuario().getId());
+						}
+					}
+
+					usuariosAusentes = udao
+							.findExaminadoresAusentesByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+									idAplicacion, idNivel, idActividadTipo,
+									idCurso);
+
+					if (usuariosAusentes != null && !usuariosAusentes.isEmpty()) {
+						for (Usuario usuarioAusente : usuariosAusentes) {
+							idReemplazados.add(usuarioAusente.getId());
 						}
 					}
 
@@ -1489,9 +1502,16 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 															+ " no ha sido asignado como examinador para este nivel.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
 										}
 									}
-									uxa = new UsuarioXActividad();
+									uxa = uxadao
+											.findExaminadorNoAsignadoByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+													idAplicacion, idNivel,
+													idActividadTipo, idCurso);
+									if (uxa == null) {
+										uxa = new UsuarioXActividad();
+										uxa.setActividad(a);
+										uxa.setUsuarioTipo(us.getUsuarioTipo());
+									}
 									uxa.setUsuarioSeleccion(us);
-									uxa.setActividad(a);
 
 									if (actividades != null
 											&& !actividades.isEmpty()) {
@@ -2037,7 +2057,19 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				String contenido;
 				if (total != 0) {
-					bw.write("RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total;Alumnos Evaluados;Alumnos Sincronizados;Cuestionarios Entregados;Cuestionarios Recibidos;Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna\r");
+					String header = "RBD;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Alumnos Total";
+					if (!(idAplicacion == 2 && idActividadTipo == 1)) {
+						header += ";Alumnos Evaluados;Alumnos Sincronizados";
+					}
+					header += ";Cuestionarios Entregados";
+					if (!(idAplicacion == 2 && idActividadTipo == 1)) {
+						header += ";Cuestionarios Recibidos";
+					}
+					if (idAplicacion == 2 && idActividadTipo == 2) {
+						header += ";Cuestionarios Aplicados";
+					}
+					header += ";Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna;Examinador;Supervisor;Nombre Contacto;Teléfono Contacto;Email Contacto\r";
+					bw.write(header);
 				}
 				while (total > 0) {
 					apdtos = adao
@@ -2057,18 +2089,33 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							contenido += apdto.getTipoEstablecimiento() + ";";
 							contenido += apdto.getEstadoAgenda() + ";";
 							contenido += apdto.getAlumnosTotales() + ";";
-							contenido += apdto.getAlumnosEvaluados() + ";";
-							contenido += apdto.getAlumnosSincronizados() + ";";
+							if (!(idAplicacion == 2 && idActividadTipo == 1)) {
+								contenido += apdto.getAlumnosEvaluados() + ";";
+								contenido += apdto.getAlumnosSincronizados()
+										+ ";";
+							}
 							contenido += apdto
 									.getCuestionariosPadresApoderadosEntregados()
 									+ ";";
-							contenido += apdto
-									.getCuestionariosPadresApoderadosRecibidos()
-									+ ";";
+							if (!(idAplicacion == 2 && idActividadTipo == 1)) {
+								contenido += apdto
+										.getCuestionariosPadresApoderadosRecibidos()
+										+ ";";
+							}
+							if (idAplicacion == 2 && idActividadTipo == 2) {
+								contenido += apdto
+										.getCuestionariosPadresApoderadosRecibidosAplicados()
+										+ ";";
+							}
 							contenido += apdto.getContingencia() + ";";
 							contenido += apdto.getContingenciaLimitante() + ";";
 							contenido += apdto.getRegion() + ";";
-							contenido += apdto.getComuna();
+							contenido += apdto.getComuna() + ";";
+							contenido += apdto.getNombreExaminador() + ";";
+							contenido += apdto.getNombreSupervisor() + ";";
+							contenido += apdto.getNombreContacto() + ";";
+							contenido += apdto.getTelefonoContacto() + ";";
+							contenido += apdto.getMailContacto();
 							bw.write(contenido + "\r");
 						}
 					}

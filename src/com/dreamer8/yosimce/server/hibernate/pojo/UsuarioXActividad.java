@@ -20,6 +20,7 @@ public class UsuarioXActividad implements java.io.Serializable {
 	private Integer notaLlenadoFormularios;
 	private Integer notaDespempeno;
 	private String comentario;
+	private UsuarioTipo usuarioTipo;
 
 	public UsuarioXActividad() {
 	}
@@ -133,6 +134,18 @@ public class UsuarioXActividad implements java.io.Serializable {
 
 	public void setComentario(String comentario) {
 		this.comentario = comentario;
+	}
+
+	public UsuarioTipo getUsuarioTipo() {
+		return usuarioTipo;
+	}
+
+	public void setUsuarioTipo(UsuarioTipo usuarioTipo) {
+		this.usuarioTipo = usuarioTipo;
+	}
+
+	public Boolean getAsistencia() {
+		return asistencia;
 	}
 
 	public EvaluacionUsuarioDTO getEvaluacionUsuarioDTO() {

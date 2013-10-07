@@ -14,6 +14,9 @@
         <many-to-one name="actividad" class="com.dreamer8.yosimce.server.hibernate.pojo.Actividad" fetch="select">
             <column name="actividad_id" />
         </many-to-one>
+        <many-to-one name="usuarioTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo" fetch="select">
+            <column name="usuario_tipo_id" />
+        </many-to-one>
         <many-to-one name="usuarioEstado" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioEstado" fetch="select">
             <column name="usuario_estado_id" />
         </many-to-one>

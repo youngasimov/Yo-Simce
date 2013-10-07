@@ -217,6 +217,34 @@ public class UsuarioXActividadDAO extends
 		return uxa;
 	}
 
+	public UsuarioXActividad findExaminadorNoAsignadoByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idCurso) {
+
+		UsuarioXActividad uxa = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
+				+ SecurityFilter.escapeString(idCurso)
+				+ ")"
+				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
+				+ UsuarioTipo.EXAMINADOR + "' OR ut.nombre='"
+				+ UsuarioTipo.EXAMINADOR_NEE + "' OR ut.nombre='"
+				+ UsuarioTipo.EXAMINADOR_SUPLENTE + "')"
+				+ " WHERE uxa.usuario_seleccion_id IS NULL";
+		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
+		uxa = (UsuarioXActividad) q.uniqueResult();
+		return uxa;
+	}
+
 	public List<UsuarioXActividad> findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario) {
