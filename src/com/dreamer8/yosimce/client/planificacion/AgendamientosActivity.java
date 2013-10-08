@@ -147,7 +147,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	public void onRangeChange(Range r) {
 		this.range = r;
 		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getPreviewAgendamientos")){
-			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus,false) {
+			getFactory().getPlanificacionService().getPreviewAgendamientos(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<AgendaPreviewDTO>>(eventBus,false,60000) {
 	
 				@Override
 				public void success(ArrayList<AgendaPreviewDTO> result) {

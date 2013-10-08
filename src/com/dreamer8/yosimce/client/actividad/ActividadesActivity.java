@@ -183,7 +183,7 @@ public class ActividadesActivity extends SimceActivity implements
 	public void onRangeChange(Range r) {
 		this.range = r;
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getPreviewActividades")){
-			getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus,false) {
+			getFactory().getActividadService().getPreviewActividades(range.getStart(), range.getLength(), filtros, new SimceCallback<ArrayList<ActividadPreviewDTO>>(eventBus,false,60000) {
 	
 				@Override
 				public void success(ArrayList<ActividadPreviewDTO> result) {
