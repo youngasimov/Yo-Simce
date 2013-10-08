@@ -26,7 +26,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
@@ -58,7 +58,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-					+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
@@ -94,7 +94,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ " AND a.actividad_estado_id!=7)"
+				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
 				+ " LEFT JOIN CONTACTO_CARGO cc ON a.contacto_cargo_id=cc.id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"

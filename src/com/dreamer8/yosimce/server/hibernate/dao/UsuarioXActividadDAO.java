@@ -39,9 +39,9 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ " AND a.actividad_estado_id!=7)"
+				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id AND (uxa.asistencia != false OR uxa.asistencia IS NULL)"
-				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				// +
 				// " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND (ut.nombre='"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
@@ -67,10 +67,10 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 				+ ""
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				// +
 				// " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND (ut.nombre='"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
@@ -123,10 +123,10 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 				+ ""
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				// +
@@ -207,9 +207,9 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ " AND a.actividad_estado_id!=7)"
+				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
@@ -233,7 +233,7 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ " AND a.actividad_estado_id!=7)"
+				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
 				+ UsuarioTipo.EXAMINADOR + "' OR ut.nombre='"
@@ -259,9 +259,9 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
@@ -283,14 +283,14 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 				+ " JOIN CURSO c ON (a.curso_id=c.id AND c.nombre='"
 				+ SecurityFilter.escapeString(curso)
 				+ "' AND c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
 				+ ")"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
@@ -304,7 +304,7 @@ public class UsuarioXActividadDAO extends
 		UsuarioXActividad uxa = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT uxa.* FROM USUARIO_x_ACTIVIDAD uxa"
-				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND uxa.actividad_id="
+				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false AND uxa.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)
 				+ ")"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="

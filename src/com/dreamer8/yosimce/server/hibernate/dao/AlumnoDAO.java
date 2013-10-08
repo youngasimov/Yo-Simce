@@ -110,7 +110,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-					+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
@@ -300,7 +300,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-					+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}

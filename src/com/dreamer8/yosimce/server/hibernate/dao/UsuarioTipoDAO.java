@@ -46,7 +46,7 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
-				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
+				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND us.seleccion = true AND us.renuncia = false"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " WHERE uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
@@ -67,7 +67,7 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
-				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
+				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND us.seleccion = true AND us.renuncia = false"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND us.usuario_tipo_id="
 				+ SecurityFilter.escapeString(idTipoUsuario)
 				+ " WHERE uxaxn.usuario_id="
