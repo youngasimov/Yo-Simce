@@ -131,9 +131,9 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "WITH mh_max AS("
 				+ " SELECT mh.material_id,mh.destino_id,m.centro_id fROM MATERIAL_HISTORIAL mh"
-				+ " LEFT JOIN (SELECT mh.material_id, MAX(mh.fecha) FROM MATERIAL_HISTORIAL mh"
-				+ " JOIN MATERIAL m ON mh.material_id=m.id"
+				+ " LEFT JOIN (SELECT mh.material_id, MAX(mh.fecha) fecha FROM MATERIAL_HISTORIAL mh"
 				+ " GROUP BY mh.material_id) mh_max ON mh.material_id=mh_max.material_id AND mh.fecha=mh_max.fecha"
+				+ " JOIN MATERIAL m ON mh.material_id=m.id"
 				+ ")"
 				+ "SELECT DISTINCT co.id,co.comuna_id,p.region_id,co.zona_id,co.nombre,co.direccion_longitud,co.direccion_latitud,"
 				+ " u.nombres,u.apellido_paterno,u.apellido_materno,u.celular,total_en_centro,total_establ,total_imprenta,total_minis"
@@ -177,8 +177,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			}
 		}
 
-		query += " WHERE joxco.jo_id=" + SecurityFilter.escapeString(idUsuario)
-				+ " AND joxco.activo=TRUE" + " ORDER BY co.nombre ASC";
+		query += " WHERE  joxco.activo=TRUE" + " ORDER BY co.nombre ASC";
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
 		CentroOperacionDTO codto = null;
