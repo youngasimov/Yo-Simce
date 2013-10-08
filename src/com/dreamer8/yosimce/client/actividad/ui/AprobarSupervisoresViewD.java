@@ -355,15 +355,21 @@ public class AprobarSupervisoresViewD extends Composite implements
 	@UiField
 	SuggestBox supervisorSearchBox;
 	@UiField
+	SuggestBox suplenteSearchBox;
+	@UiField
 	Button clean;
 	@UiField
+	Button suplenteClean;
+	@UiField
 	Button search;
+	@UiField
+	Button suplenteSearch;
 	@UiField(provided = true)
 	DataGrid<EvaluacionSupervisorDTO> dataGrid;
 	@UiField(provided = true)
 	SimplePager pager;
 	@UiField(provided = true)
-	DataGrid<EvaluacionSupervisorDTO> suplentesdataGrid;
+	DataGrid<EvaluacionSuplenteDTO> suplentesdataGrid;
 	@UiField(provided = true)
 	SimplePager suplentesPager;
 	
@@ -387,7 +393,10 @@ public class AprobarSupervisoresViewD extends Composite implements
 	    resources.style().ensureInjected();
 		dataGrid = new DataGrid<EvaluacionSupervisorDTO>(
 				EvaluacionSupervisorDTO.KEY_PROVIDER);
+		suplentesdataGrid = new DataGrid<EvaluacionSuplenteDTO>(
+				EvaluacionSuplenteDTO.KEY_PROVIDER);
 		dataGrid.setPageSize(100);
+		suplentesdataGrid.setPageSize(100);
 		//selectionModel = new SingleSelectionModel<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
 		//dataGrid.setSelectionModel(selectionModel);
 		dataProvider = new ListDataProvider<EvaluacionSupervisorDTO>(
@@ -399,7 +408,10 @@ public class AprobarSupervisoresViewD extends Composite implements
 				.create(SimplePager.Resources.class);
 		pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
 				true);
+		suplentesPager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
+				true);
 		pager.setDisplay(dataGrid);
+		suplentesPager.setDisplay(suplentesdataGrid);
 		buildTable();
 		
 		dataGrid.addColumn(rutColumn);

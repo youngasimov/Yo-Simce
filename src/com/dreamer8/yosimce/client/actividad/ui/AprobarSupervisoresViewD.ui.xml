@@ -68,6 +68,18 @@
     			<g:tab>
     				<g:header size='7'>Evaluación examinadores suplentes</g:header>
     				<g:DockLayoutPanel unit="PX">
+    					<g:north size="40">
+							<g:HTMLPanel>
+								<table>
+									<tr>
+										<td>Buscar suplente:</td>
+										<td><g:SuggestBox ui:field="suplenteSearchBox" width="400px"/> </td>
+										<td><g:Button ui:field="suplenteSearch" text="Buscar"/> </td>
+										<td><g:Button ui:field="suplenteClean" text="Limpiar"/> </td>
+									</tr>
+								</table>
+							</g:HTMLPanel>
+						</g:north>
 						<g:center>
 							<c:DataGrid ui:field='suplentesdataGrid' addStyleNames='{style.data}'/>
 						</g:center>
