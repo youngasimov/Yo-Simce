@@ -1,6 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	<ui:style>
 	.title {
@@ -19,17 +20,48 @@
 		width: 100%;
 		height: 100%;
 	}
+	
+	.panelGraficos{
+		display: block;
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+		min-width: 600px;
+		max-width: 1000px;
+	}
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Centro de control</div> ></g:MenuItem>
+				<g:MenuItem>
+					<g:MenuBar vertical='true'>
+						<g:MenuItem ui:field="actualizarMenu">Actualizar</g:MenuItem>
+						<g:MenuItem ui:field="autoCarga2Menu">Actualizar cada 2 minutos</g:MenuItem>
+						<g:MenuItem ui:field="autoCarga5Menu">Actualizar cada 5 minutos</g:MenuItem>
+						<g:MenuItem ui:field="autoCarga10Menu">Actualizar cada 10 minutos</g:MenuItem>
+					</g:MenuBar>
+				</g:MenuItem>
+				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
+				<g:MenuItem ui:field="removeFromMonitorItem">No monitorear</g:MenuItem>
 			</my:OverMenuBar>	
 		</g:north>
 		<g:center>
-			<g:ScrollPanel addStyleNames='{style.scroll}'>
-				
-			</g:ScrollPanel>
+			<g:SplitLayoutPanel>
+				<g:west size='300'>
+					<c:DataGrid ui:field="allTable"/>
+				</g:west>
+				<g:north size='400'>
+					<c:DataGrid ui:field="monitorTable"/>
+				</g:north>
+				<g:west size='400'>
+					<c:DataGrid ui:field="completeTable"/>
+				</g:west>
+				<g:center>
+					<c:DataGrid ui:field="incompleteTable"/>
+				</g:center>
+			</g:SplitLayoutPanel>
 		</g:center>
+		
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

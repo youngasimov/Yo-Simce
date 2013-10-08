@@ -19,12 +19,9 @@ import com.dreamer8.yosimce.server.hibernate.pojo.Region;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.AccessControl;
-import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
-import com.dreamer8.yosimce.shared.dto.EtapaDTO;
-import com.dreamer8.yosimce.shared.dto.ItemReporteMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
@@ -463,21 +460,5 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return null;
 	}
 
-	@Override
-	public ArrayList<ItemReporteMaterialDTO> getItemsReporteMaterial(
-			Integer start, Integer max) throws NoAllowedException,
-			NoLoggedException, DBException, ConsistencyException,
-			NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<EtapaDTO> getEtapasMaterial() throws NoAllowedException,
-			NoLoggedException, DBException, ConsistencyException,
-			NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

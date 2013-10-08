@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
-import com.dreamer8.yosimce.shared.dto.EtapaDTO;
-import com.dreamer8.yosimce.shared.dto.ItemReporteMaterialDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.dreamer8.yosimce.shared.exceptions.DBException;
@@ -39,13 +37,7 @@ public interface GeneralService extends RemoteService {
 			NullPointerException;
 	
 	public ArrayList<CentroOperacionDTO> getCentrosOperacion()  throws NoAllowedException,
-	NoLoggedException, DBException, ConsistencyException,
-	NullPointerException;
-	
-	public ArrayList<ItemReporteMaterialDTO> getItemsReporteMaterial(Integer start, Integer max) throws NoAllowedException,
-			NoLoggedException, DBException, ConsistencyException,NullPointerException;
-	
-	public ArrayList<EtapaDTO> getEtapasMaterial() throws NoAllowedException,
-	NoLoggedException, DBException, ConsistencyException,NullPointerException;
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException;	
 
 }

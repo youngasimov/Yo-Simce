@@ -519,7 +519,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 					Boolean value) {
 				object.setPuntualidad((value)?4:0);
 				presenter.sinc(object);
-				dataProvider.refresh();
+				//dataProvider.refresh();
 			}
 		});
 		dataGrid.setColumnWidth(++i, 8, Unit.EM);
@@ -541,7 +541,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 					Boolean value) {
 				object.setPresentacionPersonal((value)?4:0);
 				presenter.sinc(object);
-				dataProvider.refresh();
+				//dataProvider.refresh();
 				
 			}
 		});
@@ -563,7 +563,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 					Boolean value) {
 				object.setGeneral((value)?4:0);
 				presenter.sinc(object);
-				dataProvider.refresh();
+				//dataProvider.refresh();
 				
 			}
 		});
