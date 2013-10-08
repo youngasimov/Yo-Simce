@@ -73,6 +73,7 @@ import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSuplenteDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -489,179 +490,179 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 		return result;
 	}
 
-	/**
-	 * @permiso getEvaluacionSupervisores
-	 */
-	@Override
-	public ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
-			throws NoAllowedException, NoLoggedException, DBException {
+//	/**
+//	 * @permiso getEvaluacionSupervisores
+//	 */
+//	@Override
+//	public ArrayList<EvaluacionUsuarioDTO> getEvaluacionSupervisores()
+//			throws NoAllowedException, NoLoggedException, DBException {
+//
+//		ArrayList<EvaluacionUsuarioDTO> eudtos = new ArrayList<EvaluacionUsuarioDTO>();
+//		Session s = HibernateUtil.getSessionFactory().openSession();
+//		ManagedSessionContext.bind(s);
+//		try {
+//			AccessControl ac = getAccessControl();
+//			if (ac.isLogged()
+//					&& ac.isAllowed(className, "getEvaluacionSupervisores")) {
+//
+//				Integer idAplicacion = ac.getIdAplicacion();
+//				if (idAplicacion == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado una aplicación.");
+//				}
+//
+//				Integer idNivel = ac.getIdNivel();
+//				if (idNivel == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado un nivel.");
+//				}
+//
+//				Integer idActividadTipo = ac.getIdActividadTipo();
+//				if (idActividadTipo == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado el tipo de la actividad.");
+//				}
+//
+//				Usuario u = getUsuarioActual();
+//
+//				s.beginTransaction();
+//
+//				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+//				if (usuarioTipo == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado el tipo de usuario.");
+//				}
+//
+//				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+//				List<UsuarioXActividad> uxas = uxadao
+//						.findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
+//								idAplicacion, idNivel, idActividadTipo,
+//								u.getId(), usuarioTipo.getNombre());
+//
+//				if (uxas != null && !uxas.isEmpty()) {
+//					for (UsuarioXActividad uxa : uxas) {
+//						eudtos.add(uxa.getEvaluacionUsuarioDTO());
+//					}
+//				}
+//
+//				s.getTransaction().commit();
+//			}
+//		} catch (HibernateException ex) {
+//			System.err.println(ex);
+//			HibernateUtil.rollback(s);
+//			throw new DBException();
+//		} catch (ConsistencyException ex) {
+//			HibernateUtil.rollbackActiveOnly(s);
+//			throw ex;
+//		} catch (NullPointerException ex) {
+//			HibernateUtil.rollbackActiveOnly(s);
+//			throw ex;
+//		} finally {
+//			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+//			if (s.isOpen()) {
+//				s.clear();
+//				s.close();
+//			}
+//		}
+//		return eudtos;
+//	}
 
-		ArrayList<EvaluacionUsuarioDTO> eudtos = new ArrayList<EvaluacionUsuarioDTO>();
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		ManagedSessionContext.bind(s);
-		try {
-			AccessControl ac = getAccessControl();
-			if (ac.isLogged()
-					&& ac.isAllowed(className, "getEvaluacionSupervisores")) {
-
-				Integer idAplicacion = ac.getIdAplicacion();
-				if (idAplicacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado una aplicación.");
-				}
-
-				Integer idNivel = ac.getIdNivel();
-				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
-				}
-
-				Integer idActividadTipo = ac.getIdActividadTipo();
-				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
-				}
-
-				Usuario u = getUsuarioActual();
-
-				s.beginTransaction();
-
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
-				if (usuarioTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de usuario.");
-				}
-
-				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
-				List<UsuarioXActividad> uxas = uxadao
-						.findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
-								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre());
-
-				if (uxas != null && !uxas.isEmpty()) {
-					for (UsuarioXActividad uxa : uxas) {
-						eudtos.add(uxa.getEvaluacionUsuarioDTO());
-					}
-				}
-
-				s.getTransaction().commit();
-			}
-		} catch (HibernateException ex) {
-			System.err.println(ex);
-			HibernateUtil.rollback(s);
-			throw new DBException();
-		} catch (ConsistencyException ex) {
-			HibernateUtil.rollbackActiveOnly(s);
-			throw ex;
-		} catch (NullPointerException ex) {
-			HibernateUtil.rollbackActiveOnly(s);
-			throw ex;
-		} finally {
-			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
-			if (s.isOpen()) {
-				s.clear();
-				s.close();
-			}
-		}
-		return eudtos;
-	}
-
-	/**
-	 * @permiso updateEvaluacionSupervisor
-	 */
-	@Override
-	public Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
-			throws NoAllowedException, NoLoggedException, DBException {
-
-		Boolean result = true;
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		ManagedSessionContext.bind(s);
-		try {
-			AccessControl ac = getAccessControl();
-			if (ac.isLogged()
-					&& ac.isAllowed(className, "updateEvaluacionSupervisor")) {
-
-				Integer idAplicacion = ac.getIdAplicacion();
-				if (idAplicacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado una aplicación.");
-				}
-
-				Integer idNivel = ac.getIdNivel();
-				if (idNivel == null) {
-					throw new NullPointerException(
-							"No se ha especificado un nivel.");
-				}
-
-				Integer idActividadTipo = ac.getIdActividadTipo();
-				if (idActividadTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de la actividad.");
-				}
-
-				if (evaluacion == null) {
-					throw new NullPointerException(
-							"No se ha especificado la evaluación para el supervisor.");
-				}
-
-				UserDTO udto = evaluacion.getUsuario();
-				if (udto == null || udto.getId() == null) {
-					throw new NullPointerException(
-							"No se ha especificado el supervisor.");
-				}
-
-				Usuario u = getUsuarioActual();
-
-				s.beginTransaction();
-
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
-				if (usuarioTipo == null) {
-					throw new NullPointerException(
-							"No se ha especificado el tipo de usuario.");
-				}
-
-				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
-				List<UsuarioXActividad> uxas = uxadao
-						.findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
-								idAplicacion, idNivel, idActividadTipo,
-								udto.getId());
-
-				if (uxas == null || uxas.isEmpty()) {
-					throw new ConsistencyException("El examinador ("
-							+ udto.getRut() + ") " + udto.getNombres() + " "
-							+ udto.getApellidoPaterno()
-							+ " no está asociado a esta actividad.");
-				}
-				for (UsuarioXActividad uxa : uxas) {
-					uxa.setNotaPuntualidad(evaluacion.getPuntualidad());
-					uxa.setNotaLlenadoFormularios(evaluacion.getFormulario());
-					uxa.setNotaPresentacionPersonal(evaluacion
-							.getPresentacionPersonal());
-					uxa.setNotaDespempeno(evaluacion.getGeneral());
-					uxadao.update(uxa);
-				}
-
-				s.getTransaction().commit();
-			}
-		} catch (HibernateException ex) {
-			System.err.println(ex);
-			HibernateUtil.rollback(s);
-			throw new DBException();
-		} catch (ConsistencyException ex) {
-			HibernateUtil.rollbackActiveOnly(s);
-			throw ex;
-		} catch (NullPointerException ex) {
-			HibernateUtil.rollbackActiveOnly(s);
-			throw ex;
-		} finally {
-			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
-			if (s.isOpen()) {
-				s.clear();
-				s.close();
-			}
-		}
-		return result;
-	}
+//	/**
+//	 * @permiso updateEvaluacionSupervisor
+//	 */
+//	@Override
+//	public Boolean updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion)
+//			throws NoAllowedException, NoLoggedException, DBException {
+//
+//		Boolean result = true;
+//		Session s = HibernateUtil.getSessionFactory().openSession();
+//		ManagedSessionContext.bind(s);
+//		try {
+//			AccessControl ac = getAccessControl();
+//			if (ac.isLogged()
+//					&& ac.isAllowed(className, "updateEvaluacionSupervisor")) {
+//
+//				Integer idAplicacion = ac.getIdAplicacion();
+//				if (idAplicacion == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado una aplicación.");
+//				}
+//
+//				Integer idNivel = ac.getIdNivel();
+//				if (idNivel == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado un nivel.");
+//				}
+//
+//				Integer idActividadTipo = ac.getIdActividadTipo();
+//				if (idActividadTipo == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado el tipo de la actividad.");
+//				}
+//
+//				if (evaluacion == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado la evaluación para el supervisor.");
+//				}
+//
+//				UserDTO udto = evaluacion.getUsuario();
+//				if (udto == null || udto.getId() == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado el supervisor.");
+//				}
+//
+//				Usuario u = getUsuarioActual();
+//
+//				s.beginTransaction();
+//
+//				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+//				if (usuarioTipo == null) {
+//					throw new NullPointerException(
+//							"No se ha especificado el tipo de usuario.");
+//				}
+//
+//				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+//				List<UsuarioXActividad> uxas = uxadao
+//						.findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
+//								idAplicacion, idNivel, idActividadTipo,
+//								udto.getId());
+//
+//				if (uxas == null || uxas.isEmpty()) {
+//					throw new ConsistencyException("El examinador ("
+//							+ udto.getRut() + ") " + udto.getNombres() + " "
+//							+ udto.getApellidoPaterno()
+//							+ " no está asociado a esta actividad.");
+//				}
+//				for (UsuarioXActividad uxa : uxas) {
+//					uxa.setNotaPuntualidad(evaluacion.getPuntualidad());
+//					uxa.setNotaLlenadoFormularios(evaluacion.getFormulario());
+//					uxa.setNotaPresentacionPersonal(evaluacion
+//							.getPresentacionPersonal());
+//					uxa.setNotaDespempeno(evaluacion.getGeneral());
+//					uxadao.update(uxa);
+//				}
+//
+//				s.getTransaction().commit();
+//			}
+//		} catch (HibernateException ex) {
+//			System.err.println(ex);
+//			HibernateUtil.rollback(s);
+//			throw new DBException();
+//		} catch (ConsistencyException ex) {
+//			HibernateUtil.rollbackActiveOnly(s);
+//			throw ex;
+//		} catch (NullPointerException ex) {
+//			HibernateUtil.rollbackActiveOnly(s);
+//			throw ex;
+//		} finally {
+//			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+//			if (s.isOpen()) {
+//				s.clear();
+//				s.close();
+//			}
+//		}
+//		return result;
+//	}
 
 	/**
 	 * @permiso getExaminadores
@@ -2462,7 +2463,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	 * @permiso getEvaluacionSupervisores
 	 */
 	@Override
-	public ArrayList<EvaluacionSupervisorDTO> getEvaluacionSupervisores2()
+	public ArrayList<EvaluacionSupervisorDTO> getEvaluacionSupervisores()
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
 
@@ -2638,5 +2639,27 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * @permiso getEvaluacionSuplentes
+	 */
+	@Override
+	public ArrayList<EvaluacionSuplenteDTO> getEvaluacionSuplentes()
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @permiso updateEvaluacionSuplente
+	 */
+	@Override
+	public Boolean updateEvaluacionSuplente(EvaluacionSuplenteDTO evaluaciones)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
