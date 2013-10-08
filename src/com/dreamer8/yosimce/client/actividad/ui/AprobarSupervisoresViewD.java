@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSuplenteDTO;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
@@ -361,6 +362,10 @@ public class AprobarSupervisoresViewD extends Composite implements
 	DataGrid<EvaluacionSupervisorDTO> dataGrid;
 	@UiField(provided = true)
 	SimplePager pager;
+	@UiField(provided = true)
+	DataGrid<EvaluacionSupervisorDTO> suplentesdataGrid;
+	@UiField(provided = true)
+	SimplePager suplentesPager;
 	
 	private Resources resources;
 
@@ -576,6 +581,17 @@ public class AprobarSupervisoresViewD extends Composite implements
 		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)supervisorSearchBox.getSuggestOracle();
 		mwso.clear();
 		mwso.addAll(suggestions);
+	}
+
+	@Override
+	public void setSuplentes(ArrayList<EvaluacionSuplenteDTO> suplentes) {
+		
+	}
+
+	@Override
+	public void setSuplenteSuggestions(ArrayList<String> suggestions) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

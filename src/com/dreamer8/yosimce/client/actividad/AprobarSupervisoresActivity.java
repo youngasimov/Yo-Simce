@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView.AprobarSupervisoresPresenter;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSuplenteDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -21,6 +22,7 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	private EventBus eventBus; 
 	
 	private ArrayList<EvaluacionSupervisorDTO> evaluaciones;
+	private ArrayList<EvaluacionSuplenteDTO> evaluacionesSuplentes;
 	
 	public AprobarSupervisoresActivity(ClientFactory factory, SimcePlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -33,11 +35,12 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		updateSupervisores(true);
+		updateSuplentes(true);
 	}
 	
 	private void updateSupervisores(boolean block){
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEvaluacionSupervisores")){
-			getFactory().getActividadService().getEvaluacionSupervisores2(new SimceCallback<ArrayList<EvaluacionSupervisorDTO>>(eventBus,block) {
+			getFactory().getActividadService().getEvaluacionSupervisores(new SimceCallback<ArrayList<EvaluacionSupervisorDTO>>(eventBus,block) {
 
 				@Override
 				public void success(ArrayList<EvaluacionSupervisorDTO> result) {
@@ -64,6 +67,38 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 		}else{
 			evaluaciones = new ArrayList<EvaluacionSupervisorDTO>();
 			view.setSupervisores(evaluaciones);
+		}
+	}
+	
+	private void updateSuplentes(boolean block){
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "getEvaluacionSupervisores")){
+			getFactory().getActividadService().getEvaluacionSuplentes(new SimceCallback<ArrayList<EvaluacionSuplenteDTO>>(eventBus,block) {
+
+				@Override
+				public void success(ArrayList<EvaluacionSuplenteDTO> result) {
+					
+					evaluacionesSuplentes = result;
+					view.setSuplentes(evaluacionesSuplentes);
+					ArrayList<String> sugestions = new ArrayList<String>();
+					ArrayList<Integer> suplentes = new ArrayList<Integer>();
+					for(EvaluacionSuplenteDTO e:evaluacionesSuplentes){
+						if(!suplentes.contains(e.getSuplente().getId())){
+							suplentes.add(e.getSuplente().getId());
+							sugestions.add(e.getSuplente().getNombres()+" "+e.getSuplente().getApellidoPaterno()+" "+e.getSuplente().getApellidoMaterno());
+						}
+					}
+					view.setSuplenteSuggestions(sugestions);
+					
+				}
+				@Override
+				public void failure(Throwable caught) {
+					evaluacionesSuplentes = new ArrayList<EvaluacionSuplenteDTO>();
+					view.setSuplentes(evaluacionesSuplentes);
+				}
+			});
+		}else{
+			evaluacionesSuplentes = new ArrayList<EvaluacionSuplenteDTO>();
+			view.setSuplentes(evaluacionesSuplentes);
 		}
 	}
 	
@@ -101,6 +136,41 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 			}
 		}
 		view.setSupervisores(aux);
+	}
+
+	@Override
+	public void suplentefilter(String filter) {
+		if(filter == null || filter.isEmpty()){
+			view.setSuplentes(evaluacionesSuplentes);
+			return;
+		}
+		
+		ArrayList<EvaluacionSuplenteDTO> aux = new ArrayList<EvaluacionSuplenteDTO>();
+		String name;
+		for(EvaluacionSuplenteDTO e:evaluacionesSuplentes){
+			name = e.getSuplente().getNombres()+" "+e.getSuplente().getApellidoPaterno()+" "+e.getSuplente().getApellidoMaterno();
+			if(name.contains(filter)){
+				aux.add(e);
+			}
+		}
+		view.setSuplentes(aux);
+	}
+
+	@Override
+	public void sinc(EvaluacionSuplenteDTO suplente) {
+		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
+			getFactory().getActividadService().updateEvaluacionSuplente(suplente, new SimceCallback<Boolean>(eventBus,false) {
+	
+				@Override
+				public void success(Boolean result) {
+					
+				}
+				@Override
+				public void failure(Throwable caught) {
+					updateSuplentes(true);
+				}
+			});
+		}
 	}
 
 }

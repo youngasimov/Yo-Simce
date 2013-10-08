@@ -904,7 +904,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 			selectedRetiranteRut = null;
 			return;
 		}
-		selectedRetiranteRut = rut;
+		selectedRetiranteRut = rut.trim();
 		
 		selectedRetiranteRut = selectedRetiranteRut.replace('k', 'K');
 		

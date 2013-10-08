@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
+import com.dreamer8.yosimce.shared.dto.EvaluacionSuplenteDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.MaterialDefectuosoDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
@@ -38,12 +39,6 @@ public interface ActividadServiceAsync {
 			AsyncCallback<Boolean> callback);
 
 	void getActividad(Integer idCurso, AsyncCallback<ActividadDTO> callback);
-
-	void getEvaluacionSupervisores(
-			AsyncCallback<ArrayList<EvaluacionUsuarioDTO>> callback);
-
-	void updateEvaluacionSupervisor(EvaluacionUsuarioDTO evaluacion,
-			AsyncCallback<Boolean> callback);
 
 	void getEstadosActividad(AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
 
@@ -85,7 +80,13 @@ public interface ActividadServiceAsync {
 			EvaluacionSupervisorDTO evaluaciones,
 			AsyncCallback<Boolean> callback);
 
-	void getEvaluacionSupervisores2(
+	void getEvaluacionSupervisores(
 			AsyncCallback<ArrayList<EvaluacionSupervisorDTO>> callback);
+
+	void getEvaluacionSuplentes(
+			AsyncCallback<ArrayList<EvaluacionSuplenteDTO>> callback);
+
+	void updateEvaluacionSuplente(EvaluacionSuplenteDTO evaluaciones,
+			AsyncCallback<Boolean> callback);
 
 }

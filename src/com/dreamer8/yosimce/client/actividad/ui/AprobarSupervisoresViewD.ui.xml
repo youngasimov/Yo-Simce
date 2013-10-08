@@ -67,7 +67,22 @@
     			</g:tab>
     			<g:tab>
     				<g:header size='7'>Evaluación examinadores suplentes</g:header>
-    				<g:SimpleLayoutPanel />
+    				<g:DockLayoutPanel unit="PX">
+						<g:center>
+							<c:DataGrid ui:field='suplentesdataGrid' addStyleNames='{style.data}'/>
+						</g:center>
+						<g:south size="30">
+		      				<g:HTMLPanel>
+		        				<table style="width:100%">
+		          					<tr>
+		            					<td align='center'>
+		              						<c:SimplePager ui:field='suplentesPager' />
+		            					</td>
+		          					</tr>
+		        				</table>
+		      				</g:HTMLPanel>
+		    			</g:south>
+		    		</g:DockLayoutPanel>
     			</g:tab>
     		</g:TabLayoutPanel>
     	</g:center>
