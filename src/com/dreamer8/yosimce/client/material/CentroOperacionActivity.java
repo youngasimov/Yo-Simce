@@ -385,6 +385,16 @@ public class CentroOperacionActivity extends SimceActivity implements
 	@Override
 	public void onMaterialAddedToIngresoStack(String id) {
 
+		if(id.contains(",")){
+			String[] ids = id.split(",");
+			for(String x:ids){
+				onMaterialAddedToIngresoStack(x);
+			}
+			return;
+		}
+		
+		id = id.trim();
+		
 		view.setFocusOnIngresoCodigoBox(true);
 
 		for (MaterialWrap m : materiales) {
@@ -444,6 +454,7 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	@Override
 	public void onMaterialAddedToPredespachoStack(String id) {
+		id = id.trim();
 		view.setFocusOnPredespachoCodigoBox(true);
 		if (selectedLote == null) {
 			eventBus.fireEvent(new MensajeEvent(
@@ -483,6 +494,17 @@ public class CentroOperacionActivity extends SimceActivity implements
 
 	@Override
 	public void onMaterialAddedToDespachoStack(String id) {
+		
+		if(id.contains(",")){
+			String[] ids = id.split(",");
+			for(String x:ids){
+				onMaterialAddedToDespachoStack(x);
+			}
+			return;
+		}
+		
+		id = id.trim();
+		
 		view.setFocusOnDespachoCodigoBox(true);
 		MaterialWrap mat = null;
 		for (MaterialWrap m : materiales) {

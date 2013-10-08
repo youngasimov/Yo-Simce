@@ -32,31 +32,44 @@
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Evaluación supervisores</div> ></g:MenuItem>
 			</my:OverMenuBar>
 		</g:north>
-		<g:north size="40">
-			<g:HTMLPanel>
-				<table>
-					<tr>
-						<td>Buscar supervisor:</td>
-						<td><g:SuggestBox ui:field="supervisorSearchBox" width="400px"/> </td>
-						<td><g:Button ui:field="search" text="Buscar"/> </td>
-						<td><g:Button ui:field="clean" text="Limpiar"/> </td>
-					</tr>
-				</table>
-			</g:HTMLPanel>
-		</g:north>
 		<g:center>
-			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
-		</g:center>
-		<g:south size="30">
-      		<g:HTMLPanel>
-        		<table style="width:100%">
-          			<tr>
-            			<td align='center'>
-              				<c:SimplePager ui:field='pager' />
-            			</td>
-          			</tr>
-        		</table>
-      		</g:HTMLPanel>
-    	</g:south>
+			<g:TabLayoutPanel  barUnit='PX' barHeight='30'>
+				<g:tab>
+					<g:header size='7'>Evaluación supervisores</g:header>
+					<g:DockLayoutPanel unit="PX">
+						<g:north size="40">
+							<g:HTMLPanel>
+								<table>
+									<tr>
+										<td>Buscar supervisor:</td>
+										<td><g:SuggestBox ui:field="supervisorSearchBox" width="400px"/> </td>
+										<td><g:Button ui:field="search" text="Buscar"/> </td>
+										<td><g:Button ui:field="clean" text="Limpiar"/> </td>
+									</tr>
+								</table>
+							</g:HTMLPanel>
+						</g:north>
+						<g:center>
+							<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
+						</g:center>
+						<g:south size="30">
+		      				<g:HTMLPanel>
+		        				<table style="width:100%">
+		          					<tr>
+		            					<td align='center'>
+		              						<c:SimplePager ui:field='pager' />
+		            					</td>
+		          					</tr>
+		        				</table>
+		      				</g:HTMLPanel>
+		    			</g:south>
+		    		</g:DockLayoutPanel>
+    			</g:tab>
+    			<g:tab>
+    				<g:header size='7'>Evaluación examinadores suplentes</g:header>
+    				<g:SimpleLayoutPanel />
+    			</g:tab>
+    		</g:TabLayoutPanel>
+    	</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder>
