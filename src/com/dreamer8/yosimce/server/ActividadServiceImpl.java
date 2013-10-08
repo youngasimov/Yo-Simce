@@ -20,6 +20,7 @@ import org.hibernate.context.internal.ManagedSessionContext;
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadEstadoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadHistorialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoTipoDAO;
@@ -42,6 +43,8 @@ import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioXActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadEstado;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadHistorial;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadHistorialId;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumento;
 import com.dreamer8.yosimce.server.hibernate.pojo.ActividadXDocumentoId;
@@ -1190,6 +1193,19 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				a.setUsuario(u);
 				adao.update(a);
+
+				ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+				ActividadHistorial ah = new ActividadHistorial();
+				ActividadHistorialId ahid = new ActividadHistorialId();
+				ahid.setActividadId(a.getId());
+				ahid.setFecha(new Date());
+				ah.setId(ahid);
+				ah.setFechaInicio(a.getFechaInicio());
+				ah.setActividadEstado(a.getActividadEstado());
+				ah.setComentario(a.getComentario());
+				ah.setFechaTermino(a.getFechaTermino());
+				ah.setModificadorId(u.getId());
+				ahdao.save(ah);
 
 				s.getTransaction().commit();
 			}
@@ -2404,7 +2420,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
-				List<ActividadEstado> aes = aedao.findAll();
+				List<ActividadEstado> aes = aedao.findAll2();
 
 				if (aes != null && !aes.isEmpty()) {
 					for (ActividadEstado ae : aes) {

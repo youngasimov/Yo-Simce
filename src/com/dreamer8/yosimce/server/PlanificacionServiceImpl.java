@@ -1245,7 +1245,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
-				List<ActividadEstado> aes = aedao.findAll();
+				List<ActividadEstado> aes = aedao.findAll2();
 				if (aes != null && !aes.isEmpty()) {
 					for (ActividadEstado ae : aes) {
 						eadtos.add(ae.getEstadoAgendaDTO());

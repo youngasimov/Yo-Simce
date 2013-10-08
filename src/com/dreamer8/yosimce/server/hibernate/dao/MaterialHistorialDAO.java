@@ -64,7 +64,7 @@ public class MaterialHistorialDAO extends
 				// + "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"

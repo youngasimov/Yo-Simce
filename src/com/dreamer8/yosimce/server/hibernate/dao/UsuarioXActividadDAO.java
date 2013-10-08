@@ -39,7 +39,7 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ ")"
+				+ " AND a.actividad_estado_id!=7)"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id AND (uxa.asistencia != false OR uxa.asistencia IS NULL)"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
 				// +
@@ -67,7 +67,7 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ ""
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
@@ -123,7 +123,7 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ ""
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
@@ -207,7 +207,7 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ ")"
+				+ " AND a.actividad_estado_id!=7)"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
@@ -233,7 +233,7 @@ public class UsuarioXActividadDAO extends
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ ")"
+				+ " AND a.actividad_estado_id!=7)"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
 				+ UsuarioTipo.EXAMINADOR + "' OR ut.nombre='"
@@ -259,7 +259,7 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
@@ -283,7 +283,7 @@ public class UsuarioXActividadDAO extends
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN CURSO c ON (a.curso_id=c.id AND c.nombre='"
 				+ SecurityFilter.escapeString(curso)
 				+ "' AND c.establecimiento_id="

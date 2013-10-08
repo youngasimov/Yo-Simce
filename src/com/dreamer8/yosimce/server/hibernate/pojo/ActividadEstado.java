@@ -18,11 +18,13 @@ public class ActividadEstado implements java.io.Serializable {
 	public static final String REALIZADA = "Realizada";
 	public static final String ANULADA = "Anulada";
 	public static final String CONFIRMADO_CON_CAMBIOS = "Confirmado con Cambios";
+	public static final String NO_APLICA = "No Aplica";
 
 	private Integer id;
 	private String nombre;
 	private List<Actividad> actividads = new ArrayList<Actividad>(0);
-	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(0);
+	private List<ActividadHistorial> actividadHistorials = new ArrayList<ActividadHistorial>(
+			0);
 
 	public ActividadEstado() {
 	}
@@ -31,7 +33,9 @@ public class ActividadEstado implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public ActividadEstado(Integer id, String nombre, List<Actividad> actividads, List<ActividadHistorial> actividadHistorials) {
+	public ActividadEstado(Integer id, String nombre,
+			List<Actividad> actividads,
+			List<ActividadHistorial> actividadHistorials) {
 		this.id = id;
 		this.nombre = nombre;
 		this.actividads = actividads;
@@ -66,18 +70,19 @@ public class ActividadEstado implements java.io.Serializable {
 		return this.actividadHistorials;
 	}
 
-	public void setActividadHistorials(List<ActividadHistorial> actividadHistorials) {
+	public void setActividadHistorials(
+			List<ActividadHistorial> actividadHistorials) {
 		this.actividadHistorials = actividadHistorials;
 	}
 
 	public EstadoAgendaDTO getEstadoAgendaDTO() {
 		EstadoAgendaDTO eadto = new EstadoAgendaDTO();
 		eadto.setId(id);
-//		if (nombre.equals(ANULADA) || nombre.equals(REALIZADA)) {
-//			eadto.setEstado(CONFIRMADO);
-//		} else {
-//			eadto.setEstado(nombre);
-//		}
+		// if (nombre.equals(ANULADA) || nombre.equals(REALIZADA)) {
+		// eadto.setEstado(CONFIRMADO);
+		// } else {
+		// eadto.setEstado(nombre);
+		// }
 		eadto.setEstado(nombre);
 
 		return eadto;

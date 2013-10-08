@@ -49,7 +49,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id";
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " WHERE a.actividad_estado_id!=7";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;
@@ -79,7 +80,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " WHERE c.establecimiento_id="
-				+ SecurityFilter.escapeString(idEstablecimiento);
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " AND a.actividad_estado_id!=7";
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
@@ -105,7 +107,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " WHERE c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
 				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
-				+ "'";
+				+ "'" + " AND a.actividad_estado_id!=7";
 		if (dia != null) {
 			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
 		}
@@ -134,7 +136,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " WHERE c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
 				+ " AND c.codigo='" + SecurityFilter.escapeString(nombreCurso)
-				+ "'";
+				+ "'" + " AND a.actividad_estado_id!=7";
 		if (dia != null) {
 			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
 		}
@@ -159,7 +161,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
-				+ SecurityFilter.escapeString(idCurso) + ")";
+				+ SecurityFilter.escapeString(idCurso) + ")"
+				+ " WHERE a.actividad_estado_id!=7";
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
@@ -188,7 +191,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
@@ -373,7 +376,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
@@ -487,7 +490,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ ")"
 
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " LEFT JOIN CONTACTO_CARGO cc ON a.contacto_cargo_id=cc.id"
 				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
@@ -677,7 +680,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
@@ -790,7 +793,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " LEFT JOIN CONTACTO_CARGO cc ON a.contacto_cargo_id=cc.id"
 				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
@@ -942,7 +945,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
@@ -1071,7 +1074,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
 				+ " LEFT JOIN ACTIVIDAD_x_INCIDENCIA axi ON a.id=axi.actividad_id"
 				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD axa_def ON a.id=axa_def.actividad_id AND axa_def.alumno_id IS NULL"
@@ -1086,7 +1089,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ " GROUP BY actividad_id) act_sinc ON a.id=act_sinc.actividad_id"
 
 					+ " LEFT JOIN (SELECT pendrive_sinc.actividad_id,COUNT(cuest.id) AS total_cuest_sinc FROM pendrive_sinc"
-					+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON pendrive_sinc.alumno_x_actividad_id=axaxd.alumno_x_actividad_id"
+					+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON pendrive_sinc.alumno_x_actividad_id=axaxd.alumno_x_actividad_id AND axaxd.recibido=true"
 					+ " JOIN DOCUMENTO cuest ON axaxd.documento_id=cuest.id"
 					+ " JOIN DOCUMENTO_TIPO dt ON (cuest.documento_tipo_id=dt.id AND dt.nombre='"
 					+ SecurityFilter
@@ -1352,7 +1355,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.actividad_estado_id!=7"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
@@ -1503,7 +1506,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(tipoActividad)
 				+ "')"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
-				+ SecurityFilter.escapeString(idCurso) + ")";
+				+ SecurityFilter.escapeString(idCurso)
+				+ " AND a.actividad_estado_id!=7)";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
 		return a;
@@ -1523,7 +1527,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
-				+ " WHERE a.fecha_inicio > now() and a.fecha_inicio < (now()+interval'1 day') and a.actividad_estado_id > 2  ";
+				+ " WHERE a.fecha_inicio > now() and a.fecha_inicio < (now()+interval'1 day') and a.actividad_estado_id > 2   AND a.actividad_estado_id!=7";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;
@@ -1544,7 +1548,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " WHERE a.fecha_inicio >  '"
 				+ SecurityFilter.escapeString(StringUtils
 						.getDateISOString(fechaInicio)) + "' AND a.curso_id="
-				+ SecurityFilter.escapeString(idCurso);
+				+ SecurityFilter.escapeString(idCurso)
+				+ " AND a.actividad_estado_id!=7";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;

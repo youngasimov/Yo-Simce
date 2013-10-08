@@ -525,6 +525,7 @@ public class Actividad implements java.io.Serializable {
 		}
 		adto.setEstadoAplicacion(actividadEstado.getEstadoAgendaDTO());
 		adto.setInicioActividad(fechaInicio);
+		adto.setFechaActividad(fechaInicio);
 		adto.setInicioPrueba(fechaInicioPrueba);
 		adto.setTerminoPrueba(fechaTerminoPrueba);
 		if (totalAlumnos == null) {

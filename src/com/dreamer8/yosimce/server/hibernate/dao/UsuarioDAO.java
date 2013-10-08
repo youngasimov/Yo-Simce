@@ -278,7 +278,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ ")"
+				+ " AND a.actividad_estado_id!=7)"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 				+ " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
 				// + " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"

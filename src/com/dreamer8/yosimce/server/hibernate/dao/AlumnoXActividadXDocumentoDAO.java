@@ -34,7 +34,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 		String query = "SELECT DISTINCT axaxd.id as axaxd_id,al.nombres as al_nombres,"
 				+ "al.apellido_paterno,al.apellido_materno,al.rut,d.codigo,"
 				+ "de.id as doc_estado_id,de.nombre as doc_estado,axaxd.comentario as axaxd_com,"
-				+ "axaxd_form.recibido IS NOT NULL FROM APLICACION_x_NIVEL axn "
+				+ "axaxd_form.recibido FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -76,7 +76,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			esdto.setNombreEstado((String) o[7]);
 			sadto.setEstado(esdto);
 			sadto.setComentario((String) o[8]);
-			sadto.setEntregoFormulario((Boolean) o[9]);
+			sadto.setEntregoFormulario((o[9] != null) ? (Boolean) o[9] : false);
 			sadtos.add(sadto);
 		}
 		return sadtos;

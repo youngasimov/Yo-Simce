@@ -32,8 +32,10 @@ public class UsuarioSeleccionDAO extends
 				+ ")"
 				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id  AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
-				+ ")";
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ ")"
+				+ " WHERE us.seleccion=true AND (us.renuncia=false OR us.renuncia IS NULL)";
 		Query q = s.createSQLQuery(query).addEntity(UsuarioSeleccion.class);
 		us = ((UsuarioSeleccion) q.uniqueResult());
 		return us;
