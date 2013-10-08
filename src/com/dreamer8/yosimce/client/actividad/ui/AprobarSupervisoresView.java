@@ -23,5 +23,6 @@ public interface AprobarSupervisoresView extends IsWidget {
 		void suplentefilter(String filter);
 		void sinc(EvaluacionSupervisorDTO supervisor);
 		void sinc(EvaluacionSuplenteDTO suplente);
+		void onTabSelected(int tab);
 	}
 }

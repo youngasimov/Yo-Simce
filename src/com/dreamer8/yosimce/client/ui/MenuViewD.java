@@ -5,6 +5,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -18,7 +19,7 @@ public class MenuViewD extends Composite implements MenuView {
 
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
-	
+	@UiField HTMLPanel informacionPanel;
 	
 	private MenuPresenter presenter;
 	
@@ -38,6 +39,11 @@ public class MenuViewD extends Composite implements MenuView {
 	@Override
 	public void setPresenter(MenuPresenter presenter) {
 		this.presenter = presenter;
+	}
+
+	@Override
+	public void setInformacionVisible(boolean visible) {
+		informacionPanel.setVisible(visible);
 	}
 
 }

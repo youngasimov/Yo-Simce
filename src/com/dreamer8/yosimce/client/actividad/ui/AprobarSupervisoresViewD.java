@@ -17,6 +17,7 @@ import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.Style.OutlineStyle;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -40,6 +41,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
@@ -353,6 +355,8 @@ public class AprobarSupervisoresViewD extends Composite implements
 	@UiField
 	MenuItem menuItem;
 	@UiField
+	TabLayoutPanel tabs;
+	@UiField
 	SuggestBox supervisorSearchBox;
 	@UiField
 	SuggestBox suplenteSearchBox;
@@ -384,7 +388,14 @@ public class AprobarSupervisoresViewD extends Composite implements
 	private Column<EvaluacionSupervisorDTO, Boolean> presentacionColumn;
 	private Column<EvaluacionSupervisorDTO, Boolean> generalColumn;
 	private ListDataProvider<EvaluacionSupervisorDTO> dataProvider;
-	//private SingleSelectionModel<EvaluacionSupervisorDTO> selectionModel;
+	
+	private Column<EvaluacionSuplenteDTO, String> srutColumn;
+	private Column<EvaluacionSuplenteDTO, String> snombreColumn;
+	private Column<EvaluacionSuplenteDTO, String> coColumn;
+	private Column<EvaluacionSuplenteDTO, Boolean> spuntualidadColumn;
+	private Column<EvaluacionSuplenteDTO, Boolean> spresentacionColumn;
+	private Column<EvaluacionSuplenteDTO, Boolean> sgeneralColumn;
+	private ListDataProvider<EvaluacionSuplenteDTO> sdataProvider;
 
 	private AprobarSupervisoresPresenter presenter;
 
@@ -393,17 +404,28 @@ public class AprobarSupervisoresViewD extends Composite implements
 	    resources.style().ensureInjected();
 		dataGrid = new DataGrid<EvaluacionSupervisorDTO>(
 				EvaluacionSupervisorDTO.KEY_PROVIDER);
+		
 		suplentesdataGrid = new DataGrid<EvaluacionSuplenteDTO>(
 				EvaluacionSuplenteDTO.KEY_PROVIDER);
+		
 		dataGrid.setPageSize(100);
 		suplentesdataGrid.setPageSize(100);
+		
 		//selectionModel = new SingleSelectionModel<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
 		//dataGrid.setSelectionModel(selectionModel);
+		
 		dataProvider = new ListDataProvider<EvaluacionSupervisorDTO>(
 				EvaluacionSupervisorDTO.KEY_PROVIDER);
 		dataGrid.setAutoHeaderRefreshDisabled(true);
 		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
 		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+		
+		sdataProvider = new ListDataProvider<EvaluacionSuplenteDTO>(
+				EvaluacionSuplenteDTO.KEY_PROVIDER);
+		suplentesdataGrid.setAutoHeaderRefreshDisabled(true);
+		suplentesdataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
+		suplentesdataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+		
 		SimplePager.Resources pagerResources = GWT
 				.create(SimplePager.Resources.class);
 		pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0,
@@ -423,11 +445,21 @@ public class AprobarSupervisoresViewD extends Composite implements
 		dataGrid.addColumn(presentacionColumn);
 		dataGrid.addColumn(generalColumn);
 		
+		buildSuplenteTable();
+		
+		suplentesdataGrid.addColumn(srutColumn);
+		suplentesdataGrid.addColumn(snombreColumn);
+		suplentesdataGrid.addColumn(coColumn);
+		suplentesdataGrid.addColumn(spuntualidadColumn);
+		suplentesdataGrid.addColumn(spresentacionColumn);
+		suplentesdataGrid.addColumn(sgeneralColumn);
+		
 		
 		dataGrid.setTableBuilder(new CustomTableBuilder());
 		dataGrid.setHeaderBuilder(new CustomHeaderBuilder());
 		
 		dataProvider.addDataDisplay(dataGrid);
+		sdataProvider.addDataDisplay(suplentesdataGrid);
 		initWidget(uiBinder.createAndBindUi(this));
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
@@ -438,11 +470,28 @@ public class AprobarSupervisoresViewD extends Composite implements
 			}
 		});
 		
+		
+		
+	}
+	@UiHandler("tabs")
+	void tabSelected(SelectionEvent<Integer> event){
+		presenter.onTabSelected(tabs.getSelectedIndex());
 	}
 	
 	@UiHandler("search")
 	void onSearchClick(ClickEvent event){
 		presenter.filter(supervisorSearchBox.getValue());
+	}
+	
+	@UiHandler("suplenteSearch")
+	void onSuplentesSearchClick(ClickEvent event){
+		presenter.suplentefilter(suplenteSearchBox.getValue());
+	}
+	
+	@UiHandler("suplenteClean")
+	void onSuplenteCleanFilterClick(ClickEvent event){
+		suplenteSearchBox.setValue("");
+		presenter.suplentefilter(null);
 	}
 	
 	@UiHandler("clean")
@@ -459,6 +508,26 @@ public class AprobarSupervisoresViewD extends Composite implements
 	@Override
 	public void setSupervisores(ArrayList<EvaluacionSupervisorDTO> supervisores) {
 		dataProvider.setList(supervisores);
+	}
+	
+
+	@Override
+	public void setSuplentes(ArrayList<EvaluacionSuplenteDTO> suplentes) {
+		sdataProvider.setList(suplentes);
+	}
+	
+	@Override
+	public void setSuggestions(ArrayList<String> suggestions) {
+		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)supervisorSearchBox.getSuggestOracle();
+		mwso.clear();
+		mwso.addAll(suggestions);
+	}
+
+	@Override
+	public void setSuplenteSuggestions(ArrayList<String> suggestions) {
+		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)suplenteSearchBox.getSuggestOracle();
+		mwso.clear();
+		mwso.addAll(suggestions);
 	}
 
 	private void buildTable() {
@@ -587,23 +656,108 @@ public class AprobarSupervisoresViewD extends Composite implements
 		dataGrid.setColumnWidth(++i, 7, Unit.EM);
 
 	}
-
-	@Override
-	public void setSuggestions(ArrayList<String> suggestions) {
-		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)supervisorSearchBox.getSuggestOracle();
-		mwso.clear();
-		mwso.addAll(suggestions);
-	}
-
-	@Override
-	public void setSuplentes(ArrayList<EvaluacionSuplenteDTO> suplentes) {
+	
+	private void buildSuplenteTable(){
+		int i = -1;
 		
-	}
+		srutColumn = new Column<EvaluacionSuplenteDTO, String>(new TextCell()) {
 
-	@Override
-	public void setSuplenteSuggestions(ArrayList<String> suggestions) {
-		// TODO Auto-generated method stub
-		
-	}
+			@Override
+			public String getValue(EvaluacionSuplenteDTO o) {
+				return o.getSuplente().getRut();
+			}
+		};
+		srutColumn.setSortable(false);
+		suplentesdataGrid.setColumnWidth(++i, 10, Unit.EM);
 
+		snombreColumn = new Column<EvaluacionSuplenteDTO, String>(
+				new TextCell()) {
+
+			@Override
+			public String getValue(EvaluacionSuplenteDTO o) {
+				return ViewUtils.limitarString(o.getSuplente().getNombres() + " "
+						+ o.getSuplente().getApellidoPaterno() + " "
+						+ o.getSuplente().getApellidoMaterno(),30);
+			}
+		};
+		snombreColumn.setSortable(false);
+		suplentesdataGrid.setColumnWidth(++i, 26, Unit.EM);
+
+		coColumn = new Column<EvaluacionSuplenteDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(EvaluacionSuplenteDTO o) {
+				return o.getCo();
+			}
+		};
+		coColumn.setSortable(false);
+		suplentesdataGrid.setColumnWidth(++i, 5, Unit.EM);
+
+		spuntualidadColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
+				new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionSuplenteDTO o) {
+				return o.getPuntualidad() != null && o.getPuntualidad() > 0;
+			}
+		};
+		spuntualidadColumn.setSortable(false);
+		spuntualidadColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, Boolean>() {
+
+			@Override
+			public void update(int index, EvaluacionSuplenteDTO object,
+					Boolean value) {
+				object.setPuntualidad((value)?4:0);
+				presenter.sinc(object);
+				//dataProvider.refresh();
+			}
+		});
+		suplentesdataGrid.setColumnWidth(++i, 8, Unit.EM);
+
+		spresentacionColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
+				new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionSuplenteDTO o) {
+				return o.getPresentacionPersonal() != null
+						&& o.getPresentacionPersonal() > 0;
+			}
+		};
+		spresentacionColumn.setSortable(false);
+		spresentacionColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, Boolean>() {
+
+			@Override
+			public void update(int index, EvaluacionSuplenteDTO object,
+					Boolean value) {
+				object.setPresentacionPersonal((value)?4:0);
+				presenter.sinc(object);
+				//dataProvider.refresh();
+				
+			}
+		});
+		suplentesdataGrid.setColumnWidth(++i, 12, Unit.EM);
+
+		sgeneralColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
+				new CheckboxCell()) {
+
+			@Override
+			public Boolean getValue(EvaluacionSuplenteDTO o) {
+				return o.getGeneral() != null && o.getGeneral() > 0;
+			}
+		};
+		sgeneralColumn.setSortable(false);
+		sgeneralColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, Boolean>() {
+
+			@Override
+			public void update(int index, EvaluacionSuplenteDTO object,
+					Boolean value) {
+				object.setGeneral((value)?4:0);
+				presenter.sinc(object);
+				//dataProvider.refresh();
+				
+			}
+		});
+		suplentesdataGrid.setColumnWidth(++i, 7, Unit.EM);
+
+	}
 }

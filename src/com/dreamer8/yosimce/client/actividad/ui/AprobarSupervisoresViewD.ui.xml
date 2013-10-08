@@ -29,11 +29,11 @@
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
-				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Evaluación supervisores</div> ></g:MenuItem>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Evaluación supervisores y suplentes</div> ></g:MenuItem>
 			</my:OverMenuBar>
 		</g:north>
 		<g:center>
-			<g:TabLayoutPanel  barUnit='PX' barHeight='30'>
+			<g:TabLayoutPanel  barUnit='PX' barHeight='30' ui:field='tabs'>
 				<g:tab>
 					<g:header size='7'>Evaluación supervisores</g:header>
 					<g:DockLayoutPanel unit="PX">

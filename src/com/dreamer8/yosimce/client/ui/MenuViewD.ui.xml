@@ -64,7 +64,7 @@
 		<g:center>
 			<g:HTMLPanel>
 				<g:ScrollPanel width="100%" height="100%">
-					<g:HTMLPanel addStyleNames='{style.content}'>
+					<g:HTMLPanel addStyleNames='{style.content}' ui:field='informacionPanel'>
 						<p>
 	    				Como regla general, si usted recibe alguna notificación de error al realizar una acción en el sistema siga los siguientes pasos:<br />
 	    				<ul>
@@ -83,6 +83,13 @@
 	    				es muy probable que esto se encuentre solucionado durante los próximos días.</p>
 	    				
 	    				<p>URL: se refiere al texto que se encuentra en la parte superior del navegador que indica qué página está visitando</p>
+	    				
+	    				<ul>
+	    					<li>
+	    						<a  href='/informacion_tracking_supervisores.pdf' target="_blank">manual para ingreso de datos a formulario</a> Cortesía de la JZ, Carolina Jara.
+	    					</li>
+	    				</ul>
+	    				
 					</g:HTMLPanel>
 				</g:ScrollPanel>
 				<div class='{style.help}'>

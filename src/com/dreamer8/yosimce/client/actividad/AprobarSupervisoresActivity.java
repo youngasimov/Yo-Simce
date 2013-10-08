@@ -35,7 +35,15 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
 		updateSupervisores(true);
-		updateSuplentes(true);
+	}
+	
+	@Override
+	public void onTabSelected(int tab) {
+		if(tab == 0){
+			updateSupervisores(true);
+		}else{
+			updateSuplentes(true);
+		}
 	}
 	
 	private void updateSupervisores(boolean block){

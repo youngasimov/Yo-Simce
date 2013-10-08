@@ -236,7 +236,8 @@ public class FormActividadActivity extends SimceActivity implements
 			});
 		}
 		
-		if(a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.REALIZADA) &&
+		if(Utils.hasPermisos(getPermisos(),"ActividadService","getEvaluacionExaminadores") && 
+				a.getEstadoAplicacion().getEstado().equals(EstadoAgendaDTO.REALIZADA) &&
 				Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","updateEvaluacionExaminadores")){
 			ArrayList<EvaluacionUsuarioDTO> examinadoresCorregido = null;
 			if(realizadaPorSupervisor){

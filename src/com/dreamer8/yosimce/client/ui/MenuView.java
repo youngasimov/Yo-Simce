@@ -8,6 +8,8 @@ public interface MenuView extends IsWidget {
 	
 	void setPresenter(MenuPresenter presenter);
 	
+	void setInformacionVisible(boolean visible);
+	
 	public interface MenuPresenter extends SimcePresenter{
 		
 	}
