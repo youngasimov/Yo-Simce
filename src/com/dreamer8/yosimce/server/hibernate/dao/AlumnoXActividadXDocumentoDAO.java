@@ -31,10 +31,9 @@ public class AlumnoXActividadXDocumentoDAO extends
 
 		List<SincAlumnoDTO> sadtos = new ArrayList<SincAlumnoDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT axaxd.id as axaxd_id,al.nombres as al_nombres,"
-				+ "al.apellido_paterno,al.apellido_materno,al.rut,d.codigo,"
-				+ "de.id as doc_estado_id,de.nombre as doc_estado,axaxd.comentario as axaxd_com,"
-				+ "axaxd_form.recibido FROM APLICACION_x_NIVEL axn "
+		String query = "SELECT DISTINCT axaxd_id,al.nombres as al_nombres,"
+				+ "al.apellido_paterno,al.apellido_materno,al.rut,"
+				+ "axaxd.codigo,doc_estado_id,doc_estado,axaxd_com,axaxd_form.recibido  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -47,17 +46,19 @@ public class AlumnoXActividadXDocumentoDAO extends
 				+ ")"
 				+ " JOIN ALUMNO_x_ACTIVIDAD axa ON a.id=axa.actividad_id"
 				+ " JOIN ALUMNO al ON axa.alumno_id=al.id"
-				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON axa.id=axaxd.alumno_x_actividad_id"
-				+ " LEFT JOIN DOCUMENTO d ON axaxd.documento_id=d.id"
-				+ " LEFT  JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
+				+ " LEFT JOIN (SELECT axaxd.alumno_x_actividad_id,axaxd.id axaxd_id,d.codigo,de.id as doc_estado_id,"
+				+ "de.nombre as doc_estado,axaxd.comentario as axaxd_com FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd"
+				+ " JOIN DOCUMENTO d ON axaxd.documento_id=d.id"
+				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
 				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
 				+ "')"
-				+ " LEFT  JOIN DOCUMENTO_ESTADO de ON axaxd.documento_estado_id=de.id"
-				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_form ON axa.id=axaxd_form.alumno_x_actividad_id"
-				+ " LEFT  JOIN DOCUMENTO d_form ON axaxd_form.documento_id=d_form.id"
-				+ " LEFT  JOIN DOCUMENTO_TIPO dt_form ON (d_form.documento_tipo_id=dt_form.id AND dt_form.nombre='"
+				+ " JOIN DOCUMENTO_ESTADO de ON axaxd.documento_estado_id=de.id) axaxd ON axa.id=axaxd.alumno_x_actividad_id"
+
+				+ " LEFT JOIN (SELECT axaxd_form.alumno_x_actividad_id,axaxd_form.recibido FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_form"
+				+ " JOIN DOCUMENTO d_form ON axaxd_form.documento_id=d_form.id"
+				+ " JOIN DOCUMENTO_TIPO dt_form ON (d_form.documento_tipo_id=dt_form.id AND dt_form.nombre='"
 				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
-				+ "')";
+				+ "')) axaxd_form ON axa.id=axaxd_form.alumno_x_actividad_id ";
 
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
@@ -166,6 +167,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 				+ SecurityFilter.escapeString(idAlumnoXActividad);
 		Query q = s.createSQLQuery(query).addEntity(
 				AlumnoXActividadXDocumento.class);
+		q.setMaxResults(1);
 		axaxd = ((AlumnoXActividadXDocumento) q.uniqueResult());
 		return axaxd;
 	}

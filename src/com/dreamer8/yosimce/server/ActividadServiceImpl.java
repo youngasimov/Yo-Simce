@@ -392,23 +392,29 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				DocumentoDAO ddao = new DocumentoDAO();
 				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
-				if (sinc.getIdPendrive() != null) {
+				if (sinc.getIdPendrive() != null
+						&& !sinc.getIdPendrive().isEmpty()) {
+					// AlumnoXActividadXDocumento axaxdPndrive = axaxddao
+					// .findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
+					// axa.getId(), sinc.getIdPendrive(),
+					// DocumentoTipo.PRUEBA);
 					AlumnoXActividadXDocumento axaxdPndrive = axaxddao
-							.findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
-									axa.getId(), sinc.getIdPendrive(),
-									DocumentoTipo.PRUEBA);
+							.findByIdAlumnoXActividadANDTipoDocumento(
+									axa.getId(), DocumentoTipo.PRUEBA);
 
 					if (axaxdPndrive == null) {
-						Documento pendrive = ddao.findByCodigoANDTipoDocumento(
-								sinc.getIdPendrive(), DocumentoTipo.PRUEBA);
-						if (pendrive == null) {
-							throw new NullPointerException(
-									"No se ha encontrado un pendrive con el código ingresado.");
-						}
+
 						axaxdPndrive = new AlumnoXActividadXDocumento();
 						axaxdPndrive.setAlumnoXActividad(axa);
-						axaxdPndrive.setDocumento(pendrive);
+
 					}
+					Documento pendrive = ddao.findByCodigoANDTipoDocumento(
+							sinc.getIdPendrive(), DocumentoTipo.PRUEBA);
+					if (pendrive == null) {
+						throw new NullPointerException(
+								"No se ha encontrado un pendrive con el código ingresado.");
+					}
+					axaxdPndrive.setDocumento(pendrive);
 
 					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
 					DocumentoEstado de = dedao.getById(sinc.getEstado()
@@ -435,30 +441,32 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							.getTotalAlumnosPresentes() + 1 : 0);
 				}
 
-				AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
-						.findByIdAlumnoXActividadANDTipoDocumento(axa.getId(),
-								DocumentoTipo.CUESTIONARIO_PADRE);
+				if (sinc.getEntregoFormulario()) {
+					AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
+							.findByIdAlumnoXActividadANDTipoDocumento(
+									axa.getId(),
+									DocumentoTipo.CUESTIONARIO_PADRE);
 
-				if (axaxdCuestionario == null) {
-					DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
-					DocumentoTipo dt = dtdao
-							.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
-					Documento cuestionario = new Documento();
-					cuestionario.setDocumentoTipo(dt);
-					ddao.save(cuestionario);
-					axaxdCuestionario = new AlumnoXActividadXDocumento();
-					axaxdCuestionario.setAlumnoXActividad(axa);
-					axaxdCuestionario.setDocumento(cuestionario);
+					if (axaxdCuestionario == null) {
+						DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+						DocumentoTipo dt = dtdao
+								.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
+						Documento cuestionario = new Documento();
+						cuestionario.setDocumentoTipo(dt);
+						ddao.save(cuestionario);
+						axaxdCuestionario = new AlumnoXActividadXDocumento();
+						axaxdCuestionario.setAlumnoXActividad(axa);
+						axaxdCuestionario.setDocumento(cuestionario);
+					}
+
+					axaxdCuestionario.setEntregado(true);
+					axaxdCuestionario.setRecibido(sinc.getEntregoFormulario());
+
+					axaxdCuestionario.setUpdatedAt(new Date());
+					axaxdCuestionario.setModificadorId(u.getId());
+
+					axaxddao.saveOrUpdate(axaxdCuestionario);
 				}
-
-				axaxdCuestionario.setEntregado(true);
-				axaxdCuestionario.setRecibido(sinc.getEntregoFormulario());
-
-				axaxdCuestionario.setUpdatedAt(new Date());
-				axaxdCuestionario.setModificadorId(u.getId());
-
-				axaxddao.saveOrUpdate(axaxdCuestionario);
-
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
