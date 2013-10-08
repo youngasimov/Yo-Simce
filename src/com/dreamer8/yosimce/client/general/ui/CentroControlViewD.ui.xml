@@ -21,6 +21,10 @@
 		height: 100%;
 	}
 	
+	.data{
+		font-size: 12px;
+	}
+	
 	.panelGraficos{
 		display: block;
 		width: 90%;
@@ -35,11 +39,21 @@
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Centro de control</div> ></g:MenuItem>
 				<g:MenuItem>
+					Actualizar
 					<g:MenuBar vertical='true'>
 						<g:MenuItem ui:field="actualizarMenu">Actualizar</g:MenuItem>
 						<g:MenuItem ui:field="autoCarga2Menu">Actualizar cada 2 minutos</g:MenuItem>
 						<g:MenuItem ui:field="autoCarga5Menu">Actualizar cada 5 minutos</g:MenuItem>
 						<g:MenuItem ui:field="autoCarga10Menu">Actualizar cada 10 minutos</g:MenuItem>
+					</g:MenuBar>
+				</g:MenuItem>
+				<g:MenuItem>
+					Evento
+					<g:MenuBar vertical='true'>
+						<g:MenuItem ui:field="establecimientoItem">Salida a establecimiento</g:MenuItem>
+						<g:MenuItem ui:field="centroItem">LLegada a centro</g:MenuItem>
+						<g:MenuItem ui:field="imprentaItem">Imprenta</g:MenuItem>
+						<g:MenuItem ui:field="ministerioItem">Ministerio</g:MenuItem>
 					</g:MenuBar>
 				</g:MenuItem>
 				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
@@ -49,16 +63,16 @@
 		<g:center>
 			<g:SplitLayoutPanel>
 				<g:west size='300'>
-					<c:DataGrid ui:field="allTable"/>
+					<c:DataGrid ui:field="allTable" addStyleNames='{style.data}'/>
 				</g:west>
 				<g:north size='400'>
-					<c:DataGrid ui:field="monitorTable"/>
+					<c:DataGrid ui:field="monitorTable" addStyleNames='{style.data}'/>
 				</g:north>
 				<g:west size='400'>
-					<c:DataGrid ui:field="completeTable"/>
+					<c:DataGrid ui:field="completeTable" addStyleNames='{style.data}'/>
 				</g:west>
 				<g:center>
-					<c:DataGrid ui:field="incompleteTable"/>
+					<c:DataGrid ui:field="incompleteTable" addStyleNames='{style.data}'/>
 				</g:center>
 			</g:SplitLayoutPanel>
 		</g:center>

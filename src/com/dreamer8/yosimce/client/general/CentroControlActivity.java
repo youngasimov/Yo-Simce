@@ -14,6 +14,7 @@ import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.view.client.ProvidesKey;
 
 public class CentroControlActivity extends SimceActivity implements
@@ -27,12 +28,13 @@ public class CentroControlActivity extends SimceActivity implements
 				return (item == null) ? null : item.centroOperacion.getId();
 			}
 		};
-		CentroOperacionDTO centroOperacion;
-		int maxEnCentro;
-		int maxEnEstablecimiento;
-		int maxEnImprenta;
-		int maxEnMinisterio;
-		CentroOperacionPlace place;
+		public CentroOperacionDTO centroOperacion;
+		public int maxEnCentro;
+		public int maxEnEstablecimiento;
+		public int maxEnImprenta;
+		public int maxEnMinisterio;
+		public Hyperlink hyperlink;
+		public CentroOperacionPlace place;
 	}
 	
 	private final CentroControlView view;
@@ -43,6 +45,7 @@ public class CentroControlActivity extends SimceActivity implements
 	private ArrayList<CentroOperacionWrap> centros;
 	private boolean firstLoad;
 	
+	private int etapa;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -57,6 +60,7 @@ public class CentroControlActivity extends SimceActivity implements
 		panel.setWidget(this.view.asWidget());
 		this.eventBus = eventBus;
 		firstLoad = true;
+		etapa = 1;
 		updateCentros();
 	}
 	
@@ -88,6 +92,43 @@ public class CentroControlActivity extends SimceActivity implements
 		}
 	}
 	
+	@Override
+	public void addToMonitor(ArrayList<CentroOperacionWrap> centros) {
+		view.getMonitorDataProvider().getList().addAll(centros);
+		updateTables();
+		
+	}
+
+	@Override
+	public void removeFromMonitor(ArrayList<CentroOperacionWrap> centros) {
+		view.getMonitorDataProvider().getList().removeAll(centros);
+		updateTables();
+	}
+
+	@Override
+	public void setMonitorEtapaEstablecimiento() {
+		etapa = 1;
+		updateTables();
+	}
+
+	@Override
+	public void setMonitorEtapaCentro() {
+		etapa = 2;
+		updateTables();
+	}
+
+	@Override
+	public void setMonitorEtapaImprenta() {
+		etapa = 3;
+		updateTables();
+	}
+
+	@Override
+	public void setMonitorEtapaMinisterio() {
+		etapa = 4;
+		updateTables();
+	}
+	
 	private void updateCentros(){
 		getFactory().getGeneralService().getCentrosOperacion(new SimceCallback<ArrayList<CentroOperacionDTO>>(eventBus, firstLoad) {
 
@@ -116,6 +157,7 @@ public class CentroControlActivity extends SimceActivity implements
 						cow.maxEnEstablecimiento = centro.getEnEstablecimiento();
 						cow.maxEnImprenta = centro.getEnImprenta();
 						cow.maxEnMinisterio = centro.getEnMinisterio();
+						cow.hyperlink = new Hyperlink("Ir a tracking", getFactory().getPlaceHistoryMapper().getToken(cow.place));
 						centros.add(cow);
 					}
 				}
@@ -127,7 +169,37 @@ public class CentroControlActivity extends SimceActivity implements
 	}
 	
 	private void updateTables(){
-		
+		view.getCompleteDataProvider().getList().clear();
+		view.getIncompleteDataProvider().getList().clear();
+		int total = 0;
+		int aux = 0;
+		for(CentroOperacionWrap cow:centros){
+			total = cow.centroOperacion.getEnCentro()+cow.centroOperacion.getEnEstablecimiento()+cow.centroOperacion.getEnImprenta()+cow.centroOperacion.getEnMinisterio();
+			if(etapa == 1){
+				aux = cow.maxEnEstablecimiento;
+			}else if(etapa == 2){
+				aux = cow.maxEnCentro;
+			}else if(etapa == 3){
+				aux = cow.maxEnImprenta;
+			}else{
+				aux = cow.maxEnMinisterio;
+			}
+			
+			if(view.getMonitorDataProvider().getList().contains(cow)){
+				view.getMonitorDataProvider().getList().set(view.getMonitorDataProvider().getList().indexOf(cow), cow);
+			}
+			if(view.getAllDataProvider().getList().contains(cow)){
+				view.getAllDataProvider().getList().set(view.getAllDataProvider().getList().indexOf(cow), cow);
+			}
+			if(aux<total){
+				view.getIncompleteDataProvider().getList().add(cow);
+			}else{
+				view.getCompleteDataProvider().getList().add(cow);
+			}
+			
+		}
 	}
+
+	
 
 }
