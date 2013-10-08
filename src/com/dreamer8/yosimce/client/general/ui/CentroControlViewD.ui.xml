@@ -69,10 +69,10 @@
 					<c:DataGrid ui:field="monitorTable" addStyleNames='{style.data}'/>
 				</g:north>
 				<g:west size='400'>
-					<c:DataGrid ui:field="completeTable" addStyleNames='{style.data}'/>
+					<c:DataGrid ui:field="incompleteTable" addStyleNames='{style.data}'/>
 				</g:west>
 				<g:center>
-					<c:DataGrid ui:field="incompleteTable" addStyleNames='{style.data}'/>
+					<c:DataGrid ui:field="completeTable" addStyleNames='{style.data}'/>
 				</g:center>
 			</g:SplitLayoutPanel>
 		</g:center>

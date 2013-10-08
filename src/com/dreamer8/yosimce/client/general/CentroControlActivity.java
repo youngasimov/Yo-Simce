@@ -35,6 +35,35 @@ public class CentroControlActivity extends SimceActivity implements
 		public int maxEnMinisterio;
 		public Hyperlink hyperlink;
 		public CentroOperacionPlace place;
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime
+					* result
+					+ ((centroOperacion.getId() == null) ? 0 : centroOperacion.getId()
+							.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			CentroOperacionWrap other = (CentroOperacionWrap) obj;
+			if (centroOperacion.getId() == null) {
+				if (other.centroOperacion.getId() != null)
+					return false;
+			} else if (!centroOperacion.getId().equals(other.centroOperacion.getId()))
+				return false;
+			return true;
+		}
+		
+		
+		
 	}
 	
 	private final CentroControlView view;
@@ -157,7 +186,7 @@ public class CentroControlActivity extends SimceActivity implements
 						cow.maxEnEstablecimiento = centro.getEnEstablecimiento();
 						cow.maxEnImprenta = centro.getEnImprenta();
 						cow.maxEnMinisterio = centro.getEnMinisterio();
-						cow.hyperlink = new Hyperlink("Ir a tracking", getFactory().getPlaceHistoryMapper().getToken(cow.place));
+						cow.hyperlink = new Hyperlink("Tracking", getFactory().getPlaceHistoryMapper().getToken(cow.place));
 						centros.add(cow);
 					}
 				}
@@ -173,6 +202,9 @@ public class CentroControlActivity extends SimceActivity implements
 		view.getIncompleteDataProvider().getList().clear();
 		int total = 0;
 		int aux = 0;
+		view.getAllDataProvider().setList(centros);
+		ArrayList<CentroOperacionWrap> incomplete = new ArrayList<CentroControlActivity.CentroOperacionWrap>();
+		ArrayList<CentroOperacionWrap> complete = new ArrayList<CentroControlActivity.CentroOperacionWrap>();
 		for(CentroOperacionWrap cow:centros){
 			total = cow.centroOperacion.getEnCentro()+cow.centroOperacion.getEnEstablecimiento()+cow.centroOperacion.getEnImprenta()+cow.centroOperacion.getEnMinisterio();
 			if(etapa == 1){
@@ -184,20 +216,17 @@ public class CentroControlActivity extends SimceActivity implements
 			}else{
 				aux = cow.maxEnMinisterio;
 			}
-			
 			if(view.getMonitorDataProvider().getList().contains(cow)){
 				view.getMonitorDataProvider().getList().set(view.getMonitorDataProvider().getList().indexOf(cow), cow);
+				if(aux<total){
+					incomplete.add(cow);
+				}else{
+					complete.add(cow);
+				}
 			}
-			if(view.getAllDataProvider().getList().contains(cow)){
-				view.getAllDataProvider().getList().set(view.getAllDataProvider().getList().indexOf(cow), cow);
-			}
-			if(aux<total){
-				view.getIncompleteDataProvider().getList().add(cow);
-			}else{
-				view.getCompleteDataProvider().getList().add(cow);
-			}
-			
 		}
+		view.getCompleteDataProvider().setList(complete);
+		view.getIncompleteDataProvider().setList(incomplete);
 	}
 
 	

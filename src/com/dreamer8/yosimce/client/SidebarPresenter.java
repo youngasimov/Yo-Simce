@@ -152,7 +152,7 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setDetalleCursoViewItemVisivility(Utils.hasPermisos(permisos,"GeneralService","getDetalleCurso") && tipo);
 		
 		//Mientras no se definan los permisos especificos, solo los administradores pueden ver esto 
-		view.setCentroControlViewItemVisivility(Utils.hasPermisos(permisos,"AdministracionService","getPermisos"));
+		view.setCentroControlViewItemVisivility(Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario"));
 		
 		view.setAgendamientoVisivility((Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos")) ||
 				(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda")) ||

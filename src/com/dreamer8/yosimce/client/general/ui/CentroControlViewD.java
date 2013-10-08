@@ -17,10 +17,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -70,6 +73,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		completeTable = new DataGrid<CentroControlActivity.CentroOperacionWrap>(CentroControlActivity.CentroOperacionWrap.KEY_PROVIDER);
 		allTable = new DataGrid<CentroControlActivity.CentroOperacionWrap>(CentroControlActivity.CentroOperacionWrap.KEY_PROVIDER);
 		
+		monitorTable.setPageSize(500);
+		incompleteTable.setPageSize(500);
+		completeTable.setPageSize(500);
+		allTable.setPageSize(500);
+		
 		monitorDataProvider = new ListDataProvider<CentroControlActivity.CentroOperacionWrap>();
 		incompleteDataProvider = new ListDataProvider<CentroControlActivity.CentroOperacionWrap>();
 		completeDataProvider = new ListDataProvider<CentroControlActivity.CentroOperacionWrap>();
@@ -79,10 +87,12 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		allSelectionModel = new MultiSelectionModel<CentroControlActivity.CentroOperacionWrap>();
 		
 		monitorDataProvider.addDataDisplay(monitorTable);
-		monitorTable.setSelectionModel(monitorSelectionModel);
+		monitorTable.setSelectionModel(monitorSelectionModel,DefaultSelectionEventManager
+		        .<CentroControlActivity.CentroOperacionWrap> createCheckboxManager());
 		
 		allDataProvider.addDataDisplay(allTable);
-		allTable.setSelectionModel(allSelectionModel);
+		allTable.setSelectionModel(allSelectionModel,DefaultSelectionEventManager
+		        .<CentroControlActivity.CentroOperacionWrap> createCheckboxManager());
 		
 		incompleteDataProvider.addDataDisplay(incompleteTable);
 		completeDataProvider.addDataDisplay(completeTable);
