@@ -600,6 +600,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			fileLink.setVisible(false);
 			fileLabel.setText("");
 			fileLabel.setVisible(false);
+			file = null;
 		}
 		else if((documento.getUrl() == null || documento.getUrl().isEmpty()) && documento.getName() != null && !documento.getName().isEmpty()){
 			fileLink.setHref("");
