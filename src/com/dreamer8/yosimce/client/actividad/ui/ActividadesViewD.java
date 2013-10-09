@@ -146,7 +146,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			th.style().trustedProperty("border-right", "10px solid white").endStyle();
 			th.text("Contingencia").endTH();
 			
-			th = tr.startTH().colSpan(5);
+			tr.startTH().colSpan(5).endTH();
 			
 			th = tr.startTH().colSpan(3).className(style.groupHeaderCell());
 			th.style().trustedProperty("border-right", "10px solid white").endStyle();
@@ -891,7 +891,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		docColumn.setSortable(false);
 		dataGrid.addColumn(docColumn);
-		dataGrid.setColumnWidth(15, 200, Unit.PX);
+		dataGrid.setColumnWidth(15, 250, Unit.PX);
 		
 		examinadorColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -903,7 +903,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		examinadorColumn.setSortable(false);
 		dataGrid.addColumn(examinadorColumn);
-		dataGrid.setColumnWidth(16, 200, Unit.PX);
+		dataGrid.setColumnWidth(16, 220, Unit.PX);
 		
 		supervisorColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -915,7 +915,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		supervisorColumn.setSortable(false);
 		dataGrid.addColumn(supervisorColumn);
-		dataGrid.setColumnWidth(17, 200, Unit.PX);
+		dataGrid.setColumnWidth(17, 220, Unit.PX);
 		
 		nombreContactoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -951,7 +951,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		emailContactoColumn.setSortable(false);
 		dataGrid.addColumn(emailContactoColumn);
-		dataGrid.setColumnWidth(20, 200, Unit.PX);
+		dataGrid.setColumnWidth(20, 210, Unit.PX);
 
 	}
 }

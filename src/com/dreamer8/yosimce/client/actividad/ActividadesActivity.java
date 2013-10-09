@@ -73,10 +73,14 @@ public class ActividadesActivity extends SimceActivity implements
 			view.setColumnWidth(7,"0px");
 			view.setColumnWidth(10,"0px");
 			view.setColumnWidth(2,"70px");
+			view.setColumnWidth(16,"0px");
+			view.setColumnWidth(17,"0px");
 		}else{
 			view.setColumnWidth(7,"90px");
 			view.setColumnWidth(10,"90px");
 			view.setColumnWidth(2,"0px");
+			view.setColumnWidth(16,"170px");
+			view.setColumnWidth(17,"170px");
 		}
 		
 		if(place.getAplicacionId()==2 && place.getTipoId()==1){
