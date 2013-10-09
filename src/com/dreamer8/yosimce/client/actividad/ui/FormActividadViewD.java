@@ -135,7 +135,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private Logger logger = Logger.getLogger("");
 	
 	public FormActividadViewD() {
-		file = "";
+		file = null;
 		uploader = new SingleUploader(FileInputType.LABEL);
 		uploader.setAutoSubmit(true);
 		inicioActividadBox = new TimeBox(new Date(0),false);
@@ -601,6 +601,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			fileLabel.setText("");
 			fileLabel.setVisible(false);
 			file = null;
+			fileUploaded = false;
 		}
 		else if((documento.getUrl() == null || documento.getUrl().isEmpty()) && documento.getName() != null && !documento.getName().isEmpty()){
 			fileLink.setHref("");
