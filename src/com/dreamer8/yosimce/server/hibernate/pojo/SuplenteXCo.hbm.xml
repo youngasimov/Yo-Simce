@@ -23,11 +23,11 @@
         <many-to-one name="co" class="com.dreamer8.yosimce.server.hibernate.pojo.Co" fetch="select">
             <column name="co_id" />
         </many-to-one>
-        <property name="asistencia" type="boolean">
-            <column name="asistencia" not-null="true" />
+        <property name="asistencia" type="java.lang.Boolean">
+            <column name="asistencia" />
         </property>
-        <property name="reemplazando" type="boolean">
-            <column name="reemplazando" not-null="true" />
+        <property name="reemplazando" type="java.lang.Boolean">
+            <column name="reemplazando" />
         </property>
         <property name="evaluacion" type="java.lang.Integer">
             <column name="evaluacion" />

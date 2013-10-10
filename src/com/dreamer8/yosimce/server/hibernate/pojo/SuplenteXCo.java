@@ -13,15 +13,15 @@ public class SuplenteXCo implements java.io.Serializable {
 	private AplicacionXNivelXActividadTipo aplicacionXNivelXActividadTipo;
 	private Usuario usuario;
 	private Co co;
-	private boolean asistencia;
-	private boolean reemplazando;
+	private Boolean asistencia;
+	private Boolean reemplazando;
 	private Integer evaluacion;
 	private String comentario;
 
 	public SuplenteXCo() {
 	}
 
-	public SuplenteXCo(Integer id, boolean asistencia, boolean reemplazando) {
+	public SuplenteXCo(Integer id, Boolean asistencia, Boolean reemplazando) {
 		this.id = id;
 		this.asistencia = asistencia;
 		this.reemplazando = reemplazando;
@@ -30,7 +30,7 @@ public class SuplenteXCo implements java.io.Serializable {
 	public SuplenteXCo(Integer id, UsuarioSeleccion usuarioSeleccion,
 			UsuarioEstado usuarioEstado,
 			AplicacionXNivelXActividadTipo aplicacionXNivelXActividadTipo,
-			Usuario usuario, Co co, boolean asistencia, boolean reemplazando,
+			Usuario usuario, Co co, Boolean asistencia, Boolean reemplazando,
 			Integer evaluacion, String comentario) {
 		this.id = id;
 		this.usuarioSeleccion = usuarioSeleccion;
@@ -93,19 +93,19 @@ public class SuplenteXCo implements java.io.Serializable {
 		this.co = co;
 	}
 
-	public boolean isAsistencia() {
+	public Boolean isAsistencia() {
 		return this.asistencia;
 	}
 
-	public void setAsistencia(boolean asistencia) {
+	public void setAsistencia(Boolean asistencia) {
 		this.asistencia = asistencia;
 	}
 
-	public boolean isReemplazando() {
+	public Boolean isReemplazando() {
 		return this.reemplazando;
 	}
 
-	public void setReemplazando(boolean reemplazando) {
+	public void setReemplazando(Boolean reemplazando) {
 		this.reemplazando = reemplazando;
 	}
 
