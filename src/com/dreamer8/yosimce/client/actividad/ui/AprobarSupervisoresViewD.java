@@ -445,10 +445,10 @@ public class AprobarSupervisoresViewD extends Composite implements
 		
 		buildSuplenteTable();
 		
-		suplentesdataGrid.addColumn(srutColumn);
-		suplentesdataGrid.addColumn(snombreColumn);
-		suplentesdataGrid.addColumn(coColumn);
-		suplentesdataGrid.addColumn(sgeneralColumn);
+		suplentesdataGrid.addColumn(srutColumn,"Rut");
+		suplentesdataGrid.addColumn(snombreColumn,"Nombre");
+		suplentesdataGrid.addColumn(coColumn,"C. O.");
+		suplentesdataGrid.addColumn(sgeneralColumn,"Cumplió");
 		
 		
 		dataGrid.setTableBuilder(new CustomTableBuilder());
@@ -694,7 +694,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 
 			@Override
 			public Boolean getValue(EvaluacionSuplenteDTO o) {
-				return o.getGeneral() != null && o.getGeneral() > 0;
+				return (o.getPresente()!=null)?o.getPresente():false;
 			}
 		};
 		sgeneralColumn.setSortable(false);

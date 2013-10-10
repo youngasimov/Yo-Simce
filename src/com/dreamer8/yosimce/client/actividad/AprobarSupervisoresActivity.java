@@ -23,22 +23,29 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	
 	private ArrayList<EvaluacionSupervisorDTO> evaluaciones;
 	private ArrayList<EvaluacionSuplenteDTO> evaluacionesSuplentes;
+	private int selectedTab;
 	
 	public AprobarSupervisoresActivity(ClientFactory factory, SimcePlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
 		this.view = getFactory().getAprobarSupervisoresView();
 		this.view.setPresenter(this);
+		selectedTab = 0;
 	}
 
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
-		updateSupervisores(true);
+		if(selectedTab==0){
+			updateSupervisores(true);
+		}else{
+			updateSuplentes(true);
+		}
 	}
 	
 	@Override
 	public void onTabSelected(int tab) {
+		selectedTab = tab;
 		if(tab == 0){
 			updateSupervisores(true);
 		}else{
