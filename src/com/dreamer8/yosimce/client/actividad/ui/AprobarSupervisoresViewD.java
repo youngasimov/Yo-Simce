@@ -392,8 +392,6 @@ public class AprobarSupervisoresViewD extends Composite implements
 	private Column<EvaluacionSuplenteDTO, String> srutColumn;
 	private Column<EvaluacionSuplenteDTO, String> snombreColumn;
 	private Column<EvaluacionSuplenteDTO, String> coColumn;
-	private Column<EvaluacionSuplenteDTO, Boolean> spuntualidadColumn;
-	private Column<EvaluacionSuplenteDTO, Boolean> spresentacionColumn;
 	private Column<EvaluacionSuplenteDTO, Boolean> sgeneralColumn;
 	private ListDataProvider<EvaluacionSuplenteDTO> sdataProvider;
 
@@ -450,8 +448,6 @@ public class AprobarSupervisoresViewD extends Composite implements
 		suplentesdataGrid.addColumn(srutColumn);
 		suplentesdataGrid.addColumn(snombreColumn);
 		suplentesdataGrid.addColumn(coColumn);
-		suplentesdataGrid.addColumn(spuntualidadColumn);
-		suplentesdataGrid.addColumn(spresentacionColumn);
 		suplentesdataGrid.addColumn(sgeneralColumn);
 		
 		
@@ -693,50 +689,6 @@ public class AprobarSupervisoresViewD extends Composite implements
 		coColumn.setSortable(false);
 		suplentesdataGrid.setColumnWidth(++i, 5, Unit.EM);
 
-		spuntualidadColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
-				new CheckboxCell()) {
-
-			@Override
-			public Boolean getValue(EvaluacionSuplenteDTO o) {
-				return o.getPuntualidad() != null && o.getPuntualidad() > 0;
-			}
-		};
-		spuntualidadColumn.setSortable(false);
-		spuntualidadColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, Boolean>() {
-
-			@Override
-			public void update(int index, EvaluacionSuplenteDTO object,
-					Boolean value) {
-				object.setPuntualidad((value)?4:0);
-				presenter.sinc(object);
-				//dataProvider.refresh();
-			}
-		});
-		suplentesdataGrid.setColumnWidth(++i, 8, Unit.EM);
-
-		spresentacionColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
-				new CheckboxCell()) {
-
-			@Override
-			public Boolean getValue(EvaluacionSuplenteDTO o) {
-				return o.getPresentacionPersonal() != null
-						&& o.getPresentacionPersonal() > 0;
-			}
-		};
-		spresentacionColumn.setSortable(false);
-		spresentacionColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, Boolean>() {
-
-			@Override
-			public void update(int index, EvaluacionSuplenteDTO object,
-					Boolean value) {
-				object.setPresentacionPersonal((value)?4:0);
-				presenter.sinc(object);
-				//dataProvider.refresh();
-				
-			}
-		});
-		suplentesdataGrid.setColumnWidth(++i, 12, Unit.EM);
-
 		sgeneralColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
 				new CheckboxCell()) {
 
@@ -751,9 +703,8 @@ public class AprobarSupervisoresViewD extends Composite implements
 			@Override
 			public void update(int index, EvaluacionSuplenteDTO object,
 					Boolean value) {
-				object.setGeneral((value)?4:0);
+				object.setPresente(value);
 				presenter.sinc(object);
-				//dataProvider.refresh();
 				
 			}
 		});
