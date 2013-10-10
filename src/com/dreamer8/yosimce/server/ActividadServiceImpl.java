@@ -980,7 +980,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				// c.setTime(a.getFechaInicio());
 
-				c.setTime(actividad.getFechaActividad());
+				c.setTime(StringUtils.getDate(actividad.getFechaActividad()));
 
 				int year = c.get(Calendar.YEAR);
 				int month = c.get(Calendar.MONTH);
@@ -989,21 +989,21 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				int minute;
 
 				if (actividad.getInicioActividad() != null) {
-					c.setTime(actividad.getInicioActividad());
+					c.setTime(StringUtils.getDate(actividad.getInicioActividad()));
 					hour = c.get(Calendar.HOUR_OF_DAY);
 					minute = c.get(Calendar.MINUTE);
 					c.set(year, month, day, hour, minute);
 					a.setFechaInicio(c.getTime());
 				}
 				if (actividad.getInicioPrueba() != null) {
-					c.setTime(actividad.getInicioPrueba());
+					c.setTime(StringUtils.getDate(actividad.getInicioPrueba()));
 					hour = c.get(Calendar.HOUR_OF_DAY);
 					minute = c.get(Calendar.MINUTE);
 					c.set(year, month, day, hour, minute);
 					a.setFechaInicioPrueba(c.getTime());
 				}
 				if (actividad.getTerminoPrueba() != null) {
-					c.setTime(actividad.getTerminoPrueba());
+					c.setTime(StringUtils.getDate(actividad.getTerminoPrueba()));
 					hour = c.get(Calendar.HOUR_OF_DAY);
 					minute = c.get(Calendar.MINUTE);
 					c.set(year, month, day, hour, minute);

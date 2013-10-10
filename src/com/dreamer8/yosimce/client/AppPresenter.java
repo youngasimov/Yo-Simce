@@ -10,7 +10,6 @@ import com.dreamer8.yosimce.shared.exceptions.DBException;
 import com.dreamer8.yosimce.shared.exceptions.NoAllowedException;
 import com.dreamer8.yosimce.shared.exceptions.NoLoggedException;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
@@ -36,8 +35,6 @@ public class AppPresenter implements AppView.AppPresenter {
 	
 	private Date update;
 	
-	private DateTimeFormat format;
-	
 	private Timer t2;
 	
 	private boolean updateSoonAlert;
@@ -53,7 +50,6 @@ public class AppPresenter implements AppView.AppPresenter {
 		nonBlockingEvents = 0;
 		notLogged = false;
 		menuOpen = false;
-		format = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
 		updateSoonAlert = false;
 		bind();
 	}
@@ -140,7 +136,7 @@ public class AppPresenter implements AppView.AppPresenter {
 									if(result == null || result.isEmpty()){
 										update = null;
 									}else{
-										update = format.parse(result);
+										update = Utils.getDate(result);
 										t2 = new Timer() {
 											
 											@Override
