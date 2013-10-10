@@ -113,7 +113,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				List<Co> cos = cdao
 						.findByIdAplicacionANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, u.getId(),
-								usuarioTipo.getNombre());
+								usuarioTipo.getRol());
 
 				if (cos != null && !cos.isEmpty()) {
 					for (Co co : cos) {

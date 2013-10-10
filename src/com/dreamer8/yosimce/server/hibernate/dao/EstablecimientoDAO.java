@@ -61,7 +61,7 @@ public class EstablecimientoDAO extends
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"

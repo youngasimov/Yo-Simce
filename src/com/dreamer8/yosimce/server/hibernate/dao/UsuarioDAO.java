@@ -83,13 +83,9 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT u.id as u_id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id as ut_id,ut.nombre as ut_nom FROM USUARIO_SELECCION us"
-				+ " JOIN USUARIO_TIPO ut ON (us.usuario_tipo_id=ut.id AND (ut.nombre='"
+				+ " JOIN USUARIO_TIPO ut ON (us.usuario_tipo_id=ut.id AND ut.rol='"
 				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_NEE)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_SUPLENTE)
-				+ "'))"
+				+ "')"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -215,13 +211,8 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (uxa.asistencia IS NULL OR uxa.asistencia=true) AND (ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_NEE)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_SUPLENTE)
-				+ "')";
+				+ " WHERE (uxa.asistencia IS NULL OR uxa.asistencia=true) AND (ut.rol='"
+				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR) + "')";
 
 		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
 		us = q.list();
@@ -250,13 +241,8 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (uxa.asistencia=false) AND (ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_NEE)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR_SUPLENTE)
-				+ "')";
+				+ " WHERE (uxa.asistencia=false) AND (ut.rol='"
+				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR) + "')";
 
 		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
 		us = q.list();
@@ -285,11 +271,8 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (uxa.asistencia IS NULL OR uxa.asistencia=true) AND (ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.SUPERVISOR)
-				+ "' OR ut.nombre='"
-				+ SecurityFilter.escapeString(UsuarioTipo.SUPERVISOR_CON_AUTO)
-				+ "')";
+				+ " WHERE (uxa.asistencia IS NULL OR uxa.asistencia=true) AND (ut.rol='"
+				+ SecurityFilter.escapeString(UsuarioTipo.SUPERVISOR) + "')";
 
 		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
 		u = (Usuario) q.uniqueResult();

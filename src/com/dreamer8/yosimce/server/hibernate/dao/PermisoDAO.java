@@ -35,7 +35,9 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO_SELECCION us ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND us.seleccion = true AND us.renuncia = false"
-				+ " JOIN APLICACION_x_USUARIO_TIPO axut ON (us.usuario_tipo_id=axut.usuario_tipo_id AND axut.aplicacion_id="
+				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
+				+ " JOIN APLICACION_x_USUARIO_TIPO axut ON ((ut.usuario_tipo_base_id IS NOT NULL AND ut.usuario_tipo_base_id=axut.usuario_tipo_id) "
+				+ " OR (ut.usuario_tipo_base_id IS NULL AND ut.id=axut.usuario_tipo_id) AND axut.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ ")"
 				+ " JOIN APLICACION_x_USUARIO_TIPO_x_PERMISO axutxp ON (axutxp.aplicacion_x_usuario_tipo_id=axut.id AND axutxp.acceso=TRUE)"

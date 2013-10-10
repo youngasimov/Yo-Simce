@@ -567,6 +567,7 @@ public class Actividad implements java.io.Serializable {
 		List<Documento> ds = ddao.findByIdActividadANDDocumentoTipo(id,
 				DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION);
 
+		adto.setDocumento(null);
 		if (ds != null && !ds.isEmpty()) {
 			adto.setDocumento(ds.get(ds.size() - 1).getArchivo()
 					.getDocumentoDTO(baseURL));

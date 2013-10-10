@@ -80,7 +80,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 				List<Region> rs = rdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre());
+								u.getId(), usuarioTipo.getRol());
 				if (rs != null && !rs.isEmpty()) {
 					for (Region r : rs) {
 						sdtos.add(r.getSectorDTO());
@@ -157,20 +157,20 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 					cs = cdao
 							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDusuarioTipo(
 									idAplicacion, idNivel, idActividadTipo,
-									u.getId(), usuarioTipo.getNombre());
+									u.getId(), usuarioTipo.getRol());
 				} else if (sector.getTipoSector().equals(
 						SectorDTO.TIPO_PROVINCIA)) {
 					cs = cdao
 							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdProvinciaANDIdUsuarioANDusuarioTipo(
 									idAplicacion, idNivel, idActividadTipo,
 									sector.getIdSector(), u.getId(),
-									usuarioTipo.getNombre());
+									usuarioTipo.getRol());
 				} else {
 					cs = cdao
 							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdRegionANDIdUsuarioANDusuarioTipo(
 									idAplicacion, idNivel, idActividadTipo,
 									sector.getIdSector(), u.getId(),
-									usuarioTipo.getNombre());
+									usuarioTipo.getRol());
 				}
 				if (cs != null && !cs.isEmpty()) {
 					for (Comuna c : cs) {
@@ -251,7 +251,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 				CursoDAO cdao = new CursoDAO();
 				List<Curso> cs = cdao.findByByActividadANDRbd(idAplicacion,
 						idNivel, idActividadTipo, u.getId(),
-						usuarioTipo.getNombre(), rbdSeach);
+						usuarioTipo.getRol(), rbdSeach);
 				if (cs != null && !cs.isEmpty()) {
 					for (Curso curso : cs) {
 						cdtos.add(curso.getCursoDTO());
@@ -501,7 +501,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 				codtos = (ArrayList<CentroOperacionDTO>) codao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre());
+								u.getId(), usuarioTipo.getRol());
 
 				s.getTransaction().commit();
 			}

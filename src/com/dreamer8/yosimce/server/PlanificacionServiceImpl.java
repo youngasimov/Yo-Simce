@@ -111,7 +111,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				apdtos = (ArrayList<AgendaPreviewDTO>) adao
 						.findAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre(), offset,
+								u.getId(), usuarioTipo.getRol(), offset,
 								length, filtros);
 
 				s.getTransaction().commit();
@@ -354,9 +354,9 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 										.equals(estadoActualNombre))) {
 							if (usuarioTipo.getId() > 6
 									&& !UsuarioTipo.OPERADOR_CENTRO_LLAMADOS
-											.equals(usuarioTipo.getNombre())
+											.equals(usuarioTipo.getRol())
 									&& !UsuarioTipo.LOGISTICA_Y_SOPORTE
-											.equals(usuarioTipo.getNombre())) {
+											.equals(usuarioTipo.getRol())) {
 								throw new ConsistencyException(
 										"No se puede cambiar la fecha de agendamiento, debido a que la actividad ya ha sido confirmada");
 							}
@@ -674,7 +674,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				result = adao
 						.countAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre(), filtros);
+								u.getId(), usuarioTipo.getRol(), filtros);
 
 				s.getTransaction().commit();
 			}
@@ -916,12 +916,12 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 					total = adao
 							.countAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
 									idAplicacion, idNivel, u.getId(),
-									usuarioTipo.getNombre(), filtros);
+									usuarioTipo.getRol(), filtros);
 				} else {
 					total = adao
 							.countAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
 									idAplicacion, idNivel, idAplicacion,
-									u.getId(), usuarioTipo.getNombre(), filtros);
+									u.getId(), usuarioTipo.getRol(), filtros);
 				}
 				if (total == null || total == 0) {
 					throw new NullPointerException(
@@ -946,13 +946,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 						filas = adao
 								.findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
 										idAplicacion, idNivel, idActividadTipo,
-										u.getId(), usuarioTipo.getNombre(),
+										u.getId(), usuarioTipo.getRol(),
 										offset, lenght, filtros);
 					} else {
 						filas = adao
 								.findAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
 										idAplicacion, idNivel, idActividadTipo,
-										u.getId(), usuarioTipo.getNombre(),
+										u.getId(), usuarioTipo.getRol(),
 										offset, lenght, filtros);
 					}
 					total -= lenght;

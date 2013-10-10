@@ -137,7 +137,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				apdtos = (ArrayList<ActividadPreviewDTO>) adao
 						.findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre(), offset,
+								u.getId(), usuarioTipo.getRol(), offset,
 								length, filtros, getBaseURL());
 
 				s.getTransaction().commit();
@@ -209,7 +209,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				result = adao
 						.countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre(), filtros);
+								u.getId(), usuarioTipo.getRol(), filtros);
 
 				s.getTransaction().commit();
 			}
@@ -537,7 +537,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 //				List<UsuarioXActividad> uxas = uxadao
 //						.findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
 //								idAplicacion, idNivel, idActividadTipo,
-//								u.getId(), usuarioTipo.getNombre());
+//								u.getId(), usuarioTipo.getRol());
 //
 //				if (uxas != null && !uxas.isEmpty()) {
 //					for (UsuarioXActividad uxa : uxas) {
@@ -1228,6 +1228,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throw ex;
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
+			ex.printStackTrace();
 			throw ex;
 		} finally {
 			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
@@ -2063,7 +2064,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				Integer total = adao
 						.countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre(), filtros);
+								u.getId(), usuarioTipo.getRol(), filtros);
 				if (total == null || total == 0) {
 					throw new NullPointerException(
 							"No se han obtenido resultados con el filtro especificado.");
@@ -2107,7 +2108,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					apdtos = adao
 							.findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 									idAplicacion, idNivel, idActividadTipo,
-									u.getId(), usuarioTipo.getNombre(), offset,
+									u.getId(), usuarioTipo.getRol(), offset,
 									lenght, filtros, getBaseURL());
 
 					total -= lenght;
@@ -2235,7 +2236,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				Integer total = adao
 						.countAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre(), filtros);
+								u.getId(), usuarioTipo.getRol(), filtros);
 				if (total == null || total == 0) {
 					throw new NullPointerException(
 							"No se han obtenido resultados con el filtro especificado.");
@@ -2263,7 +2264,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					filas = adao
 							.findAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
 									idAplicacion, idNivel, idActividadTipo,
-									u.getId(), usuarioTipo.getNombre(), offset,
+									u.getId(), usuarioTipo.getRol(), offset,
 									lenght, filtros);
 					total -= lenght;
 					offset += lenght;
@@ -2507,7 +2508,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				eudtos = (ArrayList<EvaluacionSupervisorDTO>) uxadao
 						.findEvaluacionSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
 								idAplicacion, idNivel, idActividadTipo,
-								u.getId(), usuarioTipo.getNombre());
+								u.getId(), usuarioTipo.getRol());
 
 				s.getTransaction().commit();
 			}

@@ -89,7 +89,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				}
 
 				UsuarioDAO udao = new UsuarioDAO();
-				if (usuarioTipo.getNombre().equals(UsuarioTipo.ADMINISTRADOR)) {
+				if (usuarioTipo.getRol().equals(UsuarioTipo.ADMINISTRADOR)) {
 					udtos = (ArrayList<UserDTO>) udao
 							.findByIdAplicacionANDIdNivelANDFiltro(
 									idAplicacion, idNivel, offset, length,
@@ -159,7 +159,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
 				List<UsuarioTipo> uts = null;
 
-				if (usuarioTipo.getNombre().equals(UsuarioTipo.ADMINISTRADOR)) {
+				if (usuarioTipo.getRol().equals(UsuarioTipo.ADMINISTRADOR)) {
 					uts = utdao.findByIdAplicacion(idAplicacion);
 				} else {
 					uts = utdao.findByIdAplicacionANDIdTipoUsuarioSuperior(

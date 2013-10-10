@@ -21,10 +21,10 @@ public class UsuarioTipoDAO extends AbstractHibernateDAO<UsuarioTipo, Integer> {
 
 		UsuarioTipo ut = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT ut.* FROM USUARIO_TIPO ut"
-				+ " WHERE ut.nombre='" + SecurityFilter.escapeString(nombre)
-				+ "'";
+		String query = "SELECT ut.* FROM USUARIO_TIPO ut" + " WHERE ut.rol='"
+				+ SecurityFilter.escapeString(nombre) + "'";
 		Query q = s.createSQLQuery(query).addEntity(UsuarioTipo.class);
+		q.setMaxResults(1);
 		ut = ((UsuarioTipo) q.uniqueResult());
 		return ut;
 	}

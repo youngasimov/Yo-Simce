@@ -56,6 +56,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -179,4 +180,20 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 		c = ((Curso) q.uniqueResult());
 		return c;
 	}
+
+	public List<Curso> findSinActividadByIdAplicacionXNivel(
+			Integer idAplicacionXNivel) {
+
+		List<Curso> cs = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT c.* FROM CURSO c"
+				+ " LEFT JOIN ACTIVIDAD a ON c.id=a.curso_id"
+				+ " WHERE c.aplicacion_x_nivel_id="
+				+ SecurityFilter.escapeString(idAplicacionXNivel)
+				+ " AND a.id IS NULL";
+		Query q = s.createSQLQuery(query).addEntity(Curso.class);
+		cs = q.list();
+		return cs;
+	}
+
 }

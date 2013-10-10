@@ -44,10 +44,15 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				// +
 				// " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND (ut.nombre='"
-				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
-				+ UsuarioTipo.EXAMINADOR + "' OR ut.nombre='"
-				+ UsuarioTipo.EXAMINADOR_NEE + "' OR ut.nombre='"
-				+ UsuarioTipo.EXAMINADOR_SUPLENTE + "')";
+				// +
+				// " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
+				// + UsuarioTipo.EXAMINADOR + "' OR ut.nombre='"
+				// + UsuarioTipo.EXAMINADOR_NEE + "' OR ut.nombre='"
+				// + UsuarioTipo.EXAMINADOR_SUPLENTE + "' OR ut.nombre='"
+				// + UsuarioTipo.EXAMINADOR_ASISTENTE + "')";
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND ut.rol='"
+				+ UsuarioTipo.EXAMINADOR + "'";
+
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
 		uxas = q.list();
 		return uxas;
@@ -73,9 +78,12 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				// +
 				// " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND (ut.nombre='"
-				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
-				+ UsuarioTipo.SUPERVISOR + "' OR ut.nombre='"
-				+ UsuarioTipo.SUPERVISOR_CON_AUTO + "')"
+				// +
+				// " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
+				// + UsuarioTipo.SUPERVISOR + "' OR ut.nombre='"
+				// + UsuarioTipo.SUPERVISOR_CON_AUTO + "')"
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND ut.rol='"
+				+ UsuarioTipo.SUPERVISOR + "'"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
@@ -131,11 +139,9 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				// +
 				// " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id AND (ut.nombre='"
-				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND ut.rol='"
 				+ UsuarioTipo.SUPERVISOR
-				+ "' OR ut.nombre='"
-				+ UsuarioTipo.SUPERVISOR_CON_AUTO
-				+ "')"
+				+ "'"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
@@ -235,10 +241,8 @@ public class UsuarioXActividadDAO extends
 				+ SecurityFilter.escapeString(idCurso)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.nombre='"
-				+ UsuarioTipo.EXAMINADOR + "' OR ut.nombre='"
-				+ UsuarioTipo.EXAMINADOR_NEE + "' OR ut.nombre='"
-				+ UsuarioTipo.EXAMINADOR_SUPLENTE + "')"
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND ut.rol='"
+				+ UsuarioTipo.EXAMINADOR + "'"
 				+ " WHERE uxa.usuario_seleccion_id IS NULL";
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
 		uxa = (UsuarioXActividad) q.uniqueResult();
