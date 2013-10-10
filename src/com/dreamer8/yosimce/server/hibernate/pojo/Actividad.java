@@ -524,10 +524,10 @@ public class Actividad implements java.io.Serializable {
 			adto.setTipoEstablecimiento(et.getNombre());
 		}
 		adto.setEstadoAplicacion(actividadEstado.getEstadoAgendaDTO());
-		adto.setInicioActividad(fechaInicio);
-		adto.setFechaActividad(fechaInicio);
-		adto.setInicioPrueba(fechaInicioPrueba);
-		adto.setTerminoPrueba(fechaTerminoPrueba);
+		adto.setInicioActividad(StringUtils.getDateString(fechaInicio));
+		adto.setFechaActividad(StringUtils.getDateString(fechaInicio));
+		adto.setInicioPrueba(StringUtils.getDateString(fechaInicioPrueba));
+		adto.setTerminoPrueba(StringUtils.getDateString(fechaTerminoPrueba));
 		if (totalAlumnos == null) {
 			Integer total = ((totalAlumnosAusentes != null) ? totalAlumnosAusentes
 					: 0)

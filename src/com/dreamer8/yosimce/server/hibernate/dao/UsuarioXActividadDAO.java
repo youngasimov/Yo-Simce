@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
+import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 
@@ -191,7 +192,8 @@ public class UsuarioXActividadDAO extends
 			esdto.setRbd(String.valueOf((Integer) o[10]));
 			esdto.setEstablecimiento((String) o[11]);
 			esdto.setCurso((String) o[12]);
-			esdto.setPlanificacionActividad((Date) o[13]);
+			esdto.setPlanificacionActividad(StringUtils
+					.getDateString((Date) o[13]));
 			esdtos.add(esdto);
 		}
 		return esdtos;
