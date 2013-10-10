@@ -2,7 +2,6 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 @SuppressWarnings("serial")
 public class ActividadDTO implements Serializable {
@@ -16,10 +15,10 @@ public class ActividadDTO implements Serializable {
 	private String comuna;
 	private EstadoAgendaDTO estadoAplicacion;
 	private ArrayList<ContingenciaDTO> contingencias;
-	private Date fechaActividad;
-	private Date inicioActividad;
-	private Date inicioPrueba;
-	private Date terminoPrueba;
+	private String fechaActividad;
+	private String inicioActividad;
+	private String inicioPrueba;
+	private String terminoPrueba;
 	private Integer alumnosTotal;
 	private Integer alumnosAusentes;
 	private Integer alumnosDs;
@@ -99,35 +98,35 @@ public class ActividadDTO implements Serializable {
 		this.contingencias = contingencias;
 	}
 
-	public Date getInicioActividad() {
+	public String getInicioActividad() {
 		return inicioActividad;
 	}
 
-	public void setInicioActividad(Date inicioActividad) {
+	public void setInicioActividad(String inicioActividad) {
 		this.inicioActividad = inicioActividad;
 	}
 
-	public Date getInicioPrueba() {
+	public String getInicioPrueba() {
 		return inicioPrueba;
 	}
 
-	public void setInicioPrueba(Date inicioPrueba) {
+	public void setInicioPrueba(String inicioPrueba) {
 		this.inicioPrueba = inicioPrueba;
 	}
 
-	public Date getFechaActividad() {
+	public String getFechaActividad() {
 		return fechaActividad;
 	}
 
-	public void setFechaActividad(Date fechaActividad) {
+	public void setFechaActividad(String fechaActividad) {
 		this.fechaActividad = fechaActividad;
 	}
 
-	public Date getTerminoPrueba() {
+	public String getTerminoPrueba() {
 		return terminoPrueba;
 	}
 
-	public void setTerminoPrueba(Date terminoPrueba) {
+	public void setTerminoPrueba(String terminoPrueba) {
 		this.terminoPrueba = terminoPrueba;
 	}
 

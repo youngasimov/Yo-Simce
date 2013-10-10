@@ -205,10 +205,10 @@ public class FormActividadActivity extends SimceActivity implements
 			eventBus.fireEvent(new MensajeEvent("Debe ingresar la fecha en que se realizó la actividad antes de guardar el formulario",MensajeEvent.MSG_WARNING,false));
 			return;
 		}
-		a.setFechaActividad(view.getFechaActividad());
-		a.setInicioActividad(view.getInicioActividad());
-		a.setInicioPrueba(view.getInicioPrueba());
-		a.setTerminoPrueba(view.getTerminoPrueba());
+		a.setFechaActividad(Utils.getDateString(view.getFechaActividad()));
+		a.setInicioActividad(Utils.getDateString(view.getInicioActividad()));
+		a.setInicioPrueba(Utils.getDateString(view.getInicioPrueba()));
+		a.setTerminoPrueba(Utils.getDateString(view.getTerminoPrueba()));
 		a.setAlumnosTotal(view.getTotalAlumnos());
 		a.setAlumnosAusentes(view.getAlumnosAusentes());
 		a.setAlumnosDs(view.getAlumnosDS());
@@ -353,13 +353,13 @@ public class FormActividadActivity extends SimceActivity implements
 		view.setContingencias(a.getContingencias());
 		Date b = new Date();
 		
-		view.setFechaActividad(a.getFechaActividad());
-		a.setInicioActividad((a.getInicioActividad()!=null)?a.getInicioActividad():new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0));
-		view.setInicioActividad(a.getInicioActividad());
-		a.setInicioPrueba((a.getInicioPrueba()!=null)?a.getInicioPrueba():a.getInicioActividad());
-		view.setInicioPrueba(a.getInicioPrueba());
-		a.setTerminoPrueba((a.getTerminoPrueba()!=null)?a.getTerminoPrueba():a.getInicioPrueba());
-		view.setTerminoPrueba(a.getTerminoPrueba());
+		view.setFechaActividad(Utils.getDate(a.getFechaActividad()));
+		a.setInicioActividad((a.getInicioActividad()!=null && !a.getInicioActividad().isEmpty())?a.getInicioActividad():Utils.getDateString(new Date(b.getYear(), b.getMonth(), b.getDate(), 8, 0)));
+		view.setInicioActividad(Utils.getDate(a.getInicioActividad()));
+		a.setInicioPrueba((a.getInicioPrueba()!=null && !a.getInicioPrueba().isEmpty())?a.getInicioPrueba():a.getInicioActividad());
+		view.setInicioPrueba(Utils.getDate(a.getInicioPrueba()));
+		a.setTerminoPrueba((a.getTerminoPrueba()!=null  && !a.getTerminoPrueba().isEmpty())?a.getTerminoPrueba():a.getInicioPrueba());
+		view.setTerminoPrueba(Utils.getDate(a.getTerminoPrueba()));
 		if(a.getAlumnosTotal()!=null){view.setTotalAlumnos(a.getAlumnosTotal());}
 		if(a.getAlumnosAusentes()!=null){view.setAlumnosAusentes(a.getAlumnosAusentes());}
 		if(a.getAlumnosDs()!=null){view.setAlumnosDS(a.getAlumnosDs());}

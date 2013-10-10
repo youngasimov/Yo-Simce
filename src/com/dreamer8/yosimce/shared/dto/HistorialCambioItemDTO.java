@@ -1,13 +1,12 @@
 package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class HistorialCambioItemDTO implements Serializable {
 
 	private UserDTO usuario;
 	private String cambio;
-	private Date fecha;
+	private String fecha;
 
 	/**
 	 * 
@@ -32,11 +31,11 @@ public class HistorialCambioItemDTO implements Serializable {
 		this.cambio = cambio;
 	}
 
-	public Date getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 }

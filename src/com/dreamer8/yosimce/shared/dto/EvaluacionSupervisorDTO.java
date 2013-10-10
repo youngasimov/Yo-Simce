@@ -1,7 +1,6 @@
 package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -25,7 +24,7 @@ public class EvaluacionSupervisorDTO implements Serializable {
 	private String rbd;
 	private String establecimiento;
 	private String curso;
-	private Date planificacionActividad;
+	private String planificacionActividad;
 	
 	public EvaluacionSupervisorDTO(){}
 	
@@ -72,11 +71,11 @@ public class EvaluacionSupervisorDTO implements Serializable {
 		this.curso = curso;
 	}
 
-	public Date getPlanificacionActividad() {
+	public String getPlanificacionActividad() {
 		return planificacionActividad;
 	}
 
-	public void setPlanificacionActividad(Date planificacionActividad) {
+	public void setPlanificacionActividad(String planificacionActividad) {
 		this.planificacionActividad = planificacionActividad;
 	}
 }
