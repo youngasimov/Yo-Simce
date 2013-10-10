@@ -82,7 +82,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		private Header<String> puHeader = new TextHeader("Puntualidad");
 		private Header<String> ppHeader = new TextHeader(
 				"Presentación personal");
-		private Header<String> geHeader = new TextHeader("Cumplió");
+		private Header<String> geHeader = new TextHeader("Asistió");
 
 		public CustomHeaderBuilder() {
 			super(dataGrid, false);
@@ -420,7 +420,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		
 		sdataProvider = new ListDataProvider<EvaluacionSuplenteDTO>(
 				EvaluacionSuplenteDTO.KEY_PROVIDER);
-		suplentesdataGrid.setAutoHeaderRefreshDisabled(true);
+		//suplentesdataGrid.setAutoHeaderRefreshDisabled(true);
 		suplentesdataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
 		suplentesdataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 		
@@ -448,7 +448,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		suplentesdataGrid.addColumn(srutColumn,"Rut");
 		suplentesdataGrid.addColumn(snombreColumn,"Nombre");
 		suplentesdataGrid.addColumn(coColumn,"C. O.");
-		suplentesdataGrid.addColumn(sgeneralColumn,"Cumplió");
+		suplentesdataGrid.addColumn(sgeneralColumn,"Asistió");
 		
 		
 		dataGrid.setTableBuilder(new CustomTableBuilder());
@@ -710,5 +710,9 @@ public class AprobarSupervisoresViewD extends Composite implements
 		});
 		suplentesdataGrid.setColumnWidth(++i, 7, Unit.EM);
 
+	}
+	@Override
+	public int getTabSelected() {
+		return tabs.getSelectedIndex();
 	}
 }

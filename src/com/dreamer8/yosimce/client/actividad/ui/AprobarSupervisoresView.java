@@ -16,6 +16,8 @@ public interface AprobarSupervisoresView extends IsWidget {
 	
 	void setSuplenteSuggestions(ArrayList<String> suggestions);
 	
+	int getTabSelected();
+	
 	void setPresenter(AprobarSupervisoresPresenter presenter);
 	
 	public interface AprobarSupervisoresPresenter extends SimcePresenter{

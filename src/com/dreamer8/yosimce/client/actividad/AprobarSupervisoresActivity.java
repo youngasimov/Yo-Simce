@@ -29,13 +29,13 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 		super(factory, place, permisos);
 		this.view = getFactory().getAprobarSupervisoresView();
 		this.view.setPresenter(this);
-		selectedTab = 0;
 	}
 
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		selectedTab = view.getTabSelected();
 		if(selectedTab==0){
 			updateSupervisores(true);
 		}else{
