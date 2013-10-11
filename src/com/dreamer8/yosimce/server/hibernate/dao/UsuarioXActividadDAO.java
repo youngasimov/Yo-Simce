@@ -124,7 +124,7 @@ public class UsuarioXActividadDAO extends
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT u.id as u_id,u.username,u.email,u.nombres,u.apellido_paterno,"
 				+ "u.apellido_materno,u.celular,uxa.nota_presentacion_personal,uxa.nota_puntualidad,uxa.nota_despempeno,"
-				+ "e.id as establecimiento_id,e.nombre as e_nombre,c.nombre as c_nombre,a.fecha_inicio FROM APLICACION_x_NIVEL axn "
+				+ "e.id as establecimiento_id,e.nombre as e_nombre,c.nombre as c_nombre,a.fecha_inicio,uxa.asistencia FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -194,6 +194,7 @@ public class UsuarioXActividadDAO extends
 			esdto.setCurso((String) o[12]);
 			esdto.setPlanificacionActividad(StringUtils
 					.getDateString((Date) o[13]));
+			esdto.setPresente((Boolean) o[14]);
 			esdtos.add(esdto);
 		}
 		return esdtos;

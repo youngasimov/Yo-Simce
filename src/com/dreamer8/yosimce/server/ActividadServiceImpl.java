@@ -2621,8 +2621,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				uxa.setNotaPresentacionPersonal(evaluaciones
 						.getPresentacionPersonal());
 				uxa.setNotaDespempeno(evaluaciones.getGeneral());
-				uxa.setAsistencia(evaluaciones.getGeneral() != null
-						&& evaluaciones.getGeneral() > 0);
+				// uxa.setAsistencia(evaluaciones.getGeneral() != null
+				// && evaluaciones.getGeneral() > 0);
+				uxa.setAsistencia(evaluaciones.getPresente());
 				uxadao.update(uxa);
 
 				s.getTransaction().commit();
