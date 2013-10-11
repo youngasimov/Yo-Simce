@@ -555,7 +555,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	
 	@Override
 	public void setColumnWidth(int column, String width){
-		dataGrid.setColumnWidth(column, width);
+		if(width.equals("0px")){
+			dataGrid.clearColumnWidth(column);
+		}else{
+			dataGrid.setColumnWidth(column, width);
+		}
+		//dataGrid.setColumnWidth(column, width);
 	}
 
 	private void bind() {
