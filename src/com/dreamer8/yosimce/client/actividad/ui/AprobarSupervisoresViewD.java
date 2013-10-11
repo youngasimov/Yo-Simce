@@ -8,6 +8,7 @@ import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSuplenteDTO;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
@@ -48,6 +49,8 @@ import com.google.gwt.view.client.SelectionModel;
 
 public class AprobarSupervisoresViewD extends Composite implements
 		AprobarSupervisoresView {
+	
+	
 
 	private static AprobarSupervisoresViewDUiBinder uiBinder = GWT
 			.create(AprobarSupervisoresViewDUiBinder.class);
@@ -82,7 +85,8 @@ public class AprobarSupervisoresViewD extends Composite implements
 		private Header<String> puHeader = new TextHeader("Puntualidad");
 		private Header<String> ppHeader = new TextHeader(
 				"Presentación personal");
-		private Header<String> geHeader = new TextHeader("Asistió");
+		private Header<String> geHeader = new TextHeader("General");
+		private Header<String> asistenciaHeader = new TextHeader("Asistencia");
 
 		public CustomHeaderBuilder() {
 			super(dataGrid, false);
@@ -108,7 +112,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 					.endStyle();
 			th.text("Establecimiento").endTH();
 
-			th = tr.startTH().colSpan(3).className(resources.style().groupHeaderCell());
+			th = tr.startTH().colSpan(4).className(resources.style().groupHeaderCell());
 			th.style().trustedProperty("border-right", "10px solid white")
 					.endStyle();
 			th.text("Evaluación").endTH();
@@ -139,6 +143,8 @@ public class AprobarSupervisoresViewD extends Composite implements
 			buildHeader(tr, ppHeader, presentacionColumn, sortedColumn,
 					isSortAscending, false, false);
 			buildHeader(tr, geHeader, generalColumn, sortedColumn,
+					isSortAscending, false, true);
+			buildHeader(tr, asistenciaHeader, asistenciaColumn, sortedColumn,
 					isSortAscending, false, true);
 			tr.endTR();
 
@@ -331,7 +337,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 					rowValue);
 			td.endTD();
 
-			// show puntualidad Column
+			// show presentacion Column
 			td = row.startTD();
 			td.className(cellStyles);
 			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
@@ -339,11 +345,18 @@ public class AprobarSupervisoresViewD extends Composite implements
 					rowValue);
 			td.endTD();
 
-			// show puntualidad Column
+			// show general Column
 			td = row.startTD();
 			td.className(cellStyles);
 			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
 			renderCell(td, createContext(++i), generalColumn, rowValue);
+			td.endTD();
+			
+			// show general Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), asistenciaColumn, rowValue);
 			td.endTD();
 			
 			row.endTR();
@@ -387,12 +400,13 @@ public class AprobarSupervisoresViewD extends Composite implements
 	private Column<EvaluacionSupervisorDTO, Boolean> puntualidadColumn;
 	private Column<EvaluacionSupervisorDTO, Boolean> presentacionColumn;
 	private Column<EvaluacionSupervisorDTO, Boolean> generalColumn;
+	private Column<EvaluacionSupervisorDTO, String> asistenciaColumn;
 	private ListDataProvider<EvaluacionSupervisorDTO> dataProvider;
 	
 	private Column<EvaluacionSuplenteDTO, String> srutColumn;
 	private Column<EvaluacionSuplenteDTO, String> snombreColumn;
 	private Column<EvaluacionSuplenteDTO, String> coColumn;
-	private Column<EvaluacionSuplenteDTO, Boolean> sgeneralColumn;
+	private Column<EvaluacionSuplenteDTO, String> sgeneralColumn;
 	private ListDataProvider<EvaluacionSuplenteDTO> sdataProvider;
 
 	private AprobarSupervisoresPresenter presenter;
@@ -442,13 +456,14 @@ public class AprobarSupervisoresViewD extends Composite implements
 		dataGrid.addColumn(puntualidadColumn);
 		dataGrid.addColumn(presentacionColumn);
 		dataGrid.addColumn(generalColumn);
+		dataGrid.addColumn(asistenciaColumn);
 		
 		buildSuplenteTable();
 		
 		suplentesdataGrid.addColumn(srutColumn,"Rut");
 		suplentesdataGrid.addColumn(snombreColumn,"Nombre");
 		suplentesdataGrid.addColumn(coColumn,"C. O.");
-		suplentesdataGrid.addColumn(sgeneralColumn,"Asistió");
+		suplentesdataGrid.addColumn(sgeneralColumn,"Asistencia");
 		
 		
 		dataGrid.setTableBuilder(new CustomTableBuilder());
@@ -650,6 +665,43 @@ public class AprobarSupervisoresViewD extends Composite implements
 			}
 		});
 		dataGrid.setColumnWidth(++i, 7, Unit.EM);
+		
+		ArrayList<String> values = new ArrayList<String>();
+		values.add(SIN_INFO);
+		values.add(ASISTIO);
+		values.add(FALTO);
+		
+		asistenciaColumn = new Column<EvaluacionSupervisorDTO, String>(new SelectionCell(values)) {
+
+			@Override
+			public String getValue(EvaluacionSupervisorDTO o) {
+				if(o.getPresente() == null){
+					return SIN_INFO;
+				}else if(o.getPresente()){
+					return ASISTIO;
+				}else{
+					return FALTO;
+				}
+			}
+		};
+		asistenciaColumn.setSortable(false);
+		asistenciaColumn.setFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, String>() {
+
+			@Override
+			public void update(int index, EvaluacionSupervisorDTO object,
+					String value) {
+				if(value.equals(SIN_INFO)){
+					object.setPresente(null);
+				}else if(value.equals(ASISTIO)){
+					object.setPresente(true);
+				}else{
+					object.setPresente(false);
+				}
+				presenter.sinc(object);
+				
+			}
+		});
+		suplentesdataGrid.setColumnWidth(++i, 7, Unit.EM);
 
 	}
 	
@@ -689,21 +741,37 @@ public class AprobarSupervisoresViewD extends Composite implements
 		coColumn.setSortable(false);
 		suplentesdataGrid.setColumnWidth(++i, 5, Unit.EM);
 
-		sgeneralColumn = new Column<EvaluacionSuplenteDTO, Boolean>(
-				new CheckboxCell()) {
+		ArrayList<String> values = new ArrayList<String>();
+		values.add(SIN_INFO);
+		values.add(ASISTIO);
+		values.add(FALTO);
+		
+		sgeneralColumn = new Column<EvaluacionSuplenteDTO, String>(new SelectionCell(values)) {
 
 			@Override
-			public Boolean getValue(EvaluacionSuplenteDTO o) {
-				return (o.getPresente()!=null)?o.getPresente():false;
+			public String getValue(EvaluacionSuplenteDTO o) {
+				if(o.getPresente() == null){
+					return SIN_INFO;
+				}else if(o.getPresente()){
+					return ASISTIO;
+				}else{
+					return FALTO;
+				}
 			}
 		};
 		sgeneralColumn.setSortable(false);
-		sgeneralColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, Boolean>() {
+		sgeneralColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, String>() {
 
 			@Override
 			public void update(int index, EvaluacionSuplenteDTO object,
-					Boolean value) {
-				object.setPresente(value);
+					String value) {
+				if(value.equals(SIN_INFO)){
+					object.setPresente(null);
+				}else if(value.equals(ASISTIO)){
+					object.setPresente(true);
+				}else{
+					object.setPresente(false);
+				}
 				presenter.sinc(object);
 				
 			}

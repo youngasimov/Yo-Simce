@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.dreamer8.yosimce.client.ui.CursoSelectorView;
 import com.dreamer8.yosimce.client.ui.CursoSelectorView.CursoSelectorPresenter;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 
@@ -38,7 +39,13 @@ public class CursoSelector implements
 					view.getDataDisplay().setRowCount(result.size());
 					view.getDataDisplay().setRowData(0, result);
 					view.setOkButtonEnabled(false);
-					view.getSelectionModel().clear();
+					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+						
+						@Override
+						public void execute() {
+							view.getSelectionModel().clear();
+						}
+					});
 					currentCurso = null;
 				}
 				
@@ -84,6 +91,13 @@ public class CursoSelector implements
 		view.getDataDisplay().setRowCount(0);
 		view.getDataDisplay().setRowData(0, new ArrayList<CursoDTO>());
 		view.setSearchValue("");
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				view.getSelectionModel().clear();
+			}
+		});
 		view.hide();
 	}
 	

@@ -9,6 +9,10 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface AprobarSupervisoresView extends IsWidget {
 	
+	public static final String SIN_INFO = "Sin información";
+	public static final String ASISTIO = "Asistió";
+	public static final String FALTO = "Faltó";
+	
 	void setSupervisores(ArrayList<EvaluacionSupervisorDTO> supervisores);
 	void setSuplentes(ArrayList<EvaluacionSuplenteDTO> suplentes);
 	

@@ -25,6 +25,7 @@ public class EvaluacionSupervisorDTO implements Serializable {
 	private String establecimiento;
 	private String curso;
 	private String planificacionActividad;
+	private Boolean presente;
 	
 	public EvaluacionSupervisorDTO(){}
 	
@@ -77,5 +78,13 @@ public class EvaluacionSupervisorDTO implements Serializable {
 
 	public void setPlanificacionActividad(String planificacionActividad) {
 		this.planificacionActividad = planificacionActividad;
+	}
+
+	public Boolean getPresente() {
+		return presente;
+	}
+
+	public void setPresente(Boolean presente) {
+		this.presente = presente;
 	}
 }
