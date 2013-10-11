@@ -34,22 +34,18 @@
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Sincronización</div> ></g:MenuItem>
 				<g:MenuItem enabled="false" ui:field="cursoItem" />
 				<g:MenuItem ui:field="cambiarItem" text='Cambiar'/>
-				<g:MenuItem ui:field="guardarItem" text='Guardar' />
 				<g:MenuItem ui:field="materialDefectuosoItem" text='Material defectuoso' />
 			</my:OverMenuBar>
 		</g:north>
 		<g:center>
 			<c:DataGrid ui:field='dataGrid'  addStyleNames='{style.data}'/>
 		</g:center>
-    	<g:south size="40">
+    	<g:south size="35">
 	     	<g:HTMLPanel>
        			<table style="width:100%">
          			<tr>
            				<td align='center'>
-             					alumnos totales: <g:HTML addStyleNames='{style.footer}' ui:field="alumnosHtml" />
-           				</td>
-           				<td align="right">
-             					<g:Button ui:field="saveButton" text="Guardar"/>
+             				<c:SimplePager  ui:field='pager' />
            				</td>
          			</tr>
        			</table>

@@ -11,18 +11,19 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface SincronizacionView extends IsWidget {
 
+	public static final String SIN_INFO = "Sin Información";
+	
 	void setIdMaterialFieldUpdater(FieldUpdater<SincAlumnoDTO, String> updater);
 	void setEstadoFieldUpdater(FieldUpdater<SincAlumnoDTO, String> updater);
 	void setFormFieldUpdater(FieldUpdater<SincAlumnoDTO, Boolean> updater);
 	void setComentarioFieldUpdater(FieldUpdater<SincAlumnoDTO, String> updater);
+	void setUpdateFieldUpdater(FieldUpdater<SincAlumnoDTO, String> updater);
 	void setEstadosSincronizacion(ArrayList<EstadoSincronizacionDTO> estados);
 	void updateTableRow(SincAlumnoDTO alumno);
 	void setAlumnos(ArrayList<SincAlumnoDTO> alumnos);
-	void setTotalALumnos(int total);
 	void setCurso(CursoDTO curso);
 	void setPresenter(SincronizacionPresenter presenter);
 	void clear();
-	void setGuardarButtonEnabled(boolean enabled);
 	
 	void setMaterialDefectusoVisivility(boolean visible);
 	
@@ -30,7 +31,6 @@ public interface SincronizacionView extends IsWidget {
 		
 		void onCambiarCursoButtonClick();
 		void onAgregarAlumnoButtonClick();
-		void onGuardarTodoButtonClick();
 		
 	}
 }

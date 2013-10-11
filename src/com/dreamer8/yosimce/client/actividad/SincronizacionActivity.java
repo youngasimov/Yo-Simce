@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
@@ -16,13 +17,14 @@ import com.dreamer8.yosimce.shared.dto.EstadoSincronizacionDTO;
 import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class SincronizacionActivity extends SimceActivity implements
 		SincronizacionPresenter {
+	
+	
 
 	private final SincronizacionPlace place;
 	private final SincronizacionView view;
@@ -65,7 +67,6 @@ public class SincronizacionActivity extends SimceActivity implements
 				
 				@Override
 				public void execute() {
-					//goTo(new ActividadPlace());
 					goTo(new SimcePlace());
 				}
 			});
@@ -94,79 +95,100 @@ public class SincronizacionActivity extends SimceActivity implements
 			}
 			
 			if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getSincronizacionesCurso")){
-				view.setGuardarButtonEnabled(true);
 				getFactory().getActividadService().getSincronizacionesCurso(place.getIdCurso(), new SimceCallback<ArrayList<SincAlumnoDTO>>(eventBus,false) {
 	
 					@Override
 					public void success(ArrayList<SincAlumnoDTO> result) {
 						alumnos = result;
 						for(SincAlumnoDTO x:alumnos){
-							x.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
+							
+							
+							if(x.getEstado() == null || x.getEstado().getNombreEstado() == null || x.getEstado().getNombreEstado().isEmpty() || x.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
+								x.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
+							}else{
+								x.setSinc(SincAlumnoDTO.SINC_EXITOSA);
+							}
 						}
 						view.setAlumnos(alumnos);
-						view.setTotalALumnos(alumnos.size());
 					}
 					
 					@Override
 					public void failure(Throwable caught) {
 						super.failure(caught);
 						view.setAlumnos(new ArrayList<SincAlumnoDTO>());
-						view.setTotalALumnos(0);
 					}
 				});
-			}else{
-				view.setGuardarButtonEnabled(false);
 			}
 			
 		}
 		
-		if(Utils.hasPermisos(getPermisos(),"ActividadService","updateSincronizacionAlumno")){
-			view.setGuardarButtonEnabled(true);
-			view.setIdMaterialFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
-				
-				@Override
-				public void update(int index, final SincAlumnoDTO object, String value) {
-					object.setIdPendrive(value);
+		view.setIdMaterialFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
+			
+			@Override
+			public void update(int index, final SincAlumnoDTO object, String value) {
+				object.setIdPendrive(value);
+				if(!object.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
 					sinc(object);
 				}
-			});
-			
-			view.setEstadoFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
-	
-				@Override
-				public void update(int index, SincAlumnoDTO object, String value) {
-					for(EstadoSincronizacionDTO e: estados){
-						if(e.getNombreEstado().equals(value)){
-							object.setEstado(e);
-							sinc(object);
-							return;
-						}
-					}
-					
-				}
-			});
-			
-			view.setComentarioFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
-	
-				@Override
-				public void update(int index, SincAlumnoDTO object, String value) {
-					object.setComentario(value);
-					sinc(object);
-				}
-			});
-			
-			view.setFormFieldUpdater(new FieldUpdater<SincAlumnoDTO, Boolean>() {
+			}
+		});
+		
+		view.setEstadoFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
 
-				@Override
-				public void update(int index, SincAlumnoDTO object,
-						Boolean value) {
-					object.setEntregoFormulario(value);
+			@Override
+			public void update(int index, SincAlumnoDTO object, String value) {
+				for(EstadoSincronizacionDTO e: estados){
+					if(e.getNombreEstado().equals(value)){
+						object.setEstado(e);
+						if(e.getNombreEstado().equals(SincronizacionView.SIN_INFO)){
+							object.setIdPendrive("");
+							object.setComentario("");
+							object.setEntregoFormulario(false);
+						}
+						sinc(object);
+						return;
+					}
+				}
+				
+			}
+		});
+		
+		view.setComentarioFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
+
+			@Override
+			public void update(int index, SincAlumnoDTO object, String value) {
+				object.setComentario(value);
+				if(!object.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
 					sinc(object);
 				}
-			});
-		}else{
-			view.setGuardarButtonEnabled(false);
-		}
+			}
+		});
+		
+		view.setFormFieldUpdater(new FieldUpdater<SincAlumnoDTO, Boolean>() {
+
+			@Override
+			public void update(int index, SincAlumnoDTO object,
+					Boolean value) {
+				object.setEntregoFormulario(value);
+				if(!object.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
+					sinc(object);
+				}
+			}
+		});
+		
+		view.setUpdateFieldUpdater(new FieldUpdater<SincAlumnoDTO, String>() {
+
+			@Override
+			public void update(int index, SincAlumnoDTO object,String value) {
+				if(!object.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
+					sinc(object);
+				}else{
+					SincronizacionActivity.this.eventBus.fireEvent(new MensajeEvent(
+							"Para actualizar la información asociada al alumno" +
+							"debe seleccionar el estado del pendrive primero",MensajeEvent.MSG_WARNING,true));
+				}
+			}
+		});
 	}
 
 	@Override
@@ -180,27 +202,6 @@ public class SincronizacionActivity extends SimceActivity implements
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void onGuardarTodoButtonClick() {
-		
-		view.setGuardarButtonEnabled(false);
-		
-		Scheduler.get().scheduleIncremental(new RepeatingCommand() {
-			int count = 0;
-			@Override
-			public boolean execute() {
-				if(alumnos.size()>count){
-					sinc(alumnos.get(count));
-					count++;
-					return true;
-				}else{
-					view.setGuardarButtonEnabled(true);
-					return false;
-				}
-			}
-		});
-	}
 	
 	@Override
 	public void onStop() {
@@ -209,27 +210,35 @@ public class SincronizacionActivity extends SimceActivity implements
 	}
 	
 	private void sinc(final SincAlumnoDTO alumno){
-		
-		if(Utils.hasPermisos(getPermisos(),"ActividadService","updateSincronizacionAlumno")){
-			alumno.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
-			view.updateTableRow(alumno);
-				
-			getFactory().getActividadService().updateSincronizacionAlumno(place.getIdCurso(),alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus,false) {
-	
-				@Override
-				public void success(Boolean result) {
-					alumno.setSinc(SincAlumnoDTO.SINC_EXITOSA);
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(Utils.hasPermisos(getPermisos(),"ActividadService","updateSincronizacionAlumno")){
+					alumno.setSinc(SincAlumnoDTO.SINC_EN_PROCESO);
 					view.updateTableRow(alumno);
+					getFactory().getActividadService().updateSincronizacionAlumno(place.getIdCurso(),alumno, new SimceCallback<Boolean>(SincronizacionActivity.this.eventBus,false) {
+			
+						@Override
+						public void success(Boolean result) {
+							if(alumno.getEstado().getNombreEstado().equals(SincronizacionView.SIN_INFO)){
+								alumno.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
+							}else{
+								alumno.setSinc(SincAlumnoDTO.SINC_EXITOSA);
+							}
+							view.updateTableRow(alumno);
+						}
+						
+						@Override
+						public void failure(Throwable caught) {
+							super.failure(caught);
+							alumno.setSinc(SincAlumnoDTO.SINC_ERRONEA);
+							view.updateTableRow(alumno);
+						}
+					});
 				}
-				
-				@Override
-				public void failure(Throwable caught) {
-					super.failure(caught);
-					alumno.setSinc(SincAlumnoDTO.SINC_ERRONEA);
-					view.updateTableRow(alumno);
-				}
-			});
-		}
+			}
+		});
 	}
 
 }

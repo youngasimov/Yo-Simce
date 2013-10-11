@@ -117,4 +117,51 @@ public class SincAlumnoDTO implements Serializable {
 	public void setTipoAlumno(String tipoAlumno) {
 		this.tipoAlumno = tipoAlumno;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((apellidoMaterno == null) ? 0 : apellidoMaterno.hashCode());
+		result = prime * result
+				+ ((apellidoPaterno == null) ? 0 : apellidoPaterno.hashCode());
+		result = prime * result + ((nombres == null) ? 0 : nombres.hashCode());
+		result = prime * result + ((rut == null) ? 0 : rut.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SincAlumnoDTO other = (SincAlumnoDTO) obj;
+		if (apellidoMaterno == null) {
+			if (other.apellidoMaterno != null)
+				return false;
+		} else if (!apellidoMaterno.equals(other.apellidoMaterno))
+			return false;
+		if (apellidoPaterno == null) {
+			if (other.apellidoPaterno != null)
+				return false;
+		} else if (!apellidoPaterno.equals(other.apellidoPaterno))
+			return false;
+		if (nombres == null) {
+			if (other.nombres != null)
+				return false;
+		} else if (!nombres.equals(other.nombres))
+			return false;
+		if (rut == null) {
+			if (other.rut != null)
+				return false;
+		} else if (!rut.equals(other.rut))
+			return false;
+		return true;
+	}
+	
+	
 }
