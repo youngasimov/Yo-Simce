@@ -146,6 +146,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 					isSortAscending, false, true);
 			buildHeader(tr, asistenciaHeader, asistenciaColumn, sortedColumn,
 					isSortAscending, false, true);
+			
 			tr.endTR();
 
 			return true;
@@ -352,12 +353,13 @@ public class AprobarSupervisoresViewD extends Composite implements
 			renderCell(td, createContext(++i), generalColumn, rowValue);
 			td.endTD();
 			
-			// show general Column
+			// show asistencia Column
 			td = row.startTD();
 			td.className(cellStyles);
 			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
 			renderCell(td, createContext(++i), asistenciaColumn, rowValue);
 			td.endTD();
+			
 			
 			row.endTR();
 		}
@@ -419,9 +421,10 @@ public class AprobarSupervisoresViewD extends Composite implements
 		
 		suplentesdataGrid = new DataGrid<EvaluacionSuplenteDTO>(
 				EvaluacionSuplenteDTO.KEY_PROVIDER);
-		
+		dataGrid.setWidth("100%");
 		dataGrid.setPageSize(100);
 		suplentesdataGrid.setPageSize(100);
+		suplentesdataGrid.setWidth("100%");
 		
 		//selectionModel = new SingleSelectionModel<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
 		//dataGrid.setSelectionModel(selectionModel);
@@ -543,6 +546,8 @@ public class AprobarSupervisoresViewD extends Composite implements
 
 	private void buildTable() {
 
+		dataGrid.setMinimumTableWidth(90, Unit.EM);
+		
 		int i = -1;
 		
 		rutColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
@@ -562,11 +567,11 @@ public class AprobarSupervisoresViewD extends Composite implements
 			public String getValue(EvaluacionSupervisorDTO o) {
 				return ViewUtils.limitarString(o.getSupervisor().getNombres() + " "
 						+ o.getSupervisor().getApellidoPaterno() + " "
-						+ o.getSupervisor().getApellidoMaterno(),30);
+						+ o.getSupervisor().getApellidoMaterno(),35);
 			}
 		};
 		nombreColumn.setSortable(false);
-		dataGrid.setColumnWidth(++i, 26, Unit.EM);
+		dataGrid.setColumnWidth(++i, 50, Unit.PCT);
 
 		rbdColumn = new Column<EvaluacionSupervisorDTO, String>(new TextCell()) {
 
@@ -583,11 +588,11 @@ public class AprobarSupervisoresViewD extends Composite implements
 
 			@Override
 			public String getValue(EvaluacionSupervisorDTO o) {
-				return ViewUtils.limitarString(o.getEstablecimiento(),25);
+				return ViewUtils.limitarString(o.getEstablecimiento(),35);
 			}
 		};
 		establecimientoColumn.setSortable(false);
-		dataGrid.setColumnWidth(++i, 25, Unit.EM);
+		dataGrid.setColumnWidth(++i, 50, Unit.PCT);
 
 		cursoColumn = new Column<EvaluacionSupervisorDTO, String>(
 				new TextCell()) {
@@ -599,7 +604,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		};
 		cursoColumn.setSortable(false);
 		dataGrid.setColumnWidth(++i, 6, Unit.EM);
-
+		
 		puntualidadColumn = new Column<EvaluacionSupervisorDTO, Boolean>(
 				new CheckboxCell()) {
 
@@ -642,7 +647,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 				
 			}
 		});
-		dataGrid.setColumnWidth(++i, 12, Unit.EM);
+		dataGrid.setColumnWidth(++i, 13, Unit.EM);
 
 		generalColumn = new Column<EvaluacionSupervisorDTO, Boolean>(
 				new CheckboxCell()) {
@@ -664,7 +669,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 				
 			}
 		});
-		dataGrid.setColumnWidth(++i, 7, Unit.EM);
+		dataGrid.setColumnWidth(++i, 8, Unit.EM);
 		
 		ArrayList<String> values = new ArrayList<String>();
 		values.add(SIN_INFO);
@@ -701,13 +706,13 @@ public class AprobarSupervisoresViewD extends Composite implements
 				
 			}
 		});
-		suplentesdataGrid.setColumnWidth(++i, 7, Unit.EM);
+		dataGrid.setColumnWidth(++i, 13, Unit.EM);
 
 	}
 	
 	private void buildSuplenteTable(){
 		int i = -1;
-		
+		suplentesdataGrid.setMinimumTableWidth(60, Unit.EM);
 		srutColumn = new Column<EvaluacionSuplenteDTO, String>(new TextCell()) {
 
 			@Override
@@ -725,11 +730,11 @@ public class AprobarSupervisoresViewD extends Composite implements
 			public String getValue(EvaluacionSuplenteDTO o) {
 				return ViewUtils.limitarString(o.getSuplente().getNombres() + " "
 						+ o.getSuplente().getApellidoPaterno() + " "
-						+ o.getSuplente().getApellidoMaterno(),30);
+						+ o.getSuplente().getApellidoMaterno(),40);
 			}
 		};
 		snombreColumn.setSortable(false);
-		suplentesdataGrid.setColumnWidth(++i, 26, Unit.EM);
+		suplentesdataGrid.setColumnWidth(++i, 100, Unit.PCT);
 
 		coColumn = new Column<EvaluacionSuplenteDTO, String>(new TextCell()) {
 
@@ -739,7 +744,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 			}
 		};
 		coColumn.setSortable(false);
-		suplentesdataGrid.setColumnWidth(++i, 5, Unit.EM);
+		suplentesdataGrid.setColumnWidth(++i, 6, Unit.EM);
 
 		ArrayList<String> values = new ArrayList<String>();
 		values.add(SIN_INFO);
@@ -776,7 +781,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 				
 			}
 		});
-		suplentesdataGrid.setColumnWidth(++i, 7, Unit.EM);
+		suplentesdataGrid.setColumnWidth(++i, 50, Unit.PCT);
 
 	}
 	@Override

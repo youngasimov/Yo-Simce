@@ -36,7 +36,7 @@
 			<g:TabLayoutPanel  barUnit='PX' barHeight='30' ui:field='tabs'>
 				<g:tab>
 					<g:header size='7'>Evaluación supervisores</g:header>
-					<g:DockLayoutPanel unit="PX">
+					<g:DockLayoutPanel unit="PX" width="100%">
 						<g:north size="40">
 							<g:HTMLPanel>
 								<table>
@@ -50,7 +50,7 @@
 							</g:HTMLPanel>
 						</g:north>
 						<g:center>
-							<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
+							<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}' width="100%"/>
 						</g:center>
 						<g:south size="30">
 		      				<g:HTMLPanel>
@@ -81,7 +81,7 @@
 							</g:HTMLPanel>
 						</g:north>
 						<g:center>
-							<c:DataGrid ui:field='suplentesdataGrid' addStyleNames='{style.data}'/>
+							<c:DataGrid ui:field='suplentesdataGrid' addStyleNames='{style.data}' width="100%"/>
 						</g:center>
 						<g:south size="30">
 		      				<g:HTMLPanel>
