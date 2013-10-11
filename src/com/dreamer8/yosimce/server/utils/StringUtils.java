@@ -182,6 +182,10 @@ public class StringUtils {
 		return str.matches("^[0-9]+$");
 	}
 
+	public static Boolean isEmpty(String str) {
+		return str == null || str.isEmpty();
+	}
+
 	public static String getExtension(String ruta) {
 		Integer index = ruta.lastIndexOf(".");
 		String extension = "";

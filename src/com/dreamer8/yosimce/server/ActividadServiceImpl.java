@@ -1102,7 +1102,9 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						.getMaterialContingencia()));
 
 				Documento d = null;
-				if (actividad.getDocumento() != null) {
+				if (actividad.getDocumento() != null
+						&& !StringUtils.isEmpty(actividad.getDocumento()
+								.getName())) {
 					DocumentoDAO ddao = new DocumentoDAO();
 					if (actividad.getDocumento().getId() != null) {
 						d = ddao.findByIdArchivo(actividad.getDocumento()

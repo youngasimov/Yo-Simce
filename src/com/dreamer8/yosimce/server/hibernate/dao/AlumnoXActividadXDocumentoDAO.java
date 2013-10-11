@@ -33,7 +33,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT axaxd_id,al.nombres as al_nombres,"
 				+ "al.apellido_paterno,al.apellido_materno,al.rut,"
-				+ "axaxd.codigo,doc_estado_id,doc_estado,axaxd_com,axaxd_form.recibido  FROM APLICACION_x_NIVEL axn "
+				+ "axaxd.codigo,doc_estado_id,doc_estado,axaxd_com,axaxd_form.recibido,alt.nombre as alt_nombre  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -46,6 +46,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 				+ ")"
 				+ " JOIN ALUMNO_x_ACTIVIDAD axa ON a.id=axa.actividad_id"
 				+ " JOIN ALUMNO al ON axa.alumno_id=al.id"
+				+ " JOIN ALUMNO_TIPO alt ON axa.alumno_tipo_id=alt.id"
 				+ " LEFT JOIN (SELECT axaxd.alumno_x_actividad_id,axaxd.id axaxd_id,d.codigo,de.id as doc_estado_id,"
 				+ "de.nombre as doc_estado,axaxd.comentario as axaxd_com FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd"
 				+ " JOIN DOCUMENTO d ON axaxd.documento_id=d.id"
@@ -78,6 +79,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			sadto.setEstado(esdto);
 			sadto.setComentario((String) o[8]);
 			sadto.setEntregoFormulario((o[9] != null) ? (Boolean) o[9] : false);
+			sadto.setTipoAlumno((String) o[10]);
 			sadtos.add(sadto);
 		}
 		return sadtos;
