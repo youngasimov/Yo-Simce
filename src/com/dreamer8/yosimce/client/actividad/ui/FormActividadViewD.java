@@ -92,7 +92,6 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField CheckBox realizadaPorSupervisorBox;
 	@UiField Button agregarExaminadorButton;
 	@UiField Button ausenteButton;
-	//@UiField Button updateEvaluacionButton;
 	@UiField(provided=true) CellList<EvaluacionUsuarioDTO> examinadoresList;
 	@UiField HTMLPanel evaluacionExaminadorPanel;
 	@UiField Label examinadorSeleccionadoLabel;
@@ -129,6 +128,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	private boolean fileUploaded;
 	//private ArrayList<EvaluacionExaminador> evaluaciones;
 	private String file;
+	private ListDataProvider<ContingenciaDTO> contingenciasProvider;
 	private ListDataProvider<EvaluacionUsuarioDTO> examinadoresProvider;
 	private SingleSelectionModel<EvaluacionUsuarioDTO> examinadoresSelectionModel;
 	
@@ -142,9 +142,11 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		inicioPruebaBox = new TimeBox(new Date(0),false);
 		terminoPruebaBox = new TimeBox(new Date(0),false);
 		contingenciasTable = new DataGrid<ContingenciaDTO>();
+		contingenciasProvider = new ListDataProvider<ContingenciaDTO>();
+		contingenciasProvider.addDataDisplay(contingenciasTable);
 		examinadoresList = new CellList<EvaluacionUsuarioDTO>(new EvaluacionUsuarioCell());
-		examinadoresList.setPageSize(4);
-		examinadoresList.setVisibleRange(0, 4);
+		examinadoresList.setPageSize(5);
+		examinadoresList.setVisibleRange(0, 5);
 		examinadoresProvider = new ListDataProvider<EvaluacionUsuarioDTO>();
 		examinadoresProvider.addDataDisplay(examinadoresList);
 		examinadoresSelectionModel = new SingleSelectionModel<EvaluacionUsuarioDTO>();
@@ -310,8 +312,51 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		presenter.setSelectedExaminadorAusente();
 	}
 	
-	@UiHandler("dateBox")
-	void onDateChange(ValueChangeEvent<Date> event){
+	@Override
+	public void clear() {
+		nombreEstablecimientoLabel.setText("");
+		rbdLabel.setText("");
+		cursoLabel.setText("");
+		tipoLabel.setText("");
+		regionLabel.setText("");
+		comunaLabel.setText("");
+		estadoBox.clear();
+		dateBox.setValue(null);
+		tipoContingenciaBox.clear();
+		detalleContingenciaBox.setValue("");
+		inhabilitaContingenciaBox.setValue(null);
+		contingenciasProvider.getList().clear();
+		realizadaPorSupervisorBox.setValue(null);
+		examinadoresProvider.getList().clear();
+		examinadorSeleccionadoLabel.setText("");
+		ppScoreSelector.setValue(0);
+		puScoreSelector.setValue(0);
+		lfScoreSelector.setValue(0);
+		geScoreSelector.setValue(0);
+		Date d = new Date();
+		inicioActividadBox.setValue(d.getTime());
+		inicioPruebaBox.setValue(d.getTime());
+		terminoPruebaBox.setValue(d.getTime());
+		totalAlumnosBox.setValue("0");
+		alumnosAusentesBox.setValue("0");
+		alumnosDsBox.setValue("0");
+		cuestionariosTotalesBox.setValue("0");
+		cuestionariosEntregadosBox.setValue("0");
+		cuestionariosRecibidosBox.setValue("0");
+		usoMaterialBox.setValue(null);
+		detallesUsoBox.setValue("");
+		procedimientoScoreSelector.setValue(0);
+		fileLink.setHref("");
+		fileLink.setTarget("");
+		fileLink.setText("");
+		fileLabel.setText("");
+		examinadorSelector.examinadorBox.setValue("");
+		uploading = false;
+		fileUploaded = false;
+		file = null;
+		enableAddContingencia(false);
+		enableExaminadorActions(false);
+		showForm(false);
 	}
 	
 	@Override
@@ -394,9 +439,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 
 	@Override
 	public void setContingencias(ArrayList<ContingenciaDTO> contingencias) {
-		contingenciasTable.setRowCount(contingencias.size());
-		contingenciasTable.setRowData(contingencias);
-		contingenciasTable.setVisibleRange(0, contingencias.size());
+		contingenciasProvider.setList(contingencias);
 	}
 
 
@@ -801,8 +844,6 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	public void setRealizadaPorSupervisor(boolean realizada) {
 		realizadaPorSupervisorBox.setValue(realizada);
 	}
-
-
 
 	@Override
 	public void updateEvaluacionExaminador(EvaluacionUsuarioDTO evaluacion) {

@@ -95,6 +95,8 @@ public interface FormActividadView extends IsWidget {
 	void enableExaminadorActions(boolean enable);
 	void updateEvaluacionExaminador(EvaluacionUsuarioDTO evaluacion);
 	
+	void clear();
+	
 	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();

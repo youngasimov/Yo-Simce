@@ -55,6 +55,7 @@ public class FormActividadActivity extends SimceActivity implements
 		this.view.setPresenter(this);
 		contingencias = new ArrayList<ContingenciaDTO>();
 		tipos = new ArrayList<TipoContingenciaDTO>();
+		estados = new ArrayList<EstadoAgendaDTO>();
 		titularesIds = new ArrayList<Integer>();
 		reemplazantesIds = new ArrayList<Integer>();
 		reemplazadosIds = new ArrayList<Integer>();
@@ -63,6 +64,7 @@ public class FormActividadActivity extends SimceActivity implements
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
+		view.clear();
 		this.eventBus = eventBus;
 		estadoSelected = false;
 		view.showForm(false);
@@ -71,6 +73,13 @@ public class FormActividadActivity extends SimceActivity implements
 		titularesIds.clear();
 		reemplazadosIds.clear();
 		reemplazantesIds.clear();
+		tipos.clear();
+		contingencias.clear();
+		selected = null;
+		a = null;
+		tipos.clear();
+		contingencias.clear();
+		estados.clear();
 		
 		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
 		
@@ -161,7 +170,8 @@ public class FormActividadActivity extends SimceActivity implements
 
 					@Override
 					public void success(ArrayList<EstadoAgendaDTO> result) {
-						estados = result;
+						estados.clear();
+						estados.addAll(result);
 						if(a != null){
 							view.setEstados(result);
 							view.selectEstado(a.getEstadoAplicacion());
@@ -385,29 +395,12 @@ public class FormActividadActivity extends SimceActivity implements
 	}
 	
 	private void clear(){
-		contingencias.clear();
-		view.setContingencias(contingencias);
-		view.setTotalAlumnos(0);
-		view.setAlumnosAusentes(0);
-		view.setAlumnosDS(0);
-		view.setFechaActividad(null);
-		view.setCuestionariosTotales(0);
-		view.setCuestionariosEntregados(0);
-		view.setCuestionariosRecibidos(0);
-		view.setUsoMaterialContingencia(false);
-		view.setDetalleUsoMaterialContingencia("");
-		view.setEvaluacionGeneral(0);
-		view.setHyperlink(null);
+		view.clear();
 		if(examinadores!=null){
 			examinadores.clear();
-			view.setExaminadores(examinadores);
-		}else{
-			view.setExaminadores(new ArrayList<EvaluacionUsuarioDTO>());
 		}
 		selected = null;
-		view.enableExaminadorActions(false);
 		a = null;
-		view.showForm(false);
 	}
 
 	@Override
