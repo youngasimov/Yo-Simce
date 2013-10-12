@@ -6,6 +6,7 @@ import com.dreamer8.yosimce.client.actividad.ui.FormActividadView.FormActividadP
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -97,6 +98,13 @@ public class ExaminadorSelectorViewD {
 	void show(Command action){
 		this.c = action;
 		panel.center();
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				examinadorBox.setFocus(true);
+			}
+		});
 	}
 	
 	UserDTO getSelectedUser(){

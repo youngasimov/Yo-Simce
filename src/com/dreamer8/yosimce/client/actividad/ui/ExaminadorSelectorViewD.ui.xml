@@ -27,7 +27,7 @@
 		.list{
 			display:block;
 			width: 320px;
-			height: 250px;
+			height: 220px;
 			margin-left: auto;
 			margin-right: auto;
 		}
@@ -39,7 +39,7 @@
 					<th colspan='2'>Reemplazar examinador</th>
 				</tr>
 				<tr>
-					<td><my:HelperLabel text='Buscar:' help='Realice una busqueda por nombre o rut del examinador' /></td>
+					<td><my:HelperLabel text='Buscar:' help='Nombre o rut del examinador' /></td>
 					<td><g:TextBox ui:field="examinadorBox" addStyleNames='{style.buscar}'/></td>
 				</tr>
 				<tr>

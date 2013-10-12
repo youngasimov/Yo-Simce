@@ -24,6 +24,9 @@ public interface AprobarSupervisoresView extends IsWidget {
 	
 	void setPresenter(AprobarSupervisoresPresenter presenter);
 	
+	void updateTableRow(EvaluacionSupervisorDTO dto);
+	void updateTableRow(EvaluacionSuplenteDTO dto);
+	
 	public interface AprobarSupervisoresPresenter extends SimcePresenter{
 		void filter(String filter);
 		void suplentefilter(String filter);

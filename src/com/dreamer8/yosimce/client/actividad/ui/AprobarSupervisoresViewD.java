@@ -6,6 +6,7 @@ import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSupervisorDTO;
 import com.dreamer8.yosimce.shared.dto.EvaluacionSuplenteDTO;
+import com.google.gwt.cell.client.ButtonCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
@@ -87,6 +88,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 				"Presentación personal");
 		private Header<String> geHeader = new TextHeader("General");
 		private Header<String> asistenciaHeader = new TextHeader("Asistencia");
+		private Header<String> updateHeader = new TextHeader("");
 
 		public CustomHeaderBuilder() {
 			super(dataGrid, false);
@@ -143,10 +145,11 @@ public class AprobarSupervisoresViewD extends Composite implements
 			buildHeader(tr, ppHeader, presentacionColumn, sortedColumn,
 					isSortAscending, false, false);
 			buildHeader(tr, geHeader, generalColumn, sortedColumn,
-					isSortAscending, false, true);
+					isSortAscending, false, false);
 			buildHeader(tr, asistenciaHeader, asistenciaColumn, sortedColumn,
+					isSortAscending, false, false);
+			buildHeader(tr, updateHeader, updateColumn, sortedColumn,
 					isSortAscending, false, true);
-			
 			tr.endTR();
 
 			return true;
@@ -360,6 +363,13 @@ public class AprobarSupervisoresViewD extends Composite implements
 			renderCell(td, createContext(++i), asistenciaColumn, rowValue);
 			td.endTD();
 			
+			// show asistencia Column
+			td = row.startTD();
+			td.className(cellStyles);
+			td.style().outlineStyle(OutlineStyle.NONE).endStyle();
+			renderCell(td, createContext(++i), updateColumn, rowValue);
+			td.endTD();
+			
 			
 			row.endTR();
 		}
@@ -403,12 +413,14 @@ public class AprobarSupervisoresViewD extends Composite implements
 	private Column<EvaluacionSupervisorDTO, Boolean> presentacionColumn;
 	private Column<EvaluacionSupervisorDTO, Boolean> generalColumn;
 	private Column<EvaluacionSupervisorDTO, String> asistenciaColumn;
+	private Column<EvaluacionSupervisorDTO, String> updateColumn;
 	private ListDataProvider<EvaluacionSupervisorDTO> dataProvider;
 	
 	private Column<EvaluacionSuplenteDTO, String> srutColumn;
 	private Column<EvaluacionSuplenteDTO, String> snombreColumn;
 	private Column<EvaluacionSuplenteDTO, String> coColumn;
 	private Column<EvaluacionSuplenteDTO, String> sgeneralColumn;
+	private Column<EvaluacionSuplenteDTO, String> supdateColumn;
 	private ListDataProvider<EvaluacionSuplenteDTO> sdataProvider;
 
 	private AprobarSupervisoresPresenter presenter;
@@ -426,9 +438,6 @@ public class AprobarSupervisoresViewD extends Composite implements
 		suplentesdataGrid.setPageSize(100);
 		suplentesdataGrid.setWidth("100%");
 		
-		//selectionModel = new SingleSelectionModel<EvaluacionSupervisorDTO>(EvaluacionSupervisorDTO.KEY_PROVIDER);
-		//dataGrid.setSelectionModel(selectionModel);
-		
 		dataProvider = new ListDataProvider<EvaluacionSupervisorDTO>(
 				EvaluacionSupervisorDTO.KEY_PROVIDER);
 		dataGrid.setAutoHeaderRefreshDisabled(true);
@@ -437,7 +446,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		
 		sdataProvider = new ListDataProvider<EvaluacionSuplenteDTO>(
 				EvaluacionSuplenteDTO.KEY_PROVIDER);
-		//suplentesdataGrid.setAutoHeaderRefreshDisabled(true);
+		suplentesdataGrid.setAutoHeaderRefreshDisabled(true);
 		suplentesdataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
 		suplentesdataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
 		
@@ -460,6 +469,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		dataGrid.addColumn(presentacionColumn);
 		dataGrid.addColumn(generalColumn);
 		dataGrid.addColumn(asistenciaColumn);
+		dataGrid.addColumn(updateColumn);
 		
 		buildSuplenteTable();
 		
@@ -467,6 +477,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 		suplentesdataGrid.addColumn(snombreColumn,"Nombre");
 		suplentesdataGrid.addColumn(coColumn,"C. O.");
 		suplentesdataGrid.addColumn(sgeneralColumn,"Asistencia");
+		suplentesdataGrid.addColumn(supdateColumn,"");
 		
 		
 		dataGrid.setTableBuilder(new CustomTableBuilder());
@@ -542,6 +553,18 @@ public class AprobarSupervisoresViewD extends Composite implements
 		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)suplenteSearchBox.getSuggestOracle();
 		mwso.clear();
 		mwso.addAll(suggestions);
+	}
+	
+	@Override
+	public void updateTableRow(EvaluacionSupervisorDTO dto) {
+		int index = dataProvider.getList().indexOf(dto);
+		dataProvider.getList().set(index,dto);
+	}
+	
+	@Override
+	public void updateTableRow(EvaluacionSuplenteDTO dto) {
+		int index = sdataProvider.getList().indexOf(dto);
+		sdataProvider.getList().set(index,dto);
 	}
 
 	private void buildTable() {
@@ -708,6 +731,26 @@ public class AprobarSupervisoresViewD extends Composite implements
 		});
 		dataGrid.setColumnWidth(++i, 13, Unit.EM);
 
+		updateColumn = new Column<EvaluacionSupervisorDTO, String>(new ButtonCell()) {
+
+			@Override
+			public String getValue(EvaluacionSupervisorDTO o) {
+				return (o.getSinc() == EvaluacionSupervisorDTO.UPDATING)?"Actualizando...":
+					(o.getSinc() == EvaluacionSupervisorDTO.ERROR)?"Actualizar":"Actualizado";
+			}
+		};
+		updateColumn.setSortable(false);
+		updateColumn.setFieldUpdater(new FieldUpdater<EvaluacionSupervisorDTO, String>() {
+
+			@Override
+			public void update(int index, EvaluacionSupervisorDTO object,
+					String value) {
+				presenter.sinc(object);
+			}
+		});
+		dataGrid.setColumnWidth(++i, 10,Unit.EM);
+		
+		
 	}
 	
 	private void buildSuplenteTable(){
@@ -781,7 +824,28 @@ public class AprobarSupervisoresViewD extends Composite implements
 				
 			}
 		});
+		suplentesdataGrid.setColumnWidth(++i, 13, Unit.EM);
+		
+		supdateColumn = new Column<EvaluacionSuplenteDTO, String>(new ButtonCell()) {
+
+			@Override
+			public String getValue(EvaluacionSuplenteDTO o) {
+				return (o.getSinc() == EvaluacionSuplenteDTO.UPDATING)?"Actualizando...":
+					(o.getSinc() == EvaluacionSuplenteDTO.ERROR)?"Actualizar":"Actualizado";
+			}
+		};
+		supdateColumn.setSortable(false);
+		supdateColumn.setFieldUpdater(new FieldUpdater<EvaluacionSuplenteDTO, String>() {
+
+			@Override
+			public void update(int index, EvaluacionSuplenteDTO object,
+					String value) {
+				presenter.sinc(object);
+			}
+		});
 		suplentesdataGrid.setColumnWidth(++i, 50, Unit.PCT);
+		
+		
 
 	}
 	@Override

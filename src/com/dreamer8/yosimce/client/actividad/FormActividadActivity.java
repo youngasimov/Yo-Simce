@@ -24,6 +24,7 @@ import com.dreamer8.yosimce.shared.exceptions.ConsistencyException;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class FormActividadActivity extends SimceActivity implements
@@ -47,6 +48,7 @@ public class FormActividadActivity extends SimceActivity implements
 	private ArrayList<Integer> reemplazantesIds;
 	private ArrayList<Integer> reemplazadosIds;
 	private boolean realizadaPorSupervisor;
+	private Timer t;
 	
 	public FormActividadActivity(ClientFactory factory, FormActividadPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -272,16 +274,29 @@ public class FormActividadActivity extends SimceActivity implements
 	}
 
 	@Override
-	public void getExaminadoresSuplentes(String search) {
-
-		if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getExaminadores")){
-			getFactory().getActividadService().getExaminadores(search, new SimceCallback<ArrayList<UserDTO>>(eventBus,false) {
-	
+	public void getExaminadoresSuplentes(final String search) {
+		if(t!=null){
+			t.cancel();
+		}
+		if(search!=null && !search.isEmpty() && search.length()>3){
+			t = new Timer() {
+				
 				@Override
-				public void success(ArrayList<UserDTO> result) {
-					view.setExaminadoresSuplentes(result);
+				public void run() {
+					if(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","getExaminadores")){
+						getFactory().getActividadService().getExaminadores(search, new SimceCallback<ArrayList<UserDTO>>(eventBus,false) {
+				
+							@Override
+							public void success(ArrayList<UserDTO> result) {
+								view.setExaminadoresSuplentes(result);
+							}
+						});
+					}
 				}
-			});
+			};
+			t.schedule(500);
+		}else{
+			view.setExaminadoresSuplentes(new ArrayList<UserDTO>());
 		}
 	}
 	

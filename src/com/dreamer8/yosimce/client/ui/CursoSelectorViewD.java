@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.ui;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -91,6 +92,13 @@ public class CursoSelectorViewD implements CursoSelectorView {
 	@Override
 	public void show() {
 		panel.center();
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				rbdBox.setFocus(true);
+			}
+		});
 	}
 	
 	@Override

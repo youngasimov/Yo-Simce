@@ -7,6 +7,10 @@ import com.google.gwt.view.client.ProvidesKey;
 @SuppressWarnings("serial")
 public class EvaluacionSuplenteDTO implements Serializable {
 
+	public static final int UPDATED = 0;
+	public static final int UPDATING = 1;
+	public static final int ERROR = 2;
+	
 	public static final ProvidesKey<EvaluacionSuplenteDTO> KEY_PROVIDER = new ProvidesKey<EvaluacionSuplenteDTO>() {
 
 		@Override
@@ -25,6 +29,9 @@ public class EvaluacionSuplenteDTO implements Serializable {
 	// private Integer puntualidad;
 	private Integer general;
 	private Boolean presente;
+	
+	//para uso en cliente solamente
+	private Integer sinc;
 
 	public UserDTO getSuplente() {
 		return suplente;
@@ -69,5 +76,15 @@ public class EvaluacionSuplenteDTO implements Serializable {
 	public void setPresente(Boolean presente) {
 		this.presente = presente;
 	}
+
+	public Integer getSinc() {
+		return sinc;
+	}
+
+	public void setSinc(Integer sinc) {
+		this.sinc = sinc;
+	}
+	
+	
 
 }

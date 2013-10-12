@@ -25,11 +25,11 @@
 		}
 		
 		.list{
-			width: 310px;
+			display:block;
+			width: 320px;
+			height: 220px;
 			margin-left: auto;
 			margin-right: auto;
-			min-height:200px;
-			max-height: 300px;
 		}
 	</ui:style>
 	<g:DialogBox animationEnabled="true" autoHideEnabled="true" autoHideOnHistoryEventsEnabled="true" glassEnabled="true" modal="true"  ui:field="panel">
@@ -40,10 +40,14 @@
 				</tr>
 				<tr>
 					<td> <my:HelperLabel text='Buscar:' help='Ingrese el rbd o nombre del establecimiento que esta buscando'/> </td>
-					<td><my:PlaceHolderTextBox ui:field="rbdBox" addStyleNames='{style.buscar}' placeholder='Ingrese nombre establecimiento o RBD'/></td>
+					<td><my:PlaceHolderTextBox ui:field="rbdBox" addStyleNames='{style.buscar}' placeholder='Nombre establecimiento o RBD'/></td>
 				</tr>
 				<tr>
-					<td colspan='2'> <c:CellList ui:field="cursosList" addStyleNames='{style.list}'/> </td>
+					<td colspan='2'>
+						<g:ScrollPanel addStyleNames='{style.list}'>
+						<c:CellList ui:field="cursosList" width="310"/>
+						</g:ScrollPanel>
+					</td>
 				</tr>
 				<tr>
 					<td colspan='2'>

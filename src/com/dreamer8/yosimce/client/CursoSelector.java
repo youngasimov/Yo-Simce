@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Timer;
 
 public class CursoSelector implements
 		CursoSelectorPresenter {
@@ -19,6 +20,7 @@ public class CursoSelector implements
 	private Command cancelCommand;
 	private Command confirmCommand;
 	private CursoDTO currentCurso;
+	private Timer t;
 	
 	public CursoSelector(ClientFactory factory,EventBus eventBus){
 		this.factory = factory;
@@ -30,26 +32,20 @@ public class CursoSelector implements
 	}
 	
 	@Override
-	public void onSearchBoxChange(String search) {
-		if(search!=null && search.length()>2){
-			factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus,false) {
-
-				@Override
-				public void success(ArrayList<CursoDTO> result) {
-					view.getDataDisplay().setRowCount(result.size());
-					view.getDataDisplay().setRowData(0, result);
-					view.setOkButtonEnabled(false);
-					Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-						
-						@Override
-						public void execute() {
-							view.getSelectionModel().clear();
-						}
-					});
-					currentCurso = null;
-				}
+	public void onSearchBoxChange(final String search) {
+		if(t!=null){
+			t.cancel();
+		}
+		
+		if(search!=null && !search.isEmpty() && (search.matches("^[0-9]+$") || search.length()>3)){
+			t = new Timer() {
 				
-			});
+				@Override
+				public void run() {
+					searchCursos(search);
+				}
+			};
+			t.schedule(500);
 		}else{
 			view.getDataDisplay().setRowCount(0);
 			view.setOkButtonEnabled(false);
@@ -111,5 +107,26 @@ public class CursoSelector implements
 	
 	public void setOnCursoChangeAction(Command c){
 		this.confirmCommand = c;
+	}
+	
+	private void searchCursos(String search){
+		factory.getGeneralService().getCursos(search, new SimceCallback<ArrayList<CursoDTO>>(eventBus,false) {
+
+			@Override
+			public void success(ArrayList<CursoDTO> result) {
+				view.getDataDisplay().setRowCount(result.size());
+				view.getDataDisplay().setRowData(0, result);
+				view.setOkButtonEnabled(false);
+				Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+					
+					@Override
+					public void execute() {
+						view.getSelectionModel().clear();
+					}
+				});
+				currentCurso = null;
+			}
+			
+		});
 	}
 }

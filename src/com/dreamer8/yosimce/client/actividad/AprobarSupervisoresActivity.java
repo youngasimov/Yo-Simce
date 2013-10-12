@@ -65,6 +65,7 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 					ArrayList<String> sugestions = new ArrayList<String>();
 					ArrayList<Integer> supervisores = new ArrayList<Integer>();
 					for(EvaluacionSupervisorDTO e:evaluaciones){
+						e.setSinc(EvaluacionSupervisorDTO.UPDATED);
 						if(!supervisores.contains(e.getSupervisor().getId())){
 							supervisores.add(e.getSupervisor().getId());
 							sugestions.add(e.getSupervisor().getNombres()+" "+e.getSupervisor().getApellidoPaterno()+" "+e.getSupervisor().getApellidoMaterno());
@@ -97,6 +98,7 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 					ArrayList<String> sugestions = new ArrayList<String>();
 					ArrayList<Integer> suplentes = new ArrayList<Integer>();
 					for(EvaluacionSuplenteDTO e:evaluacionesSuplentes){
+						e.setSinc(EvaluacionSupervisorDTO.UPDATED);
 						if(!suplentes.contains(e.getSuplente().getId())){
 							suplentes.add(e.getSuplente().getId());
 							sugestions.add(e.getSuplente().getNombres()+" "+e.getSuplente().getApellidoPaterno()+" "+e.getSuplente().getApellidoMaterno());
@@ -118,17 +120,23 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void sinc(EvaluacionSupervisorDTO sup){
+	public void sinc(final EvaluacionSupervisorDTO sup){
+		
+		sup.setSinc(EvaluacionSupervisorDTO.UPDATING);
+		view.updateTableRow(sup);
+		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 			getFactory().getActividadService().updateEvaluacionSupervisor(sup, new SimceCallback<Boolean>(eventBus,false) {
 	
 				@Override
 				public void success(Boolean result) {
-					
+					sup.setSinc(EvaluacionSupervisorDTO.UPDATED);
+					view.updateTableRow(sup);
 				}
 				@Override
 				public void failure(Throwable caught) {
-					updateSupervisores(true);
+					sup.setSinc(EvaluacionSupervisorDTO.ERROR);
+					view.updateTableRow(sup);
 				}
 			});
 		}
@@ -172,17 +180,21 @@ public class AprobarSupervisoresActivity extends SimceActivity implements
 	}
 
 	@Override
-	public void sinc(EvaluacionSuplenteDTO suplente) {
+	public void sinc(final EvaluacionSuplenteDTO suplente) {
+		suplente.setSinc(EvaluacionSuplenteDTO.UPDATING);
+		view.updateTableRow(suplente);
 		if(Utils.hasPermisos(eventBus,getPermisos(), "ActividadService", "updateEvaluacionSupervisor")){
 			getFactory().getActividadService().updateEvaluacionSuplente(suplente, new SimceCallback<Boolean>(eventBus,false) {
 	
 				@Override
 				public void success(Boolean result) {
-					
+					suplente.setSinc(EvaluacionSuplenteDTO.UPDATED);
+					view.updateTableRow(suplente);
 				}
 				@Override
 				public void failure(Throwable caught) {
-					updateSuplentes(true);
+					suplente.setSinc(EvaluacionSuplenteDTO.ERROR);
+					view.updateTableRow(suplente);
 				}
 			});
 		}
