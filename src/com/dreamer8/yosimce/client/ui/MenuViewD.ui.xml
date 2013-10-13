@@ -65,6 +65,14 @@
 			<g:HTMLPanel>
 				<g:ScrollPanel width="100%" height="100%">
 					<g:HTMLPanel addStyleNames='{style.content}' ui:field='informacionPanel'>
+						<ul>
+	    					<li>
+	    						<a  href='/manual_agendamiento.pdf' target="_blank">Manual de agendamiento de visitas previas</a> para supervisores y Jefes de centro de operación
+	    					</li>
+	    					<li>
+	    						<a  href='/informacion_tracking_supervisores.pdf' target="_blank">Manual formulario de aplicación</a>, Cortesía de la JZ Carolina Jara.
+	    					</li>
+	    				</ul>
 						<p>
 	    				Como regla general, si usted recibe alguna notificación de error al realizar una acción en el sistema siga los siguientes pasos:<br />
 	    				<ul>
@@ -82,13 +90,7 @@
 	    				<p>Todas los días se realizan mejoras al sistema Tracking, por lo que si usted informó un error de la manera indicada anteriormente,
 	    				es muy probable que esto se encuentre solucionado durante los próximos días.</p>
 	    				
-	    				<p>URL: se refiere al texto que se encuentra en la parte superior del navegador que indica qué página está visitando</p>
-	    				
-	    				<ul>
-	    					<li>
-	    						<a  href='/informacion_tracking_supervisores.pdf' target="_blank">manual para ingreso de datos a formulario</a> Cortesía de la JZ, Carolina Jara.
-	    					</li>
-	    				</ul>
+	    				<p style='font-size: 9px; font-style: oblique;'>URL: se refiere al texto que se encuentra en la parte superior del navegador (barra de navegación) que indica qué página está visitando</p>
 	    				
 					</g:HTMLPanel>
 				</g:ScrollPanel>

@@ -206,12 +206,18 @@ public class SincronizacionViewD extends Composite implements
 			if(alumno.getNombres() == null){
 				alumno.setNombres("");
 			}
+			alumno.setNombres(alumno.getNombres().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
+					.replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U"));
 			if(alumno.getApellidoPaterno() == null){
 				alumno.setApellidoPaterno("");
 			}
+			alumno.setApellidoPaterno(alumno.getApellidoPaterno().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
+					.replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U"));
 			if(alumno.getApellidoMaterno() == null){
 				alumno.setApellidoMaterno("");
 			}
+			alumno.setApellidoMaterno(alumno.getApellidoMaterno().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
+					.replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U"));
 			if(alumno.getRut() == null){
 				alumno.setRut("");
 			}

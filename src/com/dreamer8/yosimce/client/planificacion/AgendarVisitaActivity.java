@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.planificacion;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
@@ -30,6 +31,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	private CursoSelector selector;
 	private EventBus eventBus;
 	private AgendaDTO agenda;
+	private boolean fechaSelected;
 	
 	private ArrayList<EstadoAgendaDTO> estados;
 	
@@ -45,6 +47,8 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		
+		fechaSelected = false;
 		
 		view.setEditarContactoVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "editarContacto"));
 		view.setEditarDirectorVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "editarDirector"));
@@ -129,11 +133,17 @@ public class AgendarVisitaActivity extends SimceActivity implements
 						
 						if(agenda.getItems() != null && !agenda.getItems().isEmpty()){
 							view.setUltimoEstado(agenda.getItems().get(0));
+							fechaSelected = true;
 						}
 					}
 				});
 			}
 		}
+	}
+	
+	@Override
+	public void onFechaChange(Date d) {
+		fechaSelected = true;
 	}
 	
 	@Override
@@ -179,6 +189,11 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	@Override
 	public void onModificarAgendaClick() {
+		
+		if(!fechaSelected){
+			eventBus.fireEvent(new MensajeEvent("Seleccione la fecha para la cual quiere agendar la actividad",MensajeEvent.MSG_WARNING,true));
+			return;
+		}
 		
 		AgendaItemDTO last = null;
 		if(!agenda.getItems().isEmpty()){

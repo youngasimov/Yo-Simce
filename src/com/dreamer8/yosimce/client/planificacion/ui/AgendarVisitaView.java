@@ -53,5 +53,6 @@ public interface AgendarVisitaView extends IsWidget {
 		void onModificarAgendaClick();
 		void onEditarContacto(ContactoDTO contacto);
 		void onEditarDirector(ContactoDTO contacto);
+		void onFechaChange(Date d);
 	}
 }

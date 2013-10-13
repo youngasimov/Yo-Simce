@@ -263,6 +263,7 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		}else{
 			fechaLabel.setText(format.format(event.getValue()));
 			timeBox.setValue(event.getValue().getTime());
+			presenter.onFechaChange(event.getValue());
 		}
 	}
 	
