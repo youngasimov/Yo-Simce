@@ -5,6 +5,7 @@ package com.dreamer8.yosimce.server.hibernate.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 
 /**
@@ -31,8 +32,10 @@ public class Curso implements java.io.Serializable {
 		this.nee = nee;
 	}
 
-	public Curso(Integer id, AplicacionXNivel aplicacionXNivel, Establecimiento establecimiento, String nombre, String codigo, boolean emergente,
-			boolean nee, Integer cantidadAlumnos, List<Actividad> actividads) {
+	public Curso(Integer id, AplicacionXNivel aplicacionXNivel,
+			Establecimiento establecimiento, String nombre, String codigo,
+			boolean emergente, boolean nee, Integer cantidadAlumnos,
+			List<Actividad> actividads) {
 		this.id = id;
 		this.aplicacionXNivel = aplicacionXNivel;
 		this.establecimiento = establecimiento;
@@ -126,6 +129,10 @@ public class Curso implements java.io.Serializable {
 		cdto.setNombre(nombre);
 		cdto.setNombreEstablecimiento(establecimiento.getNombre());
 		cdto.setRbd(Integer.toString(establecimiento.getId()));
+		cdto.setLatitud((establecimiento.getDireccionLatitud() != null) ? establecimiento
+				.getDireccionLatitud().longValue() : 0);
+		cdto.setLongitud((establecimiento.getDireccionLongitud() != null) ? establecimiento
+				.getDireccionLongitud().longValue() : 0);
 		return cdto;
 	}
 

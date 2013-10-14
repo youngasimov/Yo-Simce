@@ -18,6 +18,7 @@ import org.hibernate.Session;
 import org.hibernate.context.internal.ManagedSessionContext;
 
 import com.dreamer8.yosimce.client.material.MaterialService;
+import com.dreamer8.yosimce.server.hibernate.dao.ActividadTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.GuiaDespachoDAO;
@@ -30,6 +31,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.MaterialHistorialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MaterialXGuiaDespachoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.MaterialXLoteDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.ActividadTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.GuiaDespacho;
@@ -112,8 +114,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				CoDAO cdao = new CoDAO();
 				List<Co> cos = cdao
 						.findByIdAplicacionANDIdUsuarioANDUsuarioTipo(
-								idAplicacion, u.getId(),
-								usuarioTipo.getRol());
+								idAplicacion, u.getId(), usuarioTipo.getRol());
 
 				if (cos != null && !cos.isEmpty()) {
 					for (Co co : cos) {
@@ -496,10 +497,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
+				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipo at = atdao.getById(idActividadTipo);
 
 				DateFormat dateFormat = new SimpleDateFormat(
 						"dd-MM-yyyy HH.mm.ss");
-				String name = "Materiales " + dateFormat.format(new Date());
+				String name = "Materiales " + at.getNombre() + " "
+						+ dateFormat.format(new Date());
 				File file = File.createTempFile(
 						StringUtils.getDatePathSafe(name), ".csv",
 						getUploadDirForTmpFiles());
