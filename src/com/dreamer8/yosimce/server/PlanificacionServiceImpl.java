@@ -751,25 +751,41 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
-				Actividad a = adao
-						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
-								idAplicacion, idNivel, idActividadTipo, idCurso);
-				if (a == null) {
+				CursoDAO cdao = new CursoDAO();
+				Curso c = cdao.getById(idCurso);
+				if (c == null) {
 					throw new NullPointerException(
-							"No se ha encontrado una actividad para el curso especificado.");
+							"No se ha encontrado el curso especificado.");
 				}
-				a.setContactoNombre(contacto.getContactoNombre());
-				a.setContactoTelefono(contacto.getContactoTelefono());
-				a.setContactoEmail(contacto.getContactoEmail());
+
+				ActividadDAO adao = new ActividadDAO();
+				List<Actividad> as = adao
+						.findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+								idAplicacion, idNivel, c.getEstablecimiento()
+										.getId());
+				// Actividad a = adao
+				// .findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+				// idAplicacion, idNivel, idActividadTipo, idCurso);
+				// if (a == null) {
+				// throw new NullPointerException(
+				// "No se ha encontrado una actividad para el curso especificado.");
+				// }
+
+				ContactoCargoDAO ccdao = new ContactoCargoDAO();
+				ContactoCargo cc = null;
 				if (contacto.getCargo() != null
 						&& contacto.getCargo().getId() != null) {
-					ContactoCargoDAO ccdao = new ContactoCargoDAO();
-					ContactoCargo cc = ccdao.getById(contacto.getCargo()
-							.getId());
-					a.setContactoCargo(cc);
+					cc = ccdao.getById(contacto.getCargo().getId());
 				}
-				adao.update(a);
+				if (as != null && !as.isEmpty()) {
+					for (Actividad a : as) {
+						a.setContactoNombre(contacto.getContactoNombre());
+						a.setContactoTelefono(contacto.getContactoTelefono());
+						a.setContactoEmail(contacto.getContactoEmail());
+						a.setContactoCargo(cc);
+						adao.update(a);
+					}
+				}
 
 				s.getTransaction().commit();
 			}

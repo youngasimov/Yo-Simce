@@ -130,10 +130,11 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 		List<CentroOperacionDTO> codots = new ArrayList<CentroOperacionDTO>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "WITH mh_max AS("
-				+ " SELECT mh.material_id,mh.destino_id,m.centro_id fROM MATERIAL_HISTORIAL mh"
+				+ " SELECT mh.material_id,mh.destino_id,m.centro_id,"
+				+ "(c.nombre = 'CONT' OR a.actividad_estado_id=7 OR a.actividad_estado_id IS NULL) as contingencia fROM MATERIAL m"
+				+ " LEFT JOIN (SELECT mh.material_id,mh.destino_id FROM MATERIAL_HISTORIAL mh "
 				+ " JOIN (SELECT mh.material_id, MAX(mh.fecha) fecha FROM MATERIAL_HISTORIAL mh"
-				+ " GROUP BY mh.material_id) mh_max ON mh.material_id=mh_max.material_id AND mh.fecha=mh_max.fecha"
-				+ " JOIN MATERIAL m ON m.id=mh.material_id"
+				+ " GROUP BY mh.material_id) mh_max ON mh.material_id=mh_max.material_id AND mh.fecha=mh_max.fecha) mh ON m.id=mh.material_id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON m.id=mxa.material_id"
 				+ " JOIN ACTIVIDAD a ON mxa.actividad_id=a.id"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
@@ -145,11 +146,11 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " WHERE c.nombre != 'CONT'"
 
 				+ ")"
 				+ "SELECT DISTINCT co.id,co.comuna_id,p.region_id,co.zona_id,co.nombre,co.direccion_longitud,co.direccion_latitud,"
-				+ " u.nombres,u.apellido_paterno,u.apellido_materno,u.celular,total_en_centro,total_establ,total_imprenta,total_minis"
+				+ " u.nombres,u.apellido_paterno,u.apellido_materno,u.celular,total_en_centro,total_establ,total_imprenta,total_minis,"
+				+ " total_cont_centro,total_cont_establ,total_cont_imprenta,total_cont_minis"
 				+ " FROM CO co "
 				+ " JOIN CO_x_ESTABLECIMIENTO cxe ON co.id=cxe.co_id"
 				+ " JOIN APLICACION_x_NIVEL axn ON (axn.aplicacion_id="
@@ -159,13 +160,23 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ " AND axn.id=cxe.aplicacion_x_nivel_id)"
 
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_en_centro "
-				+ " FROM mh_max WHERE mh_max.destino_id=4 GROUP BY mh_max.centro_id) en_centro ON en_centro.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=4 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_centro ON en_centro.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_establ "
-				+ " FROM mh_max WHERE mh_max.destino_id=5 GROUP BY mh_max.centro_id) en_estab ON en_estab.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=5 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_estab ON en_estab.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_minis "
-				+ " FROM mh_max WHERE mh_max.destino_id=1 GROUP BY mh_max.centro_id) en_minis ON en_minis.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=1 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_minis ON en_minis.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_imprenta "
-				+ " FROM mh_max WHERE mh_max.destino_id=2 OR mh_max.destino_id IS NULL GROUP BY mh_max.centro_id) en_imp ON en_imp.centro_id=co.id"
+				+ " FROM mh_max WHERE (mh_max.destino_id=2 OR mh_max.destino_id IS NULL) AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_imp ON en_imp.centro_id=co.id"
+
+				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_centro "
+				+ " FROM mh_max WHERE mh_max.destino_id=4 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_centro ON cont_en_centro.centro_id=co.id"
+				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_establ "
+				+ " FROM mh_max WHERE mh_max.destino_id=5 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_estab ON cont_en_estab.centro_id=co.id"
+				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_minis "
+				+ " FROM mh_max WHERE mh_max.destino_id=1 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_minis ON cont_en_minis.centro_id=co.id"
+				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_imprenta "
+				+ " FROM mh_max WHERE (mh_max.destino_id=2 OR mh_max.destino_id IS NULL) AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_imp ON cont_en_imp.centro_id=co.id"
+
 				+ " JOIN COMUNA com ON co.comuna_id=com.id"
 				+ " JOIN PROVINCIA p ON com.provincia_id=p.id"
 				+ " JOIN JO_x_CO joxco ON co.id=joxco.co_id"
@@ -216,6 +227,14 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 					.intValue());
 			codto.setEnMinisterio((o[14] == null) ? 0 : ((BigInteger) o[14])
 					.intValue());
+			codto.setContingenciaEnCentro((o[15] == null) ? 0
+					: ((BigInteger) o[15]).intValue());
+			codto.setContingenciaEnEstablecimiento((o[16] == null) ? 0
+					: ((BigInteger) o[16]).intValue());
+			codto.setContingenciaEnImprenta((o[17] == null) ? 0
+					: ((BigInteger) o[17]).intValue());
+			codto.setContingenciaEnMinisterio((o[18] == null) ? 0
+					: ((BigInteger) o[18]).intValue());
 			codots.add(codto);
 		}
 		return codots;

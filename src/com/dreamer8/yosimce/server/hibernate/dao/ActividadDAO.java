@@ -88,6 +88,27 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
+	public List<Actividad> findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
+
+		List<Actividad> as = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id )"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento)
+				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		as = q.list();
+		return as;
+	}
+
 	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idEstablecimiento, String nombreCurso, Integer dia) {
@@ -137,11 +158,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " WHERE c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
-				+ " AND c.codigo='"
-				+ SecurityFilter.escapeString(nombreCurso)
+				+ " AND c.codigo='" + SecurityFilter.escapeString(nombreCurso)
 				+ "'"
-//				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				;
+		// + " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+		;
 		if (dia != null) {
 			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
 		}
@@ -246,7 +266,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -414,7 +435,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -556,7 +578,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -718,7 +741,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -849,7 +873,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -983,7 +1008,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -1171,7 +1197,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -1348,13 +1375,12 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				apdto.setNombreContacto((String) o[33]);
 				apdto.setTelefonoContacto((String) o[34]);
 				apdto.setMailContacto((String) o[35]);
-			}else{
+			} else {
 				apdto.setNombreContacto((String) o[21]);
 				apdto.setTelefonoContacto((String) o[22]);
 				apdto.setMailContacto((String) o[23]);
 			}
-			
-			
+
 			apdtos.add(apdto);
 		}
 
@@ -1407,7 +1433,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
