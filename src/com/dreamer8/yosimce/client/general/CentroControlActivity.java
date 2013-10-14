@@ -14,82 +14,38 @@ import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.view.client.ProvidesKey;
 
 public class CentroControlActivity extends SimceActivity implements
 		CentroControlPresenter {
-
-	public static class CentroOperacionWrap{
-		public static final ProvidesKey<CentroOperacionWrap> KEY_PROVIDER = new ProvidesKey<CentroOperacionWrap>() {
-
-			@Override
-			public Object getKey(CentroOperacionWrap item) {
-				return (item == null) ? null : item.centroOperacion.getId();
-			}
-		};
-		public CentroOperacionDTO centroOperacion;
-		public int maxEnCentro;
-		public int maxEnEstablecimiento;
-		public int maxEnImprenta;
-		public int maxEnMinisterio;
-		public Hyperlink hyperlink;
-		public CentroOperacionPlace place;
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime
-					* result
-					+ ((centroOperacion.getId() == null) ? 0 : centroOperacion.getId()
-							.hashCode());
-			return result;
-		}
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			CentroOperacionWrap other = (CentroOperacionWrap) obj;
-			if (centroOperacion.getId() == null) {
-				if (other.centroOperacion.getId() != null)
-					return false;
-			} else if (!centroOperacion.getId().equals(other.centroOperacion.getId()))
-				return false;
-			return true;
-		}
-		
-		
-		
-	}
 	
 	private final CentroControlView view;
 	private final CentroControlPlace place;
+	private CentroOperacionPlace coPlace;
 	private EventBus eventBus;
 	private Timer updateTimer;
 	
-	private ArrayList<CentroOperacionWrap> centros;
+	private ArrayList<CentroOperacionDTO> centros;
+	private ArrayList<Integer> monitoring;
 	private boolean firstLoad;
-	
-	private int etapa;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
 		this.place = place;
+		this.coPlace = new CentroOperacionPlace();
 		this.view = getFactory().getCentroControlView();
 		this.view.setPresenter(this);
-		centros = new ArrayList<CentroControlActivity.CentroOperacionWrap>();
+		monitoring = new ArrayList<Integer>();
 	}
 
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(this.view.asWidget());
 		this.eventBus = eventBus;
+		coPlace.setAplicacionId(place.getAplicacionId());
+		coPlace.setNivelId(place.getNivelId());
+		coPlace.setTipoId(place.getTipoId());
 		firstLoad = true;
-		etapa = 1;
+		monitoring.clear();
 		updateCentros();
 	}
 	
@@ -122,40 +78,24 @@ public class CentroControlActivity extends SimceActivity implements
 	}
 	
 	@Override
-	public void addToMonitor(ArrayList<CentroOperacionWrap> centros) {
-		view.getMonitorDataProvider().getList().addAll(centros);
+	public void addToMonitor(ArrayList<CentroOperacionDTO> centros) {
+		for(CentroOperacionDTO centro:centros){
+			if(!monitoring.contains(centro.getId())){
+				monitoring.add(centro.getId());
+			}
+		}
 		updateTables();
+	}
+
+	@Override
+	public void removeFromMonitor(ArrayList<CentroOperacionDTO> centros) {
 		
 	}
-
+	
 	@Override
-	public void removeFromMonitor(ArrayList<CentroOperacionWrap> centros) {
-		view.getMonitorDataProvider().getList().removeAll(centros);
-		updateTables();
-	}
-
-	@Override
-	public void setMonitorEtapaEstablecimiento() {
-		etapa = 1;
-		updateTables();
-	}
-
-	@Override
-	public void setMonitorEtapaCentro() {
-		etapa = 2;
-		updateTables();
-	}
-
-	@Override
-	public void setMonitorEtapaImprenta() {
-		etapa = 3;
-		updateTables();
-	}
-
-	@Override
-	public void setMonitorEtapaMinisterio() {
-		etapa = 4;
-		updateTables();
+	public String getCentroOperacionToken(int centroId) {
+		coPlace.setCentroId(centroId);
+		return getFactory().getPlaceHistoryMapper().getToken(coPlace);
 	}
 	
 	private void updateCentros(){
@@ -163,33 +103,17 @@ public class CentroControlActivity extends SimceActivity implements
 
 			@Override
 			public void success(ArrayList<CentroOperacionDTO> result) {
-				boolean finded;
 				for(CentroOperacionDTO centro:result){
-					finded = false;
-					for(CentroOperacionWrap cow:centros){
-						if(cow.centroOperacion.getId() == centro.getId()){
-							cow.centroOperacion = centro;
-							cow.maxEnCentro = (cow.maxEnCentro<centro.getEnCentro())?centro.getEnCentro():cow.maxEnCentro;
-							cow.maxEnEstablecimiento = (cow.maxEnEstablecimiento<centro.getEnEstablecimiento())?centro.getEnEstablecimiento():cow.maxEnEstablecimiento;
-							cow.maxEnImprenta = (cow.maxEnImprenta<centro.getEnImprenta())?centro.getEnImprenta():cow.maxEnImprenta;
-							cow.maxEnMinisterio = (cow.maxEnMinisterio<centro.getEnMinisterio())?centro.getEnMinisterio():cow.maxEnMinisterio;
-							finded = true;
-							break;
-						}
-					}
-					if(!finded){
-						CentroOperacionWrap cow = new CentroOperacionWrap();
-						cow.centroOperacion = centro;
-						cow.place = new CentroOperacionPlace(place.getAplicacionId(), place.getNivelId(), place.getTipoId());
-						cow.place.setCentroId(centro.getId());
-						cow.maxEnCentro = centro.getEnCentro();
-						cow.maxEnEstablecimiento = centro.getEnEstablecimiento();
-						cow.maxEnImprenta = centro.getEnImprenta();
-						cow.maxEnMinisterio = centro.getEnMinisterio();
-						cow.hyperlink = new Hyperlink("Tracking", getFactory().getPlaceHistoryMapper().getToken(cow.place));
-						centros.add(cow);
-					}
+					centro.setEnCentro((centro.getEnCentro() == null)?0:centro.getEnCentro());
+					centro.setEnEstablecimiento((centro.getEnEstablecimiento() == null)?0:centro.getEnEstablecimiento());
+					centro.setEnImprenta((centro.getEnImprenta() == null)?0:centro.getEnImprenta());
+					centro.setEnMinisterio((centro.getEnMinisterio() == null)?0:centro.getEnMinisterio());
+					centro.setContingenciaEnCentro((centro.getContingenciaEnCentro() == null)?0:centro.getContingenciaEnCentro());
+					centro.setContingenciaEnEstablecimiento((centro.getContingenciaEnEstablecimiento() == null)?0:centro.getContingenciaEnEstablecimiento());
+					centro.setContingenciaEnImprenta((centro.getContingenciaEnImprenta() == null)?0:centro.getContingenciaEnImprenta());
+					centro.setContingenciaEnMinisterio((centro.getContingenciaEnMinisterio() == null)?0:centro.getContingenciaEnMinisterio());
 				}
+				centros = result;
 				firstLoad = false;
 				updateTables();
 			}
@@ -198,35 +122,14 @@ public class CentroControlActivity extends SimceActivity implements
 	}
 	
 	private void updateTables(){
-		view.getCompleteDataProvider().getList().clear();
-		view.getIncompleteDataProvider().getList().clear();
-		int total = 0;
-		int aux = 0;
 		view.getAllDataProvider().setList(centros);
-		ArrayList<CentroOperacionWrap> incomplete = new ArrayList<CentroControlActivity.CentroOperacionWrap>();
-		ArrayList<CentroOperacionWrap> complete = new ArrayList<CentroControlActivity.CentroOperacionWrap>();
-		for(CentroOperacionWrap cow:centros){
-			total = cow.centroOperacion.getEnCentro()+cow.centroOperacion.getEnEstablecimiento()+cow.centroOperacion.getEnImprenta()+cow.centroOperacion.getEnMinisterio();
-			if(etapa == 1){
-				aux = cow.maxEnEstablecimiento;
-			}else if(etapa == 2){
-				aux = cow.maxEnCentro;
-			}else if(etapa == 3){
-				aux = cow.maxEnImprenta;
-			}else{
-				aux = cow.maxEnMinisterio;
-			}
-			if(view.getMonitorDataProvider().getList().contains(cow)){
-				view.getMonitorDataProvider().getList().set(view.getMonitorDataProvider().getList().indexOf(cow), cow);
-				if(aux<total){
-					incomplete.add(cow);
-				}else{
-					complete.add(cow);
-				}
+		ArrayList<CentroOperacionDTO> monitor = new ArrayList<CentroOperacionDTO>(monitoring.size());
+		for(CentroOperacionDTO centro:centros){
+			if(monitoring.contains(centro.getId())){
+				monitor.add(centro);
 			}
 		}
-		view.getCompleteDataProvider().setList(complete);
-		view.getIncompleteDataProvider().setList(incomplete);
+		view.getMonitoringDataProvider().setList(monitor);
 	}
 
 	

@@ -76,4 +76,7 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/star.png")
 	public ImageResource star();
+	
+	@Source("images/filtro.png")
+	public ImageResource filtro();
 }

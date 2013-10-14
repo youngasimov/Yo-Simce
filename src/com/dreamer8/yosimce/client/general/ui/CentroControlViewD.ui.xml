@@ -3,7 +3,10 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
-	<ui:style>
+	
+	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
+	
+	<ui:style type='com.dreamer8.yosimce.client.general.ui.CentroControlViewD.Styles'>
 	.title {
 		font-size: 20px;
 		margin-left: 10px;
@@ -33,6 +36,29 @@
 		min-width: 600px;
 		max-width: 1000px;
 	}
+	
+	.realTimeData{
+		min-width: 420px;
+	}
+	
+	.button{
+		cursor: pointer;
+	}
+	
+	.childCell {
+  		padding-left: 30px;
+  		border: 2px solid #eee !important;
+  		background: #eee !important;
+	}
+
+	.groupHeaderCell {
+  		padding: 1px 15px;
+  		color: #4b4a4a;
+  		text-shadow: #ddf 1px 1px 0;
+  		font-size: 130%;
+  		background: #eee;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -42,39 +68,87 @@
 					Actualizar
 					<g:MenuBar vertical='true'>
 						<g:MenuItem ui:field="actualizarMenu">Actualizar</g:MenuItem>
+						<g:MenuItem ui:field="autoCargaMenu">Actualizar cada 1 minutos</g:MenuItem>
 						<g:MenuItem ui:field="autoCarga2Menu">Actualizar cada 2 minutos</g:MenuItem>
 						<g:MenuItem ui:field="autoCarga5Menu">Actualizar cada 5 minutos</g:MenuItem>
 						<g:MenuItem ui:field="autoCarga10Menu">Actualizar cada 10 minutos</g:MenuItem>
-					</g:MenuBar>
-				</g:MenuItem>
-				<g:MenuItem>
-					Evento
-					<g:MenuBar vertical='true'>
-						<g:MenuItem ui:field="establecimientoItem">Salida a establecimiento</g:MenuItem>
-						<g:MenuItem ui:field="centroItem">LLegada a centro</g:MenuItem>
-						<g:MenuItem ui:field="imprentaItem">Imprenta</g:MenuItem>
-						<g:MenuItem ui:field="ministerioItem">Ministerio</g:MenuItem>
 					</g:MenuBar>
 				</g:MenuItem>
 				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
 				<g:MenuItem ui:field="removeFromMonitorItem">No monitorear</g:MenuItem>
 			</my:OverMenuBar>	
 		</g:north>
+		<g:west size='300'>
+			<g:StackLayoutPanel unit="PX">
+				<g:stack>
+					<g:header size='35'>Filtros</g:header>
+					<g:HTMLPanel>
+						<table style='width: 100%'>
+							<tr>
+								<th colspan='4'>Filtros</th>
+							</tr>
+							<tr>
+								<th colspan='4'>Región</th>
+							</tr>
+							<tr>
+								<td colspan='3'> <g:ListBox ui:field="regionBox" /> </td>
+								<td><g:Image ui:field="seleccionarRegionButton" resource="{res.filtro}" addStyleNames='{style.button}'/></td>
+							</tr>
+							<tr>
+								<th colspan='2'>Zona</th>
+								<th colspan='2'>Comuna</th>
+							</tr>
+							<tr>
+								<td> <g:ListBox ui:field="zonaBox" /> </td>
+								<td><g:Image ui:field="seleccionarZonaButton" resource="{res.filtro}" addStyleNames='{style.button}' /></td>
+								<td> <g:ListBox ui:field="comunaBox" /> </td>
+								<td><g:Image ui:field="seleccionarComunaButton" resource="{res.filtro}" addStyleNames='{style.button}' /></td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:stack>
+				<g:stack>
+					<g:header size='35'>Monitor</g:header>
+					<g:ScrollPanel>
+						<c:CellList ui:field="monitorList"/>
+					</g:ScrollPanel>
+				</g:stack>
+			</g:StackLayoutPanel>
+		</g:west>
 		<g:center>
-			<g:SplitLayoutPanel>
-				<g:west size='300'>
-					<c:DataGrid ui:field="allTable" addStyleNames='{style.data}'/>
-				</g:west>
-				<g:north size='400'>
-					<c:DataGrid ui:field="monitorTable" addStyleNames='{style.data}'/>
-				</g:north>
-				<g:west size='400'>
-					<c:DataGrid ui:field="incompleteTable" addStyleNames='{style.data}'/>
-				</g:west>
-				<g:center>
-					<c:DataGrid ui:field="completeTable" addStyleNames='{style.data}'/>
-				</g:center>
-			</g:SplitLayoutPanel>
+			<g:TabLayoutPanel addStyleNames='{style.realTimeData}' barHeight='25' barUnit='PX' animationDuration="300" animationVertical="true">
+				<g:tab>
+					<g:header>Datos en tiempo real</g:header>
+					<g:DockLayoutPanel unit="PX">
+						<g:south size="35">
+					     	<g:HTMLPanel>
+				       			<table style="width:100%">
+				         			<tr>
+				           				<td align='center'>
+				             				<c:SimplePager  ui:field='allPager' />
+				           				</td>
+				         			</tr>
+				       			</table>
+				     		</g:HTMLPanel>
+				  		</g:south>
+						<g:center>
+							<c:DataGrid ui:field="allTable" addStyleNames='{style.data}' minimumTableWidth="650px"/>
+						</g:center>
+					</g:DockLayoutPanel>
+				</g:tab>
+				<g:tab>
+					<g:header>Monitor</g:header>
+					<g:HTMLPanel>
+						
+					</g:HTMLPanel>
+				</g:tab>
+				<g:tab>
+					<g:header>Ayuda</g:header>
+					<g:HTMLPanel>
+						
+					</g:HTMLPanel>
+				</g:tab>
+			</g:TabLayoutPanel>
 		</g:center>
 		
 	</g:DockLayoutPanel>
