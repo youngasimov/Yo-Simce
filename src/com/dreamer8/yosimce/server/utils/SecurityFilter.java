@@ -54,6 +54,7 @@ public class SecurityFilter {
 	}
 	String str = SecurityFilter.escapeString(object);
 	str = str.replaceAll("%", escapeChar + "%").replaceAll("_", escapeChar + "_");
+	str = str.replaceAll("[áéíóúüñÁÉÍÓÚÜÑ]", "_");
 	return str;
     }
 

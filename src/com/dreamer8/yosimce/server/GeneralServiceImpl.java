@@ -14,6 +14,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.RegionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Comuna;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Region;
@@ -431,6 +432,17 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 							"El curso especificado no existe.");
 				}
 				cdto = c.getCursoDTO();
+				if (cdto.getRbd() != null && !cdto.getRbd().isEmpty()) {
+					CoDAO codao = new CoDAO();
+					Co co = codao
+							.findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+									idAplicacion, idNivel,
+									Integer.valueOf(cdto.getRbd()));
+					if (co != null) {
+						cdto.setCoAsociado(co.getNombre());
+					}
+				}
+
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
