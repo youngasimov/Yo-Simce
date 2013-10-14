@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.general.ui;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.client.ui.HyperlinkCell;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.google.gwt.cell.client.AbstractCell;
@@ -14,10 +15,13 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.builder.shared.TableCellBuilder;
 import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.AbstractHeaderOrFooterBuilder;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.Column;
@@ -29,9 +33,12 @@ import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.cellview.client.AbstractCellTable.Style;
 import com.google.gwt.user.cellview.client.ColumnSortList.ColumnSortInfo;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
@@ -220,6 +227,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField MenuItem autoCarga10Menu;
 	@UiField MenuItem sendToMonitorItem;
 	@UiField MenuItem removeFromMonitorItem;
+	@UiField StackLayoutPanel leftPanel;
+	@UiField CheckBox selectAllBox;
+	@UiField ListBox regionBox;
+	@UiField ListBox zonaBox;
+	@UiField ListBox comunaBox;
 	@UiField(provided=true) DataGrid<CentroOperacionDTO> allTable;
 	@UiField(provided=true) CellList<CentroOperacionDTO> monitorList;
 	@UiField(provided=true) SimplePager allPager;
@@ -249,6 +261,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	public CentroControlViewD() {
 		allTable = new DataGrid<CentroOperacionDTO>(CentroOperacionDTO.KEY_PROVIDER);
 		monitorList = new CellList<CentroOperacionDTO>(new CoCell());
+		monitorList.setPageSize(500);
 		allTable.setPageSize(100);
 		allTable.setWidth("100%");
 		allTable.setHeight("100%");
@@ -264,6 +277,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
+				selectAllBox.setValue(allSelectionModel.getSelectedSet().size()==allDataProvider.getList().size(),false);
 				sendToMonitorItem.setVisible(!allSelectionModel.getSelectedSet().isEmpty());
 			}
 		});
@@ -354,6 +368,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 						allSelectionModel.setSelected(cow, false);
 					}
 				}
+				leftPanel.showWidget(1);
 				presenter.addToMonitor(aux);
 			}
 		});
@@ -366,6 +381,18 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		});
 	}
 
+	@UiHandler("selectAllBox")
+	void onSelectAllBoxChange(ValueChangeEvent<Boolean> event){
+		for(CentroOperacionDTO c:allDataProvider.getList()){
+			allSelectionModel.setSelected(c, event.getValue());
+		}
+	}
+	
+	@UiHandler("regionBox")
+	void onRegionBoxChange(ChangeEvent event){
+		presenter.onRegionChange(Integer.parseInt(regionBox.getValue(regionBox.getSelectedIndex())));
+	}
+	
 	@Override
 	public void setPresenter(CentroControlPresenter presenter) {
 		this.presenter = presenter;
@@ -379,6 +406,33 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@Override
 	public ListDataProvider<CentroOperacionDTO> getMonitoringDataProvider() {
 		return monitorDataProvider;
+	}
+	
+	@Override
+	public void setRegiones(ArrayList<SectorDTO> regiones) {
+		regionBox.clear();
+		regionBox.addItem("Todas","-1");
+		for(SectorDTO s:regiones){
+			regionBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
+	}
+	
+	@Override
+	public void setComunas(ArrayList<SectorDTO> comunas) {
+		comunaBox.clear();
+		comunaBox.addItem("Todas","-1");
+		for(SectorDTO s:comunas){
+			comunaBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
+	}
+	
+	@Override
+	public void setZonas(ArrayList<SectorDTO> zonas) {
+		zonaBox.clear();
+		zonaBox.addItem("Todas","-1");
+		for(SectorDTO s:zonas){
+			zonaBox.addItem(s.getSector(),s.getIdSector()+"");
+		}
 	}
 	
 	private void buildAllTable(){

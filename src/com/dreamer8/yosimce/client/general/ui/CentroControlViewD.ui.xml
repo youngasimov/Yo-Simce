@@ -79,7 +79,7 @@
 			</my:OverMenuBar>	
 		</g:north>
 		<g:west size='300'>
-			<g:StackLayoutPanel unit="PX">
+			<g:StackLayoutPanel unit="PX" ui:field="leftPanel">
 				<g:stack>
 					<g:header size='35'>Filtros</g:header>
 					<g:HTMLPanel>
@@ -108,7 +108,7 @@
 					</g:HTMLPanel>
 				</g:stack>
 				<g:stack>
-					<g:header size='35'>Monitor</g:header>
+					<g:header size='35'>Monitoreados</g:header>
 					<g:ScrollPanel>
 						<c:CellList ui:field="monitorList"/>
 					</g:ScrollPanel>
@@ -120,6 +120,9 @@
 				<g:tab>
 					<g:header>Datos en tiempo real</g:header>
 					<g:DockLayoutPanel unit="PX">
+						<g:north size="30">
+							<g:CheckBox ui:field="selectAllBox" text="seleccionar todo"/>
+						</g:north>
 						<g:south size="35">
 					     	<g:HTMLPanel>
 				       			<table style="width:100%">

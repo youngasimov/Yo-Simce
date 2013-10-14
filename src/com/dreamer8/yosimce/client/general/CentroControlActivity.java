@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.client.general.ui.CentroControlView;
 import com.dreamer8.yosimce.client.general.ui.CentroControlView.CentroControlPresenter;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -24,6 +25,9 @@ public class CentroControlActivity extends SimceActivity implements
 	private EventBus eventBus;
 	private Timer updateTimer;
 	
+	private ArrayList<SectorDTO> regiones;
+	private HashMap<Integer,ArrayList<SectorDTO>> comunas;
+	private HashMap<Integer,ArrayList<SectorDTO>> zonas;
 	private ArrayList<CentroOperacionDTO> centros;
 	private ArrayList<Integer> monitoring;
 	private boolean firstLoad;
@@ -35,6 +39,8 @@ public class CentroControlActivity extends SimceActivity implements
 		this.view = getFactory().getCentroControlView();
 		this.view.setPresenter(this);
 		monitoring = new ArrayList<Integer>();
+		comunas = new HashMap<Integer, ArrayList<SectorDTO>>();
+		zonas = new HashMap<Integer, ArrayList<SectorDTO>>();
 	}
 
 	@Override
@@ -46,6 +52,16 @@ public class CentroControlActivity extends SimceActivity implements
 		coPlace.setTipoId(place.getTipoId());
 		firstLoad = true;
 		monitoring.clear();
+		
+		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,true) {
+
+			@Override
+			public void success(ArrayList<SectorDTO> result) {
+				regiones = result;
+				view.setRegiones(regiones);
+			}
+		});
+		
 		updateCentros();
 	}
 	
@@ -53,6 +69,54 @@ public class CentroControlActivity extends SimceActivity implements
 	@Override
 	public void actualizar() {
 		updateCentros();
+	}
+	
+	@Override
+	public void onRegionChange(final int regionId) {
+		
+		if(regionId == -1){
+			view.setComunas(new ArrayList<SectorDTO>());
+			view.setZonas(new ArrayList<SectorDTO>());
+			return;
+		}
+		
+		SectorDTO region = null;
+		for(SectorDTO r:regiones){
+			if(r.getIdSector() == regionId){
+				region = r;
+				break;
+			}
+		}
+		if(region == null){
+			view.setComunas(new ArrayList<SectorDTO>());
+			view.setZonas(new ArrayList<SectorDTO>());
+			return;
+		}
+		
+		if(comunas.containsKey(regionId)){
+			view.setComunas(comunas.get(regionId));
+		}else{
+			getFactory().getGeneralService().getComunas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
+
+				@Override
+				public void success(ArrayList<SectorDTO> result) {
+					comunas.put(regionId, result);
+					view.setComunas(result);
+				}
+			});
+		}
+		if(zonas.containsKey(regionId)){
+			view.setZonas(zonas.get(regionId));
+		}else{
+			getFactory().getGeneralService().getZonas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
+
+				@Override
+				public void success(ArrayList<SectorDTO> result) {
+					zonas.put(regionId, result);
+					view.setZonas(result);
+				}
+			});
+		}
 	}
 
 	@Override
