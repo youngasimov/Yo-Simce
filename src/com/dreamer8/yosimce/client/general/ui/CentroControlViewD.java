@@ -226,9 +226,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField MenuItem autoCarga5Menu;
 	@UiField MenuItem autoCarga10Menu;
 	@UiField MenuItem sendToMonitorItem;
-	@UiField MenuItem removeFromMonitorItem;
 	@UiField StackLayoutPanel leftPanel;
 	@UiField CheckBox selectAllBox;
+	@UiField CheckBox selectFiltroBox;
 	@UiField ListBox regionBox;
 	@UiField ListBox zonaBox;
 	@UiField ListBox comunaBox;
@@ -302,10 +302,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		allPager.setDisplay(allTable);
 		
 		sendToMonitorItem.setVisible(false);
-		removeFromMonitorItem.setVisible(false);
 		autoRecargaActivated = false;
 		menu.setOverItem(menuItem);
-		menu.insertSeparator(3);
+		menu.insertSeparator(2);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
 			
 			@Override
@@ -372,13 +371,6 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				presenter.addToMonitor(aux);
 			}
 		});
-		removeFromMonitorItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				
-			}
-		});
 	}
 
 	@UiHandler("selectAllBox")
@@ -433,6 +425,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		for(SectorDTO s:zonas){
 			zonaBox.addItem(s.getSector(),s.getIdSector()+"");
 		}
+	}
+	
+	@Override
+	public void setMonitoreados(int monitoreados) {
+		leftPanel.setHeaderText(1, "Monitoreados ("+monitoreados+")");
 	}
 	
 	private void buildAllTable(){

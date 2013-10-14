@@ -113,12 +113,16 @@ public class LoginActivity implements LoginPresenter {
 		user = null;
 		if(caught == null){
 			view.setMensaje("");
+			view.setUsernameFocus();
 		}else if(caught instanceof RequestTimeoutException){
 			view.setMensaje("Estamos trabajando al 100%<br />Intente ingresar nuevamente");
+			view.setPasswordFocus();
 		}else if(caught instanceof IncompatibleRemoteServiceException){
 			view.setMensaje("La aplicación web esta desactualizada<br />limpie el cache y recargue el sitio");
+			view.setPasswordFocus();
 		}else{
 			view.setMensaje(caught.getMessage());
+			view.setPasswordFocus();
 		}
 	}
 	

@@ -75,8 +75,15 @@ public class LoginView extends Composite {
 	
 	public void showLogin(){
 		div.addClassName(style.showLogin());
-		usernameBox.setFocus(true);
 		passwordBox.setValue("");
+	}
+	
+	public void setPasswordFocus(){
+		passwordBox.setFocus(true);
+	}
+	
+	public void setUsernameFocus(){
+		usernameBox.setFocus(true);
 	}
 	
 	public void showLoad(){

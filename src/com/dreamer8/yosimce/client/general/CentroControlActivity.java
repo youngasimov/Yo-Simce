@@ -143,10 +143,9 @@ public class CentroControlActivity extends SimceActivity implements
 	
 	@Override
 	public void addToMonitor(ArrayList<CentroOperacionDTO> centros) {
+		monitoring.clear();
 		for(CentroOperacionDTO centro:centros){
-			if(!monitoring.contains(centro.getId())){
-				monitoring.add(centro.getId());
-			}
+			monitoring.add(centro.getId());
 		}
 		updateTables();
 	}
@@ -194,6 +193,7 @@ public class CentroControlActivity extends SimceActivity implements
 			}
 		}
 		view.getMonitoringDataProvider().setList(monitor);
+		view.setMonitoreados(monitoring.size());
 	}
 
 	

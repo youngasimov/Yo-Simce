@@ -18,6 +18,8 @@ public interface CentroControlView extends IsWidget {
 	void setComunas(ArrayList<SectorDTO> comunas);
 	void setZonas(ArrayList<SectorDTO> zonas);
 	
+	void setMonitoreados(int monitoreados);
+	
 	void setPresenter(CentroControlPresenter presenter);
 	
 	public interface CentroControlPresenter extends SimcePresenter{

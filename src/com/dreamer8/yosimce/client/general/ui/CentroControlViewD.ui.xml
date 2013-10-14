@@ -75,7 +75,6 @@
 					</g:MenuBar>
 				</g:MenuItem>
 				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
-				<g:MenuItem ui:field="removeFromMonitorItem">No monitorear</g:MenuItem>
 			</my:OverMenuBar>	
 		</g:north>
 		<g:west size='300'>
@@ -85,24 +84,25 @@
 					<g:HTMLPanel>
 						<table style='width: 100%'>
 							<tr>
-								<th colspan='4'>Filtros</th>
+								<th colspan='2'>Filtros</th>
 							</tr>
 							<tr>
-								<th colspan='4'>Región</th>
+								<th colspan='2'>Región</th>
 							</tr>
 							<tr>
-								<td colspan='3'> <g:ListBox ui:field="regionBox" /> </td>
-								<td><g:Image ui:field="seleccionarRegionButton" resource="{res.filtro}" addStyleNames='{style.button}'/></td>
+								<td colspan='2'> <g:ListBox ui:field="regionBox" /> </td>
 							</tr>
 							<tr>
-								<th colspan='2'>Zona</th>
-								<th colspan='2'>Comuna</th>
+								<th>Zona</th>
+								<th>Comuna</th>
 							</tr>
 							<tr>
 								<td> <g:ListBox ui:field="zonaBox" /> </td>
-								<td><g:Image ui:field="seleccionarZonaButton" resource="{res.filtro}" addStyleNames='{style.button}' /></td>
 								<td> <g:ListBox ui:field="comunaBox" /> </td>
-								<td><g:Image ui:field="seleccionarComunaButton" resource="{res.filtro}" addStyleNames='{style.button}' /></td>
+							</tr>
+							<tr>
+								<td><my:ImageButton text='Seleccionar' ui:field="seleccionarZonaButton" resource="{res.filtro}" addStyleNames='{style.button}' /></td>
+								<td><my:ImageButton text='Seleccionar' ui:field="seleccionarComunaButton" resource="{res.filtro}" addStyleNames='{style.button}'/></td>
 							</tr>
 						</table>
 					</g:HTMLPanel>
@@ -116,12 +116,19 @@
 			</g:StackLayoutPanel>
 		</g:west>
 		<g:center>
-			<g:TabLayoutPanel addStyleNames='{style.realTimeData}' barHeight='25' barUnit='PX' animationDuration="300" animationVertical="true">
+			<g:TabLayoutPanel addStyleNames='{style.realTimeData}' barHeight='25' barUnit='PX' animationDuration="300" animationVertical="false">
 				<g:tab>
 					<g:header>Datos en tiempo real</g:header>
 					<g:DockLayoutPanel unit="PX">
 						<g:north size="30">
-							<g:CheckBox ui:field="selectAllBox" text="seleccionar todo"/>
+							<g:HTMLPanel>
+								<table>
+									<tr>
+										<td><g:CheckBox ui:field="selectAllBox" text="seleccionar todo"/></td>
+										<td><g:CheckBox ui:field="selectFiltroBox" text="seleccionar usando filtro"/></td>
+									</tr>
+								</table>
+							</g:HTMLPanel>
 						</g:north>
 						<g:south size="35">
 					     	<g:HTMLPanel>
