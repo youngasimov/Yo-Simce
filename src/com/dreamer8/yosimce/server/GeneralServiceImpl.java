@@ -530,4 +530,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return codtos;
 	}
 
+	@Override
+	public ArrayList<SectorDTO> getZonas(SectorDTO parent)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

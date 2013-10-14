@@ -27,6 +27,10 @@ public interface GeneralService extends RemoteService {
 	public ArrayList<SectorDTO> getComunas(SectorDTO parent)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException;
+	
+	public ArrayList<SectorDTO> getZonas(SectorDTO parent)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
 
 	public ArrayList<CursoDTO> getCursos(String rbdSeach)
 			throws NoAllowedException, NoLoggedException, DBException,

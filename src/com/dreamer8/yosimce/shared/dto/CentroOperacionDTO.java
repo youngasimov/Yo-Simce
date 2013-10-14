@@ -2,9 +2,20 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
+import com.google.gwt.view.client.ProvidesKey;
+
 
 @SuppressWarnings("serial")
 public class CentroOperacionDTO implements Serializable {
+	
+	public static final ProvidesKey<CentroOperacionDTO> KEY_PROVIDER = new ProvidesKey<CentroOperacionDTO>() {
+
+		@Override
+		public Object getKey(CentroOperacionDTO item) {
+			return (item == null) ? null : item.getId();
+		}
+	};
+	
 	
 	private Integer id;
 	private Integer idRegion;

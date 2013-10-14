@@ -23,7 +23,7 @@ public interface DetalleCursoView extends IsWidget {
 	void setCargoContacto(String cargo);
 	void setEmailContacto(String email);
 	void setTelefonoContacto(String telefono);
-	
+	void setCentroOperacion(String co);
 	void clearAll();
 	
 	void setPresenter(DetalleCursoPresenter presenter);

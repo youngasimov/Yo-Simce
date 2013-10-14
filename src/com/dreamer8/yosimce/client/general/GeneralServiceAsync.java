@@ -25,4 +25,6 @@ public interface GeneralServiceAsync {
 	void getCentrosOperacion(
 			AsyncCallback<ArrayList<CentroOperacionDTO>> callback);
 
+	void getZonas(SectorDTO parent, AsyncCallback<ArrayList<SectorDTO>> callback);
+
 }

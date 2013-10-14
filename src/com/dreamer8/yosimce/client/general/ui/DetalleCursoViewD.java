@@ -37,11 +37,13 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@UiField MenuItem menuItem;
 	@UiField MenuItem cursoItem;
 	@UiField MenuItem cambiarItem;
+	@UiField Label colegioLabel;
 	@UiField Label rbdLabel;
 	@UiField Label regionLabel;
 	@UiField Label comunaLabel;
 	@UiField Label cursoLabel;
 	@UiField Label tipoLabel;
+	@UiField Label coLabel;
 	@UiField FlexTable personasTable;
 	@UiField FlexTable contactosTable;
 	
@@ -84,6 +86,7 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@Override
 	public void setNombreEstablecimiento(String nombre) {
 		cursoItem.setHTML(ViewUtils.limitarString(nombre, 40));
+		colegioLabel.setText(nombre);
 	}
 
 	@Override
@@ -109,6 +112,11 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@Override
 	public void setTipo(String tipo) {
 		tipoLabel.setText(tipo);
+	}
+	
+	@Override
+	public void setCentroOperacion(String co) {
+		coLabel.setText(co);
 	}
 	
 	

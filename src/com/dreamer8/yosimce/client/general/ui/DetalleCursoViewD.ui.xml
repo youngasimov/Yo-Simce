@@ -83,6 +83,10 @@
 								<td colspan='2'>General</td>
 							</tr>
 							<tr>
+								<td class='{style.label}'>Colegio:</td>
+								<td><g:Label ui:field="colegioLabel"/> </td>
+							</tr>
+							<tr>
 								<td class='{style.label}'>RBD:</td>
 								<td><g:Label ui:field="rbdLabel"/> </td>
 							</tr>
@@ -101,6 +105,10 @@
 							<tr>
 								<td class='{style.label}'>Tipo:</td>
 								<td><g:Label ui:field="tipoLabel"/> </td>
+							</tr>
+							<tr>
+								<td class='{style.label}'>Centro operación:</td>
+								<td><g:Label ui:field="coLabel"/> </td>
 							</tr>
 							<tr class='{style.subtitle}'>
 								<td colspan='2'>Personas</td>

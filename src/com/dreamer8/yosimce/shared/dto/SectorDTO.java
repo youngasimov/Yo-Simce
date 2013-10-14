@@ -2,10 +2,12 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class SectorDTO implements Serializable {
 	public static final Integer TIPO_REGION = 1;
 	public static final Integer TIPO_PROVINCIA = 2;
 	public static final Integer TIPO_COMUNA = 3;
+	public static final Integer TIPO_ZONA=4;
 	private Integer idSector;
 	private String sector;
 	private Integer tipoSector;

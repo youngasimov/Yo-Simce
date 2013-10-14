@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.planificacion.ui;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
@@ -82,8 +83,6 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	
 	private AgendaItemDTO lastItem;
 	
-	private DateTimeFormat format2;
-	
 	public AgendarVisitaViewD() {
 		cell = new AgendaCell();
 		agendaList = new CellList<AgendaItemDTO>(cell);
@@ -91,7 +90,6 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 		initWidget(uiBinder.createAndBindUi(this));
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_LONG);
 		idCurso = -1;
-		format2 = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 		menu.insertSeparator(2);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
@@ -316,9 +314,9 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	public void setUltimoEstado(AgendaItemDTO item) {
 		lastItem = item;
 		if(item.getFecha() != null && !item.getFecha().isEmpty()){
-			fechaPicker.setValue(format2.parse(item.getFecha()));
-			fechaLabel.setText(format.format(format2.parse(item.getFecha())));
-			timeBox.setValue(format2.parse(item.getFecha()).getTime());
+			fechaPicker.setValue(Utils.getDate(item.getFecha()));
+			fechaLabel.setText(format.format(Utils.getDate(item.getFecha())));
+			timeBox.setValue(Utils.getDate(item.getFecha()).getTime());
 		}
 		for(int i=0; i<estadoBox.getItemCount(); i++){
 			if(Integer.parseInt(estadoBox.getValue(i)) == item.getEstado().getId()){
