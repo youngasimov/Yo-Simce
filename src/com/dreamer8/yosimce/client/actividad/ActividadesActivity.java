@@ -68,26 +68,35 @@ public class ActividadesActivity extends SimceActivity implements
 		view.setFormularioVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getActividad"));
 		view.setInformacionVisivility(Utils.hasPermisos(getPermisos(), "GeneralService","getDetalleCurso"));
 		
-		
+		//simce
 		if(place.getAplicacionId()==1){
 			view.setColumnWidth(7,"0px");
 			view.setColumnWidth(10,"0px");
 			view.setColumnWidth(2,"70px");
 			view.setColumnWidth(16,"0px");
 			view.setColumnWidth(17,"0px");
-		}else{
+		}
+		//tic
+		else{
 			view.setColumnWidth(7,"90px");
 			view.setColumnWidth(10,"90px");
 			view.setColumnWidth(2,"0px");
 			view.setColumnWidth(16,"170px");
 			view.setColumnWidth(17,"170px");
 		}
-		
+		//tic visita previa
 		if(place.getAplicacionId()==2 && place.getTipoId()==1){
 			view.setColumnWidth(6,"0px");
 			view.setColumnWidth(7,"0px");
-		}else{
+			view.setColumnWidth(9,"0px");
+			view.setColumnWidth(10,"0px");
+			
+		}
+		//todo el resto
+		else{
 			view.setColumnWidth(6,"90px");
+			view.setColumnWidth(8,"90px");
+			view.setColumnWidth(9,"90px");
 		}
 		
 		

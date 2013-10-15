@@ -156,16 +156,16 @@
 				    		<g:HTMLPanel>
 				    			<table class='{style.tablaContacto}'>
 				    				<tr>
-				    					<th><g:Label ui:field="nombreContactoLabel"/> </th>
+				    					<th>Nombre:  <g:Label ui:field="nombreContactoLabel"/> </th>
 				    				</tr>
 				    				<tr>
-				    					<th> <g:Label ui:field="fonoContactoLabel"/> </th>
+				    					<th>Teléfono:   <g:Label ui:field="fonoContactoLabel"/> </th>
 				    				</tr>
 				    				<tr>
-				    					<th><g:Label ui:field="emailContactoLabel"/> </th>
+				    					<th>Email:  <g:Label ui:field="emailContactoLabel"/> </th>
 				    				</tr>
 				    				<tr>
-				    					<th><g:Label ui:field="cargoContactoLabel"/> </th>
+				    					<th>Cargo:  <g:Label ui:field="cargoContactoLabel"/> </th>
 				    				</tr>
 				    			</table>
 				    		</g:HTMLPanel>
