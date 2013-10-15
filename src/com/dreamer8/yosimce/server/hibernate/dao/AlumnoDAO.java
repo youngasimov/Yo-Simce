@@ -13,6 +13,7 @@ import org.hibernate.Session;
 
 import com.dreamer8.yosimce.client.actividad.ActividadService;
 import com.dreamer8.yosimce.server.hibernate.pojo.Alumno;
+import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.utils.SecurityFilter;
@@ -35,18 +36,27 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 	}
 
 	public List<String> findAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
-			Integer idAplicacion, Integer idNivel,Integer idActividadTipo, Integer idUsuario,
-			String usuarioTipo, Integer offset, Integer lenght,
-			Map<String, String> filtros) {
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idUsuario, String usuarioTipo, Integer offset,
+			Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
+		String query = "WITH pendrive_sinc AS ("
+				+ " SELECT axaxd.alumno_x_actividad_id,d.codigo,de.nombre as estado"
+				+ " FROM ALUMNO_x_ACTIVIDAD axa"
+				+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON axa.id=axaxd.alumno_x_actividad_id"
+				+ " JOIN DOCUMENTO_ESTADO de ON axaxd.documento_estado_id=de.id"
+				+ " JOIN DOCUMENTO d ON axaxd.documento_id=d.id"
+				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
+				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
+				+ "'))"
+				+ "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.nombre as est_tipo_nombre,"
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
 				+ "at.nombre as act_tipo_nombre,a.total_alumnos,al.rut,al.nombres,al.apellido_paterno,al.apellido_materno,"
-				+ "alt.nombre as al_tipo,ale.nombre as al_estado,d_pendrive.codigo,de_pendrive.nombre as pendrive_estado,"
-				+ "axaxd_cuest.entregado,axa.id"
+				+ "alt.nombre as al_tipo,ale.nombre as al_estado,pendrive_sinc.codigo,pendrive_sinc.estado as pendrive_estado,"
+				+ "(axaxd_cuest.entregado IS NOT NULL AND axaxd_cuest.entregado=true),axa.id"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -62,17 +72,19 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ " JOIN ALUMNO al ON axa.alumno_id=al.id"
 				+ " JOIN ALUMNO_TIPO alt ON axa.alumno_tipo_id=alt.id"
 				+ " JOIN ALUMNO_ESTADO ale ON axa.alumno_estado_id=ale.id"
-				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
-				+ " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
-				+ " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
-				+ " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
-				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
-				+ "')"
-				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
-				+ " LEFT JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
-				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
+//				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
+//				+ " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
+//				+ " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
+//				+ " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
+//				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
+//				+ "')"
+				+ " LEFT JOIN pendrive_sinc ON axa.id=alumno_x_actividad_id"
+				+ " LEFT JOIN (SELECT axaxd_cuest.alumno_x_actividad_id,axaxd_cuest.entregado FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest"
+				+ " JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
+				+ " JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
 				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
-				+ "')"
+				+ "')) axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
+				
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
@@ -85,9 +97,11 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		;
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -107,7 +121,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -149,20 +164,22 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 							}
 							where += ") ";
 						}
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " contingencia=true";
-//						opciones += " false";
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " limitante=true";
-//						opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " contingencia=true";
+						// opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " limitante=true";
+						// opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {
@@ -213,7 +230,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		List<Object[]> os = q.list();
 		String linea = null;
 		if (os != null && !os.isEmpty()) {
-			
+
 			for (Object[] o : os) {
 				linea = Integer.toString((Integer) o[1]) + ";"
 						+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
@@ -231,8 +248,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 	}
 
 	public Integer countAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
-			Integer idAplicacion, Integer idNivel,Integer idActividadTipo, Integer idUsuario,
-			String usuarioTipo, Map<String, String> filtros) {
+			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -252,17 +269,17 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ " JOIN ALUMNO al ON axa.alumno_id=al.id"
 				+ " JOIN ALUMNO_TIPO alt ON axa.alumno_tipo_id=alt.id"
 				+ " JOIN ALUMNO_ESTADO ale ON axa.alumno_estado_id=ale.id"
-				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
-				+ " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
-				+ " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
-				+ " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
-				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
-				+ "')"
-				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
-				+ " LEFT JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
-				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
-				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
-				+ "')"
+//				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
+//				+ " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
+//				+ " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
+//				+ " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
+//				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
+//				+ "')"
+//				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
+//				+ " LEFT JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
+//				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
+//				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
+//				+ "')"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
@@ -275,9 +292,11 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		;
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -297,7 +316,8 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -339,20 +359,22 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 							}
 							where += ") ";
 						}
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " contingencia=true";
-//						opciones += " false";
-//					} else if (key
-//							.equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE)) {
-//						if (!opciones.equals("")) {
-//							opciones += " OR ";
-//						}
-//						// opciones += " limitante=true";
-//						opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " contingencia=true";
+						// opciones += " false";
+						// } else if (key
+						// .equals(ActividadService.FKEY_ACTIVIDADES_CONTINGENCIA_INHABILITANTE))
+						// {
+						// if (!opciones.equals("")) {
+						// opciones += " OR ";
+						// }
+						// // opciones += " limitante=true";
+						// opciones += " false";
 					} else if (key
 							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {
