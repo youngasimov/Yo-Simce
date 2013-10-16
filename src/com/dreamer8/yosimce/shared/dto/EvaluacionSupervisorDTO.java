@@ -29,6 +29,7 @@ public class EvaluacionSupervisorDTO implements Serializable {
 	private String establecimiento;
 	private String curso;
 	private String planificacionActividad;
+	private String co;
 	private Boolean presente;
 	
 	//para uso en cliente solamente
@@ -101,5 +102,13 @@ public class EvaluacionSupervisorDTO implements Serializable {
 
 	public void setSinc(Integer sinc) {
 		this.sinc = sinc;
+	}
+
+	public String getCo() {
+		return co;
+	}
+
+	public void setCo(String co) {
+		this.co = co;
 	}
 }
