@@ -34,6 +34,7 @@ public class EvaluacionSupervisorDTO implements Serializable {
 	
 	//para uso en cliente solamente
 	private Integer sinc;
+	private boolean even;
 	
 	public EvaluacionSupervisorDTO(){}
 	
@@ -110,5 +111,13 @@ public class EvaluacionSupervisorDTO implements Serializable {
 
 	public void setCo(String co) {
 		this.co = co;
+	}
+
+	public boolean isEven() {
+		return even;
+	}
+
+	public void setEven(boolean even) {
+		this.even = even;
 	}
 }

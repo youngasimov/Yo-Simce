@@ -115,7 +115,6 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 								public void success(ArrayList<AplicacionDTO> result) {
 									aplicaciones = result;
 									selectAplicacion();
-									
 								}
 							});
 						}else{
@@ -213,7 +212,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 					@Override
 					public void success(ArrayList<TipoUsuarioDTO> result) {
 						if(result== null || result.isEmpty()){
-							
+							factory.getEventBus().fireEvent(new MensajeEvent("No tiene ningun permisos asignado para esta actividad y nivel.<br />Consulte con su superior directo para que regularize su situación",MensajeEvent.MSG_WARNING,false));
 						}else if(result.size() == 1){
 							Cookies.setCookie(LoginService.USUARIO_TIPO_COOKIE_NAME, result.get(0).getId()+"");
 							afterTipoUsuarioSelected();
@@ -253,8 +252,12 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 
 				@Override
 				public void success(HashMap<String, ArrayList<String>> result) {
-					permisos.put(aplicacionId+":"+nivelId, result);
-					factory.getEventBus().fireEvent(new PermisosEvent(result));
+					if(result.isEmpty()){
+						factory.getEventBus().fireEvent(new MensajeEvent("No tiene ningun permisos asignado para esta actividad y nivel.<br />Consulte con su superior directo para que regularize su situación",MensajeEvent.MSG_WARNING,false));
+					}else{
+						permisos.put(aplicacionId+":"+nivelId, result);
+						factory.getEventBus().fireEvent(new PermisosEvent(result));
+					}
 				}
 			});
 		}

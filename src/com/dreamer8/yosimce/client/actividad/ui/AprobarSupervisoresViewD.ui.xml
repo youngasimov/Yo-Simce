@@ -45,6 +45,7 @@
 										<td><g:SuggestBox ui:field="supervisorSearchBox" width="400px"/> </td>
 										<td><g:Button ui:field="search" text="Buscar"/> </td>
 										<td><g:Button ui:field="clean" text="Limpiar"/> </td>
+										<td> <g:CheckBox ui:field="replicarBox" text='replicar cambios para todos los cursos de supervisor'/> </td>
 									</tr>
 								</table>
 							</g:HTMLPanel>

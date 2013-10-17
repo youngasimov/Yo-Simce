@@ -39,6 +39,7 @@ import com.google.gwt.user.cellview.client.AbstractCellTable.Style;
 import com.google.gwt.user.cellview.client.ColumnSortList.ColumnSortInfo;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
@@ -225,15 +226,9 @@ public class AprobarSupervisoresViewD extends Composite implements
 		private final String cellStyleOdd;
 		private final String cellStyleOdd2;
 		private final String selectedCellStyle;
-		
-		
-		private int current;
-		private boolean even;
 
 		public CustomTableBuilder() {
 			super(dataGrid);
-			even = false;
-			current = -1;
 			// Cache styles for faster access.
 			Style s = dataGrid.getResources().style();
 			rowStyle = s.evenRow();
@@ -244,19 +239,14 @@ public class AprobarSupervisoresViewD extends Composite implements
 			cellStyle2 = s.cell() + " "+resources.style().evenSupervisorRowStyle2();
 			cellStyleOdd = s.cell() + " " + resources.style().supervisorRowStyle();
 			cellStyleOdd2 = s.cell() + " " + resources.style().supervisorRowStyle2();
-			selectedCellStyle =s.cell()+ " " + resources.style().selected();			
+			selectedCellStyle =s.cell()+ " " + resources.style().selected();
 		}
 
 		@Override
 		public void buildRowImpl(EvaluacionSupervisorDTO rowValue,
 				int absRowIndex) {
 			
-			if(rowValue.getSupervisor().getId()!=current){
-				current = rowValue.getSupervisor().getId();
-				even = !even;
-			}
 			buildSupervisorRow(rowValue, absRowIndex,false);
-			
 		}
 
 		private void buildSupervisorRow(EvaluacionSupervisorDTO rowValue,int absRowIndex, boolean isFirst) {
@@ -268,7 +258,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 			
 			String evenCell ="";
 			String oddCell ="";
-			if(even){
+			if(rowValue.isEven()){
 				evenCell = cellStyle;
 				oddCell = cellStyleOdd;
 			}else{
@@ -393,6 +383,8 @@ public class AprobarSupervisoresViewD extends Composite implements
 	Button search;
 	@UiField
 	Button suplenteSearch;
+	@UiField
+	CheckBox replicarBox;
 	@UiField(provided = true)
 	DataGrid<EvaluacionSupervisorDTO> dataGrid;
 	@UiField(provided = true)
@@ -528,6 +520,11 @@ public class AprobarSupervisoresViewD extends Composite implements
 	@Override
 	public void setPresenter(AprobarSupervisoresPresenter presenter) {
 		this.presenter = presenter;
+	}
+	
+	@Override
+	public boolean replicarSeleccionByCurso() {
+		return replicarBox.getValue();
 	}
 
 	@Override
