@@ -1097,6 +1097,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,";
 		}
 		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
+		if (idAplicacion == 1) {
+			query += ",a.material_contingencia,a.detalle_material_contingencia";
+		}
 		if (idAplicacion == 2) {
 			query += ",act_sinc.total_sinc,cuest_sinc.total_cuest_sinc";
 		}
@@ -1305,6 +1308,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		}
 		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
 
+		if (idAplicacion == 1) {
+			query += ",a.material_contingencia,a.detalle_material_contingencia";
+		}
+
 		if (idAplicacion == 2) {
 			query += ",act_sinc.total_sinc,cuest_sinc.total_cuest_sinc";
 		}
@@ -1379,6 +1386,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				apdto.setNombreContacto((String) o[21]);
 				apdto.setTelefonoContacto((String) o[22]);
 				apdto.setMailContacto((String) o[23]);
+				apdto.setUsoMaterialContingencia((Boolean) o[24]);
+				apdto.setDetalleUsoMaterialContingecia((String) o[25]);
 			}
 
 			apdtos.add(apdto);

@@ -124,7 +124,7 @@ public class UsuarioXActividadDAO extends
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
 		String query = "SELECT DISTINCT u.id as u_id,u.username,u.email,u.nombres,u.apellido_paterno,"
 				+ "u.apellido_materno,u.celular,uxa.nota_presentacion_personal,uxa.nota_puntualidad,uxa.nota_despempeno,"
-				+ "e.id as establecimiento_id,e.nombre as e_nombre,c.nombre as c_nombre,a.fecha_inicio,uxa.asistencia FROM APLICACION_x_NIVEL axn "
+				+ "e.id as establecimiento_id,e.nombre as e_nombre,c.nombre as c_nombre,a.fecha_inicio,uxa.asistencia,co.nombre as centro FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -144,19 +144,20 @@ public class UsuarioXActividadDAO extends
 				+ UsuarioTipo.SUPERVISOR
 				+ "'"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)"
+				+ " JOIN CO co ON coxe.co_id=co.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
 				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
+
 			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
 					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
 			} else {
-				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
 					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
 							+ SecurityFilter.escapeString(idUsuario)
@@ -195,6 +196,7 @@ public class UsuarioXActividadDAO extends
 			esdto.setPlanificacionActividad(StringUtils
 					.getDateString((Date) o[13]));
 			esdto.setPresente((Boolean) o[14]);
+			esdto.setCo((String) o[15]);
 			esdtos.add(esdto);
 		}
 		return esdtos;

@@ -234,7 +234,13 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			}
 		}
 
-		query += " WHERE  joxco.activo=TRUE" + " ORDER BY co.nombre ASC";
+		query += " WHERE  joxco.activo=TRUE";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+			query += " AND joxco.jo_id="
+					+ SecurityFilter.escapeString(idUsuario);
+		}
+		query += " ORDER BY co.nombre ASC";
+		
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
 		CentroOperacionDTO codto = null;

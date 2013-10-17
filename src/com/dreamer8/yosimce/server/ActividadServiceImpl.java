@@ -2106,7 +2106,11 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					if (idAplicacion == 2 && idActividadTipo == 2) {
 						header += ";Cuestionarios Aplicados";
 					}
-					header += ";Ocurrió Contingencia;Contingencia Inhabilitante;Región;Comuna;Examinador;Supervisor;Nombre Contacto;Teléfono Contacto;Email Contacto\r";
+					header += ";Ocurrió Contingencia;Contingencia Inhabilitante";
+					if (idAplicacion == 1) {
+						header += ";Usa Material de Contingencia;Detalle Uso Material de Contingencia";
+					}
+					header += ";Región;Comuna;Examinador;Supervisor;Nombre Contacto;Teléfono Contacto;Email Contacto\r";
 					bw.write(header);
 				}
 				while (total > 0) {
@@ -2147,6 +2151,11 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							}
 							contenido += apdto.getContingencia() + ";";
 							contenido += apdto.getContingenciaLimitante() + ";";
+							if (idAplicacion == 1) {
+								contenido += apdto.getUsoMaterialContingencia() + ";";
+								contenido += apdto
+										.getDetalleUsoMaterialContingecia() + ";";
+							}
 							contenido += apdto.getRegion() + ";";
 							contenido += apdto.getComuna() + ";";
 							contenido += apdto.getNombreExaminador() + ";";
