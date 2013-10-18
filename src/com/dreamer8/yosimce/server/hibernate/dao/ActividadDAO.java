@@ -130,7 +130,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " AND c.nombre='"
 				+ SecurityFilter.escapeString(nombreCurso)
 				+ "'"
-				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
+//				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				;
 		if (dia != null) {
 			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
 		}
