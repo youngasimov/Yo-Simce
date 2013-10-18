@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.general.ui;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
@@ -11,6 +12,18 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public interface CentroControlView extends IsWidget {
 	
+	public class GraphItem{
+		public Date d;
+		public int mi;
+		public int mc;
+		public int me;
+		public int mm;
+		public int ci;
+		public int cc;
+		public int ce;
+		public int cm;
+	}
+	
 	ListDataProvider<CentroOperacionDTO> getAllDataProvider();
 	ListDataProvider<CentroOperacionDTO> getMonitoringDataProvider();
 	
@@ -18,16 +31,24 @@ public interface CentroControlView extends IsWidget {
 	void setComunas(ArrayList<SectorDTO> comunas);
 	void setZonas(ArrayList<SectorDTO> zonas);
 	
+	int getSelectedRegion();
+	int getSelectedZona();
+	int getSelectedComuna();
+	
+	void setSelectedCos(ArrayList<Integer> selected);
+	
 	void setMonitoreados(int monitoreados);
 	
 	void setPresenter(CentroControlPresenter presenter);
+	
+	void updateGraphs(ArrayList<GraphItem> data);
 	
 	public interface CentroControlPresenter extends SimcePresenter{
 		void activarAutoRecarga(boolean activada, int time);
 		void actualizar();
 		void addToMonitor(ArrayList<CentroOperacionDTO> centros);
-		void removeFromMonitor(ArrayList<CentroOperacionDTO> centros);
 		String getCentroOperacionToken(int centroId);
 		void onRegionChange(int regionId);
+		void selectUsingFiltro();
 	}
 }

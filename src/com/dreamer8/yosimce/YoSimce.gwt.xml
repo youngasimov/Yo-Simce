@@ -13,8 +13,9 @@
 	<inherits name="com.google.gwt.i18n.I18N" />
 	<inherits name="com.google.gwt.logging.Logging" />
 	<inherits name="com.googlecode.gwt.charts.Charts"/>
-	<inherits name="gwtupload.GWTUpload"/>
 	<inherits name="com.seanchenxi.gwt.storage.Storage" />
+	<inherits name='com.google.gwt.maps.Maps' />
+	<inherits name="gwtupload.GWTUpload"/>
 	
 	<!-- 
     	By default, a simple memory cache is enabled 

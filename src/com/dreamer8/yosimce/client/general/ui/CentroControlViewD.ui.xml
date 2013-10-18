@@ -59,6 +59,81 @@
   		background: #eee;
 	}
 	
+	.filtro tr td{
+		padding-top: 10px;
+		padding-bottom: 10px;
+		width: 100%;
+	}
+	
+	.filtroDivisor{
+		border-bottom:2px dashed #AAAAAA; 
+	}
+	
+	.filtroDivisorLeft{
+		border-left:3px solid #444444;  
+	}
+	.filtroDivisorButton{
+		border-bottom:3px solid #444444;
+	}
+	
+	.graficosPanel{
+		display:block;
+		width: 100%;
+		
+	}
+	
+	.graphPanel{
+		display:block;
+		width: 56%;
+		margin-left: 1%; 
+		margin-right: 1%;
+		margin-top: 20px;
+		min-width: 400px;
+		float: left;
+	}
+	
+	.mapPanel{
+		display:block;
+		width: 40%;
+		margin-left: 1%; 
+		margin-right: 1%;
+		margin-top: 20px;
+		min-width: 350px;
+		float: left;
+	}
+	
+	.full{
+		min-width: 600px;
+	}
+	
+	.full .graphPanel{
+		width: 96% !important;
+	}
+	
+	.full .mapPanel{
+		width: 96% !important;
+	}
+	
+	.full .mapPanel .mapa{
+		width: 80% !important;
+		margin-left: 10% !important;
+		margin-right: 10% !important;
+	}
+	
+	.tiempoPanel{
+		display:block;
+		width: 100%;
+		margin-bottom:10px;
+		float: left;
+	}
+	
+	.mapa{
+		display:block;
+		float: left;
+		width: 100%;
+		height: 450px;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -77,35 +152,49 @@
 				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
 			</my:OverMenuBar>	
 		</g:north>
-		<g:west size='300'>
+		<g:west size='250'>
 			<g:StackLayoutPanel unit="PX" ui:field="leftPanel">
 				<g:stack>
 					<g:header size='35'>Filtros</g:header>
-					<g:HTMLPanel>
-						<table style='width: 100%'>
-							<tr>
-								<th colspan='2'>Filtros</th>
-							</tr>
-							<tr>
-								<th colspan='2'>Región</th>
-							</tr>
-							<tr>
-								<td colspan='2'> <g:ListBox ui:field="regionBox" /> </td>
-							</tr>
-							<tr>
-								<th>Zona</th>
-								<th>Comuna</th>
-							</tr>
-							<tr>
-								<td> <g:ListBox ui:field="zonaBox" /> </td>
-								<td> <g:ListBox ui:field="comunaBox" /> </td>
-							</tr>
-							<tr>
-								<td><my:ImageButton text='Seleccionar' ui:field="seleccionarZonaButton" resource="{res.filtro}" addStyleNames='{style.button}' /></td>
-								<td><my:ImageButton text='Seleccionar' ui:field="seleccionarComunaButton" resource="{res.filtro}" addStyleNames='{style.button}'/></td>
-							</tr>
-						</table>
-					</g:HTMLPanel>
+					<g:ScrollPanel>
+						<g:HTMLPanel>
+							<table class='{style.filtro}'>
+								<tr>
+									<th>Evento</th>
+								</tr>
+								<tr>
+									<td> <g:RadioButton text="Imprenta" name='evento' formValue="1" ui:field="imprentaRadioButton"/> </td>
+								</tr>
+								<tr>
+									<td> <g:RadioButton text="Centro" name='evento' formValue="2" ui:field="centroRadioButton"/> </td>
+								</tr>
+								<tr>
+									<td> <g:RadioButton text="Establecimiento" name='evento' formValue="3" ui:field="establecimientoRadioButton"/> </td>
+								</tr>
+								<tr>
+									<td> <g:RadioButton text="Ministerio" name='evento' formValue="4" ui:field="ministerioRadioButton"/> </td>
+								</tr>
+								<tr>
+									<th>Geográfico</th>
+								</tr>
+								<tr>
+									<td class='{style.filtroDivisorLeft}'>Región<br /> <g:ListBox ui:field="regionBox" /> </td>
+								</tr>
+								<tr>
+									<td class='{style.filtroDivisorLeft} {style.filtroDivisorButton}'>Zona<br /> <g:ListBox ui:field="zonaBox" /> </td>
+								</tr>
+								<tr>
+									<td class='{style.filtroDivisorLeft} {style.filtroDivisorButton}'> Comuna <br /><g:ListBox ui:field="comunaBox" /> </td>
+								</tr>
+								<tr>
+									<td class='{style.filtroDivisor}'/>
+								</tr>
+								<tr>
+									<td style="text-align: right;"> <my:ImageButton ui:field="selectFiltroButton" text='seleccionar' resource="{res.filtro}"/> </td>
+								</tr>
+							</table>
+						</g:HTMLPanel>
+					</g:ScrollPanel>
 				</g:stack>
 				<g:stack>
 					<g:header size='35'>Monitoreados</g:header>
@@ -116,7 +205,23 @@
 			</g:StackLayoutPanel>
 		</g:west>
 		<g:center>
-			<g:TabLayoutPanel addStyleNames='{style.realTimeData}' barHeight='25' barUnit='PX' animationDuration="300" animationVertical="false">
+			<g:TabLayoutPanel ui:field="tabs" addStyleNames='{style.realTimeData}' barHeight='25' barUnit='PX' animationDuration="300" animationVertical="false">
+				<g:tab>
+					<g:header>Monitor</g:header>
+					<g:ScrollPanel addStyleNames='{style.graficosPanel}'>
+						<g:HTMLPanel ui:field="graphPanel">
+							<div class='{style.mapPanel}'>
+								<g:SimplePanel addStyleNames='{style.mapa}' ui:field="mapaPanel"/>
+							</div>
+							<div class='{style.graphPanel}'>
+								<g:SimplePanel addStyleNames='{style.tiempoPanel}' ui:field="allMaterialPanel"/>
+								<g:SimplePanel addStyleNames='{style.tiempoPanel}' ui:field="materialPanel"/>
+								<g:SimplePanel addStyleNames='{style.tiempoPanel}' ui:field="contingenciaPanel"/>
+							</div>
+							
+						</g:HTMLPanel>
+					</g:ScrollPanel>
+				</g:tab>
 				<g:tab>
 					<g:header>Datos en tiempo real</g:header>
 					<g:DockLayoutPanel unit="PX">
@@ -125,7 +230,6 @@
 								<table>
 									<tr>
 										<td><g:CheckBox ui:field="selectAllBox" text="seleccionar todo"/></td>
-										<td><g:CheckBox ui:field="selectFiltroBox" text="seleccionar usando filtro"/></td>
 									</tr>
 								</table>
 							</g:HTMLPanel>
@@ -145,12 +249,6 @@
 							<c:DataGrid ui:field="allTable" addStyleNames='{style.data}' minimumTableWidth="650px"/>
 						</g:center>
 					</g:DockLayoutPanel>
-				</g:tab>
-				<g:tab>
-					<g:header>Monitor</g:header>
-					<g:HTMLPanel>
-						
-					</g:HTMLPanel>
 				</g:tab>
 				<g:tab>
 					<g:header>Ayuda</g:header>
