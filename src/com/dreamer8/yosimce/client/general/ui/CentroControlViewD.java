@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.client.ui.HyperlinkCell;
+import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -16,7 +17,13 @@ import com.google.gwt.dom.builder.shared.TableCellBuilder;
 import com.google.gwt.dom.builder.shared.TableRowBuilder;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.maps.client.LoadApi;
+import com.google.gwt.maps.client.LoadApi.LoadLibrary;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -33,17 +40,26 @@ import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.cellview.client.AbstractCellTable.Style;
 import com.google.gwt.user.cellview.client.ColumnSortList.ColumnSortInfo;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.RadioButton;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.googlecode.gwt.charts.client.ChartLoader;
+import com.googlecode.gwt.charts.client.ChartPackage;
+import com.googlecode.gwt.charts.client.ColumnType;
+import com.googlecode.gwt.charts.client.DataTable;
 
 public class CentroControlViewD extends Composite implements CentroControlView {
 
@@ -64,6 +80,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	     * Applies to group headers.
 	     */
 	    String groupHeaderCell();
+	    
+	    String full();
+	    
 	  }
 	
 	private class CoCell extends AbstractCell<CentroOperacionDTO>{
@@ -126,7 +145,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 
 			th = tr.startTH().colSpan(4).className(style.groupHeaderCell());
 			th.style().trustedProperty("border-right", "10px solid white").endStyle();
-			th.text("Material Complementario").endTH();
+			th.text("Material Contingencia").endTH();
 			
 			tr.startTH().endTH();
 
@@ -227,14 +246,24 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField MenuItem autoCarga10Menu;
 	@UiField MenuItem sendToMonitorItem;
 	@UiField StackLayoutPanel leftPanel;
+	@UiField TabLayoutPanel tabs;
 	@UiField CheckBox selectAllBox;
-	@UiField CheckBox selectFiltroBox;
 	@UiField ListBox regionBox;
 	@UiField ListBox zonaBox;
 	@UiField ListBox comunaBox;
+	@UiField ImageButton selectFiltroButton;
 	@UiField(provided=true) DataGrid<CentroOperacionDTO> allTable;
 	@UiField(provided=true) CellList<CentroOperacionDTO> monitorList;
 	@UiField(provided=true) SimplePager allPager;
+	@UiField SimplePanel allMaterialPanel;
+	@UiField SimplePanel materialPanel;
+	@UiField SimplePanel contingenciaPanel;
+	@UiField SimplePanel mapaPanel;
+	@UiField HTMLPanel graphPanel;
+	@UiField RadioButton imprentaRadioButton;
+	@UiField RadioButton centroRadioButton;
+	@UiField RadioButton establecimientoRadioButton;
+	@UiField RadioButton ministerioRadioButton;
 	
 	private Column<CentroOperacionDTO, Boolean> checkColumn;
 	private Column<CentroOperacionDTO, CentroOperacionDTO> centroColumn;
@@ -257,8 +286,19 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	
 	private boolean autoRecargaActivated;
 	
+	private boolean mapApi;
+	private boolean chartApi;
+	
+	private SimceMapWidget map;
+	
+	private MaterialTimeLineChart allLineChart;
+	private MaterialTimeLineChart materialLineChart;
+	private MaterialTimeLineChart contingenciaLineChart;
+	
 	
 	public CentroControlViewD() {
+		mapApi = false;
+		chartApi = false;
 		allTable = new DataGrid<CentroOperacionDTO>(CentroOperacionDTO.KEY_PROVIDER);
 		monitorList = new CellList<CentroOperacionDTO>(new CoCell());
 		monitorList.setPageSize(500);
@@ -281,11 +321,17 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				sendToMonitorItem.setVisible(!allSelectionModel.getSelectedSet().isEmpty());
 			}
 		});
+		map = new SimceMapWidget();
+		allLineChart = new MaterialTimeLineChart();
+		materialLineChart = new MaterialTimeLineChart();
+		contingenciaLineChart = new MaterialTimeLineChart();
 		
 		initWidget(uiBinder.createAndBindUi(this));
-		
+		mapaPanel.setWidget(map);
+		allMaterialPanel.setWidget(allLineChart);
+		materialPanel.setWidget(materialLineChart);
+		contingenciaPanel.setWidget(contingenciaLineChart);
 		buildAllTable();
-		
 		allTable.addColumn(checkColumn);
 		allTable.addColumn(centroColumn);
 		allTable.addColumn(enImprentaColumn);
@@ -355,8 +401,6 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				presenter.activarAutoRecarga(true, 600000);
 			}
 		});
-		
-		
 		sendToMonitorItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			
 			@Override
@@ -371,6 +415,25 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				presenter.addToMonitor(aux);
 			}
 		});
+		
+		Window.addResizeHandler(new ResizeHandler() {
+			
+			@Override
+			public void onResize(ResizeEvent event) {
+				allLineChart.redraw();
+				materialLineChart.redraw();
+				contingenciaLineChart.redraw();
+				if(event.getWidth()<1210){
+					graphPanel.addStyleName(style.full());
+				}else{
+					graphPanel.removeStyleName(style.full());
+				}
+			}
+		});
+		
+		if(Window.getClientWidth()<1210){
+			graphPanel.addStyleName(style.full());
+		}
 	}
 
 	@UiHandler("selectAllBox")
@@ -380,15 +443,64 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		}
 	}
 	
+	@UiHandler("imprentaRadioButton")
+	void onImprentaEventSelected(ValueChangeEvent<Boolean> event){
+		if(event.getValue()){
+			
+		}
+	}
+	
+	@UiHandler("centroRadioButton")
+	void onCentroEventSelected(ValueChangeEvent<Boolean> event){
+		if(event.getValue()){
+			
+		}
+	}
+	
+	@UiHandler("establecimientoRadioButton")
+	void onEstablecimientoEventSelected(ValueChangeEvent<Boolean> event){
+		if(event.getValue()){
+			
+		}
+	}
+	
+	@UiHandler("ministerioRadioButton")
+	void onMinisterioEventSelected(ValueChangeEvent<Boolean> event){
+		if(event.getValue()){
+			
+		}
+	}
+	
+	@UiHandler("selectFiltroButton")
+	void onAplicarFiltroButtonClick(ClickEvent event){
+		presenter.selectUsingFiltro();
+	}
+	
 	@UiHandler("regionBox")
 	void onRegionBoxChange(ChangeEvent event){
 		presenter.onRegionChange(Integer.parseInt(regionBox.getValue(regionBox.getSelectedIndex())));
+	}
+	
+	@UiHandler("tabs")
+	void onTabSelected(SelectionEvent<Integer> event){
+		
 	}
 	
 	@Override
 	public void setPresenter(CentroControlPresenter presenter) {
 		this.presenter = presenter;
 	}
+	
+	@Override
+	public boolean isMapApiReady() {
+		return mapApi;
+	}
+	
+	@Override
+	public boolean isChartApiReady() {
+		return chartApi;
+	}
+	
 
 	@Override
 	public ListDataProvider<CentroOperacionDTO> getAllDataProvider() {
@@ -430,6 +542,131 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@Override
 	public void setMonitoreados(int monitoreados) {
 		leftPanel.setHeaderText(1, "Monitoreados ("+monitoreados+")");
+	}
+	
+	@Override
+	public int getSelectedRegion() {
+		return Integer.parseInt(regionBox.getValue(regionBox.getSelectedIndex()));
+	}
+	
+	@Override
+	public int getSelectedZona() {
+		return Integer.parseInt(zonaBox.getValue(zonaBox.getSelectedIndex()));
+	}
+	
+	@Override
+	public int getSelectedComuna() {
+		return Integer.parseInt(comunaBox.getValue(comunaBox.getSelectedIndex()));
+	}
+	
+	@Override
+	public void setSelectedCos(ArrayList<Integer> selected) {
+		for(CentroOperacionDTO co:allDataProvider.getList()){
+			allSelectionModel.setSelected(co, selected.contains(co.getId()));
+		}
+	}
+	
+	@Override
+	public void updateGraphs(ArrayList<GraphItem> data) {
+		if(data!=null && !data.isEmpty()){
+			DataTable dt = DataTable.create();
+			DataTable dt2 = DataTable.create();
+			DataTable dt3 = DataTable.create();
+			dt.addColumn(ColumnType.DATETIME, "Tiempo");
+			dt.addColumn(ColumnType.NUMBER, "Imprenta");
+			dt.addColumn(ColumnType.NUMBER, "Centro");
+			dt.addColumn(ColumnType.NUMBER, "Establecimiento");
+			dt.addColumn(ColumnType.NUMBER, "Ministerio");
+			dt.addRows(data.size());
+			
+			dt2.addColumn(ColumnType.DATETIME, "Tiempo");
+			dt2.addColumn(ColumnType.NUMBER, "Imprenta");
+			dt2.addColumn(ColumnType.NUMBER, "Centro");
+			dt2.addColumn(ColumnType.NUMBER, "Establecimiento");
+			dt2.addColumn(ColumnType.NUMBER, "Ministerio");
+			dt2.addRows(data.size());
+			
+			dt3.addColumn(ColumnType.DATETIME, "Tiempo");
+			dt3.addColumn(ColumnType.NUMBER, "Imprenta");
+			dt3.addColumn(ColumnType.NUMBER, "Centro");
+			dt3.addColumn(ColumnType.NUMBER, "Establecimiento");
+			dt3.addColumn(ColumnType.NUMBER, "Ministerio");
+			dt3.addRows(data.size());
+			for (int i = 0; i < data.size(); i++) {
+				float total =  data.get(i).ci+data.get(i).mi+
+						data.get(i).cc+data.get(i).mc+
+						data.get(i).ce+data.get(i).me+
+						data.get(i).cm+data.get(i).mm;
+				dt.setValue(i, 0, data.get(i).d);
+				dt.setValue(i, 1, 100*(((float)data.get(i).ci+(float)data.get(i).mi)/total));
+				dt.setValue(i, 2, 100*(((float)data.get(i).cc+(float)data.get(i).mc)/total));
+				dt.setValue(i, 3, 100*(((float)data.get(i).ce+(float)data.get(i).me)/total));
+				dt.setValue(i, 4, 100*(((float)data.get(i).cm+(float)data.get(i).mm)/total));
+				
+				total =  data.get(i).mi+data.get(i).mc+data.get(i).me+data.get(i).mm;
+				dt2.setValue(i, 0, data.get(i).d);
+				dt2.setValue(i, 1, 100*((float)data.get(i).mi/total));
+				dt2.setValue(i, 2, 100*((float)data.get(i).mc/total));
+				dt2.setValue(i, 3, 100*((float)data.get(i).me/total));
+				dt2.setValue(i, 4, 100*((float)data.get(i).mm/total));
+				
+				total =  data.get(i).ci+data.get(i).cc+data.get(i).me+data.get(i).cm;
+				dt3.setValue(i, 0, data.get(i).d);
+				dt3.setValue(i, 1, 100*((float)data.get(i).ci/total));
+				dt3.setValue(i, 2, 100*((float)data.get(i).cc/total));
+				dt3.setValue(i, 3, 100*((float)data.get(i).ce/total));
+				dt3.setValue(i, 4, 100*((float)data.get(i).cm/total));
+			}
+			allLineChart.draw(dt);
+			materialLineChart.draw(dt2);
+			contingenciaLineChart.draw(dt3);
+		}
+	}
+	
+	@Override
+	public void initApis() {
+		if(!mapApi){
+			boolean sensor = true;
+		    // load all the libs for use in the maps
+		    ArrayList<LoadLibrary> loadLibraries = new ArrayList<LoadApi.LoadLibrary>();
+		    loadLibraries.add(LoadLibrary.DRAWING);
+		    loadLibraries.add(LoadLibrary.PLACES);
+		    Runnable onLoad = new Runnable() {
+		    	@Override
+		    	public void run() {
+		    		map.createMapIfIsNull();
+		    		mapApi = true;
+		    		initChartApi();
+		    	}
+		    };
+		    LoadApi.go(onLoad, loadLibraries,sensor);
+		}else{
+			map.createMapIfIsNull();
+    		mapApi = true;
+    		initChartApi();
+		}
+	}
+	
+	private void initChartApi(){
+		if(!chartApi){
+    		ChartLoader chartLoader = new ChartLoader(ChartPackage.CORECHART);
+    		chartLoader.loadApi(new Runnable() {
+    			@Override
+    			public void run() {
+    				allLineChart.createChartIfIsNull("Estado materiales (Cajas-curso-dia, Complementario y Contingencia)");
+    				materialLineChart.createChartIfIsNull("Estado materiales (Cajas-curso-dia y Complementario)");
+    				contingenciaLineChart.createChartIfIsNull("Estado materiales (Contingecia)");
+    				chartApi = true;
+    				presenter.onApisReady();
+    			}
+    		});
+		}else{
+			allLineChart.createChartIfIsNull("Estado materiales (Cajas-curso-dia, Complementario y Contingencia)");
+			materialLineChart.createChartIfIsNull("Estado materiales (Cajas-curso-dia y Complementario)");
+			contingenciaLineChart.createChartIfIsNull("Estado materiales (Contingecia)");
+			chartApi = true;
+			presenter.onApisReady();
+		}
 	}
 	
 	private void buildAllTable(){

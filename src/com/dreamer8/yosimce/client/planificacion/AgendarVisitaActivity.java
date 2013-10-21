@@ -35,6 +35,9 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	private ArrayList<EstadoAgendaDTO> estados;
 	
+	private ContactoDTO contacto;
+	private ContactoDTO director;
+	
 	
 	public AgendarVisitaActivity(ClientFactory factory,AgendarVisitaPlace place, HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place,permisos);
@@ -83,6 +86,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 					@Override
 					public void success(ContactoDTO result) {
+						contacto = result;
 						view.setContacto(result);
 					}
 				});
@@ -93,6 +97,7 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 					@Override
 					public void success(ContactoDTO result) {
+						director = result;
 						view.setDirector(result);
 					}
 				});
@@ -153,9 +158,12 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	
 	@Override
 	public void onEditarContacto(final ContactoDTO contacto) {
-		if(contacto.getContactoEmail()!=null && !contacto.getContactoEmail().isEmpty() && !contacto.getContactoEmail().trim().matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$")){
+		if(contacto.getContactoEmail()!=null && !contacto.getContactoEmail().isEmpty() && !contacto.getContactoEmail().trim().matches("^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,3})$")){
 			eventBus.fireEvent(new MensajeEvent("El mail ingresado no es válido", MensajeEvent.MSG_WARNING, true));
-			return;
+			if(this.contacto!=null){
+				contacto.setContactoEmail(this.contacto.getContactoEmail());
+			}
+			
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarContacto")){
 			getFactory().getPlanificacionService().editarContacto(place.getCursoId(),contacto,new SimceCallback<Boolean>(eventBus,true) {
@@ -173,7 +181,9 @@ public class AgendarVisitaActivity extends SimceActivity implements
 	public void onEditarDirector(final ContactoDTO director) {
 		if(director.getContactoEmail()!=null && !director.getContactoEmail().isEmpty() && !director.getContactoEmail().trim().matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$")){
 			eventBus.fireEvent(new MensajeEvent("El mail ingresado no es válido", MensajeEvent.MSG_WARNING, true));
-			return;
+			if(this.director!=null){
+				director.setContactoEmail(this.director.getContactoEmail());
+			}
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarDirector")){
 			getFactory().getPlanificacionService().editarDirector(place.getCursoId(), director, new SimceCallback<Boolean>(eventBus,true) {

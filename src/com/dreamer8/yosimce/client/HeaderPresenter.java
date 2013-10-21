@@ -212,7 +212,7 @@ public class HeaderPresenter implements HeaderView.HeaderPresenter{
 					@Override
 					public void success(ArrayList<TipoUsuarioDTO> result) {
 						if(result== null || result.isEmpty()){
-							factory.getEventBus().fireEvent(new MensajeEvent("No tiene ningun permisos asignado para esta actividad y nivel.<br />Consulte con su superior directo para que regularize su situación",MensajeEvent.MSG_WARNING,false));
+							factory.getEventBus().fireEvent(new MensajeEvent("No tiene ningún permiso asignado para esta actividad y nivel.<br />Consulte con su superior directo para que regularice su situación",MensajeEvent.MSG_WARNING,false));
 						}else if(result.size() == 1){
 							Cookies.setCookie(LoginService.USUARIO_TIPO_COOKIE_NAME, result.get(0).getId()+"");
 							afterTipoUsuarioSelected();
