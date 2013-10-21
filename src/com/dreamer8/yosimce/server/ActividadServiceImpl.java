@@ -1537,7 +1537,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 															+ udto.getNombres()
 															+ " "
 															+ udto.getApellidoPaterno()
-															+ " no ha sido asignado como examinador para este nivel.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+															// +
+															// " no ha sido asignado como examinador para este nivel.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+															+ " no ha sido asignado como examinador para este nivel.<br />El "
+															+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
+																	: "Encargado de Logística")
+															+ " debe realizar la selección para el nivel en la intranet en YoSimce.");
 										}
 									}
 									uxa = uxadao
@@ -1592,7 +1597,12 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 													+ udto.getNombres()
 													+ " "
 													+ udto.getApellidoPaterno()
-													+ " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+													// +
+													// " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
+													+ " no ha sido asignado como examinador para este nivel.<br />El "
+													+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
+															: "Encargado de Logística")
+													+ " debe realizar la selección para el nivel en la intranet en YoSimce.");
 								}
 							}
 							if (eudto.getEstado().equals(
@@ -2152,9 +2162,11 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							contenido += apdto.getContingencia() + ";";
 							contenido += apdto.getContingenciaLimitante() + ";";
 							if (idAplicacion == 1) {
-								contenido += apdto.getUsoMaterialContingencia() + ";";
+								contenido += apdto.getUsoMaterialContingencia()
+										+ ";";
 								contenido += apdto
-										.getDetalleUsoMaterialContingecia() + ";";
+										.getDetalleUsoMaterialContingecia()
+										+ ";";
 							}
 							contenido += apdto.getRegion() + ";";
 							contenido += apdto.getComuna() + ";";

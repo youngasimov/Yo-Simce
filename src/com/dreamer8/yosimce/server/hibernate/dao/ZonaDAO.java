@@ -20,7 +20,7 @@ public class ZonaDAO extends AbstractHibernateDAO<Zona, Integer> {
 
 		List<Zona> zs = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT z.* FROM  cr "
+		String query = "SELECT DISTINCT z.* FROM CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")";
 		Query q = s.createSQLQuery(query).addEntity(Zona.class);
@@ -33,7 +33,7 @@ public class ZonaDAO extends AbstractHibernateDAO<Zona, Integer> {
 
 		List<Zona> zs = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT z.* FROM  cr "
+		String query = "SELECT DISTINCT z.* FROM CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
 				+ " JOIN CO ON (z.id=co.zona_id AND co.comuna_id="
@@ -48,7 +48,7 @@ public class ZonaDAO extends AbstractHibernateDAO<Zona, Integer> {
 
 		List<Zona> zs = null;
 		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
-		String query = "SELECT DISTINCT z.* FROM  cr "
+		String query = "SELECT DISTINCT z.* FROM CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ ")"
