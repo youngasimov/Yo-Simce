@@ -240,7 +240,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 					+ SecurityFilter.escapeString(idUsuario);
 		}
 		query += " ORDER BY co.nombre ASC";
-		
+
 		Query q = s.createSQLQuery(query);
 		List<Object[]> os = q.list();
 		CentroOperacionDTO codto = null;
@@ -252,9 +252,9 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			codto.setIdRegion((Integer) o[2]);
 			codto.setIdZona((Integer) o[3]);
 			codto.setNombre((String) o[4]);
-			codto.setLongitud((o[5] != null) ? ((BigDecimal) o[5]).longValue()
-					: 0);
-			codto.setLatitud((o[6] != null) ? ((BigDecimal) o[6]).longValue()
+			codto.setLongitud((o[5] != null) ? ((BigDecimal) o[5])
+					.doubleValue() : 0);
+			codto.setLatitud((o[6] != null) ? ((BigDecimal) o[6]).doubleValue()
 					: 0);
 			if (o[7] != null) {
 				codto.setNombreJefeCentro(StringUtils
