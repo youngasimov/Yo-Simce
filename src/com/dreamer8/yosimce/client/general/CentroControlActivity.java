@@ -175,6 +175,7 @@ public class CentroControlActivity extends SimceActivity implements
 		updateRealTime();
 		view.clearMarkers();
 		updateMap();
+		view.setTab(0);
 	}
 	
 	@Override
@@ -187,13 +188,14 @@ public class CentroControlActivity extends SimceActivity implements
 		for(CentroOperacionDTO co: view.getAllDataProvider().getList()){
 			if((c >=0 || z>=0) && (co.getIdComuna() == c || co.getIdZona()==z)){
 				selected.add(co.getId());
-			}else if(r>=0 && co.getIdRegion() == r){
+			}else if(r>=0 && c==-1 && z == -1 && co.getIdRegion() == r){
 				selected.add(co.getId());
 			}else if(r == -1){
 				selected.add(co.getId());
 			}
 		}
 		view.setSelectedCos(selected);
+		view.setTab(1);
 	}
 	
 	@Override
@@ -204,7 +206,12 @@ public class CentroControlActivity extends SimceActivity implements
 	
 	@Override
 	public void onCentroSelected(int id) {
-		
+		for(CentroOperacionDTO c:centros){
+			if(c.getId() == id){
+				view.showCentroOperacionInfo(c);
+				return;
+			}
+		}
 	}
 	
 	private void updateCentros(){

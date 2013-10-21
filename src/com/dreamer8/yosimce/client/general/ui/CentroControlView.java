@@ -59,6 +59,8 @@ public interface CentroControlView extends IsWidget {
 	
 	void showCentroOperacionInfo(CentroOperacionDTO centro);
 	
+	void setTab(int tab);
+	
 	public interface CentroControlPresenter extends SimcePresenter{
 		void activarAutoRecarga(boolean activada, int time);
 		void actualizar();

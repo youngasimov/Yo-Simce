@@ -44,6 +44,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
@@ -307,6 +308,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	private Label iwCC;
 	private Label iwCE;
 	private Label iwCM;
+	private Hyperlink iwh;
 	
 	
 	public CentroControlViewD() {
@@ -364,6 +366,27 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		iwCC = new Label();
 		iwCE = new Label();
 		iwCM = new Label();
+		iwh = new Hyperlink();
+		
+		infoWindowTable.setWidget(0, 0, new HTML("Centro:"));
+		infoWindowTable.setWidget(0, 1, iwCentro);
+		infoWindowTable.setWidget(1, 0, new HTML("En Imprenta:"));
+		infoWindowTable.setWidget(1, 1, iwMI);
+		infoWindowTable.setWidget(2, 0, new HTML("En Centro:"));
+		infoWindowTable.setWidget(2, 1, iwMC);
+		infoWindowTable.setWidget(3, 0, new HTML("En Establecimiento:"));
+		infoWindowTable.setWidget(3, 1, iwME);
+		infoWindowTable.setWidget(4, 0, new HTML("En Ministerio:"));
+		infoWindowTable.setWidget(4, 1, iwMM);
+		infoWindowTable.setWidget(5, 0, new HTML("Contingecia en Imprenta:"));
+		infoWindowTable.setWidget(5, 1, iwCI);
+		infoWindowTable.setWidget(6, 0, new HTML("Contingecia en Centro:"));
+		infoWindowTable.setWidget(6, 1, iwCC);
+		infoWindowTable.setWidget(7, 0, new HTML("Contingecia en Establecimiento:"));
+		infoWindowTable.setWidget(7, 1, iwCE);
+		infoWindowTable.setWidget(8, 0, new HTML("Contingecia en Ministerio:"));
+		infoWindowTable.setWidget(8, 1, iwCM);
+		infoWindowTable.setWidget(9, 0, iwh);
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		mapaPanel.setWidget(map);
@@ -526,6 +549,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	}
 	
 	@Override
+	public void setTab(int tab) {
+		tabs.selectTab(tab);
+	}
+	
+	@Override
 	public void setEvento(int event) {
 		if(event == EVENT_CENTRO){
 			centroRadioButton.setValue(true);
@@ -547,7 +575,18 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	
 	@Override
 	public void showCentroOperacionInfo(CentroOperacionDTO centro) {
-		
+		iwCentro.setText(centro.getNombre());
+		iwMI.setText(centro.getEnImprenta()+"");
+		iwMC.setText(centro.getEnCentro()+"");
+		iwME.setText(centro.getEnEstablecimiento()+"");
+		iwMM.setText(centro.getEnMinisterio()+"");
+		iwCI.setText(centro.getContingenciaEnImprenta()+"");
+		iwCC.setText(centro.getContingenciaEnCentro()+"");
+		iwCE.setText(centro.getContingenciaEnEstablecimiento()+"");
+		iwCM.setText(centro.getContingenciaEnMinisterio()+"");
+		iwh.setHTML("ir a tracking");
+		iwh.setTargetHistoryToken(presenter.getCentroOperacionToken(centro.getId()));
+		map.showInfoWindow(infoWindowTable, centro.getLatitud(), centro.getLongitud());
 	}
 	
 	@Override
