@@ -595,7 +595,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 					if (SectorDTO.TIPO_COMUNA.equals(parent.getTipoSector())) {
 						zs = zdao.findByIdAplicacionANDIdComuna(idAplicacion,
 								parent.getIdSector());
-					} else if (SectorDTO.TIPO_COMUNA.equals(parent
+					} else if (SectorDTO.TIPO_REGION.equals(parent
 							.getTipoSector())) {
 						zs = zdao.findByIdAplicacionANDIdRegion(idAplicacion,
 								parent.getIdSector());
