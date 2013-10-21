@@ -43,8 +43,10 @@ import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RadioButton;
@@ -295,6 +297,17 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	private MaterialTimeLineChart materialLineChart;
 	private MaterialTimeLineChart contingenciaLineChart;
 	
+	private FlexTable infoWindowTable;
+	private Label iwCentro; 
+	private Label iwMI;
+	private Label iwMC;
+	private Label iwME;
+	private Label iwMM;
+	private Label iwCI;
+	private Label iwCC;
+	private Label iwCE;
+	private Label iwCM;
+	
 	
 	public CentroControlViewD() {
 		mapApi = false;
@@ -322,9 +335,35 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			}
 		});
 		map = new SimceMapWidget();
+		map.setMapHandler(new SimceMapWidget.MapHandler() {
+			
+			@Override
+			public void onMapClicked() {
+				map.clearInfoWindow();
+			}
+		});
+		map.setMarkerHandler(new SimceMapWidget.MarkerHandler() {
+
+			@Override
+			public void onMarkerSelected(int id) {
+				presenter.onCentroSelected(id);
+			}
+			
+		});
 		allLineChart = new MaterialTimeLineChart();
 		materialLineChart = new MaterialTimeLineChart();
 		contingenciaLineChart = new MaterialTimeLineChart();
+		
+		infoWindowTable = new FlexTable();
+		iwCentro = new Label();
+		iwMI = new Label();
+		iwMC = new Label();
+		iwME = new Label();
+		iwMM = new Label();
+		iwCI = new Label();
+		iwCC = new Label();
+		iwCE = new Label();
+		iwCM = new Label();
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		mapaPanel.setWidget(map);
@@ -446,28 +485,28 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiHandler("imprentaRadioButton")
 	void onImprentaEventSelected(ValueChangeEvent<Boolean> event){
 		if(event.getValue()){
-			
+			presenter.onEventChange(EVENT_IMPRENTA);
 		}
 	}
 	
 	@UiHandler("centroRadioButton")
 	void onCentroEventSelected(ValueChangeEvent<Boolean> event){
 		if(event.getValue()){
-			
+			presenter.onEventChange(EVENT_CENTRO);
 		}
 	}
 	
 	@UiHandler("establecimientoRadioButton")
 	void onEstablecimientoEventSelected(ValueChangeEvent<Boolean> event){
 		if(event.getValue()){
-			
+			presenter.onEventChange(EVENT_ESTABLECIMIENTO);
 		}
 	}
 	
 	@UiHandler("ministerioRadioButton")
 	void onMinisterioEventSelected(ValueChangeEvent<Boolean> event){
 		if(event.getValue()){
-			
+			presenter.onEventChange(EVENT_MINISTERIO);
 		}
 	}
 	
@@ -483,6 +522,31 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	
 	@UiHandler("tabs")
 	void onTabSelected(SelectionEvent<Integer> event){
+		
+	}
+	
+	@Override
+	public void setEvento(int event) {
+		if(event == EVENT_CENTRO){
+			centroRadioButton.setValue(true);
+		}else if(event == EVENT_ESTABLECIMIENTO){
+			establecimientoRadioButton.setValue(true);
+		}else if(event == EVENT_IMPRENTA){
+			imprentaRadioButton.setValue(true);
+		}else if(event == EVENT_MINISTERIO){
+			ministerioRadioButton.setValue(true);
+		}else{
+			imprentaRadioButton.setValue(true);
+		}
+	}
+	
+	@Override
+	public void clearMarkers() {
+		map.clearMarkers();
+	}
+	
+	@Override
+	public void showCentroOperacionInfo(CentroOperacionDTO centro) {
 		
 	}
 	
@@ -620,6 +684,13 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			allLineChart.draw(dt);
 			materialLineChart.draw(dt2);
 			contingenciaLineChart.draw(dt3);
+		}
+	}
+	
+	@Override
+	public void updateMarkers(int evento, ArrayList<CentroOperacionDTO> centros) {
+		if(mapApi){
+			map.updateCentros(evento, centros);
 		}
 	}
 	

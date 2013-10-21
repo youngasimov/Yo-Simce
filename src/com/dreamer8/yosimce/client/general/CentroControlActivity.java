@@ -34,6 +34,7 @@ public class CentroControlActivity extends SimceActivity implements
 	private HashMap<Date,ArrayList<CentroOperacionDTO>> historial;
 	ArrayList<CentroControlView.GraphItem> data;
 	private boolean firstLoad;
+	private int evento;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -45,6 +46,7 @@ public class CentroControlActivity extends SimceActivity implements
 		comunas = new HashMap<Integer, ArrayList<SectorDTO>>();
 		zonas = new HashMap<Integer, ArrayList<SectorDTO>>();
 		historial = new HashMap<Date, ArrayList<CentroOperacionDTO>>();
+		evento  = CentroControlView.EVENT_IMPRENTA;
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class CentroControlActivity extends SimceActivity implements
 				view.setRegiones(regiones);
 			}
 		});
-		
+		view.setEvento(evento);
 		updateCentros();
 	}
 	
@@ -77,11 +79,13 @@ public class CentroControlActivity extends SimceActivity implements
 		if(data!=null && !data.isEmpty()){
 			view.updateGraphs(data);
 		}
+		updateMap();
 	}
 	
 	@Override
 	public void onEventChange(int event) {
-		
+		evento = event;
+		updateMap();
 	}
 	
 	
@@ -169,6 +173,8 @@ public class CentroControlActivity extends SimceActivity implements
 			monitoring.add(centro.getId());
 		}
 		updateRealTime();
+		view.clearMarkers();
+		updateMap();
 	}
 	
 	@Override
@@ -194,6 +200,11 @@ public class CentroControlActivity extends SimceActivity implements
 	public String getCentroOperacionToken(int centroId) {
 		coPlace.setCentroId(centroId);
 		return getFactory().getPlaceHistoryMapper().getToken(coPlace);
+	}
+	
+	@Override
+	public void onCentroSelected(int id) {
+		
 	}
 	
 	private void updateCentros(){
@@ -230,7 +241,15 @@ public class CentroControlActivity extends SimceActivity implements
 	}
 	
 	private void updateMap(){
-		
+		if(monitoring != null && !monitoring.isEmpty()){
+			ArrayList<CentroOperacionDTO> cs = new ArrayList<CentroOperacionDTO>();
+			for(CentroOperacionDTO c:centros){
+				if(monitoring.contains(c.getId())){
+					cs.add(c);
+				}
+			}
+			view.updateMarkers(evento, cs);
+		}
 	}
 	
 	private void updateLineasTiempo(){

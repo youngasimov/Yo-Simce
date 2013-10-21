@@ -48,9 +48,16 @@ public interface CentroControlView extends IsWidget {
 	
 	void updateGraphs(ArrayList<GraphItem> data);
 	
+	void clearMarkers();
+	void updateMarkers(int evento, ArrayList<CentroOperacionDTO> centros);
+	
 	void initApis();
 	boolean isMapApiReady();
 	boolean isChartApiReady();
+	
+	void setEvento(int event);
+	
+	void showCentroOperacionInfo(CentroOperacionDTO centro);
 	
 	public interface CentroControlPresenter extends SimcePresenter{
 		void activarAutoRecarga(boolean activada, int time);
@@ -61,5 +68,6 @@ public interface CentroControlView extends IsWidget {
 		void selectUsingFiltro();
 		void onApisReady();
 		void onEventChange(int event);
+		void onCentroSelected(int id);
 	}
 }
