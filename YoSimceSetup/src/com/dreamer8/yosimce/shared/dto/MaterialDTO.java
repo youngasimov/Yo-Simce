@@ -2,7 +2,6 @@ package com.dreamer8.yosimce.shared.dto;
 
 import java.io.Serializable;
 
-
 @SuppressWarnings("serial")
 public class MaterialDTO implements Serializable {
 
@@ -17,13 +16,12 @@ public class MaterialDTO implements Serializable {
 	private String nivel;
 	private String curso;
 	private String etapa;
+	private String transicion;
 	private LoteDTO lote;
-
 
 	public Integer getId() {
 		return id;
 	}
-
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -33,7 +31,6 @@ public class MaterialDTO implements Serializable {
 		return idCentro;
 	}
 
-
 	public void setIdCentro(Integer idCentro) {
 		this.idCentro = idCentro;
 	}
@@ -42,86 +39,69 @@ public class MaterialDTO implements Serializable {
 		return idNivel;
 	}
 
-
 	public void setIdNivel(Integer idNivel) {
 		this.idNivel = idNivel;
 	}
-
 
 	public Integer getIdTipoActividad() {
 		return idTipoActividad;
 	}
 
-
 	public void setIdTipoActividad(Integer idTipoActividad) {
 		this.idTipoActividad = idTipoActividad;
 	}
-
 
 	public String getCodigo() {
 		return codigo;
 	}
 
-
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
-
 
 	public String getTipo() {
 		return tipo;
 	}
 
-
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-
 
 	public String getRbd() {
 		return rbd;
 	}
 
-
 	public void setRbd(String rbd) {
 		this.rbd = rbd;
 	}
-
 
 	public String getEstablecimiento() {
 		return establecimiento;
 	}
 
-
 	public void setEstablecimiento(String establecimiento) {
 		this.establecimiento = establecimiento;
 	}
-
 
 	public String getNivel() {
 		return nivel;
 	}
 
-
 	public void setNivel(String nivel) {
 		this.nivel = nivel;
 	}
-
 
 	public String getCurso() {
 		return curso;
 	}
 
-
 	public void setCurso(String curso) {
 		this.curso = curso;
 	}
 
-
 	public String getEtapa() {
 		return etapa;
 	}
-
 
 	public void setEtapa(String etapa) {
 		this.etapa = etapa;
@@ -131,11 +111,17 @@ public class MaterialDTO implements Serializable {
 		return lote;
 	}
 
-
 	public void setLote(LoteDTO lote) {
 		this.lote = lote;
 	}
 
+	public String getTransicion() {
+		return transicion;
+	}
+
+	public void setTransicion(String transicion) {
+		this.transicion = transicion;
+	}
 
 	@Override
 	public int hashCode() {
@@ -152,7 +138,6 @@ public class MaterialDTO implements Serializable {
 		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

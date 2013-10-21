@@ -4,8 +4,12 @@
  */
 package com.dreamer8.yosimce.server.utils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -27,6 +31,13 @@ public class StringUtils {
 		return str;
 	}
 
+	public static String limpiarString(String str) {
+		if (str == null) {
+			return null;
+		}
+		return str.replaceAll("[\\n\\r]", " ").replaceAll("[;,]", ".");
+	}
+
 	public static String getDateString(Date date) {
 		if (date == null) {
 			return "";
@@ -44,19 +55,40 @@ public class StringUtils {
 				+ ":" + forceTwoDigits(sec);
 	}
 
+	public static String getDateISOString(Date date) {
+		if (date == null) {
+			return "";
+		}
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int min = calendar.get(Calendar.MINUTE);
+		int sec = calendar.get(Calendar.SECOND);
+		return year + "-" + forceTwoDigits(month + 1) + "-"
+				+ forceTwoDigits(day) + " " + forceTwoDigits(hour) + ":"
+				+ forceTwoDigits(min) + ":" + forceTwoDigits(sec);
+	}
+
 	public static Date getDate(String dateString) {
 		if (dateString == null
 				|| !dateString
-						.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}")) {
+						.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:*[0-9]{0,2}")) {
 			return null;
 		}
 		String[] dateParts = dateString.split(" ");
 		String[] date = dateParts[0].split("/");
 		String[] time = dateParts[1].split(":");
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
+		Integer sec = (time.length == 3) ? Integer.valueOf(time[2]) : 0;
+		// calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
+		// Integer.valueOf(date[0]), Integer.valueOf(time[0]),
+		// Integer.valueOf(time[1]), sec);
+		calendar.set(2013, Integer.valueOf(date[1]) - 1,
 				Integer.valueOf(date[0]), Integer.valueOf(time[0]),
-				Integer.valueOf(time[1]), Integer.valueOf(time[2]));
+				Integer.valueOf(time[1]), sec);
 		return calendar.getTime();
 	}
 
@@ -182,6 +214,31 @@ public class StringUtils {
 		if (noms.length < 2) {
 			return nombres;
 		}
-		return noms[0] + " " + noms[1].substring(0, 1) + ".";
+		String segNom = null;
+		for (int i = 1; i < noms.length; i++) {
+			if (noms[i] != null && !noms[i].isEmpty()) {
+				segNom = noms[i];
+				break;
+			}
+		}
+		return noms[0] + " " + segNom.substring(0, 1) + ".";
+	}
+
+	public static String getMes(int mes) {
+		String[] meses = { "enero", "febrero", "marzo", "abril", "mayo",
+				"junio", "julio", "agosto", "septiembre", "octubre",
+				"noviembre", "diciembre" };
+		return meses[mes % 12];
+	}
+
+	public static List<String> extractMails(String str) {
+		List<String> mails = new ArrayList<String>();
+		String regex = "[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}";
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(str);
+		while (m.find()) {
+			mails.add(m.group());
+		}
+		return mails;
 	}
 }
