@@ -14,12 +14,14 @@ import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
 import com.dreamer8.yosimce.server.hibernate.dao.RegionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ZonaDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.Comuna;
 import com.dreamer8.yosimce.server.hibernate.pojo.Curso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Region;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
+import com.dreamer8.yosimce.server.hibernate.pojo.Zona;
 import com.dreamer8.yosimce.server.utils.AccessControl;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
@@ -542,12 +544,98 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return codtos;
 	}
 
+	/**
+	 * 
+	 * @permiso getZonas
+	 */
 	@Override
 	public ArrayList<SectorDTO> getZonas(SectorDTO parent)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+		ArrayList<SectorDTO> sdtos = new ArrayList<SectorDTO>();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getZonas")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ZonaDAO zdao = new ZonaDAO();
+				List<Zona> zs = null;
+
+				if (parent != null && parent.getIdSector() != null) {
+					if (SectorDTO.TIPO_COMUNA.equals(parent.getTipoSector())) {
+						zs = zdao.findByIdAplicacionANDIdComuna(idAplicacion,
+								parent.getIdSector());
+					} else if (SectorDTO.TIPO_COMUNA.equals(parent
+							.getTipoSector())) {
+						zs = zdao.findByIdAplicacionANDIdRegion(idAplicacion,
+								parent.getIdSector());
+					}
+				}
+
+				if (zs == null) {
+					zs = zdao.findByIdAplicacion(idAplicacion);
+				}
+
+				if (zs != null && !zs.isEmpty()) {
+					for (Zona zona : zs) {
+						sdtos.add(zona.getSectodDTO());
+					}
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return sdtos;
+	}
 }

@@ -132,9 +132,9 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "'"
 //				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 				;
-		if (dia != null) {
-			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
-		}
+//		if (dia != null) {
+//			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
+//		}
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
