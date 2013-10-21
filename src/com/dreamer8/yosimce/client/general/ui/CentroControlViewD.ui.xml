@@ -175,6 +175,9 @@
 									<td> <g:RadioButton text="Ministerio" name='evento' formValue="4" ui:field="ministerioRadioButton"/> </td>
 								</tr>
 								<tr>
+									<td class='{style.filtroDivisor}'/>
+								</tr>
+								<tr>
 									<th>Geográfico</th>
 								</tr>
 								<tr>
@@ -187,11 +190,12 @@
 									<td class='{style.filtroDivisorLeft} {style.filtroDivisorButton}'> Comuna <br /><g:ListBox ui:field="comunaBox" /> </td>
 								</tr>
 								<tr>
-									<td class='{style.filtroDivisor}'/>
-								</tr>
-								<tr>
 									<td style="text-align: right;"> <my:ImageButton ui:field="selectFiltroButton" text='seleccionar' resource="{res.filtro}"/> </td>
 								</tr>
+								<tr>
+									<td class='{style.filtroDivisor}'/>
+								</tr>
+								
 							</table>
 						</g:HTMLPanel>
 					</g:ScrollPanel>

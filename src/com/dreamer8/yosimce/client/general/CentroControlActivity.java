@@ -32,6 +32,7 @@ public class CentroControlActivity extends SimceActivity implements
 	private ArrayList<CentroOperacionDTO> centros;
 	private ArrayList<Integer> monitoring;
 	private HashMap<Date,ArrayList<CentroOperacionDTO>> historial;
+	ArrayList<CentroControlView.GraphItem> data;
 	private boolean firstLoad;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
@@ -58,6 +59,7 @@ public class CentroControlActivity extends SimceActivity implements
 		view.setRegiones(new ArrayList<SectorDTO>());
 		view.setComunas(new ArrayList<SectorDTO>());
 		view.setZonas(new ArrayList<SectorDTO>());
+		view.initApis();
 		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,true) {
 
 			@Override
@@ -69,6 +71,20 @@ public class CentroControlActivity extends SimceActivity implements
 		
 		updateCentros();
 	}
+	
+	@Override
+	public void onApisReady() {
+		if(data!=null && !data.isEmpty()){
+			view.updateGraphs(data);
+		}
+	}
+	
+	@Override
+	public void onEventChange(int event) {
+		
+	}
+	
+	
 	
 	
 	@Override
@@ -219,7 +235,11 @@ public class CentroControlActivity extends SimceActivity implements
 	
 	private void updateLineasTiempo(){
 		ArrayList<Date> keys = new ArrayList<Date>(historial.keySet());
-		ArrayList<CentroControlView.GraphItem> data = new ArrayList<CentroControlView.GraphItem>();
+		if(data==null){
+			data = new ArrayList<CentroControlView.GraphItem>();
+		}else{
+			data.clear();
+		}
 		ArrayList<CentroOperacionDTO> centros;
 		CentroControlView.GraphItem aux;
 		for(Date d:keys){
@@ -248,7 +268,9 @@ public class CentroControlActivity extends SimceActivity implements
 			aux.d = d;
 			data.add(aux);
 		}
-		view.updateGraphs(data);
+		if(view.isChartApiReady()){
+			view.updateGraphs(data);
+		}
 	}
 	
 	private void updateRealTime(){

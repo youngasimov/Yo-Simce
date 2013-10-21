@@ -12,6 +12,11 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public interface CentroControlView extends IsWidget {
 	
+	public static final int EVENT_IMPRENTA = 1;
+	public static final int EVENT_CENTRO = 2;
+	public static final int EVENT_ESTABLECIMIENTO = 3;
+	public static final int EVENT_MINISTERIO = 4;
+	
 	public class GraphItem{
 		public Date d;
 		public int mi;
@@ -43,6 +48,10 @@ public interface CentroControlView extends IsWidget {
 	
 	void updateGraphs(ArrayList<GraphItem> data);
 	
+	void initApis();
+	boolean isMapApiReady();
+	boolean isChartApiReady();
+	
 	public interface CentroControlPresenter extends SimcePresenter{
 		void activarAutoRecarga(boolean activada, int time);
 		void actualizar();
@@ -50,5 +59,7 @@ public interface CentroControlView extends IsWidget {
 		String getCentroOperacionToken(int centroId);
 		void onRegionChange(int regionId);
 		void selectUsingFiltro();
+		void onApisReady();
+		void onEventChange(int event);
 	}
 }
