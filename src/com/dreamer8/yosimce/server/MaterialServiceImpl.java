@@ -1124,11 +1124,11 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							throw new NullPointerException(
 									"No se ha encontrado uno de los materiales especificados.");
 						}
-						if (!co.equals(m.getCo())) {
-							throw new ConsistencyException("El material "
-									+ m.getCodigo()
-									+ " no corresponde al centro especificado");
-						}
+//						if (!co.equals(m.getCo())) {
+//							throw new ConsistencyException("El material "
+//									+ m.getCodigo()
+//									+ " no corresponde al centro especificado");
+//						}
 						mxlid = new MaterialXLoteId();
 						mxlid.setMaterialId(m.getId());
 						mxlid.setLoteId(l.getId());
