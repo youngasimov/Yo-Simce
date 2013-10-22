@@ -22,7 +22,7 @@ public class LoginActivity implements LoginPresenter {
 	private LoginServiceAsync service;
 	private UserDTO user;
 	private Logger logger = Logger.getLogger("");
-	private SimceApp app;
+	//private SimceApp app;
 	private SimplePanel panel;
 	private boolean start;
 	
@@ -52,9 +52,10 @@ public class LoginActivity implements LoginPresenter {
 					public void onSuccess(UserDTO result) {
 						user =result;
 						start = true;
-						if(app!=null){
+						loadApp();
+						/*if(app!=null){
 							app.start(panel, user);
-						}
+						}*/
 					}
 				});
 			}
@@ -94,12 +95,11 @@ public class LoginActivity implements LoginPresenter {
 			
 			@Override
 			public void onSuccess() {
-				if(app == null){
-					app = new SimceApp();
+				if(!start){
+					return;
 				}
-				if(start){
-					app.start(panel,user);
-				}
+				SimceApp app = new SimceApp();
+				app.start(panel,user);
 			}
 			
 			@Override

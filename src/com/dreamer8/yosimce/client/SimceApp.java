@@ -14,12 +14,23 @@ public class SimceApp {
 	private PlaceHistoryHandler historyHandler;
 	
 	public SimceApp(){
+	}
+	
+	public void start(SimplePanel panel, UserDTO user){
+		
+		
 		defaultPlace = new SimcePlace();
 		factory = GWT.create(ClientFactory.class);
 		
 		GATracker.setSessionCookieTimeout(0);
 		GATracker.setSiteSpeedSampleRate(5);
 		GATracker.trackPageview();
+		
+		AppPresenter app = new AppPresenter(factory);
+		app.setDisplay(panel);
+		
+		HeaderPresenter header = new HeaderPresenter(factory, user);
+		header.setDisplay(factory.getAppView().getHeaderView());
 		
 		SidebarPresenter sidebar = new SidebarPresenter(factory);
 		sidebar.setDisplay(factory.getAppView().getSideBarPanel());
@@ -31,13 +42,6 @@ public class SimceApp {
 		
 		historyHandler = new PlaceHistoryHandler(factory.getPlaceHistoryMapper());
 		historyHandler.register(factory.getPlaceController(), factory.getEventBus(), defaultPlace);
-	}
-	
-	public void start(SimplePanel panel, UserDTO user){
-		AppPresenter app = new AppPresenter(factory);
-		app.setDisplay(panel);
-		HeaderPresenter header = new HeaderPresenter(factory, user);
-		header.setDisplay(factory.getAppView().getHeaderView());
 		historyHandler.handleCurrentHistory();
 	}
 	
