@@ -66,6 +66,7 @@ public class DetalleCursoActivity extends SimceActivity implements
 						view.setComuna(r.getComuna());
 						view.setCurso(r.getCurso());
 						view.setTipo(r.getTipoEstablecimiento());
+						view.setCentroOperacion(r.getCentro());
 						if(r.getSupervisor()!=null){
 							view.setSupervisor(r.getSupervisor());
 						}

@@ -797,7 +797,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			}
 		};
 		centroColumn.setSortable(false);
-		allTable.setColumnWidth(i++, 30, Unit.PCT);
+		allTable.setColumnWidth(i++, 14, Unit.EM);
 		
 		enImprentaColumn = new Column<CentroOperacionDTO, Number>(new NumberCell()) {
 
@@ -887,6 +887,6 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			}
 		};
 		trackingColumn.setSortable(false);
-		allTable.setColumnWidth(i++, 70, Unit.PCT);
+		allTable.setColumnWidth(i++, 15, Unit.EM);
 	}
 }

@@ -24,12 +24,13 @@ public class LoginActivity implements LoginPresenter {
 	private Logger logger = Logger.getLogger("");
 	private SimceApp app;
 	private SimplePanel panel;
-	
+	private boolean start;
 	
 	public LoginActivity(LoginServiceAsync service, LoginView view){
 		this.service = service;
 		this.view = view;
 		this.view.setPresenter(this);
+		start = false;
 	}
 	
 	@Override
@@ -50,7 +51,10 @@ public class LoginActivity implements LoginPresenter {
 					@Override
 					public void onSuccess(UserDTO result) {
 						user =result;
-						loadApp();
+						start = true;
+						if(app!=null){
+							app.start(panel, user);
+						}
 					}
 				});
 			}
@@ -63,6 +67,7 @@ public class LoginActivity implements LoginPresenter {
 	public void start(final SimplePanel panel) {
 		this.panel = panel;
 		this.panel.setWidget(view.asWidget());
+		start = false;
 		view.showLoad();
 		view.setMensaje("Comprobando sesión de usuario...");
 		service.getYoSimceUser(new AsyncCallback<UserDTO>() {
@@ -70,31 +75,21 @@ public class LoginActivity implements LoginPresenter {
 			@Override
 			public void onSuccess(UserDTO result) {
 				user = result;
+				view.setMensaje(user.getNombres()+" "+user.getApellidoPaterno()+",<br />Cargando aplicación...");
+				start = true;
 				loadApp();
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				GWT.runAsync(new RunAsyncCallback() {
-					
-					@Override
-					public void onSuccess() {
-						if(app == null){
-							app = new SimceApp();
-						}
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-					}
-				});
+				start = false;
+				loadApp();
 				loginError(null);
 			}
 		});
 	}
 	
 	private void loadApp(){
-		view.setMensaje(user.getNombres()+" "+user.getApellidoPaterno()+",<br />Cargando aplicación...");
 		GWT.runAsync(new RunAsyncCallback() {
 			
 			@Override
@@ -102,7 +97,9 @@ public class LoginActivity implements LoginPresenter {
 				if(app == null){
 					app = new SimceApp();
 				}
-				app.start(panel,user);
+				if(start){
+					app.start(panel,user);
+				}
 			}
 			
 			@Override
