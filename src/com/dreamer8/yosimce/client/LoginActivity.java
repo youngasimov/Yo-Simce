@@ -6,12 +6,9 @@ import java.util.logging.Logger;
 import com.dreamer8.yosimce.client.ui.LoginView;
 import com.dreamer8.yosimce.client.ui.LoginView.LoginPresenter;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
-import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.http.client.RequestTimeoutException;
-import com.google.gwt.place.shared.Place;
-import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
@@ -23,11 +20,10 @@ public class LoginActivity implements LoginPresenter {
 	
 	private LoginView view;
 	private LoginServiceAsync service;
-	private ClientFactory factory;
 	private UserDTO user;
-	private Place defaultPlace;
-	private SimplePanel panel;
 	private Logger logger = Logger.getLogger("");
+	private SimceApp app;
+	private SimplePanel panel;
 	
 	
 	public LoginActivity(LoginServiceAsync service, LoginView view){
@@ -64,10 +60,9 @@ public class LoginActivity implements LoginPresenter {
 	}
 
 	@Override
-	public void start(SimplePanel panel) {
+	public void start(final SimplePanel panel) {
 		this.panel = panel;
-		defaultPlace = new SimcePlace();
-		panel.setWidget(view.asWidget());
+		this.panel.setWidget(view.asWidget());
 		view.showLoad();
 		view.setMensaje("Comprobando sesión de usuario...");
 		service.getYoSimceUser(new AsyncCallback<UserDTO>() {
@@ -80,6 +75,19 @@ public class LoginActivity implements LoginPresenter {
 			
 			@Override
 			public void onFailure(Throwable caught) {
+				GWT.runAsync(new RunAsyncCallback() {
+					
+					@Override
+					public void onSuccess() {
+						if(app == null){
+							app = new SimceApp();
+						}
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+					}
+				});
 				loginError(null);
 			}
 		});
@@ -91,7 +99,10 @@ public class LoginActivity implements LoginPresenter {
 			
 			@Override
 			public void onSuccess() {
-				load();
+				if(app == null){
+					app = new SimceApp();
+				}
+				app.start(panel,user);
 			}
 			
 			@Override
@@ -124,34 +135,6 @@ public class LoginActivity implements LoginPresenter {
 			view.setMensaje(caught.getMessage());
 			view.setPasswordFocus();
 		}
-	}
-	
-	private void load(){
-		
-		factory = GWT.create(ClientFactory.class);
-		
-		GATracker.setSessionCookieTimeout(0);
-		GATracker.setSiteSpeedSampleRate(5);
-		GATracker.trackPageview();
-		
-		AppPresenter app = new AppPresenter(factory);
-		app.setDisplay(panel);
-		
-		HeaderPresenter header = new HeaderPresenter(factory, user);
-		header.setDisplay(factory.getAppView().getHeaderView());
-		
-		SidebarPresenter sidebar = new SidebarPresenter(factory);
-		sidebar.setDisplay(factory.getAppView().getSideBarPanel());
-		
-		
-		ContentActivityMapper contentActivityMapper = new ContentActivityMapper(factory);
-		ActivityManager contentActivityManager  = new ActivityManager(contentActivityMapper, factory.getEventBus());
-		contentActivityManager.setDisplay(factory.getAppView().getContentPanel());
-		
-		PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(factory.getPlaceHistoryMapper());
-		historyHandler.register(factory.getPlaceController(), factory.getEventBus(), defaultPlace);
-		historyHandler.handleCurrentHistory();
-		view.showLoad();
 	}
 
 }

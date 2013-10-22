@@ -282,15 +282,15 @@
 								<li><span>CI:</span> Material de contingencia en ministerio</li>
 							</ul>
 							<h2>Monitor</h2>
-							<p>El monitor despliega los centros en un mapa, ademas de mostrar un historial del movimiento de cajas</p>
+							<p>El monitor despliega los centros en un mapa, además de mostrar un historial del movimiento de cajas</p>
 							<p>Para agregar centros de operación al monitor, se deben seleccionar los centros que se deseen monitorear en la pestaña "Datos en tiempo real", y luego, en el menú superior, seleccionar "Monitorear" </p>
-							<p>Alternativamente, se pueden seleccionar todos los centros utilizando la caja seleccionable ubicada debajo del menú superior y arriba de la tabla de centros, o se puede utilizar el filtro de región, zona o comuna</p>
+							<p>Alternativamente, se pueden seleccionar todos los centros utilizando la caja seleccionable "Seleccionar todo", ubicada en la pestaña "Datos en tiempo real"</p>
 							<p>Al agregar centros al monitor, los datos de los gráficos y mapa se adaptaran para mostrar información de los centros seleccionados</p>
 							<h2>Actualizar</h2>
-							<p>por omisión, la actualización de los datos se realiza de manera manual seleccionando en el menú superior "Actualizar", sin embargo se peude programar que se actualice la información cada 1, 2, 5 o 10 minutos. Para volver a realizar esto de forma manual, simplemente seleccione "Actualizar"</p>
+							<p>Por omisión, la actualización de los datos se realiza de manera manual seleccionando en el menú superior "Actualizar", sin embargo, se puede programar que se actualice la información cada 1, 2, 5 o 10 minutos. Para volver a realizar esto de forma manual, simplemente seleccione "Actualizar"</p>
 							<h2>Evento</h2>
-							<p>Se puede seleccionar un evento en el panel izquierdo, al seleccionarlo, los iconos del mapa se actualizaran, utilizando un código de colores para indicar el estado de cada centro en relación al evento seleccionado</p>
-							<p>Por ejemplo, si se seleccionar el evento "Establecimiento" los centros de operación en color verde, indican que todas las cajas estan en ese estado (En Establecimiento), en cambio, uno en rojo, indica que niguna caja esta en el establecimiento</p>
+							<p>Se puede seleccionar un evento en el panel izquierdo, al seleccionarlo, los íconos del mapa se actualizarán, utilizando un código de colores para indicar el estado de cada centro en relación al evento seleccionado</p>
+							<p>Por ejemplo, si se selecciona el evento "Establecimiento" los centros de operación en color verde, indican que todas las cajas están en ese estado (En Establecimiento), en cambio, uno en rojo, indica que niguna caja está en el establecimiento</p>
 							<h2>Tracking</h2>
 							<p>Tanto en la tabla de datos en tiempo real, como seleccionando un centro de operación en el mapa, se puede ver un enlace al tracking de cajas de ese centro. Manteniendo Apretado CRTL y seleccionando el link, podemos abrir el centro en otra pestaña (o click derecho->abrir en otra pestaña)</p>
 						</g:HTMLPanel>

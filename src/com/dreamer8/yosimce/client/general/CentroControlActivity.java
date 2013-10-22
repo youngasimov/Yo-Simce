@@ -8,12 +8,14 @@ import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
+import com.dreamer8.yosimce.client.YoSimce;
 import com.dreamer8.yosimce.client.general.ui.CentroControlView;
 import com.dreamer8.yosimce.client.general.ui.CentroControlView.CentroControlPresenter;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
@@ -26,6 +28,7 @@ public class CentroControlActivity extends SimceActivity implements
 	private EventBus eventBus;
 	private Timer updateTimer;
 	
+	private LocalCentroControlService localService;
 	private ArrayList<SectorDTO> regiones;
 	private HashMap<Integer,ArrayList<SectorDTO>> comunas;
 	private HashMap<Integer,ArrayList<SectorDTO>> zonas;
@@ -35,6 +38,7 @@ public class CentroControlActivity extends SimceActivity implements
 	ArrayList<CentroControlView.GraphItem> data;
 	private boolean firstLoad;
 	private int evento;
+	private String userKey;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -45,23 +49,59 @@ public class CentroControlActivity extends SimceActivity implements
 		monitoring = new ArrayList<Integer>();
 		comunas = new HashMap<Integer, ArrayList<SectorDTO>>();
 		zonas = new HashMap<Integer, ArrayList<SectorDTO>>();
-		historial = new HashMap<Date, ArrayList<CentroOperacionDTO>>();
 		evento  = CentroControlView.EVENT_IMPRENTA;
+		userKey= Cookies.getCookie(YoSimce.TOKEN_COOKIE);
+		if(userKey == null || userKey.length() == 0){
+			userKey = Cookies.getCookie(YoSimce.TOKEN_COOKIE_DEMO);
+		}
+		if(userKey==null){
+			userKey = "";
+		}else{
+			userKey = userKey+Cookies.getCookie("a")+"-"+Cookies.getCookie("n")+"-"+Cookies.getCookie("t");
+		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(this.view.asWidget());
 		this.eventBus = eventBus;
+		localService = new LocalCentroControlService(eventBus);
 		coPlace.setAplicacionId(place.getAplicacionId());
 		coPlace.setNivelId(place.getNivelId());
 		coPlace.setTipoId(place.getTipoId());
 		firstLoad = true;
-		monitoring.clear();
+		monitoring = localService.getMonitoreados(userKey);
+		if(monitoring == null){
+			monitoring = new ArrayList<Integer>();
+		}
 		view.setRegiones(new ArrayList<SectorDTO>());
 		view.setComunas(new ArrayList<SectorDTO>());
 		view.setZonas(new ArrayList<SectorDTO>());
 		view.initApis();
+		
+		Integer i = localService.getEvento(userKey);
+		if(i==null){
+			evento  = CentroControlView.EVENT_IMPRENTA;
+		}else{
+			evento = i;
+		}
+		
+		historial  = localService.getHistorial(userKey);
+		if(historial == null){
+			historial = new HashMap<Date, ArrayList<CentroOperacionDTO>>();
+		}
+		ArrayList<Date> remove = new ArrayList<Date>();
+		Date aux = new Date();
+		for(Date d:historial.keySet()){
+			if(d.getDay()!=aux.getDay() && d.getDate()<aux.getDate()){
+				remove.add(d);
+			}
+		}
+		for(Date d:remove){
+			historial.remove(d);
+		}
+		
 		getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,true) {
 
 			@Override
@@ -85,6 +125,7 @@ public class CentroControlActivity extends SimceActivity implements
 	@Override
 	public void onEventChange(int event) {
 		evento = event;
+		localService.setEvento(userKey, evento);
 		updateMap();
 	}
 	
@@ -172,6 +213,7 @@ public class CentroControlActivity extends SimceActivity implements
 		for(CentroOperacionDTO centro:centros){
 			monitoring.add(centro.getId());
 		}
+		localService.setMonitoreados(userKey,monitoring);
 		updateRealTime();
 		view.clearMarkers();
 		updateMap();
@@ -224,6 +266,7 @@ public class CentroControlActivity extends SimceActivity implements
 					addToMonitor = true;
 				}
 				historial.put(new Date(), result);
+				localService.setHistorial(userKey, historial);
 				for(CentroOperacionDTO centro:result){
 					centro.setEnCentro((centro.getEnCentro() == null)?0:centro.getEnCentro());
 					centro.setEnEstablecimiento((centro.getEnEstablecimiento() == null)?0:centro.getEnEstablecimiento());
