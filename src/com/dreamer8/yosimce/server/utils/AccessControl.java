@@ -145,7 +145,7 @@ public class AccessControl {
 		return idActividadTipo;
 	}
 
-	public UsuarioTipo getUsuarioTipo() {
+	public UsuarioTipo getUsuarioTipo(Session s) {
 		if (usuarioTipo == null) {
 			Cookie cookie = null;
 			for (Cookie c : this.request.getCookies()) {
@@ -157,7 +157,7 @@ public class AccessControl {
 			if (cookie != null) {
 				Usuario usuario = (Usuario) this.session
 						.getAttribute("usuario");
-				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO(s);
 				try {
 					Integer idUsuarioTipo = Integer.parseInt(cookie.getValue());
 					UsuarioTipo ut = utdao

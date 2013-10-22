@@ -17,10 +17,22 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  * 
  */
 public class DocumentoDAO extends AbstractHibernateDAO<Documento, Integer> {
+	/**
+	 * 
+	 */
+	public DocumentoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DocumentoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public Documento findByCodigoANDTipoDocumento(String codigo, String tipo) {
 
 		Documento d = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT d.* FROM DOCUMENTO d"
 				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
 				+ SecurityFilter.escapeString(tipo) + "')"
@@ -34,7 +46,7 @@ public class DocumentoDAO extends AbstractHibernateDAO<Documento, Integer> {
 	public Documento findByIdArchivo(Integer idArchivo) {
 
 		Documento d = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT d.* FROM DOCUMENTO d" + " WHERE d.archivo_id="
 				+ SecurityFilter.escapeString(idArchivo);
 		Query q = s.createSQLQuery(query).addEntity(Documento.class);
@@ -46,14 +58,14 @@ public class DocumentoDAO extends AbstractHibernateDAO<Documento, Integer> {
 			Integer idActividad, String documentoTipo) {
 
 		List<Documento> axds = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT d.* FROM  ACTIVIDAD_x_DOCUMENTO axd"
 				+ " JOIN DOCUMENTO d ON (axd.documento_id=d.id AND axd.actividad_id="
 				+ SecurityFilter.escapeString(idActividad) + ")"
 				+ " JOIN DOCUMENTO_TIPO dt ON d.documento_tipo_id=dt.id"
 				+ " WHERE dt.nombre='"
 				+ SecurityFilter.escapeString(documentoTipo) + "'"
-						+ " ORDER BY d.id ASC";
+				+ " ORDER BY d.id ASC";
 		Query q = s.createSQLQuery(query).addEntity(Documento.class);
 		axds = q.list();
 		return axds;

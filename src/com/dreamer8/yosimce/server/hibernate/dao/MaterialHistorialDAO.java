@@ -20,11 +20,25 @@ import com.dreamer8.yosimce.shared.dto.HistorialMaterialItemDTO;
  */
 public class MaterialHistorialDAO extends
 		AbstractHibernateDAO<MaterialHistorial, MaterialHistorialId> {
+	/**
+	 * 
+	 */
+	public MaterialHistorialDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public MaterialHistorialDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<MaterialHistorial> findByIdMaterial(Integer idMaterial) {
 
 		List<MaterialHistorial> mhs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT mh.* FROM  MATERIAL_HISTORIAL mh"
 				+ " WHERE mh.material_id="
 				+ SecurityFilter.escapeString(idMaterial)
@@ -37,7 +51,7 @@ public class MaterialHistorialDAO extends
 	public MaterialHistorial findLastByIdMaterial(Integer idMaterial) {
 
 		MaterialHistorial mh = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT mh.*  FROM MATERIAL_HISTORIAL mh"
 				+ " JOIN (SELECT mh.material_id,MAX(mh.fecha) as fecha"
 				+ " FROM MATERIAL_HISTORIAL mh"
@@ -54,7 +68,7 @@ public class MaterialHistorialDAO extends
 			List<String> codigos) {
 
 		List<HistorialMaterialItemDTO> mhs = new ArrayList<HistorialMaterialItemDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT mh.material_id,mh.origen_id,mh.destino_id FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)

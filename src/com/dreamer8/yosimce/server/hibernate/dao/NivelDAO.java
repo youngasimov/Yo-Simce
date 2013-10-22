@@ -16,6 +16,20 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  * 
  */
 public class NivelDAO extends AbstractHibernateDAO<Nivel, Integer> {
+	/**
+	 * 
+	 */
+	public NivelDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public NivelDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	/**
 	 * @param idAplicacion
@@ -26,10 +40,11 @@ public class NivelDAO extends AbstractHibernateDAO<Nivel, Integer> {
 			Integer idUsuario) {
 
 		List<Nivel> ns = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT n.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn "
 				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion) + ")"
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id "
 				+ " WHERE uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);

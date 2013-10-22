@@ -17,10 +17,22 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class CentroRegionalDAO extends
 		AbstractHibernateDAO<CentroRegional, Integer> {
+	/**
+	 * 
+	 */
+	public CentroRegionalDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public CentroRegionalDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public List<CentroRegional> findByIdAplicacion(Integer idAplicacion) {
 
 		List<CentroRegional> crs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT cr.* FROM  CENTRO_REGIONAL cr "
 				+ " WHERE cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion);

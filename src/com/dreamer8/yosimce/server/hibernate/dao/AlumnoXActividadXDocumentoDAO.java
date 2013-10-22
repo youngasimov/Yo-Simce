@@ -25,12 +25,24 @@ import com.dreamer8.yosimce.shared.dto.SincAlumnoDTO;
  */
 public class AlumnoXActividadXDocumentoDAO extends
 		AbstractHibernateDAO<AlumnoXActividadXDocumento, Integer> {
+	/**
+	 * 
+	 */
+	public AlumnoXActividadXDocumentoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public AlumnoXActividadXDocumentoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public List<SincAlumnoDTO> findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
 
 		List<SincAlumnoDTO> sadtos = new ArrayList<SincAlumnoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT axaxd_id,al.nombres as al_nombres,"
 				+ "al.apellido_paterno,al.apellido_materno,al.rut,"
 				+ "axaxd.codigo,doc_estado_id,doc_estado,axaxd_com,axaxd_form.recibido,alt.nombre as alt_nombre  FROM APLICACION_x_NIVEL axn "
@@ -92,7 +104,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			String tipoDocumento) {
 
 		AlumnoXActividadXDocumento axaxd = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axaxd.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -123,7 +135,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			Integer idAlumnoXActividad, String codigo, String tipoDocumento) {
 
 		AlumnoXActividadXDocumento axaxd = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axaxd.* FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd"
 				+ " JOIN DOCUMENTO d ON ( axaxd.documento_id=d.id AND d.codigo='"
 				+ SecurityFilter.escapeString(codigo)
@@ -143,7 +155,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			Integer idAlumnoXActividad, Integer idDocumento) {
 
 		AlumnoXActividadXDocumento axaxd = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axaxd.* FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd"
 				+ " WHERE axaxd.alumno_x_actividad_id="
 				+ SecurityFilter.escapeString(idAlumnoXActividad)
@@ -159,7 +171,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			Integer idAlumnoXActividad, String tipoDocumento) {
 
 		AlumnoXActividadXDocumento axaxd = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axaxd.* FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd"
 				+ " JOIN DOCUMENTO d ON axaxd.documento_id=d.id"
 				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
@@ -178,7 +190,7 @@ public class AlumnoXActividadXDocumentoDAO extends
 			Integer idActividad, String tipoDocumento) {
 
 		List<MaterialDefectuosoDTO> mddtos = new ArrayList<MaterialDefectuosoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT d.codigo,de.id as doc_estado_id,de.nombre as doc_estado FROM ALUMNO_x_ACTIVIDAD axa"
 				+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON (axa.id=axaxd.alumno_x_actividad_id AND axa.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)

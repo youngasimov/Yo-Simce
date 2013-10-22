@@ -15,11 +15,23 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class AlumnoEstadoDAO extends
 		AbstractHibernateDAO<AlumnoEstado, Integer> {
-	
+
+	/**
+ * 
+ */
+	public AlumnoEstadoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public AlumnoEstadoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public AlumnoEstado findByNombre(String nombre) {
 
 		AlumnoEstado ae = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ae.* FROM ALUMNO_ESTADO ae"
 				+ " WHERE ae.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

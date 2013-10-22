@@ -17,10 +17,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
 public class ActividadHistorialDAO extends
 		AbstractHibernateDAO<ActividadHistorial, ActividadHistorialId> {
 
+	/**
+	 * 
+	 */
+	public ActividadHistorialDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public ActividadHistorialDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public ActividadHistorial findLastByIdActividad(Integer idActividad) {
 
 		ActividadHistorial ah = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ah.* FROM  ACTIVIDAD_HISTORIAL ah"
 				+ " JOIN (SELECT ah.actividad_id,MAX(ah.fecha) as fecha"
 				+ " FROM ACTIVIDAD_HISTORIAL ah"
@@ -31,11 +46,11 @@ public class ActividadHistorialDAO extends
 		ah = ((ActividadHistorial) q.uniqueResult());
 		return ah;
 	}
-	
+
 	public ActividadHistorial findFirstByIdActividad(Integer idActividad) {
 
 		ActividadHistorial ah = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ah.* FROM  ACTIVIDAD_HISTORIAL ah"
 				+ " JOIN (SELECT ah.actividad_id,MIN(ah.fecha) as fecha"
 				+ " FROM ACTIVIDAD_HISTORIAL ah"

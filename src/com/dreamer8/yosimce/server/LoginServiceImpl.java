@@ -75,7 +75,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 			}
 
 			s.beginTransaction();
-			SesionDAO sdao = new SesionDAO();
+			SesionDAO sdao = new SesionDAO(s);
 			List<Sesion> ss = sdao.findBySessionId(token);
 			if (ss == null || ss.isEmpty()) {
 				throw new NullPointerException(
@@ -132,7 +132,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				s.beginTransaction();
 
 				Usuario u = getUsuarioActual();
-				AplicacionDAO adao = new AplicacionDAO();
+				AplicacionDAO adao = new AplicacionDAO(s);
 				List<Aplicacion> as = adao.findByIdUsuario(u.getId());
 				if (as != null && !as.isEmpty()) {
 					for (Aplicacion a : as) {
@@ -183,7 +183,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 				Usuario u = getUsuarioActual();
-				NivelDAO ndao = new NivelDAO();
+				NivelDAO ndao = new NivelDAO(s);
 				List<Nivel> ns = ndao.findByIdAplicacionANDIdUsuario(
 						idAplicacion, u.getId());
 				if (ns != null && !ns.isEmpty()) {
@@ -242,7 +242,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				s.beginTransaction();
 
 				Usuario u = getUsuarioActual();
-				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipoDAO atdao = new ActividadTipoDAO(s);
 				List<ActividadTipo> ats = atdao
 						.findByIdAplicacionANDIdNivelANDIdUsuario(idAplicacion,
 								idNivel, u.getId());
@@ -300,7 +300,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado un nivel.");
 				}
 				s.beginTransaction();
-				PermisoDAO pdao = new PermisoDAO();
+				PermisoDAO pdao = new PermisoDAO(s);
 				List<Permiso> ps = pdao
 						.findByIdAplicacionANDIdNivelANDIdUsuario(idAplicacion,
 								idNivel, getUsuarioActual().getId());
@@ -345,9 +345,9 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 		ManagedSessionContext.bind(s);
 		try {
 			s.beginTransaction();
-			UsuarioDAO udao = new UsuarioDAO();
+			UsuarioDAO udao = new UsuarioDAO(s);
 			Usuario u = null;
-			SesionDAO sdao = new SesionDAO();
+			SesionDAO sdao = new SesionDAO(s);
 			List<Sesion> ss = sdao.findBySessionId(username);
 
 			Sesion sesion = null;
@@ -403,7 +403,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 
 			s.beginTransaction();
 
-			SesionDAO sdao = new SesionDAO();
+			SesionDAO sdao = new SesionDAO(s);
 			for (Cookie c : this.getThreadLocalRequest().getCookies()) {
 				if (c.getName().equals(AccessControl.TOKEN_COOKIE_NAME)) {
 
@@ -480,7 +480,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO(s);
 				List<UsuarioTipo> uts = utdao
 						.findByIdAplicacionANDIdNivelANDIdUsuario(idAplicacion,
 								idNivel, u.getId());
@@ -561,7 +561,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				s.beginTransaction();
-				SesionDAO sdao = new SesionDAO();
+				SesionDAO sdao = new SesionDAO(s);
 				List<Sesion> ss = sdao.findBySessionId(token);
 				if (ss == null || ss.isEmpty()) {
 					throw new NullPointerException(
@@ -625,7 +625,7 @@ public class LoginServiceImpl extends CustomRemoteServiceServlet implements
 
 			s.beginTransaction();
 
-			UsuarioDAO udao = new UsuarioDAO();
+			UsuarioDAO udao = new UsuarioDAO(s);
 			Usuario u = udao.findbyUsername(StringUtils.formatRut(user));
 			if (u == null) {
 				throw new NoLoggedException(

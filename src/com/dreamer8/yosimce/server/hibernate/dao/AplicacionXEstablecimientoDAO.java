@@ -15,12 +15,23 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class AplicacionXEstablecimientoDAO extends
 		AbstractHibernateDAO<AplicacionXEstablecimiento, Integer> {
+	/**
+	 * 
+	 */
+	public AplicacionXEstablecimientoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public AplicacionXEstablecimientoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public AplicacionXEstablecimiento findByIdAplicacionANDIdEstablecimiento(
 			Integer idAplicacion, Integer idEstablecimiento) {
 
 		AplicacionXEstablecimiento axe = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axe.* FROM APLICACION_x_ESTABLECIMIENTO axe"
 				+ " WHERE axe.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)

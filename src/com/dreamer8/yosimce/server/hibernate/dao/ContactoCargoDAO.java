@@ -8,11 +8,22 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
 
 public class ContactoCargoDAO extends
 		AbstractHibernateDAO<ContactoCargo, Integer> {
+	/**
+	 * 
+	 */
+	public ContactoCargoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ContactoCargoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public ContactoCargo findByName(String nombre) {
 
 		ContactoCargo cc = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT cc.* FROM CONTACTO_CARGO cc"
 				+ " WHERE cc.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

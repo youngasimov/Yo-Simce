@@ -14,6 +14,20 @@ import com.dreamer8.yosimce.shared.dto.TipoUsuarioDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
 
 public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
+	/**
+	 * 
+	 */
+	public UsuarioDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public UsuarioDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	/**
 	 * @param idAplicacion
@@ -29,7 +43,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			String filtro) {
 
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND us.usuario_tipo_id > "
@@ -81,7 +95,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			Integer length, String filtro) {
 
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT u.id as u_id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id as ut_id,ut.nombre as ut_nom FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON (us.usuario_tipo_id=ut.id AND ut.rol='"
 				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR)
@@ -133,7 +147,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			Integer length, String filtro) {
 
 		List<UserDTO> udtos = new ArrayList<UserDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,ut.id,ut.nombre FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUAInteger RIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
@@ -181,7 +195,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 	public Usuario findbyUsername(String username) {
 
 		Usuario u = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT u.* FROM USUARIO u" + " WHERE u.username='"
 				+ SecurityFilter.escapeString(username) + "'";
 		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
@@ -193,7 +207,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
 		List<Usuario> us = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT u.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -223,7 +237,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
 		List<Usuario> us = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT u.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -253,7 +267,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
 		Usuario u = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT u.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -283,7 +297,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividad) {
 
 		Usuario u = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT u.* FROM ACTIVIDAD a"
 				+ " JOIN CURSO c ON a.curso_id=c.id AND a.id="
 				+ SecurityFilter.escapeString(idActividad)

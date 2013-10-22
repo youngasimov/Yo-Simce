@@ -18,12 +18,21 @@
 
 <!--  Config  hacia el maestro  -->
 
-   <property name="hibernate.connection.password">pg.simce</property> 
-   <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.13:5432/simcedb</property> 
-   <property name="hibernate.connection.username">pg_simce</property> 
+<!--    <property name="hibernate.connection.password">pg.simce</property>  -->
+<!--    <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.13:5432/simcedb</property>  -->
+<!--    <property name="hibernate.connection.username">pg_simce</property>  -->
 
 <!--  FIN Config  hacia el maestro  -->
 
+
+
+<!--  Config  hacia el esclavo  -->
+
+   <property name="hibernate.connection.password">pg.simce</property> 
+   <property name="hibernate.connection.url">jdbc:postgresql://10.2.33.14:5432/simcedb</property> 
+   <property name="hibernate.connection.username">pg_simce</property> 
+
+<!--  FIN Config  hacia el esclavo  -->
 
 
 

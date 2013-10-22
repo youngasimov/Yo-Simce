@@ -17,11 +17,22 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class MaterialEstadoDAO extends
 		AbstractHibernateDAO<MaterialEstado, Integer> {
+	/**
+	 * 
+	 */
+	public MaterialEstadoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public MaterialEstadoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public MaterialEstado findByNombre(String nombre) {
 
 		MaterialEstado me = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT me.* FROM MATERIAL_ESTADO me"
 				+ " WHERE me.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

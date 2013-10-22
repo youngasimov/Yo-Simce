@@ -4,6 +4,8 @@ package com.dreamer8.yosimce.server.hibernate.pojo;
 
 import java.util.Date;
 
+import org.hibernate.Session;
+
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.utils.StringUtils;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
@@ -98,12 +100,12 @@ public class ActividadHistorial implements java.io.Serializable {
 		this.fechaTermino = fechaTermino;
 	}
 
-	public AgendaItemDTO getAgendaItemDTO() {
+	public AgendaItemDTO getAgendaItemDTO(Session s) {
 		AgendaItemDTO aidto = new AgendaItemDTO();
 		aidto.setEstado(actividadEstado.getEstadoAgendaDTO());
 		aidto.setComentario(comentario);
 		aidto.setFecha(StringUtils.getDateString(fechaInicio));
-		UsuarioDAO udao = new UsuarioDAO();
+		UsuarioDAO udao = new UsuarioDAO(s);
 		if (modificadorId != null) {
 			Usuario usuario = udao.getById(modificadorId);
 			if (usuario != null) {

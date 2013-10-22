@@ -72,7 +72,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<AgendaPreviewDTO> apdtos = null;
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -101,13 +101,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				apdtos = (ArrayList<AgendaPreviewDTO>) adao
 						.findAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
@@ -117,7 +117,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
-			System.err.println(ex);
+			ex.printStackTrace();
 			HibernateUtil.rollback(s);
 			throw new DBException();
 		} catch (ConsistencyException ex) {
@@ -174,13 +174,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -189,7 +189,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"La actividad especificada no existe.");
 				}
 
-				adto = a.getAgendaDTO();
+				adto = a.getAgendaDTO(s);
 
 				s.getTransaction().commit();
 			}
@@ -262,13 +262,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -277,9 +277,9 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 							"No existe una actividad para este curso en el nivel seleccionado");
 				}
 
-				ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+				ActividadHistorialDAO ahdao = new ActividadHistorialDAO(s);
 				ActividadHistorial ah = ahdao.findFirstByIdActividad(a.getId());
-				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
 				ActividadEstado ae = aedao.getById(itemAgenda.getEstado()
 						.getId());
 
@@ -402,7 +402,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				a.setActividadEstado(ae);
 				adao.update(a);
 
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				u = udao.getById(u.getId());
 				itemAgenda.setCreador(u.getUserDTO());
 
@@ -421,7 +421,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 						dirMail = contMail;
 						contMail = null;
 					} else {
-						EstablecimientoDAO edao = new EstablecimientoDAO();
+						EstablecimientoDAO edao = new EstablecimientoDAO(s);
 						Establecimiento e = edao.findByIdActividad(a.getId());
 						if (e != null) {
 							dirMail = e.getEmail();
@@ -525,13 +525,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
 				List<ActividadEstado> aes = aedao.findAllByAgendamiento();
 				for (ActividadEstado actividadEstado : aes) {
 					eadtos.add(actividadEstado.getEstadoAgendaDTO());
@@ -598,7 +598,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -664,13 +664,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				result = adao
 						.countAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
@@ -745,20 +745,20 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CursoDAO cdao = new CursoDAO();
+				CursoDAO cdao = new CursoDAO(s);
 				Curso c = cdao.getById(idCurso);
 				if (c == null) {
 					throw new NullPointerException(
 							"No se ha encontrado el curso especificado.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				List<Actividad> as = adao
 						.findByIdAplicacionANDIdNivelANDIdEstablecimiento(
 								idAplicacion, idNivel, c.getEstablecimiento()
@@ -771,7 +771,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				// "No se ha encontrado una actividad para el curso especificado.");
 				// }
 
-				ContactoCargoDAO ccdao = new ContactoCargoDAO();
+				ContactoCargoDAO ccdao = new ContactoCargoDAO(s);
 				ContactoCargo cc = null;
 				if (contacto.getCargo() != null
 						&& contacto.getCargo().getId() != null) {
@@ -845,13 +845,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ContactoCargoDAO ccdao = new ContactoCargoDAO();
+				ContactoCargoDAO ccdao = new ContactoCargoDAO(s);
 				List<ContactoCargo> ccs = ccdao.findAll();
 				if (ccs != null && !ccs.isEmpty()) {
 					for (ContactoCargo contactoCargo : ccs) {
@@ -920,13 +920,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Integer total = null;
 				if (idAplicacion == 2) {
 					total = adao
@@ -982,7 +982,7 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				}
 				bw.close();
 
-				ArchivoDAO ardao = new ArchivoDAO();
+				ArchivoDAO ardao = new ArchivoDAO(s);
 				Archivo archivo = new Archivo();
 				archivo.setTitulo(name);
 				archivo.setRutaArchivo(file.getAbsolutePath());
@@ -1057,20 +1057,20 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CursoDAO cdao = new CursoDAO();
+				CursoDAO cdao = new CursoDAO(s);
 				Curso c = cdao.getById(idCurso);
 				if (c == null) {
 					throw new NullPointerException(
 							"El curso especificado no existe.");
 				}
 				Establecimiento e = c.getEstablecimiento();
-				ContactoCargoDAO ccdao = new ContactoCargoDAO();
+				ContactoCargoDAO ccdao = new ContactoCargoDAO(s);
 				ContactoCargo cc = ccdao.findByName(ContactoCargo.DIRECTOR);
 				cdto.setCargo(cc.getCargoDTO());
 				cdto.setContactoEmail(e.getEmail());
@@ -1145,13 +1145,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CursoDAO cdao = new CursoDAO();
+				CursoDAO cdao = new CursoDAO(s);
 				Curso c = cdao.getById(idCurso);
 				if (c == null) {
 					throw new NullPointerException(
@@ -1167,10 +1167,10 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 				if (director.getContactoEmail() != null) {
 					e.setEmail(director.getContactoEmail());
 				}
-				EstablecimientoDAO edao = new EstablecimientoDAO();
+				EstablecimientoDAO edao = new EstablecimientoDAO(s);
 				edao.update(e);
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				List<Actividad> as = c.getActividads();
 				if (as != null && !as.isEmpty()) {
 					for (Actividad actividad : as) {
@@ -1254,13 +1254,13 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
 				List<ActividadEstado> aes = aedao.findAll2();
 				if (aes != null && !aes.isEmpty()) {
 					for (ActividadEstado ae : aes) {

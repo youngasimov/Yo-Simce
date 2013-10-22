@@ -36,11 +36,27 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
  * 
  */
 public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
+
+	/**
+	 * 
+	 */
+	public ActividadDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public ActividadDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public List<Actividad> findByIdAplicacionANDIdNivelANDIdActividadTipo(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
 
 		List<Actividad> as = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -68,7 +84,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idEstablecimiento) {
 
 		Actividad a = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -92,7 +108,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
 
 		List<Actividad> as = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -114,7 +130,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idEstablecimiento, String nombreCurso, Integer dia) {
 
 		Actividad a = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -127,14 +143,13 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " WHERE c.establecimiento_id="
 				+ SecurityFilter.escapeString(idEstablecimiento)
-				+ " AND c.nombre='"
-				+ SecurityFilter.escapeString(nombreCurso)
+				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
 				+ "'"
-//				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				;
-//		if (dia != null) {
-//			query += " AND a.dia=" + SecurityFilter.escapeString(dia);
-//		}
+		// + " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+		;
+		// if (dia != null) {
+		// query += " AND a.dia=" + SecurityFilter.escapeString(dia);
+		// }
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
@@ -146,7 +161,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idEstablecimiento, String nombreCurso, Integer dia) {
 
 		Actividad a = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -177,7 +192,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idCurso) {
 
 		Actividad a = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -202,7 +217,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer lenght, Map<String, String> filtros) {
 
 		List<AgendaPreviewDTO> apdtos = new ArrayList<AgendaPreviewDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT c.id as curso_id,c.nombre as nombre_curso,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.id as est_tipo_id,et.nombre as est_tipo_nombre,"
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,a.fecha_inicio,a.comentario,u.id as usuario_id,u.username,"
@@ -395,7 +410,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -499,7 +514,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.nombre as est_tipo_nombre,"
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
@@ -702,7 +717,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -805,7 +820,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
 				+ "et.nombre as est_tipo_nombre,"
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
@@ -968,7 +983,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -1072,7 +1087,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer lenght, Map<String, String> filtros, String baseURL) {
 
 		List<ActividadPreviewDTO> apdtos = new ArrayList<ActividadPreviewDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "";
 		if (idAplicacion == 2) {
 			query += "WITH pendrive_sinc AS ("
@@ -1402,7 +1417,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -1552,7 +1567,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			String tipoActividad) {
 
 		Actividad a = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -1574,7 +1589,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
 
 		List<Actividad> as = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "select a.* FROM ACTIVIDAD a "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (a.aplicacion_x_nivel_x_actividad_tipo_id=axnxat.id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
@@ -1594,7 +1609,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idCurso,
 			Date fechaInicio) {
 		List<Actividad> as = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "select a.* FROM ACTIVIDAD a "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON a.aplicacion_x_nivel_x_actividad_tipo_id=axnxat.id"
 				+ " JOIN APLICACION_x_NIVEL axn ON (axnxat.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="

@@ -17,10 +17,21 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class ActividadXIncidenciaDAO extends
 		AbstractHibernateDAO<ActividadXIncidencia, Integer> {
+
+	
+	public ActividadXIncidenciaDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ActividadXIncidenciaDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public ActividadXIncidencia findByIdActividadANDIdMotivoFalla(
 			Integer idActividad, Integer idMotivoFalla) {
 		ActividadXIncidencia axi = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axi.* FROM ACTIVIDAD_x_INCIDENCIA axi"
 				+ " WHERE axi.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)
@@ -34,7 +45,7 @@ public class ActividadXIncidenciaDAO extends
 	public List<ActividadXIncidencia> findByIdActividadANDIncidenciaTipo(
 			Integer idActividad, String incidenciaTipo) {
 		List<ActividadXIncidencia> axis = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axi.* FROM  ACTIVIDAD_x_INCIDENCIA axi"
 				+ " JOIN MOTIVO_FALLA mf ON axi.motivo_falla_id=mf.id AND axi.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)

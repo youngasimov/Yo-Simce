@@ -24,13 +24,24 @@ import com.dreamer8.yosimce.shared.dto.MaterialDTO;
  * 
  */
 public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
+	/**
+	 * 
+	 */
+	public MaterialDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public MaterialDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<Material> findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCo(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCo) {
 
 		List<Material> ms = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -39,7 +50,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
 				+ SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
 				+ " JOIN MATERIAL m ON mxa.material_id=m.id AND m.centro_id="
 				+ SecurityFilter.escapeString(idCo);
@@ -53,7 +69,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			List<String> codigos) {
 
 		List<Material> ms = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -63,7 +79,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
@@ -101,7 +122,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			String codigo) {
 
 		Material m = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -111,7 +132,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + "AND axnxat.actividad_tipo_id="
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
@@ -128,7 +154,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			Integer idCo) {
 
 		List<MaterialDTO> mdtos = new ArrayList<MaterialDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
 				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
@@ -142,7 +168,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
@@ -200,7 +231,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			List<String> codigos) {
 
 		List<MaterialDTO> mdtos = new ArrayList<MaterialDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
 				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
@@ -214,7 +245,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
@@ -278,7 +314,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			List<Integer> idMateriales) {
 
 		List<MaterialDTO> mdtos = new ArrayList<MaterialDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
 				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
@@ -292,7 +328,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
@@ -354,7 +395,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			String codigo) {
 		MaterialDTO mdto = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT m.id as m_id,m.codigo as m_cod,mt.nombre as m_tipo,"
 				+ "m.centro_id as co_id,e.id as rbd,e.nombre as e_nom, c.nombre as c_nom, n.nombre as n_nom,"
 				+ "l_dest.nombre as dest_nom, l.id as l_id, l.nombre as l_nom,n.id as n_id, axnxat.actividad_tipo_id,me.nombre"
@@ -368,7 +409,12 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 				// + SecurityFilter.escapeString(idActividadTipo)
 				+ ")"
 				+ " JOIN NIVEL n ON axn.nivel_id=n.id"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id "// AND
+																							// (a.actividad_estado_id!=7
+																							// OR
+																							// a.actividad_estado_id
+																							// IS
+																							// NULL)"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " JOIN MATERIAL_x_ACTIVIDAD mxa ON a.id=mxa.actividad_id"
@@ -415,7 +461,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 	public Map<String, List<Integer>> findRepetidos() {
 
 		Map<String, List<Integer>> ms = new HashMap<String, List<Integer>>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "select m.codigo,m.id as m_id,m1.id as m1_id from material m join material m1 on m.codigo=m1.codigo where m.id != m1.id;";
 		Query q = s.createSQLQuery(query);
 		List<Integer> ids = null;
@@ -434,10 +480,14 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 	public Map<Integer, Integer> findEnCentroEquivocado() {
 
 		Map<Integer, Integer> ms = new HashMap<Integer, Integer>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "select m.id,cxe.co_id from material m"
 				+ " join material_x_actividad mxa on m.id=mxa.material_id"
-				+ " join actividad a on mxa.actividad_id=a.id "//AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
+				+ " join actividad a on mxa.actividad_id=a.id "// AND
+															   // (a.actividad_estado_id!=7
+															   // OR
+															   // a.actividad_estado_id
+															   // IS NULL)"
 				+ " join curso c on a.curso_id=c.id"
 				+ " join establecimiento e on c.establecimiento_id=e.id"
 				+ " join co_x_establecimiento cxe on e.id=cxe.establecimiento_id and c.aplicacion_x_nivel_id=cxe.aplicacion_x_nivel_id"
@@ -455,7 +505,7 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 
 	public List<Material> findByDia(Integer dia) {
 		List<Material> ms = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT m.* FROM MATERIAL m "
 				+ " WHERE substring(m.codigo from 4 for 1)='"
 				+ SecurityFilter.escapeString(dia) + "';";

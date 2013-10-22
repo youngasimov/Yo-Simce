@@ -23,13 +23,27 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
  */
 public class UsuarioXActividadDAO extends
 		AbstractHibernateDAO<UsuarioXActividad, Integer> {
+	/**
+	 * 
+	 */
+	public UsuarioXActividadDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public UsuarioXActividadDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<UsuarioXActividad> findExaminadoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso) {
 
 		List<UsuarioXActividad> uxas = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -64,7 +78,7 @@ public class UsuarioXActividadDAO extends
 			Integer idUsuario, String usuarioTipo) {
 
 		List<UsuarioXActividad> uxas = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -121,7 +135,7 @@ public class UsuarioXActividadDAO extends
 			Integer idUsuario, String usuarioTipo) {
 
 		List<EvaluacionSupervisorDTO> esdtos = new ArrayList<EvaluacionSupervisorDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT u.id as u_id,u.username,u.email,u.nombres,u.apellido_paterno,"
 				+ "u.apellido_materno,u.celular,uxa.nota_presentacion_personal,uxa.nota_puntualidad,uxa.nota_despempeno,"
 				+ "e.id as establecimiento_id,e.nombre as e_nombre,c.nombre as c_nombre,a.fecha_inicio,uxa.asistencia,co.nombre as centro FROM APLICACION_x_NIVEL axn "
@@ -207,7 +221,7 @@ public class UsuarioXActividadDAO extends
 			Integer idCurso, Integer idUsuario) {
 
 		UsuarioXActividad uxa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -234,7 +248,7 @@ public class UsuarioXActividadDAO extends
 			Integer idCurso) {
 
 		UsuarioXActividad uxa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -261,7 +275,7 @@ public class UsuarioXActividadDAO extends
 			Integer idUsuario) {
 
 		List<UsuarioXActividad> uxas = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -285,7 +299,7 @@ public class UsuarioXActividadDAO extends
 			Integer idUsuario, Integer idEstablecimiento, String curso) {
 
 		UsuarioXActividad uxa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT uxa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -313,7 +327,7 @@ public class UsuarioXActividadDAO extends
 			Integer idUsuario) {
 
 		UsuarioXActividad uxa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT uxa.* FROM USUARIO_x_ACTIVIDAD uxa"
 				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false AND uxa.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)

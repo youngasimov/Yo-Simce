@@ -11,10 +11,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
 public class ActividadEstadoDAO extends
 		AbstractHibernateDAO<ActividadEstado, Integer> {
 
+	/**
+	 * 
+	 */
+	public ActividadEstadoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public ActividadEstadoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public ActividadEstado findByNombre(String nombre) {
 
 		ActividadEstado ae = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae"
 				+ " WHERE ae.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";
@@ -26,7 +41,7 @@ public class ActividadEstadoDAO extends
 	public List<ActividadEstado> findAllByAgendamiento() {
 
 		List<ActividadEstado> aes = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae"
 				+ " WHERE ae.id > 1 AND ae.id < 4";
 		// + " WHERE ae.id = 3";
@@ -38,7 +53,7 @@ public class ActividadEstadoDAO extends
 	public List<ActividadEstado> findAllByActividad() {
 
 		List<ActividadEstado> aes = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae"
 				+ " WHERE ae.id > 3 AND ae.id < 6";
 		Query q = s.createSQLQuery(query).addEntity(ActividadEstado.class);
@@ -52,7 +67,7 @@ public class ActividadEstadoDAO extends
 	public List<ActividadEstado> findAll2() {
 
 		List<ActividadEstado> aes = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT ae.* FROM ACTIVIDAD_ESTADO ae"
 				+ " WHERE ae.id!=7";
 		Query q = s.createSQLQuery(query).addEntity(ActividadEstado.class);

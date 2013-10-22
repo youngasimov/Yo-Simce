@@ -19,11 +19,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class MaterialXLoteDAO extends
 		AbstractHibernateDAO<MaterialXLote, MaterialXLoteId> {
+	/**
+	 * 
+	 */
+	public MaterialXLoteDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public MaterialXLoteDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<Integer> findIdMaterialesByIdLote(Integer idLote) {
 
 		List<Integer> res = new ArrayList<Integer>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT mxl.material_id FROM  MATERIAL_x_LOTE mxl"
 				+ " WHERE mxl.lote_id=" + SecurityFilter.escapeString(idLote);
 		Query q = s.createSQLQuery(query);
@@ -36,7 +50,7 @@ public class MaterialXLoteDAO extends
 
 	public void deleteByIdMaterial(Integer idMaterial) {
 
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "DELETE FROM MATERIAL_x_LOTE WHERE material_id="
 				+ SecurityFilter.escapeString(idMaterial);
 		s.createSQLQuery(query).executeUpdate();

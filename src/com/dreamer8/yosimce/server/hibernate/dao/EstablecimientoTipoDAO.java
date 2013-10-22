@@ -17,11 +17,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class EstablecimientoTipoDAO extends
 		AbstractHibernateDAO<EstablecimientoTipo, Integer> {
+	/**
+	 * 
+	 */
+	public EstablecimientoTipoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public EstablecimientoTipoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<EstablecimientoTipo> findAll() {
 
 		List<EstablecimientoTipo> ets = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT et.* FROM ESTABLECIMIENTO_TIPO et"
 				+ " ORDER et.id ASC";
 		Query q = s.createSQLQuery(query).addEntity(EstablecimientoTipo.class);
@@ -33,7 +47,7 @@ public class EstablecimientoTipoDAO extends
 			Integer idAplicacion, Integer idEstablecimiento) {
 
 		EstablecimientoTipo et = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT et.* FROM ESTABLECIMIENTO_TIPO et"
 				+ " JOIN APLICACION_x_ESTABLECIMIENTO axe ON axe.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -48,7 +62,7 @@ public class EstablecimientoTipoDAO extends
 	public EstablecimientoTipo findByNombre(String nombre) {
 
 		EstablecimientoTipo et = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT et.* FROM ESTABLECIMIENTO_TIPO et"
 				+ " WHERE et.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

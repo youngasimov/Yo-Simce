@@ -22,11 +22,22 @@ import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
  * 
  */
 public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
+	/**
+	 * 
+	 */
+	public CoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public CoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<Co> findByIdAplicacion(Integer idAplicacion) {
 
 		List<Co> cos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT co.* FROM  CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
@@ -40,7 +51,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			Integer idAplicacion, Integer idUsuario, String usuarioTipo) {
 
 		List<Co> cos = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT co.* FROM  CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
@@ -70,7 +81,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
 
 		Co co = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT co.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN CO_x_ESTABLECIMIENTO cxe ON axn.id=cxe.aplicacion_x_nivel_id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -87,7 +98,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 	public Co findByIdAplicacionANDNombre(Integer idAplicacion, String nombre) {
 
 		Co co = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT co.* FROM  CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
@@ -103,7 +114,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			Integer idAplicacion, Integer idNivel, String comuna, String region) {
 
 		Co co = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT co.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN CO_x_ESTABLECIMIENTO cxe ON axn.id=cxe.aplicacion_x_nivel_id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -128,7 +139,7 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			Integer idUsuario, String usuarioTipo) {
 
 		List<CentroOperacionDTO> codots = new ArrayList<CentroOperacionDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query =
 
 		// "WITH mh_max AS("

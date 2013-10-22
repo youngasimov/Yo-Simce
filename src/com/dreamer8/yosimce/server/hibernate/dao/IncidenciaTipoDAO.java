@@ -15,11 +15,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class IncidenciaTipoDAO extends
 		AbstractHibernateDAO<IncidenciaTipo, Integer> {
+	/**
+	 * 
+	 */
+	public IncidenciaTipoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public IncidenciaTipoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public IncidenciaTipo findByNombre(String nombre) {
 
 		IncidenciaTipo it = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT it.* FROM INCIDENCIA_TIPO it"
 				+ " WHERE it.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

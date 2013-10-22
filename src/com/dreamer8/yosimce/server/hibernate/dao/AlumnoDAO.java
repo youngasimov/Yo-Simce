@@ -24,10 +24,21 @@ import com.dreamer8.yosimce.server.utils.StringUtils;
  * 
  */
 public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
+	/**
+	 * 
+	 */
+	public AlumnoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public AlumnoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public Alumno findByRut(String rut) {
 		Alumno a = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT a.* FROM ALUMNO a " + " WHERE a.rut='"
 				+ SecurityFilter.escapeString(StringUtils.formatRut(rut)) + "'";
 		Query q = s.createSQLQuery(query).addEntity(Alumno.class);
@@ -41,7 +52,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 			Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "WITH pendrive_sinc AS ("
 				+ " SELECT axaxd.alumno_x_actividad_id,d.codigo,de.nombre as estado"
 				+ " FROM ALUMNO_x_ACTIVIDAD axa"
@@ -72,19 +83,23 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ " JOIN ALUMNO al ON axa.alumno_id=al.id"
 				+ " JOIN ALUMNO_TIPO alt ON axa.alumno_tipo_id=alt.id"
 				+ " JOIN ALUMNO_ESTADO ale ON axa.alumno_estado_id=ale.id"
-//				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
-//				+ " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
-//				+ " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
-//				+ " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
-//				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
-//				+ "')"
+				// +
+				// " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
+				// +
+				// " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
+				// +
+				// " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
+				// +
+				// " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
+				// + SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
+				// + "')"
 				+ " LEFT JOIN pendrive_sinc ON axa.id=alumno_x_actividad_id"
 				+ " LEFT JOIN (SELECT axaxd_cuest.alumno_x_actividad_id,axaxd_cuest.entregado FROM ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest"
 				+ " JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
 				+ " JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
 				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
 				+ "')) axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
-				
+
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
@@ -252,7 +267,7 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT COUNT(al.id)"
 				+ " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
@@ -269,17 +284,25 @@ public class AlumnoDAO extends AbstractHibernateDAO<Alumno, Integer> {
 				+ " JOIN ALUMNO al ON axa.alumno_id=al.id"
 				+ " JOIN ALUMNO_TIPO alt ON axa.alumno_tipo_id=alt.id"
 				+ " JOIN ALUMNO_ESTADO ale ON axa.alumno_estado_id=ale.id"
-//				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
-//				+ " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
-//				+ " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
-//				+ " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
-//				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
-//				+ "')"
-//				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
-//				+ " LEFT JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
-//				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
-//				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
-//				+ "')"
+				// +
+				// " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_pendrive ON axa.id=axaxd_pendrive.alumno_x_actividad_id"
+				// +
+				// " LEFT JOIN DOCUMENTO_ESTADO de_pendrive ON axaxd_pendrive.documento_estado_id=de_pendrive.id"
+				// +
+				// " LEFT JOIN DOCUMENTO d_pendrive ON axaxd_pendrive.documento_id=d_pendrive.id"
+				// +
+				// " LEFT JOIN DOCUMENTO_TIPO dt_pendrive ON (d_pendrive.documento_tipo_id=dt_pendrive.id AND dt_pendrive.nombre='"
+				// + SecurityFilter.escapeString(DocumentoTipo.PRUEBA)
+				// + "')"
+				// +
+				// " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_cuest ON axa.id=axaxd_cuest.alumno_x_actividad_id"
+				// +
+				// " LEFT JOIN DOCUMENTO d_cuest ON axaxd_cuest.documento_id=d_cuest.id"
+				// +
+				// " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON (d_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
+				// +
+				// SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
+				// + "')"
 				+ " JOIN CURSO c ON a.curso_id=c.id"
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="

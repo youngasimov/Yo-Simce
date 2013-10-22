@@ -20,12 +20,24 @@ import com.dreamer8.yosimce.shared.dto.UserDTO;
  * 
  */
 public class SuplenteXCoDAO extends AbstractHibernateDAO<SuplenteXCo, Integer> {
+	/**
+	 * 
+	 */
+	public SuplenteXCoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public SuplenteXCoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public SuplenteXCo findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario) {
 
 		SuplenteXCo sco = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT sco.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -48,7 +60,7 @@ public class SuplenteXCoDAO extends AbstractHibernateDAO<SuplenteXCo, Integer> {
 			Integer idUsuario, String usuarioTipo) {
 
 		List<EvaluacionSuplenteDTO> esdtos = new ArrayList<EvaluacionSuplenteDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT u.id,u.email,u.nombres,u.apellido_paterno,u.apellido_materno,u.username,co.nombre as centro,sco.evaluacion,sco.asistencia FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)

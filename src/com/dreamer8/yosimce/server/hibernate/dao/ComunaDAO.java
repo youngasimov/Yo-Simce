@@ -17,11 +17,23 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  * 
  */
 public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
+	/**
+	 * 
+	 */
+	public ComunaDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ComunaDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public List<Comuna> findByIdAplicacionANDIdNivelANDIdActividadTipo(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
 
 		List<Comuna> cs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT com.* FROM  APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -44,7 +56,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idUsuario, String usuarioTipo) {
 
 		List<Comuna> cs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT COMUNA.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -58,9 +70,11 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -80,7 +94,8 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -97,7 +112,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idProvincia) {
 		List<Comuna> cs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT com.* FROM  APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -122,7 +137,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idProvincia, Integer idUsuario, String usuarioTipo) {
 
 		List<Comuna> cs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT COMUNA.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -136,9 +151,11 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -158,7 +175,8 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -177,7 +195,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idRegion) {
 		List<Comuna> cs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT com.* FROM  APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -202,7 +220,7 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 			Integer idRegion, Integer idUsuario, String usuarioTipo) {
 
 		List<Comuna> cs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT COMuNA.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -216,9 +234,11 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id";
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
+					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
 						+ SecurityFilter.escapeString(idUsuario)
 						+ ") AND joxco.activo=TRUE";
@@ -238,7 +258,8 @@ public class ComunaDAO extends AbstractHibernateDAO<Comuna, Integer> {
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
 				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"

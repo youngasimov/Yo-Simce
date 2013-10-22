@@ -105,13 +105,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				List<Co> cos = cdao
 						.findByIdAplicacionANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, u.getId(), usuarioTipo.getRol());
@@ -181,13 +181,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				LugarDAO ldao = new LugarDAO();
+				LugarDAO ldao = new LugarDAO(s);
 				List<Lugar> ls = ldao.findByIdAplicacion(idAplicacion);
 				if (ls != null && !ls.isEmpty()) {
 					for (Lugar lugar : ls) {
@@ -259,13 +259,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				Usuario user = udao.findbyUsername(StringUtils.formatRut(rut));
 				if (user == null) {
 					throw new NullPointerException(
@@ -305,7 +305,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			NullPointerException, ConsistencyException {
 
 		ArrayList<MaterialDTO> mdtos = null;
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -338,13 +338,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				mdtos = (ArrayList<MaterialDTO>) mdao
 						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCo(
 								idAplicacion, idNivel, idActividadTipo, idCo);
@@ -352,7 +352,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
-			System.err.println(ex);
+			ex.printStackTrace();
 			HibernateUtil.rollback(s);
 			throw new DBException();
 		} catch (ConsistencyException ex) {
@@ -413,13 +413,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				mdto = mdao
 						.findDTOByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigo(
 								idAplicacion, idNivel, idActividadTipo, codigo);
@@ -492,12 +492,12 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
-				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipoDAO atdao = new ActividadTipoDAO(s);
 				ActividadTipo at = atdao.getById(idActividadTipo);
 
 				DateFormat dateFormat = new SimpleDateFormat(
@@ -511,7 +511,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
 						new FileOutputStream(file), "ISO-8859-1"));
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				List<MaterialDTO> mdtos = mdao
 						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDIdMateriales(
 								idAplicacion, idNivel, idActividadTipo,
@@ -540,7 +540,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				bw.close();
 
-				ArchivoDAO ardao = new ArchivoDAO();
+				ArchivoDAO ardao = new ArchivoDAO(s);
 				Archivo archivo = new Archivo();
 				archivo.setTitulo(name);
 				archivo.setRutaArchivo(file.getAbsolutePath());
@@ -612,13 +612,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				List<Co> cos = cdao.findByIdAplicacion(idAplicacion);
 				if (cos != null && !cos.isEmpty()) {
 					for (Co co : cos) {
@@ -692,13 +692,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				mdtos = (ArrayList<MaterialDTO>) mdao
 						.findDTOSByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
 								idAplicacion, idNivel, idActividadTipo, codigos);
@@ -772,13 +772,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				Material m = mdao.getById(idMaterial);
 				if (m == null) {
 					throw new NullPointerException(
@@ -786,7 +786,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 				}
 				dmdto.setNombreCentroOperacion(m.getCo().getNombre());
 
-				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO(s);
 				List<MaterialHistorial> mhs = mhdao
 						.findByIdMaterial(idMaterial);
 				ArrayList<HistorialMaterialItemDTO> hmidto = new ArrayList<HistorialMaterialItemDTO>();
@@ -799,7 +799,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				dmdto.setHistorial(hmidto);
 
-				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO(s);
 				List<GuiaDespacho> gds = gddao.findByIdMaterial(idMaterial);
 				HashMap<String, DocumentoDTO> docs = new HashMap<String, DocumentoDTO>();
 				DocumentoDTO ddto = null;
@@ -889,20 +889,20 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				Co co = cdao.getById(idCo);
 				if (co == null) {
 					throw new NullPointerException(
 							"No se ha encontrado el centro especificado.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				List<Material> ms = mdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
 								idAplicacion, idNivel, idActividadTipo, codigos);
@@ -912,16 +912,16 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se encontró ningún material con los códigos especificados.");
 				}
 
-				LugarDAO ldao = new LugarDAO();
+				LugarDAO ldao = new LugarDAO(s);
 				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
 				Lugar imprenta = ldao.findByNombre(Lugar.IMPRENTA);
 				List<Lugar> lugares = ldao.findAll();
 
-				MaterialEstadoDAO medao = new MaterialEstadoDAO();
+				MaterialEstadoDAO medao = new MaterialEstadoDAO(s);
 				MaterialEstado me = medao
 						.findByNombre(MaterialEstado.EN_EL_LUGAR);
 
-				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO(s);
 				GuiaDespacho gd = null;
 				Date fecha = new Date();
 				if (folio != null && !folio.isEmpty()) {
@@ -930,7 +930,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					gd.setFecha(fecha);
 					gd.setCodigo(folio);
 					if (file != null && !file.isEmpty()) {
-						ArchivoDAO adao = new ArchivoDAO();
+						ArchivoDAO adao = new ArchivoDAO(s);
 						Archivo archivo = guardarArchivo(file);
 						archivo.setTitulo(folio);
 						adao.save(archivo);
@@ -939,11 +939,12 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					gddao.save(gd);
 				}
 
-				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO(s);
 				MaterialHistorial mh = null;
 				MaterialHistorialId mhid = null;
 				HistorialMaterialItemDTO mhLast = null;
-				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO();
+				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO(
+						s);
 				MaterialXGuiaDespacho mxgd = null;
 				List<HistorialMaterialItemDTO> mhLasts = mhdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
@@ -1070,20 +1071,20 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				Co co = cdao.getById(idCo);
 				if (co == null) {
 					throw new NullPointerException(
 							"No se ha encontrado el centro especificado.");
 				}
 
-				LoteDAO ldao = new LoteDAO();
+				LoteDAO ldao = new LoteDAO(s);
 				Lote l = null;
 
 				if (lote.getId() != -1) {
@@ -1096,7 +1097,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					ldao.save(l);
 				}
 
-				MaterialXLoteDAO mxldao = new MaterialXLoteDAO();
+				MaterialXLoteDAO mxldao = new MaterialXLoteDAO(s);
 				List<Integer> idMs = mxldao.findIdMaterialesByIdLote(l.getId());
 				MaterialXLoteId mxlid = null;
 				MaterialXLote mxl = null;
@@ -1113,7 +1114,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					}
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				Material m = null;
 
 				if (materiales != null && !materiales.isEmpty()) {
@@ -1226,13 +1227,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				Usuario receptor = udao.findbyUsername(StringUtils
 						.formatRut(rut));
 				if (receptor == null) {
@@ -1240,14 +1241,14 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado a un usuario con el rut especificado.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				Co co = cdao.getById(idCo);
 				if (co == null) {
 					throw new NullPointerException(
 							"No se ha encontrado el centro especificado.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				List<Material> ms = mdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
 								idAplicacion, idNivel, idActividadTipo, codigos);
@@ -1257,15 +1258,15 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se encontró ningún material con los códigos especificados.");
 				}
 
-				LugarDAO ldao = new LugarDAO();
+				LugarDAO ldao = new LugarDAO(s);
 				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
 				Lugar destino = ldao.getById(etapa.getId());
 
-				MaterialEstadoDAO medao = new MaterialEstadoDAO();
+				MaterialEstadoDAO medao = new MaterialEstadoDAO(s);
 				MaterialEstado me = medao
 						.findByNombre(MaterialEstado.EN_EL_LUGAR);
 
-				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO(s);
 				GuiaDespacho gd = null;
 				Date fecha = new Date();
 				if (folio != null && !folio.isEmpty()) {
@@ -1274,7 +1275,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					gd.setFecha(fecha);
 					gd.setCodigo(folio);
 					if (file != null && !file.isEmpty()) {
-						ArchivoDAO adao = new ArchivoDAO();
+						ArchivoDAO adao = new ArchivoDAO(s);
 						Archivo archivo = guardarArchivo(file);
 						archivo.setTitulo(folio);
 						adao.save(archivo);
@@ -1283,12 +1284,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					gddao.save(gd);
 				}
 
-				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO(s);
 				MaterialHistorial mh = null;
 				MaterialHistorialId mhid = null;
-				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO();
+				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO(
+						s);
 				MaterialXGuiaDespacho mxgd = null;
-				MaterialXLoteDAO mxldao = new MaterialXLoteDAO();
+				MaterialXLoteDAO mxldao = new MaterialXLoteDAO(s);
 				for (Material material : ms) {
 					mhid = new MaterialHistorialId();
 					mhid.setMaterialId(material.getId());
@@ -1399,13 +1401,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				Usuario receptor = udao.findbyUsername(StringUtils
 						.formatRut(rut));
 				if (receptor == null) {
@@ -1413,7 +1415,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado a un usuario con el rut especificado.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				Co co = cdao.getById(idCo);
 				if (co == null) {
 					throw new NullPointerException(
@@ -1426,7 +1428,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado el centro de destino especificado.");
 				}
 
-				MaterialDAO mdao = new MaterialDAO();
+				MaterialDAO mdao = new MaterialDAO(s);
 				List<Material> ms = mdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDCodigos(
 								idAplicacion, idNivel, idActividadTipo, codigos);
@@ -1436,14 +1438,14 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							"No se encontró ningún material con los códigos especificados.");
 				}
 
-				LugarDAO ldao = new LugarDAO();
+				LugarDAO ldao = new LugarDAO(s);
 				Lugar centro = ldao.findByNombre(Lugar.CENTRO_DE_OPERACIONES);
 
-				MaterialEstadoDAO medao = new MaterialEstadoDAO();
+				MaterialEstadoDAO medao = new MaterialEstadoDAO(s);
 				MaterialEstado me = medao
 						.findByNombre(MaterialEstado.EN_CAMINO);
 
-				GuiaDespachoDAO gddao = new GuiaDespachoDAO();
+				GuiaDespachoDAO gddao = new GuiaDespachoDAO(s);
 				GuiaDespacho gd = null;
 				Date fecha = new Date();
 				if (folio != null && !folio.isEmpty()) {
@@ -1452,7 +1454,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					gd.setFecha(fecha);
 					gd.setCodigo(folio);
 					if (file != null && !file.isEmpty()) {
-						ArchivoDAO adao = new ArchivoDAO();
+						ArchivoDAO adao = new ArchivoDAO(s);
 						Archivo archivo = guardarArchivo(file);
 						archivo.setTitulo(folio);
 						adao.save(archivo);
@@ -1461,12 +1463,13 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					gddao.save(gd);
 				}
 
-				MaterialHistorialDAO mhdao = new MaterialHistorialDAO();
+				MaterialHistorialDAO mhdao = new MaterialHistorialDAO(s);
 				MaterialHistorial mh = null;
 				MaterialHistorialId mhid = null;
-				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO();
+				MaterialXGuiaDespachoDAO mxgddao = new MaterialXGuiaDespachoDAO(
+						s);
 				MaterialXGuiaDespacho mxgd = null;
-				MaterialXLoteDAO mxldao = new MaterialXLoteDAO();
+				MaterialXLoteDAO mxldao = new MaterialXLoteDAO(s);
 				for (Material material : ms) {
 					mhid = new MaterialHistorialId();
 					mhid.setMaterialId(material.getId());
@@ -1561,20 +1564,20 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CoDAO cdao = new CoDAO();
+				CoDAO cdao = new CoDAO(s);
 				Co destino = cdao.getById(idCo);
 				if (destino == null) {
 					throw new NullPointerException(
 							"No se ha encontrado el centro de destino especificado.");
 				}
 
-				LoteDAO ldao = new LoteDAO();
+				LoteDAO ldao = new LoteDAO(s);
 				Lote l = ldao.getById(loteId);
 
 				if (l == null) {

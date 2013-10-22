@@ -81,7 +81,7 @@ public class DownloadServlet extends HttpServlet {
 		ManagedSessionContext.bind(s);
 		try {
 			s.beginTransaction();
-			ArchivoDAO adao = new ArchivoDAO();
+			ArchivoDAO adao = new ArchivoDAO(s);
 			Archivo a = adao.getById(id);
 
 			if (a == null

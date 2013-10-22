@@ -18,11 +18,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class MaterialXActividadDAO extends
 		AbstractHibernateDAO<MaterialXActividad, MaterialXActividadId> {
+	/**
+	 * 
+	 */
+	public MaterialXActividadDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public MaterialXActividadDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<MaterialXActividad> findByIdMaterial(Integer idMaterial) {
 
 		List<MaterialXActividad> mxas = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT mxa.* FROM  MATERIAL_x_ACTIVIDAD mxa"
 				+ " WHERE mxa.material_id="
 				+ SecurityFilter.escapeString(idMaterial);

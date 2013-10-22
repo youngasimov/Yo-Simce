@@ -8,11 +8,26 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
 
 public class UsuarioSeleccionDAO extends
 		AbstractHibernateDAO<UsuarioSeleccion, Integer> {
+	/**
+	 * 
+	 */
+	public UsuarioSeleccionDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public UsuarioSeleccionDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public UsuarioSeleccion findBYIdUsuarioXAplicacionXNivel(
 			Integer idUsuarioXAplicacionXNivel) {
 
 		UsuarioSeleccion us = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT us.* FROM USUARIO_SELECCION us"
 				+ " WHERE us.usuario_x_aplicacion_x_nivel_id="
 				+ SecurityFilter.escapeString(idUsuarioXAplicacionXNivel);
@@ -25,7 +40,7 @@ public class UsuarioSeleccionDAO extends
 			Integer idAplicacion, Integer idNivel, Integer idUsuario) {
 
 		UsuarioSeleccion us = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT us.* FROM USUARIO_SELECCION us"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario)

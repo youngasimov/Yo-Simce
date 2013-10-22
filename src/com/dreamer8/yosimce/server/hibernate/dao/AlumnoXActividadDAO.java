@@ -16,12 +16,24 @@ import com.dreamer8.yosimce.server.utils.StringUtils;
  */
 public class AlumnoXActividadDAO extends
 		AbstractHibernateDAO<AlumnoXActividad, Integer> {
+	/**
+	 * 
+	 */
+	public AlumnoXActividadDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public AlumnoXActividadDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public AlumnoXActividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDRutAlumno(
 			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idCurso, String rutAlumno) {
 
 		AlumnoXActividad axa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -46,7 +58,7 @@ public class AlumnoXActividadDAO extends
 			Integer iDEstablecimiento, String rutAlumno) {
 
 		AlumnoXActividad axa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axa.* FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -70,7 +82,7 @@ public class AlumnoXActividadDAO extends
 	public AlumnoXActividad findSinAlumnoByIdActividad(Integer idActividad) {
 
 		AlumnoXActividad axa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axa.* FROM ALUMNO_x_ACTIVIDAD axa "
 				+ " WHERE axa.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)
@@ -84,7 +96,7 @@ public class AlumnoXActividadDAO extends
 			Integer idActividad) {
 
 		AlumnoXActividad axa = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axa.* FROM ALUMNO_x_ACTIVIDAD axa "
 				+ " WHERE axa.actividad_id="
 				+ SecurityFilter.escapeString(idActividad)

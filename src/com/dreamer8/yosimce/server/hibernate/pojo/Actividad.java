@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXDocumentoTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadXIncidenciaDAO;
@@ -457,14 +459,14 @@ public class Actividad implements java.io.Serializable {
 		return cdto;
 	}
 
-	public AgendaPreviewDTO getAgendaPreviewDTO(Integer idAplicacion) {
+	public AgendaPreviewDTO getAgendaPreviewDTO(Session s, Integer idAplicacion) {
 		AgendaPreviewDTO apdto = new AgendaPreviewDTO();
 		apdto.setCurso(curso.getNombre());
 		apdto.setCursoId(curso.getId());
 		apdto.setEstablecimientoName(curso.getEstablecimiento().getNombre());
 		Integer idEstablecimiento = curso.getEstablecimiento().getId();
 		apdto.setRbd(Integer.toString(idEstablecimiento));
-		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
+		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO(s);
 		EstablecimientoTipo et = etdao.findByIdAplicacionANDIdEstablecimiento(
 				idAplicacion, idEstablecimiento);
 		if (et != null) {
@@ -491,14 +493,14 @@ public class Actividad implements java.io.Serializable {
 	/**
 	 * @return
 	 */
-	public AgendaDTO getAgendaDTO() {
+	public AgendaDTO getAgendaDTO(Session s) {
 		AgendaDTO adto = new AgendaDTO();
 		adto.setCurso(curso.getNombre());
 		adto.setEstablecimiento(curso.getEstablecimiento().getNombre());
 		adto.setRbd(Integer.toString(curso.getEstablecimiento().getId()));
 		ArrayList<AgendaItemDTO> aidtos = new ArrayList<AgendaItemDTO>();
 		for (ActividadHistorial ah : getActividadHistorials()) {
-			aidtos.add(ah.getAgendaItemDTO());
+			aidtos.add(ah.getAgendaItemDTO(s));
 		}
 		adto.setItems(aidtos);
 		return adto;
@@ -507,7 +509,8 @@ public class Actividad implements java.io.Serializable {
 	/**
 	 * @return
 	 */
-	public ActividadDTO getActividadDTO(Integer idAplicacion, String baseURL) {
+	public ActividadDTO getActividadDTO(Session s, Integer idAplicacion,
+			String baseURL) {
 		ActividadDTO adto = new ActividadDTO();
 		adto.setNombreEstablecimiento(curso.getEstablecimiento().getNombre());
 		Integer idEstablecimiento = curso.getEstablecimiento().getId();
@@ -517,7 +520,7 @@ public class Actividad implements java.io.Serializable {
 		adto.setComuna(curso.getEstablecimiento().getComuna().getNombre());
 		adto.setRegion(curso.getEstablecimiento().getComuna().getProvincia()
 				.getRegion().getNombre());
-		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO();
+		EstablecimientoTipoDAO etdao = new EstablecimientoTipoDAO(s);
 		EstablecimientoTipo et = etdao.findByIdAplicacionANDIdEstablecimiento(
 				idAplicacion, idEstablecimiento);
 		if (et != null) {
@@ -542,7 +545,7 @@ public class Actividad implements java.io.Serializable {
 		adto.setEvaluacionProcedimientos(notaProceso);
 		adto.setMaterialContingencia(materialContingencia);
 		adto.setDetalleUsoMaterialContingencia(detalleUsoMaterialContingencia);
-		ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO();
+		ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO(s);
 		List<ActividadXIncidencia> axis = axidao
 				.findByIdActividadANDIncidenciaTipo(id,
 						IncidenciaTipo.CONTINGENCIA);
@@ -553,7 +556,7 @@ public class Actividad implements java.io.Serializable {
 			}
 		}
 		adto.setContingencias(cdtos);
-		ActividadXDocumentoTipoDAO axdtdao = new ActividadXDocumentoTipoDAO();
+		ActividadXDocumentoTipoDAO axdtdao = new ActividadXDocumentoTipoDAO(s);
 		ActividadXDocumentoTipo axdt = axdtdao
 				.findByIdActividadANDDocumentoTipo(id,
 						DocumentoTipo.CUESTIONARIO_PADRE);
@@ -563,7 +566,7 @@ public class Actividad implements java.io.Serializable {
 			adto.setCuestionariosRecibidos(axdt.getTotalRecibidos());
 		}
 
-		DocumentoDAO ddao = new DocumentoDAO();
+		DocumentoDAO ddao = new DocumentoDAO(s);
 		List<Documento> ds = ddao.findByIdActividadANDDocumentoTipo(id,
 				DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION);
 

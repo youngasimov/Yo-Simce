@@ -15,10 +15,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class DocumentoTipoDAO extends
 		AbstractHibernateDAO<DocumentoTipo, Integer> {
+	/**
+	 * 
+	 */
+	public DocumentoTipoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public DocumentoTipoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public DocumentoTipo findByNombre(String nombre) {
 
 		DocumentoTipo dt = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT dt.* FROM DOCUMENTO_TIPO dt"
 				+ " WHERE dt.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

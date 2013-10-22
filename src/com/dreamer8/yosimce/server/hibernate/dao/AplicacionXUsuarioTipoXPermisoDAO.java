@@ -17,12 +17,23 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class AplicacionXUsuarioTipoXPermisoDAO extends
 		AbstractHibernateDAO<AplicacionXUsuarioTipoXPermiso, Integer> {
+	/**
+	 * 
+	 */
+	public AplicacionXUsuarioTipoXPermisoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public AplicacionXUsuarioTipoXPermisoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public List<AplicacionXUsuarioTipoXPermiso> findByIdAplicacionSortedByIdPermiso(
 			Integer idAplicacion) {
 
 		List<AplicacionXUsuarioTipoXPermiso> axutxps = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axutxp.* FROM  APLICACION_x_USUARIO_TIPO_x_PERMISO axutxp"
 				+ " JOIN APLICACION_x_USUARIO_TIPO axut ON (axutxp.aplicacion_x_usuario_tipo_id=axut.id AND axut.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -38,7 +49,7 @@ public class AplicacionXUsuarioTipoXPermisoDAO extends
 			Integer idAplicacion, Integer idPermiso) {
 
 		List<AplicacionXUsuarioTipoXPermiso> axutxps = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axutxp.* FROM  APLICACION_x_USUARIO_TIPO_x_PERMISO axutxp"
 				+ " JOIN APLICACION_x_USUARIO_TIPO axut ON (axutxp.aplicacion_x_usuario_tipo_id=axut.id AND axut.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)

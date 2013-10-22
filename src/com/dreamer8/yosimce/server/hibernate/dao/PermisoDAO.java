@@ -18,6 +18,20 @@ import com.dreamer8.yosimce.shared.dto.PermisoDTO;
  * 
  */
 public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
+	/**
+	 * 
+	 */
+	public PermisoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public PermisoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	/**
 	 * @param id
@@ -27,7 +41,7 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 			Integer idAplicacion, Integer idNivel, Integer idUsuario) {
 
 		List<Permiso> ps = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT p.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn"
 				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -52,7 +66,7 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 	public List<PermisoDTO> findByIdAplicacion(Integer idAplicacion) {
 
 		List<PermisoDTO> pdtos = new ArrayList<PermisoDTO>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT p.id,p.clase,p.metodo,axut.usuario_tipo_id,axutxp.acceso FROM APLICACION_x_USUARIO_TIPO axut"
 				+ " JOIN APLICACION_x_USUARIO_TIPO_x_PERMISO axutxp ON (axutxp.aplicacion_x_usuario_tipo_id=axut.id AND axut.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -86,7 +100,7 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 
 	public List<String> getClases() {
 		List<String> clases = new ArrayList<String>();
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT p.clase FROM PERMISO p";
 		Query q = s.createSQLQuery(query);
 		List<Object> os = q.list();

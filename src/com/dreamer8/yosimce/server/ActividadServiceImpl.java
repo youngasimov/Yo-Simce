@@ -98,7 +98,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 			throws NoAllowedException, NoLoggedException, DBException {
 
 		ArrayList<ActividadPreviewDTO> apdtos = null;
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -127,13 +127,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				apdtos = (ArrayList<ActividadPreviewDTO>) adao
 						.findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
@@ -143,7 +143,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
-			System.err.println(ex);
+			ex.printStackTrace();
 			HibernateUtil.rollback(s);
 			throw new DBException();
 		} catch (ConsistencyException ex) {
@@ -199,13 +199,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				result = adao
 						.countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
@@ -275,13 +275,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO(
+						s);
 				sadtos = (ArrayList<SincAlumnoDTO>) axaxddao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -367,13 +368,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
+				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO(s);
 				AlumnoXActividad axa = axadao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCursoANDRutAlumno(
 								idAplicacion, idNivel, idActividadTipo,
@@ -384,15 +385,16 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado al alumno especificado.");
 				}
 
-				AlumnoEstadoDAO aedao = new AlumnoEstadoDAO();
+				AlumnoEstadoDAO aedao = new AlumnoEstadoDAO(s);
 				AlumnoEstado ae = aedao.findByNombre(AlumnoEstado.PRESENTE);
 
 				axa.setAlumnoEstado(ae);
 				axa.setPruebaComentario(sinc.getComentario());
 				axadao.update(axa);
 
-				DocumentoDAO ddao = new DocumentoDAO();
-				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				DocumentoDAO ddao = new DocumentoDAO(s);
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO(
+						s);
 				if (sinc.getIdPendrive() != null
 						&& !sinc.getIdPendrive().isEmpty()) {
 					// AlumnoXActividadXDocumento axaxdPndrive = axaxddao
@@ -417,7 +419,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					}
 					axaxdPndrive.setDocumento(pendrive);
 
-					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO(s);
 					DocumentoEstado de = dedao.getById(sinc.getEstado()
 							.getIdEstadoSincronizacion());
 
@@ -433,7 +435,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					axaxddao.saveOrUpdate(axaxdPndrive);
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -449,7 +451,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 									DocumentoTipo.CUESTIONARIO_PADRE);
 
 					if (axaxdCuestionario == null) {
-						DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+						DocumentoTipoDAO dtdao = new DocumentoTipoDAO(s);
 						DocumentoTipo dt = dtdao
 								.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
 						Documento cuestionario = new Documento();
@@ -534,7 +536,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	// "No se ha especificado el tipo de usuario.");
 	// }
 	//
-	// UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+	// UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO(s);
 	// List<UsuarioXActividad> uxas = uxadao
 	// .findSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
 	// idAplicacion, idNivel, idActividadTipo,
@@ -623,7 +625,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 	// "No se ha especificado el tipo de usuario.");
 	// }
 	//
-	// UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+	// UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO(s);
 	// List<UsuarioXActividad> uxas = uxadao
 	// .findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
 	// idAplicacion, idNivel, idActividadTipo,
@@ -707,13 +709,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				udtos = (ArrayList<UserDTO>) udao
 						.findExaminadoresByIdAplicacionANDIdNivelANDFiltro(
 								idAplicacion, idNivel, 0, 10, search);
@@ -777,17 +779,17 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				IncidenciaTipoDAO itdao = new IncidenciaTipoDAO();
+				IncidenciaTipoDAO itdao = new IncidenciaTipoDAO(s);
 				IncidenciaTipo it = itdao
 						.findByNombre(IncidenciaTipo.CONTINGENCIA);
 				if (it != null) {
-					MotivoFallaDAO mfdao = new MotivoFallaDAO();
+					MotivoFallaDAO mfdao = new MotivoFallaDAO(s);
 					List<MotivoFalla> mfs = mfdao.findByIdIncidenciaTipo(it
 							.getId());
 
@@ -861,13 +863,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -879,7 +881,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				// throw new ConsistencyException(
 				// "Esta actividad aún no ha sido agendada.");
 				// }
-				adto = a.getActividadDTO(idAplicacion, getBaseURL());
+				adto = a.getActividadDTO(s, idAplicacion, getBaseURL());
 				s.getTransaction().commit();
 			}
 		} catch (HibernateException ex) {
@@ -953,13 +955,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo,
@@ -1017,13 +1019,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				if (actividad.getEstadoAplicacion() != null
 						&& actividad.getEstadoAplicacion().getId() != null) {
-					ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+					ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
 					ActividadEstado ae = aedao.getById(actividad
 							.getEstadoAplicacion().getId());
 					a.setActividadEstado(ae);
 				}
 
-				ActividadXDocumentoTipoDAO axdtdao = new ActividadXDocumentoTipoDAO();
+				ActividadXDocumentoTipoDAO axdtdao = new ActividadXDocumentoTipoDAO(
+						s);
 				ActividadXDocumentoTipo axdt = axdtdao
 						.findByIdActividadANDDocumentoTipo(a.getId(),
 								DocumentoTipo.CUESTIONARIO_PADRE);
@@ -1031,7 +1034,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				if (axdt == null) {
 					axdt = new ActividadXDocumentoTipo();
 					axdt.setActividad(a);
-					DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+					DocumentoTipoDAO dtdao = new DocumentoTipoDAO(s);
 					DocumentoTipo dt = dtdao
 							.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
 					axdt.setDocumentoTipo(dt);
@@ -1056,7 +1059,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						if (axdt == null) {
 							axdt = new ActividadXDocumentoTipo();
 							axdt.setActividad(aplicacion);
-							DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+							DocumentoTipoDAO dtdao = new DocumentoTipoDAO(s);
 							DocumentoTipo dt = dtdao
 									.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
 							axdt.setDocumentoTipo(dt);
@@ -1081,7 +1084,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 								if (axdt == null) {
 									axdt = new ActividadXDocumentoTipo();
 									axdt.setActividad(aplicacion);
-									DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+									DocumentoTipoDAO dtdao = new DocumentoTipoDAO(
+											s);
 									DocumentoTipo dt = dtdao
 											.findByNombre(DocumentoTipo.CUESTIONARIO_PADRE);
 									axdt.setDocumentoTipo(dt);
@@ -1105,14 +1109,14 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				if (actividad.getDocumento() != null
 						&& !StringUtils.isEmpty(actividad.getDocumento()
 								.getName())) {
-					DocumentoDAO ddao = new DocumentoDAO();
+					DocumentoDAO ddao = new DocumentoDAO(s);
 					if (actividad.getDocumento().getId() != null) {
 						d = ddao.findByIdArchivo(actividad.getDocumento()
 								.getId());
 					}
 					if (d == null) {
 						d = new Documento();
-						DocumentoTipoDAO dtdao = new DocumentoTipoDAO();
+						DocumentoTipoDAO dtdao = new DocumentoTipoDAO(s);
 						DocumentoTipo dt = dtdao
 								.findByNombre(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION);
 						d.setDocumentoTipo(dt);
@@ -1120,7 +1124,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					if (d.getArchivo() == null
 							|| !d.getArchivo().getId()
 									.equals(actividad.getDocumento().getId())) {
-						ArchivoDAO archivoDAO = new ArchivoDAO();
+						ArchivoDAO archivoDAO = new ArchivoDAO(s);
 						Archivo archivo = null;
 						if (actividad.getDocumento().getId() != null) {
 							archivo = archivoDAO.getById(actividad
@@ -1138,7 +1142,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 						ddao.saveOrUpdate(d);
 					}
 
-					ActividadXDocumentoDAO axddao = new ActividadXDocumentoDAO();
+					ActividadXDocumentoDAO axddao = new ActividadXDocumentoDAO(
+							s);
 					ActividadXDocumento axd = axddao
 							.findByIdActividadANDIdDocumento(a.getId(),
 									d.getId());
@@ -1152,11 +1157,11 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					}
 				}
 
-				ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO();
+				ActividadXIncidenciaDAO axidao = new ActividadXIncidenciaDAO(s);
 				List<ActividadXIncidencia> axis = axidao
 						.findByIdActividadANDIncidenciaTipo(a.getId(),
 								IncidenciaTipo.CONTINGENCIA);
-				MotivoFallaDAO mfdao = new MotivoFallaDAO();
+				MotivoFallaDAO mfdao = new MotivoFallaDAO(s);
 				MotivoFalla mf = null;
 
 				if (axis != null && !axis.isEmpty()) {
@@ -1208,7 +1213,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				a.setUsuario(u);
 				adao.update(a);
 
-				ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+				ActividadHistorialDAO ahdao = new ActividadHistorialDAO(s);
 				ActividadHistorial ah = new ActividadHistorial();
 				ActividadHistorialId ahid = new ActividadHistorialId();
 				ahid.setActividadId(a.getId());
@@ -1281,13 +1286,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
 				List<ActividadEstado> aes = aedao.findAllByActividad();
 
 				if (aes != null && !aes.isEmpty()) {
@@ -1361,13 +1366,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO(s);
 				List<UsuarioXActividad> uxas = uxadao
 						.findExaminadoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -1448,31 +1453,31 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO(s);
 				UsuarioXActividad uxa = null;
 				UserDTO udto = null;
-				SuplenteXCoDAO sxcDAO = new SuplenteXCoDAO();
+				SuplenteXCoDAO sxcDAO = new SuplenteXCoDAO(s);
 				SuplenteXCo sxc = null;
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
 
-				UsuarioSeleccionDAO usdao = new UsuarioSeleccionDAO();
+				UsuarioSeleccionDAO usdao = new UsuarioSeleccionDAO(s);
 				UsuarioSeleccion us = null;
 				List<Integer> idReemplazados = new ArrayList<Integer>();
 				List<Actividad> actividades = null;
-				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO(s);
 				UsuarioTipo examinadorTipo = utdao
 						.findByNombre(UsuarioTipo.EXAMINADOR);
 				UsuarioXActividad uxaNext = null;
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				List<Usuario> usuariosAusentes = null;
 
 				if (evaluaciones != null && !evaluaciones.isEmpty()) {
@@ -1685,13 +1690,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO(s);
 				List<DocumentoEstado> des = dedao
 						.findForSincronizacionFallida();
 				if (des != null && !des.isEmpty()) {
@@ -1760,13 +1765,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -1776,7 +1781,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"El curso especificado no tiene una actividad asociada.");
 				}
 
-				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO(
+						s);
 				mddtos = (ArrayList<MaterialDefectuosoDTO>) axaxddao
 						.findDefectuososByIdctividadANDTipoDocumento(a.getId(),
 								DocumentoTipo.PRUEBA);
@@ -1852,13 +1858,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -1868,7 +1874,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"El curso especificado no tiene una actividad asociada.");
 				}
 
-				DocumentoDAO ddao = new DocumentoDAO();
+				DocumentoDAO ddao = new DocumentoDAO(s);
 				Documento d = ddao.findByCodigoANDTipoDocumento(
 						material.getIdMaterial(), DocumentoTipo.PRUEBA);
 
@@ -1877,7 +1883,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado el pendrive especificado. Verifique que ha ingresado el código correctamente.");
 				}
 
-				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
+				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO(s);
 				AlumnoXActividad axa = axadao.findSinAlumnoByIdActividad(a
 						.getId());
 
@@ -1887,7 +1893,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					axadao.save(axa);
 				}
 
-				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO();
+				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO(
+						s);
 				AlumnoXActividadXDocumento axaxd = axaxddao
 						.findByIdAlumnoXActividadANDIdDocumento(axa.getId(),
 								d.getId());
@@ -1899,7 +1906,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				if (material.getEstado() != null) {
-					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+					DocumentoEstadoDAO dedao = new DocumentoEstadoDAO(s);
 					DocumentoEstado de = dedao.getById(material.getEstado()
 							.getIdEstadoSincronizacion());
 					axaxd.setDocumentoEstado(de);
@@ -1976,13 +1983,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Actividad a = adao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -1992,7 +1999,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"El curso especificado no tiene una actividad asociada.");
 				}
 
-				DocumentoDAO ddao = new DocumentoDAO();
+				DocumentoDAO ddao = new DocumentoDAO(s);
 				Documento d = ddao.findByCodigoANDTipoDocumento(idMaterial,
 						DocumentoTipo.PRUEBA);
 
@@ -2001,7 +2008,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha encontrado el pendrive especificado. Verifique que ha ingresado el código correctamente.");
 				}
 
-				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO();
+				AlumnoXActividadDAO axadao = new AlumnoXActividadDAO(s);
 				AlumnoXActividad axa = axadao.findSinAlumnoByIdActividad(a
 						.getId());
 
@@ -2069,13 +2076,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				Integer total = adao
 						.countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
@@ -2089,7 +2096,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				Integer lenght = 10000;
 				List<ActividadPreviewDTO> apdtos = null;
 
-				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipoDAO atdao = new ActividadTipoDAO(s);
 				ActividadTipo at = atdao.getById(idActividadTipo);
 
 				DateFormat dateFormat = new SimpleDateFormat(
@@ -2181,7 +2188,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 				bw.close();
 
-				ArchivoDAO ardao = new ArchivoDAO();
+				ArchivoDAO ardao = new ArchivoDAO(s);
 				Archivo archivo = new Archivo();
 				archivo.setTitulo(name);
 				archivo.setRutaArchivo(file.getAbsolutePath());
@@ -2252,13 +2259,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				AlumnoDAO adao = new AlumnoDAO();
+				AlumnoDAO adao = new AlumnoDAO(s);
 				Integer total = adao
 						.countAlumnosCsvByIdAplicacionANDIdNivelANDIdTipoActividadANDFiltros(
 								idAplicacion, idNivel, idActividadTipo,
@@ -2267,7 +2274,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se han obtenido resultados con el filtro especificado.");
 				}
-				ActividadTipoDAO atdao = new ActividadTipoDAO();
+				ActividadTipoDAO atdao = new ActividadTipoDAO(s);
 				ActividadTipo at = atdao.getById(idActividadTipo);
 
 				Integer offset = 0;
@@ -2303,7 +2310,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 				bw.close();
 
-				ArchivoDAO ardao = new ArchivoDAO();
+				ArchivoDAO ardao = new ArchivoDAO(s);
 				Archivo archivo = new Archivo();
 				archivo.setTitulo(name);
 				archivo.setRutaArchivo(file.getAbsolutePath());
@@ -2375,13 +2382,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO();
+				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO(s);
 				List<DocumentoEstado> des = dedao.findForSincronizacion();
 				if (des != null && !des.isEmpty()) {
 					for (DocumentoEstado documentoEstado : des) {
@@ -2449,13 +2456,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
 				List<ActividadEstado> aes = aedao.findAll2();
 
 				if (aes != null && !aes.isEmpty()) {
@@ -2524,13 +2531,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO(s);
 				eudtos = (ArrayList<EvaluacionSupervisorDTO>) uxadao
 						.findEvaluacionSupervisoresByIdAplicacionANDIdNivelANDIdActividadTipo(
 								idAplicacion, idNivel, idActividadTipo,
@@ -2616,13 +2623,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO();
+				UsuarioXActividadDAO uxadao = new UsuarioXActividadDAO(s);
 				UsuarioXActividad uxa = uxadao
 						.findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDIdEstablecimientoANDNombreCurso(
 								idAplicacion, idNivel, idActividadTipo,
@@ -2707,13 +2714,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				SuplenteXCoDAO sxcdao = new SuplenteXCoDAO();
+				SuplenteXCoDAO sxcdao = new SuplenteXCoDAO(s);
 				esdtos = (ArrayList<EvaluacionSuplenteDTO>) sxcdao
 						.findEvaluacionesByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, idNivel, idActividadTipo,
@@ -2795,13 +2802,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				SuplenteXCoDAO sxcdao = new SuplenteXCoDAO();
+				SuplenteXCoDAO sxcdao = new SuplenteXCoDAO(s);
 				SuplenteXCo sxc = sxcdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuario(
 								idAplicacion, idNivel, idActividadTipo,

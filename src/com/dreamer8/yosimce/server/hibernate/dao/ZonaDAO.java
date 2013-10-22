@@ -16,10 +16,25 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  * 
  */
 public class ZonaDAO extends AbstractHibernateDAO<Zona, Integer> {
+	/**
+	 * 
+	 */
+	public ZonaDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public ZonaDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public List<Zona> findByIdAplicacion(Integer idAplicacion) {
 
 		List<Zona> zs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT z.* FROM CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")";
@@ -32,7 +47,7 @@ public class ZonaDAO extends AbstractHibernateDAO<Zona, Integer> {
 			Integer idComuna) {
 
 		List<Zona> zs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT z.* FROM CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion) + ")"
@@ -47,7 +62,7 @@ public class ZonaDAO extends AbstractHibernateDAO<Zona, Integer> {
 			Integer idRegion) {
 
 		List<Zona> zs = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT z.* FROM CENTRO_REGIONAL cr "
 				+ " JOIN ZONA z ON (cr.id=z.centro_regional_id AND cr.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)

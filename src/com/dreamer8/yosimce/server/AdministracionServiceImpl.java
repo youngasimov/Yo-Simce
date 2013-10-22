@@ -82,13 +82,13 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				if (usuarioTipo.getRol().equals(UsuarioTipo.ADMINISTRADOR)) {
 					udtos = (ArrayList<UserDTO>) udao
 							.findByIdAplicacionANDIdNivelANDFiltro(
@@ -150,13 +150,13 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				UsuarioTipoDAO utdao = new UsuarioTipoDAO();
+				UsuarioTipoDAO utdao = new UsuarioTipoDAO(s);
 				List<UsuarioTipo> uts = null;
 
 				if (usuarioTipo.getRol().equals(UsuarioTipo.ADMINISTRADOR)) {
@@ -224,7 +224,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				if (tipoEmplazamiento
 						.equals(EmplazamientoDTO.CENTRO_OPERACIONAL)) {
-					CoDAO codao = new CoDAO();
+					CoDAO codao = new CoDAO(s);
 					List<Co> cos = codao.findByIdAplicacion(idAplicacion);
 					if (cos != null && !cos.isEmpty()) {
 						for (Co co : cos) {
@@ -232,7 +232,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 						}
 					}
 				} else if (tipoEmplazamiento.equals(EmplazamientoDTO.ZONA)) {
-					ZonaDAO zdao = new ZonaDAO();
+					ZonaDAO zdao = new ZonaDAO(s);
 					List<Zona> zs = zdao.findByIdAplicacion(idAplicacion);
 					if (zs != null && !zs.isEmpty()) {
 						for (Zona z : zs) {
@@ -241,7 +241,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 					}
 				} else if (tipoEmplazamiento
 						.equals(EmplazamientoDTO.CENTRO_REGIONAL)) {
-					CentroRegionalDAO crdao = new CentroRegionalDAO();
+					CentroRegionalDAO crdao = new CentroRegionalDAO(s);
 					List<CentroRegional> crs = crdao
 							.findByIdAplicacion(idAplicacion);
 					if (crs != null && !crs.isEmpty()) {
@@ -316,7 +316,7 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				PermisoDAO pdao = new PermisoDAO();
+				PermisoDAO pdao = new PermisoDAO(s);
 				pdtos = (ArrayList<PermisoDTO>) pdao
 						.findByIdAplicacion(idAplicacion);
 
@@ -369,13 +369,15 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				AplicacionXUsuarioTipoDAO axutdao = new AplicacionXUsuarioTipoDAO();
+				AplicacionXUsuarioTipoDAO axutdao = new AplicacionXUsuarioTipoDAO(
+						s);
 				AplicacionXUsuarioTipo axut = null;
 
-				AplicacionXUsuarioTipoXPermisoDAO axutxpdao = new AplicacionXUsuarioTipoXPermisoDAO();
+				AplicacionXUsuarioTipoXPermisoDAO axutxpdao = new AplicacionXUsuarioTipoXPermisoDAO(
+						s);
 				AplicacionXUsuarioTipoXPermiso axutxp = null;
 
-				PermisoDAO pdao = new PermisoDAO();
+				PermisoDAO pdao = new PermisoDAO(s);
 				Permiso p = null;
 				Integer idUsuarioTipo = null;
 				for (PermisoDTO pdto : permisos) {
@@ -492,13 +494,13 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ActividadDAO adao = new ActividadDAO();
+				ActividadDAO adao = new ActividadDAO(s);
 				List<Actividad> as = adao
 						.findAgendadasParaMañanaByIdAplicacionANDIdNivelANDIdActividadTipo(
 								2, 10, 1);
@@ -608,19 +610,21 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 			int min;
 			String dirMail = null;
 			String contMail = null;
-			ActividadDAO adao = new ActividadDAO();
+
+			Session s = HibernateUtil.getSessionFactory().openSession();
+			ManagedSessionContext.bind(s);
+
+			ActividadDAO adao = new ActividadDAO(s);
 			Establecimiento e = null;
-			EstablecimientoDAO edao = new EstablecimientoDAO();
+			EstablecimientoDAO edao = new EstablecimientoDAO(s);
 			Integer region;
 			Usuario u = null;
 			List<Usuario> us = null;
-			UsuarioDAO udao = new UsuarioDAO();
+			UsuarioDAO udao = new UsuarioDAO(s);
 			Boolean mandarMail;
 			String motivo;
 			Actividad actividad;
 			List<String> correos;
-			Session s = HibernateUtil.getSessionFactory().openSession();
-			ManagedSessionContext.bind(s);
 
 			try {
 				if (actividades != null && !actividades.isEmpty()) {

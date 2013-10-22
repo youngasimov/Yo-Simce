@@ -17,6 +17,20 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class ActividadTipoDAO extends
 		AbstractHibernateDAO<ActividadTipo, Integer> {
+	/**
+	 * 
+	 */
+	public ActividadTipoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * 
+	 */
+	public ActividadTipoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	/**
 	 * @param idAplicacion
@@ -28,7 +42,7 @@ public class ActividadTipoDAO extends
 			Integer idAplicacion, Integer idNivel, Integer idUsuario) {
 
 		List<ActividadTipo> ats = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT DISTINCT at.* FROM USUARIO_x_APLICACION_x_NIVEL uxaxn"
 				+ " JOIN APLICACION_x_NIVEL axn ON (uxaxn.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
@@ -38,7 +52,8 @@ public class ActividadTipoDAO extends
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON axn.id=axnxat.aplicacion_x_nivel_id"
 				+ " JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id"
 				+ " WHERE uxaxn.usuario_id="
-				+ SecurityFilter.escapeString(idUsuario) + " ORDER BY at.id ASC";
+				+ SecurityFilter.escapeString(idUsuario)
+				+ " ORDER BY at.id ASC";
 		Query q = s.createSQLQuery(query).addEntity(ActividadTipo.class);
 		ats = q.list();
 		return ats;
@@ -47,7 +62,7 @@ public class ActividadTipoDAO extends
 	public ActividadTipo finByNombre(String nombre) {
 
 		ActividadTipo at = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT at.* FROM ACTIVIDAD_TIPO at"
 				+ " WHERE at.nombre='" + SecurityFilter.escapeString(nombre)
 				+ "'";

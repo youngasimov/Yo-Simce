@@ -14,10 +14,22 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  * 
  */
 public class SexoDAO extends AbstractHibernateDAO<Sexo, Integer> {
+	/**
+ * 
+ */
+	public SexoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public SexoDAO(Session s) {
+		super();
+		setSession(s);
+	}
+
 	public Sexo findByNombre(String nombre) {
 
 		Sexo sexo = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT s.* FROM SEXO s" + " WHERE s.nombre='"
 				+ SecurityFilter.escapeString(nombre) + "'";
 		Query q = s.createSQLQuery(query).addEntity(Sexo.class);

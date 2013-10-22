@@ -73,13 +73,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				RegionDAO rdao = new RegionDAO();
+				RegionDAO rdao = new RegionDAO(s);
 				List<Region> rs = rdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, idNivel, idActividadTipo,
@@ -147,13 +147,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ComunaDAO cdao = new ComunaDAO();
+				ComunaDAO cdao = new ComunaDAO(s);
 				List<Comuna> cs = null;
 
 				if (sector == null || sector.getIdSector() == null) {
@@ -245,13 +245,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CursoDAO cdao = new CursoDAO();
+				CursoDAO cdao = new CursoDAO(s);
 				List<Curso> cs = cdao.findByByActividadANDRbd(idAplicacion,
 						idNivel, idActividadTipo, u.getId(),
 						usuarioTipo.getRol(), rbdSeach);
@@ -324,13 +324,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CursoDAO cdao = new CursoDAO();
+				CursoDAO cdao = new CursoDAO(s);
 				dcdto = cdao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -339,7 +339,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"No se ha encontrado información para el curso especificado en la actividad indicada.");
 				}
-				UsuarioDAO udao = new UsuarioDAO();
+				UsuarioDAO udao = new UsuarioDAO(s);
 				List<Usuario> examinadores = udao
 						.findExaminadoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
 								idAplicacion, idNivel, idActividadTipo, idCurso);
@@ -421,13 +421,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CursoDAO cdao = new CursoDAO();
+				CursoDAO cdao = new CursoDAO(s);
 				Curso c = cdao.getById(idCurso);
 				if (c == null || c.getId() == null) {
 					throw new NullPointerException(
@@ -435,7 +435,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 				}
 				cdto = c.getCursoDTO();
 				if (cdto.getRbd() != null && !cdto.getRbd().isEmpty()) {
-					CoDAO codao = new CoDAO();
+					CoDAO codao = new CoDAO(s);
 					Co co = codao
 							.findByIdAplicacionANDIdNivelANDIdEstablecimiento(
 									idAplicacion, idNivel,
@@ -505,13 +505,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				CoDAO codao = new CoDAO();
+				CoDAO codao = new CoDAO(s);
 				codtos = (ArrayList<CentroOperacionDTO>) codao
 						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdUsuarioANDUsuarioTipo(
 								idAplicacion, idNivel, idActividadTipo,
@@ -582,13 +582,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 				s.beginTransaction();
 
-				UsuarioTipo usuarioTipo = ac.getUsuarioTipo();
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
 				if (usuarioTipo == null) {
 					throw new NullPointerException(
 							"No se ha especificado el tipo de usuario.");
 				}
 
-				ZonaDAO zdao = new ZonaDAO();
+				ZonaDAO zdao = new ZonaDAO(s);
 				List<Zona> zs = null;
 
 				if (parent != null && parent.getIdSector() != null) {

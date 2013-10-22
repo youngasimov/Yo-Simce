@@ -15,12 +15,23 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  */
 public class ActividadXDocumentoTipoDAO extends
 		AbstractHibernateDAO<ActividadXDocumentoTipo, Integer> {
+	/**
+	 * 
+	 */
+	public ActividadXDocumentoTipoDAO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ActividadXDocumentoTipoDAO(Session s) {
+		super();
+		setSession(s);
+	}
 
 	public ActividadXDocumentoTipo findByIdActividadANDDocumentoTipo(
 			Integer idActividad, String documentoTipo) {
 
 		ActividadXDocumentoTipo axdt = null;
-		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session s = getSession();
 		String query = "SELECT axdt.* FROM ACTIVIDAD_x_DOCUMENTO_TIPO axdt"
 				+ " JOIN DOCUMENTO_TIPO dt ON (axdt.documento_tipo_id=dt.id AND dt.nombre='"
 				+ SecurityFilter.escapeString(documentoTipo) + "')"
