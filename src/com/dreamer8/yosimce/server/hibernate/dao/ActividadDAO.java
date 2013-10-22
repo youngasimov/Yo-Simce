@@ -203,8 +203,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ ")"
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
-				+ ")"
-				+ " WHERE (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
+				+ ")";
+//				+ " WHERE (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
