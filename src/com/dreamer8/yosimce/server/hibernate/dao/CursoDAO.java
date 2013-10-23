@@ -98,7 +98,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 		Session s = getSession();
 		String query = "SELECT c.id as curso_id,c.nombre as curso_nombre,e.id as est_id,e.nombre as est_nombre,"
 				+ "r.nombre as region_nombre, COMUNA.nombre as comuna_nombre,et.nombre as est_tipo,"
-				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as cont_cargo,co.nombre as centro  FROM APLICACION_x_NIVEL axn "
+				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as cont_cargo,co.nombre as centro,e.direccion as e_direcc  FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -137,6 +137,7 @@ public class CursoDAO extends AbstractHibernateDAO<Curso, Integer> {
 			dcdto.setEmailContacto((String) o[9]);
 			dcdto.setCargoContacto((String) o[10]);
 			dcdto.setCentro((String) o[11]);
+			dcdto.setDireccion((String) o[12]);
 			break;
 		}
 		return dcdto;
