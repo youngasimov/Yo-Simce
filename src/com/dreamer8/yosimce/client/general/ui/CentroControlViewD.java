@@ -713,7 +713,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				dt2.setValue(i, 3, 100*((float)data.get(i).me/total));
 				dt2.setValue(i, 4, 100*((float)data.get(i).mm/total));
 				
-				total =  data.get(i).ci+data.get(i).cc+data.get(i).me+data.get(i).cm;
+				total =  data.get(i).ci+data.get(i).cc+data.get(i).ce+data.get(i).cm;
 				dt3.setValue(i, 0, data.get(i).d);
 				dt3.setValue(i, 1, 100*((float)data.get(i).ci/total));
 				dt3.setValue(i, 2, 100*((float)data.get(i).cc/total));
