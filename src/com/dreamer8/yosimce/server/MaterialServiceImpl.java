@@ -76,7 +76,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			NullPointerException, ConsistencyException {
 
 		ArrayList<EmplazamientoDTO> edtos = new ArrayList<EmplazamientoDTO>();
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -153,7 +153,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			ConsistencyException {
 
 		ArrayList<EtapaDTO> edtos = new ArrayList<EtapaDTO>();
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -226,7 +226,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			ConsistencyException {
 
 		UserDTO udto = null;
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -305,7 +305,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			NullPointerException, ConsistencyException {
 
 		ArrayList<MaterialDTO> mdtos = null;
-		Session s = HibernateUtil.getSessionFactorySlave().openSession();
+		Session s = HibernateUtil.getSessionFactory().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -584,7 +584,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			NullPointerException, ConsistencyException {
 
 		ArrayList<EmplazamientoDTO> edtos = new ArrayList<EmplazamientoDTO>();
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();

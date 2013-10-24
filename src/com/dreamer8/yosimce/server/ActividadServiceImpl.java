@@ -395,15 +395,17 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				DocumentoDAO ddao = new DocumentoDAO(s);
 				AlumnoXActividadXDocumentoDAO axaxddao = new AlumnoXActividadXDocumentoDAO(
 						s);
+
+				AlumnoXActividadXDocumento axaxdPndrive = axaxddao
+						.findByIdAlumnoXActividadANDTipoDocumento(axa.getId(),
+								DocumentoTipo.PRUEBA);
+
 				if (sinc.getIdPendrive() != null
 						&& !sinc.getIdPendrive().isEmpty()) {
 					// AlumnoXActividadXDocumento axaxdPndrive = axaxddao
 					// .findByIdAlumnoXActividadANDCodigoDocumentoANDTipoDocumento(
 					// axa.getId(), sinc.getIdPendrive(),
 					// DocumentoTipo.PRUEBA);
-					AlumnoXActividadXDocumento axaxdPndrive = axaxddao
-							.findByIdAlumnoXActividadANDTipoDocumento(
-									axa.getId(), DocumentoTipo.PRUEBA);
 
 					if (axaxdPndrive == null) {
 
@@ -433,6 +435,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					axaxdPndrive.setModificadorId(u.getId());
 
 					axaxddao.saveOrUpdate(axaxdPndrive);
+				} else {
+					if (axaxdPndrive != null) {
+						axaxddao.delete(axaxdPndrive);
+					}
 				}
 
 				ActividadDAO adao = new ActividadDAO(s);
