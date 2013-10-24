@@ -81,6 +81,7 @@ public class DetalleCursoActivity extends SimceActivity implements
 						view.setCargoContacto(r.getCargoContacto());
 						view.setEmailContacto(r.getEmailContacto());
 						view.setTelefonoContacto(r.getTelefonoContacto());
+						view.setAddress(r.getDireccion());
 					}
 					
 				});

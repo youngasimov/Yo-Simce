@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
-import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
@@ -180,13 +179,13 @@ public class SincronizacionActivity extends SimceActivity implements
 
 			@Override
 			public void update(int index, SincAlumnoDTO object,String value) {
-				if(!object.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
-					sinc(object);
-				}else{
-					SincronizacionActivity.this.eventBus.fireEvent(new MensajeEvent(
-							"Para actualizar la información asociada al alumno" +
-							"debe seleccionar el estado del pendrive primero",MensajeEvent.MSG_WARNING,true));
+				if(object.getEstado().getNombreEstado().equals(SincronizacionView.SIN_INFO)){
+					object.setIdPendrive("");
+					object.setComentario("");
+					object.setEntregoFormulario(false);
 				}
+				sinc(object);
+				
 			}
 		});
 	}

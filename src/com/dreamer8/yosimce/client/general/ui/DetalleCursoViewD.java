@@ -44,6 +44,7 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@UiField Label cursoLabel;
 	@UiField Label tipoLabel;
 	@UiField Label coLabel;
+	@UiField Label addressLabel;
 	@UiField FlexTable personasTable;
 	@UiField FlexTable contactosTable;
 	
@@ -183,6 +184,11 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	@Override
 	public void setTelefonoContacto(String telefono) {
 		contactosTable.setWidget(4, 0, new HTML(telefono));
+	}
+	
+	@Override
+	public void setAddress(String address) {
+		addressLabel.setText(address);
 	}
 
 	@Override

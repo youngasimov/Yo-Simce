@@ -99,6 +99,10 @@
 								<td><g:Label ui:field="comunaLabel"/> </td>
 							</tr>
 							<tr>
+								<td class='{style.label}'>Dirección:</td>
+								<td><g:Label ui:field="addressLabel"/> </td>
+							</tr>
+							<tr>
 								<td class='{style.label}'>Curso:</td>
 								<td><g:Label ui:field="cursoLabel"/> </td>
 							</tr>

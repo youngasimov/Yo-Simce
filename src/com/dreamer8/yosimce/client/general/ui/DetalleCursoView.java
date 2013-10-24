@@ -24,6 +24,7 @@ public interface DetalleCursoView extends IsWidget {
 	void setEmailContacto(String email);
 	void setTelefonoContacto(String telefono);
 	void setCentroOperacion(String co);
+	void setAddress(String address);
 	void clearAll();
 	
 	void setPresenter(DetalleCursoPresenter presenter);
