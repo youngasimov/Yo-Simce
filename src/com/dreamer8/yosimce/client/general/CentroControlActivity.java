@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client.general;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -61,7 +62,6 @@ public class CentroControlActivity extends SimceActivity implements
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(this.view.asWidget());
@@ -92,11 +92,14 @@ public class CentroControlActivity extends SimceActivity implements
 			historial = new HashMap<Date, ArrayList<CentroOperacionDTO>>();
 		}
 		ArrayList<Date> remove = new ArrayList<Date>();
-		Date aux = new Date();
-		for(Date d:historial.keySet()){
-			if(d.getDay()!=aux.getDay() && d.getDate()<aux.getDate()){
+		ArrayList<Date> keys = new ArrayList<Date>(historial.keySet());
+		Collections.sort(keys);
+		int i2 = 0;
+		for(Date d:keys){
+			if(i2<keys.size()-30){
 				remove.add(d);
 			}
+			i2++;
 		}
 		for(Date d:remove){
 			historial.remove(d);
@@ -112,6 +115,15 @@ public class CentroControlActivity extends SimceActivity implements
 		});
 		view.setEvento(evento);
 		updateCentros();
+	}
+	
+	@Override
+	public void onStop() {
+		if(updateTimer!=null){
+			updateTimer.cancel();
+		}
+		updateTimer = null;
+		super.onStop();
 	}
 	
 	@Override
@@ -303,7 +315,22 @@ public class CentroControlActivity extends SimceActivity implements
 	}
 	
 	private void updateLineasTiempo(){
+		
+		ArrayList<Date> remove = new ArrayList<Date>();
 		ArrayList<Date> keys = new ArrayList<Date>(historial.keySet());
+		Collections.sort(keys);
+		int i2 = 0;
+		for(Date d:keys){
+			if(i2<keys.size()-30){
+				remove.add(d);
+			}
+			i2++;
+		}
+		for(Date d:remove){
+			historial.remove(d);
+		}
+		
+		keys = new ArrayList<Date>(historial.keySet());
 		if(data==null){
 			data = new ArrayList<CentroControlView.GraphItem>();
 		}else{

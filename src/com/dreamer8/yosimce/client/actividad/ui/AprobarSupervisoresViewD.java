@@ -566,7 +566,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 
 	private void buildTable() {
 
-		dataGrid.setMinimumTableWidth(90, Unit.EM);
+		dataGrid.setMinimumTableWidth(95, Unit.EM);
 		
 		int i = -1;
 		
@@ -752,7 +752,7 @@ public class AprobarSupervisoresViewD extends Composite implements
 	
 	private void buildSuplenteTable(){
 		int i = -1;
-		suplentesdataGrid.setMinimumTableWidth(60, Unit.EM);
+		suplentesdataGrid.setMinimumTableWidth(65, Unit.EM);
 		srutColumn = new Column<EvaluacionSuplenteDTO, String>(new TextCell()) {
 
 			@Override

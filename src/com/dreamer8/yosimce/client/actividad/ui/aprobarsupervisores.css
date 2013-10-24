@@ -1,31 +1,31 @@
 @CHARSET "US-ASCII";
 
 .evenSupervisorRowStyle {
-	padding: 5px 8px;
+	
 	color: #4b4a4a;
 	background: #F4DDB2;
 }
 
 .supervisorRowStyle {
-	padding: 5px 8px;
+	
 	color: #4b4a4a;
 	background: #F2E5CD;
 }
 
 .evenSupervisorRowStyle2 {
-	padding: 5px 8px;
+	
 	color: #4b4a4a;
 	background: #b0d4e3;
 }
 
 .supervisorRowStyle2 {
-	padding: 5px 8px;
+	
 	color: #4b4a4a;
 	background: #D3DEE2;
 }
 
 .selected {
-	padding: 5px 8px;
+	
 	background: #49c0f0; /* Old browsers */
 	background: -moz-linear-gradient(top, #49c0f0 0%, #2cafe3 100%);
 	/* FF3.6+ */
@@ -43,7 +43,7 @@
 }
 
 .groupHeaderCell {
-	padding: 1px 15px;
+	
 	color: #4b4a4a;
 	text-shadow: #ddf 1px 1px 0;
 	font-size: 130%;
