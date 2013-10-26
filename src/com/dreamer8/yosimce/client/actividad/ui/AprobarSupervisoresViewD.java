@@ -46,6 +46,7 @@ import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionModel;
 
@@ -493,6 +494,18 @@ public class AprobarSupervisoresViewD extends Composite implements
 	@UiHandler("tabs")
 	void tabSelected(SelectionEvent<Integer> event){
 		presenter.onTabSelected(tabs.getSelectedIndex());
+	}
+	
+	@UiHandler("supervisorSearchBox")
+	void onSupervisorSelectSuggestionClick(final SelectionEvent<Suggestion> event){
+		presenter.filter(event.getSelectedItem().getReplacementString().trim());
+		
+	}
+	
+	@UiHandler("suplenteSearchBox")
+	void onSuplenteSelectSuggestionClick(final SelectionEvent<Suggestion> event){
+		presenter.suplentefilter(event.getSelectedItem().getReplacementString().trim());
+		
 	}
 	
 	@UiHandler("search")

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.google.gwt.view.client.ProvidesKey;
 
+@SuppressWarnings("serial")
 public class SincAlumnoDTO implements Serializable {
 
 	public static final int SINC_SIN_INFORMACION = 0;
@@ -15,7 +16,7 @@ public class SincAlumnoDTO implements Serializable {
 
 		@Override
 		public Object getKey(SincAlumnoDTO item) {
-			return (item == null) ? null : item.getIdSincronizacion();
+			return (item == null) ? null : item.getRut();
 		}
 	};
 	

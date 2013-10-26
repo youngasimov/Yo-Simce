@@ -25,12 +25,15 @@ public interface SincronizacionView extends IsWidget {
 	void setPresenter(SincronizacionPresenter presenter);
 	void clear();
 	
+	void setSuggestions(ArrayList<String> suggestions);
+	
 	void setMaterialDefectusoVisivility(boolean visible);
 	
 	public interface SincronizacionPresenter extends SimcePresenter{
 		
 		void onCambiarCursoButtonClick();
 		void onAgregarAlumnoButtonClick();
+		void filter(String filter);
 		
 	}
 }

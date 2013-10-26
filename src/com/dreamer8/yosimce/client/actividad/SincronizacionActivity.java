@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.CursoSelector;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.SimcePlace;
@@ -99,15 +100,27 @@ public class SincronizacionActivity extends SimceActivity implements
 					@Override
 					public void success(ArrayList<SincAlumnoDTO> result) {
 						alumnos = result;
+						ArrayList<String> suggestions = new ArrayList<String>();
 						for(SincAlumnoDTO x:alumnos){
 							
-							
+							if(x.getComentario() == null){
+								x.setComentario("");
+							}
+							if(x.getIdPendrive() == null){
+								x.setIdPendrive("");
+							}
+							if(x.getEntregoFormulario() == null){
+								x.setEntregoFormulario(false);
+							}
 							if(x.getEstado() == null || x.getEstado().getNombreEstado() == null || x.getEstado().getNombreEstado().isEmpty() || x.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
 								x.setSinc(SincAlumnoDTO.SINC_SIN_INFORMACION);
 							}else{
 								x.setSinc(SincAlumnoDTO.SINC_EXITOSA);
 							}
+							
+							suggestions.add(x.getRut()+" - "+x.getNombres()+" "+x.getApellidoPaterno()+" "+x.getApellidoMaterno());
 						}
+						view.setSuggestions(suggestions);
 						view.setAlumnos(alumnos);
 					}
 					
@@ -125,6 +138,14 @@ public class SincronizacionActivity extends SimceActivity implements
 			
 			@Override
 			public void update(int index, final SincAlumnoDTO object, String value) {
+				
+				for(SincAlumnoDTO s:alumnos){
+					if(s.getIdPendrive()!=null && value!=null && !value.isEmpty() && value.equals(s.getIdPendrive())){
+						SincronizacionActivity.this.eventBus.fireEvent(new MensajeEvent("El id del pendrive ya esta registrado a un alumno de este mismo curso",MensajeEvent.MSG_WARNING,true));
+						break;
+					}
+				}
+				
 				object.setIdPendrive(value);
 				if(!object.getEstado().getNombreEstado().contains(SincronizacionView.SIN_INFO)){
 					sinc(object);
@@ -200,6 +221,22 @@ public class SincronizacionActivity extends SimceActivity implements
 	public void onAgregarAlumnoButtonClick() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void filter(String filter) {
+		if(filter == null || filter.isEmpty()){
+			view.setAlumnos(alumnos);
+			return;
+		}
+		String rut = filter.substring(0, 12).trim();
+		ArrayList<SincAlumnoDTO> filtrado = new ArrayList<SincAlumnoDTO>();
+		for(SincAlumnoDTO s:alumnos){
+			if(s.getRut().contains(rut)){
+				filtrado.add(s);
+			}
+		}
+		view.setAlumnos(filtrado);
 	}
 	
 	@Override

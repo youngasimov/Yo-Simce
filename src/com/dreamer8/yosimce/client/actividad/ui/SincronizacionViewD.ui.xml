@@ -37,8 +37,20 @@
 				<g:MenuItem ui:field="materialDefectuosoItem" text='Material defectuoso' />
 			</my:OverMenuBar>
 		</g:north>
+		<g:north size='40'>
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td>Buscar alumno:</td>
+						<td><g:SuggestBox ui:field="alumnoSearchBox" width="350px"/> </td>
+						<td><g:Button ui:field="search" text="Buscar"/> </td>
+						<td><g:Button ui:field="clean" text="Limpiar"/> </td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:north>
 		<g:center>
-			<c:DataGrid ui:field='dataGrid'  addStyleNames='{style.data}'/>
+			<c:DataGrid ui:field="dataGrid" addStyleNames='{style.data}'/>
 		</g:center>
     	<g:south size="35">
 	     	<g:HTMLPanel>

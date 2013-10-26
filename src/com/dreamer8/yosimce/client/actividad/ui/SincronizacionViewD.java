@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
+import com.dreamer8.yosimce.client.ui.FixedTextInputCell;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
@@ -17,22 +18,27 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.cell.client.TextInputCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
+import com.google.gwt.user.client.ui.SuggestBox;
+import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.view.client.ListDataProvider;
@@ -52,9 +58,11 @@ public class SincronizacionViewD extends Composite implements
 	@UiField MenuItem cursoItem;
 	@UiField MenuItem cambiarItem;
 	@UiField MenuItem materialDefectuosoItem;
+	@UiField Button search;
+	@UiField Button clean;
 	@UiField(provided = true) DataGrid<SincAlumnoDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
-
+	@UiField SuggestBox alumnoSearchBox;
 	
 	private ArrayList<SincAlumnoDTO> alumnos;
 	private ArrayList<EstadoSincronizacionDTO> estados;
@@ -83,8 +91,7 @@ public class SincronizacionViewD extends Composite implements
 		pager = new SimplePager(TextLocation.CENTER, false, false);
 		initWidget(uiBinder.createAndBindUi(this));
 		pager.setDisplay(dataGrid);
-		dataGrid.setKeyboardPagingPolicy(KeyboardPagingPolicy.CHANGE_PAGE);
-		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+		dataGrid.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		estados = new ArrayList<EstadoSincronizacionDTO>();
 		dataProvider = new ListDataProvider<SincAlumnoDTO>(SincAlumnoDTO.KEY_PROVIDER);
 		dataProvider.addDataDisplay(dataGrid);
@@ -124,6 +131,30 @@ public class SincronizacionViewD extends Composite implements
 		return SimceResources.INSTANCE;
 	}
 	
+	@UiHandler("alumnoSearchBox")
+	void onSelectSuggestionClick(SelectionEvent<Suggestion> event){
+		presenter.filter(event.getSelectedItem().getReplacementString());
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				dataGrid.setFocus(true);
+			}
+		});
+	}
+	
+	
+	@UiHandler("search")
+	void onSearchClick(ClickEvent event){
+		presenter.filter(alumnoSearchBox.getValue());
+	}
+	
+	@UiHandler("clean")
+	void onCleanFilterClick(ClickEvent event){
+		alumnoSearchBox.setValue("");
+		presenter.filter(null);
+	}
+	
 	@Override
 	public void setMaterialDefectusoVisivility(boolean visible) {
 		materialDefectuosoItem.setVisible(visible);
@@ -137,10 +168,26 @@ public class SincronizacionViewD extends Composite implements
 		
 		insertEstadoColumn();
 		
-		dataGrid.redraw();
-		if(alumnos!= null){
-			setAlumnos(alumnos);
-		}
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				if(alumnos!= null){
+					setAlumnos(alumnos);
+				}
+			}
+		});
+		
+		//dataGrid.redraw();
+		
+		
+	}
+	
+	@Override
+	public void setSuggestions(ArrayList<String> suggestions) {
+		MultiWordSuggestOracle mwso = (MultiWordSuggestOracle)alumnoSearchBox.getSuggestOracle();
+		mwso.clear();
+		mwso.addAll(suggestions);
 	}
 	
 	@Override
@@ -388,7 +435,7 @@ public class SincronizacionViewD extends Composite implements
 		dataGrid.setColumnWidth(tipoColumn,130,Unit.PX);
 
 		
-		materialColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
+		materialColumn = new Column<SincAlumnoDTO, String>(new FixedTextInputCell(50)) {
 			@Override
 			public String getValue(SincAlumnoDTO o) {
 				return (o.getIdPendrive()!=null)?o.getIdPendrive():"";
@@ -413,7 +460,7 @@ public class SincronizacionViewD extends Composite implements
 			formColumn.setFieldUpdater(formUpdater);
 		}
 		
-		comentarioColumn = new Column<SincAlumnoDTO, String>(new TextInputCell()) {
+		comentarioColumn = new Column<SincAlumnoDTO, String>(new FixedTextInputCell(150)) {
 			@Override
 			public String getValue(SincAlumnoDTO o) {
 				return (o.getComentario()!=null)?o.getComentario():"";
@@ -425,11 +472,11 @@ public class SincronizacionViewD extends Composite implements
 			comentarioColumn.setFieldUpdater(comentarioUpdater);
 		}
 		
-		
 		updateColumn = new Column<SincAlumnoDTO,String>(new ButtonCell()){
 
 			@Override
 			public String getValue(SincAlumnoDTO o) {
+				
 				return (o.getSinc() == SincAlumnoDTO.SINC_EN_PROCESO)?"Actualizando...":
 						(o.getSinc() == SincAlumnoDTO.SINC_ERRONEA || o.getSinc() == SincAlumnoDTO.SINC_SIN_INFORMACION)?"Actualizar":"Actualizado";
 			}
@@ -457,7 +504,7 @@ public class SincronizacionViewD extends Composite implements
 				if(o.getEstado() == null || o.getEstado().getIdEstadoSincronizacion() == null || o.getEstado().getNombreEstado() == null){
 					o.setEstado(sinInfo);
 				}
-				return (o.getEstado()!=null)?o.getEstado().getNombreEstado():SIN_INFO;
+				return o.getEstado().getNombreEstado();
 			}
 		};
 		dataGrid.insertColumn(7,estadoColumn, "Estado");
