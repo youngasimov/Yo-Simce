@@ -26,6 +26,8 @@ import com.dreamer8.yosimce.client.general.ui.DetalleCursoView;
 import com.dreamer8.yosimce.client.general.ui.DetalleCursoViewD;
 import com.dreamer8.yosimce.client.material.MaterialService;
 import com.dreamer8.yosimce.client.material.MaterialServiceAsync;
+import com.dreamer8.yosimce.client.material.ui.BuscadorCodigoView;
+import com.dreamer8.yosimce.client.material.ui.BuscadorCodigoViewD;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionSelectorView;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionSelectorViewD;
 import com.dreamer8.yosimce.client.material.ui.CentroOperacionView;
@@ -100,6 +102,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final AprobarSupervisoresView aprobarSupervisoresView = new AprobarSupervisoresViewD();
 	
 	private final CentroOperacionView centroOperacionView = new CentroOperacionViewD();
+	private final BuscadorCodigoView buscadorCodigoView = new BuscadorCodigoViewD();
 	private final CentroOperacionSelectorView centroOperacionSelectorView = new CentroOperacionSelectorViewD();
 
 	private final PermisosView permisosView = new PermisosViewD();
@@ -246,6 +249,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public CentroOperacionView getCentroOperacionView() {
 		return centroOperacionView;
+	}
+	
+	@Override
+	public BuscadorCodigoView getBuscadorCodigoView() {
+		return buscadorCodigoView;
 	}
 	
 	@Override

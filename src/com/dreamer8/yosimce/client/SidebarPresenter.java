@@ -12,6 +12,7 @@ import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
@@ -106,6 +107,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setAprobarSupervisoresActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof CentroOperacionPlace){
 					view.setCentroOperacionViewItemSelected(true);
+				}else if(event.getNewPlace() instanceof BuscadorCodigoPlace){
+					view.setBuscadorCodigoViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof ReportesPlace){
 					view.setReportesActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof PermisosPlace){
@@ -176,7 +179,11 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setMaterialVisivility(Utils.hasPermisos(permisos,"MaterialService","getCentrosOperacionAsociados") && Utils.hasPermisos(permisos,"MaterialService","getMateriales") && tipo);
 		view.setCentroOperacionViewItemVisivility(Utils.hasPermisos(permisos,"MaterialService","getCentrosOperacionAsociados") && Utils.hasPermisos(permisos,"MaterialService","getMateriales") && tipo);
 		
+		//Por mientras se utiliza mismo permiso que para ver centro de operacion
+		view.setBuscadorCodigoViewItemVisivility(Utils.hasPermisos(permisos,"MaterialService","getMateriales"));
+		
 		view.setAdministracionVisivility((Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario") && Utils.hasPermisos(permisos,"AdministracionService","getPermisos")));
+		
 		
 		
 		//Por mientras se utiliza mismo permiso que para editar los permisos

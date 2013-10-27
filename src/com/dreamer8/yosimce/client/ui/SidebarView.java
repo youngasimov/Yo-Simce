@@ -36,6 +36,8 @@ public interface SidebarView extends IsWidget {
 	void setMaterialVisivility(boolean visible);
 	void setCentroOperacionViewItemVisivility(boolean visible);
 	void setCentroOperacionViewItemSelected(boolean selected);
+	void setBuscadorCodigoViewItemVisivility(boolean visible);
+	void setBuscadorCodigoViewItemSelected(boolean selected);
 	
 	void setAdministracionVisivility(boolean visible);
 	void setReportesActionItemVisivility(boolean visible);

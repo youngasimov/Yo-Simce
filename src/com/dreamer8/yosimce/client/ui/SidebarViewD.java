@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
@@ -64,6 +65,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor aprobarSupervisoresActionItem;
 	
 	@UiField Anchor centroOperacionViewItem;
+	@UiField Anchor buscadorCodigoViewItem;
 	
 	@UiField Anchor reportesActionItem;
 	@UiField Anchor administrarPermisosActionItem;
@@ -145,6 +147,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	void onCentroOperacionViewItemClick(ClickEvent event){
 		GATracker.trackEvent("sidebar menu","Centro operación");
 		presenter.goTo(new CentroOperacionPlace());
+	}
+	
+	@UiHandler("buscadorCodigoViewItem")
+	void onBuscadorCodigoViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Codigos material");
+		presenter.goTo(new BuscadorCodigoPlace());
 	}
 	
 	@UiHandler("reportesActionItem")
@@ -275,6 +283,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	public void setCentroOperacionViewItemVisivility(boolean visible) {
 		centroOperacionViewItem.setVisible(visible);
 	}
+	
+	@Override
+	public void setBuscadorCodigoViewItemVisivility(boolean visible) {
+		buscadorCodigoViewItem.setVisible(visible);
+	}
+	
 
 	@Override
 	public void setAdministracionVisivility(boolean visible) {
@@ -378,6 +392,14 @@ public class SidebarViewD extends Composite implements SidebarView{
 	}
 	
 	@Override
+	public void setBuscadorCodigoViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			buscadorCodigoViewItem.addStyleName(style.selected());
+		}
+	}
+	
+	@Override
 	public void setReportesActionItemSelected(boolean selected) {
 		removeSeleccion();
 		if(selected){
@@ -406,6 +428,8 @@ public class SidebarViewD extends Composite implements SidebarView{
 		materialDefectuosoActionItem.removeStyleName(style.selected());
 		aprobarSupervisoresActionItem.removeStyleName(style.selected());
 		centroOperacionViewItem.removeStyleName(style.selected());
+		buscadorCodigoViewItem.removeStyleName(style.selected());
+		reportesActionItem.removeStyleName(style.selected());
 		administrarPermisosActionItem.removeStyleName(style.selected());
 	}
 }

@@ -39,7 +39,7 @@ public interface CentroOperacionView extends IsWidget {
 	HasData<MaterialWrap> getDespachoDataDisplay();
 	void setDespachoSortHandler(ListHandler<MaterialWrap> handler);
 	
-	void setDetallesMaterial(MaterialDTO m, DetallesMaterialDTO d);
+	void setDetallesMaterial(MaterialDTO m, DetallesMaterialDTO d,String detallesToken);
 	
 	void clearIngresoFolioBox();
 	void clearDespachoFolioBox();

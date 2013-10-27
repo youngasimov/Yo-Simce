@@ -115,6 +115,7 @@
 			</ul>
 			<ul class='{style.margin}' ui:field="material">
 				<li><g:Anchor ui:field="centroOperacionViewItem" text="Centro operación"/></li>
+				<li><g:Anchor ui:field="buscadorCodigoViewItem" text="Códigos material"/></li>
 			</ul>
 			<ul class='{style.margin}' ui:field="administracion">
 				<li><g:Anchor ui:field="reportesActionItem" text="Reportes"/></li>
