@@ -48,7 +48,7 @@ public class SuplenteXCoDAO extends AbstractHibernateDAO<SuplenteXCo, Integer> {
 				+ ")"
 				+ " JOIN SUPLENTE_x_CO sco ON axnxat.id=aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " JOIN USUARIO_SELECCION us ON (sco.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
-				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
+				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (axn.id=uxaxn.aplicacion_x_nivel_id AND us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario) + ")";
 		Query q = s.createSQLQuery(query).addEntity(SuplenteXCo.class);
 		sco = ((SuplenteXCo) q.uniqueResult());

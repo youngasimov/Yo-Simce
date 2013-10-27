@@ -215,4 +215,22 @@ public class AlumnoXActividadXDocumentoDAO extends
 		}
 		return mddtos;
 	}
+
+	public List<AlumnoXActividadXDocumento> findPendrivesSincronizadosEnVisitaPrevia() {
+
+		List<AlumnoXActividadXDocumento> axaxds = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT axaxd.* FROM  APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=1 AND axn.aplicacion_id=2"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN ALUMNO_x_ACTIVIDAD axa ON a.id=axa.actividad_id"
+				+ " JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd ON axa.id=axaxd.alumno_x_actividad_id"
+				+ " JOIN DOCUMENTO d ON axaxd.documento_id=d.id"
+				+ " JOIN DOCUMENTO_TIPO dt ON (d.documento_tipo_id=dt.id AND dt.nombre='"
+				+ SecurityFilter.escapeString(DocumentoTipo.PRUEBA) + "')";
+		Query q = s.createSQLQuery(query).addEntity(
+				AlumnoXActividadXDocumento.class);
+		axaxds = q.list();
+		return axaxds;
+	}
 }

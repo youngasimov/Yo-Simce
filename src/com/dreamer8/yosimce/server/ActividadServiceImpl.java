@@ -343,6 +343,11 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							"No se ha especificado el tipo de la actividad.");
 				}
 
+				if (idActividadTipo != 2) {
+					throw new ConsistencyException(
+							"La sincronización debe hacerse en el día 1.");
+				}
+
 				if (sinc == null) {
 					throw new NullPointerException(
 							"No se han especificado los datos para la sincronización.");
@@ -386,7 +391,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				AlumnoEstadoDAO aedao = new AlumnoEstadoDAO(s);
-				AlumnoEstado ae = aedao.findByNombre(AlumnoEstado.PRESENTE);
+				AlumnoEstado ae = aedao
+						.findByNombre((DocumentoEstado.SIN_INFORMACION
+								.equals(sinc.getEstado().getNombreEstado())) ? AlumnoEstado.SIN_INFORMACION
+								: AlumnoEstado.PRESENTE);
 
 				axa.setAlumnoEstado(ae);
 				axa.setPruebaComentario(sinc.getComentario());
@@ -1550,7 +1558,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 															+ udto.getApellidoPaterno()
 															// +
 															// " no ha sido asignado como examinador para este nivel.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
-															+ " no ha sido asignado como examinador para este nivel.<br />El "
+															+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 															+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
 																	: "Encargado de Logística")
 															+ " debe realizar la selección para el nivel en la intranet en YoSimce.");
@@ -1610,7 +1618,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 													+ udto.getApellidoPaterno()
 													// +
 													// " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
-													+ " no ha sido asignado como examinador para este nivel.<br />El "
+													+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 													+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
 															: "Encargado de Logística")
 													+ " debe realizar la selección para el nivel en la intranet en YoSimce.");
