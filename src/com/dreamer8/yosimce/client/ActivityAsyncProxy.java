@@ -6,14 +6,14 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
-public abstract class ActivityAsyncProxy<A extends SimceActivity> implements Activity {
+public abstract class ActivityAsyncProxy implements Activity {
 
 	private boolean hasAsyncBeenIssued;
 	private boolean hasAsyncBeenCancelled;
 	private boolean hasAsyncFailed;
 	private AcceptsOneWidget display;
 	private EventBus eventBus;
-	private A instance;
+	private SimceActivity instance;
 	
 	@Override
 	public String mayStop() {
@@ -84,7 +84,7 @@ public abstract class ActivityAsyncProxy<A extends SimceActivity> implements Act
 	   */
 	  protected abstract void doAsync(RunAsyncCallback callback);
 	 
-	  protected abstract A createInstance();
+	  protected abstract SimceActivity createInstance();
 	 
 	  private void checkHasAsyncFailed() {
 	    if (this.hasAsyncFailed) {

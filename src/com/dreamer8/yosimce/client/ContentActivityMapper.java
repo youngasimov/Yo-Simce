@@ -21,6 +21,8 @@ import com.dreamer8.yosimce.client.general.CentroControlActivity;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.material.BuscadorCodigoActivity;
+import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionActivity;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosActivity;
@@ -55,7 +57,7 @@ public class ContentActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(final Place place) {
 		if(place instanceof CentroControlPlace){
-			return new ActivityAsyncProxy<CentroControlActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -63,13 +65,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected CentroControlActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new CentroControlActivity(factory, (CentroControlPlace)place, permisos);
 				}
 			};
-			//return new CentroControlActivity(factory, (CentroControlPlace)place, permisos);
 		}else if(place instanceof DetalleCursoPlace){
-			return new ActivityAsyncProxy<DetalleCursoActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -77,13 +78,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected DetalleCursoActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new DetalleCursoActivity(factory, (DetalleCursoPlace)place, permisos);
 				}
 			};
-			//return new DetalleCursoActivity(factory, (DetalleCursoPlace)place, permisos);
 		}else if(place instanceof AgendamientosPlace){
-			return new ActivityAsyncProxy<AgendamientosActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -91,12 +91,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected AgendamientosActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new AgendamientosActivity(factory, (AgendamientosPlace)place, permisos);
 				}
 			};
 		}else if(place instanceof AgendarVisitaPlace){
-			return new ActivityAsyncProxy<AgendarVisitaActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -104,12 +104,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected AgendarVisitaActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new AgendarVisitaActivity(factory, (AgendarVisitaPlace)place, permisos);
 				}
 			};
 		}else if(place instanceof DetalleAgendaPlace){
-			return new ActivityAsyncProxy<DetalleAgendaActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -117,12 +117,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected DetalleAgendaActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new DetalleAgendaActivity(factory, (DetalleAgendaPlace)place, permisos);
 				}
 			};
 		}else if(place instanceof ActividadesPlace){
-			return new ActivityAsyncProxy<ActividadesActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -130,12 +130,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected ActividadesActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
 				}
 			};
 		}else if(place instanceof FormActividadPlace){
-			return new ActivityAsyncProxy<FormActividadActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -143,13 +143,13 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected FormActividadActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
 				}
 			};
 			
 		}else if(place instanceof SincronizacionPlace){
-			return new ActivityAsyncProxy<SincronizacionActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -157,13 +157,13 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected SincronizacionActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
 				}
 			};
 			
 		}else if(place instanceof MaterialDefectuosoPlace){
-			return new ActivityAsyncProxy<MaterialDefectuosoActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -171,12 +171,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected MaterialDefectuosoActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new MaterialDefectuosoActivity(factory, (MaterialDefectuosoPlace)place, permisos);
 				}
 			};
 		}else if(place instanceof AprobarSupervisoresPlace){
-			return new ActivityAsyncProxy<AprobarSupervisoresActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -184,12 +184,12 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected AprobarSupervisoresActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 				}
 			};
 		}else if(place instanceof CentroOperacionPlace){
-			return new ActivityAsyncProxy<CentroOperacionActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -197,12 +197,25 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected CentroOperacionActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
 				}
 			};
+		}else if(place instanceof BuscadorCodigoPlace){
+			return new ActivityAsyncProxy() {
+
+				@Override
+				protected void doAsync(RunAsyncCallback callback) {
+					GWT.runAsync(callback);
+				}
+
+				@Override
+				protected SimceActivity createInstance() {
+					return new BuscadorCodigoActivity(factory, (BuscadorCodigoPlace)place, permisos);
+				}
+			};
 		}else if(place instanceof PermisosPlace){
-			return new ActivityAsyncProxy<PermisosActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -215,7 +228,7 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 			};
 		}else if(place instanceof ReportesPlace){
-			return new ActivityAsyncProxy<ReportesActivity>() {
+			return new ActivityAsyncProxy() {
 
 				@Override
 				protected void doAsync(RunAsyncCallback callback) {
@@ -223,7 +236,7 @@ public class ContentActivityMapper implements ActivityMapper {
 				}
 
 				@Override
-				protected ReportesActivity createInstance() {
+				protected SimceActivity createInstance() {
 					return new ReportesActivity(factory, (ReportesPlace)place, permisos);
 				}
 			};

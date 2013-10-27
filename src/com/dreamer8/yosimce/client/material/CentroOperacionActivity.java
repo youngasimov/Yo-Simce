@@ -352,13 +352,13 @@ public class CentroOperacionActivity extends SimceActivity implements
 	@Override
 	public void onMaterialSelected(final MaterialWrap material) {
 		if (material.getDetalles() != null && material.getDetalles().getHistorial()!=null) {
+			BuscadorCodigoPlace bcp = new BuscadorCodigoPlace(place.getAplicacionId(), place.getNivelId(), place.getTipoId());
+			bcp.setCodigo(material.getMaterial().getCodigo());
+			view.setDetallesMaterial(material.getMaterial(), material.getDetalles(),getFactory().getPlaceHistoryMapper().getToken(bcp));
 			historialDataProvider.setList(material.getDetalles().getHistorial());
 		}
-		
-		view.setDetallesMaterial(material.getMaterial(), material.getDetalles());
 
-		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService",
-				"getDetallesMaterial")) {
+		if (Utils.hasPermisos(eventBus, getPermisos(), "MaterialService","getDetallesMaterial")) {
 			getFactory().getMaterialService().getDetallesMaterial(
 					material.getMaterial().getId(),
 					new SimceCallback<DetallesMaterialDTO>(eventBus, false) {
@@ -366,7 +366,9 @@ public class CentroOperacionActivity extends SimceActivity implements
 						@Override
 						public void success(DetallesMaterialDTO result) {
 							material.setDetalles(result);
-							view.setDetallesMaterial(material.getMaterial(), material.getDetalles());
+							BuscadorCodigoPlace bcp = new BuscadorCodigoPlace(place.getAplicacionId(), place.getNivelId(), place.getTipoId());
+							bcp.setCodigo(material.getMaterial().getCodigo());
+							view.setDetallesMaterial(material.getMaterial(), material.getDetalles(),getFactory().getPlaceHistoryMapper().getToken(bcp));
 							if (result.getHistorial() != null) {
 								historialDataProvider.setList(material.getDetalles().getHistorial());
 							}

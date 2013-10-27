@@ -53,6 +53,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -439,7 +440,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 	}
 
 	@Override
-	public void setDetallesMaterial(MaterialDTO m,  DetallesMaterialDTO detalles) {
+	public void setDetallesMaterial(MaterialDTO m,  DetallesMaterialDTO detalles, String detallesToken) {
 		detallesGrid.clear();
 		if(m == null){
 			return;
@@ -465,8 +466,9 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 		detallesGrid.setWidget(3, 1, new Label((detalles.getCentroOperacionIngresado()!=null)?
 				detalles.getCentroOperacionIngresado().getNombre():""));
 		detallesGrid.getRowFormatter().setStyleName(3, style.inparRow());
+		int i = 4;
 		if(detalles.getDocumentos()!=null && !detalles.getDocumentos().isEmpty()){
-			int i = 4;
+			
 			for(Map.Entry<String,DocumentoDTO> entry:detalles.getDocumentos().entrySet()){
 				Anchor a = new Anchor("#Folio:"+entry.getKey());
 				if(entry.getValue()!=null){
@@ -475,9 +477,13 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 				detallesGrid.setWidget(i, 0, a);
 				detallesGrid.getFlexCellFormatter().setColSpan(i, 0, 2);
 				detallesGrid.getFlexCellFormatter().setStyleName(i, 0, (i%2==0)?style.parRow():style.inparRow());
+				i++;
 				
 			}
 		}
+		detallesGrid.setWidget(i, 0, new Hyperlink("más detalles", detallesToken));
+		detallesGrid.getFlexCellFormatter().setColSpan(i, 0, 2);
+		detallesGrid.getFlexCellFormatter().setStyleName(i, 0, (i%2==0)?style.parRow():style.inparRow());
 	}
 	
 	@Override
