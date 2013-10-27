@@ -458,10 +458,15 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 			return;
 		}
 		detallesGrid.setWidget(2, 0, new Label("C.O. asignado:"));
-		detallesGrid.setWidget(2, 1, new Label(detalles.getNombreCentroOperacion()));
+		detallesGrid.setWidget(2, 1, new Label((detalles.getCentroOperacionAsignado()!=null)?
+				detalles.getCentroOperacionAsignado().getNombre():""));
 		detallesGrid.getRowFormatter().setStyleName(2, style.parRow());
+		detallesGrid.setWidget(3, 0, new Label("C.O. ingresado:"));
+		detallesGrid.setWidget(3, 1, new Label((detalles.getCentroOperacionIngresado()!=null)?
+				detalles.getCentroOperacionIngresado().getNombre():""));
+		detallesGrid.getRowFormatter().setStyleName(3, style.inparRow());
 		if(detalles.getDocumentos()!=null && !detalles.getDocumentos().isEmpty()){
-			int i = 3;
+			int i = 4;
 			for(Map.Entry<String,DocumentoDTO> entry:detalles.getDocumentos().entrySet()){
 				Anchor a = new Anchor("#Folio:"+entry.getKey());
 				if(entry.getValue()!=null){
