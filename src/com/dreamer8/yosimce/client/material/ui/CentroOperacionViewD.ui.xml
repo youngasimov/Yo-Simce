@@ -100,9 +100,9 @@
 	     									<g:Label addStyleNames='{style.subtitle}' text="Detalles"/>
 	     								</g:north>
 	     								<g:center>
-	     									<g:FlowPanel>
+	     									<g:ScrollPanel>
 	     										<g:FlexTable addStyleNames='{style.data}' ui:field="detallesGrid"/>
-	     									</g:FlowPanel>
+	     									</g:ScrollPanel>
 	     								</g:center>
 	     							</g:DockLayoutPanel>
 	     						</g:east>
