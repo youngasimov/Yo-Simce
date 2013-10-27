@@ -784,7 +784,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"El material especificado no existe.");
 				}
-				dmdto.setNombreCentroOperacion(m.getCo().getNombre());
+				dmdto.setCentroOperacionAsignado(m.getCo().getEmplazamientoDTO());
 
 				MaterialHistorialDAO mhdao = new MaterialHistorialDAO(s);
 				List<MaterialHistorial> mhs = mhdao
