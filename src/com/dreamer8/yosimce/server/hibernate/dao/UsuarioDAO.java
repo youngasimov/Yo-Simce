@@ -253,7 +253,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				// + " JOIN USUARIO_TIPO ut ON us.usuario_tipo_id=ut.id"
 				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id"
-				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
+				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON axn.id=uxaxn.aplicacion_x_nivel_id AND us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				+ " WHERE (uxa.asistencia=false) AND (ut.rol='"
 				+ SecurityFilter.escapeString(UsuarioTipo.EXAMINADOR) + "')";
