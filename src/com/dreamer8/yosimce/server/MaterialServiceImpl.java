@@ -739,7 +739,7 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 			NullPointerException, ConsistencyException {
 
 		DetallesMaterialDTO dmdto = new DetallesMaterialDTO();
-		Session s = HibernateUtil.getSessionFactory().openSession();
+		Session s = HibernateUtil.getSessionFactorySlave().openSession();
 		ManagedSessionContext.bind(s);
 		try {
 			AccessControl ac = getAccessControl();
@@ -784,7 +784,8 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					throw new NullPointerException(
 							"El material especificado no existe.");
 				}
-				dmdto.setCentroOperacionAsignado(m.getCo().getEmplazamientoDTO());
+				dmdto.setCentroOperacionAsignado(m.getCo()
+						.getEmplazamientoDTO());
 
 				MaterialHistorialDAO mhdao = new MaterialHistorialDAO(s);
 				List<MaterialHistorial> mhs = mhdao
@@ -795,6 +796,12 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 					for (MaterialHistorial mh : mhs) {
 						hmidto.add(mh.getHistorialMaterialItemDTO());
 					}
+				}
+				MaterialHistorial mhLast = mhdao
+						.findLastByIdMaterial(idMaterial);
+				if (mhLast != null && mhLast.getCo() != null) {
+					dmdto.setCentroOperacionIngresado(mhLast.getCo()
+							.getEmplazamientoDTO());
 				}
 
 				dmdto.setHistorial(hmidto);
@@ -1124,11 +1131,11 @@ public class MaterialServiceImpl extends CustomRemoteServiceServlet implements
 							throw new NullPointerException(
 									"No se ha encontrado uno de los materiales especificados.");
 						}
-//						if (!co.equals(m.getCo())) {
-//							throw new ConsistencyException("El material "
-//									+ m.getCodigo()
-//									+ " no corresponde al centro especificado");
-//						}
+						// if (!co.equals(m.getCo())) {
+						// throw new ConsistencyException("El material "
+						// + m.getCodigo()
+						// + " no corresponde al centro especificado");
+						// }
 						mxlid = new MaterialXLoteId();
 						mxlid.setMaterialId(m.getId());
 						mxlid.setLoteId(l.getId());
