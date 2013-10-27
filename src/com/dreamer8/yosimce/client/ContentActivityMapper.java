@@ -33,8 +33,6 @@ import com.dreamer8.yosimce.client.planificacion.DetalleAgendaActivity;
 import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.place.shared.Place;
 
 public class ContentActivityMapper implements ActivityMapper {
@@ -57,189 +55,33 @@ public class ContentActivityMapper implements ActivityMapper {
 	@Override
 	public Activity getActivity(final Place place) {
 		if(place instanceof CentroControlPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new CentroControlActivity(factory, (CentroControlPlace)place, permisos);
-				}
-			};
+			return new CentroControlActivity(factory, (CentroControlPlace)place, permisos);
 		}else if(place instanceof DetalleCursoPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new DetalleCursoActivity(factory, (DetalleCursoPlace)place, permisos);
-				}
-			};
+			return new DetalleCursoActivity(factory, (DetalleCursoPlace)place, permisos);
 		}else if(place instanceof AgendamientosPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new AgendamientosActivity(factory, (AgendamientosPlace)place, permisos);
-				}
-			};
+			return new AgendamientosActivity(factory, (AgendamientosPlace)place, permisos);
 		}else if(place instanceof AgendarVisitaPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new AgendarVisitaActivity(factory, (AgendarVisitaPlace)place, permisos);
-				}
-			};
+			return new AgendarVisitaActivity(factory, (AgendarVisitaPlace)place, permisos);
 		}else if(place instanceof DetalleAgendaPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new DetalleAgendaActivity(factory, (DetalleAgendaPlace)place, permisos);
-				}
-			};
+			return new DetalleAgendaActivity(factory, (DetalleAgendaPlace)place, permisos);
 		}else if(place instanceof ActividadesPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
-				}
-			};
+			return new ActividadesActivity(factory, (ActividadesPlace)place, permisos);
 		}else if(place instanceof FormActividadPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
-				}
-			};
-			
+			return new FormActividadActivity(factory, (FormActividadPlace)place, permisos);
 		}else if(place instanceof SincronizacionPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
-				}
-			};
-			
+			return new SincronizacionActivity(factory, (SincronizacionPlace)place, permisos);
 		}else if(place instanceof MaterialDefectuosoPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new MaterialDefectuosoActivity(factory, (MaterialDefectuosoPlace)place, permisos);
-				}
-			};
+			return new MaterialDefectuosoActivity(factory, (MaterialDefectuosoPlace)place, permisos);
 		}else if(place instanceof AprobarSupervisoresPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
-				}
-			};
+			return new AprobarSupervisoresActivity(factory, (AprobarSupervisoresPlace)place, permisos);
 		}else if(place instanceof CentroOperacionPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
-				}
-			};
+			return new CentroOperacionActivity(factory, (CentroOperacionPlace)place, permisos);
 		}else if(place instanceof BuscadorCodigoPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new BuscadorCodigoActivity(factory, (BuscadorCodigoPlace)place, permisos);
-				}
-			};
+			return new BuscadorCodigoActivity(factory, (BuscadorCodigoPlace)place, permisos);
 		}else if(place instanceof PermisosPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected PermisosActivity createInstance() {
-					return new PermisosActivity(factory, (PermisosPlace)place, permisos);
-				}
-			};
+			return new PermisosActivity(factory, (PermisosPlace)place, permisos);
 		}else if(place instanceof ReportesPlace){
-			return new ActivityAsyncProxy() {
-
-				@Override
-				protected void doAsync(RunAsyncCallback callback) {
-					GWT.runAsync(callback);
-				}
-
-				@Override
-				protected SimceActivity createInstance() {
-					return new ReportesActivity(factory, (ReportesPlace)place, permisos);
-				}
-			};
+			return new ReportesActivity(factory, (ReportesPlace)place, permisos);
 		}else if(place instanceof SimcePlace){
 			return new MenuActivity(factory, (SimcePlace)place, permisos);
 		}

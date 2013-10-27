@@ -22,7 +22,6 @@ public class LoginActivity implements LoginPresenter {
 	private LoginServiceAsync service;
 	private UserDTO user;
 	private Logger logger = Logger.getLogger("");
-	//private SimceApp app;
 	private SimplePanel panel;
 	private boolean start;
 	
@@ -53,9 +52,6 @@ public class LoginActivity implements LoginPresenter {
 						user =result;
 						start = true;
 						loadApp();
-						/*if(app!=null){
-							app.start(panel, user);
-						}*/
 					}
 				});
 			}
