@@ -267,6 +267,8 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField RadioButton centroRadioButton;
 	@UiField RadioButton establecimientoRadioButton;
 	@UiField RadioButton ministerioRadioButton;
+	//@UiField FlexTable bingormTable;
+	//@UiField FlexTable bingor8Table;
 	
 	private Column<CentroOperacionDTO, Boolean> checkColumn;
 	private Column<CentroOperacionDTO, CentroOperacionDTO> centroColumn;
@@ -496,6 +498,8 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		if(Window.getClientWidth()<1210){
 			graphPanel.addStyleName(style.full());
 		}
+		
+		//buildBingo();
 	}
 
 	@UiHandler("selectAllBox")
@@ -889,4 +893,151 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		trackingColumn.setSortable(false);
 		allTable.setColumnWidth(i++, 15, Unit.EM);
 	}
+	/*
+	private void buildBingo(){
+		bingormTable.setWidget(0, 0, new HTML("Región Metropolitana"));
+		bingormTable.getFlexCellFormatter().setColSpan(0, 0, 10);
+		int i = 1;
+		bingormTable.setWidget(i, 0, new HTML("CJ"));
+		bingormTable.setWidget(i, 1, new HTML("01"));
+		bingormTable.setWidget(i, 2, new HTML("02"));
+		bingormTable.setWidget(i, 3, new HTML("03"));
+		bingormTable.setWidget(i, 4, new HTML("04"));
+		bingormTable.setWidget(i, 5, new HTML("05"));
+		bingormTable.setWidget(i, 6, new HTML("06"));
+		bingormTable.setWidget(i, 7, new HTML("07"));
+		bingormTable.setWidget(i, 8, new HTML("08"));
+		bingormTable.setWidget(i, 9, new HTML("09"));
+		i = 2;
+		bingormTable.setWidget(i, 0, new HTML("VM"));
+		bingormTable.setWidget(i, 1, new HTML("10"));
+		bingormTable.setWidget(i, 2, new HTML("11"));
+		bingormTable.setWidget(i, 3, new HTML("12"));
+		bingormTable.setWidget(i, 4, new HTML("13"));
+		bingormTable.setWidget(i, 5, new HTML("14"));
+		bingormTable.setWidget(i, 6, new HTML("15"));
+		i = 3;
+		bingormTable.setWidget(i, 0, new HTML("RC"));
+		bingormTable.setWidget(i, 1, new HTML("16"));
+		bingormTable.setWidget(i, 2, new HTML("17"));
+		bingormTable.setWidget(i, 3, new HTML("18"));
+		bingormTable.setWidget(i, 4, new HTML("19"));
+		bingormTable.setWidget(i, 5, new HTML("20"));
+		bingormTable.setWidget(i, 6, new HTML("21"));
+		bingormTable.setWidget(i, 7, new HTML("22"));
+		i = 4;
+		bingormTable.setWidget(i, 0, new HTML("KM"));
+		bingormTable.setWidget(i, 1, new HTML("23"));
+		bingormTable.setWidget(i, 2, new HTML("24"));
+		bingormTable.setWidget(i, 3, new HTML("25"));
+		bingormTable.setWidget(i, 4, new HTML("26"));
+		bingormTable.setWidget(i, 5, new HTML("27"));
+		bingormTable.setWidget(i, 6, new HTML("28"));
+		bingormTable.setWidget(i, 7, new HTML("29"));
+		i = 5;
+		bingormTable.setWidget(i, 0, new HTML("HG"));
+		bingormTable.setWidget(i, 1, new HTML("30"));
+		bingormTable.setWidget(i, 2, new HTML("31"));
+		bingormTable.setWidget(i, 3, new HTML("32"));
+		bingormTable.setWidget(i, 4, new HTML("33"));
+		bingormTable.setWidget(i, 5, new HTML("34"));
+		bingormTable.setWidget(i, 6, new HTML("35"));
+		i = 6;
+		bingormTable.setWidget(i, 0, new HTML("CN"));
+		bingormTable.setWidget(i, 1, new HTML("36"));
+		bingormTable.setWidget(i, 2, new HTML("37"));
+		bingormTable.setWidget(i, 3, new HTML("38"));
+		bingormTable.setWidget(i, 4, new HTML("39"));
+		bingormTable.setWidget(i, 5, new HTML("40"));
+		bingormTable.setWidget(i, 6, new HTML("41"));
+		bingormTable.setWidget(i, 7, new HTML("42"));
+		i = 7;
+		bingormTable.setWidget(i, 0, new HTML("PM"));
+		bingormTable.setWidget(i, 1, new HTML("43"));
+		bingormTable.setWidget(i, 2, new HTML("44"));
+		bingormTable.setWidget(i, 3, new HTML("45"));
+		bingormTable.setWidget(i, 4, new HTML("46"));
+		bingormTable.setWidget(i, 5, new HTML("47"));
+		bingormTable.setWidget(i, 6, new HTML("48"));
+		bingormTable.setWidget(i, 7, new HTML("49"));
+		bingormTable.setWidget(i, 8, new HTML("50"));
+		bingormTable.setWidget(i, 9, new HTML("51"));
+		bingormTable.setWidget(i, 10, new HTML("52"));
+		bingormTable.setWidget(i, 11, new HTML("53"));
+		bingormTable.setWidget(i, 12, new HTML("54"));
+		
+		
+		bingor8Table.setWidget(0, 0, new HTML("VIII Región"));
+		bingor8Table.getFlexCellFormatter().setColSpan(0, 0, 10);
+		i = 1;
+		bingor8Table.setWidget(i, 0, new HTML("CJ"));
+		bingor8Table.setWidget(i, 1, new HTML("01"));
+		bingor8Table.setWidget(i, 2, new HTML("02"));
+		bingor8Table.setWidget(i, 3, new HTML("03"));
+		bingor8Table.setWidget(i, 4, new HTML("04"));
+		bingor8Table.setWidget(i, 5, new HTML("05"));
+		bingor8Table.setWidget(i, 6, new HTML("06"));
+		bingor8Table.setWidget(i, 7, new HTML("07"));
+		bingor8Table.setWidget(i, 8, new HTML("08"));
+		bingor8Table.setWidget(i, 9, new HTML("09"));
+		i = 2;
+		bingor8Table.setWidget(i, 0, new HTML("VM"));
+		bingor8Table.setWidget(i, 1, new HTML("10"));
+		bingor8Table.setWidget(i, 2, new HTML("11"));
+		bingor8Table.setWidget(i, 3, new HTML("12"));
+		bingor8Table.setWidget(i, 4, new HTML("13"));
+		bingor8Table.setWidget(i, 5, new HTML("14"));
+		bingor8Table.setWidget(i, 6, new HTML("15"));
+		i = 3;
+		bingor8Table.setWidget(i, 0, new HTML("RC"));
+		bingor8Table.setWidget(i, 1, new HTML("16"));
+		bingor8Table.setWidget(i, 2, new HTML("17"));
+		bingor8Table.setWidget(i, 3, new HTML("18"));
+		bingor8Table.setWidget(i, 4, new HTML("19"));
+		bingor8Table.setWidget(i, 5, new HTML("20"));
+		bingor8Table.setWidget(i, 6, new HTML("21"));
+		bingor8Table.setWidget(i, 7, new HTML("22"));
+		i = 4;
+		bingor8Table.setWidget(i, 0, new HTML("KM"));
+		bingor8Table.setWidget(i, 1, new HTML("23"));
+		bingor8Table.setWidget(i, 2, new HTML("24"));
+		bingor8Table.setWidget(i, 3, new HTML("25"));
+		bingor8Table.setWidget(i, 4, new HTML("26"));
+		bingor8Table.setWidget(i, 5, new HTML("27"));
+		bingor8Table.setWidget(i, 6, new HTML("28"));
+		bingor8Table.setWidget(i, 7, new HTML("29"));
+		i = 5;
+		bingor8Table.setWidget(i, 0, new HTML("HG"));
+		bingor8Table.setWidget(i, 1, new HTML("30"));
+		bingor8Table.setWidget(i, 2, new HTML("31"));
+		bingor8Table.setWidget(i, 3, new HTML("32"));
+		bingor8Table.setWidget(i, 4, new HTML("33"));
+		bingor8Table.setWidget(i, 5, new HTML("34"));
+		bingor8Table.setWidget(i, 6, new HTML("35"));
+		i = 6;
+		bingor8Table.setWidget(i, 0, new HTML("CN"));
+		bingor8Table.setWidget(i, 1, new HTML("36"));
+		bingor8Table.setWidget(i, 2, new HTML("37"));
+		bingor8Table.setWidget(i, 3, new HTML("38"));
+		bingor8Table.setWidget(i, 4, new HTML("39"));
+		bingor8Table.setWidget(i, 5, new HTML("40"));
+		bingor8Table.setWidget(i, 6, new HTML("41"));
+		bingor8Table.setWidget(i, 7, new HTML("42"));
+		i = 7;
+		bingor8Table.setWidget(i, 0, new HTML("PM"));
+		bingor8Table.setWidget(i, 1, new HTML("43"));
+		bingor8Table.setWidget(i, 2, new HTML("44"));
+		bingor8Table.setWidget(i, 3, new HTML("45"));
+		bingor8Table.setWidget(i, 4, new HTML("46"));
+		bingor8Table.setWidget(i, 5, new HTML("47"));
+		bingor8Table.setWidget(i, 6, new HTML("48"));
+		bingor8Table.setWidget(i, 7, new HTML("49"));
+		bingor8Table.setWidget(i, 8, new HTML("50"));
+		bingor8Table.setWidget(i, 9, new HTML("51"));
+		bingor8Table.setWidget(i, 10, new HTML("52"));
+		bingor8Table.setWidget(i, 11, new HTML("53"));
+		bingor8Table.setWidget(i, 12, new HTML("54"));
+
+	}
+	*/
 }

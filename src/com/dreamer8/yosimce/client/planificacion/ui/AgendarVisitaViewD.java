@@ -116,6 +116,10 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 							}
 						}
 					}
+				}else{
+					editarContactoPanel.nombreBox.setText("");
+					editarContactoPanel.fonoBox.setText("");
+					editarContactoPanel.emailBox.setText("");
 				}
 				editarContactoDialog.center();
 			}
@@ -134,6 +138,12 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 					if(director.getCargo()!=null){
 						editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
 					}
+				}else{
+					editarDirectorPanel.fonoBox.setText("");
+					editarDirectorPanel.nombreBox.setText("");
+					editarDirectorPanel.emailBox.setText("");
+					editarDirectorPanel.cargoBox.setVisible(false);
+					editarDirectorPanel.cargoBox.clear();
 				}
 				editarDirectorDialog.center();
 			}
@@ -365,11 +375,18 @@ public class AgendarVisitaViewD extends Composite implements AgendarVisitaView {
 	@Override
 	public void setContacto(ContactoDTO contacto) {
 		this.contacto = contacto;
-		nombreContactoLabel.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
-		fonoContactoLabel.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
-		emailContactoLabel.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
-		if(contacto.getCargo()!=null){
-			cargoContactoLabel.setText(contacto.getCargo().getCargo());
+		if(contacto != null){
+			nombreContactoLabel.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+			fonoContactoLabel.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+			emailContactoLabel.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
+			if(contacto.getCargo()!=null){
+				cargoContactoLabel.setText(contacto.getCargo().getCargo());
+			}
+		}else{
+			nombreContactoLabel.setText("");
+			fonoContactoLabel.setText("");
+			emailContactoLabel.setText("");
+			cargoContactoLabel.setText("");
 		}
 	}
 
