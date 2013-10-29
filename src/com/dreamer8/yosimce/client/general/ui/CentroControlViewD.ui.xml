@@ -175,13 +175,7 @@
 		padding:2%;
 	}
 	
-	.btn1{
-		background: 
-	}
 	
-	.btn2{
-	
-	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
