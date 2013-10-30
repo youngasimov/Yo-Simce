@@ -84,7 +84,7 @@ public class FormActividadActivity extends SimceActivity implements
 		estados.clear();
 		
 		view.enableAddExaminador(true);
-		view.enableRemoveExaminador(true);
+		view.enableRemoveExaminador(true); 
 		
 		view.setSaveVisibility(Utils.hasPermisos(eventBus,getPermisos(),"ActividadService","actualizarActividad"));
 		
@@ -131,6 +131,13 @@ public class FormActividadActivity extends SimceActivity implements
 				view.enableAddContingencia(false);
 			}
 			if(Utils.hasPermisos(getPermisos(),"ActividadService","getEvaluacionExaminadores")){
+				/*    otro cagaso de claudio   */
+				if(place.getNivelId() == 2){
+					view.enableAddExaminador(false);
+					view.enableRemoveExaminador(false);
+					FormActividadActivity.this.eventBus.fireEvent(new MensajeEvent("Se bloqueó el ingreso y eliminación de examinadores por este medio,<br />el Jefe de centro de operaciones debe ingresar los examinadores en YoSimce antes para poder evaluarlos<br />(solo para 2 básico por conflictos con examinadores de apoyo en el sistema YoSimce)",MensajeEvent.MSG_WARNING,false));
+				}
+				/* fin cagaso de claudio */
 				getFactory().getActividadService().getEvaluacionExaminadores(place.getIdCurso(), new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus,true) {
 
 					@Override
@@ -140,15 +147,6 @@ public class FormActividadActivity extends SimceActivity implements
 							examinadores = new ArrayList<EvaluacionUsuarioDTO>();
 							view.setRealizadaPorSupervisor(true);
 							onActividadRealizadaPorSupervisor(true);
-							
-							
-							/*    otro cagaso de claudio   */
-							if(place.getNivelId() == 2 && place.getTipoId()==2){
-								view.enableAddExaminador(false);
-								view.enableRemoveExaminador(false);
-								FormActividadActivity.this.eventBus.fireEvent(new MensajeEvent("Se bloqueo el ingreso o eliminación de examinadores por este medio,<br />el Jefe de centro de operaciones debe ingresar los examinadores en YoSimce antes para poder evaluarlos<br />(solo para 2 básico por conflictos con examinadores de apoyo en el sistema YoSimce)",MensajeEvent.MSG_WARNING,false));
-							}
-							/* fin cagaso de claudio */ 
 						}else{
 							view.setRealizadaPorSupervisor(false);
 							onActividadRealizadaPorSupervisor(false);
