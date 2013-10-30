@@ -360,6 +360,16 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	}
 	
 	@Override
+	public void enableAddExaminador(boolean enabled) {
+		agregarExaminadorButton.setEnabled(enabled);
+	}
+	
+	@Override
+	public void enableRemoveExaminador(boolean enabled) {
+		ausenteButton.setEnabled(enabled);
+	}
+	
+	@Override
 	public void setSaveVisibility(boolean visible) {
 		saveItem.setVisible(visible);
 		save2Button.setVisible(visible);

@@ -97,6 +97,8 @@ public interface FormActividadView extends IsWidget {
 	
 	void clear();
 	
+	void enableAddExaminador(boolean enabled);
+	void enableRemoveExaminador(boolean enabled);
 	
 	public interface FormActividadPresenter extends SimcePresenter{
 		void onCambiarCursoClick();
