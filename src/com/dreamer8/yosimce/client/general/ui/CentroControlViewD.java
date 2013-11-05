@@ -1,6 +1,8 @@
 package com.dreamer8.yosimce.client.general.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -50,6 +52,7 @@ import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
@@ -248,6 +251,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField MenuItem autoCarga5Menu;
 	@UiField MenuItem autoCarga10Menu;
 	@UiField MenuItem sendToMonitorItem;
+	@UiField MenuItem bingoItem;
 	@UiField StackLayoutPanel leftPanel;
 	@UiField TabLayoutPanel tabs;
 	@UiField CheckBox selectAllBox;
@@ -267,8 +271,6 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField RadioButton centroRadioButton;
 	@UiField RadioButton establecimientoRadioButton;
 	@UiField RadioButton ministerioRadioButton;
-	//@UiField FlexTable bingormTable;
-	//@UiField FlexTable bingor8Table;
 	
 	private Column<CentroOperacionDTO, Boolean> checkColumn;
 	private Column<CentroOperacionDTO, CentroOperacionDTO> centroColumn;
@@ -288,6 +290,8 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	private MultiSelectionModel<CentroOperacionDTO> allSelectionModel;
 	
 	private CentroControlPresenter presenter;
+	private BingoPanel bingo;
+	private PopupPanel bingoPopup;
 	
 	private boolean autoRecargaActivated;
 	
@@ -391,6 +395,10 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		infoWindowTable.setWidget(9, 0, iwh);
 		
 		initWidget(uiBinder.createAndBindUi(this));
+		bingo = new BingoPanel();
+		bingoPopup = new PopupPanel(true,true);
+		bingoPopup.setGlassEnabled(true);
+		bingoPopup.setWidget(bingo);
 		mapaPanel.setWidget(map);
 		allMaterialPanel.setWidget(allLineChart);
 		materialPanel.setWidget(materialLineChart);
@@ -477,6 +485,17 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				}
 				leftPanel.showWidget(1);
 				presenter.addToMonitor(aux);
+			}
+		});
+		bingoItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				int w = Window.getClientWidth() - 60;
+				int h = Window.getClientHeight() - 120;
+				bingo.setWidth(w+"px");
+				bingo.setHeight(h+"px");
+				bingoPopup.center();
 			}
 		});
 		
@@ -893,6 +912,50 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		trackingColumn.setSortable(false);
 		allTable.setColumnWidth(i++, 15, Unit.EM);
 	}
+	
+	@Override
+	public void setBingoRM(HashMap<String, ArrayList<String>> bingo) {
+		this.bingo.bingormTable.setWidget(0, 0, new HTML("Región Metropolitana"));
+		int max = 0;
+		int i=1;
+		int j=1;
+		for(Entry<String,ArrayList<String>> entry:bingo.entrySet()){
+			this.bingo.bingormTable.setWidget(i, 0, new HTML(entry.getKey()));
+			if(max<entry.getValue().size()){
+				max = entry.getValue().size();
+			}
+			for(String co:entry.getValue()){
+				this.bingo.bingormTable.setWidget(i, j, new HTML(co));
+				j++;
+			}
+			j=1;
+			i++;
+		}
+		this.bingo.bingormTable.getFlexCellFormatter().setColSpan(0, 0, max);
+		
+	}
+	
+	@Override
+	public void setBingoR8(HashMap<String, ArrayList<String>> bingo) {
+		this.bingo.bingor8Table.setWidget(0, 0, new HTML("VIII Région"));
+		int max = 0;
+		int i=1;
+		int j=1;
+		for(Entry<String,ArrayList<String>> entry:bingo.entrySet()){
+			this.bingo.bingor8Table.setWidget(i, 0, new HTML(entry.getKey()));
+			if(max<entry.getValue().size()){
+				max = entry.getValue().size();
+			}
+			for(String co:entry.getValue()){
+				this.bingo.bingor8Table.setWidget(i, j, new HTML(co));
+				j++;
+			}
+			j=1;
+			i++;
+		}
+		this.bingo.bingor8Table.getFlexCellFormatter().setColSpan(0, 0, max);
+	}
+	
 	/*
 	private void buildBingo(){
 		bingormTable.setWidget(0, 0, new HTML("Región Metropolitana"));

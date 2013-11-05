@@ -146,37 +146,6 @@
 		font-size: 15px;
 	}
 	
-	.bingo{
-		display:block;
-		width: 100%;
-		height: 100%;
-	}
-	
-	.bingo td{
-		font-size: 13px;
-		font-weight: bold;
-	}
-	
-	.rm{
-		display:block;
-		width: 45%;
-		height: 100%;
-		float: left;
-		border-right: 2px solid black;
-		padding:2%;
-	}
-	
-	.r8{
-		display:block;
-		width: 45%;
-		height: 100%;
-		float: right;
-		border-left: 2px solid black;
-		padding:2%;
-	}
-	
-	
-	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -193,6 +162,7 @@
 					</g:MenuBar>
 				</g:MenuItem>
 				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
+				<g:MenuItem ui:field="bingoItem">B</g:MenuItem>
 			</my:OverMenuBar>	
 		</g:north>
 		<g:west size='250'>
@@ -327,19 +297,6 @@
 						</g:HTMLPanel>
 					</g:ScrollPanel>
 				</g:tab>
-				<!--
-				<g:tab>
-					<g:header>Bingo</g:header>
-					<g:HTMLPanel addStyleNames='{style.bingo}'>
-						<div class='{style.rm}'>
-							<g:FlexTable ui:field="bingormTable" width="100%" height="100%"/>
-						</div>
-						<div class='{style.r8}'>
-							<g:FlexTable ui:field="bingor8Table" width="100%" height="100%"/>
-						</div>
-					</g:HTMLPanel>
-				</g:tab>
-				-->
 			</g:TabLayoutPanel>
 		</g:center>
 		

@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.general.ui;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
@@ -60,6 +61,9 @@ public interface CentroControlView extends IsWidget {
 	void showCentroOperacionInfo(CentroOperacionDTO centro);
 	
 	void setTab(int tab);
+	
+	void setBingoRM(HashMap<String,ArrayList<String>> bingo);
+	void setBingoR8(HashMap<String,ArrayList<String>> bingo);
 	
 	public interface CentroControlPresenter extends SimcePresenter{
 		void activarAutoRecarga(boolean activada, int time);

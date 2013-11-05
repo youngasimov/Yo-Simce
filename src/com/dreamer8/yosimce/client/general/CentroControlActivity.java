@@ -40,6 +40,7 @@ public class CentroControlActivity extends SimceActivity implements
 	private boolean firstLoad;
 	private int evento;
 	private String userKey;
+	private boolean bingoReady;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -71,6 +72,7 @@ public class CentroControlActivity extends SimceActivity implements
 		coPlace.setNivelId(place.getNivelId());
 		coPlace.setTipoId(place.getTipoId());
 		firstLoad = true;
+		bingoReady = false;
 		monitoring = localService.getMonitoreados(userKey);
 		if(monitoring == null){
 			monitoring = new ArrayList<Integer>();
@@ -111,6 +113,9 @@ public class CentroControlActivity extends SimceActivity implements
 			public void success(ArrayList<SectorDTO> result) {
 				regiones = result;
 				view.setRegiones(regiones);
+				if(!bingoReady && centros!=null && !centros.isEmpty()){
+					buildBingo();
+				}
 			}
 		});
 		view.setEvento(evento);
@@ -297,6 +302,9 @@ public class CentroControlActivity extends SimceActivity implements
 				updateRealTime();
 				updateMap();
 				updateLineasTiempo();
+				if(!bingoReady && regiones!=null && !regiones.isEmpty()){
+					buildBingo();
+				}
 			}
 		});
 		
@@ -379,6 +387,57 @@ public class CentroControlActivity extends SimceActivity implements
 		}
 		view.getMonitoringDataProvider().setList(monitor);
 		view.setMonitoreados(monitoring.size());
+	}
+	
+	private void buildBingo(){
+		bingoReady = true;
+		for(SectorDTO region:regiones){
+			if(region.getIdSector() == 13){
+				getFactory().getGeneralService().getZonas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
+
+					@Override
+					public void success(ArrayList<SectorDTO> result) {
+						ArrayList<String> cos = new ArrayList<String>();
+						HashMap<String, ArrayList<String>> bingo = new HashMap<String, ArrayList<String>>();
+						Collections.sort(result);
+						for(SectorDTO zona:result){
+							for(CentroOperacionDTO co:centros){
+								if(zona.getIdSector() == co.getIdZona()){
+									cos.add(co.getNombre().substring(2));
+								}
+							}
+							Collections.sort(cos);
+							bingo.put(zona.getSector(), cos);
+							cos = new ArrayList<String>();
+						}
+						view.setBingoRM(bingo);
+					}
+				});
+			}
+			if(region.getIdSector() == 8){
+				getFactory().getGeneralService().getZonas(region, new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
+
+					@Override
+					public void success(ArrayList<SectorDTO> result) {
+						ArrayList<String> cos = new ArrayList<String>();
+						HashMap<String, ArrayList<String>> bingo = new HashMap<String, ArrayList<String>>();
+						Collections.sort(result);
+						for(SectorDTO zona:result){
+							for(CentroOperacionDTO co:centros){
+								if(zona.getIdSector() == co.getIdZona()){
+									cos.add(co.getNombre().substring(2));
+								}
+							}
+							Collections.sort(cos);
+							bingo.put(zona.getSector(), cos);
+							cos = new ArrayList<String>();
+						}
+						view.setBingoR8(bingo);
+					}
+				});
+			}
+		}
+		
 	}
 
 	
