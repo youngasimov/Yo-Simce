@@ -143,6 +143,7 @@ public class FormActividadActivity extends SimceActivity implements
 					@Override
 					public void success(ArrayList<EvaluacionUsuarioDTO> result) {
 						examinadores = result;
+						
 						if(result == null || result.isEmpty()){
 							examinadores = new ArrayList<EvaluacionUsuarioDTO>();
 							view.setRealizadaPorSupervisor(true);
@@ -282,9 +283,16 @@ public class FormActividadActivity extends SimceActivity implements
 				
 				@Override
 				public void failure(Throwable caught) {
-					
+					ArrayList<EvaluacionUsuarioDTO> examAux = new ArrayList<EvaluacionUsuarioDTO>();
+					for(EvaluacionUsuarioDTO eval:examinadores){
+						if(titularesIds.contains(eval.getUsuario().getId())){
+							eval.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
+							examAux.add(eval);
+						}
+					}
+					examinadores.clear();
+					examinadores.addAll(examAux);
 					setExaminadores();
-					
 					super.failure(caught);
 				}
 			});
