@@ -153,6 +153,29 @@ public class FormActividadActivity extends SimceActivity implements
 							onActividadRealizadaPorSupervisor(false);
 						}
 						for(EvaluacionUsuarioDTO u:examinadores){
+							
+							if(u.getUsuario().getNombres() == null){
+								u.getUsuario().setNombres("");
+							}
+							if(u.getUsuario().getApellidoPaterno() == null){
+								u.getUsuario().setApellidoPaterno("");
+							}
+							if(u.getUsuario().getApellidoMaterno() == null){
+								u.getUsuario().setApellidoMaterno("");
+							}
+							if(u.getUsuario().getRut() == null){
+								u.getUsuario().setRut("");
+							}
+							if(u.getUsuario().getEmail() == null){
+								u.getUsuario().setEmail("");
+							}
+							if(u.getUsuario().getTelefono() == null){
+								u.getUsuario().setTelefono("");
+							}
+							if(u.getUsuario().getUsername() == null){
+								u.getUsuario().setUsername("");
+							}
+							
 							u.setEstado(EvaluacionUsuarioDTO.ESTADO_TITULAR);
 							titularesIds.add(u.getUsuario().getId());
 						}
