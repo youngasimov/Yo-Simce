@@ -19,14 +19,17 @@ public class UsuarioSeleccion implements java.io.Serializable {
 	private boolean contratoFirmado;
 	private Date fechaFirma;
 	private boolean asistencia;
-	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(0);
+	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
+			0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
+	private List<UsuarioContrato> usarioContratos = new ArrayList<UsuarioContrato>(
+			0);
 
 	public UsuarioSeleccion() {
 	}
 
-	public UsuarioSeleccion(Integer id, boolean pagado, boolean contratoFirmado,
-			boolean asistencia) {
+	public UsuarioSeleccion(Integer id, boolean pagado,
+			boolean contratoFirmado, boolean asistencia) {
 		this.id = id;
 		this.pagado = pagado;
 		this.contratoFirmado = contratoFirmado;
@@ -36,7 +39,8 @@ public class UsuarioSeleccion implements java.io.Serializable {
 	public UsuarioSeleccion(Integer id, UsuarioTipo usuarioTipo,
 			UsuarioXAplicacionXNivel usuarioXAplicacionXNivel,
 			Integer montoPago, boolean pagado, boolean contratoFirmado,
-			Date fechaFirma, boolean asistencia, List<UsuarioXActividad> usuarioXActividads,
+			Date fechaFirma, boolean asistencia,
+			List<UsuarioXActividad> usuarioXActividads,
 			List<SuplenteXCo> suplenteXCos) {
 		this.id = id;
 		this.usuarioTipo = usuarioTipo;
@@ -129,6 +133,14 @@ public class UsuarioSeleccion implements java.io.Serializable {
 
 	public void setSuplenteXCos(List<SuplenteXCo> suplenteXCos) {
 		this.suplenteXCos = suplenteXCos;
+	}
+
+	public List<UsuarioContrato> getUsarioContratos() {
+		return usarioContratos;
+	}
+
+	public void setUsarioContratos(List<UsuarioContrato> usarioContratos) {
+		this.usarioContratos = usarioContratos;
 	}
 
 }

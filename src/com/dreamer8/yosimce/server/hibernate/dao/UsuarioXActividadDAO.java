@@ -233,7 +233,7 @@ public class UsuarioXActividadDAO extends
 				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
-				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id AND uxa.usuario_tipo_id < 16"
+				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id AND (uxa.usuario_tipo_id < 16 OR uxa.usuario_tipo_id > 19)"
 				+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON axn.id=uxaxn.aplicacion_x_nivel_id AND us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
 				+ SecurityFilter.escapeString(idUsuario);
@@ -261,7 +261,7 @@ public class UsuarioXActividadDAO extends
 				+ SecurityFilter.escapeString(idCurso)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))"
 				+ " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
-				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND ut.id < 16 AND ut.rol='"
+				+ " JOIN USUARIO_TIPO ut ON uxa.usuario_tipo_id=ut.id AND (ut.id < 16 OR ut.id > 19) AND ut.rol='"
 				+ UsuarioTipo.EXAMINADOR + "'"
 				+ " WHERE uxa.usuario_seleccion_id IS NULL";
 		Query q = s.createSQLQuery(query).addEntity(UsuarioXActividad.class);
