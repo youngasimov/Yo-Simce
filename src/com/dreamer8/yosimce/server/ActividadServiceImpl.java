@@ -61,6 +61,7 @@ import com.dreamer8.yosimce.server.hibernate.pojo.IncidenciaTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.MotivoFalla;
 import com.dreamer8.yosimce.server.hibernate.pojo.SuplenteXCo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
+import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioContrato;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXActividad;
@@ -1493,6 +1494,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 				UsuarioXActividad uxaNext = null;
 				UsuarioDAO udao = new UsuarioDAO(s);
 				List<Usuario> usuariosAusentes = null;
+				UsuarioContrato uc = null;
 
 				if (evaluaciones != null && !evaluaciones.isEmpty()) {
 					for (EvaluacionUsuarioDTO eudto : evaluaciones) {
@@ -1561,7 +1563,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 															+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 															+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
 																	: "Encargado de Logística")
-															+ " debe realizar la selección para el nivel en la intranet en YoSimce.");
+															+ " debe realizar la selección para el nivel en la intranet en YoSimce en el menú \"Seleccionar\".");
 										}
 									}
 									uxa = uxadao
@@ -1621,12 +1623,31 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 													+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 													+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
 															: "Encargado de Logística")
-													+ " debe realizar la selección para el nivel en la intranet en YoSimce.");
+															+ " debe realizar la selección para el nivel en la intranet en YoSimce en el menú \"Seleccionar\".");
 								}
 							}
 							if (eudto.getEstado().equals(
 									EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
 								uxa.setAsistencia(false);
+								us = uxa.getUsuarioSeleccion();
+								if (us != null) {
+									if (us.getUsarioContratos() != null
+											&& !us.getUsarioContratos()
+													.isEmpty()) {
+										uc = us.getUsarioContratos().get(0);
+										if (uc != null && uc.getPagoEnviado()) {
+											throw new ConsistencyException(
+													"Al examinador ("
+															+ udto.getRut()
+															+ ") "
+															+ udto.getNombres()
+															+ " "
+															+ udto.getApellidoPaterno()
+															+ " ya se le ha pagado, por lo tanto no puede se puede dejar ausente. <br />Si cree que es un error envíe un correo a server.simce@usm.cl"
+															+ " con el asunto \"Error Pago Examinador\" indicando los detalles necesarios como el nivel, actividad y datos del examinador.");
+										}
+									}
+								}
 							} else {
 								uxa.setNotaPuntualidad(eudto.getPuntualidad());
 								uxa.setNotaLlenadoFormularios(eudto

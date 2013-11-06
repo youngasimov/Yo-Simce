@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-08-2013 05:13:17 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioContrato" table="usuario_contrato" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="usuarioSeleccion" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioSeleccion" fetch="select">
+            <column name="usuario_seleccion_id" />
+        </many-to-one>
+        <property name="pagado" type="boolean">
+            <column name="pagado" not-null="true" />
+        </property>
+        <property name="pagoEnviado" type="boolean">
+            <column name="pago_enviado" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

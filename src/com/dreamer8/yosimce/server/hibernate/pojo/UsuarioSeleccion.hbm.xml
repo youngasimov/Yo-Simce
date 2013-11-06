@@ -42,5 +42,11 @@
             </key>
             <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.SuplenteXCo" />
         </bag>
+        <bag name="usarioContratos" table="usuario_contrato" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="usuario_seleccion_id" />
+            </key>
+            <one-to-many class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioContrato" />
+        </bag>
     </class>
 </hibernate-mapping>
