@@ -279,6 +279,14 @@ public class FormActividadActivity extends SimceActivity implements
 				public void success(Boolean result) {
 					eventBus.fireEvent(new MensajeEvent("La evaluación de los examinadores se ha guardado exitosamente",MensajeEvent.MSG_OK,true));
 				}
+				
+				@Override
+				public void failure(Throwable caught) {
+					
+					setExaminadores();
+					
+					super.failure(caught);
+				}
 			});
 		}
 	}

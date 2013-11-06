@@ -300,7 +300,7 @@ public class AppPresenter implements AppView.AppPresenter {
 			view.showErrorMessage(e.getLocalizedMessage(), true, tiempo);
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}else if(e instanceof ConsistencyException){
-			view.showWarningMessage(e.getMessage(), true, 10000);
+			view.showWarningMessage(e.getMessage(), false, tiempo);
 			logger.log(Level.INFO, e.getLocalizedMessage());
 		}else if(e instanceof NoLoggedException && !notLogged){
 			logger.log(Level.SEVERE, e.getLocalizedMessage());
