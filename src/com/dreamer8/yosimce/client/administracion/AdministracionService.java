@@ -16,10 +16,14 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("administracionservice")
 public interface AdministracionService extends RemoteService {
-	
+
+	// Traspaso de material entre actores
 	public static final int MOVIMIENTO_MATERIAL = 1;
-	public static final int TRACKING_POR_CO = 2;
-	
+	// Traspaso de material entre actores Salida
+	public static final int MOVIMIENTO_MATERIAL_SALIDA = 2;
+	// Uso de material de contingencia para el nivel
+	public static final int MATERIAL_CONTINGENCIA = 3;
+
 	public ArrayList<UserDTO> getUsuarios(String filtro, Integer offset,
 			Integer length) throws NoAllowedException, NoLoggedException,
 			DBException, ConsistencyException;
@@ -49,13 +53,16 @@ public interface AdministracionService extends RemoteService {
 	public Boolean setPermisos(ArrayList<PermisoDTO> permisos)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException;
-	
-	public DocumentoDTO getReporte(Integer tipo, Integer region, Integer comuna, String desde);
-	
-	public Boolean enviarCorreosSimceTic() throws NoAllowedException, NoLoggedException, DBException,
-	ConsistencyException, NullPointerException;;
-	
-	public Boolean enviarCorreosSimce() throws NoAllowedException, NoLoggedException, DBException,
-	ConsistencyException, NullPointerException;;
+
+	public DocumentoDTO getReporte(Integer tipo, Integer region,
+			Integer comuna, String desde);
+
+	public Boolean enviarCorreosSimceTic() throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException;;
+
+	public Boolean enviarCorreosSimce() throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException;;
 
 }

@@ -1643,7 +1643,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 															+ udto.getNombres()
 															+ " "
 															+ udto.getApellidoPaterno()
-															+ " ya se le ha pagado, por lo tanto no puede se puede dejar ausente. <br />Si cree que es un error envíe un correo a server.simce@usm.cl"
+															+ " ya se le ha pagado, por lo tanto no se le puede dejar ausente. <br />Si cree que es un error envíe un correo a server.simce@usm.cl"
 															+ " con el asunto \"Error Pago Examinador\" indicando los detalles necesarios como el nivel, actividad y datos del examinador.");
 										}
 									}
