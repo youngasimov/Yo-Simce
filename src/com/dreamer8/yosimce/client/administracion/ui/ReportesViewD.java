@@ -1,17 +1,12 @@
 package com.dreamer8.yosimce.client.administracion.ui;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
-import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -20,8 +15,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DateBox;
 
 public class ReportesViewD extends Composite implements ReportesView {
 
@@ -34,20 +29,20 @@ public class ReportesViewD extends Composite implements ReportesView {
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
 	@UiField DecoratorPanel reportesPanel;
-	@UiField ListBox regionBox;
-	@UiField ListBox comunaBox;
-	@UiField DateBox desdeBox;
+	//@UiField ListBox regionBox;
+	//@UiField ListBox comunaBox;
+	@UiField TextBox codigoBox;
 	@UiField ListBox reporteBox;
 	@UiField Button generarButton;
 	
 	private ReportesPresenter presenter;
 	
-	private DateTimeFormat format;
+	//private DateTimeFormat format;
 	
 	public ReportesViewD() {
 		initWidget(uiBinder.createAndBindUi(this));
-		desdeBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM)));
-		format = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
+		//desdeBox.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_MEDIUM)));
+		//format = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
 		menu.setOverItem(menuItem);
 		menu.setOverCommand(new Scheduler.ScheduledCommand() {
 			
@@ -63,13 +58,14 @@ public class ReportesViewD extends Composite implements ReportesView {
 		presenter.onGenerarReporte();
 	}
 	
+	/*
 	@UiHandler("regionBox")
 	void onRegionChange(ChangeEvent event){
 		if(comunaBox.getItemCount()>0){
 			comunaBox.setSelectedIndex(0);
 		}
 		presenter.onRegionChange(Integer.parseInt(regionBox.getValue(regionBox.getSelectedIndex())));
-	}
+	}*/
 
 	@Override
 	public void setPresenter(ReportesPresenter presenter) {
@@ -80,7 +76,13 @@ public class ReportesViewD extends Composite implements ReportesView {
 	public void setReportesVisibility(boolean visible) {
 		reportesPanel.setVisible(visible);
 	}
+	
+	@Override
+	public String getCodigo() {
+		return codigoBox.getValue();
+	}
 
+	/*
 	@Override
 	public void setRegiones(ArrayList<SectorDTO> regiones) {
 		regionBox.clear();
@@ -88,8 +90,8 @@ public class ReportesViewD extends Composite implements ReportesView {
 		for(SectorDTO s:regiones){
 			regionBox.addItem(s.getSector(),s.getIdSector()+"");
 		}
-	}
-
+	}*/
+/*
 	@Override
 	public void setComunas(ArrayList<SectorDTO> comunas) {
 		comunaBox.clear();
@@ -118,7 +120,7 @@ public class ReportesViewD extends Composite implements ReportesView {
 			return format.format(d);
 		}
 	}
-
+*/
 	@Override
 	public void setReportes(HashMap<Integer, String> reportes) {
 		reporteBox.clear();
@@ -135,13 +137,14 @@ public class ReportesViewD extends Composite implements ReportesView {
 	
 	@Override
 	public void clear() {
-		if(regionBox.getItemCount()>0){
+		/*if(regionBox.getItemCount()>0){
 			regionBox.setSelectedIndex(0);
 		}
 		if(comunaBox.getItemCount()>0){
 			comunaBox.setSelectedIndex(0);
 		}
 		desdeBox.setValue(null);
+		*/
 		if(reporteBox.getItemCount()>0){
 			reporteBox.setSelectedIndex(0);
 		}

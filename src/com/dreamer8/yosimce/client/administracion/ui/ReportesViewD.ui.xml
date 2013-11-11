@@ -38,6 +38,7 @@
 							<tr>
 								<th colspan='2'>Generador de reportes</th>
 							</tr>
+							<!-- 
 							<tr>
 								<td>Región:</td>
 								<td> <g:ListBox ui:field='regionBox'/> </td>
@@ -46,9 +47,10 @@
 								<td>Comuna:</td>
 								<td> <g:ListBox ui:field='comunaBox'/> </td>
 							</tr>
+							 -->
 							<tr>
-								<td>Desde:</td>
-								<td> <d:DateBox ui:field='desdeBox'/> </td>
+								<td>Código material:</td>
+								<td> <g:TextBox ui:field='codigoBox'/> </td>
 							</tr>
 							<tr>
 								<td>Reporte:</td>

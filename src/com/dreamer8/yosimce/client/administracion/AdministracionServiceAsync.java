@@ -29,7 +29,7 @@ public interface AdministracionServiceAsync {
 	void setPermisos(ArrayList<PermisoDTO> permisos,
 			AsyncCallback<Boolean> callback);
 
-	void getReporte(Integer tipo, Integer region, Integer comuna, String desde,
+	void getReporte(Integer tipo, String codigo,
 			AsyncCallback<DocumentoDTO> callback);
 
 	void enviarCorreosSimceTic(AsyncCallback<Boolean> callback);
