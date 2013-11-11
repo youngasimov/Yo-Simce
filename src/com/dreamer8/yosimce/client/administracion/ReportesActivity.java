@@ -39,6 +39,8 @@ public class ReportesActivity extends SimceActivity implements
 		
 		reportes.clear();
 		reportes.put(AdministracionService.MOVIMIENTO_MATERIAL, "Movimiento de material");
+		reportes.put(AdministracionService.MOVIMIENTO_MATERIAL_SALIDA, "Movimiento de material salida");
+		reportes.put(AdministracionService.MATERIAL_CONTINGENCIA, "Material de contingencia");
 		reportes.put(AdministracionService.TRACKING_POR_CO, "Estado de material por Centro operación");
 		
 		view.setReportes(reportes);
