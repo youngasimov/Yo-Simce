@@ -20,7 +20,7 @@ public interface AdministracionService extends RemoteService {
 	// Traspaso de material entre actores
 	public static final int MOVIMIENTO_MATERIAL = 1;
 	// Tracking por centro de operación
-		public static final int TRACKING_POR_CO = 4;
+		public static final int TRACKING_POR_CO = 2;
 	
 
 	public ArrayList<UserDTO> getUsuarios(String filtro, Integer offset,
