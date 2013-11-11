@@ -510,13 +510,24 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 						"dd-MM-yyyy HH.mm.ss");
 				String name = null;
 				if (tipo.equals(MOVIMIENTO_MATERIAL)) {
+					if (codigo == null || !StringUtils.isInt(codigo)) {
+						throw new NullPointerException(
+								"No se ha ingresado un código válido.");
+					}
 					name = "Traspaso de material entre actores";
+					filas = mdao.findTraspasoDeMaterial(codigo);
 				} else if (tipo.equals(MOVIMIENTO_MATERIAL_SALIDA)) {
+					if (codigo == null || !StringUtils.isInt(codigo)) {
+						throw new NullPointerException(
+								"No se ha ingresado un código válido.");
+					}
 					name = "Traspaso de material entre actores salida";
+					filas = mdao.findTraspasoDeMaterialSalida(codigo);
 				} else if (tipo.equals(MATERIAL_CONTINGENCIA)) {
 					NivelDAO ndao = new NivelDAO(s);
 					Nivel n = ndao.getById(idNivel);
 					name = "Uso material contingencia " + n.getNombre();
+					filas = mdao.findUsoMaterialContingenciaByIdNivel(idNivel);
 				}
 				name += " " + dateFormat.format(new Date());
 				File file = File.createTempFile(
@@ -527,8 +538,9 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 						new FileOutputStream(file), "ISO-8859-1"));
 
 				if (filas == null || filas.isEmpty()) {
+					bw.close();
 					throw new NullPointerException(
-							"No se ha especificado el tipo de usuario.");
+							"No se ha obtenido resultados.");
 				}
 
 				for (String contenido : filas) {

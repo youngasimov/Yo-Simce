@@ -513,4 +513,105 @@ public class MaterialDAO extends AbstractHibernateDAO<Material, Integer> {
 		ms = q.list();
 		return ms;
 	}
+
+	public List<String> findTraspasoDeMaterial(String codigo) {
+
+		List<String> lineas = new ArrayList<String>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "WITH mh AS "
+				+ "	(SELECT mh.fecha,m.codigo,mh.centro_id FROM material m "
+				+ "		JOIN (SELECT mh.material_id,MAX(mh.fecha) as fecha FROM material_historial mh WHERE mh.origen_id=2 AND mh.destino_id=4 GROUP BY mh.material_id) mh_max ON m.id=mh_max.material_id "
+				+ "		JOIN material_historial mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha)"
+				+ " SELECT DISTINCT 'I' as accion, '1' as id_actor_informante, '5' as id_actor_entrega,'' as id_centro_entrega,"
+				+ " '1' as id_actor_recibe, co.nombre as id_centro_recibe, mh.codigo as codigo_barra,"
+				+ " '' as id_estado_fisico_material,to_char(mh.fecha,  'dd-MM-YYYY HH24:MI') as fecha_hora_transaccion, '' as codigo_guia_de_despacho FROM mh"
+				+ " JOIN co ON mh.centro_id=co.id WHERE mh.fecha > (SELECT mh.fecha FROM mh WHERE mh.codigo='"
+				+ SecurityFilter.escapeString(codigo)
+				+ "')  ORDER BY fecha_hora_transaccion ASC;";
+		Query q = s.createSQLQuery(query);
+		List<Object[]> os = q.list();
+		if (os != null && !os.isEmpty()) {
+			lineas.add("accion;id_actor_informante;id_actor_entrega;id_centro_entrega;id_actor_recibe;id_centro_recibe;codigo_barra;id_estado_fisico_material;fecha_hora_transaccion;codigo_guia_de_despacho");
+		}
+		String linea;
+		for (Object[] o : os) {
+			linea = "";
+			for (int i = 0; i < o.length; i++) {
+				linea += (String) o[i];
+				if (i < (o.length - 1)) {
+					linea += ";";
+				}
+			}
+			lineas.add(linea);
+		}
+		return lineas;
+	}
+
+	public List<String> findTraspasoDeMaterialSalida(String codigo) {
+
+		List<String> lineas = new ArrayList<String>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "WITH mh AS "
+				+ " (SELECT mh.fecha,m.codigo,mh.centro_id FROM material m "
+				+ "		JOIN (select mh.material_id,MAX(mh.fecha) as fecha FROM material_historial mh WHERE mh.origen_id=4 AND mh.destino_id=1 GROUP BY mh.material_id) mh_max ON m.id=mh_max.material_id"
+				+ "		JOIN material_historial mh ON mh_max.material_id=mh.material_id AND mh_max.fecha=mh.fecha)"
+				+ " SELECT DISTINCT 'I' as accion, '1' as id_actor_informante, '1' as id_actor_entrega,co.nombre as id_centro_entrega,"
+				+ " '5' as id_actor_recibe,''  as id_centro_recibe, mh.codigo as codigo_barra,"
+				+ " '' as id_estado_fisico_material,to_char(mh.fecha,  'dd-MM-YYYY HH24:MI') as fecha_hora_transaccion, '' as codigo_guia_de_despacho FROM mh"
+				+ " JOIN co ON mh.centro_id=co.id where mh.fecha >(SELECT mh.fecha FROM mh WHERE mh.codigo='"
+				+ SecurityFilter.escapeString(codigo)
+				+ "')  ORDER BY fecha_hora_transaccion ASC;";
+		Query q = s.createSQLQuery(query);
+		List<Object[]> os = q.list();
+		if (os != null && !os.isEmpty()) {
+			lineas.add("accion;id_actor_informante;id_actor_entrega;id_centro_entrega;id_actor_recibe;id_centro_recibe;codigo_barra;id_estado_fisico_material;fecha_hora_transaccion;codigo_guia_de_despacho");
+		}
+		String linea;
+		for (Object[] o : os) {
+			linea = "";
+			for (int i = 0; i < o.length; i++) {
+				linea += (String) o[i];
+				if (i < (o.length - 1)) {
+					linea += ";";
+				}
+			}
+			lineas.add(linea);
+		}
+		return lineas;
+	}
+
+	public List<String> findUsoMaterialContingenciaByIdNivel(Integer idNivel) {
+
+		List<String> lineas = new ArrayList<String>();
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT e.id as rbd, c.nombre as curso,"
+				+ " at.nombre as actividad,r.nombre as region, com.nombre as comuna,"
+				+ "a.material_contingencia as utilizó_material_contingencia,a.detalle_material_contingencia FROM ACTIVIDAD a "
+				+ "JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON a.aplicacion_x_nivel_x_actividad_tipo_id=axnxat.id "
+				+ "JOIN APLICACION_x_NIVEL axn ON axnxat.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id=1 AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ "JOIN ACTIVIDAD_TIPO at ON axnxat.actividad_tipo_id=at.id "
+				+ "JOIN CURSO c ON a.curso_id=c.id "
+				+ "JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id "
+				+ "JOIN COMUNA com ON e.comuna_id=com.id "
+				+ "JOIN PROVINCIA p ON com.provincia_id=p.id "
+				+ "JOIN REGION r ON p.region_id=r.id ORDER BY e.id,c.nombre,at.id;";
+		Query q = s.createSQLQuery(query);
+		List<Object[]> os = q.list();
+		if (os != null && !os.isEmpty()) {
+			lineas.add("rbd;curso;actividad;region;comuna;utilizó_material_contingencia;detalle_material_contingencia");
+		}
+		String linea;
+		for (Object[] o : os) {
+			linea = "";
+			for (int i = 0; i < o.length; i++) {
+				linea += (o[i] != null) ? o[i].toString() : "";
+				if (i < (o.length - 1)) {
+					linea += ";";
+				}
+			}
+			lineas.add(linea);
+		}
+		return lineas;
+	}
 }
