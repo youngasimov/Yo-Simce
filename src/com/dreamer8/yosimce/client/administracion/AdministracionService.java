@@ -20,8 +20,11 @@ public interface AdministracionService extends RemoteService {
 	// Traspaso de material entre actores
 	public static final int MOVIMIENTO_MATERIAL = 1;
 	// Tracking por centro de operación
-		public static final int TRACKING_POR_CO = 2;
-	
+	public static final int TRACKING_POR_CO = 2;
+	// Uso de material de contingencia para el nivel
+	public static final int MATERIAL_CONTINGENCIA = 3;
+	// Traspaso de material entre actores Salida
+	public static final int MOVIMIENTO_MATERIAL_SALIDA = 4;
 
 	public ArrayList<UserDTO> getUsuarios(String filtro, Integer offset,
 			Integer length) throws NoAllowedException, NoLoggedException,
@@ -53,9 +56,9 @@ public interface AdministracionService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException;
 
-	DocumentoDTO getReporte(Integer tipo, String codigo) throws NoAllowedException,
-	NoLoggedException, DBException, ConsistencyException,
-	NullPointerException;;
+	DocumentoDTO getReporte(Integer tipo, String codigo)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;;
 
 	public Boolean enviarCorreosSimceTic() throws NoAllowedException,
 			NoLoggedException, DBException, ConsistencyException,

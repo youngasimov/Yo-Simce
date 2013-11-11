@@ -1,10 +1,17 @@
 package com.dreamer8.yosimce.server;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -17,10 +24,13 @@ import com.dreamer8.yosimce.client.administracion.AdministracionService;
 import com.dreamer8.yosimce.server.hibernate.dao.ActividadDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.AplicacionXUsuarioTipoXPermisoDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.ArchivoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CentroRegionalDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.EstablecimientoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialDAO;
+import com.dreamer8.yosimce.server.hibernate.dao.NivelDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.PermisoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioTipoDAO;
@@ -28,10 +38,12 @@ import com.dreamer8.yosimce.server.hibernate.dao.ZonaDAO;
 import com.dreamer8.yosimce.server.hibernate.pojo.Actividad;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipo;
 import com.dreamer8.yosimce.server.hibernate.pojo.AplicacionXUsuarioTipoXPermiso;
+import com.dreamer8.yosimce.server.hibernate.pojo.Archivo;
 import com.dreamer8.yosimce.server.hibernate.pojo.CentroRegional;
 import com.dreamer8.yosimce.server.hibernate.pojo.Co;
 import com.dreamer8.yosimce.server.hibernate.pojo.ContactoCargo;
 import com.dreamer8.yosimce.server.hibernate.pojo.Establecimiento;
+import com.dreamer8.yosimce.server.hibernate.pojo.Nivel;
 import com.dreamer8.yosimce.server.hibernate.pojo.Permiso;
 import com.dreamer8.yosimce.server.hibernate.pojo.Usuario;
 import com.dreamer8.yosimce.server.hibernate.pojo.UsuarioTipo;
@@ -450,10 +462,116 @@ public class AdministracionServiceImpl extends CustomRemoteServiceServlet
 	}
 
 	@Override
-	public DocumentoDTO getReporte(Integer tipo, Integer region,
-			Integer comuna, String date) {
-		// TODO Auto-generated method stub
-		return null;
+	public DocumentoDTO getReporte(Integer tipo, String codigo) {
+
+		DocumentoDTO ddto = new DocumentoDTO();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getReporte")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (tipo == null) {
+					throw new NullPointerException(
+							"No se ha definido el tipo de reporte a generar.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO(s);
+				List<String> filas = null;
+				DateFormat dateFormat = new SimpleDateFormat(
+						"dd-MM-yyyy HH.mm.ss");
+				String name = null;
+				if (tipo.equals(MOVIMIENTO_MATERIAL)) {
+					name = "Traspaso de material entre actores";
+				} else if (tipo.equals(MOVIMIENTO_MATERIAL_SALIDA)) {
+					name = "Traspaso de material entre actores salida";
+				} else if (tipo.equals(MATERIAL_CONTINGENCIA)) {
+					NivelDAO ndao = new NivelDAO(s);
+					Nivel n = ndao.getById(idNivel);
+					name = "Uso material contingencia " + n.getNombre();
+				}
+				name += " " + dateFormat.format(new Date());
+				File file = File.createTempFile(
+						StringUtils.getDatePathSafe(name), ".csv",
+						getUploadDirForTmpFiles());
+				// FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file), "ISO-8859-1"));
+
+				if (filas == null || filas.isEmpty()) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				for (String contenido : filas) {
+					bw.write(contenido + "\r");
+				}
+
+				bw.close();
+
+				ArchivoDAO ardao = new ArchivoDAO(s);
+				Archivo archivo = new Archivo();
+				archivo.setTitulo(name);
+				archivo.setRutaArchivo(file.getAbsolutePath());
+				archivo.setMimeType("text/plain");
+				archivo.setIpServer("200.1.30.52");
+				ardao.save(archivo);
+
+				ddto = archivo.getDocumentoDTO(getBaseURL());
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return ddto;
 	}
 
 	/**
