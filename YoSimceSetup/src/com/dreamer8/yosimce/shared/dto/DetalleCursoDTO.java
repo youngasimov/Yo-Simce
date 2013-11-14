@@ -12,6 +12,8 @@ public class DetalleCursoDTO implements Serializable {
 	private String comuna;
 	private String curso;
 	private String tipoEstablecimiento;
+	private String direccion;
+	private String centro;
 
 	private UserDTO supervisor;
 	private ArrayList<UserDTO> examinadores;
@@ -20,12 +22,10 @@ public class DetalleCursoDTO implements Serializable {
 	private String nombreContacto;
 	private String emailContacto;
 	private String telefonoContacto;
-	
+
 	private String nombreDirector;
 	private String emailDirector;
 	private String telefonoDirector;
-	
-	
 
 	public DetalleCursoDTO() {
 
@@ -87,6 +87,22 @@ public class DetalleCursoDTO implements Serializable {
 		this.tipoEstablecimiento = tipoEstablecimiento;
 	}
 
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getCentro() {
+		return centro;
+	}
+
+	public void setCentro(String centro) {
+		this.centro = centro;
+	}
+
 	public UserDTO getSupervisor() {
 		return supervisor;
 	}
@@ -94,7 +110,7 @@ public class DetalleCursoDTO implements Serializable {
 	public void setSupervisor(UserDTO supervisor) {
 		this.supervisor = supervisor;
 	}
-	
+
 	public String getCargoContacto() {
 		return cargoContacto;
 	}
