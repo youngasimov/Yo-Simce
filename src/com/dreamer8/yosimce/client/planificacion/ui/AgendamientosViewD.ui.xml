@@ -2,6 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
 	
     <ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
@@ -22,26 +24,76 @@
 		min-width: 200px;
 		text-align: center;
 	}
+	.decPanel{
+		display:block;
+		margin-top: 50px;
+	}
+	.panel{
+		width: 330px;
+	}
+	
+	.panel td{
+		width: 20px;
+		padding: 10px;
+		text-align: left;
+	}
+	
+	.panel .subtitle td{
+		font-weight: bolder;
+		text-align: center;
+		border-top: 2px solid black;
+		border-bottom: 1px solid #AAAAAA;
+		font-size: 16px;
+	}
+	
+	.panel .label{
+		font-weight: bold;
+		font-size: 12px;
+	}
+	
+	.form{
+		width: 300px;
+		text-align: center;
+	}
+	
+	.form .label{
+		font-size: 15px;
+		font-weight: bold;
+	}
+	
+	.form .separador td{
+		padding-top: 30px;
+		border-bottom: 1px solid black;
+	}
+	.timepicker{
+		display: block;
+		width: 80px;
+		height: 20px;
+		float: left;
+	}
+	
+	.fechaPicker table{
+		text-align: center;
+		width: 300px;
+	}
+	
+	.agendaList{
+		display: block;
+		float: left;
+		width: 330px;
+	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
 				<g:MenuItem  ui:field="menuItem" enabled="false" addStyleNames='{style.title}'><div class='{style.title2}'>Agenda</div> ></g:MenuItem>
+				<g:MenuItem ui:field="buscarItem" text='Buscar'/>
 				<g:MenuItem ui:field="filtrosItem" text='Filtros'/>
 				<g:MenuItem ui:field="exportarItem" text='Exportar' />
-				<g:MenuItem ui:field="cursoItem">
-					<g:MenuBar vertical="true">
-						<g:MenuItem ui:field="modificarItem" text='Modificar' />
-						<g:MenuItem ui:field="detallesItem" text='Detalles' />
-						<g:MenuItem ui:field="informacionItem" text='Información General' />
-					</g:MenuBar>
-				</g:MenuItem>
+				<g:MenuItem ui:field="cursoItem" enabled='false'/>
 			</my:OverMenuBar>
 		</g:north>
-		<g:center>
-			<c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/>
-		</g:center>
     	<g:south size="35">
 	     	<g:HTMLPanel>
        			<table style="width:100%">
@@ -53,5 +105,133 @@
        			</table>
      		</g:HTMLPanel>
   		</g:south>
+  		<g:center>
+  			<g:SplitLayoutPanel>
+  				<g:east size="350">
+  					<g:TabLayoutPanel barUnit='PX' barHeight="25" animationDuration="100" animationVertical="false" >
+  						<g:tab>
+  							<g:header size='7'>Detalles</g:header>
+  							<g:StackLayoutPanel animationDuration="200" unit="PX">
+  								<g:stack>
+  									<g:header size='40'>General</g:header>
+  									<g:ScrollPanel>
+	  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+		  									<g:HTMLPanel>
+		  										<table class='{style.panel}'>
+		  											<tr>
+		  												<td class='{style.label}'>Colegio:</td>
+		  												<td> <g:Label ui:field="colegioLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>RBD:</td>
+		  												<td> <g:Label ui:field="rbdLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>Región:</td>
+		  												<td> <g:Label ui:field="regionLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>Comuna:</td>
+		  												<td> <g:Label ui:field="comunaLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>Dirección:</td>
+		  												<td> <g:Label ui:field="direccionLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>Curso:</td>
+		  												<td> <g:Label ui:field="cursoLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>Tipo:</td>
+		  												<td> <g:Label ui:field="tipoLabel"/> </td>
+		  											</tr>
+		  											<tr>
+		  												<td class='{style.label}'>Centro operación:</td>
+		  												<td> <g:Label ui:field="centroOperacionLabel"/> </td>
+		  											</tr>
+		  										</table>
+		  									</g:HTMLPanel>
+	  									</g:DecoratorPanel>
+  									</g:ScrollPanel>
+  								</g:stack>
+  								<g:stack>
+  									<g:header size='40'>Contactos</g:header>
+  									<g:ScrollPanel>
+	  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+		  									<g:HTMLPanel>
+		  										<table>
+		  											<tr>
+		  												<td><g:FlexTable ui:field='contactosTable'/></td>
+		  											</tr>
+		  											<tr>
+		  												<td>
+		  													<g:Button text="Editar contacto" ui:field="editContactoButton"/>
+		  												</td>
+		  												<td>
+		  													<g:Button text="Editar director" ui:field="editDirectorButton"/>
+		  												</td>
+		  											</tr>
+		  										</table>
+		  									</g:HTMLPanel>
+	  									</g:DecoratorPanel>
+  									</g:ScrollPanel>
+  								</g:stack>
+  								<g:stack>
+  									<g:header size='40'>Personas</g:header>
+  									<g:ScrollPanel>
+  										<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+  											<g:FlexTable ui:field='personasTable'/>
+  										</g:DecoratorPanel>
+  									</g:ScrollPanel>
+  								</g:stack>
+  							</g:StackLayoutPanel>
+  						</g:tab>
+  						<g:tab>
+  							<g:header size='7'>Agenda</g:header>
+  							<g:ScrollPanel>
+  								<g:FlowPanel>
+  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+  										<g:HTMLPanel>
+								    		<table class='{style.form}'>
+								    			<tr>
+								    				<td class='{style.label}'>Estado:</td>
+								    				<td><g:ListBox ui:field="estadoBox"/> </td>
+								    			</tr>
+								    			<tr class='{style.separador}'>
+								    				<td class='{style.label}'>Fecha</td>
+								    				<td class='{style.label}'><g:Label ui:field="fechaLabel"/> </td>
+								    			</tr>
+								    			<tr>
+								    				<td colspan='2' class='{style.fechaPicker}'><d:DatePicker ui:field="fechaPicker"/> </td>
+								    			</tr>
+								    			<tr>
+								    				<td class='{style.label}'>Hora:</td>
+								    				<td><e:TimeBox ui:field="timeBox"/> </td>
+								    			</tr>
+								    			<tr class='{style.separador}'>
+								    				<td colspan='2' class='{style.label}'>Comentario</td>
+								    			</tr>
+								    			<tr>
+								    				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
+								    			</tr>
+								    			<tr class='{style.separador}'>
+								    				<td></td>
+								    				<td><g:Button ui:field="modificarButton" text="Modificar agenda"/> </td>
+								    			</tr>
+								    		</table>
+							    		</g:HTMLPanel>
+  									</g:DecoratorPanel>
+  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+				    					<c:CellList ui:field="agendaList" addStyleNames='{style.agendaList}'/>
+  									</g:DecoratorPanel>
+  								</g:FlowPanel>
+  							</g:ScrollPanel>
+  						</g:tab>
+  					</g:TabLayoutPanel>
+  				</g:east>
+  				<g:center><c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/></g:center>
+  			</g:SplitLayoutPanel>
+		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

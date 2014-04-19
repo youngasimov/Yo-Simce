@@ -5,17 +5,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
-import com.dreamer8.yosimce.client.planificacion.AgendarVisitaPlace;
-import com.dreamer8.yosimce.client.planificacion.DetalleAgendaPlace;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
+import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
+import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
+import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
-import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -30,6 +29,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SafeHtmlHeader;
@@ -37,11 +37,17 @@ import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -59,14 +65,33 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
+	@UiField MenuItem buscarItem;
 	@UiField MenuItem filtrosItem;
 	@UiField MenuItem exportarItem;
 	@UiField MenuItem cursoItem;
-	@UiField MenuItem modificarItem;
-	@UiField MenuItem detallesItem;
-	@UiField MenuItem informacionItem;
 	@UiField(provided = true) DataGrid<AgendaPreviewDTO> dataGrid;
 	@UiField(provided = true) SimplePager pager;
+	@UiField Label colegioLabel;
+	@UiField Label rbdLabel;
+	@UiField Label regionLabel;
+	@UiField Label comunaLabel;
+	@UiField Label direccionLabel;
+	@UiField Label cursoLabel;
+	@UiField Label tipoLabel;
+	@UiField Label centroOperacionLabel;
+	@UiField FlexTable contactosTable;
+	@UiField FlexTable personasTable;
+	@UiField Button editContactoButton;
+	@UiField Button editDirectorButton;
+	@UiField ListBox estadoBox;
+	@UiField DatePicker fechaPicker;
+	@UiField Label fechaLabel;
+	@UiField(provided=true) TimeBox timeBox;
+	@UiField TextArea comentarioBox;
+	@UiField Button modificarButton;
+	
+	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
+	
 	
 	private HashMap<Integer,CheckBox> estadoCheckBoxs;
 	
@@ -83,9 +108,11 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	private DateTimeFormat format;
 	
 	
+	
 	public AgendamientosViewD() {
 		dataGrid = new DataGrid<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
 		pager = new SimplePager(TextLocation.CENTER, false, false);
+		timeBox = new TimeBox(new Date(), TIME_PRECISION.MINUTE, false);
 		initWidget(uiBinder.createAndBindUi(this));
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
@@ -120,39 +147,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			}
 		});
 		
-		modificarItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				AgendarVisitaPlace avp = new AgendarVisitaPlace();
-				if(selectedItem !=null)avp.setCursoId(selectedItem.getCursoId());
-				presenter.goTo(avp);
-			}
-		});
-		
-		detallesItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				DetalleAgendaPlace daep = new DetalleAgendaPlace();
-				if(selectedItem !=null)daep.setCursoId(selectedItem.getCursoId());
-				presenter.goTo(daep);
-			}
-		});
-		
-		informacionItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				DetalleCursoPlace dcp = new DetalleCursoPlace();
-				if(selectedItem !=null)dcp.setCursoId(selectedItem.getCursoId());
-				presenter.goTo(dcp);
-			}
-		});
-		
-		bind();
-		
-		
+		bind();	
 	}
 
 	@UiFactory
@@ -288,10 +283,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	private void bind(){
 		dataGrid.setWidth("100%");
-		buildGrid();		
-		modificarItem.setVisible(false);
-		detallesItem.setVisible(false);
-		informacionItem.setVisible(false);
+		buildGrid();
 		cursoItem.setVisible(false);
 		
 		pager.setDisplay(dataGrid);
@@ -318,11 +310,17 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				cursoItem.setText((selectionModel.getSelectedObject()!=null)?
 						ViewUtils.limitarString(selectionModel.getSelectedObject().getEstablecimientoName(),40):"");
 				
-				modificarItem.setVisible(selectionModel.getSelectedObject()!=null && modificarAgendaVisible);
-				detallesItem.setVisible(selectionModel.getSelectedObject()!=null && detalleVisible);
-				informacionItem.setVisible(selectionModel.getSelectedObject()!=null && informacionVisible);
-				cursoItem.setVisible(modificarItem.isVisible() || detallesItem.isVisible() || informacionItem.isVisible());
+				boolean a = selectionModel.getSelectedObject()!=null && modificarAgendaVisible;
+				boolean b = selectionModel.getSelectedObject()!=null && detalleVisible;
+				boolean c = selectionModel.getSelectedObject()!=null && informacionVisible;
+				cursoItem.setVisible(a || b || c);
 				selectedItem = selectionModel.getSelectedObject();
+				
+				
+				/**
+				 * Aqui ocurre toda la magia
+				 */
+				
 			}
 		});
 		
@@ -425,6 +423,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(tipoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Tipo")));
         dataGrid.setColumnWidth(tipoColumn, 100, Unit.PX);
         
+        /*
         Column<AgendaPreviewDTO, String> estadoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -444,6 +443,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dateColumn.setSortable(false);
         dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
         dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
+        */
         
         Column<AgendaPreviewDTO, String> regionColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
@@ -468,6 +468,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(comunaColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Comuna")));
         dataGrid.setColumnWidth(comunaColumn, 120, Unit.PX);
         
+        /*
         Column<AgendaPreviewDTO, String> comentarioColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -546,5 +547,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         emailContactoColumn.setSortable(false);
         dataGrid.addColumn(emailContactoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Email contacto")));
         dataGrid.setColumnWidth(emailContactoColumn, 200, Unit.PX);
+        */
 	}
 }
