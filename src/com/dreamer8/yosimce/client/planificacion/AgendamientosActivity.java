@@ -48,7 +48,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	private ContactoDTO contacto;
 	private ContactoDTO director;
 	
-	private ArrayList<EstadoAgendaDTO> estadosAgenda;
+	//private ArrayList<EstadoAgendaDTO> estadosAgenda;
 	private AgendaDTO agenda;
 	private boolean fechaSelected;
 	
@@ -88,7 +88,6 @@ public class AgendamientosActivity extends SimceActivity implements
 		regiones.clear();
 		comunas.clear();
 		estados.clear();
-		estadosAgenda.clear();
 		estadosReady = false;
 		regionesReady = false;
 		range = view.getDataDisplay().getVisibleRange();
@@ -137,7 +136,7 @@ public class AgendamientosActivity extends SimceActivity implements
 
 				@Override
 				public void success(ArrayList<EstadoAgendaDTO> result) {
-					estadosAgenda = result;
+					//estadosAgenda = result;
 					view.setEstadosAgenda(result);
 				}
 			});
