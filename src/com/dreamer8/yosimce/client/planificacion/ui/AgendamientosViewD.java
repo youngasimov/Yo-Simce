@@ -6,15 +6,20 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
+import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView.AgendarVisitaPresenter;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
+import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
+import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
+import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -25,6 +30,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -42,12 +48,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.RangeChangeEvent;
@@ -63,6 +68,11 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			UiBinder<Widget, AgendamientosViewD> {
 	}
 	
+	interface Style extends CssResource {
+		String line();
+	}
+	
+	@UiField Style style;
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
 	@UiField MenuItem buscarItem;
@@ -83,12 +93,8 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@UiField FlexTable personasTable;
 	@UiField Button editContactoButton;
 	@UiField Button editDirectorButton;
-	@UiField ListBox estadoBox;
-	@UiField DatePicker fechaPicker;
-	@UiField Label fechaLabel;
-	@UiField(provided=true) TimeBox timeBox;
-	@UiField TextArea comentarioBox;
-	@UiField Button modificarButton;
+	@UiField Button agendarButton;
+	@UiField ListBox tipoActividadBox;
 	
 	@UiField(provided=true) CellList<AgendaItemDTO> agendaList;
 	
@@ -107,13 +113,24 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	private boolean informacionVisible;
 	private DateTimeFormat format;
 	
+	private AgendaCell cell;
+	
+	
+	private int idCurso;
+	
 	
 	
 	public AgendamientosViewD() {
+		
+		cell = new AgendaCell();
+		agendaList = new CellList<AgendaItemDTO>(cell);
 		dataGrid = new DataGrid<AgendaPreviewDTO>(AgendaPreviewDTO.KEY_PROVIDER);
 		pager = new SimplePager(TextLocation.CENTER, false, false);
-		timeBox = new TimeBox(new Date(), TIME_PRECISION.MINUTE, false);
 		initWidget(uiBinder.createAndBindUi(this));
+		personasTable.getColumnFormatter().setWidth(0, "30%");
+		personasTable.getColumnFormatter().setWidth(1, "70%");
+		contactosTable.getColumnFormatter().setWidth(0, "30%");
+		contactosTable.getColumnFormatter().setWidth(1, "70%");
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
 		filtrosDialogBox.setWidget(filtrosPanel);
@@ -187,6 +204,16 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		informacionVisible = false;
 		estadoCheckBoxs.clear();
 		filtrosPanel.estadosPanel.clear();
+		colegioLabel.setText("");
+		rbdLabel.setText("");
+		regionLabel.setText("");
+		comunaLabel.setText("");
+		direccionLabel.setText("");
+		cursoLabel.setText("");
+		tipoLabel.setText("");
+		centroOperacionLabel.setText("");
+		contactosTable.clear();
+		personasTable.clear();
 	}
 	
 	@Override
@@ -316,10 +343,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				cursoItem.setVisible(a || b || c);
 				selectedItem = selectionModel.getSelectedObject();
 				
-				
-				/**
-				 * Aqui ocurre toda la magia
-				 */
+				presenter.onCursoClick(selectedItem);
 				
 			}
 		});
@@ -549,4 +573,192 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.setColumnWidth(emailContactoColumn, 200, Unit.PX);
         */
 	}
+
+	@Override
+	public void setNombreEstablecimiento(String establecimiento) {
+		cursoItem.setHTML(ViewUtils.limitarString(establecimiento, 40));
+		colegioLabel.setText(establecimiento);
+	}
+
+	@Override
+	public void setIdCurso(int idCurso) {
+		this.idCurso = idCurso;
+	}
+
+	@Override
+	public HasData<AgendaItemDTO> getAgendaDataDisplay() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setUltimoEstado(AgendaItemDTO item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setEstadosAgenda(ArrayList<EstadoAgendaDTO> estados) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getIdEstadoAgendaSeleccionado() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Date getFechaHoraSeleccionada() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getComentario() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEditarContactoVisivility(boolean visible) {
+		editContactoButton.setVisible(visible);
+	}
+
+	@Override
+	public void setEditarDirectorVisivility(boolean visible) {
+		editDirectorButton.setVisible(visible);
+	}
+
+	@Override
+	public void setRbd(String rbd) {
+		rbdLabel.setText(rbd);
+	}
+
+	@Override
+	public void setRegion(String region) {
+		regionLabel.setText(region);
+	}
+
+	@Override
+	public void setComuna(String comuna) {
+		comunaLabel.setText(comuna);
+	}
+
+	@Override
+	public void setCurso(String curso) {
+		cursoLabel.setText(curso);
+	}
+
+	@Override
+	public void setTipo(String tipo) {
+		tipoLabel.setText(tipo);
+	}
+
+	@Override
+	public void setSupervisor(UserDTO supervisor) {
+		if(supervisor == null){
+			personasTable.clear();
+			return;
+		}
+		personasTable.setWidget(1, 0, new HTML("Supervisor"));
+		personasTable.setWidget(1, 1, new HTML(supervisor.getNombres()+" "+supervisor.getApellidoPaterno()+" "+supervisor.getApellidoMaterno()));
+		personasTable.setWidget(2, 0, new HTML(supervisor.getTelefono()));
+		personasTable.setWidget(2, 1, new HTML(supervisor.getEmail()));
+		personasTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
+		personasTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
+	}
+
+	@Override
+	public void setExaminadores(ArrayList<UserDTO> examinadores) {
+		int i = 3;
+		for(UserDTO examinador:examinadores){
+			personasTable.setWidget(i, 0, new HTML("Examinador"));
+			personasTable.setWidget(i, 1, new HTML(examinador.getNombres()+" "+examinador.getApellidoPaterno()+" "+examinador.getApellidoMaterno()));
+			personasTable.setWidget(i+1, 0, new HTML(examinador.getTelefono()));
+			personasTable.setWidget(i+1, 1, new HTML(examinador.getEmail()));
+			personasTable.getFlexCellFormatter().addStyleName(i+1, 0, style.line());
+			personasTable.getFlexCellFormatter().addStyleName(i+1, 1, style.line());
+			i = i + 2;
+		}
+	}
+
+	@Override
+	public void setDirector(String director) {
+		contactosTable.setWidget(1, 0, new HTML("Director"));
+		contactosTable.setWidget(1, 1, new HTML(director));
+	}
+
+	@Override
+	public void setEmailDirector(String email) {
+		contactosTable.setWidget(2, 1, new HTML(email));
+		contactosTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
+		contactosTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
+	}
+
+	@Override
+	public void setTelefonoDirector(String telefono) {
+		contactosTable.setWidget(2, 0, new HTML(telefono));
+		contactosTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
+		contactosTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
+	}
+
+	@Override
+	public void setContacto(String director) {
+		contactosTable.setWidget(3, 1, new HTML(director));
+	}
+
+	@Override
+	public void setCargoContacto(String cargo) {
+		contactosTable.setWidget(3, 0, new HTML(cargo));
+	}
+
+	@Override
+	public void setEmailContacto(String email) {
+		contactosTable.setWidget(4, 1, new HTML(email));
+	}
+
+	@Override
+	public void setTelefonoContacto(String telefono) {
+		contactosTable.setWidget(4, 0, new HTML(telefono));
+	}
+
+	@Override
+	public void setCentroOperacion(String co) {
+		centroOperacionLabel.setText(co);
+	}
+
+	@Override
+	public void setAddress(String address) {
+		direccionLabel.setText(address);
+	}
+
+	@Override
+	public void setBuscarVisivility(boolean visible) {
+		buscarItem.setVisible(visible);
+	}
+
+	@Override
+	public void setTiposActividad(ArrayList<ActividadTipoDTO> tipos) {
+		tipoActividadBox.clear();
+		for(ActividadTipoDTO tipo:tipos){
+			tipoActividadBox.addItem(tipo.getNombre(), tipo.getId()+"");
+		}
+	}
+	
+	@Override
+	public void selectTipoActividad(int id) {
+		for(int i=0; i < tipoActividadBox.getItemCount();i++){
+			int aux = Integer.parseInt(tipoActividadBox.getValue(i));
+			if(aux == id){
+				tipoActividadBox.setSelectedIndex(i);
+				return;
+			}
+		}
+	}
+	
+	public int getSelectedTipoActividad() {
+		return Integer.parseInt(tipoActividadBox.getValue(tipoActividadBox.getSelectedIndex()));
+	};
 }

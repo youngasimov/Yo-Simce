@@ -8,7 +8,7 @@
 	
     <ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
      
-	<ui:style>
+	<ui:style field="style" type="com.dreamer8.yosimce.client.planificacion.ui.AgendamientosViewD.Style">
 	
 	.data{
 		font-size: 12px;
@@ -80,7 +80,10 @@
 	.agendaList{
 		display: block;
 		float: left;
-		width: 330px;
+		width: 320px;
+	}
+	.line{
+		border-bottom: 1px solid #AAAAAA;
 	}
 	
 	</ui:style>
@@ -108,127 +111,112 @@
   		<g:center>
   			<g:SplitLayoutPanel>
   				<g:east size="350">
-  					<g:TabLayoutPanel barUnit='PX' barHeight="25" animationDuration="100" animationVertical="false" >
-  						<g:tab>
-  							<g:header size='7'>Detalles</g:header>
-  							<g:StackLayoutPanel animationDuration="200" unit="PX">
-  								<g:stack>
-  									<g:header size='40'>General</g:header>
-  									<g:ScrollPanel>
-	  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
-		  									<g:HTMLPanel>
-		  										<table class='{style.panel}'>
-		  											<tr>
-		  												<td class='{style.label}'>Colegio:</td>
-		  												<td> <g:Label ui:field="colegioLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>RBD:</td>
-		  												<td> <g:Label ui:field="rbdLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>Región:</td>
-		  												<td> <g:Label ui:field="regionLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>Comuna:</td>
-		  												<td> <g:Label ui:field="comunaLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>Dirección:</td>
-		  												<td> <g:Label ui:field="direccionLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>Curso:</td>
-		  												<td> <g:Label ui:field="cursoLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>Tipo:</td>
-		  												<td> <g:Label ui:field="tipoLabel"/> </td>
-		  											</tr>
-		  											<tr>
-		  												<td class='{style.label}'>Centro operación:</td>
-		  												<td> <g:Label ui:field="centroOperacionLabel"/> </td>
-		  											</tr>
-		  										</table>
-		  									</g:HTMLPanel>
-	  									</g:DecoratorPanel>
-  									</g:ScrollPanel>
-  								</g:stack>
-  								<g:stack>
-  									<g:header size='40'>Contactos</g:header>
-  									<g:ScrollPanel>
-	  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
-		  									<g:HTMLPanel>
-		  										<table>
-		  											<tr>
-		  												<td><g:FlexTable ui:field='contactosTable'/></td>
-		  											</tr>
-		  											<tr>
-		  												<td>
-		  													<g:Button text="Editar contacto" ui:field="editContactoButton"/>
-		  												</td>
-		  												<td>
-		  													<g:Button text="Editar director" ui:field="editDirectorButton"/>
-		  												</td>
-		  											</tr>
-		  										</table>
-		  									</g:HTMLPanel>
-	  									</g:DecoratorPanel>
-  									</g:ScrollPanel>
-  								</g:stack>
-  								<g:stack>
-  									<g:header size='40'>Personas</g:header>
-  									<g:ScrollPanel>
-  										<g:DecoratorPanel addStyleNames='{style.decPanel}'>
-  											<g:FlexTable ui:field='personasTable'/>
-  										</g:DecoratorPanel>
-  									</g:ScrollPanel>
-  								</g:stack>
-  							</g:StackLayoutPanel>
-  						</g:tab>
-  						<g:tab>
-  							<g:header size='7'>Agenda</g:header>
-  							<g:ScrollPanel>
-  								<g:FlowPanel>
-  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
-  										<g:HTMLPanel>
-								    		<table class='{style.form}'>
-								    			<tr>
-								    				<td class='{style.label}'>Estado:</td>
-								    				<td><g:ListBox ui:field="estadoBox"/> </td>
-								    			</tr>
-								    			<tr class='{style.separador}'>
-								    				<td class='{style.label}'>Fecha</td>
-								    				<td class='{style.label}'><g:Label ui:field="fechaLabel"/> </td>
-								    			</tr>
-								    			<tr>
-								    				<td colspan='2' class='{style.fechaPicker}'><d:DatePicker ui:field="fechaPicker"/> </td>
-								    			</tr>
-								    			<tr>
-								    				<td class='{style.label}'>Hora:</td>
-								    				<td><e:TimeBox ui:field="timeBox"/> </td>
-								    			</tr>
-								    			<tr class='{style.separador}'>
-								    				<td colspan='2' class='{style.label}'>Comentario</td>
-								    			</tr>
-								    			<tr>
-								    				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
-								    			</tr>
-								    			<tr class='{style.separador}'>
-								    				<td></td>
-								    				<td><g:Button ui:field="modificarButton" text="Modificar agenda"/> </td>
-								    			</tr>
-								    		</table>
-							    		</g:HTMLPanel>
-  									</g:DecoratorPanel>
-  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
-				    					<c:CellList ui:field="agendaList" addStyleNames='{style.agendaList}'/>
-  									</g:DecoratorPanel>
-  								</g:FlowPanel>
-  							</g:ScrollPanel>
-  						</g:tab>
-  					</g:TabLayoutPanel>
+  					<g:DockLayoutPanel unit='PX'>
+  						<g:north size="35">
+  							<g:ListBox ui:field="tipoActividadBox"/>
+  						</g:north>
+  						<g:center>
+  							<g:TabLayoutPanel barUnit='PX' barHeight="25" animationDuration="100" animationVertical="false" >
+		  						<g:tab>
+		  							<g:header size='7'>Detalles</g:header>
+		  							<g:StackLayoutPanel animationDuration="200" unit="PX">
+		  								<g:stack>
+		  									<g:header size='40'>General</g:header>
+		  									<g:ScrollPanel>
+			  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+				  									<g:HTMLPanel>
+				  										<table class='{style.panel}'>
+				  											<tr>
+				  												<td class='{style.label}'>Colegio:</td>
+				  												<td> <g:Label ui:field="colegioLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>RBD:</td>
+				  												<td> <g:Label ui:field="rbdLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>Región:</td>
+				  												<td> <g:Label ui:field="regionLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>Comuna:</td>
+				  												<td> <g:Label ui:field="comunaLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>Dirección:</td>
+				  												<td> <g:Label ui:field="direccionLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>Curso:</td>
+				  												<td> <g:Label ui:field="cursoLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>Tipo:</td>
+				  												<td> <g:Label ui:field="tipoLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td class='{style.label}'>Centro operación:</td>
+				  												<td> <g:Label ui:field="centroOperacionLabel"/> </td>
+				  											</tr>
+				  										</table>
+				  									</g:HTMLPanel>
+			  									</g:DecoratorPanel>
+		  									</g:ScrollPanel>
+		  								</g:stack>
+		  								<g:stack>
+		  									<g:header size='40'>Contactos</g:header>
+		  									<g:ScrollPanel>
+			  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+				  									<g:HTMLPanel>
+				  										<table>
+				  											<tr>
+				  												<td colspan='2'><g:FlexTable ui:field='contactosTable'/></td>
+				  											</tr>
+				  											<tr>
+				  												<td>
+				  													<g:Button text="Editar contacto" ui:field="editContactoButton"/>
+				  												</td>
+				  												<td>
+				  													<g:Button text="Editar director" ui:field="editDirectorButton"/>
+				  												</td>
+				  											</tr>
+				  										</table>
+				  									</g:HTMLPanel>
+			  									</g:DecoratorPanel>
+		  									</g:ScrollPanel>
+		  								</g:stack>
+		  								<g:stack>
+		  									<g:header size='40'>Personas</g:header>
+		  									<g:ScrollPanel>
+		  										<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+		  											<g:FlexTable ui:field='personasTable'/>
+		  										</g:DecoratorPanel>
+		  									</g:ScrollPanel>
+		  								</g:stack>
+		  							</g:StackLayoutPanel>
+		  						</g:tab>
+		  						<g:tab>
+		  							<g:header size='7'>Agenda</g:header>
+		  							<g:ScrollPanel>
+		  								<g:FlowPanel>
+		  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
+		  										<g:HTMLPanel>
+			  										<table>
+			  											<tr>
+			  												<td><g:Button ui:field="agendarButton" text="Agendar"/></td>
+			  											</tr>
+			  											<tr>
+							    							<td><c:CellList ui:field="agendaList" addStyleNames='{style.agendaList}'/></td>
+							    						</tr>
+							    					</table>
+						    					</g:HTMLPanel>
+		  									</g:DecoratorPanel>
+		  								</g:FlowPanel>
+		  							</g:ScrollPanel>
+		  						</g:tab>
+		  					</g:TabLayoutPanel>
+  						</g:center>
+  					</g:DockLayoutPanel>
   				</g:east>
   				<g:center><c:DataGrid ui:field='dataGrid' addStyleNames='{style.data}'/></g:center>
   			</g:SplitLayoutPanel>

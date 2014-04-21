@@ -5,17 +5,20 @@ import java.util.Date;
 import java.util.HashMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-
 import com.dreamer8.yosimce.client.ClientFactory;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
+import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.ContactoDTO;
+import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
+import com.dreamer8.yosimce.shared.dto.UserDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -56,6 +59,24 @@ public class AgendamientosActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
+		
+		view.setNombreEstablecimiento("");
+		view.setRbd("");
+		view.setRegion("");
+		view.setComuna("");
+		view.setCurso("");
+		view.setTipo("");
+		view.setCentroOperacion("");
+		view.setSupervisor(null);
+		view.setDirector("");
+		view.setExaminadores(new ArrayList<UserDTO>());
+		view.setEmailDirector("");
+		view.setTelefonoDirector("");
+		view.setContacto("");
+		view.setCargoContacto("");
+		view.setEmailContacto("");
+		view.setTelefonoContacto("");
+		view.setAddress("");
 		filtros.clear();
 		regiones.clear();
 		comunas.clear();
@@ -71,6 +92,14 @@ public class AgendamientosActivity extends SimceActivity implements
 				Utils.hasPermisos(getPermisos(),"PlanificacionService","getEstadosAgenda"));
 		view.setDetallesAgendaVisivility(Utils.hasPermisos(getPermisos(),"PlanificacionService","getAgendaCurso"));
 		view.setInformacionGeneralVisivility(Utils.hasPermisos(getPermisos(),"GeneralService","getDetalleCurso"));
+		
+		getFactory().getLoginService().getActividadTipos(new SimceCallback<ArrayList<ActividadTipoDTO>>(eventBus,false) {
+
+			@Override
+			public void success(ArrayList<ActividadTipoDTO> result) {
+				view.setTiposActividad(result);
+			}
+		});
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(),"GeneralService","getRegiones")){
 			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
@@ -123,6 +152,7 @@ public class AgendamientosActivity extends SimceActivity implements
 		}else{
 			view.getDataDisplay().setRowCount(0);
 		}
+
 	}
 	
 	@Override
@@ -263,6 +293,65 @@ public class AgendamientosActivity extends SimceActivity implements
 				public void success(ArrayList<AgendaPreviewDTO> result) {
 					view.getDataDisplay().setRowData(range.getStart(), result);
 				}
+			});
+		}
+	}
+
+	@Override
+	public void onModificarAgendaClick() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onEditarContacto(ContactoDTO contacto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onEditarDirector(ContactoDTO contacto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onFechaChange(Date d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCursoClick(AgendaPreviewDTO agendaPreview) {
+		if(getPermisos().get("GeneralService").contains("getDetalleCurso")){
+			getFactory().getGeneralService().getDetalleCurso(agendaPreview.getCursoId(), view.getSelectedTipoActividad(), new SimceCallback<DetalleCursoDTO>(eventBus) {
+
+				@Override
+				public void success(DetalleCursoDTO r) {
+					view.setNombreEstablecimiento(r.getEstablecimiento());
+					view.setRbd(r.getRbd());
+					view.setRegion(r.getRegion());
+					view.setComuna(r.getComuna());
+					view.setCurso(r.getCurso());
+					view.setTipo(r.getTipoEstablecimiento());
+					view.setCentroOperacion(r.getCentro());
+					if(r.getSupervisor()!=null){
+						view.setSupervisor(r.getSupervisor());
+					}
+					if (r.getExaminadores() != null && !r.getExaminadores().isEmpty()) {
+						view.setExaminadores(r.getExaminadores());
+					}
+					
+					view.setDirector(r.getNombreContacto());
+					view.setEmailDirector(r.getEmailDirector());
+					view.setTelefonoDirector(r.getTelefonoContacto());
+					view.setContacto(r.getNombreContacto());
+					view.setCargoContacto(r.getCargoContacto());
+					view.setEmailContacto(r.getEmailContacto());
+					view.setTelefonoContacto(r.getTelefonoContacto());
+					view.setAddress(r.getDireccion());
+				}
+				
 			});
 		}
 	}

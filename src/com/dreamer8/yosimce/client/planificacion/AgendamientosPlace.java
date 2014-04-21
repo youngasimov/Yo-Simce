@@ -76,7 +76,6 @@ public class AgendamientosPlace extends SimcePlace {
 		this.comunaId = comunaId;
 	}
 
-
 	@Prefix("agendamientos")
 	public static class Tokenizer implements PlaceTokenizer<AgendamientosPlace> {
 
@@ -108,6 +107,7 @@ public class AgendamientosPlace extends SimcePlace {
 				}
 				pp.setEstadosSeleccionados(e);
 			}
+			
 			return pp;
 		}
 

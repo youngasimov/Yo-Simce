@@ -638,4 +638,13 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		}
 		return sdtos;
 	}
+
+	@Override
+	public DetalleCursoDTO getDetalleCurso(Integer idCurso,
+			Integer tipoActividad) throws NoAllowedException,
+			NoLoggedException, DBException, ConsistencyException,
+			NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -19,6 +19,10 @@ public interface GeneralService extends RemoteService {
 	public DetalleCursoDTO getDetalleCurso(Integer idCurso)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException;
+	
+	public DetalleCursoDTO getDetalleCurso(Integer idCurso, Integer tipoActividad)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
 
 	public ArrayList<SectorDTO> getRegiones() throws NoAllowedException,
 			NoLoggedException, DBException, ConsistencyException,
