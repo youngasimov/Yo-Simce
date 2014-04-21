@@ -101,7 +101,9 @@
 	</ui:style>
 	<g:HTMLPanel>
 	    <div ui:field="div" class ='{style.content}'>
+	    	<!-- 
 	    	<g:Image resource='{res.logoSimceGrande}' addStyleNames='{style.logoYoSimce}'/>
+	    	 -->
 	    	<g:DecoratorPanel addStyleNames='{style.login}'>
 				<g:HTMLPanel>
 					<table>

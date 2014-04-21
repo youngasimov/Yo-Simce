@@ -46,6 +46,12 @@ public interface PlanificacionServiceAsync {
 	void getEstadosAgendaFiltro(
 			AsyncCallback<ArrayList<EstadoAgendaDTO>> callback);
 
+	void getAgendaCurso(Integer idCurso, Integer tipoActividadId,
+			AsyncCallback<AgendaDTO> callback);
+
+	void AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda,
+			Integer tipoActividadId, AsyncCallback<AgendaItemDTO> callback);
+
 	
 
 }

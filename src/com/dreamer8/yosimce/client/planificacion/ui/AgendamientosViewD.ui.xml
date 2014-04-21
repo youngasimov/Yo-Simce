@@ -168,15 +168,33 @@
 		  									<g:ScrollPanel>
 			  									<g:DecoratorPanel addStyleNames='{style.decPanel}'>
 				  									<g:HTMLPanel>
-				  										<table>
-				  											<tr>
-				  												<td colspan='2'><g:FlexTable ui:field='contactosTable'/></td>
+				  										<table class='{style.form}'>
+				  											<tr class='{style.separador}'>
+				  												<td colspan='2'>Director</td>
 				  											</tr>
 				  											<tr>
-				  												<td>
+				  												<td colspan='2'> <g:Label ui:field="directorNameLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td> <g:Label ui:field="directorPhoneLabel"/> </td>
+				  												<td> <g:Label ui:field="directorEmailLabel"/> </td>
+				  											</tr>
+				  											<tr class='{style.separador}'>
+				  												<td colspan='2'>Contacto ( <g:Label ui:field="contactoCargoLabel"/> )</td>
+				  											</tr>
+				  											<tr>
+				  												<td colspan='2'> <g:Label ui:field="contactoNameLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td> <g:Label ui:field="contactoPhoneLabel"/> </td>
+				  												<td> <g:Label ui:field="contactoEmailLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td colspan='2' class='{style.separador}'>.</td>
+				  											</tr>
+				  											<tr>
+				  												<td colspan = '2'>
 				  													<g:Button text="Editar contacto" ui:field="editContactoButton"/>
-				  												</td>
-				  												<td>
 				  													<g:Button text="Editar director" ui:field="editDirectorButton"/>
 				  												</td>
 				  											</tr>

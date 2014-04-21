@@ -119,7 +119,7 @@
 	<g:HTMLPanel addStyleNames='{style.all}'>
 	
 		<ul class='{style.leftbar}'>
-			<li class='{style.logo}'><a href='http://tracking.yosimce.cl'>YoSimce</a></li>
+			<li class='{style.logo}'><a href='http://tracking.yosimce.cl'>PISA</a></li>
 			<li class='{style.username}'><g:HTML ui:field="username"/></li>
 		</ul>
 		<div class='{style.actividades}'>

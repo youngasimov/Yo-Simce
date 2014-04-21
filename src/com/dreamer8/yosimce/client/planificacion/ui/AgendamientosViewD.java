@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
-import com.dreamer8.yosimce.client.planificacion.ui.AgendarVisitaView.AgendarVisitaPresenter;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
 import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
@@ -20,6 +19,7 @@ import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
+import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -35,6 +35,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -89,7 +90,13 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@UiField Label cursoLabel;
 	@UiField Label tipoLabel;
 	@UiField Label centroOperacionLabel;
-	@UiField FlexTable contactosTable;
+	@UiField Label directorNameLabel;
+	@UiField Label directorPhoneLabel;
+	@UiField Label directorEmailLabel;
+	@UiField Label contactoCargoLabel;
+	@UiField Label contactoNameLabel;
+	@UiField Label contactoPhoneLabel;
+	@UiField Label contactoEmailLabel;
 	@UiField FlexTable personasTable;
 	@UiField Button editContactoButton;
 	@UiField Button editDirectorButton;
@@ -118,6 +125,16 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	private int idCurso;
 	
+	private DialogBox editarContactoDialog;
+	private DialogBox editarDirectorDialog;
+	private EditarContactoViewD editarContactoPanel;
+	private EditarContactoViewD editarDirectorPanel;
+	
+	private ContactoDTO contacto;
+	private ContactoDTO director;
+	
+	private ArrayList<CargoDTO> cargos;
+	
 	
 	
 	public AgendamientosViewD() {
@@ -129,12 +146,11 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		initWidget(uiBinder.createAndBindUi(this));
 		personasTable.getColumnFormatter().setWidth(0, "30%");
 		personasTable.getColumnFormatter().setWidth(1, "70%");
-		contactosTable.getColumnFormatter().setWidth(0, "30%");
-		contactosTable.getColumnFormatter().setWidth(1, "70%");
 		filtrosDialogBox = new DialogBox(true, false);
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
 		filtrosDialogBox.setWidget(filtrosPanel);
 		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
+		idCurso = -1;
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 		menu.insertSeparator(1);
 		menu.insertSeparator(4);
@@ -164,7 +180,135 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			}
 		});
 		
+		editarContactoPanel = new EditarContactoViewD();
+		editarContactoDialog = new DialogBox();
+		editarContactoDialog.setAnimationEnabled(true);
+		editarContactoDialog.setAutoHideEnabled(true);
+		editarContactoDialog.setAutoHideOnHistoryEventsEnabled(true);
+		editarContactoDialog.setGlassEnabled(true);
+		editarContactoDialog.setModal(true);
+		editarContactoDialog.setWidget(editarContactoPanel);
+		editarContactoPanel.editarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				ContactoDTO c = new ContactoDTO();
+				c.setContactoNombre(editarContactoPanel.nombreBox.getText());
+				c.setContactoTelefono(editarContactoPanel.fonoBox.getText());
+				c.setContactoEmail(editarContactoPanel.emailBox.getText());
+				if(contacto!=null){
+					c.setCargo(contacto.getCargo());
+				}
+				int id = Integer.parseInt(editarContactoPanel.cargoBox.getValue(editarContactoPanel.cargoBox.getSelectedIndex()));
+				for(CargoDTO cargo:cargos){
+					if(cargo.getId() == id){
+						c.setCargo(cargo);
+						break;
+					}
+				}
+				presenter.onEditarContacto(c);
+				editarContactoDialog.hide();
+				editarContactoPanel.nombreBox.setText("");
+				editarContactoPanel.fonoBox.setText("");
+				editarContactoPanel.emailBox.setText("");
+				if(editarContactoPanel.cargoBox.getItemCount()>0){
+					editarContactoPanel.cargoBox.setItemSelected(0, true);
+				}
+			}
+		});
+		editarContactoPanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				editarContactoDialog.hide();
+				editarContactoPanel.nombreBox.setText("");
+				editarContactoPanel.fonoBox.setText("");
+				editarContactoPanel.emailBox.setText("");
+				if(editarContactoPanel.cargoBox.getItemCount()>0){
+					editarContactoPanel.cargoBox.setItemSelected(0, true);
+				}
+			}
+		});
+		
+		editarDirectorPanel = new EditarContactoViewD();
+		editarDirectorDialog = new DialogBox();
+		editarDirectorDialog.setAnimationEnabled(true);
+		editarDirectorDialog.setAutoHideEnabled(true);
+		editarDirectorDialog.setAutoHideOnHistoryEventsEnabled(true);
+		editarDirectorDialog.setGlassEnabled(true);
+		editarDirectorDialog.setModal(true);
+		editarDirectorPanel.cargoBox.setVisible(false);
+		editarDirectorDialog.setWidget(editarDirectorPanel);
+		editarDirectorPanel.editarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				ContactoDTO c = new ContactoDTO();
+				c.setContactoNombre(editarDirectorPanel.nombreBox.getText());
+				c.setContactoTelefono(editarDirectorPanel.fonoBox.getText());
+				c.setContactoEmail(editarDirectorPanel.emailBox.getText());
+				presenter.onEditarDirector(c);
+				editarDirectorDialog.hide();
+				editarDirectorPanel.nombreBox.setText("");
+				editarDirectorPanel.fonoBox.setText("");
+				editarDirectorPanel.emailBox.setText("");
+			}
+		});
+		editarDirectorPanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				editarDirectorDialog.hide();
+				editarDirectorPanel.nombreBox.setText("");
+				editarDirectorPanel.fonoBox.setText("");
+				editarDirectorPanel.emailBox.setText("");
+			}
+		});
 		bind();	
+	}
+	
+	@UiHandler("editContactoButton")
+	void onEditarContactoClick(ClickEvent event){
+		if(contacto != null){
+			editarContactoPanel.nombreBox.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+			editarContactoPanel.fonoBox.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+			editarContactoPanel.emailBox.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
+			
+			if(contacto.getCargo()!=null){
+				for(int i = 0; i < editarContactoPanel.cargoBox.getItemCount(); i++){
+					if(contacto.getCargo().getId() == Integer.parseInt(editarContactoPanel.cargoBox.getValue(i))){
+						editarContactoPanel.cargoBox.setItemSelected(i, true);
+						break;
+					}
+				}
+			}
+		}else{
+			editarContactoPanel.nombreBox.setText("");
+			editarContactoPanel.fonoBox.setText("");
+			editarContactoPanel.emailBox.setText("");
+		}
+		editarContactoDialog.center();
+	}
+	
+	@UiHandler("editDirectorButton")
+	void onEditarDirectorClick(ClickEvent event){
+		if(director != null){
+			editarDirectorPanel.fonoBox.setText((director.getContactoTelefono()!=null)?director.getContactoTelefono():"");
+			editarDirectorPanel.nombreBox.setText((director.getContactoNombre()!=null)?director.getContactoNombre():"");
+			editarDirectorPanel.emailBox.setText((director.getContactoEmail()!=null)?director.getContactoEmail():"");
+			editarDirectorPanel.cargoBox.setVisible(true);
+			editarDirectorPanel.cargoBox.clear();
+			if(director.getCargo()!=null){
+				editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
+			}
+		}else{
+			editarDirectorPanel.fonoBox.setText("");
+			editarDirectorPanel.nombreBox.setText("");
+			editarDirectorPanel.emailBox.setText("");
+			editarDirectorPanel.cargoBox.setVisible(false);
+			editarDirectorPanel.cargoBox.clear();
+		}
+		editarDirectorDialog.center();
 	}
 
 	@UiFactory
@@ -212,8 +356,31 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		cursoLabel.setText("");
 		tipoLabel.setText("");
 		centroOperacionLabel.setText("");
-		contactosTable.clear();
 		personasTable.clear();
+		
+		directorNameLabel.setText("");
+		directorPhoneLabel.setText("");
+		directorEmailLabel.setText("");
+		
+		contactoCargoLabel.setText("");
+		contactoNameLabel.setText("");
+		contactoPhoneLabel.setText("");
+		contactoEmailLabel.setText("");
+		
+		editarContactoPanel.nombreBox.setText("");
+		editarContactoPanel.fonoBox.setText("");
+		editarContactoPanel.emailBox.setText("");
+		editarContactoPanel.cargoBox.clear();
+		editarDirectorPanel.nombreBox.setText("");
+		editarDirectorPanel.fonoBox.setText("");
+		editarDirectorPanel.emailBox.setText("");
+		editarDirectorPanel.cargoBox.clear();
+		
+		contacto = null;
+		director = null;
+		idCurso = -1;
+		agendaList.setRowCount(0);
+		agendaList.setRowData(new ArrayList<AgendaItemDTO>());
 	}
 	
 	@Override
@@ -329,6 +496,16 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				}
 				selectionModel.setSelected(event.getValue(), !selectionModel.isSelected(event.getValue()));
 			}});
+		
+		tipoActividadBox.addChangeHandler(new ChangeHandler() {
+			
+			@Override
+			public void onChange(ChangeEvent event) {
+				if(selectionModel.getSelectedObject() != null){
+					presenter.onCursoClick(selectionModel.getSelectedObject());
+				}
+			}
+		});
 		
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			
@@ -447,7 +624,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(tipoColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Tipo")));
         dataGrid.setColumnWidth(tipoColumn, 100, Unit.PX);
         
-        /*
         Column<AgendaPreviewDTO, String> estadoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -467,7 +643,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dateColumn.setSortable(false);
         dataGrid.addColumn(dateColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("Fecha")));
         dataGrid.setColumnWidth(dateColumn, 160, Unit.PX);
-        */
         
         Column<AgendaPreviewDTO, String> regionColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
@@ -685,46 +860,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	}
 
 	@Override
-	public void setDirector(String director) {
-		contactosTable.setWidget(1, 0, new HTML("Director"));
-		contactosTable.setWidget(1, 1, new HTML(director));
-	}
-
-	@Override
-	public void setEmailDirector(String email) {
-		contactosTable.setWidget(2, 1, new HTML(email));
-		contactosTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
-		contactosTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
-	}
-
-	@Override
-	public void setTelefonoDirector(String telefono) {
-		contactosTable.setWidget(2, 0, new HTML(telefono));
-		contactosTable.getFlexCellFormatter().addStyleName(2, 0, style.line());
-		contactosTable.getFlexCellFormatter().addStyleName(2, 1, style.line());
-	}
-
-	@Override
-	public void setContacto(String director) {
-		contactosTable.setWidget(3, 1, new HTML(director));
-	}
-
-	@Override
-	public void setCargoContacto(String cargo) {
-		contactosTable.setWidget(3, 0, new HTML(cargo));
-	}
-
-	@Override
-	public void setEmailContacto(String email) {
-		contactosTable.setWidget(4, 1, new HTML(email));
-	}
-
-	@Override
-	public void setTelefonoContacto(String telefono) {
-		contactosTable.setWidget(4, 0, new HTML(telefono));
-	}
-
-	@Override
 	public void setCentroOperacion(String co) {
 		centroOperacionLabel.setText(co);
 	}
@@ -760,5 +895,46 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	public int getSelectedTipoActividad() {
 		return Integer.parseInt(tipoActividadBox.getValue(tipoActividadBox.getSelectedIndex()));
+	}
+
+	@Override
+	public void setContacto(ContactoDTO contacto) {
+		this.contacto = contacto;
+		if(contacto == null){
+			contactoCargoLabel.setText("");
+			contactoNameLabel.setText("");
+			contactoPhoneLabel.setText("");
+			contactoEmailLabel.setText("");
+			return;
+		}
+		contactoNameLabel.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+		contactoPhoneLabel.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+		contactoEmailLabel.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
+		if(contacto.getCargo()!=null){
+			contactoCargoLabel.setText(contacto.getCargo().getCargo());
+		}
+	}
+
+	@Override
+	public void setDirector(ContactoDTO contacto) {
+		this.director = contacto;
+		if(contacto == null){
+			directorNameLabel.setText("");
+			directorPhoneLabel.setText("");
+			directorEmailLabel.setText("");
+			return;
+		}
+		directorNameLabel.setText((contacto.getContactoNombre()!=null)?contacto.getContactoNombre():"");
+		directorPhoneLabel.setText((contacto.getContactoTelefono()!=null)?contacto.getContactoTelefono():"");
+		directorEmailLabel.setText((contacto.getContactoEmail()!=null)?contacto.getContactoEmail():"");
+	}
+
+	@Override
+	public void setCargos(ArrayList<CargoDTO> cargos) {
+		this.cargos = cargos;
+		editarContactoPanel.cargoBox.clear();
+		for(CargoDTO cargo:cargos){
+			editarContactoPanel.cargoBox.addItem(cargo.getCargo(),cargo.getId()+"");
+		}
 	};
 }

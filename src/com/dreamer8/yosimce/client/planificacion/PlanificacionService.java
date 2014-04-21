@@ -44,8 +44,16 @@ public interface PlanificacionService extends RemoteService {
 	public AgendaDTO getAgendaCurso(Integer idCurso) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException;
+	
+	public AgendaDTO getAgendaCurso(Integer idCurso, Integer tipoActividadId) throws NoAllowedException,
+	NoLoggedException, DBException, NullPointerException,
+	ConsistencyException;
 
 	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException;
+	
+	public AgendaItemDTO AgendarVisita(Integer idCurso, AgendaItemDTO itemAgenda, Integer tipoActividadId)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException;
 

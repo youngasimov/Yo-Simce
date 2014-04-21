@@ -7,6 +7,7 @@ import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -51,6 +52,9 @@ public interface AgendamientosView extends IsWidget {
 	String getComentario();
 	void setEditarContactoVisivility(boolean visible);
 	void setEditarDirectorVisivility(boolean visible);
+	void setContacto(ContactoDTO contacto);
+	void setDirector(ContactoDTO contacto);
+	void setCargos(ArrayList<CargoDTO> cargos);
 	//Fin Agenda
 	
 	//Detalles Curso
@@ -61,13 +65,6 @@ public interface AgendamientosView extends IsWidget {
 	void setTipo(String tipo);
 	void setSupervisor(UserDTO supervisor);
 	void setExaminadores(ArrayList<UserDTO> examinadores);
-	void setDirector(String director);
-	void setEmailDirector(String email);
-	void setTelefonoDirector(String telefono);
-	void setContacto(String director);
-	void setCargoContacto(String cargo);
-	void setEmailContacto(String email);
-	void setTelefonoContacto(String telefono);
 	void setCentroOperacion(String co);
 	void setAddress(String address);
 	//Fin Detalles Curso

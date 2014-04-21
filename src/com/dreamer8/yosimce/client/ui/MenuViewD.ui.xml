@@ -65,21 +65,13 @@
 			<g:HTMLPanel>
 				<g:ScrollPanel width="100%" height="100%">
 					<g:HTMLPanel addStyleNames='{style.content}' ui:field='informacionPanel'>
-						<ul>
-	    					<li>
-	    						<a  href='/manual_agendamiento.pdf' target="_blank">Manual de agendamiento de visitas previas</a> para supervisores y Jefes de centro de operación
-	    					</li>
-	    					<li>
-	    						<a  href='/informacion_tracking_supervisores.pdf' target="_blank">Manual formulario de aplicación</a>, Cortesía de la JZ Carolina Jara.
-	    					</li>
-	    				</ul>
 						<p>
 	    				Como regla general, si usted recibe alguna notificación de error al realizar una acción en el sistema siga los siguientes pasos:<br />
 	    				<ul>
 	    					<li>1) Compruebe si tiene conexión a internet</li>
 	    					<li>2) Refresque la página del navegador para comprobar si su sesión está activa</li>
 	    					<li>3) si el problema se mantiene despues de realizar los pasos anteriores,
-	    					envie un Correo a <b>server.simce@usm.cl</b> con el asunto <b>PROBLEMA TRACKING</b>
+	    					envie un Correo a <b>?????????</b> con el asunto <b>PROBLEMA TRACKING</b>
 	    					indicando su <b>rut</b>, <b>dirección completa de la página (URL)</b>, <b>fecha</b> y <b>hora</b> en que ocurrió el problema
 	    					y cualquier información relevante para poder replicarlo (código de material que no puede ingresar, rut de examinador que no puede cambiar,
 	    					rbd del colegio al cual no puede ingresar, etc)

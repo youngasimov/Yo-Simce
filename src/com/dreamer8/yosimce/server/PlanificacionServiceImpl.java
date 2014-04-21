@@ -1618,4 +1618,21 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		};
 
 	}
+
+	@Override
+	public AgendaDTO getAgendaCurso(Integer idCurso, Integer tipoActividadId)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public AgendaItemDTO AgendarVisita(Integer idCurso,
+			AgendaItemDTO itemAgenda, Integer tipoActividadId)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

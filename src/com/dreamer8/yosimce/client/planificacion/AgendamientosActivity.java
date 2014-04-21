@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.dreamer8.yosimce.client.ClientFactory;
+import com.dreamer8.yosimce.client.MensajeEvent;
 import com.dreamer8.yosimce.client.SimceActivity;
 import com.dreamer8.yosimce.client.SimceCallback;
 import com.dreamer8.yosimce.client.Utils;
@@ -13,6 +14,7 @@ import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
+import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
@@ -38,6 +40,11 @@ public class AgendamientosActivity extends SimceActivity implements
 	
 	private boolean estadosReady;
 	private boolean regionesReady;
+	
+	private AgendaPreviewDTO agendaPreview;
+	private ContactoDTO contacto;
+	private ContactoDTO director;
+	
 	
 	
 	private Range range;
@@ -68,14 +75,9 @@ public class AgendamientosActivity extends SimceActivity implements
 		view.setTipo("");
 		view.setCentroOperacion("");
 		view.setSupervisor(null);
-		view.setDirector("");
+		view.setDirector(null);
+		view.setContacto(null);
 		view.setExaminadores(new ArrayList<UserDTO>());
-		view.setEmailDirector("");
-		view.setTelefonoDirector("");
-		view.setContacto("");
-		view.setCargoContacto("");
-		view.setEmailContacto("");
-		view.setTelefonoContacto("");
 		view.setAddress("");
 		filtros.clear();
 		regiones.clear();
@@ -151,6 +153,16 @@ public class AgendamientosActivity extends SimceActivity implements
 			});
 		}else{
 			view.getDataDisplay().setRowCount(0);
+		}
+		
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getCargos")){
+			getFactory().getPlanificacionService().getCargos(new SimceCallback<ArrayList<CargoDTO>>(eventBus,false) {
+
+				@Override
+				public void success(ArrayList<CargoDTO> result) {
+					view.setCargos(result);
+				}
+			});
 		}
 
 	}
@@ -304,15 +316,53 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 
 	@Override
-	public void onEditarContacto(ContactoDTO contacto) {
-		// TODO Auto-generated method stub
+	public void onEditarContacto(final ContactoDTO contacto) {
 		
+		if(agendaPreview == null){
+			return;
+		}
+		
+		if(contacto.getContactoEmail()!=null && !contacto.getContactoEmail().isEmpty() && !contacto.getContactoEmail().trim().matches("^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,3})$")){
+			eventBus.fireEvent(new MensajeEvent("El mail ingresado no es válido", MensajeEvent.MSG_WARNING, true));
+			if(this.contacto!=null){
+				contacto.setContactoEmail(this.contacto.getContactoEmail());
+			}
+			
+		}
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarContacto")){
+			getFactory().getPlanificacionService().editarContacto(agendaPreview.getCursoId(),contacto,new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					AgendamientosActivity.this.contacto = contacto;
+					view.setContacto(contacto);
+					eventBus.fireEvent(new MensajeEvent("Los datos de contacto se han modificado", MensajeEvent.MSG_OK, true));
+				}
+			});
+		}
 	}
 
 	@Override
 	public void onEditarDirector(ContactoDTO contacto) {
-		// TODO Auto-generated method stub
-		
+		if(agendaPreview == null){
+			return;
+		}
+		if(director.getContactoEmail()!=null && !director.getContactoEmail().isEmpty() && !director.getContactoEmail().trim().matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$")){
+			eventBus.fireEvent(new MensajeEvent("El mail ingresado no es válido", MensajeEvent.MSG_WARNING, true));
+			if(this.director!=null){
+				director.setContactoEmail(this.director.getContactoEmail());
+			}
+		}
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarDirector")){
+			getFactory().getPlanificacionService().editarDirector(agendaPreview.getCursoId(), director, new SimceCallback<Boolean>(eventBus,true) {
+	
+				@Override
+				public void success(Boolean result) {
+					view.setDirector(director);
+					eventBus.fireEvent(new MensajeEvent("Los datos del director se han modificado", MensajeEvent.MSG_OK, true));
+				}
+			});
+		}
 	}
 
 	@Override
@@ -320,14 +370,20 @@ public class AgendamientosActivity extends SimceActivity implements
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void onCursoClick(AgendaPreviewDTO agendaPreview) {
+		
+		this.agendaPreview = agendaPreview;
+		
 		if(getPermisos().get("GeneralService").contains("getDetalleCurso")){
 			getFactory().getGeneralService().getDetalleCurso(agendaPreview.getCursoId(), view.getSelectedTipoActividad(), new SimceCallback<DetalleCursoDTO>(eventBus) {
 
 				@Override
 				public void success(DetalleCursoDTO r) {
+					if(r == null){
+						return;
+					}
 					view.setNombreEstablecimiento(r.getEstablecimiento());
 					view.setRbd(r.getRbd());
 					view.setRegion(r.getRegion());
@@ -341,17 +397,29 @@ public class AgendamientosActivity extends SimceActivity implements
 					if (r.getExaminadores() != null && !r.getExaminadores().isEmpty()) {
 						view.setExaminadores(r.getExaminadores());
 					}
-					
-					view.setDirector(r.getNombreContacto());
-					view.setEmailDirector(r.getEmailDirector());
-					view.setTelefonoDirector(r.getTelefonoContacto());
-					view.setContacto(r.getNombreContacto());
-					view.setCargoContacto(r.getCargoContacto());
-					view.setEmailContacto(r.getEmailContacto());
-					view.setTelefonoContacto(r.getTelefonoContacto());
 					view.setAddress(r.getDireccion());
 				}
 				
+			});
+		}
+		if(getPermisos().get("PlanificacionService").contains("getContacto")){
+			getFactory().getPlanificacionService().getContacto(agendaPreview.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
+	
+				@Override
+				public void success(ContactoDTO result) {
+					contacto = result;
+					view.setContacto(result);
+				}
+			});
+		}
+		if(getPermisos().get("PlanificacionService").contains("getDirector")){
+			getFactory().getPlanificacionService().getDirector(agendaPreview.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
+	
+				@Override
+				public void success(ContactoDTO result) {
+					director = result;
+					view.setDirector(result);
+				}
 			});
 		}
 	}
