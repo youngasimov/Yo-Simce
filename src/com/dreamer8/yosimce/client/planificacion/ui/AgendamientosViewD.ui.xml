@@ -85,13 +85,16 @@
 	.line{
 		border-bottom: 1px solid #AAAAAA;
 	}
+	.inlineLabel{
+		display:inline-block;
+	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
 				<g:MenuItem  ui:field="menuItem" enabled="false" addStyleNames='{style.title}'><div class='{style.title2}'>Agenda</div> ></g:MenuItem>
-				<g:MenuItem ui:field="buscarItem" text='Buscar'/>
+				
 				<g:MenuItem ui:field="filtrosItem" text='Filtros'/>
 				<g:MenuItem ui:field="exportarItem" text='Exportar' />
 				<g:MenuItem ui:field="cursoItem" enabled='false'/>
@@ -180,7 +183,7 @@
 				  												<td> <g:Label ui:field="directorEmailLabel"/> </td>
 				  											</tr>
 				  											<tr class='{style.separador}'>
-				  												<td colspan='2'>Contacto ( <g:Label ui:field="contactoCargoLabel"/> )</td>
+				  												<td colspan='2'>Contacto ( <g:Label addStyleNames='{style.inlineLabel}' ui:field="contactoCargoLabel"/> )</td>
 				  											</tr>
 				  											<tr>
 				  												<td colspan='2'> <g:Label ui:field="contactoNameLabel"/> </td>

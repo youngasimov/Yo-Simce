@@ -5,11 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.dreamer8.yosimce.client.ui.ViewUtils;
-import com.dreamer8.yosimce.client.ui.eureka.TimeBox;
-import com.dreamer8.yosimce.client.ui.eureka.TimeBox.TIME_PRECISION;
 import com.dreamer8.yosimce.client.ui.resources.SimceResources;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
@@ -76,7 +75,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@UiField Style style;
 	@UiField OverMenuBar menu;
 	@UiField MenuItem menuItem;
-	@UiField MenuItem buscarItem;
 	@UiField MenuItem filtrosItem;
 	@UiField MenuItem exportarItem;
 	@UiField MenuItem cursoItem;
@@ -121,10 +119,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	private DateTimeFormat format;
 	
 	private AgendaCell cell;
-	
-	
-	private int idCurso;
-	
+
 	private DialogBox editarContactoDialog;
 	private DialogBox editarDirectorDialog;
 	private EditarContactoViewD editarContactoPanel;
@@ -135,7 +130,10 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	
 	private ArrayList<CargoDTO> cargos;
 	
+	private DialogBox agendarDialog;
+	private AgendaPanelViewD agendaPanel;
 	
+	private AgendaItemDTO lastItem;
 	
 	public AgendamientosViewD() {
 		
@@ -150,7 +148,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		filtrosPanel = new FiltroAgendamientosPanelViewD();
 		filtrosDialogBox.setWidget(filtrosPanel);
 		estadoCheckBoxs = new HashMap<Integer,CheckBox>();
-		idCurso = -1;
 		format = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 		menu.insertSeparator(1);
 		menu.insertSeparator(4);
@@ -264,6 +261,15 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				editarDirectorPanel.emailBox.setText("");
 			}
 		});
+		
+		agendaPanel = new AgendaPanelViewD();
+		agendarDialog = new DialogBox();
+		agendarDialog.setAnimationEnabled(true);
+		agendarDialog.setAutoHideEnabled(true);
+		agendarDialog.setAutoHideOnHistoryEventsEnabled(true);
+		agendarDialog.setGlassEnabled(true);
+		agendarDialog.setModal(true);
+		agendarDialog.setWidget(agendaPanel);
 		bind();	
 	}
 	
@@ -309,6 +315,11 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			editarDirectorPanel.cargoBox.clear();
 		}
 		editarDirectorDialog.center();
+	}
+	
+	@UiHandler("agendarButton")
+	void onAgendarButtonClick(ClickEvent event){
+		agendarDialog.center();
 	}
 
 	@UiFactory
@@ -378,7 +389,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		
 		contacto = null;
 		director = null;
-		idCurso = -1;
 		agendaList.setRowCount(0);
 		agendaList.setRowData(new ArrayList<AgendaItemDTO>());
 	}
@@ -580,6 +590,14 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				presenter.goTo(p);
 			}
 		});
+		
+		agendaPanel.agendarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				presenter.onModificarAgendaClick();
+			}
+		});
 	}
 
 	
@@ -756,44 +774,55 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	}
 
 	@Override
-	public void setIdCurso(int idCurso) {
-		this.idCurso = idCurso;
-	}
-
-	@Override
 	public HasData<AgendaItemDTO> getAgendaDataDisplay() {
-		// TODO Auto-generated method stub
-		return null;
+		return agendaList;
 	}
 
 	@Override
 	public void setUltimoEstado(AgendaItemDTO item) {
-		// TODO Auto-generated method stub
-		
+		lastItem = item;
+		if(item.getFecha() != null && !item.getFecha().isEmpty()){
+			agendaPanel.fechaPicker.setValue(Utils.getDate(item.getFecha()));
+			agendaPanel.fechaLabel.setText(format.format(Utils.getDate(item.getFecha())));
+			agendaPanel.timeBox.setValue(Utils.getDate(item.getFecha()).getTime());
+		}
+		for(int i=0; i<agendaPanel.estadoBox.getItemCount(); i++){
+			if(Integer.parseInt(agendaPanel.estadoBox.getValue(i)) == item.getEstado().getId()){
+				agendaPanel.estadoBox.setSelectedIndex(i);
+				break;
+			}
+		}
 	}
 
 	@Override
 	public void setEstadosAgenda(ArrayList<EstadoAgendaDTO> estados) {
-		// TODO Auto-generated method stub
-		
+		agendaPanel.estadoBox.clear();
+		 for(EstadoAgendaDTO ea:estados){
+			 agendaPanel.estadoBox.addItem(ea.getEstado(),ea.getId()+"");
+		 }
+		 if(lastItem != null){
+			 for(int i=0; i<agendaPanel.estadoBox.getItemCount(); i++){
+				if(Integer.parseInt(agendaPanel.estadoBox.getValue(i)) == lastItem.getEstado().getId()){
+					agendaPanel.estadoBox.setSelectedIndex(i);
+					break;
+				}
+			 }
+		 }
 	}
 
 	@Override
 	public int getIdEstadoAgendaSeleccionado() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Integer.parseInt(agendaPanel.estadoBox.getValue(agendaPanel.estadoBox.getSelectedIndex()));
 	}
 
 	@Override
 	public Date getFechaHoraSeleccionada() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Date(agendaPanel.timeBox.getValue());
 	}
 
 	@Override
 	public String getComentario() {
-		// TODO Auto-generated method stub
-		return null;
+		return agendaPanel.comentarioBox.getText();
 	}
 
 	@Override
@@ -867,11 +896,6 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@Override
 	public void setAddress(String address) {
 		direccionLabel.setText(address);
-	}
-
-	@Override
-	public void setBuscarVisivility(boolean visible) {
-		buscarItem.setVisible(visible);
 	}
 
 	@Override

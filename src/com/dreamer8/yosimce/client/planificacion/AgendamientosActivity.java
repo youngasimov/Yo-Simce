@@ -1,6 +1,7 @@
 package com.dreamer8.yosimce.client.planificacion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -13,6 +14,8 @@ import com.dreamer8.yosimce.client.Utils;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView;
 import com.dreamer8.yosimce.client.planificacion.ui.AgendamientosView.AgendamientosPresenter;
 import com.dreamer8.yosimce.shared.dto.ActividadTipoDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaDTO;
+import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.CargoDTO;
 import com.dreamer8.yosimce.shared.dto.ContactoDTO;
@@ -45,7 +48,9 @@ public class AgendamientosActivity extends SimceActivity implements
 	private ContactoDTO contacto;
 	private ContactoDTO director;
 	
-	
+	private ArrayList<EstadoAgendaDTO> estadosAgenda;
+	private AgendaDTO agenda;
+	private boolean fechaSelected;
 	
 	private Range range;
 	
@@ -66,7 +71,7 @@ public class AgendamientosActivity extends SimceActivity implements
 	public void init(AcceptsOneWidget panel, EventBus eventBus) {
 		panel.setWidget(view.asWidget());
 		this.eventBus = eventBus;
-		
+		fechaSelected = false;
 		view.setNombreEstablecimiento("");
 		view.setRbd("");
 		view.setRegion("");
@@ -83,6 +88,7 @@ public class AgendamientosActivity extends SimceActivity implements
 		regiones.clear();
 		comunas.clear();
 		estados.clear();
+		estadosAgenda.clear();
 		estadosReady = false;
 		regionesReady = false;
 		range = view.getDataDisplay().getVisibleRange();
@@ -100,6 +106,7 @@ public class AgendamientosActivity extends SimceActivity implements
 			@Override
 			public void success(ArrayList<ActividadTipoDTO> result) {
 				view.setTiposActividad(result);
+				view.selectTipoActividad(place.getTipoId());
 			}
 		});
 		
@@ -123,6 +130,17 @@ public class AgendamientosActivity extends SimceActivity implements
 			});
 		}else{
 			view.getDataDisplay().setRowCount(0);
+		}
+		
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getEstadosAgenda")){
+			getFactory().getPlanificacionService().getEstadosAgenda(new SimceCallback<ArrayList<EstadoAgendaDTO>>(eventBus,false) {
+
+				@Override
+				public void success(ArrayList<EstadoAgendaDTO> result) {
+					estadosAgenda = result;
+					view.setEstadosAgenda(result);
+				}
+			});
 		}
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(),"PlanificacionService","getEstadosAgendaFiltro")){
@@ -164,7 +182,6 @@ public class AgendamientosActivity extends SimceActivity implements
 				}
 			});
 		}
-
 	}
 	
 	@Override
@@ -311,8 +328,89 @@ public class AgendamientosActivity extends SimceActivity implements
 
 	@Override
 	public void onModificarAgendaClick() {
-		// TODO Auto-generated method stub
+		if(!fechaSelected){
+			eventBus.fireEvent(new MensajeEvent("Seleccione la fecha para la cual quiere agendar la actividad",MensajeEvent.MSG_WARNING,true));
+			return;
+		}
 		
+		AgendaItemDTO last = null;
+		if(!agenda.getItems().isEmpty()){
+			last = agenda.getItems().get(0);
+		}
+		
+		AgendaItemDTO aidto = new AgendaItemDTO();
+		for(EstadoAgendaDTO eadto:estados){
+			if(eadto.getId() == view.getIdEstadoAgendaSeleccionado()){
+				aidto.setEstado(eadto);
+				break;
+			}
+		}
+		if(view.getFechaHoraSeleccionada() !=null){
+			aidto.setFecha(Utils.getDateString(view.getFechaHoraSeleccionada()));
+		}
+		aidto.setComentario(view.getComentario());
+		
+		
+		
+		
+		//Si no Existe información, se permite agregar un inte sin complicaciones
+		if(last == null || last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION)){
+			if(aidto.getComentario() == null || aidto.getComentario().isEmpty()){
+				aidto.setComentario("Planificación inicial");
+			}
+			updateAgenda(aidto);
+			return;
+		}
+		
+		if(!last.getEstado().getEstado().equals(EstadoAgendaDTO.POR_CONFIRMAR) &&
+				!last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION) &&
+				(aidto.getComentario() == null || aidto.getComentario().isEmpty())){
+			eventBus.fireEvent(new MensajeEvent("Si trata de cambiar una agenda ya confirmada, debe ingresar un comentario del cambio",MensajeEvent.MSG_WARNING,true));
+			return;
+		}
+		
+		//Si se esta intentando registrar otro item de agenda, con el mismo estado, se exige un comentario
+		if(last.getEstado().getId() == aidto.getEstado().getId() && (aidto.getComentario() == null || aidto.getComentario().isEmpty())){
+			eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario",MensajeEvent.MSG_WARNING,true));
+			return;
+		}
+		
+		//Si se cambia el estado y la fecha, se debe ingresar un comentario
+		if(last.getEstado().getId() != aidto.getEstado().getId() &&
+				!last.getFecha().equals(aidto.getFecha()) &&
+				(aidto.getComentario() == null ||
+				aidto.getComentario().isEmpty())){
+			eventBus.fireEvent(new MensajeEvent("Debe ingresar un comentario que justifique el cambio de fecha",MensajeEvent.MSG_WARNING,false));
+			return;
+		}
+		
+		//Si el estado es 'por confirmar', se permite modificar la agenda simpre que tenga un comentario
+		if(aidto.getEstado().getEstado().equals(EstadoAgendaDTO.POR_CONFIRMAR) && aidto.getComentario() != null && !aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		
+		//Si el estado es 'confirmado' o posterior, se permite modificar la agenda simpre que tenga un comentario
+		if(!last.getEstado().getEstado().equals(EstadoAgendaDTO.POR_CONFIRMAR) &&
+				!last.getEstado().getEstado().equals(EstadoAgendaDTO.SIN_INFORMACION) &&
+				aidto.getComentario() != null && !aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		
+		//Si el estado y la fecha no se han modificado, y hay un comentario, se permite agendar
+		if(last.getEstado().getId() == aidto.getEstado().getId() &&
+				last.getFecha().equals(aidto.getFecha()) &&
+				aidto.getComentario() != null &&
+				!aidto.getComentario().isEmpty()){
+			updateAgenda(aidto);
+			return;
+		}
+		//si el estado anterior es distinto al actual, se permite modificar la agenda
+		if(last.getEstado().getId() != aidto.getEstado().getId()){
+			updateAgenda(aidto);
+			return;
+		}
 	}
 
 	@Override
@@ -367,8 +465,7 @@ public class AgendamientosActivity extends SimceActivity implements
 
 	@Override
 	public void onFechaChange(Date d) {
-		// TODO Auto-generated method stub
-		
+		fechaSelected = true;
 	}
 	
 	@Override
@@ -402,6 +499,29 @@ public class AgendamientosActivity extends SimceActivity implements
 				
 			});
 		}
+		
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getAgendaCurso")){
+			getFactory().getPlanificacionService().getAgendaCurso(agendaPreview.getCursoId(), view.getSelectedTipoActividad(), new SimceCallback<AgendaDTO>(eventBus,true) {
+				
+				@Override
+				public void success(AgendaDTO result) {
+					agenda = result;
+					view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+					view.getAgendaDataDisplay().setRowCount(result.getItems().size());
+					
+					Collections.reverse(agenda.getItems());
+					
+					view.getAgendaDataDisplay().setVisibleRange(0,result.getItems().size());
+					view.getAgendaDataDisplay().setRowData(0, result.getItems());
+					
+					if(agenda.getItems() != null && !agenda.getItems().isEmpty()){
+						view.setUltimoEstado(agenda.getItems().get(0));
+						fechaSelected = true;
+					}
+				}
+			});
+		}
+		
 		if(getPermisos().get("PlanificacionService").contains("getContacto")){
 			getFactory().getPlanificacionService().getContacto(agendaPreview.getCursoId(), new SimceCallback<ContactoDTO>(eventBus) {
 	
@@ -419,6 +539,37 @@ public class AgendamientosActivity extends SimceActivity implements
 				public void success(ContactoDTO result) {
 					director = result;
 					view.setDirector(result);
+				}
+			});
+		}
+	}
+	
+	private void updateAgenda(AgendaItemDTO aidto){
+		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "AgendarVisita")){
+			getFactory().getPlanificacionService().AgendarVisita(agendaPreview.getCursoId(), aidto, view.getSelectedTipoActividad(), new SimceCallback<AgendaItemDTO>(eventBus,true) {
+	
+				@Override
+				public void success(AgendaItemDTO result) {
+					if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "getAgendaCurso")){
+						getFactory().getPlanificacionService().getAgendaCurso(agendaPreview.getCursoId(),  view.getSelectedTipoActividad(), new SimceCallback<AgendaDTO>(eventBus,true) {
+							
+							@Override
+							public void success(AgendaDTO result) {
+								agenda = result;
+								view.setNombreEstablecimiento(result.getEstablecimiento()+"-"+result.getCurso());
+								view.getAgendaDataDisplay().setRowCount(result.getItems().size());
+								
+								Collections.reverse(agenda.getItems());
+								
+								view.getAgendaDataDisplay().setVisibleRange(0,result.getItems().size());
+								view.getAgendaDataDisplay().setRowData(0, result.getItems());
+								
+								if(agenda.getItems() != null && !agenda.getItems().isEmpty()){
+									view.setUltimoEstado(agenda.getItems().get(0));
+								}
+							}
+						});
+					}
 				}
 			});
 		}

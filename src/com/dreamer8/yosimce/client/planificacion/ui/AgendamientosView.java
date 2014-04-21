@@ -43,7 +43,6 @@ public interface AgendamientosView extends IsWidget {
 	int getSelectedTipoActividad();
 	
 	//Agenda
-	void setIdCurso(int idCurso);
 	HasData<AgendaItemDTO> getAgendaDataDisplay();
 	void setUltimoEstado(AgendaItemDTO item);
 	void setEstadosAgenda(ArrayList<EstadoAgendaDTO> estados);
@@ -70,7 +69,6 @@ public interface AgendamientosView extends IsWidget {
 	//Fin Detalles Curso
 	
 	void setExportarVisivility(boolean visible);
-	void setBuscarVisivility(boolean visible);
 	void setModificarAgendaVisivility(boolean visible);
 	void setDetallesAgendaVisivility(boolean visible);
 	void setInformacionGeneralVisivility(boolean visible);

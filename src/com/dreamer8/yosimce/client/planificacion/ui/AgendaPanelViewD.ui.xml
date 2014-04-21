@@ -1,13 +1,58 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.datepicker.client"
+	xmlns:e="urn:import:com.dreamer8.yosimce.client.ui.eureka">
+	
+    
 	<ui:style>
-		.important {
-			font-weight: bold;
-		}
+	.form{
+		width: 340px;
+		text-align: center;
+	}
+	
+	.form .label{
+		font-size: 15px;
+		font-weight: bold;
+	}
+	
+	.form .separador td{
+		padding-top: 30px;
+		border-bottom: 1px solid black;
+	}
+
+	.fechaPicker table{
+		text-align: center;
+		width: 300px;
+	}
 	</ui:style>
 	<g:HTMLPanel>
-		Hello,
-		<g:Button styleName="{style.important}" ui:field="button" />
+		<table class='{style.form}'>
+ 			<tr>
+ 				<td class='{style.label}'>Estado:</td>
+ 				<td><g:ListBox ui:field="estadoBox"/> </td>
+ 			</tr>
+ 			<tr class='{style.separador}'>
+ 				<td class='{style.label}'>Fecha</td>
+ 				<td class='{style.label}'><g:Label ui:field="fechaLabel"/> </td>
+ 			</tr>
+ 			<tr>
+ 				<td colspan='2' class='{style.fechaPicker}'><c:DatePicker ui:field="fechaPicker"/> </td>
+ 			</tr>
+ 			<tr>
+ 				<td class='{style.label}'>Hora:</td>
+ 				<td><e:TimeBox ui:field="timeBox"/> </td>
+ 			</tr>
+ 			<tr class='{style.separador}'>
+ 				<td colspan='2' class='{style.label}'>Comentario</td>
+ 			</tr>
+ 			<tr>
+ 				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
+ 			</tr>
+ 			<tr class='{style.separador}'>
+ 				<td></td>
+ 				<td><g:Button ui:field="agendarButton" text="Agendar"/> </td>
+ 			</tr>
+ 		</table>
 	</g:HTMLPanel>
 </ui:UiBinder> 
