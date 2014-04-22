@@ -44,7 +44,7 @@ public class DocumentoEstadoDAO extends
 		List<DocumentoEstado> des = null;
 		Session s = getSession();
 		String query = "SELECT de.* FROM  DOCUMENTO_ESTADO de"
-				+ " WHERE de.id < 6 AND de.id > 1";
+				+ " WHERE (de.id < 6 AND de.id > 1) OR de.id = 10";
 		Query q = s.createSQLQuery(query).addEntity(DocumentoEstado.class);
 		des = q.list();
 		return des;

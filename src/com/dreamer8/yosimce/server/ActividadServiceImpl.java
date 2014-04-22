@@ -459,12 +459,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 							.getTotalAlumnosPresentes() + 1 : 0);
 				}
 
+				AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
+						.findByIdAlumnoXActividadANDTipoDocumento(axa.getId(),
+								DocumentoTipo.CUESTIONARIO_PADRE);
 				if (sinc.getEntregoFormulario()) {
-					AlumnoXActividadXDocumento axaxdCuestionario = axaxddao
-							.findByIdAlumnoXActividadANDTipoDocumento(
-									axa.getId(),
-									DocumentoTipo.CUESTIONARIO_PADRE);
-
 					if (axaxdCuestionario == null) {
 						DocumentoTipoDAO dtdao = new DocumentoTipoDAO(s);
 						DocumentoTipo dt = dtdao
@@ -484,6 +482,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 					axaxdCuestionario.setModificadorId(u.getId());
 
 					axaxddao.saveOrUpdate(axaxdCuestionario);
+				} else if (axaxdCuestionario != null) {
+					axaxddao.delete(axaxdCuestionario);
 				}
 				s.getTransaction().commit();
 			}
@@ -1623,7 +1623,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements
 													+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 													+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones"
 															: "Encargado de Logística")
-															+ " debe realizar la selección para el nivel en la intranet en YoSimce en el menú \"Seleccionar\".");
+													+ " debe realizar la selección para el nivel en la intranet en YoSimce en el menú \"Seleccionar\".");
 								}
 							}
 							if (eudto.getEstado().equals(

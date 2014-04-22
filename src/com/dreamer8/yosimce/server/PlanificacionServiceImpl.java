@@ -1620,19 +1620,349 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 	}
 
 	@Override
-	public AgendaDTO getAgendaCurso(Integer idCurso, Integer tipoActividadId)
+	public AgendaDTO getAgendaCurso(Integer idCurso, Integer idActividadTipo)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+		AgendaDTO adto = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getAgendaCurso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO(s);
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (a == null || a.getId() == null) {
+					throw new NullPointerException(
+							"La actividad especificada no existe.");
+				}
+
+				adto = a.getAgendaDTO(s);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return adto;
 	}
 
 	@Override
 	public AgendaItemDTO AgendarVisita(Integer idCurso,
-			AgendaItemDTO itemAgenda, Integer tipoActividadId)
+			AgendaItemDTO itemAgenda, Integer idActividadTipo)
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "AgendarVisita")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado un curso");
+				}
+
+				if (itemAgenda == null || itemAgenda.getFecha() == null
+						|| itemAgenda.getEstado() == null
+						|| itemAgenda.getEstado().getId() == null) {
+					throw new NullPointerException(
+							"Faltan datos para realizar el agendamiento");
+				}
+
+				Boolean enviarMail = false;
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				ActividadDAO adao = new ActividadDAO(s);
+				Actividad a = adao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (a == null) {
+					throw new NullPointerException(
+							"No existe una actividad para este curso en el nivel seleccionado");
+				}
+
+				ActividadHistorialDAO ahdao = new ActividadHistorialDAO(s);
+				ActividadHistorial ah = ahdao.findFirstByIdActividad(a.getId());
+				ActividadEstadoDAO aedao = new ActividadEstadoDAO(s);
+				ActividadEstado ae = aedao.getById(itemAgenda.getEstado()
+						.getId());
+
+				if (ae == null) {
+					throw new NullPointerException(
+							"El estado especificado no existe");
+				}
+				Calendar calendar = Calendar.getInstance();
+				Date fecha = StringUtils.getDate(itemAgenda.getFecha());
+				if (fecha == null) {
+					throw new NullPointerException(
+							"La fecha de agendamiento ingresada no es válida");
+				}
+				calendar.setTime(fecha);
+				int yearNew = calendar.get(Calendar.YEAR);
+				int monthNew = calendar.get(Calendar.MONTH);
+				String month = StringUtils.getMes(monthNew);
+				int dayNew = calendar.get(Calendar.DAY_OF_MONTH);
+				int hourNew = calendar.get(Calendar.HOUR_OF_DAY);
+				int minNew = calendar.get(Calendar.MINUTE);
+
+				if (ae.getNombre().equals(ActividadEstado.CONFIRMADO)) {
+
+					if (ah != null && ah.getFechaInicio() != null) {
+						if (a.getActividadEstado() != null) {
+							String estadoActualNombre = a.getActividadEstado()
+									.getNombre();
+							enviarMail = (!ActividadEstado.CONFIRMADO
+									.equals(estadoActualNombre) && !ActividadEstado.CONFIRMADO_CON_CAMBIOS
+									.equals(estadoActualNombre));
+
+							calendar.setTime(ah.getFechaInicio());
+							int yearHist = calendar.get(Calendar.YEAR);
+							int monthHist = calendar.get(Calendar.MONTH);
+							int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+							int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+							int minHist = calendar.get(Calendar.MINUTE);
+
+							if (yearHist != yearNew || monthHist != monthNew
+									|| dayHist != dayNew || hourHist != hourNew
+									|| minHist != minNew) {
+								ae = aedao
+										.findByNombre(ActividadEstado.CONFIRMADO_CON_CAMBIOS);
+								enviarMail = (!ActividadEstado.CONFIRMADO_CON_CAMBIOS
+										.equals(estadoActualNombre));
+							}
+						}
+					}
+				}
+				if (idAplicacion == 1 && a.getActividadEstado() != null
+						&& a.getFechaInicio() != null) {
+					String estadoActualNombre = a.getActividadEstado()
+							.getNombre();
+					if (!ActividadEstado.POR_CONFIRMAR
+							.equals(estadoActualNombre)
+							&& !ActividadEstado.SIN_INFORMACION
+									.equals(estadoActualNombre)) {
+						calendar.setTime(a.getFechaInicio());
+						int yearHist = calendar.get(Calendar.YEAR);
+						int monthHist = calendar.get(Calendar.MONTH);
+						int dayHist = calendar.get(Calendar.DAY_OF_MONTH);
+						int hourHist = calendar.get(Calendar.HOUR_OF_DAY);
+						int minHist = calendar.get(Calendar.MINUTE);
+						estadoActualNombre = ae.getNombre();
+						if (yearHist != yearNew
+								|| monthHist != monthNew
+								|| dayHist != dayNew
+								|| hourHist != hourNew
+								|| minHist != minNew
+								|| (!ActividadEstado.CONFIRMADO
+										.equals(estadoActualNombre) && !ActividadEstado.CONFIRMADO_CON_CAMBIOS
+										.equals(estadoActualNombre))) {
+							if (usuarioTipo.getId() > 6
+									&& !UsuarioTipo.OPERADOR_CENTRO_LLAMADOS
+											.equals(usuarioTipo.getRol())
+									&& !UsuarioTipo.LOGISTICA_Y_SOPORTE
+											.equals(usuarioTipo.getRol())) {
+								throw new ConsistencyException(
+										"No se puede cambiar la fecha de agendamiento, debido a que la actividad ya ha sido confirmada");
+							}
+						}
+					}
+				}
+
+				// if (idAplicacion == 2
+				// && a.getAplicacionXNivelXActividadTipo()
+				// .getActividadTipo().getNombre()
+				// .equals(ActividadTipo.APLICACION_DIA_1)) {
+				// if (itemAgenda.getFecha() != null) {
+				// Actividad visitaPrevia = adao
+				// .findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
+				// idAplicacion, idNivel, idCurso,
+				// ActividadTipo.VISITA_PREVIA);
+				// if (visitaPrevia == null
+				// || !ActividadEstado.SIN_INFORMACION
+				// .equals(visitaPrevia
+				// .getActividadEstado()
+				// .getNombre())
+				// || visitaPrevia.getFechaInicio() == null) {
+				// throw new ConsistencyException(
+				// "Primero debe agendarse la visita previa.");
+				// }
+				//
+				// Long diff = itemAgenda.getFecha().getTime()
+				// - visitaPrevia.getFechaInicio().getTime();
+				// Double dias = diff.doubleValue()
+				// / (1000 * 60 * 60 * 24);
+				//
+				// if (dias < 7) {
+				// throw new ConsistencyException(
+				// "La aplicación debe realizarse al menos 7 días después de la visita previa.");
+				// }
+				// }
+				// }
+
+				a.setFechaInicio(fecha);
+				a.setUsuario(u);
+				a.setComentario(StringUtils.limpiarString(itemAgenda
+						.getComentario()));
+				a.setActividadEstado(ae);
+				adao.update(a);
+
+				UsuarioDAO udao = new UsuarioDAO(s);
+				u = udao.getById(u.getId());
+				itemAgenda.setCreador(u.getUserDTO());
+
+				String dirMail = null;
+				String contMail = a.getContactoEmail();
+
+				// ///// No se envían correos automáticamente;
+				enviarMail = false;
+
+				Usuario firm = null;
+				String firmante = null;
+				if (enviarMail) {
+					if (a.getContactoCargo() != null
+							&& a.getContactoCargo().getNombre()
+									.equals(ContactoCargo.DIRECTOR)) {
+						dirMail = contMail;
+						contMail = null;
+					} else {
+						EstablecimientoDAO edao = new EstablecimientoDAO(s);
+						Establecimiento e = edao.findByIdActividad(a.getId());
+						if (e != null) {
+							dirMail = e.getEmail();
+						}
+					}
+
+					firm = udao.findJOByIdAplicacionANDIdNivelANDIdActividad(
+							idAplicacion, idNivel, a.getId());
+
+					firmante = (firm != null) ? StringUtils
+							.nombreInicialSegundo(firm.getNombres())
+							+ " "
+							+ firm.getApellidoPaterno() : "";
+
+				}
+				s.getTransaction().commit();
+
+				if (getBaseURL().contains("127.0.0.1")
+						|| getBaseURL().contains("demo")) {
+					enviarMail = false;
+					System.out
+							.println("Trabajando em local o demo, no se debería mandar correo");
+				}
+
+				if (enviarMail
+						&& ((dirMail != null && !dirMail.isEmpty()) || (contMail != null && !contMail
+								.isEmpty()))) {
+					if (dirMail == null || dirMail.isEmpty()) {
+						dirMail = contMail;
+						contMail = null;
+					}
+					if (idAplicacion == 1) {
+						sendEmailDirector(dirMail, contMail, firmante, dayNew
+								+ " de " + month,
+								StringUtils.forceTwoDigits(hourNew) + ":"
+										+ StringUtils.forceTwoDigits(minNew),
+								StringUtils.forceTwoDigits(hourNew + 2) + ":"
+										+ StringUtils.forceTwoDigits(minNew));
+					} else {
+						// sendEmailDirectorTIC();
+					}
+				}
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return itemAgenda;
 	}
 }

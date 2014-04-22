@@ -641,10 +641,95 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 
 	@Override
 	public DetalleCursoDTO getDetalleCurso(Integer idCurso,
-			Integer tipoActividad) throws NoAllowedException,
+			Integer idActividadTipo) throws NoAllowedException,
 			NoLoggedException, DBException, ConsistencyException,
 			NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		DetalleCursoDTO dcdto = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getDetalleCurso")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				if (idCurso == null) {
+					throw new NullPointerException(
+							"No se ha especificado el curso.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				CursoDAO cdao = new CursoDAO(s);
+				dcdto = cdao
+						.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+
+				if (dcdto == null || dcdto.getId() == null) {
+					throw new NullPointerException(
+							"No se ha encontrado información para el curso especificado en la actividad indicada.");
+				}
+				UsuarioDAO udao = new UsuarioDAO(s);
+				List<Usuario> examinadores = udao
+						.findExaminadoresByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+
+				ArrayList<UserDTO> exs = new ArrayList<UserDTO>();
+				if (examinadores != null && !examinadores.isEmpty()) {
+					for (Usuario ex : examinadores) {
+						exs.add(ex.getUserDTO());
+					}
+				}
+				dcdto.setExaminadores(exs);
+				Usuario supervisor = udao
+						.findSupervisorByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
+								idAplicacion, idNivel, idActividadTipo, idCurso);
+				if (supervisor != null) {
+					dcdto.setSupervisor(supervisor.getUserDTO());
+				}
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return dcdto;
 	}
 }
