@@ -30,6 +30,7 @@ public class AgendaPanelViewD extends Composite {
 	@UiField(provided = true) TimeBox timeBox;
 	@UiField TextArea comentarioBox;
 	@UiField Button agendarButton;
+	@UiField Button cancelarButton;
 
 	public AgendaPanelViewD() {
 		timeBox = new TimeBox(new Date(), TIME_PRECISION.MINUTE, false);

@@ -598,6 +598,13 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				presenter.onModificarAgendaClick();
 			}
 		});
+		agendaPanel.cancelarButton.addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				agendarDialog.hide();
+			}
+		});
 	}
 
 	

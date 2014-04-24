@@ -50,8 +50,10 @@
  				<td colspan='2'><g:TextArea ui:field="comentarioBox" characterWidth="40" /> </td>
  			</tr>
  			<tr class='{style.separador}'>
- 				<td></td>
- 				<td><g:Button ui:field="agendarButton" text="Agendar"/> </td>
+ 				<td colspan='2'>
+ 				    <g:Button ui:field="agendarButton" text="Agendar"/>
+ 				    <g:Button ui:field="cancelarButton" text="Cancelar"/>
+ 				</td>
  			</tr>
  		</table>
 	</g:HTMLPanel>
