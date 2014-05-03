@@ -22,7 +22,7 @@ import org.hibernate.SessionFactory;
 public class HibernateUtil {
 
 	private static SessionFactory sessionFactory;
-	private static SessionFactory sessionFactorySlave;
+//	private static SessionFactory sessionFactorySlave;
 
 	static {
 		try {
@@ -37,12 +37,12 @@ public class HibernateUtil {
 
 			// Create the SessionFactory from standard (hibernate_slave.cfg.xml)
 			// config file.
-			configuration = new Configuration();
-			configuration.configure("hibernate_slave.cfg.xml");
-			serviceRegistry = new ServiceRegistryBuilder().applySettings(
-					configuration.getProperties()).buildServiceRegistry();
-			sessionFactorySlave = configuration
-					.buildSessionFactory(serviceRegistry);
+//			configuration = new Configuration();
+//			configuration.configure("hibernate_slave.cfg.xml");
+//			serviceRegistry = new ServiceRegistryBuilder().applySettings(
+//					configuration.getProperties()).buildServiceRegistry();
+//			sessionFactorySlave = configuration
+//					.buildSessionFactory(serviceRegistry);
 
 		} catch (Throwable ex) {
 			// Log the exception.
@@ -56,7 +56,8 @@ public class HibernateUtil {
 	}
 
 	public static SessionFactory getSessionFactorySlave() {
-		return sessionFactorySlave;
+//		return sessionFactorySlave;
+		return sessionFactory;
 	}
 
 	public static void resetSessionFactory() {

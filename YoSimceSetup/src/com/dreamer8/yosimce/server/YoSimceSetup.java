@@ -97,7 +97,7 @@ import com.dreamer8.yosimce.server.utils.StringUtils;
 public class YoSimceSetup {
 
 	public static void main(String[] args) {
-		// createActividad();
+		 createActividad();
 		// List<Integer> ids = new ArrayList<Integer>();
 		// ids.add(2);
 		// ids.add(4);
@@ -110,7 +110,7 @@ public class YoSimceSetup {
 		// ids.add(10);
 		// asignarUsuario(16361209, 2, ids, 1);
 		// asignarUsuario(16370885, 2, ids, 1);
-		// initPermisos();
+		 initPermisos();
 
 		// cargarAlumnosTic("titulares.csv", EstablecimientoTipo.SELECCIONADO);
 		// cargarAlumnosTic("reemplazos1.csv", EstablecimientoTipo.REEMPLAZO_1);
@@ -250,20 +250,30 @@ public class YoSimceSetup {
 		//
 		// cargarMateriales("cajas_2medio_BIOBIO.csv", 1, 10,
 		// ActividadTipo.APLICACION_DIA_1);
-//		cargarMateriales("sobres_2medio_RM.csv", 1, 10,
-//				ActividadTipo.VISITA_PREVIA);
-//		cargarMateriales("sobres_2medio_BIOBIO.csv", 1, 10,
-//				ActividadTipo.VISITA_PREVIA);
+		// cargarMateriales("sobres_2medio_RM.csv", 1, 10,
+		// ActividadTipo.VISITA_PREVIA);
+		// cargarMateriales("sobres_2medio_BIOBIO.csv", 1, 10,
+		// ActividadTipo.VISITA_PREVIA);
+
+		// moverAlumnos("mover_alumnos.csv", 2, 10);
+
+		// cargarAlumnosTic("alumnosTIC_agregar10_11.csv",
+		// EstablecimientoTipo.SELECCIONADO, false);
+		// cargarAlumnosTic("alumnosTIC_agregar12_11.csv",
+		// EstablecimientoTipo.REEMPLAZO_1, false);
+
+		// cargarAlumnosTic("alumnosTIC_agregar14_11.csv",
+		// EstablecimientoTipo.SELECCIONADO, false);
+		// cargarAlumnosTic("alumnosTIC_agregar17_11.csv",
+		// EstablecimientoTipo.SELECCIONADO, false);
+
+		// cargarMateriales("centro_2medio_piloto_caja.csv", 1, 10,
+		// ActividadTipo.APLICACION_DIA_1);
+
+		// arreglaFechaActividad("ajustar_fechas_simce_normal.csv");
+		// arreglaFechaActividad("ajustar_fechas_simce_normal2.csv");
 		
-//		moverAlumnos("mover_alumnos.csv", 2, 10);
-		
-//		cargarAlumnosTic("alumnosTIC_agregar10_11.csv",
-//				 EstablecimientoTipo.SELECCIONADO, false);
-//		cargarAlumnosTic("alumnosTIC_agregar12_11.csv",
-//				 EstablecimientoTipo.REEMPLAZO_1, false);
-		
-		cargarAlumnosTic("alumnosTIC_agregar14_11.csv",
-				 EstablecimientoTipo.SELECCIONADO, false);
+//		arreglaHoraActividad("ajustar_horas_simce_normal.csv");
 		System.out.println("fin :P");
 	}
 
@@ -2513,10 +2523,19 @@ public class YoSimceSetup {
 	}
 
 	public static Integer getNumero(String str) {
-		Pattern p = Pattern.compile("^[0-9]", Pattern.CASE_INSENSITIVE);
+		Pattern p = Pattern.compile("[0-9]", Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(str);
 		if (m.find()) {
 			return Integer.valueOf(m.group());
+		}
+		return null;
+	}
+
+	public static String getLetra(String str) {
+		Pattern p = Pattern.compile("[A-Z]", Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(str);
+		if (m.find()) {
+			return m.group();
 		}
 		return null;
 	}
@@ -2936,6 +2955,176 @@ public class YoSimceSetup {
 		} catch (Exception e) {
 			e.printStackTrace();
 			HibernateUtil.rollback(s);
+		}
+	}
+
+	public static void arreglaFechaActividad(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String line = null;
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+			String date[];
+
+			Calendar c = Calendar.getInstance();
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					// System.out.println(row[2] + " " + (getNumero(row[2]) +
+					// 1));
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+									1, Integer.valueOf(row[3]),
+									(getNumero(row[2]) + 1),
+									Integer.valueOf(row[0]), row[1],
+									getNumero(row[2]));
+					if (a == null) {
+						throw new NullPointerException(
+								"No se encontró actividad para " + row[0]);
+					}
+					date = row[4].split("-");
+
+					// c.setTime(a.getFechaInicio());
+
+					c.set(2013, Integer.valueOf(date[1]) - 1,
+							Integer.valueOf(date[0]));
+
+					int year = c.get(Calendar.YEAR);
+					int month = c.get(Calendar.MONTH);
+					int day = c.get(Calendar.DATE);
+					int hour;
+					int minute;
+
+					if (a.getFechaInicio() != null) {
+						c.setTime(a.getFechaInicio());
+						hour = c.get(Calendar.HOUR_OF_DAY);
+						minute = c.get(Calendar.MINUTE);
+						c.set(year, month, day, hour, minute);
+						a.setFechaInicio(c.getTime());
+					}
+					if (a.getFechaInicioPrueba() != null) {
+						c.setTime(a.getFechaInicioPrueba());
+						hour = c.get(Calendar.HOUR_OF_DAY);
+						minute = c.get(Calendar.MINUTE);
+						c.set(year, month, day, hour, minute);
+						a.setFechaInicioPrueba(c.getTime());
+					}
+					if (a.getFechaTerminoPrueba() != null) {
+						c.setTime(a.getFechaTerminoPrueba());
+						hour = c.get(Calendar.HOUR_OF_DAY);
+						minute = c.get(Calendar.MINUTE);
+						c.set(year, month, day, hour, minute);
+						a.setFechaTerminoPrueba(c.getTime());
+					}
+
+					actividadDAO.update(a);
+				}
+				rowCounter++;
+			}
+
+			s.getTransaction().commit();
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		}
+	}
+
+	public static void arreglaHoraActividad(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String line = null;
+		try {
+
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+			String date[];
+
+			Calendar c = Calendar.getInstance();
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					// System.out.println(row[2] + " " + (getNumero(row[2]) +
+					// 1));
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+									1, Integer.valueOf(row[3]),
+									(getNumero(row[2]) + 1),
+									Integer.valueOf(row[0]), row[1],
+									getNumero(row[2]));
+					if (a == null) {
+						throw new NullPointerException(
+								"No se encontró actividad para " + row[0]);
+					}
+					date = row[4].split(":");
+
+					// c.setTime(a.getFechaInicio());
+
+					int year;
+					int month;
+					int day;
+					int hour = Integer.valueOf(date[0]);
+					int minute = Integer.valueOf(date[1]);
+
+					if (a.getFechaInicio() != null) {
+						c.setTime(a.getFechaInicio());
+						year = c.get(Calendar.YEAR);
+						month = c.get(Calendar.MONTH);
+						day = c.get(Calendar.DATE);
+						c.set(year, month, day, hour, minute);
+						a.setFechaInicio(c.getTime());
+					}
+
+					actividadDAO.update(a);
+				}
+				rowCounter++;
+			}
+
+			s.getTransaction().commit();
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
 		}
 	}
 }

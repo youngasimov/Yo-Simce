@@ -639,6 +639,10 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return sdtos;
 	}
 
+	/**
+	 * 
+	 * @permiso getDetalleCurso
+	 */
 	@Override
 	public DetalleCursoDTO getDetalleCurso(Integer idCurso,
 			Integer idActividadTipo) throws NoAllowedException,
