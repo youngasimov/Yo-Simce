@@ -109,11 +109,11 @@
 					<table>
 						<tr>
 							<td>Usuario:</td>
-							<td> <my:PlaceHolderTextBox placeholder='usuario yosimce' ui:field="usernameBox"/> </td>
+							<td> <my:PlaceHolderTextBox placeholder='usuario' ui:field="usernameBox"/> </td>
 						</tr>
 						<tr>
 							<td>Contraseña:</td>
-							<td> <my:PlaceHolderPasswordBox placeholder='contraseña yosimce' ui:field="passwordBox"/> </td>
+							<td> <my:PlaceHolderPasswordBox placeholder='contraseña' ui:field="passwordBox"/> </td>
 						</tr>
 						<tr>
 							<td></td>
