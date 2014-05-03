@@ -1619,6 +1619,10 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 
 	}
 
+	/**
+	 * 
+	 * @permiso getAgendaCurso
+	 */
 	@Override
 	public AgendaDTO getAgendaCurso(Integer idCurso, Integer idActividadTipo)
 			throws NoAllowedException, NoLoggedException, DBException,
@@ -1693,6 +1697,10 @@ public class PlanificacionServiceImpl extends CustomRemoteServiceServlet
 		return adto;
 	}
 
+	/**
+	 * 
+	 * @permiso AgendarVisita
+	 */
 	@Override
 	public AgendaItemDTO AgendarVisita(Integer idCurso,
 			AgendaItemDTO itemAgenda, Integer idActividadTipo)
