@@ -162,7 +162,9 @@
 					</g:MenuBar>
 				</g:MenuItem>
 				<g:MenuItem ui:field="sendToMonitorItem">Monitorear</g:MenuItem>
+				<!-- 
 				<g:MenuItem ui:field="bingoItem">B</g:MenuItem>
+				 -->
 			</my:OverMenuBar>	
 		</g:north>
 		<g:west size='250'>

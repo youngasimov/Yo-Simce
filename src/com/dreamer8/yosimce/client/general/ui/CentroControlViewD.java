@@ -251,7 +251,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField MenuItem autoCarga5Menu;
 	@UiField MenuItem autoCarga10Menu;
 	@UiField MenuItem sendToMonitorItem;
-	@UiField MenuItem bingoItem;
+	//@UiField MenuItem bingoItem;
 	@UiField StackLayoutPanel leftPanel;
 	@UiField TabLayoutPanel tabs;
 	@UiField CheckBox selectAllBox;
@@ -487,6 +487,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				presenter.addToMonitor(aux);
 			}
 		});
+		/*
 		bingoItem.setScheduledCommand(new Scheduler.ScheduledCommand() {
 			
 			@Override
@@ -498,7 +499,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 				bingoPopup.center();
 			}
 		});
-		
+		*/
 		Window.addResizeHandler(new ResizeHandler() {
 			
 			@Override
