@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.general;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -46,6 +47,10 @@ public interface GeneralService extends RemoteService {
 	
 	public ArrayList<CentroOperacionDTO> getCentrosOperacion()  throws NoAllowedException,
 			NoLoggedException, DBException, ConsistencyException,
-			NullPointerException;	
+			NullPointerException;
+	
+	public ArrayList<ControlCentroOperacionDTO> getCentrosOperacionParaControl() throws NoAllowedException,
+	NoLoggedException, DBException, ConsistencyException,
+	NullPointerException;
 
 }

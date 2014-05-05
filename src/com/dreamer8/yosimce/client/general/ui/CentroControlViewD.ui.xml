@@ -270,6 +270,30 @@
 					</g:DockLayoutPanel>
 				</g:tab>
 				<g:tab>
+					<g:header>Control</g:header>
+					<g:SplitLayoutPanel>
+						<g:east size="200">
+							<g:HTMLPanel>
+								<h1>Resumen</h1>
+								<g:SimplePanel addStyleNames='{style.tiempoPanel}' ui:field="controlResumenPanel"/>
+							</g:HTMLPanel>
+						</g:east>
+						<g:center>
+							<g:DockLayoutPanel unit='PX'>
+								<g:north size="40">
+									<g:ListBox ui:field="controlZonesBox"/>
+								</g:north>
+								<g:south size="40">
+									<g:HTMLPanel></g:HTMLPanel>
+								</g:south>
+								<g:center>
+									<c:DataGrid ui:field="controlDataGrid"/>
+								</g:center>
+							</g:DockLayoutPanel>
+						</g:center>
+					</g:SplitLayoutPanel>
+				</g:tab>
+				<g:tab>
 					<g:header>Ayuda</g:header>
 					<g:ScrollPanel>
 						<g:HTMLPanel addStyleNames='{style.help}'>

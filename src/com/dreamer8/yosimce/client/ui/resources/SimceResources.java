@@ -55,4 +55,10 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/filtro.png")
 	public ImageResource filtro();
+	
+	@Source("images/round_trip.png")
+	public ImageResource trip();
+	
+	@Source("images/round_trip2.png")
+	public ImageResource roundTrip();
 }

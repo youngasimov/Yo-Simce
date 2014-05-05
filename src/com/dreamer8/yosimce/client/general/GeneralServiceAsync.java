@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client.general;
 import java.util.ArrayList;
 
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.CursoDTO;
 import com.dreamer8.yosimce.shared.dto.DetalleCursoDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
@@ -29,5 +30,8 @@ public interface GeneralServiceAsync {
 
 	void getDetalleCurso(Integer idCurso, Integer tipoActividad,
 			AsyncCallback<DetalleCursoDTO> callback);
+
+	void getCentrosOperacionParaControl(
+			AsyncCallback<ArrayList<ControlCentroOperacionDTO>> callback);
 
 }

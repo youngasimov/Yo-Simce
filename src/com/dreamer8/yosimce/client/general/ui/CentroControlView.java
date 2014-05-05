@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -31,6 +32,7 @@ public interface CentroControlView extends IsWidget {
 	}
 	
 	ListDataProvider<CentroOperacionDTO> getAllDataProvider();
+	ListDataProvider<ControlCentroOperacionDTO> getControlDataProvider();
 	ListDataProvider<CentroOperacionDTO> getMonitoringDataProvider();
 	
 	void setRegiones(ArrayList<SectorDTO> regiones);

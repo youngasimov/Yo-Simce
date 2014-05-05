@@ -2,17 +2,27 @@ package com.dreamer8.yosimce.client.general.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.dreamer8.yosimce.client.ui.HyperlinkCell;
 import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
+import com.google.gwt.cell.client.CompositeCell;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.HasCell;
+import com.google.gwt.cell.client.IconCellDecorator;
+import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.Cell.Context;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.builder.shared.TableCellBuilder;
@@ -271,6 +281,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField RadioButton centroRadioButton;
 	@UiField RadioButton establecimientoRadioButton;
 	@UiField RadioButton ministerioRadioButton;
+	@UiField ListBox controlZonesBox;
+	@UiField SimplePanel controlResumenPanel;
+	@UiField(provided=true) DataGrid<ControlCentroOperacionDTO> controlDataGrid;
 	
 	private Column<CentroOperacionDTO, Boolean> checkColumn;
 	private Column<CentroOperacionDTO, CentroOperacionDTO> centroColumn;
@@ -283,6 +296,14 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	private Column<CentroOperacionDTO, Number> contingeciaEstablecimientoColumn;
 	private Column<CentroOperacionDTO, Number> contingeciaMinisterioColumn;
 	private Column<CentroOperacionDTO, Hyperlink> trackingColumn;
+	
+	//control columns
+	private Column<ControlCentroOperacionDTO, String> controlZonaColumn;
+	private Column<ControlCentroOperacionDTO, String> controlCoColumn;
+	private Column<ControlCentroOperacionDTO, String> controlJefeZnColumn;
+	private Column<ControlCentroOperacionDTO, String> controlJefeCoColumn;
+	private Column<ControlCentroOperacionDTO, ControlCentroOperacionDTO> controlEstadoColumn;
+	
 	
 	private ListDataProvider<CentroOperacionDTO> allDataProvider;
 	private ListDataProvider<CentroOperacionDTO> monitorDataProvider;
@@ -316,8 +337,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	private Label iwCM;
 	private Hyperlink iwh;
 	
+	private ListDataProvider<ControlCentroOperacionDTO> controlProvider;
+	
 	
 	public CentroControlViewD() {
+		controlDataGrid = new DataGrid<ControlCentroOperacionDTO>();
 		mapApi = false;
 		chartApi = false;
 		allTable = new DataGrid<CentroOperacionDTO>(CentroOperacionDTO.KEY_PROVIDER);
@@ -419,6 +443,8 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		allTable.setHeaderBuilder(new CustomHeaderBuilder());
 		allPager.setDisplay(allTable);
 		
+		buildControlTable();
+		
 		sendToMonitorItem.setVisible(false);
 		autoRecargaActivated = false;
 		menu.setOverItem(menuItem);
@@ -518,6 +544,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		if(Window.getClientWidth()<1210){
 			graphPanel.addStyleName(style.full());
 		}
+		
+		controlProvider = new ListDataProvider<ControlCentroOperacionDTO>();
+		controlProvider.addDataDisplay(controlDataGrid);
 		
 		//buildBingo();
 	}
@@ -914,6 +943,114 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		allTable.setColumnWidth(i++, 15, Unit.EM);
 	}
 	
+	
+	private void buildControlTable(){
+		controlZonaColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ControlCentroOperacionDTO object) {
+				return null;
+			}
+		};
+		controlZonaColumn.setSortable(true);
+		controlDataGrid.setColumnWidth(controlZonaColumn, "20%");
+		
+		controlCoColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ControlCentroOperacionDTO object) {
+				return "";
+			}
+		};
+		controlCoColumn.setSortable(true);
+		controlDataGrid.setColumnWidth(controlCoColumn, "4em");
+		
+		controlJefeZnColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ControlCentroOperacionDTO object) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+		controlJefeZnColumn.setSortable(false);
+		controlDataGrid.setColumnWidth(controlJefeZnColumn, "40%");
+		
+		controlJefeCoColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ControlCentroOperacionDTO object) {
+				return null;
+			}
+		};
+		controlJefeCoColumn.setSortable(false);
+		controlDataGrid.setColumnWidth(controlJefeCoColumn, "40%");
+		
+		final List<HasCell> cells = new ArrayList<HasCell>();
+		HasCell imageCell = new HasCell() {
+
+			@Override
+			public Cell getCell() {
+				return new ImageCell();
+			}
+
+			@Override
+			public FieldUpdater getFieldUpdater() {
+				return null;
+			}
+
+			@Override
+			public Object getValue(Object o) {
+				if(o instanceof ControlCentroOperacionDTO){
+					ControlCentroOperacionDTO cco = (ControlCentroOperacionDTO)o;
+					return "";
+				}
+				return "";
+			}
+		};
+		
+		HasCell actionCell = new HasCell() {
+
+			@Override
+			public Cell getCell() {
+				return new ActionCell<ControlCentroOperacionDTO>("Estado",new ActionCell.Delegate<ControlCentroOperacionDTO>() {
+
+					@Override
+					public void execute(ControlCentroOperacionDTO object) {
+						
+					}
+					
+				});
+			}
+
+			@Override
+			public FieldUpdater getFieldUpdater() {
+				return null;
+			}
+
+			@Override
+			public Object getValue(Object o) {
+				return o;
+			}
+		};
+		cells.add(imageCell);
+		cells.add(actionCell);
+		
+		
+		
+		controlEstadoColumn = new Column<ControlCentroOperacionDTO, ControlCentroOperacionDTO>(new CompositeCell(cells)) {
+
+			@Override
+			public ControlCentroOperacionDTO getValue(ControlCentroOperacionDTO object) {
+				return object;
+			}
+			
+		};
+		controlEstadoColumn.setSortable(true);
+		controlDataGrid.setColumnWidth(controlEstadoColumn, "10em");
+	}
+	
+	
 	@Override
 	public void setBingoRM(HashMap<String, ArrayList<String>> bingo) {
 		this.bingo.bingormTable.setWidget(0, 0, new HTML("Región Metropolitana"));
@@ -956,152 +1093,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		}
 		this.bingo.bingor8Table.getFlexCellFormatter().setColSpan(0, 0, max);
 	}
-	
-	/*
-	private void buildBingo(){
-		bingormTable.setWidget(0, 0, new HTML("Región Metropolitana"));
-		bingormTable.getFlexCellFormatter().setColSpan(0, 0, 10);
-		int i = 1;
-		bingormTable.setWidget(i, 0, new HTML("CJ"));
-		bingormTable.setWidget(i, 1, new HTML("01"));
-		bingormTable.setWidget(i, 2, new HTML("02"));
-		bingormTable.setWidget(i, 3, new HTML("03"));
-		bingormTable.setWidget(i, 4, new HTML("04"));
-		bingormTable.setWidget(i, 5, new HTML("05"));
-		bingormTable.setWidget(i, 6, new HTML("06"));
-		bingormTable.setWidget(i, 7, new HTML("07"));
-		bingormTable.setWidget(i, 8, new HTML("08"));
-		bingormTable.setWidget(i, 9, new HTML("09"));
-		i = 2;
-		bingormTable.setWidget(i, 0, new HTML("VM"));
-		bingormTable.setWidget(i, 1, new HTML("10"));
-		bingormTable.setWidget(i, 2, new HTML("11"));
-		bingormTable.setWidget(i, 3, new HTML("12"));
-		bingormTable.setWidget(i, 4, new HTML("13"));
-		bingormTable.setWidget(i, 5, new HTML("14"));
-		bingormTable.setWidget(i, 6, new HTML("15"));
-		i = 3;
-		bingormTable.setWidget(i, 0, new HTML("RC"));
-		bingormTable.setWidget(i, 1, new HTML("16"));
-		bingormTable.setWidget(i, 2, new HTML("17"));
-		bingormTable.setWidget(i, 3, new HTML("18"));
-		bingormTable.setWidget(i, 4, new HTML("19"));
-		bingormTable.setWidget(i, 5, new HTML("20"));
-		bingormTable.setWidget(i, 6, new HTML("21"));
-		bingormTable.setWidget(i, 7, new HTML("22"));
-		i = 4;
-		bingormTable.setWidget(i, 0, new HTML("KM"));
-		bingormTable.setWidget(i, 1, new HTML("23"));
-		bingormTable.setWidget(i, 2, new HTML("24"));
-		bingormTable.setWidget(i, 3, new HTML("25"));
-		bingormTable.setWidget(i, 4, new HTML("26"));
-		bingormTable.setWidget(i, 5, new HTML("27"));
-		bingormTable.setWidget(i, 6, new HTML("28"));
-		bingormTable.setWidget(i, 7, new HTML("29"));
-		i = 5;
-		bingormTable.setWidget(i, 0, new HTML("HG"));
-		bingormTable.setWidget(i, 1, new HTML("30"));
-		bingormTable.setWidget(i, 2, new HTML("31"));
-		bingormTable.setWidget(i, 3, new HTML("32"));
-		bingormTable.setWidget(i, 4, new HTML("33"));
-		bingormTable.setWidget(i, 5, new HTML("34"));
-		bingormTable.setWidget(i, 6, new HTML("35"));
-		i = 6;
-		bingormTable.setWidget(i, 0, new HTML("CN"));
-		bingormTable.setWidget(i, 1, new HTML("36"));
-		bingormTable.setWidget(i, 2, new HTML("37"));
-		bingormTable.setWidget(i, 3, new HTML("38"));
-		bingormTable.setWidget(i, 4, new HTML("39"));
-		bingormTable.setWidget(i, 5, new HTML("40"));
-		bingormTable.setWidget(i, 6, new HTML("41"));
-		bingormTable.setWidget(i, 7, new HTML("42"));
-		i = 7;
-		bingormTable.setWidget(i, 0, new HTML("PM"));
-		bingormTable.setWidget(i, 1, new HTML("43"));
-		bingormTable.setWidget(i, 2, new HTML("44"));
-		bingormTable.setWidget(i, 3, new HTML("45"));
-		bingormTable.setWidget(i, 4, new HTML("46"));
-		bingormTable.setWidget(i, 5, new HTML("47"));
-		bingormTable.setWidget(i, 6, new HTML("48"));
-		bingormTable.setWidget(i, 7, new HTML("49"));
-		bingormTable.setWidget(i, 8, new HTML("50"));
-		bingormTable.setWidget(i, 9, new HTML("51"));
-		bingormTable.setWidget(i, 10, new HTML("52"));
-		bingormTable.setWidget(i, 11, new HTML("53"));
-		bingormTable.setWidget(i, 12, new HTML("54"));
-		
-		
-		bingor8Table.setWidget(0, 0, new HTML("VIII Región"));
-		bingor8Table.getFlexCellFormatter().setColSpan(0, 0, 10);
-		i = 1;
-		bingor8Table.setWidget(i, 0, new HTML("CJ"));
-		bingor8Table.setWidget(i, 1, new HTML("01"));
-		bingor8Table.setWidget(i, 2, new HTML("02"));
-		bingor8Table.setWidget(i, 3, new HTML("03"));
-		bingor8Table.setWidget(i, 4, new HTML("04"));
-		bingor8Table.setWidget(i, 5, new HTML("05"));
-		bingor8Table.setWidget(i, 6, new HTML("06"));
-		bingor8Table.setWidget(i, 7, new HTML("07"));
-		bingor8Table.setWidget(i, 8, new HTML("08"));
-		bingor8Table.setWidget(i, 9, new HTML("09"));
-		i = 2;
-		bingor8Table.setWidget(i, 0, new HTML("VM"));
-		bingor8Table.setWidget(i, 1, new HTML("10"));
-		bingor8Table.setWidget(i, 2, new HTML("11"));
-		bingor8Table.setWidget(i, 3, new HTML("12"));
-		bingor8Table.setWidget(i, 4, new HTML("13"));
-		bingor8Table.setWidget(i, 5, new HTML("14"));
-		bingor8Table.setWidget(i, 6, new HTML("15"));
-		i = 3;
-		bingor8Table.setWidget(i, 0, new HTML("RC"));
-		bingor8Table.setWidget(i, 1, new HTML("16"));
-		bingor8Table.setWidget(i, 2, new HTML("17"));
-		bingor8Table.setWidget(i, 3, new HTML("18"));
-		bingor8Table.setWidget(i, 4, new HTML("19"));
-		bingor8Table.setWidget(i, 5, new HTML("20"));
-		bingor8Table.setWidget(i, 6, new HTML("21"));
-		bingor8Table.setWidget(i, 7, new HTML("22"));
-		i = 4;
-		bingor8Table.setWidget(i, 0, new HTML("KM"));
-		bingor8Table.setWidget(i, 1, new HTML("23"));
-		bingor8Table.setWidget(i, 2, new HTML("24"));
-		bingor8Table.setWidget(i, 3, new HTML("25"));
-		bingor8Table.setWidget(i, 4, new HTML("26"));
-		bingor8Table.setWidget(i, 5, new HTML("27"));
-		bingor8Table.setWidget(i, 6, new HTML("28"));
-		bingor8Table.setWidget(i, 7, new HTML("29"));
-		i = 5;
-		bingor8Table.setWidget(i, 0, new HTML("HG"));
-		bingor8Table.setWidget(i, 1, new HTML("30"));
-		bingor8Table.setWidget(i, 2, new HTML("31"));
-		bingor8Table.setWidget(i, 3, new HTML("32"));
-		bingor8Table.setWidget(i, 4, new HTML("33"));
-		bingor8Table.setWidget(i, 5, new HTML("34"));
-		bingor8Table.setWidget(i, 6, new HTML("35"));
-		i = 6;
-		bingor8Table.setWidget(i, 0, new HTML("CN"));
-		bingor8Table.setWidget(i, 1, new HTML("36"));
-		bingor8Table.setWidget(i, 2, new HTML("37"));
-		bingor8Table.setWidget(i, 3, new HTML("38"));
-		bingor8Table.setWidget(i, 4, new HTML("39"));
-		bingor8Table.setWidget(i, 5, new HTML("40"));
-		bingor8Table.setWidget(i, 6, new HTML("41"));
-		bingor8Table.setWidget(i, 7, new HTML("42"));
-		i = 7;
-		bingor8Table.setWidget(i, 0, new HTML("PM"));
-		bingor8Table.setWidget(i, 1, new HTML("43"));
-		bingor8Table.setWidget(i, 2, new HTML("44"));
-		bingor8Table.setWidget(i, 3, new HTML("45"));
-		bingor8Table.setWidget(i, 4, new HTML("46"));
-		bingor8Table.setWidget(i, 5, new HTML("47"));
-		bingor8Table.setWidget(i, 6, new HTML("48"));
-		bingor8Table.setWidget(i, 7, new HTML("49"));
-		bingor8Table.setWidget(i, 8, new HTML("50"));
-		bingor8Table.setWidget(i, 9, new HTML("51"));
-		bingor8Table.setWidget(i, 10, new HTML("52"));
-		bingor8Table.setWidget(i, 11, new HTML("53"));
-		bingor8Table.setWidget(i, 12, new HTML("54"));
 
+	@Override
+	public ListDataProvider<ControlCentroOperacionDTO> getControlDataProvider() {
+		return controlProvider;
 	}
-	*/
+	
+	
 }
