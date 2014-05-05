@@ -34,4 +34,7 @@ public interface GeneralServiceAsync {
 	void getCentrosOperacionParaControl(
 			AsyncCallback<ArrayList<ControlCentroOperacionDTO>> callback);
 
+	void updateCentroOperacionStatus(int coId, String newStatus,
+			AsyncCallback<Void> callback);
+
 }

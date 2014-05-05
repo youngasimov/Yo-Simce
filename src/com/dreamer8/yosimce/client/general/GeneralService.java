@@ -52,5 +52,9 @@ public interface GeneralService extends RemoteService {
 	public ArrayList<ControlCentroOperacionDTO> getCentrosOperacionParaControl() throws NoAllowedException,
 	NoLoggedException, DBException, ConsistencyException,
 	NullPointerException;
+	
+	public Void updateCentroOperacionStatus(int coId, String newStatus) throws NoAllowedException,
+	NoLoggedException, DBException, ConsistencyException,
+	NullPointerException;
 
 }

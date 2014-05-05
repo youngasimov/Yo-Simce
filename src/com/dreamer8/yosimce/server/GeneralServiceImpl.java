@@ -745,4 +745,12 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Void updateCentroOperacionStatus(int coId, String newStatus)
+			throws NoAllowedException, NoLoggedException, DBException,
+			ConsistencyException, NullPointerException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
