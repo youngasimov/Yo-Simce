@@ -21,7 +21,7 @@ public class ControlCentroOperacionDTO {
 	private String co;
 	private String jefeZona;
 	private String jefeCentro;
-	private String estado;
+	private EstadoControlDTO estado;
 	
 	public ControlCentroOperacionDTO() {
 		// TODO Auto-generated constructor stub
@@ -67,11 +67,11 @@ public class ControlCentroOperacionDTO {
 		this.jefeCentro = jefeCentro;
 	}
 
-	public String getEstado() {
+	public EstadoControlDTO getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(EstadoControlDTO estado) {
 		this.estado = estado;
 	}
 }
