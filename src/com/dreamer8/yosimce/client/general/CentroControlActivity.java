@@ -2,6 +2,7 @@ package com.dreamer8.yosimce.client.general;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -14,6 +15,8 @@ import com.dreamer8.yosimce.client.general.ui.CentroControlView;
 import com.dreamer8.yosimce.client.general.ui.CentroControlView.CentroControlPresenter;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoControlDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;
@@ -41,6 +44,8 @@ public class CentroControlActivity extends SimceActivity implements
 	private int evento;
 	private String userKey;
 	private boolean bingoReady;
+
+	private ArrayList<String> zonasControl;
 	
 	public CentroControlActivity(ClientFactory factory, CentroControlPlace place,HashMap<String, ArrayList<String>> permisos) {
 		super(factory, place, permisos);
@@ -120,6 +125,38 @@ public class CentroControlActivity extends SimceActivity implements
 		});
 		view.setEvento(evento);
 		updateCentros();
+		
+		
+		
+		getFactory().getGeneralService().getCentrosOperacionParaControl(new SimceCallback<ArrayList<ControlCentroOperacionDTO>>(eventBus,true) {
+
+			@Override
+			public void success(ArrayList<ControlCentroOperacionDTO> result) {
+				zonasControl = new ArrayList<String>();
+				for(ControlCentroOperacionDTO centro:result){
+					if(centro.getZona() != null && !zonasControl.contains(centro.getZona())){
+						zonasControl.add(centro.getZona());
+					}
+				}
+				
+				Collections.sort(result, new Comparator<ControlCentroOperacionDTO>() {
+
+					@Override
+					public int compare(ControlCentroOperacionDTO o1,
+							ControlCentroOperacionDTO o2) {
+						if(o1.getZona().equals(o2.getZona())){
+							return o1.getCo().compareTo(o2.getCo());
+						}else{
+							return o1.getZona().compareTo(o2.getZona());
+						}
+					}
+				});
+				
+				view.getControlDataProvider().setList(result);
+				
+			}
+			
+		});
 	}
 	
 	@Override
@@ -145,9 +182,6 @@ public class CentroControlActivity extends SimceActivity implements
 		localService.setEvento(userKey, evento);
 		updateMap();
 	}
-	
-	
-	
 	
 	@Override
 	public void actualizar() {
@@ -437,6 +471,11 @@ public class CentroControlActivity extends SimceActivity implements
 				});
 			}
 		}
+		
+	}
+
+	@Override
+	public void changeControlStatus(ControlCentroOperacionDTO centro, int estadoId) {
 		
 	}
 

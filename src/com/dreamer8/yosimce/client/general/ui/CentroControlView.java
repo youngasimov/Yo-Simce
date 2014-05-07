@@ -4,10 +4,12 @@ package com.dreamer8.yosimce.client.general.ui;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import com.dreamer8.yosimce.client.SimcePresenter;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoControlDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -67,6 +69,8 @@ public interface CentroControlView extends IsWidget {
 	void setBingoRM(HashMap<String,ArrayList<String>> bingo);
 	void setBingoR8(HashMap<String,ArrayList<String>> bingo);
 	
+	void setZonas(List<String> zonas);
+	
 	public interface CentroControlPresenter extends SimcePresenter{
 		void activarAutoRecarga(boolean activada, int time);
 		void actualizar();
@@ -77,5 +81,6 @@ public interface CentroControlView extends IsWidget {
 		void onApisReady();
 		void onEventChange(int event);
 		void onCentroSelected(int id);
+		void changeControlStatus(ControlCentroOperacionDTO centro, int newStatus);
 	}
 }

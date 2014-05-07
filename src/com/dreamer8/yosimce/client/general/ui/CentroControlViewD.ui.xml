@@ -281,7 +281,7 @@
 						<g:center>
 							<g:DockLayoutPanel unit='PX'>
 								<g:north size="40">
-									<g:ListBox ui:field="controlZonesBox"/>
+									<g:ListBox ui:field="controlZonasBox"/>
 								</g:north>
 								<g:south size="40">
 									<g:HTMLPanel></g:HTMLPanel>

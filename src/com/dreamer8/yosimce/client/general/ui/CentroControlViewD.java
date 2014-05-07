@@ -13,12 +13,7 @@ import com.dreamer8.yosimce.client.ui.ImageButton;
 import com.dreamer8.yosimce.client.ui.OverMenuBar;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ActionCell;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.CompositeCell;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.HasCell;
-import com.google.gwt.cell.client.IconCellDecorator;
 import com.google.gwt.cell.client.ImageCell;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.Cell.Context;
@@ -281,7 +276,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField RadioButton centroRadioButton;
 	@UiField RadioButton establecimientoRadioButton;
 	@UiField RadioButton ministerioRadioButton;
-	@UiField ListBox controlZonesBox;
+	@UiField ListBox controlZonasBox;
 	@UiField SimplePanel controlResumenPanel;
 	@UiField(provided=true) DataGrid<ControlCentroOperacionDTO> controlDataGrid;
 	
@@ -302,7 +297,8 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	private Column<ControlCentroOperacionDTO, String> controlCoColumn;
 	private Column<ControlCentroOperacionDTO, String> controlJefeZnColumn;
 	private Column<ControlCentroOperacionDTO, String> controlJefeCoColumn;
-	private Column<ControlCentroOperacionDTO, ControlCentroOperacionDTO> controlEstadoColumn;
+	private Column<ControlCentroOperacionDTO, String> controlEstadoColumn;
+	private Column<ControlCentroOperacionDTO, ControlCentroOperacionDTO> controlChangeEstadoColumn;
 	
 	
 	private ListDataProvider<CentroOperacionDTO> allDataProvider;
@@ -339,8 +335,19 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	
 	private ListDataProvider<ControlCentroOperacionDTO> controlProvider;
 	
+	private PopupPanel controlEstadoSelectorPanel;
+	private ControlEstadoSelector controlEstadoSelector;
+	
 	
 	public CentroControlViewD() {
+		controlEstadoSelectorPanel = new PopupPanel(true);
+		controlEstadoSelector = new ControlEstadoSelector();
+		controlEstadoSelector.setContainer(controlEstadoSelectorPanel);
+		controlEstadoSelectorPanel.setWidget(controlEstadoSelector);
+		controlEstadoSelectorPanel.setAnimationEnabled(true);
+		controlEstadoSelectorPanel.setAutoHideOnHistoryEventsEnabled(true);
+		controlEstadoSelectorPanel.setGlassEnabled(false);
+		
 		controlDataGrid = new DataGrid<ControlCentroOperacionDTO>();
 		mapApi = false;
 		chartApi = false;
@@ -645,6 +652,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@Override
 	public void setPresenter(CentroControlPresenter presenter) {
 		this.presenter = presenter;
+		controlEstadoSelector.setPresenter(presenter);
 	}
 	
 	@Override
@@ -948,97 +956,71 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		controlZonaColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(ControlCentroOperacionDTO object) {
-				return null;
+			public String getValue(ControlCentroOperacionDTO o) {
+				return o.getZona();
 			}
 		};
 		controlZonaColumn.setSortable(true);
+		controlDataGrid.addColumn(controlZonaColumn);
 		controlDataGrid.setColumnWidth(controlZonaColumn, "20%");
 		
 		controlCoColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(ControlCentroOperacionDTO object) {
-				return "";
+			public String getValue(ControlCentroOperacionDTO o) {
+				return o.getCo();
 			}
 		};
 		controlCoColumn.setSortable(true);
+		controlDataGrid.addColumn(controlCoColumn);
 		controlDataGrid.setColumnWidth(controlCoColumn, "4em");
 		
 		controlJefeZnColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(ControlCentroOperacionDTO object) {
-				// TODO Auto-generated method stub
-				return null;
+			public String getValue(ControlCentroOperacionDTO o) {
+				return o.getJefeZona();
 			}
 		};
 		controlJefeZnColumn.setSortable(false);
+		controlDataGrid.addColumn(controlJefeZnColumn);
 		controlDataGrid.setColumnWidth(controlJefeZnColumn, "40%");
 		
 		controlJefeCoColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(ControlCentroOperacionDTO object) {
-				return null;
+			public String getValue(ControlCentroOperacionDTO o) {
+				return o.getJefeCentro();
 			}
 		};
 		controlJefeCoColumn.setSortable(false);
+		controlDataGrid.addColumn(controlJefeCoColumn);
 		controlDataGrid.setColumnWidth(controlJefeCoColumn, "40%");
 		
-		final List<HasCell> cells = new ArrayList<HasCell>();
-		HasCell imageCell = new HasCell() {
+		controlEstadoColumn = new Column<ControlCentroOperacionDTO, String>(new ImageCell()) {
 
 			@Override
-			public Cell getCell() {
-				return new ImageCell();
-			}
-
-			@Override
-			public FieldUpdater getFieldUpdater() {
-				return null;
-			}
-
-			@Override
-			public Object getValue(Object o) {
-				if(o instanceof ControlCentroOperacionDTO){
-					ControlCentroOperacionDTO cco = (ControlCentroOperacionDTO)o;
+			public String getValue(ControlCentroOperacionDTO o) {
+				if(o.getEstado() == null){
 					return "";
 				}
 				return "";
 			}
 		};
+		controlEstadoColumn.setSortable(false);
+		controlDataGrid.addColumn(controlEstadoColumn);
+		controlDataGrid.setColumnWidth(controlEstadoColumn, "30px");
 		
-		HasCell actionCell = new HasCell() {
+		
+		
+		controlChangeEstadoColumn = new Column<ControlCentroOperacionDTO, ControlCentroOperacionDTO>(new ActionCell<ControlCentroOperacionDTO>("Cambiar",new ActionCell.Delegate<ControlCentroOperacionDTO>() {
 
 			@Override
-			public Cell getCell() {
-				return new ActionCell<ControlCentroOperacionDTO>("Estado",new ActionCell.Delegate<ControlCentroOperacionDTO>() {
-
-					@Override
-					public void execute(ControlCentroOperacionDTO object) {
-						
-					}
-					
-				});
+			public void execute(ControlCentroOperacionDTO object) {
+				controlEstadoSelector.setCentro(object);
+				controlEstadoSelectorPanel.center();
 			}
-
-			@Override
-			public FieldUpdater getFieldUpdater() {
-				return null;
-			}
-
-			@Override
-			public Object getValue(Object o) {
-				return o;
-			}
-		};
-		cells.add(imageCell);
-		cells.add(actionCell);
-		
-		
-		
-		controlEstadoColumn = new Column<ControlCentroOperacionDTO, ControlCentroOperacionDTO>(new CompositeCell(cells)) {
+		})) {
 
 			@Override
 			public ControlCentroOperacionDTO getValue(ControlCentroOperacionDTO object) {
@@ -1046,8 +1028,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			}
 			
 		};
-		controlEstadoColumn.setSortable(true);
-		controlDataGrid.setColumnWidth(controlEstadoColumn, "10em");
+		controlChangeEstadoColumn.setSortable(true);
+		controlDataGrid.addColumn(controlChangeEstadoColumn);
+		controlDataGrid.setColumnWidth(controlChangeEstadoColumn, "10em");
 	}
 	
 	
@@ -1097,6 +1080,15 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@Override
 	public ListDataProvider<ControlCentroOperacionDTO> getControlDataProvider() {
 		return controlProvider;
+	}
+
+	@Override
+	public void setZonas(List<String> zonas) {
+		controlZonasBox.clear();
+		controlZonasBox.addItem("Todas", "-1");
+		for(String zona:zonas){
+			controlZonasBox.addItem(zona);
+		}
 	}
 	
 	
