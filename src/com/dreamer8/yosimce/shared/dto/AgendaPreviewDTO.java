@@ -18,6 +18,7 @@ public class AgendaPreviewDTO implements Serializable {
 	private Integer cursoId;
 	private String establecimientoName;
 	private String rbd;
+	private String codigoPisa;
 	private String curso;
 	private TipoEstablecimientoDTO tipoEstablecimiento;
 	private String regionName;
@@ -149,6 +150,13 @@ public class AgendaPreviewDTO implements Serializable {
 	public void setMailContacto(String mailContacto) {
 		this.mailContacto = mailContacto;
 	}
-	
-	
+
+	public String getCodigoPisa() {
+		return codigoPisa;
+	}
+
+	public void setCodigoPisa(String codigoPisa) {
+		this.codigoPisa = codigoPisa;
+	}
+
 }

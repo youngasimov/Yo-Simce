@@ -9,6 +9,7 @@ public class AgendaItemDTO implements Serializable {
 	private String comentario;
 	private UserDTO creador;
 	private EstadoAgendaDTO estado;
+	private String fechaLlamada;
 
 	/**
 	 * 
@@ -48,4 +49,14 @@ public class AgendaItemDTO implements Serializable {
 	public void setCreador(UserDTO creador) {
 		this.creador = creador;
 	}
+
+	public String getFechaLlamada() {
+		return fechaLlamada;
+	}
+
+	public void setFechaLlamada(String fechaLlamada) {
+		this.fechaLlamada = fechaLlamada;
+	}
+	
+	
 }
