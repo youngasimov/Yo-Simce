@@ -32,6 +32,9 @@
         <property name="direccion" type="string">
             <column name="direccion" />
         </property>
+        <property name="codigo" type="string">
+            <column name="codigo" />
+        </property>
         <property name="direccionLatitud" type="big_decimal">
             <column name="direccion_latitud" precision="131089" scale="0" />
         </property>

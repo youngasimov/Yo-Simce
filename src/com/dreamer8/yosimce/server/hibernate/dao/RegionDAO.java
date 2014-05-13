@@ -94,7 +94,7 @@ public class RegionDAO extends AbstractHibernateDAO<Region, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)

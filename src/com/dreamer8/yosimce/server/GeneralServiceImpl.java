@@ -738,14 +738,84 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 		return dcdto;
 	}
 
+	/**
+	 * 
+	 * @permiso getCentrosOperacionParaControl
+	 */
 	@Override
 	public ArrayList<ControlCentroOperacionDTO> getCentrosOperacionParaControl()
 			throws NoAllowedException, NoLoggedException, DBException,
 			ConsistencyException, NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		ArrayList<ControlCentroOperacionDTO> object = new ArrayList<ControlCentroOperacionDTO>();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged()
+					&& ac.isAllowed(className, "getCentrosOperacionParaControl")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException(
+							"No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException(
+							"No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException(
+							"No se ha especificado el tipo de usuario.");
+				}
+
+				
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return object;
 	}
 
+	/**
+	 * 
+	 * @permiso updateCentroOperacionStatus
+	 */
 	@Override
 	public Void updateCentroOperacionStatus(int coId, String newStatus)
 			throws NoAllowedException, NoLoggedException, DBException,

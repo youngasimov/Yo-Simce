@@ -280,7 +280,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -449,7 +449,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -592,7 +592,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -755,7 +755,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -887,7 +887,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -1022,7 +1022,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -1218,7 +1218,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -1460,7 +1460,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				}
 			}
 		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.SUPERVISOR_CON_AUTO)
+				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
 				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
@@ -1627,6 +1627,27 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "' AND a.curso_id="
 				+ SecurityFilter.escapeString(idCurso)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		as = q.list();
+		return as;
+	}
+
+	public List<Actividad> findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(
+			Integer idAplicacion, Integer idEstablecimiento,
+			Integer idActividadTipo) {
+		List<Actividad> as = null;
+		Session s = getSession();
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
+				+ " AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id="
+				+ SecurityFilter.escapeString(idEstablecimiento);
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;

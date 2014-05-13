@@ -42,8 +42,8 @@ public class UsuarioTipo implements java.io.Serializable {
 	public static final String JEFE_ZONAL = "ROLE_JZ";
 	public static final String JEFE_CENTRO_OPERACIONES = "ROLE_JO";
 	public static final String LOGISTICA_Y_SOPORTE = "ROLE_JO";
-	public static final String SUPERVISOR = "ROLE_SUPERVISOR";
-	public static final String SUPERVISOR_CON_AUTO = "ROLE_SUPERVISOR";
+	public static final String SUPERVISOR = "ROLE_OBSERVADOR";
+	public static final String COORDINADOR = "ROLE_SUPERVISOR";
 	public static final String EXAMINADOR = "ROLE_EXAMINADOR";
 	public static final String EXAMINADOR_NEE = "ROLE_EXAMINADOR";
 	public static final String EXAMINADOR_SUPLENTE = "ROLE_EXAMINADOR";

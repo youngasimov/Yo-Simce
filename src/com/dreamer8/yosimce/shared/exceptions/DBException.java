@@ -14,7 +14,7 @@ public class DBException extends RuntimeException {
 		super("Ha ocurrido un error con la base de datos,"
 				+ " por lo que la operación no se pudo realizar.<br />"
 				+ "Por favor, inténtelo nuevamente.<br />"
-				+ "Si el problema persiste envíe un correo a server.simce@usm.cl"
+				+ "Si el problema persiste envíe un correo a pisa@ennea.cl"
 				+ " indicando la fecha y hora en que ocurrió, junto con la dirección"
 				+ " url de la página actual y un comentario indicando qué acción estaba realizando.");
 	}

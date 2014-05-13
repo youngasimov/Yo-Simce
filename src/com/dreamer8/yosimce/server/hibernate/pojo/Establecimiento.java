@@ -24,6 +24,8 @@ public class Establecimiento implements java.io.Serializable {
 	private String nombre;
 	private String telefono;
 	private String direccion;
+	private String codigo;
+
 	private BigDecimal direccionLatitud;
 	private BigDecimal direccionLongitud;
 	private String directorNombre;
@@ -149,6 +151,14 @@ public class Establecimiento implements java.io.Serializable {
 
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public BigDecimal getDireccionLatitud() {
