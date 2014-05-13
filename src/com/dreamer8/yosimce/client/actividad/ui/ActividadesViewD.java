@@ -744,7 +744,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		cursoColumn.setSortable(false);
 		dataGrid.addColumn(cursoColumn);
-		dataGrid.setColumnWidth(3, 60, Unit.PX);
+		dataGrid.setColumnWidth(3, 70, Unit.PX);
 
 		tipoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
