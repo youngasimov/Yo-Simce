@@ -109,6 +109,13 @@ public class AgendamientosActivity extends SimceActivity implements
 			}
 		});
 		
+		
+		view.setAgendarBtnVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "AgendarVisita"));
+		view.setSelectorTipoActividadVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "AgendarVisita"));
+		view.setEditarContactoVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "editarContacto"));
+		view.setEditarDirectorVisivility(Utils.hasPermisos(getPermisos(), "PlanificacionService", "editarDirector"));
+		
+		
 		if(Utils.hasPermisos(eventBus,getPermisos(),"GeneralService","getRegiones")){
 			getFactory().getGeneralService().getRegiones(new SimceCallback<ArrayList<SectorDTO>>(eventBus,false) {
 	

@@ -72,6 +72,9 @@ public interface AgendamientosView extends IsWidget {
 	void setModificarAgendaVisivility(boolean visible);
 	void setDetallesAgendaVisivility(boolean visible);
 	void setInformacionGeneralVisivility(boolean visible);
+	void setAgendarBtnVisivility(boolean visible);
+	void setSelectorTipoActividadVisivility(boolean visible);
+	
 	
 	void setPresenter(AgendamientosPresenter presenter);
 	

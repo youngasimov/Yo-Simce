@@ -3,6 +3,7 @@
     
     <ui:with field='date' type='java.lang.String'/>
     <ui:with field='estado' type='java.lang.String'/>
+    <ui:with field='dateCall' type='java.lang.String'/>
     <ui:with field='nombre' type='java.lang.String'/>
     <ui:with field='comentario' type='java.lang.String'/>
     
@@ -54,14 +55,28 @@
 	</ui:style>
 	<table class='{style.item}'>
 	    <tr>
+	        <td>Fecha agendamiento:</td>
 	        <td colspan='2' class='{style.date}'><ui:text from='{date}'/></td>
 	    </tr>
 	    <tr>
+	        <td>Estado:</td>
 	        <td colspan='2' class='{style.estado}'><ui:text from='{estado}'/></td>
 	    </tr>
 	    <tr>
+	        <td>Fecha llamada:</td>
+	        <td colspan='2' class='{style.name}'><ui:text from='{dateCall}'/></td>
+	    </tr>
+	    <tr>
+	        <td>Quien Llamó:</td>
 	        <td class='{style.name}'><ui:text from='{nombre}'/></td>
+	    </tr>
+	    <tr>
+	        <td>Comentario:</td>
 	        <td class='{style.comment}'><ui:text from='{comentario}'/></td>
+	    </tr>
+	    <tr>
+	        
+	        
 	    </tr>
 	</table>
 </ui:UiBinder>

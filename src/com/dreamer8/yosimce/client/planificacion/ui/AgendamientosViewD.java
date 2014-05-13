@@ -619,6 +619,16 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         dataGrid.addColumn(rbdColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("RBD")));
         dataGrid.setColumnWidth(rbdColumn, 60, Unit.PX);
         
+        Column<AgendaPreviewDTO, String> pisaColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
+            @Override
+            public String getValue(AgendaPreviewDTO object) {
+                return object.getCodigoPisa();
+            }
+        };
+        pisaColumn.setSortable(false);
+        dataGrid.addColumn(pisaColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("C. pisa")));
+        dataGrid.setColumnWidth(rbdColumn, 100, Unit.PX);
+        
         Column<AgendaPreviewDTO, String> establecimientoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
             public String getValue(AgendaPreviewDTO object) {
@@ -967,5 +977,15 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 		for(CargoDTO cargo:cargos){
 			editarContactoPanel.cargoBox.addItem(cargo.getCargo(),cargo.getId()+"");
 		}
-	};
+	}
+
+	@Override
+	public void setAgendarBtnVisivility(boolean visible) {
+		agendarButton.setVisible(visible);
+	}
+
+	@Override
+	public void setSelectorTipoActividadVisivility(boolean visible) {
+		tipoActividadBox.setVisible(visible);
+	}
 }

@@ -89,6 +89,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			AbstractHeaderOrFooterBuilder<ActividadPreviewDTO> {
 
 		private Header<String> rbdHeader = new TextHeader("RBD");
+		private Header<String> pisaHeader = new TextHeader("C. Pisa");
 		private Header<String> establecimientoHeader = new TextHeader("Establecimiento");
 		private Header<String> cursoHeader = new TextHeader("Curso");
 		private Header<String> tipoHeader = new TextHeader("Tipo");
@@ -130,7 +131,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			 * Name group header. Associated with the last name column, so
 			 * clicking on the group header sorts by last name.
 			 */
-			TableCellBuilder th = tr.startTH().colSpan(5).className(style.groupHeaderCell());
+			TableCellBuilder th = tr.startTH().colSpan(6).className(style.groupHeaderCell());
 			th.style().trustedProperty("border-right", "10px solid white").endStyle();
 			th.text("Información de establecimiento").endTH();
 
@@ -164,6 +165,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			// Add column headers.
 			tr = startRow();
 			buildHeader(tr, rbdHeader, rbdColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, pisaHeader, pisaColumn, sortedColumn,isSortAscending, false, false);
 			buildHeader(tr, establecimientoHeader, establecimientoColumn, sortedColumn,isSortAscending, false, false);
 			buildHeader(tr, cursoHeader, cursoColumn, sortedColumn,isSortAscending, false, false);
 			buildHeader(tr, tipoHeader, tipoColumn, sortedColumn,isSortAscending, false, false);
@@ -294,6 +296,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	private boolean info;
 	
 	private Column<ActividadPreviewDTO, String> rbdColumn;
+	private Column<ActividadPreviewDTO, String> pisaColumn;
 	private Column<ActividadPreviewDTO, String> establecimientoColumn;
 	private Column<ActividadPreviewDTO, String> cursoColumn;
 	private Column<ActividadPreviewDTO, String> tipoColumn;
@@ -706,6 +709,18 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		dataGrid.addColumn(rbdColumn);
 		dataGrid.setColumnWidth(0, 60, Unit.PX);
 		
+		pisaColumn = new Column<ActividadPreviewDTO, String>(
+				new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				return o.getCodigoPisa();
+			}
+		};
+		pisaColumn.setSortable(false);
+		dataGrid.addColumn(pisaColumn);
+		dataGrid.setColumnWidth(1, 100, Unit.PX);
+		
 		establecimientoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
 
@@ -716,7 +731,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		establecimientoColumn.setSortable(false);
 		dataGrid.addColumn(establecimientoColumn);
-		dataGrid.setColumnWidth(1, 250, Unit.PX);
+		dataGrid.setColumnWidth(2, 250, Unit.PX);
 		
 
 		cursoColumn = new Column<ActividadPreviewDTO, String>(
@@ -729,7 +744,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		cursoColumn.setSortable(false);
 		dataGrid.addColumn(cursoColumn);
-		dataGrid.setColumnWidth(2, 60, Unit.PX);
+		dataGrid.setColumnWidth(3, 60, Unit.PX);
 
 		tipoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -741,7 +756,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		tipoColumn.setSortable(false);
 		dataGrid.addColumn(tipoColumn);
-		dataGrid.setColumnWidth(3, 100, Unit.PX);
+		dataGrid.setColumnWidth(4, 100, Unit.PX);
 
 		estadoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -753,7 +768,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		estadoColumn.setSortable(false);
 		dataGrid.addColumn(estadoColumn);
-		dataGrid.setColumnWidth(4, 140, Unit.PX);
+		dataGrid.setColumnWidth(5, 140, Unit.PX);
 		
 		alumnosTotalColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
@@ -765,7 +780,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		alumnosTotalColumn.setSortable(false);
 		dataGrid.addColumn(alumnosTotalColumn);
-		dataGrid.setColumnWidth(5, 90, Unit.PX);
+		dataGrid.setColumnWidth(6, 90, Unit.PX);
 		
 		alumnosEvaluadosColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
@@ -777,7 +792,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		alumnosEvaluadosColumn.setSortable(false);
 		dataGrid.addColumn(alumnosEvaluadosColumn);
-		dataGrid.setColumnWidth(6, 90, Unit.PX);
+		dataGrid.setColumnWidth(7, 90, Unit.PX);
 
 		alumnosSincronizadosColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
@@ -789,7 +804,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		alumnosSincronizadosColumn.setSortable(false);
 		dataGrid.addColumn(alumnosSincronizadosColumn);
-		dataGrid.setColumnWidth(7, 90, Unit.PX);
+		dataGrid.setColumnWidth(8, 90, Unit.PX);
 
 		cuestionarioEntregadosColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
@@ -801,7 +816,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		cuestionarioEntregadosColumn.setSortable(false);
 		dataGrid.addColumn(cuestionarioEntregadosColumn);
-		dataGrid.setColumnWidth(8, 90, Unit.PX);
+		dataGrid.setColumnWidth(9, 90, Unit.PX);
 		
 		cuestionarioRecibidosColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
@@ -813,7 +828,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		cuestionarioRecibidosColumn.setSortable(false);
 		dataGrid.addColumn(cuestionarioRecibidosColumn);
-		dataGrid.setColumnWidth(9, 90, Unit.PX);
+		dataGrid.setColumnWidth(10, 90, Unit.PX);
 
 		cuestionarioRecibidosAplicadosColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
@@ -825,7 +840,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		cuestionarioRecibidosAplicadosColumn.setSortable(false);
 		dataGrid.addColumn(cuestionarioRecibidosAplicadosColumn);
-		dataGrid.setColumnWidth(10, 90, Unit.PX);
+		dataGrid.setColumnWidth(11, 90, Unit.PX);
 
 		contingenciaColumn = new Column<ActividadPreviewDTO, String>(
 				new ImageCell()) {
@@ -841,7 +856,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		contingenciaColumn.setSortable(false);
 		dataGrid.addColumn(contingenciaColumn);
-		dataGrid.setColumnWidth(11, 100, Unit.PX);
+		dataGrid.setColumnWidth(12, 100, Unit.PX);
 
 		contingenciaLimitanteColumn = new Column<ActividadPreviewDTO, String>(
 				new ImageCell()) {
@@ -857,7 +872,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		contingenciaLimitanteColumn.setSortable(false);
 		dataGrid.addColumn(contingenciaLimitanteColumn);
-		dataGrid.setColumnWidth(12, 90, Unit.PX);
+		dataGrid.setColumnWidth(13, 90, Unit.PX);
 
 		regionColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -872,7 +887,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		regionColumn.setSortable(false);
 		dataGrid.addColumn(regionColumn);
-		dataGrid.setColumnWidth(13, 140, Unit.PX);
+		dataGrid.setColumnWidth(14, 140, Unit.PX);
 
 		comunaColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -884,7 +899,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		comunaColumn.setSortable(false);
 		dataGrid.addColumn(comunaColumn);
-		dataGrid.setColumnWidth(14, 120, Unit.PX);
+		dataGrid.setColumnWidth(15, 120, Unit.PX);
 
 		docColumn = new Column<ActividadPreviewDTO, DocumentoDTO>(
 				new HyperTextCell()) {
@@ -896,7 +911,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		docColumn.setSortable(false);
 		dataGrid.addColumn(docColumn);
-		dataGrid.setColumnWidth(15, 250, Unit.PX);
+		dataGrid.setColumnWidth(16, 250, Unit.PX);
 		
 		examinadorColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -908,7 +923,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		examinadorColumn.setSortable(false);
 		dataGrid.addColumn(examinadorColumn);
-		dataGrid.setColumnWidth(16, 220, Unit.PX);
+		dataGrid.setColumnWidth(17, 220, Unit.PX);
 		
 		supervisorColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -920,7 +935,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		supervisorColumn.setSortable(false);
 		dataGrid.addColumn(supervisorColumn);
-		dataGrid.setColumnWidth(17, 220, Unit.PX);
+		dataGrid.setColumnWidth(18, 220, Unit.PX);
 		
 		nombreContactoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -932,7 +947,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		nombreContactoColumn.setSortable(false);
 		dataGrid.addColumn(nombreContactoColumn);
-		dataGrid.setColumnWidth(18, 200, Unit.PX);
+		dataGrid.setColumnWidth(19, 200, Unit.PX);
 		
 		telefonoContactoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -944,7 +959,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		telefonoContactoColumn.setSortable(false);
 		dataGrid.addColumn(telefonoContactoColumn);
-		dataGrid.setColumnWidth(19, 140, Unit.PX);
+		dataGrid.setColumnWidth(20, 140, Unit.PX);
 		
 		emailContactoColumn = new Column<ActividadPreviewDTO, String>(
 				new TextCell()) {
@@ -956,7 +971,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		};
 		emailContactoColumn.setSortable(false);
 		dataGrid.addColumn(emailContactoColumn);
-		dataGrid.setColumnWidth(20, 210, Unit.PX);
+		dataGrid.setColumnWidth(21, 210, Unit.PX);
 
 	}
 }

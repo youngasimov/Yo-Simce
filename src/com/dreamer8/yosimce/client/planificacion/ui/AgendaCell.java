@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiRenderer;
 public class AgendaCell extends AbstractCell<AgendaItemDTO> {
 
 	interface AgendaUiRenderer extends UiRenderer {
-		void render(SafeHtmlBuilder sb, String date, String estado, String nombre, String comentario);
+		void render(SafeHtmlBuilder sb, String date, String estado, String dateCall, String nombre, String comentario);
 	}
 	
 	private static AgendaUiRenderer renderer = GWT.create(AgendaUiRenderer.class);
@@ -30,11 +30,15 @@ public class AgendaCell extends AbstractCell<AgendaItemDTO> {
 	public void render(com.google.gwt.cell.client.Cell.Context context,AgendaItemDTO value, SafeHtmlBuilder sb) {
 		if(value.getFecha()!=null && !value.getFecha().isEmpty()){
 			Date d = xFormat.parse(value.getFecha());
+			Date d2 = xFormat.parse(value.getFechaLlamada());
 			renderer.render(sb,dateFormat.format(d)+" a las "+timeFormat.format(d), value.getEstado().getEstado(),
+					dateFormat.format(d2)+" a las "+timeFormat.format(d2),
 					((value.getCreador() != null)?value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno():""),
 					((value.getComentario() != null)?value.getComentario():""));
 		}else{
+			Date d2 = xFormat.parse(value.getFechaLlamada());
 			renderer.render(sb," Sin información", value.getEstado().getEstado(),
+					dateFormat.format(d2)+" a las "+timeFormat.format(d2),
 					((value.getCreador() != null)?value.getCreador().getNombres()+" "+value.getCreador().getApellidoPaterno():""),
 					((value.getComentario() != null)?value.getComentario():""));
 		}
