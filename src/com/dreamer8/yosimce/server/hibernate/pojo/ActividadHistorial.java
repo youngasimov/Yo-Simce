@@ -105,6 +105,7 @@ public class ActividadHistorial implements java.io.Serializable {
 		aidto.setEstado(actividadEstado.getEstadoAgendaDTO());
 		aidto.setComentario(comentario);
 		aidto.setFecha(StringUtils.getDateString(fechaInicio));
+		aidto.setFechaLlamada(StringUtils.getDateString(id.getFecha()));
 		UsuarioDAO udao = new UsuarioDAO(s);
 		if (modificadorId != null) {
 			Usuario usuario = udao.getById(modificadorId);

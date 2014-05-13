@@ -242,6 +242,7 @@ public class Establecimiento implements java.io.Serializable {
 		edto.setId(id);
 		edto.setName(nombre);
 		edto.setRbd(Integer.toString(id));
+		edto.setCodigo(codigo);
 		return edto;
 	}
 
