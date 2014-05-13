@@ -13,7 +13,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class YoSimce implements EntryPoint {
 	
-	public static final String TOKEN_COOKIE = "yosimce";
+	public static final String TOKEN_COOKIE = "ennea";
 	public static final String TOKEN_COOKIE_DEMO = "tracking";
 	
 	
