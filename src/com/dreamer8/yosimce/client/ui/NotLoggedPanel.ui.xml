@@ -68,7 +68,6 @@
 	</ui:style>
 	<g:HTMLPanel addStyleNames='{style.panel}'>
 		<div class='{style.upPanel}'>
-			<div class='{style.logoPanel}'><g:Image addStyleNames='{style.logo}' resource='{res.logoSimceGrande}' /></div>
 			<div class='{style.mensaje}'>
 				<g:HTML ui:field='mensaje1' />
 				<div class="{style.submensaje}"><g:HTML ui:field='mensaje2' /></div>
@@ -76,7 +75,7 @@
 		</div>
 		<div class='{style.bottomPanel}'>
 		    <my:ImageButton text="Reingresar a Tracking" addStyleNames='{style.button}' resource='{res.update}' ui:field="trackingButton"/>
-			<my:ImageButton text="Ir a YoSimce" addStyleNames='{style.button}' resource='{res.logoSimce}' ui:field="yosimceButton"/>
+			<my:ImageButton text="Ir a Inicio PISA" addStyleNames='{style.button}' resource='{res.logoSimce}' ui:field="yosimceButton"/>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

@@ -29,7 +29,7 @@ public class NotLoggedPanel extends Composite {
 	
 	@UiHandler("yosimceButton")
 	void onIrAYoSimceClick(ClickEvent event){
-		Window.open("http://www.yosimce.cl", "_self", "");
+		Window.open("http://ennea.no-ip.org/", "_self", "");
 	}
 	
 	@UiHandler("trackingButton")

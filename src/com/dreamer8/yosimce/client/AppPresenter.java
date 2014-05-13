@@ -13,7 +13,7 @@ import com.google.gwt.http.client.RequestTimeoutException;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
+//import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.SerializedTypeViolationException;
@@ -214,9 +214,9 @@ public class AppPresenter implements AppView.AppPresenter {
 				if(event.getNewPlace() instanceof SimcePlace){
 					currentPlace = (SimcePlace)event.getNewPlace();
 					if(currentPlace .getAplicacionId()==1){
-						view.setManualHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_simce.pdf");
+						//view.setManualHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_simce.pdf");
 					}else if(currentPlace .getAplicacionId()==2){
-						view.setManualHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_simce_tic.pdf");
+						//view.setManualHref(Window.Location.getProtocol()+"//"+Window.Location.getHost()+"/manual_simce_tic.pdf");
 					}
 				}
 			}
