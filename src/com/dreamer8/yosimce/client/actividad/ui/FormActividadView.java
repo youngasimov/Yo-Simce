@@ -50,6 +50,9 @@ public interface FormActividadView extends IsWidget {
 	void setAlumnosDS(int ds);
 	int getAlumnosDS();
 	
+	void setPcsTotales(int total);
+	int getPcsTotales();
+	
 	void setCuestionariosTotales(int total);
 	int getCuestionariosTotales();
 	void setCuestionariosEntregados(int entregados);
@@ -79,6 +82,7 @@ public interface FormActividadView extends IsWidget {
 	void setSaveVisibility(boolean visible);
 	
 	void setTotalAlumnosEnabled(boolean enabled);
+	void setPcsTotalEnabled(boolean enabled);
 	void setAlumnosDSEnabled(boolean enabled);
 	void setCuestionariosTotalesEnabled(boolean enabled);
 	void setCuestionariosEntregadosEnabled(boolean enabled);

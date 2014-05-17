@@ -266,6 +266,8 @@ public class FormActividadActivity extends SimceActivity implements
 		a.setEvaluacionProcedimientos(view.getEvaluacionGeneral());
 		a.setContingencias(contingencias);
 		
+		a.setTotalPc(view.getPcsTotales());
+		
 		if(view.isFileUploaded()){
 			DocumentoDTO d = new DocumentoDTO();
 			d.setName(view.getUploadFile());
@@ -444,6 +446,8 @@ public class FormActividadActivity extends SimceActivity implements
 		if(a.getDetalleUsoMaterialContingencia()!=null){view.setDetalleUsoMaterialContingencia(a.getDetalleUsoMaterialContingencia());}
 		if(a.getEvaluacionProcedimientos()!=null){view.setEvaluacionGeneral(a.getEvaluacionProcedimientos());}
 		view.setHyperlink(a.getDocumento());
+		
+		view.setPcsTotales(a.getTotalPc());
 		
 		//***************Simce TIC***********************
 		

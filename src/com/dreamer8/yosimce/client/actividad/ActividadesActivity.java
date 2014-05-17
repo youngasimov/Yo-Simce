@@ -68,7 +68,12 @@ public class ActividadesActivity extends SimceActivity implements
 		view.setFormularioVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getActividad"));
 		view.setInformacionVisivility(Utils.hasPermisos(getPermisos(), "GeneralService","getDetalleCurso"));
 		
+		view.setColumnWidth(9,"0px");
+		view.setColumnWidth(12,"0px");
+		view.setColumnWidth(18,"0px");
+		
 		//simce
+		/*
 		if(place.getAplicacionId()==1){
 			view.setColumnWidth(8,"0px");
 			view.setColumnWidth(11,"0px");
@@ -98,6 +103,7 @@ public class ActividadesActivity extends SimceActivity implements
 			view.setColumnWidth(9,"90px");
 			view.setColumnWidth(10,"90px");
 		}
+		*/
 		
 		
 		if(Utils.hasPermisos(eventBus,getPermisos(), "GeneralService", "getRegiones")){

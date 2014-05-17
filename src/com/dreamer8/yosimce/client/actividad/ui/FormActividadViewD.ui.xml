@@ -290,6 +290,20 @@
 					</g:HTMLPanel>
 				</g:DecoratorPanel>
 				
+				<g:DecoratorPanel  addStyleNames='{style.formPanel}'>
+					<g:HTMLPanel addStyleNames='{style.panel2}'>
+						<table class='{style.full}'>
+							<tr>
+								<th colspan='2'> Equipamiento </th>
+							</tr>
+							<tr>
+								<td><my:HelperLabel text='Total de computadores:' help='Indique la cantidad de computadores disponibles para realizar la actividad'/></td>
+								<td> <e:ValueTextBox ui:field="pcsTotalesBox" addStyleNames='{style.numberBox}'/> </td>
+							</tr>
+						</table>
+					</g:HTMLPanel>
+				</g:DecoratorPanel>
+				
 				<g:DecoratorPanel ui:field="cuestionariosPanel" addStyleNames='{style.formPanel}'>
 					<g:HTMLPanel addStyleNames='{style.panel2}'>
 						<table class='{style.full}'>

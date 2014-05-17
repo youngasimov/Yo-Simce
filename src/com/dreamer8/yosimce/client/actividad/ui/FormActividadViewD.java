@@ -121,6 +121,8 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@UiField Anchor fileLink;
 	@UiField Label fileLabel;
 	
+	@UiField TextBox pcsTotalesBox;
+	
 	private FormActividadPresenter presenter;
 	private ArrayList<TipoContingenciaDTO> tiposContingencia;
 	private ExaminadorSelectorViewD examinadorSelector;
@@ -351,6 +353,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 		fileLink.setText("");
 		fileLabel.setText("");
 		examinadorSelector.examinadorBox.setValue("");
+		
+		pcsTotalesBox.setValue("0");
+		
 		uploading = false;
 		fileUploaded = false;
 		file = null;
@@ -858,5 +863,26 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 	@Override
 	public void updateEvaluacionExaminador(EvaluacionUsuarioDTO evaluacion) {
 		examinadoresProvider.getList().set(examinadoresProvider.getList().indexOf(evaluacion), evaluacion);
+	}
+
+
+
+	@Override
+	public void setPcsTotales(int total) {
+		pcsTotalesBox.setValue(total+"");
+	}
+
+
+
+	@Override
+	public int getPcsTotales() {
+		return Integer.parseInt(pcsTotalesBox.getValue());
+	}
+
+
+
+	@Override
+	public void setPcsTotalEnabled(boolean enabled) {
+		pcsTotalesBox.setEnabled(enabled);
 	}
 }
