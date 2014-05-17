@@ -30,6 +30,7 @@ public class ActividadPreviewDTO implements Serializable {
 	private Integer alumnosTotales;
 	private Integer alumnosEvaluados;
 	private Integer alumnosSincronizados;
+	private Integer totalPc;
 	private Integer materialDefectuoso;
 	private Boolean contingencia;
 	private DocumentoDTO documento;
@@ -146,6 +147,14 @@ public class ActividadPreviewDTO implements Serializable {
 
 	public void setAlumnosSincronizados(Integer alumnosSincronizados) {
 		this.alumnosSincronizados = alumnosSincronizados;
+	}
+
+	public Integer getTotalPc() {
+		return totalPc;
+	}
+
+	public void setTotalPc(Integer totalPc) {
+		this.totalPc = totalPc;
 	}
 
 	public Integer getMaterialDefectuoso() {
