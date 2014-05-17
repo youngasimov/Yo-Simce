@@ -70,33 +70,33 @@ public class ActividadesActivity extends SimceActivity implements
 		
 		//simce
 		if(place.getAplicacionId()==1){
-			view.setColumnWidth(7,"0px");
-			view.setColumnWidth(10,"0px");
-			view.setColumnWidth(2,"70px");
-			view.setColumnWidth(16,"0px");
+			view.setColumnWidth(8,"0px");
+			view.setColumnWidth(11,"0px");
+			view.setColumnWidth(3,"70px");
 			view.setColumnWidth(17,"0px");
+			view.setColumnWidth(18,"0px");
 		}
 		//tic
 		else{
-			view.setColumnWidth(7,"90px");
-			view.setColumnWidth(10,"90px");
-			view.setColumnWidth(2,"0px");
-			view.setColumnWidth(16,"170px");
+			view.setColumnWidth(8,"90px");
+			view.setColumnWidth(11,"90px");
+			view.setColumnWidth(3,"0px");
 			view.setColumnWidth(17,"170px");
+			view.setColumnWidth(18,"170px");
 		}
 		//tic visita previa
 		if(place.getAplicacionId()==2 && place.getTipoId()==1){
-			view.setColumnWidth(6,"0px");
 			view.setColumnWidth(7,"0px");
-			view.setColumnWidth(9,"0px");
+			view.setColumnWidth(8,"0px");
 			view.setColumnWidth(10,"0px");
+			view.setColumnWidth(11,"0px");
 			
 		}
 		//todo el resto
 		else{
-			view.setColumnWidth(6,"90px");
-			view.setColumnWidth(8,"90px");
+			view.setColumnWidth(7,"90px");
 			view.setColumnWidth(9,"90px");
+			view.setColumnWidth(10,"90px");
 		}
 		
 		

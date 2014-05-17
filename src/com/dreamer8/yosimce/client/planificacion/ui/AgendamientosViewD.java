@@ -627,7 +627,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
         };
         pisaColumn.setSortable(false);
         dataGrid.addColumn(pisaColumn, new SafeHtmlHeader(SafeHtmlUtils.fromSafeConstant("C. pisa")));
-        dataGrid.setColumnWidth(rbdColumn, 100, Unit.PX);
+        dataGrid.setColumnWidth(pisaColumn, 100, Unit.PX);
         
         Column<AgendaPreviewDTO, String> establecimientoColumn =new Column<AgendaPreviewDTO, String>(new TextCell()) {
             @Override
