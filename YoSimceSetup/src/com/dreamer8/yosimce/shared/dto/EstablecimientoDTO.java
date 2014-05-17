@@ -11,6 +11,7 @@ public class EstablecimientoDTO implements Serializable{
 	private String estadoActividad;
 	private String estadoAgendamiento;
 	private String estadoMaterialSincronizado;
+	private String codigo;
 	
 	public EstablecimientoDTO() {
 		super();
@@ -63,4 +64,14 @@ public class EstablecimientoDTO implements Serializable{
 	public void setRbd(String rbd) {
 		this.rbd = rbd;
 	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	
+	
 }

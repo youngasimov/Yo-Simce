@@ -97,9 +97,13 @@ import com.dreamer8.yosimce.server.utils.StringUtils;
 public class YoSimceSetup {
 
 	public static void main(String[] args) {
+//		cargarMaterialesUsandoCodigosPisa("Material_Cajas_Cargar_Tracking.csv");
+//		cargarAgendamientoActividadesPisa("Fechas_Prueba_y_Complementaria_20140514.csv");
 		// createActividad();
 		// cargarAgendamientoPisa("agendamiento_pisa.csv");
-		cargarHistorialAgendamientoPisa("historial_agendamiento_pisa.csv");
+		// cargarHistorialAgendamientoPisa("historial_agendamiento_pisa.csv");
+		
+		cargarHistorialAgendamientoActividadPisa("historial_agendamiento_pisa.csv");
 		// List<Integer> ids = new ArrayList<Integer>();
 		// ids.add(2);
 		// ids.add(4);
@@ -3207,6 +3211,83 @@ public class YoSimceSetup {
 		}
 	}
 
+	public static void cargarAgendamientoActividadesPisa(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String line = null;
+		try {
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			ActividadDAO adao = new ActividadDAO();
+			List<Actividad> as = null;
+			ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+			ActividadEstado aeConfirmado = aedao
+					.findByNombre(ActividadEstado.CONFIRMADO);
+			Calendar calendar = Calendar.getInstance();
+			String[] fecha = null;
+			String[] hora = null;
+			// ActividadHistorial ah = null;
+			// ActividadHistorialId ahid = null;
+			// ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+			// Integer rbd = null;
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					fecha = row[5].split("-");
+					calendar.set(Integer.valueOf(fecha[2]),
+							Integer.valueOf(fecha[1]) - 1,
+							Integer.valueOf(fecha[0]), 9, 0, 0);
+					as = adao
+							.findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(
+									1, Integer.valueOf(row[0]), 4);
+					for (Actividad a : as) {
+						a.setFechaInicio(calendar.getTime());
+						a.setActividadEstado(aeConfirmado);
+						adao.update(a);
+					}
+					if(!row[6].equals("-")){
+						fecha = row[6].split("-");
+						calendar.set(Integer.valueOf(fecha[2]),
+								Integer.valueOf(fecha[1]) - 1,
+								Integer.valueOf(fecha[0]), 9, 0, 0);
+						as = adao
+								.findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(
+										1, Integer.valueOf(row[0]), 6);
+						for (Actividad a : as) {
+							a.setFechaInicio(calendar.getTime());
+							a.setActividadEstado(aeConfirmado);
+							adao.update(a);
+						}
+					}
+				}
+				rowCounter++;
+			}
+
+			s.getTransaction().commit();
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		}
+	}
+
 	public static void cargarHistorialAgendamientoPisa(String doc) {
 		DataInputStream in;
 		FileInputStream fstream;
@@ -3309,6 +3390,269 @@ public class YoSimceSetup {
 			e.printStackTrace();
 			HibernateUtil.rollback(s);
 			System.out.println(line);
+		}
+	}
+	
+	public static void cargarHistorialAgendamientoActividadPisa(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String line = null;
+		try {
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			ActividadDAO adao = new ActividadDAO();
+			List<Actividad> as = null;
+			ActividadEstadoDAO aedao = new ActividadEstadoDAO();
+			ActividadEstado ae = null;
+			ActividadEstado aeSinInfo = aedao
+					.findByNombre(ActividadEstado.SIN_INFORMACION);
+			Calendar calendar = Calendar.getInstance();
+			String[] fecha = null;
+			String[] hora = null;
+			// ActividadHistorial ah = null;
+			// ActividadHistorialId ahid = null;
+			// ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+			// Integer rbd = null;
+			int localCount = 0;
+			ActividadHistorial ah = null;
+			ActividadHistorialId ahid = null;
+			ActividadHistorialDAO ahdao = new ActividadHistorialDAO();
+			EstablecimientoDAO edao = new EstablecimientoDAO();
+			Establecimiento e = null;
+			Integer idRegion = null;
+			Integer idModificador = null;
+
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					if (localCount == 0) {
+						e = edao.getById(Integer.valueOf(row[0]));
+						idRegion = e.getComuna().getProvincia().getRegion()
+								.getId();
+						if (idRegion == 13) {
+							idModificador = 17086715;
+						} else if (idRegion < 5) {
+							idModificador = 6978902;
+						} else {
+							idModificador = 9917359;
+						}
+					}
+
+					fecha = row[1].split("-");
+					hora = row[2].split(":");
+					calendar.set(Integer.valueOf(fecha[2]),
+							Integer.valueOf(fecha[1]) - 1,
+							Integer.valueOf(fecha[0]),
+							Integer.valueOf(hora[0]), Integer.valueOf(hora[1]),
+							0);
+					localCount++;
+					if (Integer.valueOf(row[3]) > localCount) {
+						ae = aeSinInfo;
+					} else {
+						ae = null;
+						localCount = 0;
+					}
+					as = adao
+							.findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(
+									1, Integer.valueOf(row[0]), 4);
+					for (Actividad a : as) {
+						if(a.getFechaInicio() == null){
+							break;
+						}
+						ahid = new ActividadHistorialId();
+						ahid.setActividadId(a.getId());
+						ahid.setFecha(calendar.getTime());
+						ah = new ActividadHistorial();
+						ah.setId(ahid);
+						ah.setActividadEstado((ae == null) ? a
+								.getActividadEstado() : ae);
+						ah.setFechaInicio((ae == null) ? a.getFechaInicio()
+								: null);
+						ah.setFechaTermino(a.getFechaTermino());
+						ah.setModificadorId(idModificador);
+						ah.setComentario(ah.getActividadEstado().getNombre());
+						ahdao.save(ah);
+					}
+					as = adao
+							.findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(
+									1, Integer.valueOf(row[0]), 6);
+					for (Actividad a : as) {
+						if(a.getFechaInicio() == null){
+							break;
+						}
+						ahid = new ActividadHistorialId();
+						ahid.setActividadId(a.getId());
+						ahid.setFecha(calendar.getTime());
+						ah = new ActividadHistorial();
+						ah.setId(ahid);
+						ah.setActividadEstado((ae == null) ? a
+								.getActividadEstado() : ae);
+						ah.setFechaInicio((ae == null) ? a.getFechaInicio()
+								: null);
+						ah.setFechaTermino(a.getFechaTermino());
+						ah.setModificadorId(idModificador);
+						ah.setComentario(ah.getActividadEstado().getNombre());
+						ahdao.save(ah);
+					}
+				}
+				rowCounter++;
+			}
+
+			s.getTransaction().commit();
+			System.out.println("Ingresados " + rowCounter + " materiales.");
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		}
+	}
+
+	public static void cargarMaterialesUsandoCodigosPisa(String doc) {
+		DataInputStream in;
+		FileInputStream fstream;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+
+		String line = "";
+		try {
+			Integer idAplicacion = 1;
+			Integer idNivel = 1;
+			fstream = new FileInputStream(doc);
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			int rowCounter = 0;
+			String[] row;
+			s.beginTransaction();
+			Actividad a = null;
+			ActividadDAO actividadDAO = new ActividadDAO();
+
+			MaterialDAO mdao = new MaterialDAO();
+			Material m = null;
+			MaterialTipoDAO mtdao = new MaterialTipoDAO();
+			MaterialTipo caja = mtdao.findByNombre(MaterialTipo.CAJA_CURSO_DIA);
+			MaterialTipo complementario = mtdao
+					.findByNombre(MaterialTipo.COMPLEMENTARIO);
+			MaterialXActividadDAO mxadao = new MaterialXActividadDAO();
+			MaterialXActividad mxa = null;
+			MaterialXActividadId mxaid = null;
+			EstablecimientoDAO edao = new EstablecimientoDAO();
+
+			Establecimiento e = null;
+			CursoDAO cdao = new CursoDAO();
+
+			Curso curso = null;
+			Co co = null;
+			CoDAO codao = new CoDAO();
+
+			Integer materialNuevo = 0;
+			Integer idActividadTipo = null;
+			Integer idCentro = null;
+			while ((line = br.readLine()) != null) {
+				row = line.split(";");
+				if (rowCounter != 0) {
+					a = null;
+					idActividadTipo = (row[1].equals("Pruebas")) ? 4 : 3;
+					a = actividadDAO
+							.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+									idAplicacion, idNivel, idActividadTipo,
+									Integer.valueOf(row[2]), "Grupo 1", null);
+
+					if (a == null) {
+						a = actividadDAO
+								.findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
+										idAplicacion, 2, idActividadTipo,
+										Integer.valueOf(row[2]), "Grupo 1",
+										null);
+						if (a == null) {
+							System.err.println("El curso " + row[2] + " del "
+									+ row[3] + " no tiene actividad " + line);
+
+							e = edao.getById(Integer.valueOf(row[2]));
+							if (e == null) {
+								throw new NullPointerException(
+										"No existe el establecimiento de rbd "
+												+ row[2] + " " + line);
+							} else {
+								throw new NullPointerException(
+										"No existe el actividad para el rbd "
+												+ row[2] + " " + line);
+							}
+
+						}
+					}
+					m = new Material();
+					m.setCodigo(row[0].replaceAll(" ", ""));
+					m.setMaterialTipo((idActividadTipo == 3) ? complementario
+							: caja);
+					m.setContingencia(false);
+					// co = codao
+					// .findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+					// idAplicacion, idNivel,
+					// Integer.valueOf(row[3]));
+					// co = codao
+					// .findByIdAplicacionANDIdNivelANDIdEstablecimiento(
+					// idAplicacion, idNivel,
+					// Integer.valueOf(row[2]));
+
+					if (Integer.valueOf(row[6]) == 13) {
+						idCentro = 1;
+					} else if (Integer.valueOf(row[6]) == 4) {
+						idCentro = 2;
+					} else {
+						idCentro = 3;
+					}
+
+					co = codao.getById(idCentro);
+
+					if (co == null) {
+						System.err.println(line + " no se encontró centro");
+					}
+					m.setCo(co);
+					mdao.save(m);
+					mxaid = new MaterialXActividadId();
+					mxaid.setActividadId(a.getId());
+					mxaid.setMaterialId(m.getId());
+					mxa = new MaterialXActividad();
+					mxa.setId(mxaid);
+					mxadao.save(mxa);
+					materialNuevo++;
+				}
+				rowCounter++;
+				if (rowCounter % 50 == 0) {
+					s.flush();
+				}
+			}
+			System.out.println("Ingresados " + materialNuevo + " materiales.");
+			s.getTransaction().commit();
+
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+			System.err.println(ex);
+			HibernateUtil.rollback(s);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			System.err.println(e);
+			HibernateUtil.rollback(s);
+			System.err.println(line);
+			e.printStackTrace();
 		}
 	}
 }

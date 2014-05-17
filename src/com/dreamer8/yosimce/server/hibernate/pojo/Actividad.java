@@ -47,6 +47,7 @@ public class Actividad implements java.io.Serializable {
 	private Integer totalAlumnosPresentes;
 	private Integer totalAlumnosAusentes;
 	private Integer totalAlumnosNee;
+	private Integer totalPc;
 	private String detalleUsoMaterialContingencia;
 	private boolean materialContingencia;
 	private Actividad actividadBase;
@@ -343,6 +344,14 @@ public class Actividad implements java.io.Serializable {
 		this.totalAlumnosNee = totalAlumnosNee;
 	}
 
+	public Integer getTotalPc() {
+		return totalPc;
+	}
+
+	public void setTotalPc(Integer totalPc) {
+		this.totalPc = totalPc;
+	}
+
 	/**
 	 * @return the detalleUsoMaterialContingencia
 	 */
@@ -543,6 +552,7 @@ public class Actividad implements java.io.Serializable {
 		}
 		adto.setAlumnosAusentes(totalAlumnosAusentes);
 		adto.setAlumnosDs(totalAlumnosNee);
+		adto.setTotalPc(totalPc);
 		adto.setEvaluacionProcedimientos(notaProceso);
 		adto.setMaterialContingencia(materialContingencia);
 		adto.setDetalleUsoMaterialContingencia(detalleUsoMaterialContingencia);

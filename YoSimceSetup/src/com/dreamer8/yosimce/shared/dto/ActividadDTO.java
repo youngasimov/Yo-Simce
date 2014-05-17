@@ -25,6 +25,7 @@ public class ActividadDTO implements Serializable {
 	private Integer totalCuestionarios;
 	private Integer cuestionariosEntregados;
 	private Integer cuestionariosRecibidos;
+	private Integer totalPc;
 	private Boolean materialContingencia;
 	private String detalleUsoMaterialContingencia;
 	private Integer evaluacionProcedimientos;
@@ -224,6 +225,14 @@ public class ActividadDTO implements Serializable {
 	 */
 	public void setIdCurso(Integer idCurso) {
 		this.idCurso = idCurso;
+	}
+
+	public Integer getTotalPc() {
+		return totalPc;
+	}
+
+	public void setTotalPc(Integer totalPc) {
+		this.totalPc = totalPc;
 	}
 
 }

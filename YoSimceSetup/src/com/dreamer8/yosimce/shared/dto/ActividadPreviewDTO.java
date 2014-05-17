@@ -9,6 +9,7 @@ public class ActividadPreviewDTO implements Serializable {
 	private String nombreEstablecimiento;
 	private String estadoAgenda;
 	private String rbd;
+	private String codigoPisa;
 	private String tipoEstablecimiento;
 	private String curso;
 	private String region;
@@ -241,6 +242,14 @@ public class ActividadPreviewDTO implements Serializable {
 	public void setDetalleUsoMaterialContingecia(
 			String detalleUsoMaterialContingecia) {
 		this.detalleUsoMaterialContingecia = detalleUsoMaterialContingecia;
+	}
+
+	public String getCodigoPisa() {
+		return codigoPisa;
+	}
+
+	public void setCodigoPisa(String codigoPisa) {
+		this.codigoPisa = codigoPisa;
 	}
 
 }
