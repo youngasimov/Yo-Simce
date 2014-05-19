@@ -36,28 +36,36 @@ public class ActividadHistorialId implements java.io.Serializable {
 		this.fecha = fecha;
 	}
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof ActividadHistorialId))
-			return false;
-		ActividadHistorialId castOther = (ActividadHistorialId) other;
-
-		return (this.getActividadId() == castOther.getActividadId())
-				&& ((this.getFecha() == castOther.getFecha()) || (this
-						.getFecha() != null && castOther.getFecha() != null && this
-						.getFecha().equals(castOther.getFecha())));
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((actividadId == null) ? 0 : actividadId.hashCode());
+		result = prime * result + ((fecha == null) ? 0 : fecha.hashCode());
+		return result;
 	}
 
-	public int hashCode() {
-		Integer result = 17;
-
-		result = 37 * result + this.getActividadId();
-		result = 37 * result
-				+ (getFecha() == null ? 0 : this.getFecha().hashCode());
-		return result;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ActividadHistorialId other = (ActividadHistorialId) obj;
+		if (actividadId == null) {
+			if (other.actividadId != null)
+				return false;
+		} else if (!actividadId.equals(other.actividadId))
+			return false;
+		if (fecha == null) {
+			if (other.fecha != null)
+				return false;
+		} else if (!fecha.equals(other.fecha))
+			return false;
+		return true;
 	}
 
 }

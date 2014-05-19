@@ -218,7 +218,7 @@ public class StringUtils {
 		if (noms.length < 2) {
 			return nombres;
 		}
-		String segNom = null;
+		String segNom = "";
 		for (int i = 1; i < noms.length; i++) {
 			if (noms[i] != null && !noms[i].isEmpty()) {
 				segNom = noms[i];

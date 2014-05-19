@@ -81,7 +81,7 @@ public class PermisoDAO extends AbstractHibernateDAO<Permiso, Integer> {
 		ArrayList<Integer> tipos = null;
 		for (Object[] o : os) {
 			currId = (Integer) o[0];
-			if (currId != prevId) {
+			if (currId != null && !currId.equals(prevId)) {
 				prevId = currId;
 				pdto = new PermisoDTO();
 				pdto.setIdPermiso(currId);

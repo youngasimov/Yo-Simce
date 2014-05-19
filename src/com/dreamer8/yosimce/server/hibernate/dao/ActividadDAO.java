@@ -52,19 +52,13 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		setSession(s);
 	}
 
-	public List<Actividad> findByIdAplicacionANDIdNivelANDIdActividadTipo(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
+	public List<Actividad> findByIdAplicacionANDIdNivelANDIdActividadTipo(Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
 
 		List<Actividad> as = null;
 		Session s = getSession();
-		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
+		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
 				+ " WHERE (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
@@ -79,24 +73,16 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 	 * @param idEstablecimiento
 	 * @return
 	 */
-	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimiento(Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idEstablecimiento) {
 
 		Actividad a = null;
 		Session s = getSession();
-		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " WHERE c.establecimiento_id="
-				+ SecurityFilter.escapeString(idEstablecimiento)
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id" + " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id=" + SecurityFilter.escapeString(idEstablecimiento)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
 
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
@@ -104,47 +90,31 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
-	public List<Actividad> findByIdAplicacionANDIdNivelANDIdEstablecimiento(
-			Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
+	public List<Actividad> findByIdAplicacionANDIdNivelANDIdEstablecimiento(Integer idAplicacion, Integer idNivel, Integer idEstablecimiento) {
 
 		List<Actividad> as = null;
 		Session s = getSession();
-		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id )"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " WHERE c.establecimiento_id="
-				+ SecurityFilter.escapeString(idEstablecimiento)
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id )" + " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " WHERE c.establecimiento_id=" + SecurityFilter.escapeString(idEstablecimiento)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;
 	}
 
-	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idEstablecimiento, String nombreCurso, Integer dia) {
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDNombreCursoANDDia(Integer idAplicacion, Integer idNivel,
+			Integer idActividadTipo, Integer idEstablecimiento, String nombreCurso, Integer dia) {
 
 		Actividad a = null;
 		Session s = getSession();
-		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " WHERE c.establecimiento_id="
-				+ SecurityFilter.escapeString(idEstablecimiento)
-				+ " AND c.nombre='" + SecurityFilter.escapeString(nombreCurso)
-				+ "'"
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id" + " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id=" + SecurityFilter.escapeString(idEstablecimiento) + " AND c.nombre='"
+				+ SecurityFilter.escapeString(nombreCurso) + "'"
 		// + " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 		;
 		// if (dia != null) {
@@ -156,26 +126,17 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
-	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDCodigoCursoANDDia(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idEstablecimiento, String nombreCurso, Integer dia) {
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdEstablecimientoANDCodigoCursoANDDia(Integer idAplicacion, Integer idNivel,
+			Integer idActividadTipo, Integer idEstablecimiento, String nombreCurso, Integer dia) {
 
 		Actividad a = null;
 		Session s = getSession();
-		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " WHERE c.establecimiento_id="
-				+ SecurityFilter.escapeString(idEstablecimiento)
-				+ " AND c.codigo='" + SecurityFilter.escapeString(nombreCurso)
-				+ "'"
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id" + " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id=" + SecurityFilter.escapeString(idEstablecimiento) + " AND c.codigo='"
+				+ SecurityFilter.escapeString(nombreCurso) + "'"
 		// + " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
 		;
 		if (dia != null) {
@@ -187,22 +148,14 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
-	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idCurso) {
+	public Actividad findByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(Integer idAplicacion, Integer idNivel, Integer idActividadTipo, Integer idCurso) {
 
 		Actividad a = null;
 		Session s = getSession();
-		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
-				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
-				+ SecurityFilter.escapeString(idCurso) + ")";
+		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id=" + SecurityFilter.escapeString(idCurso) + ")";
 		// +
 		// " WHERE (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
 
@@ -211,10 +164,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
-	public List<AgendaPreviewDTO> findAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idUsuario, String usuarioTipo, Integer offset,
-			Integer lenght, Map<String, String> filtros) {
+	public List<AgendaPreviewDTO> findAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(Integer idAplicacion, Integer idNivel,
+			Integer idActividadTipo, Integer idUsuario, String usuarioTipo, Integer offset, Integer lenght, Map<String, String> filtros) {
 
 		List<AgendaPreviewDTO> apdtos = new ArrayList<AgendaPreviewDTO>();
 		Session s = getSession();
@@ -224,8 +175,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "u.email,u.nombres,u.apellido_paterno,u.apellido_materno,ae.id as act_est_id,ae.nombre as act_est_nombre,"
 				+ "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
 				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
-				+ "a.total_alumnos,a.contacto_nombre, a.contacto_telefono, a.contacto_email,e.codigo as es_cod"
-				+ " FROM APLICACION_x_NIVEL axn "
+				+ "a.total_alumnos,a.contacto_nombre, a.contacto_telefono, a.contacto_email,e.codigo as es_cod" + " FROM APLICACION_x_NIVEL axn "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
@@ -256,34 +206,24 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
 				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
 		;
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -298,28 +238,19 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						where += " AND ";
 					}
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
-						where += " a.fecha_inicio >='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 00:00:00'";
+						where += " a.fecha_inicio >='" + SecurityFilter.escapeString(filtros.get(key)) + " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio <='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 23:59:59'";
+						where += " a.fecha_inicio <='" + SecurityFilter.escapeString(filtros.get(key)) + " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
-						String[] estados = filtros.get(key).split(
-								PlanificacionService.SEPARATOR);
+						String[] estados = filtros.get(key).split(PlanificacionService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -406,54 +337,35 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return apdtos;
 	}
 
-	public Integer countAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+	public Integer countAgendasByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
 		Session s = getSession();
-		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
+		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
-				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
-				+ " JOIN REGION r ON p.region_id=r.id";
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id" + " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id" + " JOIN REGION r ON p.region_id=r.id";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -469,28 +381,19 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						where += " AND ";
 					}
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
-						where += " a.fecha_inicio >='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 00:00:00'";
+						where += " a.fecha_inicio >='" + SecurityFilter.escapeString(filtros.get(key)) + " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio <='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 23:59:59'";
+						where += " a.fecha_inicio <='" + SecurityFilter.escapeString(filtros.get(key)) + " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
-						String[] estados = filtros.get(key).split(
-								PlanificacionService.SEPARATOR);
+						String[] estados = filtros.get(key).split(PlanificacionService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -509,10 +412,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return result;
 	}
 
-	public List<String> findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idUsuario, String usuarioTipo, Integer offset,
-			Integer lenght, Map<String, String> filtros) {
+	public List<String> findAgendasCsvByIdAplicacionANDIdNivelANDFiltros(Integer idAplicacion, Integer idNivel, Integer idActividadTipo, Integer idUsuario,
+			String usuarioTipo, Integer offset, Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
 		Session s = getSession();
@@ -564,39 +465,28 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				// + SecurityFilter.escapeString(idAplicacion)
 				// + " AND axn.nivel_id="
 				// + SecurityFilter.escapeString(idNivel)
-				+ " AND apd1_axnxat.actividad_tipo_id=2"
-				+ ")"
+				+ " AND apd1_axnxat.actividad_tipo_id=2" + ")"
 				+ " JOIN ACTIVIDAD apd1 ON apd1_axnxat.id=apd1.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id=apd1.curso_id"
 				+ " JOIN ACTIVIDAD_ESTADO apd1_est ON apd1.actividad_estado_id=apd1_est.id";
 
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -604,9 +494,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ SecurityFilter.escapeString(idUsuario) + ")";
 		}
 
-		String where = " axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel);
+		String where = " axn.aplicacion_id=" + SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel);
 
 		if (filtros != null && !filtros.isEmpty()) {
 
@@ -621,25 +509,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						} else {
 							where += " apd1.fecha_inicio >='";
 						}
-						where += SecurityFilter.escapeString(filtros.get(key))
-								+ " 00:00:00'";
+						where += SecurityFilter.escapeString(filtros.get(key)) + " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
 						if (idActividadTipo == 1) {
 							where += " a.fecha_inicio <='";
 						} else {
 							where += " apd1.fecha_inicio <='";
 						}
-						where += SecurityFilter.escapeString(filtros.get(key))
-								+ " 23:59:59'";
+						where += SecurityFilter.escapeString(filtros.get(key)) + " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
-						String[] estados = filtros.get(key).split(
-								PlanificacionService.SEPARATOR);
+						String[] estados = filtros.get(key).split(PlanificacionService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
@@ -648,8 +531,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 								} else {
 									where += "apd1.actividad_estado_id=";
 								}
-								where += SecurityFilter
-										.escapeString(estados[i]);
+								where += SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -686,80 +568,54 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ "fecha_aplicación;estado_agendamiento_aplicación;comentario_aplicación;"
 					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto;examinador;supervisor");
 			for (Object[] o : os) {
-				linea = Integer.toString((Integer) o[1]) + ";"
-						+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
-						+ ((String) o[4]) + ";" + ((String) o[6]) + ";"
+				linea = Integer.toString((Integer) o[1]) + ";" + ((String) o[2]) + ";" + ((String) o[3]) + ";" + ((String) o[4]) + ";" + ((String) o[6]) + ";"
 						+ (Integer) o[22];
-				contacto = ";" + ((String) o[11]) + ";" + ((String) o[14])
-						+ ";" + ((String) o[12]) + ";" + ((String) o[13]);
+				contacto = ";" + ((String) o[11]) + ";" + ((String) o[14]) + ";" + ((String) o[12]) + ";" + ((String) o[13]);
 
-				examinador = ";" + ((String) o[16]) + " " + ((String) o[17])
-						+ " " + ((String) o[18]);
+				examinador = ";" + ((String) o[16]) + " " + ((String) o[17]) + " " + ((String) o[18]);
 
-				supervisor = ";" + ((String) o[19]) + " " + ((String) o[20])
-						+ " " + ((String) o[21]);
+				supervisor = ";" + ((String) o[19]) + " " + ((String) o[20]) + " " + ((String) o[21]);
 
-				visitaPrevia = ";" + ((Date) o[8]) + ";" + ((String) o[10])
-						+ ";" + ((String) o[9]);
+				visitaPrevia = ";" + ((Date) o[8]) + ";" + ((String) o[10]) + ";" + ((String) o[9]);
 
-				aplic = ";" + ((Date) o[23]) + ";" + ((String) o[24]) + ";"
-						+ ((String) o[25]);
+				aplic = ";" + ((Date) o[23]) + ";" + ((String) o[24]) + ";" + ((String) o[25]);
 
-				linea += visitaPrevia + aplic + contacto + examinador
-						+ supervisor;
+				linea += visitaPrevia + aplic + contacto + examinador + supervisor;
 				csv.add(linea);
 			}
 		}
 		return csv;
 	}
 
-	public Integer countAgendasCsvByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idUsuario,
-			String usuarioTipo, Map<String, String> filtros) {
+	public Integer countAgendasCsvByIdAplicacionANDIdNivelANDFiltros(Integer idAplicacion, Integer idNivel, Integer idUsuario, String usuarioTipo,
+			Map<String, String> filtros) {
 
 		Integer result = null;
 		Session s = getSession();
-		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id"
-				+ ")"
+		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id" + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
-				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
-				+ " JOIN REGION r ON p.region_id=r.id";
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id" + " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id" + " JOIN REGION r ON p.region_id=r.id";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -775,28 +631,19 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						where += " AND ";
 					}
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
-						where += " a.fecha_inicio >='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 00:00:00'";
+						where += " a.fecha_inicio >='" + SecurityFilter.escapeString(filtros.get(key)) + " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio <='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 23:59:59'";
+						where += " a.fecha_inicio <='" + SecurityFilter.escapeString(filtros.get(key)) + " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
-						String[] estados = filtros.get(key).split(
-								PlanificacionService.SEPARATOR);
+						String[] estados = filtros.get(key).split(PlanificacionService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -815,24 +662,18 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return result;
 	}
 
-	public List<String> findAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idUsuario, String usuarioTipo, Integer offset,
-			Integer lenght, Map<String, String> filtros) {
+	public List<String> findAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+			Integer idUsuario, String usuarioTipo, Integer offset, Integer lenght, Map<String, String> filtros) {
 
 		List<String> csv = new ArrayList<String>();
 		Session s = getSession();
-		String query = "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre,"
-				+ "et.nombre as est_tipo_nombre,"
+		String query = "SELECT DISTINCT c.id as curso_id,e.id as establecimiento_id,e.nombre as establecimiento_nombre," + "et.nombre as est_tipo_nombre,"
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,"
 				+ "at.nombre as act_tipo_nombre,a.fecha_inicio,a.comentario,ae.nombre as act_est_nombre, "
-				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as contacto_cargo,"
-				+ "a.aplicacion_x_nivel_x_actividad_tipo_id,"
+				+ "a.contacto_nombre,a.contacto_telefono,a.contacto_email,cc.nombre as contacto_cargo," + "a.aplicacion_x_nivel_x_actividad_tipo_id,"
 				+ "u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
-				+ "u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
-				+ "a.total_alumnos, c.nombre"
-				+ " FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ "u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup," + "a.total_alumnos, c.nombre"
+				+ " FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
 				+ SecurityFilter.escapeString(idAplicacion)
 				+ " AND axn.nivel_id="
 				+ SecurityFilter.escapeString(idNivel)
@@ -864,34 +705,24 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
 				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
 		;
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -906,28 +737,19 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						where += " AND ";
 					}
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
-						where += " a.fecha_inicio >='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 00:00:00'";
+						where += " a.fecha_inicio >='" + SecurityFilter.escapeString(filtros.get(key)) + " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio <='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 23:59:59'";
+						where += " a.fecha_inicio <='" + SecurityFilter.escapeString(filtros.get(key)) + " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
-						String[] estados = filtros.get(key).split(
-								PlanificacionService.SEPARATOR);
+						String[] estados = filtros.get(key).split(PlanificacionService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -959,74 +781,48 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 					+ "tipo_actividad;fecha_actividad;estado_agendamiento;comentario_agendamiento;"
 					+ "nombre_contacto;cargo_contacto;teléfono_contacto;email_cotacto;examinador;supervisor");
 			for (Object[] o : os) {
-				linea = Integer.toString((Integer) o[1]) + ";"
-						+ ((String) o[2]) + ";" + ((String) o[3]) + ";"
-						+ ((String) o[23]) + ";" + ((String) o[4]) + ";"
+				linea = Integer.toString((Integer) o[1]) + ";" + ((String) o[2]) + ";" + ((String) o[3]) + ";" + ((String) o[23]) + ";" + ((String) o[4]) + ";"
 						+ ((String) o[6]) + ";" + (Integer) o[22];
-				contacto = ";" + ((String) o[11]) + ";" + ((String) o[14])
-						+ ";" + ((String) o[12]) + ";" + ((String) o[13]);
-				examinador = ";" + ((String) o[16]) + " " + ((String) o[17])
-						+ " " + ((String) o[18]);
-				supervisor = ";" + ((String) o[19]) + " " + ((String) o[20])
-						+ " " + ((String) o[21]);
+				contacto = ";" + ((String) o[11]) + ";" + ((String) o[14]) + ";" + ((String) o[12]) + ";" + ((String) o[13]);
+				examinador = ";" + ((String) o[16]) + " " + ((String) o[17]) + " " + ((String) o[18]);
+				supervisor = ";" + ((String) o[19]) + " " + ((String) o[20]) + " " + ((String) o[21]);
 
-				linea += ";" + ((String) o[7]) + ";" + ((Date) o[8]) + ";"
-						+ ((String) o[10]) + ";" + ((String) o[9]) + contacto
-						+ examinador + supervisor;
+				linea += ";" + ((String) o[7]) + ";" + ((Date) o[8]) + ";" + ((String) o[10]) + ";" + ((String) o[9]) + contacto + examinador + supervisor;
 				csv.add(linea);
 			}
 		}
 		return csv;
 	}
 
-	public Integer countAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+	public Integer countAgendasCsvSimceNormalByIdAplicacionANDIdNivelANDFiltros(Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
 		Session s = getSession();
-		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
+		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
-				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
-				+ " JOIN REGION r ON p.region_id=r.id";
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id" + " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id" + " JOIN REGION r ON p.region_id=r.id";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -1042,28 +838,19 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						where += " AND ";
 					}
 					if (key.equals(PlanificacionService.FKEY_DESDE)) {
-						where += " a.fecha_inicio >='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 00:00:00'";
+						where += " a.fecha_inicio >='" + SecurityFilter.escapeString(filtros.get(key)) + " 00:00:00'";
 					} else if (key.equals(PlanificacionService.FKEY_HASTA)) {
-						where += " a.fecha_inicio <='"
-								+ SecurityFilter.escapeString(filtros.get(key))
-								+ " 23:59:59'";
+						where += " a.fecha_inicio <='" + SecurityFilter.escapeString(filtros.get(key)) + " 23:59:59'";
 					} else if (key.equals(PlanificacionService.FKEY_COMUNA)) {
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_REGION)) {
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(PlanificacionService.FKEY_ESTADOS)) {
-						String[] estados = filtros.get(key).split(
-								PlanificacionService.SEPARATOR);
+						String[] estados = filtros.get(key).split(PlanificacionService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -1082,10 +869,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return result;
 	}
 
-	public List<ActividadPreviewDTO> findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
-			Integer idUsuario, String usuarioTipo, Integer offset,
-			Integer lenght, Map<String, String> filtros, String baseURL) {
+	public List<ActividadPreviewDTO> findActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(Integer idAplicacion, Integer idNivel,
+			Integer idActividadTipo, Integer idUsuario, String usuarioTipo, Integer offset, Integer lenght, Map<String, String> filtros, String baseURL) {
 
 		List<ActividadPreviewDTO> apdtos = new ArrayList<ActividadPreviewDTO>();
 		Session s = getSession();
@@ -1121,28 +906,21 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		// }
 		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
 		if (idAplicacion == 1) {
-			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo as es_cod";
+			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo as es_cod,a.total_pc";
 		}
 		// if (idAplicacion == 2) {
 		// query += ",act_sinc.total_sinc,cuest_sinc.total_cuest_sinc";
 		// }
-		query += " FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
+		query += " FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id"
-				+ " LEFT JOIN ACTIVIDAD_x_INCIDENCIA axi ON a.id=axi.actividad_id"
+				+ " LEFT JOIN ACTIVIDAD_ESTADO ae ON a.actividad_estado_id=ae.id" + " LEFT JOIN ACTIVIDAD_x_INCIDENCIA axi ON a.id=axi.actividad_id"
 				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD axa_def ON a.id=axa_def.actividad_id AND axa_def.alumno_id IS NULL"
 				+ " LEFT JOIN ALUMNO_x_ACTIVIDAD_x_DOCUMENTO axaxd_def ON axa_def.id=axaxd_def.alumno_x_actividad_id"
 				+ " LEFT JOIN ACTIVIDAD_x_DOCUMENTO_TIPO axdt_cuest ON a.id=axdt_cuest.actividad_id"
 				+ " LEFT JOIN DOCUMENTO_TIPO dt_cuest ON axdt_cuest.documento_tipo_id=dt_cuest.id AND dt_cuest.nombre='"
-				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE)
-				+ "'";
+				+ SecurityFilter.escapeString(DocumentoTipo.CUESTIONARIO_PADRE) + "'";
 		//
 		// if (idAplicacion == 2) {
 		// query +=
@@ -1176,21 +954,14 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		query += " LEFT JOIN (SELECT axd_form.actividad_id,MAX(arc_form.id) as archivo_id FROM ACTIVIDAD_x_DOCUMENTO axd_form"
 				+ " LEFT JOIN DOCUMENTO d_form ON axd_form.documento_id=d_form.id"
 				+ " LEFT JOIN DOCUMENTO_TIPO dt_form ON d_form.documento_tipo_id=dt_form.id AND dt_form.nombre='"
-				+ SecurityFilter
-						.escapeString(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION)
-				+ "'"
+				+ SecurityFilter.escapeString(DocumentoTipo.FORMULARIO_CONTROL_DE_APLICACION) + "'"
 				+ " LEFT JOIN ARCHIVO arc_form ON d_form.archivo_id=arc_form.id GROUP BY axd_form.actividad_id) axd_form ON a.id=axd_form.actividad_id"
 				+ " LEFT JOIN ARCHIVO arc_form ON axd_form.archivo_id=arc_form.id"
 
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
 				+ " LEFT JOIN APLICACION_x_ESTABLECIMIENTO axe ON (e.id=axe.establecimiento_id AND axe.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ ")"
-				+ " LEFT JOIN ESTABLECIMIENTO_TIPO et ON axe.establecimiento_tipo_id=et.id"
-				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
-				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
-				+ " JOIN REGION r ON p.region_id=r.id";
+				+ SecurityFilter.escapeString(idAplicacion) + ")" + " LEFT JOIN ESTABLECIMIENTO_TIPO et ON axe.establecimiento_tipo_id=et.id"
+				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id" + " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id" + " JOIN REGION r ON p.region_id=r.id";
 		// if (idAplicacion == 2) {
 		// query +=
 		// " LEFT JOIN USUARIO_x_ACTIVIDAD uxa_ex ON (a.id=uxa_ex.actividad_id AND (uxa_ex.asistencia != false OR uxa_ex.asistencia IS NULL) AND uxa_ex.usuario_seleccion_id IS NOT NULL AND (uxa_ex.usuario_tipo_id=11 OR uxa_ex.usuario_tipo_id=12 OR uxa_ex.usuario_tipo_id=13))"
@@ -1214,34 +985,24 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		// " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
 		// + " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
 		// }
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -1257,26 +1018,21 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						if (!where.equals("")) {
 							where += " AND ";
 						}
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_REGION)) {
 						if (!where.equals("")) {
 							where += " AND ";
 						}
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_ESTADOS)) {
 						if (!where.equals("")) {
 							where += " AND ";
 						}
-						String[] estados = filtros.get(key).split(
-								ActividadService.SEPARATOR);
+						String[] estados = filtros.get(key).split(ActividadService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -1299,26 +1055,22 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						// }
 						// // opciones += " limitante=true";
 						// opciones += " false";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
 						opciones += " a.material_contingencia=true";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
 						opciones += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
 						opciones += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0  AND a.total_alumnos_presentes!=a.total_alumnos)";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
@@ -1351,7 +1103,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
 
 		if (idAplicacion == 1) {
-			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo";
+			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo,a.total_pc";
 		}
 
 		// if (idAplicacion == 2) {
@@ -1378,13 +1130,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setTipoEstablecimiento((String) o[5]);
 			apdto.setRegion((String) o[6]);
 			apdto.setComuna((String) o[8]);
-			apdto.setCuestionariosPadresApoderadosEntregados((o[12] == null) ? 0
-					: (Integer) o[12]);
-			apdto.setCuestionariosPadresApoderadosRecibidos((o[13] == null) ? 0
-					: (Integer) o[13]);
+			apdto.setCuestionariosPadresApoderadosEntregados((o[12] == null) ? 0 : (Integer) o[12]);
+			apdto.setCuestionariosPadresApoderadosRecibidos((o[13] == null) ? 0 : (Integer) o[13]);
 			apdto.setAlumnosTotales((o[9] == null) ? 0 : (Integer) o[9]);
-			apdto.setAlumnosEvaluados((o[10] == null) ? 0 : (apdto
-					.getAlumnosTotales() - (Integer) o[10]));
+			apdto.setAlumnosEvaluados((o[10] == null) ? 0 : (apdto.getAlumnosTotales() - (Integer) o[10]));
 			// if (idAplicacion == 2) {
 			// apdto.setAlumnosSincronizados((o[36] == null) ? 0
 			// : ((BigInteger) o[36]).intValue());
@@ -1398,15 +1147,12 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				ddto = new DocumentoDTO();
 				ddto.setId((Integer) o[14]);
 				ddto.setName((o[15] == null) ? "" : (String) o[15]);
-				ddto.setUrl(Archivo.buildDownloadURL(baseURL, ddto.getId(),
-						ddto.getName()));
+				ddto.setUrl(Archivo.buildDownloadURL(baseURL, ddto.getId(), ddto.getName()));
 				apdto.setDocumento(ddto);
 			}
-			apdto.setMaterialDefectuoso((o[16] == null) ? 0
-					: ((BigInteger) o[16]).intValue());
+			apdto.setMaterialDefectuoso((o[16] == null) ? 0 : ((BigInteger) o[16]).intValue());
 			apdto.setContingencia((o[17] == null) ? false : (Boolean) o[17]);
-			apdto.setContingenciaLimitante((o[18] == null) ? false
-					: (Boolean) o[18]);
+			apdto.setContingenciaLimitante((o[18] == null) ? false : (Boolean) o[18]);
 			apdto.setEstadoAgenda((String) o[20]);
 			// if (idAplicacion == 2) {
 			// if (o[24] != null) {
@@ -1431,6 +1177,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setUsoMaterialContingencia((Boolean) o[24]);
 			apdto.setDetalleUsoMaterialContingecia((String) o[25]);
 			apdto.setCodigoPisa((String) o[26]);
+			apdto.setTotalPc((Integer) o[27]);
 			// }
 
 			apdtos.add(apdto);
@@ -1439,54 +1186,35 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return apdtos;
 	}
 
-	public Integer countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
+	public Integer countActividadesByIdAplicacionANDIdNivelANDIdActividadTipoANDFiltros(Integer idAplicacion, Integer idNivel, Integer idActividadTipo,
 			Integer idUsuario, String usuarioTipo, Map<String, String> filtros) {
 
 		Integer result = null;
 		Session s = getSession();
-		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
+		String query = "SELECT COUNT(a.id) FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idActividadTipo) + ")"
 				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
-				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id"
-				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id"
-				+ " JOIN REGION r ON p.region_id=r.id";
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
-				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-				|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id" + " JOIN COMUNA ON e.comuna_id=COMUNA.id"
+				+ " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id" + " JOIN REGION r ON p.region_id=r.id";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
 			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
-			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)
-					|| usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
-				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id="
-						+ SecurityFilter.escapeString(idUsuario)
-						+ ") AND joxco.activo=TRUE";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
 			} else {
 				query += " JOIN CO co ON coxe.co_id=co.id";
 				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
-					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id="
-							+ SecurityFilter.escapeString(idUsuario)
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
 							+ ") AND jzxz.activo=TRUE";
 				} else {
 					query += " JOIN ZONA z ON co.zona_id=z.id"
 							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
-							+ SecurityFilter.escapeString(idUsuario)
-							+ ") AND jrxcr.activo=TRUE";
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
 				}
 			}
-		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR)
-				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE)
-				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR_ASISTENTE)
 				|| usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
 			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id"
 					+ " JOIN USUARIO_SELECCION us ON (uxa.usuario_seleccion_id=us.id AND us.seleccion=true AND us.renuncia=false)"
@@ -1502,26 +1230,21 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						if (!where.equals("")) {
 							where += " AND ";
 						}
-						where += " e.comuna_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " e.comuna_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_REGION)) {
 						if (!where.equals("")) {
 							where += " AND ";
 						}
-						where += " p.region_id ="
-								+ SecurityFilter.escapeString(filtros.get(key));
+						where += " p.region_id =" + SecurityFilter.escapeString(filtros.get(key));
 					} else if (key.equals(ActividadService.FKEY_ESTADOS)) {
 						if (!where.equals("")) {
 							where += " AND ";
 						}
-						String[] estados = filtros.get(key).split(
-								ActividadService.SEPARATOR);
+						String[] estados = filtros.get(key).split(ActividadService.SEPARATOR);
 						if (estados.length != 0) {
 							where += " (";
 							for (int i = 0; i < estados.length; i++) {
-								where += "a.actividad_estado_id="
-										+ SecurityFilter
-												.escapeString(estados[i]);
+								where += "a.actividad_estado_id=" + SecurityFilter.escapeString(estados[i]);
 								if (i < estados.length - 1) {
 									where += " OR ";
 								}
@@ -1544,27 +1267,23 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 						// }
 						// // opciones += " limitante=true";
 						// opciones += " false";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_MATERIAL_CONTINGENCIA)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
 						// No se está comprobando por materiales de contingencia
 						opciones += " a.material_contingencia=true";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_NO_SINCRONIZADAS)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
 						opciones += " (a.total_alumnos_presentes IS NULL OR a.total_alumnos_presentes=0)";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_PARCIALMENTE_SINCRONIZADAS)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
 						opciones += " (a.total_alumnos_presentes IS NOT NULL AND a.total_alumnos_presentes!=0  AND a.total_alumnos_presentes!=a.total_alumnos)";
-					} else if (key
-							.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
+					} else if (key.equals(ActividadService.FKEY_ACTIVIDADES_SINCRONIZADAS)) {
 						if (!opciones.equals("")) {
 							opciones += " OR ";
 						}
@@ -1589,31 +1308,22 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return result;
 	}
 
-	public Actividad findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(
-			Integer idAplicacion, Integer idNivel, Integer idCurso,
-			String tipoActividad) {
+	public Actividad findByIdAplicacionANDIdNivelANDIdCursoANDTipoActividad(Integer idAplicacion, Integer idNivel, Integer idCurso, String tipoActividad) {
 
 		Actividad a = null;
 		Session s = getSession();
-		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id)"
-				+ " JOIN ACTIVIDAD_TIPO at ON (axnxat.actividad_tipo_id=at.id AND at.nombre='"
-				+ SecurityFilter.escapeString(tipoActividad)
-				+ "')"
-				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id="
-				+ SecurityFilter.escapeString(idCurso)
+		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id)" + " JOIN ACTIVIDAD_TIPO at ON (axnxat.actividad_tipo_id=at.id AND at.nombre='"
+				+ SecurityFilter.escapeString(tipoActividad) + "')"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id=" + SecurityFilter.escapeString(idCurso)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		a = ((Actividad) q.uniqueResult());
 		return a;
 	}
 
-	public List<Actividad> findAgendadasParaMañanaByIdAplicacionANDIdNivelANDIdActividadTipo(
-			Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
+	public List<Actividad> findAgendadasParaMañanaByIdAplicacionANDIdNivelANDIdActividadTipo(Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
 
 		List<Actividad> as = null;
 		Session s = getSession();
@@ -1632,45 +1342,40 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return as;
 	}
 
-	public List<Actividad> findByIdAplicacionANDIdNivelANDIdCursoANDBiggerThanFechaInicio(
-			Integer idAplicacion, Integer idNivel, Integer idCurso,
+	public List<Actividad> findByIdAplicacionANDIdNivelANDIdCursoANDBiggerThanFechaInicio(Integer idAplicacion, Integer idNivel, Integer idCurso,
 			Date fechaInicio) {
 		List<Actividad> as = null;
 		Session s = getSession();
 		String query = "select a.* FROM ACTIVIDAD a "
 				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON a.aplicacion_x_nivel_x_actividad_tipo_id=axnxat.id"
-				+ " JOIN APLICACION_x_NIVEL axn ON (axnxat.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.nivel_id="
-				+ SecurityFilter.escapeString(idNivel)
-				+ ")"
-				+ " WHERE a.fecha_inicio >  '"
-				+ SecurityFilter.escapeString(StringUtils
-						.getDateISOString(fechaInicio))
-				+ "' AND a.curso_id="
-				+ SecurityFilter.escapeString(idCurso)
+				+ " JOIN APLICACION_x_NIVEL axn ON (axnxat.aplicacion_x_nivel_id=axn.id AND axn.aplicacion_id=" + SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel) + ")" + " WHERE a.fecha_inicio >  '"
+				+ SecurityFilter.escapeString(StringUtils.getDateISOString(fechaInicio)) + "' AND a.curso_id=" + SecurityFilter.escapeString(idCurso)
 				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL)";
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;
 	}
 
-	public List<Actividad> findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(
-			Integer idAplicacion, Integer idEstablecimiento,
-			Integer idActividadTipo) {
+	public List<Actividad> findByIdAplicacionANDIdEstablecimientoANDIdActividadTipo(Integer idAplicacion, Integer idEstablecimiento, Integer idActividadTipo) {
 		List<Actividad> as = null;
 		Session s = getSession();
-		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn "
-				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
-				+ SecurityFilter.escapeString(idAplicacion)
-				+ " AND axn.id=axnxat.aplicacion_x_nivel_id "
-				+ " AND axnxat.actividad_tipo_id="
-				+ SecurityFilter.escapeString(idActividadTipo)
-				+ ")"
-				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
-				+ " JOIN CURSO c ON a.curso_id=c.id"
-				+ " WHERE c.establecimiento_id="
-				+ SecurityFilter.escapeString(idEstablecimiento);
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.id=axnxat.aplicacion_x_nivel_id " + " AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo) + ")" + " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id" + " WHERE c.establecimiento_id=" + SecurityFilter.escapeString(idEstablecimiento);
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		as = q.list();
+		return as;
+	}
+
+	public List<Actividad> findByIdAplicacionANDIdEstablecimiento(Integer idAplicacion, Integer idEstablecimiento) {
+		List<Actividad> as = null;
+		Session s = getSession();
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.id=axnxat.aplicacion_x_nivel_id " + ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id" + " JOIN CURSO c ON a.curso_id=c.id"
+				+ " WHERE c.establecimiento_id=" + SecurityFilter.escapeString(idEstablecimiento);
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;

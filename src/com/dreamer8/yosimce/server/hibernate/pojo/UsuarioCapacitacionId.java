@@ -285,207 +285,29 @@ public class UsuarioCapacitacionId implements java.io.Serializable {
 		this.credentialsExpireAt = credentialsExpireAt;
 	}
 
-	public boolean equals(Object other) {
-		if ((this == other))
-			return true;
-		if ((other == null))
-			return false;
-		if (!(other instanceof UsuarioCapacitacionId))
-			return false;
-		UsuarioCapacitacionId castOther = (UsuarioCapacitacionId) other;
-
-		return ((this.getId() == castOther.getId()) || (this.getId() != null
-				&& castOther.getId() != null && this.getId().equals(
-				castOther.getId())))
-				&& ((this.getSexoId() == castOther.getSexoId()) || (this
-						.getSexoId() != null && castOther.getSexoId() != null && this
-						.getSexoId().equals(castOther.getSexoId())))
-				&& ((this.getUsername() == castOther.getUsername()) || (this
-						.getUsername() != null
-						&& castOther.getUsername() != null && this
-						.getUsername().equals(castOther.getUsername())))
-				&& ((this.getNombres() == castOther.getNombres()) || (this
-						.getNombres() != null && castOther.getNombres() != null && this
-						.getNombres().equals(castOther.getNombres())))
-				&& ((this.getApellidoPaterno() == castOther
-						.getApellidoPaterno()) || (this.getApellidoPaterno() != null
-						&& castOther.getApellidoPaterno() != null && this
-						.getApellidoPaterno().equals(
-								castOther.getApellidoPaterno())))
-				&& ((this.getApellidoMaterno() == castOther
-						.getApellidoMaterno()) || (this.getApellidoMaterno() != null
-						&& castOther.getApellidoMaterno() != null && this
-						.getApellidoMaterno().equals(
-								castOther.getApellidoMaterno())))
-				&& ((this.getEmail() == castOther.getEmail()) || (this
-						.getEmail() != null && castOther.getEmail() != null && this
-						.getEmail().equals(castOther.getEmail())))
-				&& ((this.getUsuarioTipoId() == castOther.getUsuarioTipoId()) || (this
-						.getUsuarioTipoId() != null
-						&& castOther.getUsuarioTipoId() != null && this
-						.getUsuarioTipoId()
-						.equals(castOther.getUsuarioTipoId())))
-				&& ((this.getCelular() == castOther.getCelular()) || (this
-						.getCelular() != null && castOther.getCelular() != null && this
-						.getCelular().equals(castOther.getCelular())))
-				&& ((this.getCompaniaTelefonoId() == castOther
-						.getCompaniaTelefonoId()) || (this
-						.getCompaniaTelefonoId() != null
-						&& castOther.getCompaniaTelefonoId() != null && this
-						.getCompaniaTelefonoId().equals(
-								castOther.getCompaniaTelefonoId())))
-				&& ((this.getSmartphone() == castOther.getSmartphone()) || (this
-						.getSmartphone() != null
-						&& castOther.getSmartphone() != null && this
-						.getSmartphone().equals(castOther.getSmartphone())))
-				&& ((this.getDireccion() == castOther.getDireccion()) || (this
-						.getDireccion() != null
-						&& castOther.getDireccion() != null && this
-						.getDireccion().equals(castOther.getDireccion())))
-				&& ((this.getDireccionLatitud() == castOther
-						.getDireccionLatitud()) || (this.getDireccionLatitud() != null
-						&& castOther.getDireccionLatitud() != null && this
-						.getDireccionLatitud().equals(
-								castOther.getDireccionLatitud())))
-				&& ((this.getDireccionLongitud() == castOther
-						.getDireccionLongitud()) || (this
-						.getDireccionLongitud() != null
-						&& castOther.getDireccionLongitud() != null && this
-						.getDireccionLongitud().equals(
-								castOther.getDireccionLongitud())))
-				&& ((this.getComunaId() == castOther.getComunaId()) || (this
-						.getComunaId() != null
-						&& castOther.getComunaId() != null && this
-						.getComunaId().equals(castOther.getComunaId())))
-				&& ((this.getFechaNacimiento() == castOther
-						.getFechaNacimiento()) || (this.getFechaNacimiento() != null
-						&& castOther.getFechaNacimiento() != null && this
-						.getFechaNacimiento().equals(
-								castOther.getFechaNacimiento())))
-				&& ((this.getUsernameCanonical() == castOther
-						.getUsernameCanonical()) || (this
-						.getUsernameCanonical() != null
-						&& castOther.getUsernameCanonical() != null && this
-						.getUsernameCanonical().equals(
-								castOther.getUsernameCanonical())))
-				&& ((this.getEmailCanonical() == castOther.getEmailCanonical()) || (this
-						.getEmailCanonical() != null
-						&& castOther.getEmailCanonical() != null && this
-						.getEmailCanonical().equals(
-								castOther.getEmailCanonical())))
-				&& ((this.getEnabled() == castOther.getEnabled()) || (this
-						.getEnabled() != null && castOther.getEnabled() != null && this
-						.getEnabled().equals(castOther.getEnabled())))
-				&& ((this.getLastLogin() == castOther.getLastLogin()) || (this
-						.getLastLogin() != null
-						&& castOther.getLastLogin() != null && this
-						.getLastLogin().equals(castOther.getLastLogin())))
-				&& ((this.getLocked() == castOther.getLocked()) || (this
-						.getLocked() != null && castOther.getLocked() != null && this
-						.getLocked().equals(castOther.getLocked())))
-				&& ((this.getExpired() == castOther.getExpired()) || (this
-						.getExpired() != null && castOther.getExpired() != null && this
-						.getExpired().equals(castOther.getExpired())))
-				&& ((this.getExpiresAt() == castOther.getExpiresAt()) || (this
-						.getExpiresAt() != null
-						&& castOther.getExpiresAt() != null && this
-						.getExpiresAt().equals(castOther.getExpiresAt())))
-				&& ((this.getRoles() == castOther.getRoles()) || (this
-						.getRoles() != null && castOther.getRoles() != null && this
-						.getRoles().equals(castOther.getRoles())))
-				&& ((this.getCredentialsExpired() == castOther
-						.getCredentialsExpired()) || (this
-						.getCredentialsExpired() != null
-						&& castOther.getCredentialsExpired() != null && this
-						.getCredentialsExpired().equals(
-								castOther.getCredentialsExpired())))
-				&& ((this.getCredentialsExpireAt() == castOther
-						.getCredentialsExpireAt()) || (this
-						.getCredentialsExpireAt() != null
-						&& castOther.getCredentialsExpireAt() != null && this
-						.getCredentialsExpireAt().equals(
-								castOther.getCredentialsExpireAt())));
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
-	public int hashCode() {
-		Integer result = 17;
-
-		result = 37 * result + (getId() == null ? 0 : this.getId().hashCode());
-		result = 37 * result
-				+ (getSexoId() == null ? 0 : this.getSexoId().hashCode());
-		result = 37 * result
-				+ (getUsername() == null ? 0 : this.getUsername().hashCode());
-		result = 37 * result
-				+ (getNombres() == null ? 0 : this.getNombres().hashCode());
-		result = 37
-				* result
-				+ (getApellidoPaterno() == null ? 0 : this.getApellidoPaterno()
-						.hashCode());
-		result = 37
-				* result
-				+ (getApellidoMaterno() == null ? 0 : this.getApellidoMaterno()
-						.hashCode());
-		result = 37 * result
-				+ (getEmail() == null ? 0 : this.getEmail().hashCode());
-		result = 37
-				* result
-				+ (getUsuarioTipoId() == null ? 0 : this.getUsuarioTipoId()
-						.hashCode());
-		result = 37 * result
-				+ (getCelular() == null ? 0 : this.getCelular().hashCode());
-		result = 37
-				* result
-				+ (getCompaniaTelefonoId() == null ? 0 : this
-						.getCompaniaTelefonoId().hashCode());
-		result = 37
-				* result
-				+ (getSmartphone() == null ? 0 : this.getSmartphone()
-						.hashCode());
-		result = 37 * result
-				+ (getDireccion() == null ? 0 : this.getDireccion().hashCode());
-		result = 37
-				* result
-				+ (getDireccionLatitud() == null ? 0 : this
-						.getDireccionLatitud().hashCode());
-		result = 37
-				* result
-				+ (getDireccionLongitud() == null ? 0 : this
-						.getDireccionLongitud().hashCode());
-		result = 37 * result
-				+ (getComunaId() == null ? 0 : this.getComunaId().hashCode());
-		result = 37
-				* result
-				+ (getFechaNacimiento() == null ? 0 : this.getFechaNacimiento()
-						.hashCode());
-		result = 37
-				* result
-				+ (getUsernameCanonical() == null ? 0 : this
-						.getUsernameCanonical().hashCode());
-		result = 37
-				* result
-				+ (getEmailCanonical() == null ? 0 : this.getEmailCanonical()
-						.hashCode());
-		result = 37 * result
-				+ (getEnabled() == null ? 0 : this.getEnabled().hashCode());
-		result = 37 * result
-				+ (getLastLogin() == null ? 0 : this.getLastLogin().hashCode());
-		result = 37 * result
-				+ (getLocked() == null ? 0 : this.getLocked().hashCode());
-		result = 37 * result
-				+ (getExpired() == null ? 0 : this.getExpired().hashCode());
-		result = 37 * result
-				+ (getExpiresAt() == null ? 0 : this.getExpiresAt().hashCode());
-		result = 37 * result
-				+ (getRoles() == null ? 0 : this.getRoles().hashCode());
-		result = 37
-				* result
-				+ (getCredentialsExpired() == null ? 0 : this
-						.getCredentialsExpired().hashCode());
-		result = 37
-				* result
-				+ (getCredentialsExpireAt() == null ? 0 : this
-						.getCredentialsExpireAt().hashCode());
-		return result;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UsuarioCapacitacionId other = (UsuarioCapacitacionId) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

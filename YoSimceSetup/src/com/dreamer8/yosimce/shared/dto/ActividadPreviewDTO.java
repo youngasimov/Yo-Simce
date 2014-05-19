@@ -21,6 +21,7 @@ public class ActividadPreviewDTO implements Serializable {
 	private Integer alumnosEvaluados;
 	private Integer alumnosSincronizados;
 	private Integer materialDefectuoso;
+	private Integer totalPc;
 	private Boolean contingencia;
 	private DocumentoDTO documento;
 	private String nombreExaminador;
@@ -100,8 +101,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return cuestionariosPadresApoderadosEntregados;
 	}
 
-	public void setCuestionariosPadresApoderadosEntregados(
-			Integer cuestionariosPadresApoderadosEntregados) {
+	public void setCuestionariosPadresApoderadosEntregados(Integer cuestionariosPadresApoderadosEntregados) {
 		this.cuestionariosPadresApoderadosEntregados = cuestionariosPadresApoderadosEntregados;
 	}
 
@@ -109,8 +109,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return cuestionariosPadresApoderadosRecibidos;
 	}
 
-	public void setCuestionariosPadresApoderadosRecibidos(
-			Integer cuestionariosPadresApoderadosRecibidos) {
+	public void setCuestionariosPadresApoderadosRecibidos(Integer cuestionariosPadresApoderadosRecibidos) {
 		this.cuestionariosPadresApoderadosRecibidos = cuestionariosPadresApoderadosRecibidos;
 	}
 
@@ -206,8 +205,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return cuestionariosPadresApoderadosRecibidosAplicados;
 	}
 
-	public void setCuestionariosPadresApoderadosRecibidosAplicados(
-			Integer cuestionariosPadresApoderadosRecibidosAplicados) {
+	public void setCuestionariosPadresApoderadosRecibidosAplicados(Integer cuestionariosPadresApoderadosRecibidosAplicados) {
 		this.cuestionariosPadresApoderadosRecibidosAplicados = cuestionariosPadresApoderadosRecibidosAplicados;
 	}
 
@@ -239,8 +237,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return detalleUsoMaterialContingecia;
 	}
 
-	public void setDetalleUsoMaterialContingecia(
-			String detalleUsoMaterialContingecia) {
+	public void setDetalleUsoMaterialContingecia(String detalleUsoMaterialContingecia) {
 		this.detalleUsoMaterialContingecia = detalleUsoMaterialContingecia;
 	}
 
@@ -250,6 +247,14 @@ public class ActividadPreviewDTO implements Serializable {
 
 	public void setCodigoPisa(String codigoPisa) {
 		this.codigoPisa = codigoPisa;
+	}
+
+	public Integer getTotalPc() {
+		return totalPc;
+	}
+
+	public void setTotalPc(Integer totalPc) {
+		this.totalPc = totalPc;
 	}
 
 }
