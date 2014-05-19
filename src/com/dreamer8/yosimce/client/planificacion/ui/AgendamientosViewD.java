@@ -330,6 +330,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 	@Override
 	public void setPresenter(AgendamientosPresenter presenter) {
 		this.presenter = presenter;
+		agendaPanel.setPresenter(presenter);
 	}
 
 	@Override
@@ -596,6 +597,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			@Override
 			public void onClick(ClickEvent event) {
 				presenter.onModificarAgendaClick();
+				agendarDialog.hide();
 			}
 		});
 		agendaPanel.cancelarButton.addClickHandler(new ClickHandler() {
