@@ -68,9 +68,6 @@ public class ActividadesActivity extends SimceActivity implements
 		view.setFormularioVisivility(Utils.hasPermisos(getPermisos(), "ActividadService", "getActividad"));
 		view.setInformacionVisivility(Utils.hasPermisos(getPermisos(), "GeneralService","getDetalleCurso"));
 		
-		view.setColumnWidth(9,"0px");
-		view.setColumnWidth(12,"0px");
-		view.setColumnWidth(18,"0px");
 		
 		//simce
 		/*
