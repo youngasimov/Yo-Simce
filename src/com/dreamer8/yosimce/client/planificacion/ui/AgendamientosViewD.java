@@ -244,6 +244,13 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 				c.setContactoNombre(editarDirectorPanel.nombreBox.getText());
 				c.setContactoTelefono(editarDirectorPanel.fonoBox.getText());
 				c.setContactoEmail(editarDirectorPanel.emailBox.getText());
+				int id = Integer.parseInt(editarDirectorPanel.cargoBox.getValue(editarDirectorPanel.cargoBox.getSelectedIndex()));
+				for(CargoDTO cargo:cargos){
+					if(cargo.getId() == id){
+						c.setCargo(cargo);
+						break;
+					}
+				}
 				presenter.onEditarDirector(c);
 				editarDirectorDialog.hide();
 				editarDirectorPanel.nombreBox.setText("");
@@ -305,7 +312,7 @@ public class AgendamientosViewD extends Composite implements AgendamientosView {
 			editarDirectorPanel.cargoBox.setVisible(true);
 			editarDirectorPanel.cargoBox.clear();
 			if(director.getCargo()!=null){
-				editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo());
+				editarDirectorPanel.cargoBox.addItem(director.getCargo().getCargo(),director.getCargo().getId()+"");
 			}
 		}else{
 			editarDirectorPanel.fonoBox.setText("");

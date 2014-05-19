@@ -179,7 +179,11 @@
 				  												<td colspan='2'> <g:Label ui:field="directorNameLabel"/> </td>
 				  											</tr>
 				  											<tr>
+				  												<td> Teléfono: </td>
 				  												<td> <g:Label ui:field="directorPhoneLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td> E-mail: </td>
 				  												<td> <g:Label ui:field="directorEmailLabel"/> </td>
 				  											</tr>
 				  											<tr class='{style.separador}'>
@@ -189,7 +193,11 @@
 				  												<td colspan='2'> <g:Label ui:field="contactoNameLabel"/> </td>
 				  											</tr>
 				  											<tr>
+				  												<td> Teléfono: </td>
 				  												<td> <g:Label ui:field="contactoPhoneLabel"/> </td>
+				  											</tr>
+				  											<tr>
+				  												<td> E-mail: </td>
 				  												<td> <g:Label ui:field="contactoEmailLabel"/> </td>
 				  											</tr>
 				  											<tr>

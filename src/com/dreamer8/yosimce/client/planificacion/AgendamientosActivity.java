@@ -426,7 +426,7 @@ public class AgendamientosActivity extends SimceActivity implements
 			return;
 		}
 		
-		if(contacto.getContactoEmail()!=null && !contacto.getContactoEmail().isEmpty() && !contacto.getContactoEmail().trim().matches("^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,3})$")){
+		if(contacto.getContactoEmail()!=null && !contacto.getContactoEmail().isEmpty() /*&& !contacto.getContactoEmail().trim().matches("^[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{2,3})$")*/){
 			eventBus.fireEvent(new MensajeEvent("El mail ingresado no es válido", MensajeEvent.MSG_WARNING, true));
 			if(this.contacto!=null){
 				contacto.setContactoEmail(this.contacto.getContactoEmail());
@@ -447,21 +447,22 @@ public class AgendamientosActivity extends SimceActivity implements
 	}
 
 	@Override
-	public void onEditarDirector(ContactoDTO contacto) {
+	public void onEditarDirector(final ContactoDTO contacto) {
 		if(agendaPreview == null){
 			return;
 		}
-		if(director.getContactoEmail()!=null && !director.getContactoEmail().isEmpty() && !director.getContactoEmail().trim().matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$")){
+		if(contacto.getContactoEmail()!=null && !contacto.getContactoEmail().isEmpty()/* && !contacto.getContactoEmail().trim().matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})$")*/){
 			eventBus.fireEvent(new MensajeEvent("El mail ingresado no es válido", MensajeEvent.MSG_WARNING, true));
 			if(this.director!=null){
-				director.setContactoEmail(this.director.getContactoEmail());
+				contacto.setContactoEmail(this.director.getContactoEmail());
 			}
 		}
 		if(Utils.hasPermisos(eventBus,getPermisos(), "PlanificacionService", "editarDirector")){
-			getFactory().getPlanificacionService().editarDirector(agendaPreview.getCursoId(), director, new SimceCallback<Boolean>(eventBus,true) {
+			getFactory().getPlanificacionService().editarDirector(agendaPreview.getCursoId(), contacto, new SimceCallback<Boolean>(eventBus,true) {
 	
 				@Override
 				public void success(Boolean result) {
+					AgendamientosActivity.this.director = contacto;
 					view.setDirector(director);
 					eventBus.fireEvent(new MensajeEvent("Los datos del director se han modificado", MensajeEvent.MSG_OK, true));
 				}

@@ -63,11 +63,11 @@
 	        <td colspan='2' class='{style.estado}'><ui:text from='{estado}'/></td>
 	    </tr>
 	    <tr>
-	        <td>Fecha llamada:</td>
+	        <td>Fecha modificación:</td>
 	        <td colspan='2' class='{style.name}'><ui:text from='{dateCall}'/></td>
 	    </tr>
 	    <tr>
-	        <td>Quien Llamó:</td>
+	        <td>Por:</td>
 	        <td class='{style.name}'><ui:text from='{nombre}'/></td>
 	    </tr>
 	    <tr>

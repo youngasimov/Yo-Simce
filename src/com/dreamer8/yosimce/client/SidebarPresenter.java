@@ -161,8 +161,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 				(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda")) ||
 				Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso"));
 		view.setAgendamientosViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgendaFiltro") && Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos") && tipo);
-		view.setAgendarVisitaActionItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda") && tipo);
-		view.setDetalleAgendaViewItemVisivility(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && tipo);
+		view.setAgendarVisitaActionItemVisivility(false && Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda") && tipo);
+		view.setDetalleAgendaViewItemVisivility(false && Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && tipo);
 		
 		view.setActividadVisivility((Utils.hasPermisos(permisos,"ActividadService","getTotalPreviewActividades") && Utils.hasPermisos(permisos,"ActividadService","getPreviewActividades")) ||
 				Utils.hasPermisos(permisos,"ActividadService","getActividad") ||
