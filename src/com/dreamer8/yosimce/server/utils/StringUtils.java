@@ -50,9 +50,8 @@ public class StringUtils {
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int min = calendar.get(Calendar.MINUTE);
 		int sec = calendar.get(Calendar.SECOND);
-		return forceTwoDigits(day) + "/" + forceTwoDigits(month + 1) + "/"
-				+ year + " " + forceTwoDigits(hour) + ":" + forceTwoDigits(min)
-				+ ":" + forceTwoDigits(sec);
+		return forceTwoDigits(day) + "/" + forceTwoDigits(month + 1) + "/" + year + " " + forceTwoDigits(hour) + ":" + forceTwoDigits(min) + ":"
+				+ forceTwoDigits(sec);
 	}
 
 	public static String getDateISOString(Date date) {
@@ -67,15 +66,12 @@ public class StringUtils {
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int min = calendar.get(Calendar.MINUTE);
 		int sec = calendar.get(Calendar.SECOND);
-		return year + "-" + forceTwoDigits(month + 1) + "-"
-				+ forceTwoDigits(day) + " " + forceTwoDigits(hour) + ":"
-				+ forceTwoDigits(min) + ":" + forceTwoDigits(sec);
+		return year + "-" + forceTwoDigits(month + 1) + "-" + forceTwoDigits(day) + " " + forceTwoDigits(hour) + ":" + forceTwoDigits(min) + ":"
+				+ forceTwoDigits(sec);
 	}
 
 	public static Date getDate(String dateString) {
-		if (dateString == null
-				|| !dateString
-						.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:*[0-9]{0,2}")) {
+		if (dateString == null || !dateString.matches("[0-9]{1,2}/[0-9]{1,2}/[0-9]{4} [0-9]{1,2}:[0-9]{1,2}:*[0-9]{0,2}")) {
 			return null;
 		}
 		String[] dateParts = dateString.split(" ");
@@ -86,15 +82,13 @@ public class StringUtils {
 		// calendar.set(Integer.valueOf(date[2]), Integer.valueOf(date[1]) - 1,
 		// Integer.valueOf(date[0]), Integer.valueOf(time[0]),
 		// Integer.valueOf(time[1]), sec);
-		calendar.set(2013, Integer.valueOf(date[1]) - 1,
-				Integer.valueOf(date[0]), Integer.valueOf(time[0]),
-				Integer.valueOf(time[1]), sec);
+		calendar.set(calendar.get(Calendar.YEAR), Integer.valueOf(date[1]) - 1, Integer.valueOf(date[0]), Integer.valueOf(time[0]), Integer.valueOf(time[1]),
+				sec);
 		return calendar.getTime();
 	}
 
 	public static Boolean isRut(String rut) {
-		return rut
-				.matches("([0-9]){1,3}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9]){0,3}[,.;_-]*([0-9kK]){0,1}");
+		return rut.matches("([0-9]){1,3}[,.;_-]*([0-9]){1,3}[,.;_-]*([0-9]){0,3}[,.;_-]*([0-9kK]){0,1}");
 	}
 
 	public static String stripRut(String rut) {
@@ -205,8 +199,7 @@ public class StringUtils {
 		}
 		String[] ds = date.split("/");
 		String prefixYear = (Integer.valueOf(ds[2]) < 30) ? "20" : "19";
-		return prefixYear + forceTwoDigits(Integer.valueOf(ds[2])) + "-"
-				+ forceTwoDigits(Integer.valueOf(ds[0])) + "-"
+		return prefixYear + forceTwoDigits(Integer.valueOf(ds[2])) + "-" + forceTwoDigits(Integer.valueOf(ds[0])) + "-"
 				+ forceTwoDigits(Integer.valueOf(ds[1]));
 	}
 
@@ -229,9 +222,7 @@ public class StringUtils {
 	}
 
 	public static String getMes(int mes) {
-		String[] meses = { "enero", "febrero", "marzo", "abril", "mayo",
-				"junio", "julio", "agosto", "septiembre", "octubre",
-				"noviembre", "diciembre" };
+		String[] meses = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre" };
 		return meses[mes % 12];
 	}
 
