@@ -269,6 +269,7 @@
 						</g:center>
 					</g:DockLayoutPanel>
 				</g:tab>
+				<!-- 
 				<g:tab>
 					<g:header>Control</g:header>
 					<g:SplitLayoutPanel>
@@ -293,6 +294,7 @@
 						</g:center>
 					</g:SplitLayoutPanel>
 				</g:tab>
+				 -->
 				<g:tab>
 					<g:header>Ayuda</g:header>
 					<g:ScrollPanel>

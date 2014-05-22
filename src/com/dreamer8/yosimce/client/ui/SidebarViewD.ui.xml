@@ -99,6 +99,7 @@
 			</div>
 			<ul ui:field="general">
 			    <li><g:Anchor ui:field="centroControlViewItem" text="Centro de control"/></li>
+			    <li><g:Anchor ui:field="graficosViewItem" text="Indicadores globales"/></li>
 				<li><g:Anchor ui:field="detalleCursoViewItem" text="Detalle curso"/></li>
 			</ul>
 			<ul class='{style.margin}' ui:field="agendamiento">

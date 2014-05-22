@@ -9,6 +9,7 @@ import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.general.GraficosPlace;
 import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -32,6 +33,7 @@ import com.google.gwt.place.shared.WithTokenizers;
 		CentroOperacionPlace.Tokenizer.class,
 		BuscadorCodigoPlace.Tokenizer.class,
 		ReportesPlace.Tokenizer.class,
-		PermisosPlace.Tokenizer.class})
+		PermisosPlace.Tokenizer.class,
+		GraficosPlace.Tokenizer.class})
 public interface SimcePlaceHistoryMapper extends PlaceHistoryMapper {
 }

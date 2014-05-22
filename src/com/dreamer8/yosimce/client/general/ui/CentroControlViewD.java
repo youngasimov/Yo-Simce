@@ -276,9 +276,9 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 	@UiField RadioButton centroRadioButton;
 	@UiField RadioButton establecimientoRadioButton;
 	@UiField RadioButton ministerioRadioButton;
-	@UiField ListBox controlZonasBox;
-	@UiField SimplePanel controlResumenPanel;
-	@UiField(provided=true) DataGrid<ControlCentroOperacionDTO> controlDataGrid;
+	//@UiField ListBox controlZonasBox;
+	//@UiField SimplePanel controlResumenPanel;
+	//@UiField(provided=true) DataGrid<ControlCentroOperacionDTO> controlDataGrid;
 	
 	private Column<CentroOperacionDTO, Boolean> checkColumn;
 	private Column<CentroOperacionDTO, CentroOperacionDTO> centroColumn;
@@ -348,7 +348,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		controlEstadoSelectorPanel.setAutoHideOnHistoryEventsEnabled(true);
 		controlEstadoSelectorPanel.setGlassEnabled(false);
 		
-		controlDataGrid = new DataGrid<ControlCentroOperacionDTO>();
+		//controlDataGrid = new DataGrid<ControlCentroOperacionDTO>();
 		mapApi = false;
 		chartApi = false;
 		allTable = new DataGrid<CentroOperacionDTO>(CentroOperacionDTO.KEY_PROVIDER);
@@ -450,7 +450,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		allTable.setHeaderBuilder(new CustomHeaderBuilder());
 		allPager.setDisplay(allTable);
 		
-		buildControlTable();
+		//buildControlTable();
 		
 		sendToMonitorItem.setVisible(false);
 		autoRecargaActivated = false;
@@ -552,8 +552,8 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 			graphPanel.addStyleName(style.full());
 		}
 		
-		controlProvider = new ListDataProvider<ControlCentroOperacionDTO>();
-		controlProvider.addDataDisplay(controlDataGrid);
+		//controlProvider = new ListDataProvider<ControlCentroOperacionDTO>();
+		//controlProvider.addDataDisplay(controlDataGrid);
 		
 		//buildBingo();
 	}
@@ -951,7 +951,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		allTable.setColumnWidth(i++, 15, Unit.EM);
 	}
 	
-	
+	/*
 	private void buildControlTable(){
 		controlZonaColumn = new Column<ControlCentroOperacionDTO, String>(new TextCell()) {
 
@@ -1032,7 +1032,7 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 		controlDataGrid.addColumn(controlChangeEstadoColumn);
 		controlDataGrid.setColumnWidth(controlChangeEstadoColumn, "10em");
 	}
-	
+	*/
 	
 	@Override
 	public void setBingoRM(HashMap<String, ArrayList<String>> bingo) {
@@ -1084,11 +1084,11 @@ public class CentroControlViewD extends Composite implements CentroControlView {
 
 	@Override
 	public void setZonas(List<String> zonas) {
-		controlZonasBox.clear();
-		controlZonasBox.addItem("Todas", "-1");
-		for(String zona:zonas){
-			controlZonasBox.addItem(zona);
-		}
+		//controlZonasBox.clear();
+		//controlZonasBox.addItem("Todas", "-1");
+		//for(String zona:zonas){
+		//	controlZonasBox.addItem(zona);
+		//}
 	}
 	
 	

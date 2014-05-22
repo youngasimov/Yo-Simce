@@ -21,6 +21,8 @@ import com.dreamer8.yosimce.client.general.CentroControlActivity;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoActivity;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.general.GraficosActivity;
+import com.dreamer8.yosimce.client.general.GraficosPlace;
 import com.dreamer8.yosimce.client.material.BuscadorCodigoActivity;
 import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionActivity;
@@ -56,6 +58,8 @@ public class ContentActivityMapper implements ActivityMapper {
 	public Activity getActivity(final Place place) {
 		if(place instanceof CentroControlPlace){
 			return new CentroControlActivity(factory, (CentroControlPlace)place, permisos);
+		}else if(place instanceof GraficosPlace){
+			return new GraficosActivity(factory, (GraficosPlace)place, permisos);
 		}else if(place instanceof DetalleCursoPlace){
 			return new DetalleCursoActivity(factory, (DetalleCursoPlace)place, permisos);
 		}else if(place instanceof AgendamientosPlace){

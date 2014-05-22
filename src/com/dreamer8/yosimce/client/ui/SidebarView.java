@@ -12,6 +12,8 @@ public interface SidebarView extends IsWidget {
 	void setDetalleCursoViewItemSelected(boolean selected);
 	void setCentroControlViewItemVisivility(boolean visible);
 	void setCentroControlViewItemSelected(boolean selected);
+	void setGraficosViewItemVisivility(boolean visible);
+	void setGraficosViewItemSelected(boolean selected);
 	
 	void setAgendamientoVisivility(boolean visible);
 	void setAgendamientosViewItemVisivility(boolean visible);

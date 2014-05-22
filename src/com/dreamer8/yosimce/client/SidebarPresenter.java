@@ -12,6 +12,7 @@ import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.general.GraficosPlace;
 import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -87,6 +88,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 				
 				if(event.getNewPlace() instanceof CentroControlPlace){
 					view.setCentroControlViewItemSelected(true);
+				}else if(event.getNewPlace() instanceof GraficosPlace){
+					view.setGraficosViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof DetalleCursoPlace){
 					view.setDetalleCursoViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof AgendamientosPlace){
@@ -156,6 +159,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		
 		//Mientras no se definan los permisos especificos, solo los administradores pueden ver esto 
 		view.setCentroControlViewItemVisivility(Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario"));
+		
+		view.setGraficosViewItemVisivility(true || Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario"));
 		
 		view.setAgendamientoVisivility((Utils.hasPermisos(permisos,"PlanificacionService","getPreviewAgendamientos") && Utils.hasPermisos(permisos,"PlanificacionService","getTotalPreviewAgendamientos")) ||
 				(Utils.hasPermisos(permisos,"PlanificacionService","getAgendaCurso") && Utils.hasPermisos(permisos,"PlanificacionService","AgendarVisita") && Utils.hasPermisos(permisos,"PlanificacionService","getEstadosAgenda")) ||

@@ -11,6 +11,7 @@ import com.dreamer8.yosimce.client.administracion.PermisosPlace;
 import com.dreamer8.yosimce.client.administracion.ReportesPlace;
 import com.dreamer8.yosimce.client.general.CentroControlPlace;
 import com.dreamer8.yosimce.client.general.DetalleCursoPlace;
+import com.dreamer8.yosimce.client.general.GraficosPlace;
 import com.dreamer8.yosimce.client.material.BuscadorCodigoPlace;
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.client.planificacion.AgendamientosPlace;
@@ -53,6 +54,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	
 	@UiField Anchor detalleCursoViewItem;
 	@UiField Anchor centroControlViewItem;
+	@UiField Anchor graficosViewItem;
 	
 	@UiField Anchor agendamientosViewItem;
 	@UiField Anchor detalleAgendaViewItem;
@@ -81,6 +83,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	void onMenuCLick(ClickEvent event){
 		GATracker.trackEvent("sidebar menu","Menu");
 		presenter.goTo(new SimcePlace());
+	}
+	
+	@UiHandler("graficosViewItem")
+	void onGraficosViewItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Indicadores globales");
+		presenter.goTo(new GraficosPlace());
 	}
 	
 	@UiHandler("centroControlViewItem")
@@ -431,5 +439,18 @@ public class SidebarViewD extends Composite implements SidebarView{
 		buscadorCodigoViewItem.removeStyleName(style.selected());
 		reportesActionItem.removeStyleName(style.selected());
 		administrarPermisosActionItem.removeStyleName(style.selected());
+	}
+
+	@Override
+	public void setGraficosViewItemVisivility(boolean visible) {
+		graficosViewItem.setVisible(visible);
+	}
+
+	@Override
+	public void setGraficosViewItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			graficosViewItem.addStyleName(style.selected());
+		}
 	}
 }

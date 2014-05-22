@@ -1,0 +1,101 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	<ui:style>
+	.title {
+		font-size: 20px;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	
+	.title2 {
+		display: inline-block;
+		min-width: 200px;
+		text-align: center;
+	}
+	
+	.scroll{
+		display:block;
+		width: 100%;
+	}
+	
+	.row{
+		display:block;
+		width: 100%;
+		float: left;
+	}
+	
+	.column{
+		display:block;
+		width: 48%;
+		margin-left: 1%;
+		margin-right: 1%;
+		float: left;
+	}
+	
+	.grafico{
+		display:block;
+		width: 98%;
+		margin-left: 1%;
+		margin-right: 1%;
+	}
+	
+	.data{
+		display:block;
+		width: 98%;
+		margin-left: 1%;
+		margin-right: 1%;
+	}
+	
+	.full .column{
+		width: 98%;
+	}
+	
+	
+	
+	</ui:style>
+	<g:DockLayoutPanel unit="PX">
+		<g:north size="45">
+			<my:OverMenuBar ui:field="menu" animationEnabled="true"
+				autoOpen='true' focusOnHoverEnabled='false'>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}'
+					ui:field="menuItem">
+					<div class='{style.title2}'>Gráficos</div>
+					>
+				</g:MenuItem>
+				<g:MenuItem ui:field="actualizarMenu">Actualizar</g:MenuItem>
+			</my:OverMenuBar>
+		</g:north>
+
+		<g:center>
+			<g:ScrollPanel addStyleNames='{style.scroll}'>
+				<g:HTMLPanel ui:field="graphPanel">
+					<div class='{style.row}'>
+						<div class='{style.column}'>
+							<g:SimplePanel addStyleNames='{style.grafico}' ui:field="graficoEstadoMaterialPanel" />
+						</div>
+						<div class='{style.column}'>
+							<div class='{style.data}'>
+								<c:DataGrid ui:field="estadoMaterialDataGrid"/>
+							</div>
+						</div>
+					</div>
+					<div class='{style.row}'>
+						<div class='{style.column}'>
+							<g:SimplePanel addStyleNames='{style.grafico}' ui:field="graficoEstadoActividadPanel" />
+						</div>
+						<div class='{style.column}'>
+							<div class='{style.data}'>
+								<c:DataGrid ui:field="estadoActividadDataGrid"/>
+							</div>
+						</div>
+					</div>
+
+				</g:HTMLPanel>
+			</g:ScrollPanel>
+		</g:center>
+
+	</g:DockLayoutPanel>
+</ui:UiBinder> 
