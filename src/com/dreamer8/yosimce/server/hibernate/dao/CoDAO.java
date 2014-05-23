@@ -227,8 +227,8 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 
 				+ " JOIN COMUNA com ON co.comuna_id=com.id"
 				+ " JOIN PROVINCIA p ON com.provincia_id=p.id"
-				+ " JOIN JO_x_CO joxco ON co.id=joxco.co_id"
-				+ " JOIN USUARIO u ON joxco.jo_id=u.id";
+				+ " LEFT JOIN JO_x_CO joxco ON co.id=joxco.co_id"
+				+ " LEFT JOIN USUARIO u ON joxco.jo_id=u.id";
 
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
@@ -245,11 +245,11 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 			}
 		}
 
-		query += " WHERE  joxco.activo=TRUE";
-		if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
-			query += " AND joxco.jo_id="
-					+ SecurityFilter.escapeString(idUsuario);
-		}
+//		query += " WHERE  joxco.activo=TRUE";
+//		if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES)) {
+//			query += " AND joxco.jo_id="
+//					+ SecurityFilter.escapeString(idUsuario);
+//		}
 		query += " ORDER BY co.nombre ASC";
 
 		Query q = s.createSQLQuery(query);
