@@ -61,4 +61,7 @@ public interface SimceResources extends ClientBundle {
 	
 	@Source("images/round_trip2.png")
 	public ImageResource roundTrip();
+	
+	@Source("images/accept_page.png")
+	public ImageResource acceptPage();
 }

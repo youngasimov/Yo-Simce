@@ -89,4 +89,12 @@ public interface ActividadServiceAsync {
 	void updateEvaluacionSuplente(EvaluacionSuplenteDTO evaluaciones,
 			AsyncCallback<Boolean> callback);
 
+	void getTotalMaterial(boolean pruebas, boolean cuestionario,
+			AsyncCallback<Integer> callback);
+
+	void getTotalMaterialProcesado(boolean pruebas, boolean cuestionario,
+			AsyncCallback<Integer> callback);
+
+	void procesarMaterial(String codigo, AsyncCallback<Boolean> callback);
+
 }

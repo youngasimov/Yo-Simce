@@ -2,6 +2,9 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:my="urn:import:com.dreamer8.yosimce.client.ui">
+	
+	<ui:with field='res' type='com.dreamer8.yosimce.client.ui.resources.SimceResources'/>
+	
 	<ui:style>
 	.menu{
 		height: 45px;
@@ -17,6 +20,11 @@
 		min-width: 200px;
 		text-align: center;
 	}
+	
+	.button{
+		height: 38px;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -24,8 +32,20 @@
 				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Registro de avance</div> ></g:MenuItem>
 			</my:OverMenuBar>
 		</g:north>
+		<g:north size="45">
+			<g:HTMLPanel>
+				<table>
+					<tr>
+						<td>Código:</td>
+						<td> <my:PlaceHolderTextBox  placeholder='Ingrese código prueba' width="170px" ui:field='codigoBox'/></td>
+						<td><my:ImageButton addStyleNames='{style.button}' ui:field='revisadaButton' resource='{res.acceptPage}' text='Revisada'/> </td>
+						<td><g:Button addStyleNames='{style.button}' text="No revisada"/>  </td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:north>
 		<g:center>
-			<g:HTMLPanel></g:HTMLPanel>
+			
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

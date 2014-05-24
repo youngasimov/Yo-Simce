@@ -2544,4 +2544,28 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 		}
 		return result;
 	}
+
+	@Override
+	public Integer getTotalMaterial(boolean pruebas, boolean cuestionario)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getTotalMaterialProcesado(boolean pruebas,
+			boolean cuestionario) throws NoAllowedException, NoLoggedException,
+			DBException, NullPointerException, ConsistencyException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean procesarMaterial(String codigo) throws NoAllowedException,
+			NoLoggedException, DBException, NullPointerException,
+			ConsistencyException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

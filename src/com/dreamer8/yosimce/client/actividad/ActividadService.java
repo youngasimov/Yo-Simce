@@ -132,4 +132,16 @@ public interface ActividadService extends RemoteService {
 	Boolean updateEvaluacionSuplente(EvaluacionSuplenteDTO evaluaciones)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
+	
+	Integer getTotalMaterial(boolean pruebas, boolean cuestionario)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+	
+	Integer getTotalMaterialProcesado(boolean pruebas, boolean cuestionario)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
+	
+	boolean procesarMaterial(String codigo)
+			throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException;
 }

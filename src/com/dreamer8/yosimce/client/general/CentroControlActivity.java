@@ -126,7 +126,7 @@ public class CentroControlActivity extends SimceActivity implements
 		updateCentros();
 		
 		
-		
+		/*
 		getFactory().getGeneralService().getCentrosOperacionParaControl(new SimceCallback<ArrayList<ControlCentroOperacionDTO>>(eventBus,true) {
 
 			@Override
@@ -155,7 +155,7 @@ public class CentroControlActivity extends SimceActivity implements
 				
 			}
 			
-		});
+		});*/
 	}
 	
 	@Override

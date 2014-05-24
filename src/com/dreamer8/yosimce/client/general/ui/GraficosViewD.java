@@ -56,6 +56,8 @@ public class GraficosViewD extends Composite implements GraficosView {
 	@UiField
 	MenuItem menuItem;
 	@UiField
+	MenuItem actualizarMenu;
+	@UiField
 	HTMLPanel graphPanel;
 	@UiField
 	SimplePanel graficoEstadoMaterialPanel;
@@ -118,6 +120,16 @@ public class GraficosViewD extends Composite implements GraficosView {
 
 			}
 		});
+		
+		actualizarMenu.setScheduledCommand(new Scheduler.ScheduledCommand(){
+
+			@Override
+			public void execute() {
+				presenter.actualizarEstadoMaterial();
+				presenter.actualizarEstadoActividad();
+			}
+		});
+		
 		Window.addResizeHandler(new ResizeHandler() {
 
 			@Override
