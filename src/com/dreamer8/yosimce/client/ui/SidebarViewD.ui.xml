@@ -113,6 +113,7 @@
 				<li><g:Anchor ui:field="sincronizacionActionItem" text="Sincronización"/></li>
 				<li><g:Anchor ui:field="materialDefectuosoActionItem" text="Material defectuoso"/></li>
 				<li><g:Anchor ui:field="aprobarSupervisoresActionItem" text="Evaluación supervisores y suplentes"/></li>
+				<li><g:Anchor ui:field="avanceRevisionItem" text="Registro de avance"/></li>
 			</ul>
 			<ul class='{style.margin}' ui:field="material">
 				<li><g:Anchor ui:field="centroOperacionViewItem" text="Centro operación"/></li>

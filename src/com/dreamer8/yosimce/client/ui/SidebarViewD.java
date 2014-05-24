@@ -4,6 +4,7 @@ import com.dreamer8.yosimce.client.GATracker;
 import com.dreamer8.yosimce.client.SimcePlace;
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
+import com.dreamer8.yosimce.client.actividad.AvanceRevisionPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
@@ -65,6 +66,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	@UiField Anchor sincronizacionActionItem;
 	@UiField Anchor materialDefectuosoActionItem;
 	@UiField Anchor aprobarSupervisoresActionItem;
+	@UiField Anchor avanceRevisionItem;
 	
 	@UiField Anchor centroOperacionViewItem;
 	@UiField Anchor buscadorCodigoViewItem;
@@ -149,6 +151,12 @@ public class SidebarViewD extends Composite implements SidebarView{
 	void onAprobarSupervisoresActionItemClick(ClickEvent event){
 		GATracker.trackEvent("sidebar menu","Evaluación supervisores");
 		presenter.goTo(new AprobarSupervisoresPlace());
+	}
+	
+	@UiHandler("avanceRevisionItem")
+	void onAvanceRevisionItemClick(ClickEvent event){
+		GATracker.trackEvent("sidebar menu","Registro avance");
+		presenter.goTo(new AvanceRevisionPlace());
 	}
 	
 	@UiHandler("centroOperacionViewItem")
@@ -427,6 +435,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 	public void removeSeleccion(){
 		centroControlViewItem.removeStyleName(style.selected());
 		detalleCursoViewItem.removeStyleName(style.selected());
+		graficosViewItem.removeStyleName(style.selected());
 		agendamientosViewItem.removeStyleName(style.selected());
 		detalleAgendaViewItem.removeStyleName(style.selected());
 		agendarVisitaActionItem.removeStyleName(style.selected());
@@ -439,6 +448,7 @@ public class SidebarViewD extends Composite implements SidebarView{
 		buscadorCodigoViewItem.removeStyleName(style.selected());
 		reportesActionItem.removeStyleName(style.selected());
 		administrarPermisosActionItem.removeStyleName(style.selected());
+		graficosViewItem.removeStyleName(style.selected());
 	}
 
 	@Override
@@ -451,6 +461,19 @@ public class SidebarViewD extends Composite implements SidebarView{
 		removeSeleccion();
 		if(selected){
 			graficosViewItem.addStyleName(style.selected());
+		}
+	}
+
+	@Override
+	public void setAvanceRevisionItemVisivility(boolean visible) {
+		avanceRevisionItem.setVisible(visible);
+	}
+
+	@Override
+	public void setAvanceRevisionItemSelected(boolean selected) {
+		removeSeleccion();
+		if(selected){
+			avanceRevisionItem.addStyleName(style.selected());
 		}
 	}
 }

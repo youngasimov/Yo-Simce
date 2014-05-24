@@ -16,7 +16,6 @@ import com.dreamer8.yosimce.client.general.ui.CentroControlView.CentroControlPre
 import com.dreamer8.yosimce.client.material.CentroOperacionPlace;
 import com.dreamer8.yosimce.shared.dto.CentroOperacionDTO;
 import com.dreamer8.yosimce.shared.dto.ControlCentroOperacionDTO;
-import com.dreamer8.yosimce.shared.dto.EstadoControlDTO;
 import com.dreamer8.yosimce.shared.dto.SectorDTO;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Cookies;

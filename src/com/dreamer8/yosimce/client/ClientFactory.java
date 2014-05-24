@@ -3,6 +3,7 @@ package com.dreamer8.yosimce.client;
 import com.dreamer8.yosimce.client.actividad.ActividadServiceAsync;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
+import com.dreamer8.yosimce.client.actividad.ui.AvanceRevisionView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
 import com.dreamer8.yosimce.client.actividad.ui.SincronizacionView;
@@ -67,6 +68,7 @@ public interface ClientFactory {
 	SincronizacionView getSincronizacionView();
 	MaterialDefectuosoView getMaterialDefectuosoView();
 	AprobarSupervisoresView getAprobarSupervisoresView();
+	AvanceRevisionView getAvanceRevisionView();
 	
 	CentroOperacionView getCentroOperacionView();
 	BuscadorCodigoView getBuscadorCodigoView();

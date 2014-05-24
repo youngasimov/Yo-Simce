@@ -15,7 +15,11 @@ public class EstadoMaterialItemDTO implements Serializable {
 	private Integer totalBodega;
 
 	public EstadoMaterialItemDTO() {
-		// TODO Auto-generated constructor stub
+		totalImprenta = 0;
+		totalCentro = 0;
+		totalEstablecimiento = 0;
+		totalCaptura = 0;
+		totalBodega = 0;
 	}
 
 	public Integer getTotalAgencia() {

@@ -34,6 +34,8 @@ public interface SidebarView extends IsWidget {
 	void setSincronizacionActionItemSelected(boolean selected);
 	void setMaterialDefectuosoActionItemSelected(boolean selected);
 	void setAprobarSupervisoresActionItemSelected(boolean selected);
+	void setAvanceRevisionItemVisivility(boolean visible);
+	void setAvanceRevisionItemSelected(boolean selected);
 	
 	void setMaterialVisivility(boolean visible);
 	void setCentroOperacionViewItemVisivility(boolean visible);

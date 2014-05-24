@@ -15,7 +15,12 @@ public class EstadoActividadItemDTO implements Serializable {
 	private Double totalRealizada;
 
 	public EstadoActividadItemDTO() {
-		// TODO Auto-generated constructor stub
+		totalSinInformacion = 0.0;
+		totalAnulada = 0.0;
+		totalPorConfirmar = 0.0;
+		totalConfirmado = 0.0;
+		totalConfirmadoConCambios = 0.0;
+		totalRealizada = 0.0;
 	}
 
 	public Integer getIdRegion() {

@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.dreamer8.yosimce.client.actividad.ActividadesPlace;
 import com.dreamer8.yosimce.client.actividad.AprobarSupervisoresPlace;
+import com.dreamer8.yosimce.client.actividad.AvanceRevisionPlace;
 import com.dreamer8.yosimce.client.actividad.FormActividadPlace;
 import com.dreamer8.yosimce.client.actividad.MaterialDefectuosoPlace;
 import com.dreamer8.yosimce.client.actividad.SincronizacionPlace;
@@ -108,6 +109,8 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 					view.setMaterialDefectuosoActionItemSelected(true);
 				}else if(event.getNewPlace() instanceof AprobarSupervisoresPlace){
 					view.setAprobarSupervisoresActionItemSelected(true);
+				}else if(event.getNewPlace() instanceof AvanceRevisionPlace){
+					view.setAvanceRevisionItemSelected(true);
 				}else if(event.getNewPlace() instanceof CentroOperacionPlace){
 					view.setCentroOperacionViewItemSelected(true);
 				}else if(event.getNewPlace() instanceof BuscadorCodigoPlace){
@@ -180,6 +183,9 @@ public class SidebarPresenter implements SidebarView.SidebarPresenter {
 		view.setMaterialDefectuosoActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getMaterialDefectuoso") && tipo);
 		
 		view.setAprobarSupervisoresActionItemVisivility(Utils.hasPermisos(permisos,"ActividadService","getEvaluacionSupervisores") && tipo);
+		
+		
+		view.setAvanceRevisionItemVisivility(true || Utils.hasPermisos(permisos,"AdministracionService","getTiposUsuario"));
 		
 		view.setMaterialVisivility(Utils.hasPermisos(permisos,"MaterialService","getCentrosOperacionAsociados") && Utils.hasPermisos(permisos,"MaterialService","getMateriales") && tipo);
 		view.setCentroOperacionViewItemVisivility(Utils.hasPermisos(permisos,"MaterialService","getCentrosOperacionAsociados") && Utils.hasPermisos(permisos,"MaterialService","getMateriales") && tipo);

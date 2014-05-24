@@ -6,6 +6,8 @@ import com.dreamer8.yosimce.client.actividad.ui.ActividadesView;
 import com.dreamer8.yosimce.client.actividad.ui.ActividadesViewD;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresView;
 import com.dreamer8.yosimce.client.actividad.ui.AprobarSupervisoresViewD;
+import com.dreamer8.yosimce.client.actividad.ui.AvanceRevisionView;
+import com.dreamer8.yosimce.client.actividad.ui.AvanceRevisionViewD;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadView;
 import com.dreamer8.yosimce.client.actividad.ui.FormActividadViewD;
 import com.dreamer8.yosimce.client.actividad.ui.MaterialDefectuosoView;
@@ -103,6 +105,7 @@ public class ClientFactoryD implements ClientFactory {
 	private final SincronizacionView sincronizacionView = new SincronizacionViewD();
 	private final MaterialDefectuosoView materialDefectuosoView = new MaterialDefectuosoViewD();
 	private final AprobarSupervisoresView aprobarSupervisoresView = new AprobarSupervisoresViewD();
+	private final AvanceRevisionView avanceRevisionView = new AvanceRevisionViewD();
 	
 	private final CentroOperacionView centroOperacionView = new CentroOperacionViewD();
 	private final BuscadorCodigoView buscadorCodigoView = new BuscadorCodigoViewD();
@@ -252,6 +255,11 @@ public class ClientFactoryD implements ClientFactory {
 	@Override
 	public AprobarSupervisoresView getAprobarSupervisoresView() {
 		return aprobarSupervisoresView;
+	}
+	
+	@Override
+	public AvanceRevisionView getAvanceRevisionView() {
+		return avanceRevisionView;
 	}
 	
 	@Override
