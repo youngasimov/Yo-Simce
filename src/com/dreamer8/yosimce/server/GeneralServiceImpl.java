@@ -867,7 +867,7 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 				}
 
 				ActividadDAO adao = new ActividadDAO(s);
-//				eaidtos = 
+				eaidtos =  (ArrayList<EstadoActividadItemDTO>) adao.getEstadisticasActividad(idAplicacion, idNivel, idActividadTipo, usuarioTipo.getNombre(), u.getId(), agruparPorEstablecimiento);
 
 				s.getTransaction().commit();
 			}

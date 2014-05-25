@@ -97,7 +97,8 @@ import com.dreamer8.yosimce.server.utils.StringUtils;
 public class YoSimceSetup {
 
 	public static void main(String[] args) {
-		cargarPCPisa("Reporte_Chequeo_Computadores_20140514.csv");
+		copiarActividadPisa();
+		// cargarPCPisa("Reporte_Chequeo_Computadores_20140514.csv");
 
 		// cargarMaterialesUsandoCodigosPisa("Material_Cajas_Cargar_Tracking.csv");
 		// cargarAgendamientoActividadesPisa("Fechas_Prueba_y_Complementaria_20140514.csv");
@@ -3285,6 +3286,77 @@ public class YoSimceSetup {
 		} catch (IOException e) {
 			System.err.println(e);
 			HibernateUtil.rollback(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
+		}
+	}
+
+	public static void copiarActividadPisa() {
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String line = null;
+		try {
+
+			s.beginTransaction();
+			ActividadDAO adao = new ActividadDAO();
+			List<Actividad> as = adao.findByIdAplicacionANDIdNivelANDIdActividadTipo(1, 1, 1);
+			Actividad a2 = null;
+			for (Actividad actividad : as) {
+				a2 = adao.findByIdAplicacionANDIdNivelANDIdCursoANDIdTipoActividad(1, 1, actividad.getCurso().getId(), 2);
+				a2.setActividadEstado(actividad.getActividadEstado());
+				a2.setComentario(actividad.getComentario());
+				a2.setContactoCargo(actividad.getContactoCargo());
+				a2.setContactoEmail(actividad.getContactoEmail());
+				a2.setContactoNombre(actividad.getContactoNombre());
+				a2.setContactoTelefono(actividad.getContactoTelefono());
+				a2.setDetalleUsoMaterialContingencia(actividad.getDetalleUsoMaterialContingencia());
+				a2.setFechaInicio(actividad.getFechaInicio());
+				a2.setFechaInicioPrueba(actividad.getFechaInicioPrueba());
+				a2.setFechaTermino(actividad.getFechaTermino());
+				a2.setFechaTerminoPrueba(actividad.getFechaTerminoPrueba());
+				a2.setMaterialContingencia(actividad.isMaterialContingencia());
+				a2.setNotaProceso(actividad.getNotaProceso());
+				a2.setSinMaterial(actividad.isSinMaterial());
+				a2.setTotalAlumnos(actividad.getTotalAlumnos());
+				a2.setTotalAlumnosAusentes(actividad.getTotalAlumnosAusentes());
+				a2.setTotalAlumnosNee(actividad.getTotalAlumnosNee());
+				a2.setTotalAlumnosPresentes(actividad.getTotalAlumnosPresentes());
+				a2.setUsuario(actividad.getUsuario());
+				adao.update(a2);
+			}
+
+			as = adao.findByIdAplicacionANDIdNivelANDIdActividadTipo(1, 2, 1);
+
+			for (Actividad actividad : as) {
+				a2 = adao.findByIdAplicacionANDIdNivelANDIdCursoANDIdTipoActividad(1, 2, actividad.getCurso().getId(), 2);
+				a2.setActividadEstado(actividad.getActividadEstado());
+				a2.setComentario(actividad.getComentario());
+				a2.setContactoCargo(actividad.getContactoCargo());
+				a2.setContactoEmail(actividad.getContactoEmail());
+				a2.setContactoNombre(actividad.getContactoNombre());
+				a2.setContactoTelefono(actividad.getContactoTelefono());
+				a2.setDetalleUsoMaterialContingencia(actividad.getDetalleUsoMaterialContingencia());
+				a2.setFechaInicio(actividad.getFechaInicio());
+				a2.setFechaInicioPrueba(actividad.getFechaInicioPrueba());
+				a2.setFechaTermino(actividad.getFechaTermino());
+				a2.setFechaTerminoPrueba(actividad.getFechaTerminoPrueba());
+				a2.setMaterialContingencia(actividad.isMaterialContingencia());
+				a2.setNotaProceso(actividad.getNotaProceso());
+				a2.setSinMaterial(actividad.isSinMaterial());
+				a2.setTotalAlumnos(actividad.getTotalAlumnos());
+				a2.setTotalAlumnosAusentes(actividad.getTotalAlumnosAusentes());
+				a2.setTotalAlumnosNee(actividad.getTotalAlumnosNee());
+				a2.setTotalAlumnosPresentes(actividad.getTotalAlumnosPresentes());
+				a2.setUsuario(actividad.getUsuario());
+				adao.update(a2);
+			}
+
+			s.getTransaction().commit();
+		} catch (HibernateException ex) {
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			System.out.println(line);
 		} catch (Exception e) {
 			e.printStackTrace();
 			HibernateUtil.rollback(s);

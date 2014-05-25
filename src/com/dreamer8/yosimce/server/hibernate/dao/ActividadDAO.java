@@ -3,6 +3,7 @@
  */
 package com.dreamer8.yosimce.server.hibernate.dao;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import com.dreamer8.yosimce.shared.dto.ActividadPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaItemDTO;
 import com.dreamer8.yosimce.shared.dto.AgendaPreviewDTO;
 import com.dreamer8.yosimce.shared.dto.DocumentoDTO;
+import com.dreamer8.yosimce.shared.dto.EstadoActividadItemDTO;
 import com.dreamer8.yosimce.shared.dto.EstadoAgendaDTO;
 import com.dreamer8.yosimce.shared.dto.TipoEstablecimientoDTO;
 import com.dreamer8.yosimce.shared.dto.UserDTO;
@@ -1323,6 +1325,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return a;
 	}
 
+	public Actividad findByIdAplicacionANDIdNivelANDIdCursoANDIdTipoActividad(Integer idAplicacion, Integer idNivel, Integer idCurso, Integer idTipoActividad) {
+
+		Actividad a = null;
+		Session s = getSession();
+		String query = "SELECT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.nivel_id=" + SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id=" + SecurityFilter.escapeString(idTipoActividad) + ")"
+				+ " JOIN ACTIVIDAD a ON (axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id AND a.curso_id=" + SecurityFilter.escapeString(idCurso)
+				+ " AND (a.actividad_estado_id!=7 OR a.actividad_estado_id IS NULL))";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		a = ((Actividad) q.uniqueResult());
+		return a;
+	}
+
 	public List<Actividad> findAgendadasParaMañanaByIdAplicacionANDIdNivelANDIdActividadTipo(Integer idAplicacion, Integer idNivel, Integer idActividadTipo) {
 
 		List<Actividad> as = null;
@@ -1369,6 +1385,17 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		return as;
 	}
 
+	public List<Actividad> findByIdAplicacionANDIdActividadTipo(Integer idAplicacion, Integer idActividadTipo) {
+		List<Actividad> as = null;
+		Session s = getSession();
+		String query = "SELECT DISTINCT a.* FROM APLICACION_x_NIVEL axn " + " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion) + " AND axn.id=axnxat.aplicacion_x_nivel_id " + " AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo) + ")" + " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id";
+		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
+		as = q.list();
+		return as;
+	}
+
 	public List<Actividad> findByIdAplicacionANDIdEstablecimiento(Integer idAplicacion, Integer idEstablecimiento) {
 		List<Actividad> as = null;
 		Session s = getSession();
@@ -1379,5 +1406,115 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		Query q = s.createSQLQuery(query).addEntity(Actividad.class);
 		as = q.list();
 		return as;
+	}
+
+	public List<EstadoActividadItemDTO> getEstadisticasActividad(Integer idAplicacion, Integer idNivel, Integer idActividadTipo, String usuarioTipo,
+			Integer idUsuario, Boolean agruparPorEstablecimiento) {
+
+		List<EstadoActividadItemDTO> eaidtos = new ArrayList<EstadoActividadItemDTO>();
+		;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "WITH act AS (SELECT DISTINCT a.id as actividad_id,a.actividad_estado_id,c.establecimiento_id,e.comuna_id,p.region_id FROM APLICACION_x_NIVEL axn "
+				+ " JOIN APLICACION_x_NIVEL_x_ACTIVIDAD_TIPO axnxat ON (axn.aplicacion_id="
+				+ SecurityFilter.escapeString(idAplicacion)
+				+ " AND axn.nivel_id="
+				+ SecurityFilter.escapeString(idNivel)
+				+ " AND axn.id=axnxat.aplicacion_x_nivel_id AND axnxat.actividad_tipo_id="
+				+ SecurityFilter.escapeString(idActividadTipo)
+				+ ")"
+				+ " JOIN ACTIVIDAD a ON axnxat.id=a.aplicacion_x_nivel_x_actividad_tipo_id"
+				+ " JOIN CURSO c ON a.curso_id=c.id"
+				+ " JOIN ESTABLECIMIENTO e ON c.establecimiento_id=e.id"
+				+ " JOIN COMUNA com ON e.comuna_id=com.id"
+				+ " JOIN PROVINCIA p ON com.provincia_id=p.id ";
+		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
+				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+			query += " JOIN CO_x_ESTABLECIMIENTO coxe ON (e.id=coxe.establecimiento_id  AND axn.id=coxe.aplicacion_x_nivel_id)";
+			if (usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
+				query += " JOIN JO_x_CO joxco ON (coxe.co_id=joxco.co_id AND joxco.jo_id=" + SecurityFilter.escapeString(idUsuario) + ") AND joxco.activo=TRUE";
+			} else {
+				query += " JOIN CO co ON coxe.co_id=co.id";
+				if (usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)) {
+					query += " JOIN JZ_x_ZONA jzxz ON (co.zona_id=jzxz.zona_id AND jzxz.jz_id=" + SecurityFilter.escapeString(idUsuario)
+							+ ") AND jzxz.activo=TRUE";
+				} else {
+					query += " JOIN ZONA z ON co.zona_id=z.id"
+							+ " JOIN JR_x_CENTRO_REGIONAL jrxcr ON (z.centro_regional_id=jrxcr.centro_regional_id AND jrxcr.jr_id="
+							+ SecurityFilter.escapeString(idUsuario) + ") AND jrxcr.activo=TRUE";
+				}
+			}
+		} else if (usuarioTipo.equals(UsuarioTipo.SUPERVISOR) || usuarioTipo.equals(UsuarioTipo.COORDINADOR) || usuarioTipo.equals(UsuarioTipo.EXAMINADOR)
+				|| usuarioTipo.equals(UsuarioTipo.EXAMINADOR_NEE) || usuarioTipo.equals(UsuarioTipo.COORDINADOR_COMPUTACION)) {
+			query += " JOIN USUARIO_x_ACTIVIDAD uxa ON a.id=uxa.actividad_id" + " JOIN USUARIO_SELECCION us ON uxa.usuario_seleccion_id=us.id"
+					+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON (us.usuario_x_aplicacion_x_nivel_id=uxaxn.id AND uxaxn.usuario_id="
+					+ SecurityFilter.escapeString(idUsuario) + ")";
+		}
+		query += ") ";
+		if (agruparPorEstablecimiento) {
+			query += " , cursos AS (SELECT establecimiento_id, COUNT(establecimiento_id) total FROM act GROUP BY establecimiento_id)";
+		}
+
+		query += " SELECT DISTINCT comuna_id,region_id, SUM(total_sin_info) OVER (PARTITION BY comuna_id) AS total_sin_info, SUM(total_anulada) OVER (PARTITION BY comuna_id) AS total_anulada, SUM(total_por_conf) OVER (PARTITION BY comuna_id) AS total_por_conf, SUM(total_conf) OVER (PARTITION BY comuna_id) AS total_conf, SUM(total_conf_camb) OVER (PARTITION BY comuna_id) AS total_conf_camb, SUM(total_realizada) OVER (PARTITION BY comuna_id) AS total_realizada FROM act";
+
+		if (agruparPorEstablecimiento) {
+			query += " LEFT JOIN (SELECT act.establecimiento_id, COUNT(actividad_id)/CAST(cursos.total as DECIMAL(5,2))  as total_sin_info FROM act"
+					+ " JOIN cursos ON act.establecimiento_id=cursos.establecimiento_id"
+					+ " WHERE actividad_estado_id IS NULL OR actividad_estado_id=1 GROUP BY act.establecimiento_id,cursos.total) t_sin_info  ON act.establecimiento_id=t_sin_info.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, COUNT(actividad_id)/CAST(cursos.total as DECIMAL(5,2))  as total_anulada FROM act"
+					+ " JOIN cursos ON act.establecimiento_id=cursos.establecimiento_id"
+					+ " WHERE actividad_estado_id=5 GROUP BY act.establecimiento_id,cursos.total) t_an  ON act.establecimiento_id=t_an.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, COUNT(actividad_id)/CAST(cursos.total as DECIMAL(5,2))  as total_por_conf FROM act"
+					+ " JOIN cursos ON act.establecimiento_id=cursos.establecimiento_id"
+					+ " WHERE actividad_estado_id=2 GROUP BY act.establecimiento_id,cursos.total) t_por_conf  ON act.establecimiento_id=t_por_conf.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, COUNT(actividad_id)/CAST(cursos.total as DECIMAL(5,2))  as total_conf FROM act"
+					+ " JOIN cursos ON act.establecimiento_id=cursos.establecimiento_id"
+					+ " WHERE actividad_estado_id=3 GROUP BY act.establecimiento_id,cursos.total) t_conf  ON act.establecimiento_id=t_conf.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, COUNT(actividad_id)/CAST(cursos.total as DECIMAL(5,2))  as total_conf_camb FROM act"
+					+ " JOIN cursos ON act.establecimiento_id=cursos.establecimiento_id"
+					+ " WHERE actividad_estado_id=6 GROUP BY act.establecimiento_id,cursos.total) t_conf_camb  ON act.establecimiento_id=t_conf_camb.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, COUNT(actividad_id)/CAST(cursos.total as DECIMAL(5,2))  as total_realizada FROM act"
+					+ " JOIN cursos ON act.establecimiento_id=cursos.establecimiento_id"
+					+ " WHERE actividad_estado_id=4 GROUP BY act.establecimiento_id,cursos.total) t_realizada  ON act.establecimiento_id=t_realizada.establecimiento_id";
+		} else {
+			query += " LEFT JOIN (SELECT act.establecimiento_id, CAST(COUNT(actividad_id) AS DECIMAL(5,2))  as total_sin_info FROM act"
+					+ " WHERE actividad_estado_id IS NULL OR actividad_estado_id=1 GROUP BY act.establecimiento_id) t_sin_info  ON act.establecimiento_id=t_sin_info.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, CAST(COUNT(actividad_id) AS DECIMAL(5,2))  as total_anulada FROM act"
+					+ " WHERE actividad_estado_id=5 GROUP BY act.establecimiento_id) t_an  ON act.establecimiento_id=t_an.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, CAST(COUNT(actividad_id) AS DECIMAL(5,2))  as total_por_conf FROM act"
+					+ " WHERE actividad_estado_id=2 GROUP BY act.establecimiento_id) t_por_conf  ON act.establecimiento_id=t_por_conf.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, CAST(COUNT(actividad_id) AS DECIMAL(5,2))  as total_conf FROM act"
+					+ " WHERE actividad_estado_id=3 GROUP BY act.establecimiento_id) t_conf  ON act.establecimiento_id=t_conf.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, CAST(COUNT(actividad_id) AS DECIMAL(5,2))  as total_conf_camb FROM act"
+					+ " WHERE actividad_estado_id=6 GROUP BY act.establecimiento_id) t_conf_camb  ON act.establecimiento_id=t_conf_camb.establecimiento_id"
+
+					+ " LEFT JOIN (SELECT act.establecimiento_id, CAST(COUNT(actividad_id) AS DECIMAL(5,2))  as total_realizada FROM act"
+					+ " WHERE actividad_estado_id=4 GROUP BY act.establecimiento_id) t_realizada  ON act.establecimiento_id=t_realizada.establecimiento_id";
+		}
+		query += " ORDER BY comuna_id,region_id";
+		Query q = s.createSQLQuery(query);
+		List<Object[]> os = q.list();
+		EstadoActividadItemDTO eaidto = null;
+		for (Object[] o : os) {
+			eaidto = new EstadoActividadItemDTO();
+			eaidto.setIdComuna((Integer) o[0]);
+			eaidto.setIdRegion((Integer) o[1]);
+			eaidto.setTotalSinInformacion((o[2]==null)?0:((BigDecimal) o[2]).doubleValue());
+			eaidto.setTotalAnulada((o[3]==null)?0:((BigDecimal) o[3]).doubleValue());
+			eaidto.setTotalPorConfirmar((o[4]==null)?0:((BigDecimal) o[4]).doubleValue());
+			eaidto.setTotalConfirmado((o[5]==null)?0:((BigDecimal) o[5]).doubleValue());
+			eaidto.setTotalConfirmadoConCambios((o[6]==null)?0:((BigDecimal) o[6]).doubleValue());
+			eaidto.setTotalRealizada((o[7]==null)?0:((BigDecimal) o[7]).doubleValue());
+			eaidtos.add(eaidto);
+		}
+		return eaidtos;
 	}
 }

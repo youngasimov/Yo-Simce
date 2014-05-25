@@ -2545,6 +2545,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 		return result;
 	}
 
+	/**
+	 * 
+	 * @permiso getTotalMaterial
+	 */
 	@Override
 	public Integer getTotalMaterial(boolean pruebas, boolean cuestionario)
 			throws NoAllowedException, NoLoggedException, DBException,
@@ -2553,6 +2557,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 		return null;
 	}
 
+	/**
+	 * 
+	 * @permiso getTotalMaterialProcesado
+	 */
 	@Override
 	public Integer getTotalMaterialProcesado(boolean pruebas,
 			boolean cuestionario) throws NoAllowedException, NoLoggedException,
@@ -2561,11 +2569,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 		return null;
 	}
 
+	/**
+	 * @permiso procesarMaterial
+	 */
 	@Override
-	public Void procesarMaterial(String codigo) throws NoAllowedException,
-			NoLoggedException, DBException, NullPointerException,
+	public Void procesarMaterial(String codigo, boolean eliminar) throws NoAllowedException, NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
-				return null;
 		// TODO Auto-generated method stub
+		return null;
 	}
 }

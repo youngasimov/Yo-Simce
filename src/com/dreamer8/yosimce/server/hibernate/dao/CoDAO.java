@@ -202,9 +202,9 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ " LEFT JOIN (SELECT mat.centro_id,COUNT(mat.id) as total_mat "
 				+ " FROM mat WHERE mat.contingencia=false GROUP BY mat.centro_id) tot ON tot.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_en_centro "
-				+ " FROM mh_max WHERE mh_max.destino_id=4 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_centro ON en_centro.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=3 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_centro ON en_centro.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_establ "
-				+ " FROM mh_max WHERE mh_max.destino_id=5 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_estab ON en_estab.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=4 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_estab ON en_estab.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_minis "
 				+ " FROM mh_max WHERE mh_max.destino_id=1 AND mh_max.contingencia=false GROUP BY mh_max.centro_id) en_minis ON en_minis.centro_id=co.id"
 				// +
@@ -215,9 +215,9 @@ public class CoDAO extends AbstractHibernateDAO<Co, Integer> {
 				+ " LEFT JOIN (SELECT mat.centro_id,COUNT(mat.id) as total_mat_cont "
 				+ " FROM mat WHERE mat.contingencia=true GROUP BY mat.centro_id) tot_cont ON tot_cont.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_centro "
-				+ " FROM mh_max WHERE mh_max.destino_id=4 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_centro ON cont_en_centro.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=3 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_centro ON cont_en_centro.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_establ "
-				+ " FROM mh_max WHERE mh_max.destino_id=5 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_estab ON cont_en_estab.centro_id=co.id"
+				+ " FROM mh_max WHERE mh_max.destino_id=4 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_estab ON cont_en_estab.centro_id=co.id"
 				+ " LEFT JOIN (SELECT mh_max.centro_id,COUNT(mh_max.material_id) as total_cont_minis "
 				+ " FROM mh_max WHERE mh_max.destino_id=1 AND mh_max.contingencia=true GROUP BY mh_max.centro_id) cont_en_minis ON cont_en_minis.centro_id=co.id"
 				// +
