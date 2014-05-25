@@ -25,6 +25,10 @@
 		height: 38px;
 	}
 	
+	.center{
+		margin: 0 auto 0 auto;
+	}
+	
 	</ui:style>
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
@@ -34,18 +38,19 @@
 		</g:north>
 		<g:north size="45">
 			<g:HTMLPanel>
-				<table>
+				<table class='{style.center}'>
 					<tr>
 						<td>Código:</td>
-						<td> <my:PlaceHolderTextBox  placeholder='Ingrese código prueba' width="170px" ui:field='codigoBox'/></td>
+						<td> <my:PlaceHolderTextBox  placeholder='Ingrese código prueba' width="200px" ui:field='codigoBox'/></td>
 						<td><my:ImageButton addStyleNames='{style.button}' ui:field='revisadaButton' resource='{res.acceptPage}' text='Revisada'/> </td>
-						<td><g:Button addStyleNames='{style.button}' text="No revisada"/>  </td>
+						<td><g:Button ui:field="noRevisadaButton" addStyleNames='{style.button}' text="No revisada"/>  </td>
+						<td> <g:CheckBox ui:field="enterReviewBox" value="true" text="activar revisado al presionar 'Enter'"/> </td>
 					</tr>
 				</table>
 			</g:HTMLPanel>
 		</g:north>
 		<g:center>
-			
+			<g:SimplePanel ui:field="graphPanel"/>
 		</g:center>
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

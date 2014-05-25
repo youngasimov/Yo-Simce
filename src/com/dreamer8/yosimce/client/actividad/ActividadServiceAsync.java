@@ -95,6 +95,7 @@ public interface ActividadServiceAsync {
 	void getTotalMaterialProcesado(boolean pruebas, boolean cuestionario,
 			AsyncCallback<Integer> callback);
 
-	void procesarMaterial(String codigo, AsyncCallback<Boolean> callback);
+	void procesarMaterial(String codigo, boolean eliminar,
+			AsyncCallback<Void> callback);
 
 }

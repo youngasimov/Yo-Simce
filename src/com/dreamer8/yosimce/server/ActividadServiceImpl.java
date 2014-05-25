@@ -2562,10 +2562,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 	}
 
 	@Override
-	public boolean procesarMaterial(String codigo) throws NoAllowedException,
+	public Void procesarMaterial(String codigo) throws NoAllowedException,
 			NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
+				return null;
 		// TODO Auto-generated method stub
-		return false;
 	}
 }

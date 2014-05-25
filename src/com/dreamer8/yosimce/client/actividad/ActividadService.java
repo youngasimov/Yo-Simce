@@ -141,7 +141,7 @@ public interface ActividadService extends RemoteService {
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
 	
-	boolean procesarMaterial(String codigo)
+	Void procesarMaterial(String codigo, boolean eliminar)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException;
 }
