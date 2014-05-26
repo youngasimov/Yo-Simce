@@ -13,6 +13,7 @@ import com.dreamer8.yosimce.server.hibernate.dao.CoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ComunaDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.CursoDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.HibernateUtil;
+import com.dreamer8.yosimce.server.hibernate.dao.MaterialDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.RegionDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.UsuarioDAO;
 import com.dreamer8.yosimce.server.hibernate.dao.ZonaDAO;
@@ -902,7 +903,67 @@ public class GeneralServiceImpl extends CustomRemoteServiceServlet implements
 	@Override
 	public ArrayList<EstadoMaterialItemDTO> getEstadoMateriales() throws NoAllowedException, NoLoggedException, DBException, ConsistencyException,
 			NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		
+
+		ArrayList<EstadoMaterialItemDTO> emidtos = new ArrayList<EstadoMaterialItemDTO>();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getEstadoMateriales")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException("No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException("No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
+				}
+
+				MaterialDAO mdao = new MaterialDAO(s);
+				emidtos = (ArrayList<EstadoMaterialItemDTO>) mdao.getEstadisticasMaterial(idAplicacion, idNivel, idActividadTipo, usuarioTipo.getNombre(),
+						u.getId());
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return emidtos;
 	}
 }
