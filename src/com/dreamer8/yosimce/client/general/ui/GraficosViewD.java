@@ -357,7 +357,14 @@ public class GraficosViewD extends Composite implements GraficosView {
 
 			@Override
 			public String getValue(Item o) {
-				return (o.porcentaje * 100) + "%";
+				String p = (o.porcentaje * 100)+"";
+				if(p.length()>4){
+					p = p.substring(0,4);
+				}
+				if(p.endsWith(".")){
+					p = p.substring(0,p.length()-1);
+				}
+				return p + "%";
 			}
 		};
 		estadoActividadDataGrid.addColumn(column, "porcentaje");
