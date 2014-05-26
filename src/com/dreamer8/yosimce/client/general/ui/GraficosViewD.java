@@ -318,8 +318,14 @@ public class GraficosViewD extends Composite implements GraficosView {
 
 			@Override
 			public String getValue(Item o) {
-				String value = ((o.porcentaje * 100)+"").substring(0,4);
-				return value + "%";
+				String p = (o.porcentaje * 100)+"";
+				if(p.length()>4){
+					p = p.substring(0,4);
+				}
+				if(p.endsWith(".")){
+					p = p.substring(0,p.length()-1);
+				}
+				return p + "%";
 			}
 		};
 		estadoMaterialDataGrid.addColumn(column, "porcentaje");
@@ -374,7 +380,7 @@ public class GraficosViewD extends Composite implements GraficosView {
 		DataTable dataTable = DataTable.create();
 		dataTable.addColumn(ColumnType.STRING, "Estado material");
 		dataTable.addColumn(ColumnType.NUMBER, "Cantidad");
-		dataTable.addRows(4);
+		dataTable.addRows(6);
 		dataTable.setValue(0, 0, "Imprenta");
 		dataTable.setValue(1, 0, "Centro operaciones");
 		dataTable.setValue(2, 0, "Establecimiento");
@@ -411,7 +417,7 @@ public class GraficosViewD extends Composite implements GraficosView {
 		DataTable dataTable = DataTable.create();
 		dataTable.addColumn(ColumnType.STRING, "Estado actividad");
 		dataTable.addColumn(ColumnType.NUMBER, "Cantidad");
-		dataTable.addRows(4);
+		dataTable.addRows(6);
 		dataTable.setValue(0, 0, "Por confirmar");
 		dataTable.setValue(1, 0, "Confirmada");
 		dataTable.setValue(2, 0, "Confirmada con cambios");

@@ -20,6 +20,7 @@ public class EstadoMaterialItemDTO implements Serializable {
 		totalEstablecimiento = 0;
 		totalCaptura = 0;
 		totalBodega = 0;
+		totalAgencia = 0;
 	}
 
 	public Integer getTotalAgencia() {
