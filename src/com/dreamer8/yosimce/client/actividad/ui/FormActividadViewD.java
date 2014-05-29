@@ -219,7 +219,7 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 				if(uploader.getStatus().equals(IUploadStatus.Status.SUCCESS)){
 					logger.log(Level.INFO, "Archivo uploaded success");
 					fileUploaded = true;
-					file = uploader.getFileInput().getFilename();
+					file = uploader.getServerInfo().getFileName();
 					presenter.onDocumentoUploaded(file);
 				}
 			}
