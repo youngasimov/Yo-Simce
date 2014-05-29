@@ -882,9 +882,9 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
 				if (o.getContingencia()) {
-					return "/images/warning.png";
+					return "images/warning.png";
 				} else {
-					return "";
+					return "images/blank.png";
 				}
 			}
 		};
@@ -898,9 +898,9 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
 				if (o.getContingenciaLimitante()) {
-					return "/images/warning.png";
+					return "images/warning.png";
 				} else {
-					return "";
+					return "images/blank.png";
 				}
 			}
 		};
