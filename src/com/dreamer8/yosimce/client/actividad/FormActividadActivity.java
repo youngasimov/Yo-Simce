@@ -132,11 +132,11 @@ public class FormActividadActivity extends SimceActivity implements
 			}
 			if(Utils.hasPermisos(getPermisos(),"ActividadService","getEvaluacionExaminadores")){
 				/*    otro cagaso de claudio   */
-				if(place.getNivelId() == 2){
+				/*if(place.getNivelId() == 2){
 					view.enableAddExaminador(false);
 					view.enableRemoveExaminador(false);
 					FormActividadActivity.this.eventBus.fireEvent(new MensajeEvent("Se bloqueó el ingreso y eliminación de examinadores por este medio,<br />el Jefe de centro de operaciones debe ingresar los examinadores en YoSimce antes para poder evaluarlos<br />(solo para 2 básico por conflictos con examinadores de apoyo en el sistema YoSimce)",MensajeEvent.MSG_WARNING,false));
-				}
+				}*/
 				/* fin cagaso de claudio */
 				getFactory().getActividadService().getEvaluacionExaminadores(place.getIdCurso(), new SimceCallback<ArrayList<EvaluacionUsuarioDTO>>(eventBus,true) {
 
