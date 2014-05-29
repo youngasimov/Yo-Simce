@@ -43,13 +43,12 @@ public class OverMenuBar extends MenuBar{
 			item = getItems().get(0);
 		}
 		
-		if(command == null){
+		if(command == null || item == null){
 			return;
 		}
-		
-        if (DOM.isOrHasChild(item.getElement(), DOM.eventGetTarget(event))) {
-            currentItem = item;
-        }
+		if(item.getElement().isOrHasChild(DOM.eventGetTarget(event))){
+			currentItem = item;
+		}
         switch (DOM.eventGetType(event)) {
         	case Event.ONMOUSEOVER:
         		if (currentItem != null) {
