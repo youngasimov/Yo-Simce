@@ -1,8 +1,10 @@
 package com.dreamer8.yosimce.shared.dto;
 
+import java.io.Serializable;
+
 import com.google.gwt.view.client.ProvidesKey;
 
-public class ControlCentroOperacionDTO {
+public class ControlCentroOperacionDTO implements Serializable{
 
 	public static final String ESTADO_EMPTY = "empty";
 	public static final String ESTADO_IDA = "ida";

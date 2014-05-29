@@ -1,23 +1,35 @@
 package com.dreamer8.yosimce.shared.dto;
 
-public class EstadoControlDTO {
+import java.io.Serializable;
 
-	
+public class EstadoControlDTO implements Serializable {
+
 	private int id;
 	private String estado;
-	
+
+	/**
+ * 
+ */
+	public EstadoControlDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getEstado() {
 		return estado;
 	}
+
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -26,6 +38,7 @@ public class EstadoControlDTO {
 		result = prime * result + id;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -44,6 +57,5 @@ public class EstadoControlDTO {
 			return false;
 		return true;
 	}
-	
-	
+
 }
