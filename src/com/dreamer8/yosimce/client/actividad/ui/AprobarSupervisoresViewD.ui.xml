@@ -29,23 +29,23 @@
 	<g:DockLayoutPanel unit="PX">
 		<g:north size="45">
 			<my:OverMenuBar ui:field="menu" animationEnabled="true" autoOpen='true' focusOnHoverEnabled='false'>
-				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Evaluación supervisores y suplentes</div> ></g:MenuItem>
+				<g:MenuItem enabled="false" addStyleNames='{style.title}' ui:field="menuItem"><div class='{style.title2}'>Evaluación coordinadores y suplentes</div> ></g:MenuItem>
 			</my:OverMenuBar>
 		</g:north>
 		<g:center>
 			<g:TabLayoutPanel  barUnit='PX' barHeight='30' ui:field='tabs'>
 				<g:tab>
-					<g:header size='7'>Evaluación supervisores</g:header>
+					<g:header size='7'>Evaluación coordinadores</g:header>
 					<g:DockLayoutPanel unit="PX">
 						<g:north size="40">
 							<g:HTMLPanel>
 								<table>
 									<tr>
-										<td>Buscar supervisor:</td>
+										<td>Buscar coordinador:</td>
 										<td><g:SuggestBox ui:field="supervisorSearchBox" width="300px"/> </td>
 										<td><g:Button ui:field="search" text="Buscar"/> </td>
 										<td><g:Button ui:field="clean" text="Limpiar"/> </td>
-										<td> <g:CheckBox ui:field="replicarBox" text='replicar cambios para todos los cursos de supervisor'/> </td>
+										<td> <g:CheckBox ui:field="replicarBox" text='replicar cambios para todos los cursos de coordinador'/> </td>
 									</tr>
 								</table>
 							</g:HTMLPanel>

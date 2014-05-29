@@ -30,6 +30,7 @@ public class ActividadPreviewDTO implements Serializable {
 	private Integer alumnosTotales;
 	private Integer alumnosEvaluados;
 	private Integer alumnosSincronizados;
+	private Double asistenciaAlumnos;
 	private Integer totalPc;
 	private Integer materialDefectuoso;
 	private Boolean contingencia;
@@ -269,6 +270,14 @@ public class ActividadPreviewDTO implements Serializable {
 
 	public void setCodigoPisa(String codigoPisa) {
 		this.codigoPisa = codigoPisa;
+	}
+	
+	public Double getAsistenciaAlumnos() {
+		return asistenciaAlumnos;
+	}
+	
+	public void setAsistenciaAlumnos(Double asistenciaAlumnos) {
+		this.asistenciaAlumnos = asistenciaAlumnos;
 	}
 
 }

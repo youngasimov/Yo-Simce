@@ -114,7 +114,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		private Header<String> docHeader = new TextHeader("Documento");
 		
 		private Header<String> examinadorHeader = new TextHeader("Examinador");
-		private Header<String> supervisorHeader = new TextHeader("Supervisor");
+		private Header<String> supervisorHeader = new TextHeader("Coordinador");
 		
 		private Header<String> nombreContactoHeader = new TextHeader("Nombre");
 		private Header<String> telefonoContactoHeader = new TextHeader("Teléfono");

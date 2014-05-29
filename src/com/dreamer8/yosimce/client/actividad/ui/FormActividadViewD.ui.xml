@@ -192,7 +192,7 @@
 							<table>
 								<tr>
 									<td>
-										<g:CheckBox ui:field='realizadaPorSupervisorBox' text="Actividad realizada por supervisor (en ausencia de examinadores)"/>
+										<g:CheckBox ui:field='realizadaPorSupervisorBox' text="Actividad realizada por Coordinador (en ausencia de examinadores)"/>
 									</td>
 								</tr>
 								<tr>

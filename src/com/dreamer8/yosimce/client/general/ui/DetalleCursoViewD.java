@@ -123,7 +123,7 @@ public class DetalleCursoViewD extends Composite implements DetalleCursoView{
 	
 	@Override
 	public void setSupervisor(UserDTO supervisor) {
-		personasTable.setWidget(1, 0, new HTML("Supervisor"));
+		personasTable.setWidget(1, 0, new HTML("Coordinador"));
 		personasTable.setWidget(1, 1, new HTML(supervisor.getNombres()+" "+supervisor.getApellidoPaterno()+" "+supervisor.getApellidoMaterno()));
 		personasTable.setWidget(2, 0, new HTML(supervisor.getTelefono()));
 		personasTable.setWidget(2, 1, new HTML(supervisor.getEmail()));
