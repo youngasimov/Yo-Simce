@@ -768,9 +768,9 @@ public class FormActividadViewD extends Composite implements FormActividadView {
 			@Override
 			public String getValue(ContingenciaDTO o) {
 				if(o.getInabilitante()){
-					return "/images/warning.png";
+					return "images/warning.png";
 				}else{
-					return "";
+					return "images/blank.png";
 				}
 			}
 		};

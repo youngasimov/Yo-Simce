@@ -812,7 +812,7 @@ public class CentroOperacionViewD extends Composite implements CentroOperacionVi
 
 			@Override
 			public String getValue(MaterialWrap o) {
-				return(o.getMaterial().getIdCentro() == null || o.getMaterial().getIdCentro() != idCentro)?"/images/warning.png":"";
+				return(o.getMaterial().getIdCentro() == null || o.getMaterial().getIdCentro() != idCentro)?"images/warning.png":"images/blank.png";
 			}
 		};
 		warningColumn.setSortable(false);
