@@ -286,7 +286,7 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ " JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn ON us.usuario_x_aplicacion_x_nivel_id=uxaxn.id"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
 				+ " WHERE (uxa.asistencia IS NULL OR uxa.asistencia=true) AND (ut.rol='"
-				+ SecurityFilter.escapeString(UsuarioTipo.SUPERVISOR) + "')";
+				+ SecurityFilter.escapeString(UsuarioTipo.COORDINADOR) + "')";
 
 		Query q = s.createSQLQuery(query).addEntity(Usuario.class);
 		u = (Usuario) q.uniqueResult();

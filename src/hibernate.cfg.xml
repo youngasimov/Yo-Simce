@@ -7,9 +7,9 @@
   
   <!-- Config  local -->
   
-<!--   <property name="hibernate.connection.password">pisa</property> -->
-<!--   <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/pisadb</property> -->
-<!--   <property name="hibernate.connection.username">pisa</property> -->
+  <property name="hibernate.connection.password">pisa</property>
+  <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/pisadb</property>
+  <property name="hibernate.connection.username">pisa</property>
 
 <!--   FIN Config  local  -->
 
@@ -18,9 +18,9 @@
 
 <!--  Config  hacia el maestro  -->
 
-   <property name="hibernate.connection.password">enneaPisa2014_</property> 
-   <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/pisadb_2014</property> 
-   <property name="hibernate.connection.username">pisa</property> 
+<!--    <property name="hibernate.connection.password">enneaPisa2014_</property>  -->
+<!--    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/pisadb_2014</property>  -->
+<!--    <property name="hibernate.connection.username">pisa</property>  -->
 
 <!--  FIN Config  hacia el maestro  -->
 

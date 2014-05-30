@@ -15,21 +15,21 @@
         <many-to-one name="usuarioXAplicacionXNivel" class="com.dreamer8.yosimce.server.hibernate.pojo.UsuarioXAplicacionXNivel" fetch="select">
             <column name="usuario_x_aplicacion_x_nivel_id" />
         </many-to-one>
-        <property name="montoPago" type="java.lang.Integer">
-            <column name="monto_pago" />
-        </property>
-        <property name="pagado" type="boolean">
-            <column name="pagado" not-null="true" />
-        </property>
-        <property name="contratoFirmado" type="boolean">
-            <column name="contrato_firmado" not-null="true" />
-        </property>
-        <property name="fechaFirma" type="timestamp">
-            <column name="fecha_firma" length="29" />
-        </property>
-        <property name="asistencia" type="boolean">
-            <column name="asistencia" not-null="true" />
-        </property>
+<!--         <property name="montoPago" type="java.lang.Integer"> -->
+<!--             <column name="monto_pago" /> -->
+<!--         </property> -->
+<!--         <property name="pagado" type="boolean"> -->
+<!--             <column name="pagado" not-null="true" /> -->
+<!--         </property> -->
+<!--         <property name="contratoFirmado" type="boolean"> -->
+<!--             <column name="contrato_firmado" not-null="true" /> -->
+<!--         </property> -->
+<!--         <property name="fechaFirma" type="timestamp"> -->
+<!--             <column name="fecha_firma" length="29" /> -->
+<!--         </property> -->
+<!--         <property name="asistencia" type="boolean"> -->
+<!--             <column name="asistencia" not-null="true" /> -->
+<!--         </property> -->
         <bag name="usuarioXActividads" table="usuario_x_actividad" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_seleccion_id" />

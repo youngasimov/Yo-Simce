@@ -1393,7 +1393,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 													// " no ha sido asignado como examinador para este nivel.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
 													+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 													+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones" : "Encargado de Logística")
-													+ " debe realizar la selección para el nivel en la intranet en YoSimce en el menú \"Seleccionar\".");
+													+ " debe realizar la selección para el nivel en la intranet en el menú \"Seleccionar\".");
 										}
 									}
 									uxa = uxadao.findExaminadorNoAsignadoByIdAplicacionANDIdNivelANDIdActividadTipoANDIdCurso(idAplicacion, idNivel,
@@ -1441,7 +1441,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 											// " no está asociado a esta actividad.<br />Si cree que es un error envíe un correo a server.simce@usm.cl con este mensaje y los detalles de esta actividad.");
 											+ " no ha sido seleccionado como examinador para este nivel.<br />El "
 											+ ((idAplicacion == 1) ? "Jefe de Centro de Operaciones" : "Encargado de Logística")
-											+ " debe realizar la selección para el nivel en la intranet en YoSimce en el menú \"Seleccionar\".");
+											+ " debe realizar la selección para el nivel en la intranet en el menú \"Seleccionar\".");
 								}
 							}
 							if (eudto.getEstado().equals(EvaluacionUsuarioDTO.ESTADO_REMPLAZADO)) {
@@ -1458,7 +1458,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 															+ udto.getNombres()
 															+ " "
 															+ udto.getApellidoPaterno()
-															+ " ya se le ha pagado, por lo tanto no se le puede dejar ausente. <br />Si cree que es un error envíe un correo a server.simce@usm.cl"
+															+ " ya se le ha pagado, por lo tanto no se le puede dejar ausente. <br />Si cree que es un error envíe un correo a pisa@ennea.cl"
 															+ " con el asunto \"Error Pago Examinador\" indicando los detalles necesarios como el nivel, actividad y datos del examinador.");
 										}
 									}
@@ -2553,8 +2553,69 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 	public Integer getTotalMaterial(boolean pruebas, boolean cuestionario)
 			throws NoAllowedException, NoLoggedException, DBException,
 			NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+		
+
+		Integer result = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getTotalMaterial")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException("No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException("No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
+				}
+
+//				DocumentoDAO ddao = new DocumentoDAO(s);
+//				
+				
+				result = 0;
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 
 	/**

@@ -14,11 +14,11 @@ public class UsuarioSeleccion implements java.io.Serializable {
 	private Integer id;
 	private UsuarioTipo usuarioTipo;
 	private UsuarioXAplicacionXNivel usuarioXAplicacionXNivel;
-	private Integer montoPago;
-	private boolean pagado;
-	private boolean contratoFirmado;
-	private Date fechaFirma;
-	private boolean asistencia;
+//	private Integer montoPago;
+//	private boolean pagado;
+//	private boolean contratoFirmado;
+//	private Date fechaFirma;
+//	private boolean asistencia;
 	private List<UsuarioXActividad> usuarioXActividads = new ArrayList<UsuarioXActividad>(
 			0);
 	private List<SuplenteXCo> suplenteXCos = new ArrayList<SuplenteXCo>(0);
@@ -28,31 +28,6 @@ public class UsuarioSeleccion implements java.io.Serializable {
 	public UsuarioSeleccion() {
 	}
 
-	public UsuarioSeleccion(Integer id, boolean pagado,
-			boolean contratoFirmado, boolean asistencia) {
-		this.id = id;
-		this.pagado = pagado;
-		this.contratoFirmado = contratoFirmado;
-		this.asistencia = asistencia;
-	}
-
-	public UsuarioSeleccion(Integer id, UsuarioTipo usuarioTipo,
-			UsuarioXAplicacionXNivel usuarioXAplicacionXNivel,
-			Integer montoPago, boolean pagado, boolean contratoFirmado,
-			Date fechaFirma, boolean asistencia,
-			List<UsuarioXActividad> usuarioXActividads,
-			List<SuplenteXCo> suplenteXCos) {
-		this.id = id;
-		this.usuarioTipo = usuarioTipo;
-		this.usuarioXAplicacionXNivel = usuarioXAplicacionXNivel;
-		this.montoPago = montoPago;
-		this.pagado = pagado;
-		this.contratoFirmado = contratoFirmado;
-		this.fechaFirma = fechaFirma;
-		this.asistencia = asistencia;
-		this.usuarioXActividads = usuarioXActividads;
-		this.suplenteXCos = suplenteXCos;
-	}
 
 	public Integer getId() {
 		return this.id;
@@ -79,45 +54,45 @@ public class UsuarioSeleccion implements java.io.Serializable {
 		this.usuarioXAplicacionXNivel = usuarioXAplicacionXNivel;
 	}
 
-	public Integer getMontoPago() {
-		return this.montoPago;
-	}
+//	public Integer getMontoPago() {
+//		return this.montoPago;
+//	}
+//
+//	public void setMontoPago(Integer montoPago) {
+//		this.montoPago = montoPago;
+//	}
 
-	public void setMontoPago(Integer montoPago) {
-		this.montoPago = montoPago;
-	}
-
-	public boolean isPagado() {
-		return this.pagado;
-	}
-
-	public void setPagado(boolean pagado) {
-		this.pagado = pagado;
-	}
-
-	public boolean isContratoFirmado() {
-		return this.contratoFirmado;
-	}
-
-	public void setContratoFirmado(boolean contratoFirmado) {
-		this.contratoFirmado = contratoFirmado;
-	}
-
-	public Date getFechaFirma() {
-		return this.fechaFirma;
-	}
-
-	public void setFechaFirma(Date fechaFirma) {
-		this.fechaFirma = fechaFirma;
-	}
-
-	public boolean isAsistencia() {
-		return this.asistencia;
-	}
-
-	public void setAsistencia(boolean asistencia) {
-		this.asistencia = asistencia;
-	}
+//	public boolean isPagado() {
+//		return this.pagado;
+//	}
+//
+//	public void setPagado(boolean pagado) {
+//		this.pagado = pagado;
+//	}
+//
+//	public boolean isContratoFirmado() {
+//		return this.contratoFirmado;
+//	}
+//
+//	public void setContratoFirmado(boolean contratoFirmado) {
+//		this.contratoFirmado = contratoFirmado;
+//	}
+//
+//	public Date getFechaFirma() {
+//		return this.fechaFirma;
+//	}
+//
+//	public void setFechaFirma(Date fechaFirma) {
+//		this.fechaFirma = fechaFirma;
+//	}
+//
+//	public boolean isAsistencia() {
+//		return this.asistencia;
+//	}
+//
+//	public void setAsistencia(boolean asistencia) {
+//		this.asistencia = asistencia;
+//	}
 
 	public List<UsuarioXActividad> getUsuarioXActividads() {
 		return this.usuarioXActividads;

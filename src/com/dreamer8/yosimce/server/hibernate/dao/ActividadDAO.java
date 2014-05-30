@@ -899,17 +899,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "r.nombre as region_nombre,COMUNA.id as comuna_id,COMUNA.nombre as comuna_nombre,a.total_alumnos,a.total_alumnos_ausentes,a.total_alumnos_presentes,"
 				+ "axdt_cuest.total_entregados,axdt_cuest.total_recibidos,arc_form.id as arc_form_id,arc_form.titulo as arc_form_tit,"
 				+ "COUNT(axaxd_def.id) as total_defectuosos,bool_or(axi.id IS NOT NULL) as contingencia, bool_or(axi.inhabilita_aplicacion) as limitante,"
-				+ "ae.id as act_est_id,ae.nombre as act_est,";
-		// if (idAplicacion == 2) {
-		// query +=
-		// "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
-		// +
-		// "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,";
-		// }
-		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
-		if (idAplicacion == 1) {
-			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo as es_cod,a.total_pc";
-		}
+				+ "ae.id as act_est_id,ae.nombre as act_est,"
+				+ "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
+				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
+				+ "a.contacto_nombre, a.contacto_telefono, a.contacto_email"
+				+ ",a.material_contingencia,a.detalle_material_contingencia,e.codigo as es_cod,a.total_pc";
 		// if (idAplicacion == 2) {
 		// query += ",act_sinc.total_sinc,cuest_sinc.total_cuest_sinc";
 		// }
@@ -965,27 +959,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ SecurityFilter.escapeString(idAplicacion) + ")" + " LEFT JOIN ESTABLECIMIENTO_TIPO et ON axe.establecimiento_tipo_id=et.id"
 				+ " JOIN COMUNA ON e.comuna_id=COMUNA.id" + " JOIN PROVINCIA p ON COMUNA.provincia_id=p.id" + " JOIN REGION r ON p.region_id=r.id";
 		// if (idAplicacion == 2) {
-		// query +=
-		// " LEFT JOIN USUARIO_x_ACTIVIDAD uxa_ex ON (a.id=uxa_ex.actividad_id AND (uxa_ex.asistencia != false OR uxa_ex.asistencia IS NULL) AND uxa_ex.usuario_seleccion_id IS NOT NULL AND (uxa_ex.usuario_tipo_id=11 OR uxa_ex.usuario_tipo_id=12 OR uxa_ex.usuario_tipo_id=13))"
-		// // +
-		// //
-		// " LEFT JOIN USUARIO_SELECCION us_ex ON (uxa_ex.usuario_seleccion_id=us_ex.id AND (us_ex.usuario_tipo_id=11 OR us_ex.usuario_tipo_id=12 OR us_ex.usuario_tipo_id=13))"
-		// +
-		// " LEFT JOIN USUARIO_SELECCION us_ex ON (uxa_ex.usuario_seleccion_id=us_ex.id)"
-		// +
-		// " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_ex ON us_ex.usuario_x_aplicacion_x_nivel_id=uxaxn_ex.id"
-		// + " LEFT JOIN USUARIO u_ex ON uxaxn_ex.usuario_id=u_ex.id"
-		//
-		// +
-		// " LEFT JOIN USUARIO_x_ACTIVIDAD uxa_sup ON (a.id=uxa_sup.actividad_id AND (uxa_sup.asistencia != false OR uxa_sup.asistencia IS NULL) AND uxa_sup.usuario_seleccion_id IS NOT NULL AND (uxa_sup.usuario_tipo_id=9 OR uxa_sup.usuario_tipo_id=10))"
-		// // +
-		// //
-		// " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa_sup.usuario_seleccion_id=us_sup.id AND (us_sup.usuario_tipo_id=9 OR us_sup.usuario_tipo_id=10))"
-		// +
-		// " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa_sup.usuario_seleccion_id=us_sup.id)"
-		// +
-		// " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
-		// + " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
+		query += " LEFT JOIN USUARIO_x_ACTIVIDAD uxa_ex ON (a.id=uxa_ex.actividad_id AND (uxa_ex.asistencia != false OR uxa_ex.asistencia IS NULL) AND uxa_ex.usuario_seleccion_id IS NOT NULL AND (uxa_ex.usuario_tipo_id=11 OR uxa_ex.usuario_tipo_id=12 OR uxa_ex.usuario_tipo_id=13))"
+				// +
+				//
+				// " LEFT JOIN USUARIO_SELECCION us_ex ON (uxa_ex.usuario_seleccion_id=us_ex.id AND (us_ex.usuario_tipo_id=11 OR us_ex.usuario_tipo_id=12 OR us_ex.usuario_tipo_id=13))"
+				+ " LEFT JOIN USUARIO_SELECCION us_ex ON (uxa_ex.usuario_seleccion_id=us_ex.id)"
+				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_ex ON us_ex.usuario_x_aplicacion_x_nivel_id=uxaxn_ex.id"
+				+ " LEFT JOIN USUARIO u_ex ON uxaxn_ex.usuario_id=u_ex.id"
+
+				+ " LEFT JOIN USUARIO_x_ACTIVIDAD uxa_sup ON (a.id=uxa_sup.actividad_id AND (uxa_sup.asistencia != false OR uxa_sup.asistencia IS NULL) AND uxa_sup.usuario_seleccion_id IS NOT NULL AND (uxa_sup.usuario_tipo_id=9 OR uxa_sup.usuario_tipo_id=10))"
+				// +
+				// " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa_sup.usuario_seleccion_id=us_sup.id AND (us_sup.usuario_tipo_id=9 OR us_sup.usuario_tipo_id=10))"
+				+ " LEFT JOIN USUARIO_SELECCION us_sup ON (uxa_sup.usuario_seleccion_id=us_sup.id)"
+				+ " LEFT JOIN USUARIO_x_APLICACION_x_NIVEL uxaxn_sup ON us_sup.usuario_x_aplicacion_x_nivel_id=uxaxn_sup.id"
+				+ " LEFT JOIN USUARIO u_sup ON uxaxn_sup.usuario_id=u_sup.id";
 		// }
 		if (usuarioTipo.equals(UsuarioTipo.JEFE_REGIONAL) || usuarioTipo.equals(UsuarioTipo.JEFE_ZONAL)
 				|| usuarioTipo.equals(UsuarioTipo.JEFE_CENTRO_OPERACIONES) || usuarioTipo.equals(UsuarioTipo.LOGISTICA_Y_SOPORTE)) {
@@ -1097,10 +1084,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "axdt_cuest.total_entregados,axdt_cuest.total_recibidos,arc_form.id,arc_form.titulo,ae.id,ae.nombre,";
 		// if (idAplicacion == 2) {
 		//
-		// query +=
-		// "u_ex.id,u_ex.username,u_ex.email,u_ex.nombres,u_ex.apellido_paterno,u_ex.apellido_materno,"
-		// +
-		// "u_sup.id,u_sup.username,u_sup.email,u_sup.nombres,u_sup.apellido_paterno,u_sup.apellido_materno,";
+		query += "u_ex.id,u_ex.username,u_ex.email,u_ex.nombres,u_ex.apellido_paterno,u_ex.apellido_materno,"
+				+ "u_sup.id,u_sup.username,u_sup.email,u_sup.nombres,u_sup.apellido_paterno,u_sup.apellido_materno,";
 		// }
 		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
 
@@ -1144,6 +1129,8 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			// : ((BigInteger) o[37]).intValue());
 			// } else {
 			apdto.setAlumnosSincronizados((o[11] == null) ? 0 : (Integer) o[11]);
+//			apdto.setAsistenciaAlumnosRelativa((apdto.getAlumnosTotales() != 0) ? (apdto.getAlumnosEvaluados() * 100 / (double) apdto.getAlumnosTotales())
+//					: null);
 			// }
 			if (o[14] != null) {
 				ddto = new DocumentoDTO();
@@ -1157,29 +1144,20 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setContingenciaLimitante((o[18] == null) ? false : (Boolean) o[18]);
 			apdto.setEstadoAgenda((String) o[20]);
 			// if (idAplicacion == 2) {
-			// if (o[24] != null) {
-			// apdto.setNombreExaminador(StringUtils
-			// .nombreInicialSegundo((String) o[24])
-			// + " "
-			// + (String) o[25] + " " + (String) o[26]);
-			// }
-			// if (o[30] != null) {
-			// apdto.setNombreSupervisor(StringUtils
-			// .nombreInicialSegundo((String) o[30])
-			// + " "
-			// + (String) o[31] + " " + (String) o[32]);
-			// }
-			// apdto.setNombreContacto((String) o[33]);
-			// apdto.setTelefonoContacto((String) o[34]);
-			// apdto.setMailContacto((String) o[35]);
+			if (o[24] != null) {
+				apdto.setNombreExaminador(StringUtils.nombreInicialSegundo((String) o[24]) + " " + (String) o[25] + " " + (String) o[26]);
+			}
+			if (o[30] != null) {
+				apdto.setNombreSupervisor(StringUtils.nombreInicialSegundo((String) o[30]) + " " + (String) o[31] + " " + (String) o[32]);
+			}
+			apdto.setNombreContacto((String) o[33]);
+			apdto.setTelefonoContacto((String) o[34]);
+			apdto.setMailContacto((String) o[35]);
 			// } else {
-			apdto.setNombreContacto((String) o[21]);
-			apdto.setTelefonoContacto((String) o[22]);
-			apdto.setMailContacto((String) o[23]);
-			apdto.setUsoMaterialContingencia((Boolean) o[24]);
-			apdto.setDetalleUsoMaterialContingecia((String) o[25]);
-			apdto.setCodigoPisa((String) o[26]);
-			apdto.setTotalPc((Integer) o[27]);
+			apdto.setUsoMaterialContingencia((Boolean) o[36]);
+			apdto.setDetalleUsoMaterialContingecia((String) o[37]);
+			apdto.setCodigoPisa((String) o[38]);
+			apdto.setTotalPc((Integer) o[39]);
 			// }
 
 			apdtos.add(apdto);
@@ -1507,12 +1485,12 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			eaidto = new EstadoActividadItemDTO();
 			eaidto.setIdComuna((Integer) o[0]);
 			eaidto.setIdRegion((Integer) o[1]);
-			eaidto.setTotalSinInformacion((o[2]==null)?0:((BigDecimal) o[2]).doubleValue());
-			eaidto.setTotalAnulada((o[3]==null)?0:((BigDecimal) o[3]).doubleValue());
-			eaidto.setTotalPorConfirmar((o[4]==null)?0:((BigDecimal) o[4]).doubleValue());
-			eaidto.setTotalConfirmado((o[5]==null)?0:((BigDecimal) o[5]).doubleValue());
-			eaidto.setTotalConfirmadoConCambios((o[6]==null)?0:((BigDecimal) o[6]).doubleValue());
-			eaidto.setTotalRealizada((o[7]==null)?0:((BigDecimal) o[7]).doubleValue());
+			eaidto.setTotalSinInformacion((o[2] == null) ? 0 : ((BigDecimal) o[2]).doubleValue());
+			eaidto.setTotalAnulada((o[3] == null) ? 0 : ((BigDecimal) o[3]).doubleValue());
+			eaidto.setTotalPorConfirmar((o[4] == null) ? 0 : ((BigDecimal) o[4]).doubleValue());
+			eaidto.setTotalConfirmado((o[5] == null) ? 0 : ((BigDecimal) o[5]).doubleValue());
+			eaidto.setTotalConfirmadoConCambios((o[6] == null) ? 0 : ((BigDecimal) o[6]).doubleValue());
+			eaidto.setTotalRealizada((o[7] == null) ? 0 : ((BigDecimal) o[7]).doubleValue());
 			eaidtos.add(eaidto);
 		}
 		return eaidtos;
