@@ -797,8 +797,21 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		porcentajeAsistenciaColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(ActividadPreviewDTO object) {
-				return "100%";
+			public String getValue(ActividadPreviewDTO o) {
+				if(o.getAlumnosTotales()!=null && o.getAlumnosEvaluados()!=null && o.getAlumnosTotales()>0){
+					double x = 100*(((double) o.getAlumnosEvaluados())/((double) o.getAlumnosTotales()));
+					String p = x+"";
+					if(p.length()>4){
+						p = p.substring(0,4);
+					}
+					if(p.endsWith(".")){
+						p = p.substring(0,p.length()-1);
+					}
+					return p + "%";
+					
+				}else{
+					return "0%";
+				}
 			}
 		};
 		porcentajeAsistenciaColumn.setSortable(false);
