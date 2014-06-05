@@ -121,6 +121,12 @@
 		margin-right:auto;
 		margin-top: 2px;
 	}
+
+	.invisible{
+		display:none;
+		width: 0px;
+		height: 0px;
+	}
 	
 	</ui:style>
 	<g:DockLayoutPanel unit='PX' addStyleNames='{style.content}' ui:field="appPanel">
@@ -141,12 +147,13 @@
     	</g:south>
     	<g:center>
     		<g:HTMLPanel>
-    		    <m:Audio ui:field="notificationSound" />
-				<m:Audio ui:field="errorSound" />
+    			<m:Audio ui:field="notificationSound"  addStyleNames='{style.invisible}'/>
+				<m:Audio ui:field="errorSound" addStyleNames='{style.invisible}'/>
     			<div class='{style.sidebarContainer}' ui:field="sidebarContainer">
 		    		<g:FocusPanel addStyleNames='{style.content}' ui:field="sidebarFocusPanel"><g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="sidebarPanel"/></g:FocusPanel>
 	 			</div>
 	        	<g:SimpleLayoutPanel addStyleNames='{style.content}' ui:field="contentPanel"/>
+	        	
         	</g:HTMLPanel>
     	</g:center>
 	</g:DockLayoutPanel>
