@@ -12,6 +12,7 @@ public class Documento implements java.io.Serializable {
 
 	private Integer id;
 	private DocumentoTipo documentoTipo;
+	private DocumentoEstado documentoEstado;
 	private Archivo archivo;
 	private Material material;
 	private String codigo;
@@ -27,8 +28,7 @@ public class Documento implements java.io.Serializable {
 		this.contingencia = contingencia;
 	}
 
-	public Documento(Integer id, DocumentoTipo documentoTipo, Archivo archivo,
-			Material material, String codigo, boolean contingencia,
+	public Documento(Integer id, DocumentoTipo documentoTipo, Archivo archivo, Material material, String codigo, boolean contingencia,
 			List<AlumnoXActividadXDocumento> alumnoXActividadXDocumentos, List<Actividad> actividads) {
 		this.id = id;
 		this.documentoTipo = documentoTipo;
@@ -54,6 +54,14 @@ public class Documento implements java.io.Serializable {
 
 	public void setDocumentoTipo(DocumentoTipo documentoTipo) {
 		this.documentoTipo = documentoTipo;
+	}
+
+	public DocumentoEstado getDocumentoEstado() {
+		return documentoEstado;
+	}
+
+	public void setDocumentoEstado(DocumentoEstado documentoEstado) {
+		this.documentoEstado = documentoEstado;
 	}
 
 	public Archivo getArchivo() {

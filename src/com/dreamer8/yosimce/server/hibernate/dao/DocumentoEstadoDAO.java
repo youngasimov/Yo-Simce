@@ -9,13 +9,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado;
+import com.dreamer8.yosimce.server.utils.SecurityFilter;
 
 /**
  * @author jorge
  * 
  */
-public class DocumentoEstadoDAO extends
-		AbstractHibernateDAO<DocumentoEstado, Integer> {
+public class DocumentoEstadoDAO extends AbstractHibernateDAO<DocumentoEstado, Integer> {
 	/**
 	 * 
 	 */
@@ -28,12 +28,21 @@ public class DocumentoEstadoDAO extends
 		setSession(s);
 	}
 
+	public DocumentoEstado findByNombre(String nombre) {
+
+		DocumentoEstado de = null;
+		Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+		String query = "SELECT de.* FROM DOCUMENTO_ESTADO de" + " WHERE de.nombre='" + SecurityFilter.escapeString(nombre) + "'";
+		Query q = s.createSQLQuery(query).addEntity(DocumentoEstado.class);
+		de = ((DocumentoEstado) q.uniqueResult());
+		return de;
+	}
+
 	public List<DocumentoEstado> findForSincronizacion() {
 
 		List<DocumentoEstado> des = null;
 		Session s = getSession();
-		String query = "SELECT de.* FROM  DOCUMENTO_ESTADO de"
-				+ " WHERE de.id <= 6";
+		String query = "SELECT de.* FROM  DOCUMENTO_ESTADO de" + " WHERE de.id <= 6";
 		Query q = s.createSQLQuery(query).addEntity(DocumentoEstado.class);
 		des = q.list();
 		return des;
@@ -43,8 +52,7 @@ public class DocumentoEstadoDAO extends
 
 		List<DocumentoEstado> des = null;
 		Session s = getSession();
-		String query = "SELECT de.* FROM  DOCUMENTO_ESTADO de"
-				+ " WHERE (de.id < 6 AND de.id > 1) OR de.id = 10";
+		String query = "SELECT de.* FROM  DOCUMENTO_ESTADO de" + " WHERE (de.id < 6 AND de.id > 1) OR de.id = 10";
 		Query q = s.createSQLQuery(query).addEntity(DocumentoEstado.class);
 		des = q.list();
 		return des;

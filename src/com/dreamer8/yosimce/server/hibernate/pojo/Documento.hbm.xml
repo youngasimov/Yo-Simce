@@ -11,6 +11,9 @@
         <many-to-one name="documentoTipo" class="com.dreamer8.yosimce.server.hibernate.pojo.DocumentoTipo" fetch="select">
             <column name="documento_tipo_id" />
         </many-to-one>
+        <many-to-one name="documentoEstado" class="com.dreamer8.yosimce.server.hibernate.pojo.DocumentoEstado" fetch="select">
+            <column name="documento_estado_id" />
+        </many-to-one>
         <many-to-one name="archivo" class="com.dreamer8.yosimce.server.hibernate.pojo.Archivo" fetch="select">
             <column name="archivo_id" />
         </many-to-one>

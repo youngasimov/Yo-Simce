@@ -1088,19 +1088,21 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 				a.setUsuario(u);
 				adao.update(a);
 
-				if (actividad.getTotalPc() != null) {
-					List<Actividad> as = adao.findByIdAplicacionANDIdEstablecimiento(idAplicacion, Integer.valueOf(actividad.getRbd()));
-					if (as != null && !as.isEmpty()) {
-						if (as.size() > 1) {
-							for (Actividad actividad2 : as) {
-								if (!actividad2.getId().equals(a.getId())) {
-									actividad2.setTotalPc(actividad.getTotalPc());
-									adao.update(actividad2);
-								}
-							}
-						}
-					}
-				}
+				// if (actividad.getTotalPc() != null) {
+				// List<Actividad> as =
+				// adao.findByIdAplicacionANDIdEstablecimiento(idAplicacion,
+				// Integer.valueOf(actividad.getRbd()));
+				// if (as != null && !as.isEmpty()) {
+				// if (as.size() > 1) {
+				// for (Actividad actividad2 : as) {
+				// if (!actividad2.getId().equals(a.getId())) {
+				// actividad2.setTotalPc(actividad.getTotalPc());
+				// adao.update(actividad2);
+				// }
+				// }
+				// }
+				// }
+				// }
 
 				ActividadHistorialDAO ahdao = new ActividadHistorialDAO(s);
 				ActividadHistorial ah = new ActividadHistorial();
@@ -2550,12 +2552,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 	 * @permiso getTotalMaterial
 	 */
 	@Override
-	public Integer getTotalMaterial(boolean pruebas, boolean cuestionario)
-			throws NoAllowedException, NoLoggedException, DBException,
-			NullPointerException, ConsistencyException {
-		
+	public Integer getTotalMaterial(boolean pruebas, boolean cuestionario) throws NoAllowedException, NoLoggedException, DBException, NullPointerException,
+			ConsistencyException {
 
-		Integer result = null;
+		Integer result = 0;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		ManagedSessionContext.bind(s);
 		try {
@@ -2586,10 +2586,10 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 					throw new NullPointerException("No se ha especificado el tipo de usuario.");
 				}
 
-//				DocumentoDAO ddao = new DocumentoDAO(s);
-//				
-				
-				result = 0;
+				String dt1 = (pruebas) ? DocumentoTipo.PRUEBA : ((cuestionario) ? DocumentoTipo.CUESTIONARIO_PADRE : null);
+				String dt2 = (pruebas && cuestionario) ? DocumentoTipo.CUESTIONARIO_PADRE : null;
+				DocumentoDAO ddao = new DocumentoDAO(s);
+				result = (dt1 != null) ? ddao.countByIdAplicacionANDIdNivelANDTipoDocumento(idAplicacion, idNivel, dt1, dt2) : 0;
 
 				s.getTransaction().commit();
 			}
@@ -2623,11 +2623,70 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 	 * @permiso getTotalMaterialProcesado
 	 */
 	@Override
-	public Integer getTotalMaterialProcesado(boolean pruebas,
-			boolean cuestionario) throws NoAllowedException, NoLoggedException,
-			DBException, NullPointerException, ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer getTotalMaterialProcesado(boolean pruebas, boolean cuestionario) throws NoAllowedException, NoLoggedException, DBException,
+			NullPointerException, ConsistencyException {
+
+		Integer result = 0;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "getTotalMaterialProcesado")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException("No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException("No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
+				}
+
+				String dt1 = (pruebas) ? DocumentoTipo.PRUEBA : ((cuestionario) ? DocumentoTipo.CUESTIONARIO_PADRE : null);
+				String dt2 = (pruebas && cuestionario) ? DocumentoTipo.CUESTIONARIO_PADRE : null;
+				DocumentoDAO ddao = new DocumentoDAO(s);
+				result = (dt1 != null) ? ddao.countProcesadosByIdAplicacionANDIdNivelANDTipoDocumento(idAplicacion, idNivel, dt1, dt2) : 0;
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -2636,7 +2695,78 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 	@Override
 	public Void procesarMaterial(String codigo, boolean eliminar) throws NoAllowedException, NoLoggedException, DBException, NullPointerException,
 			ConsistencyException {
-		// TODO Auto-generated method stub
-		return null;
+
+		Void result = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		ManagedSessionContext.bind(s);
+		try {
+			AccessControl ac = getAccessControl();
+			if (ac.isLogged() && ac.isAllowed(className, "procesarMaterial")) {
+
+				Integer idAplicacion = ac.getIdAplicacion();
+				if (idAplicacion == null) {
+					throw new NullPointerException("No se ha especificado una aplicación.");
+				}
+
+				Integer idNivel = ac.getIdNivel();
+				if (idNivel == null) {
+					throw new NullPointerException("No se ha especificado un nivel.");
+				}
+
+				Integer idActividadTipo = ac.getIdActividadTipo();
+				if (idActividadTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de la actividad.");
+				}
+
+				Usuario u = getUsuarioActual();
+
+				s.beginTransaction();
+
+				UsuarioTipo usuarioTipo = ac.getUsuarioTipo(s);
+				if (usuarioTipo == null) {
+					throw new NullPointerException("No se ha especificado el tipo de usuario.");
+				}
+
+				if (codigo == null || codigo.isEmpty()) {
+					throw new NullPointerException("No se ha especificado el código del documento.");
+				}
+
+				DocumentoDAO ddao = new DocumentoDAO(s);
+				Documento d = ddao.findByCodigo(codigo);
+
+				if (d == null) {
+					throw new NullPointerException("El documento especificado no existe.");
+				}
+
+				DocumentoEstadoDAO dedao = new DocumentoEstadoDAO(s);
+				DocumentoEstado de = dedao.findByNombre((eliminar) ? DocumentoEstado.SIN_INFORMACION : DocumentoEstado.SINCRONIZADO);
+				d.setDocumentoEstado(de);
+				ddao.update(d);
+
+				s.getTransaction().commit();
+			}
+		} catch (HibernateException ex) {
+			System.err.println(ex);
+			ex.printStackTrace();
+			HibernateUtil.rollback(s);
+			throw new DBException();
+		} catch (ConsistencyException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (NullPointerException ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			throw ex;
+		} catch (Exception ex) {
+			HibernateUtil.rollbackActiveOnly(s);
+			System.err.println(ex);
+			throw new NullPointerException("Ocurrió un error inesperado");
+		} finally {
+			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
+			if (s.isOpen()) {
+				s.clear();
+				s.close();
+			}
+		}
+		return result;
 	}
 }

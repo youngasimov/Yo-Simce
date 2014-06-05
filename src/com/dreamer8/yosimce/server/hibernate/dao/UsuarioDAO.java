@@ -55,11 +55,11 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (u.username ILIKE '%"
+				+ " WHERE (u.username ILIKE '"
 				+ SecurityFilter.escapeLikeString(
 						StringUtils.formatRut(filtro, true), "~")
 				+ "%' ESCAPE '~'"
-				+ " OR u.username ILIKE '%"
+				+ " OR u.username ILIKE '"
 				+ SecurityFilter.escapeLikeString(
 						StringUtils.formatRut(filtro, false), "~")
 				+ "%' ESCAPE '~'"
@@ -107,11 +107,11 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (u.username ILIKE '%"
+				+ " WHERE (u.username ILIKE '"
 				+ SecurityFilter.escapeLikeString(
 						StringUtils.formatRut(filtro, true), "~")
 				+ "%' ESCAPE '~'"
-				+ " OR u.username ILIKE '%"
+				+ " OR u.username ILIKE '"
 				+ SecurityFilter.escapeLikeString(
 						StringUtils.formatRut(filtro, false), "~")
 				+ "%' ESCAPE '~'"
@@ -157,11 +157,11 @@ public class UsuarioDAO extends AbstractHibernateDAO<Usuario, Integer> {
 				+ SecurityFilter.escapeString(idNivel)
 				+ ")"
 				+ " JOIN USUARIO u ON uxaxn.usuario_id=u.id"
-				+ " WHERE (u.username ILIKE '%"
+				+ " WHERE (u.username ILIKE '"
 				+ SecurityFilter.escapeLikeString(
 						StringUtils.formatRut(filtro, true), "~")
 				+ "%' ESCAPE '~'"
-				+ " OR u.username ILIKE '%"
+				+ " OR u.username ILIKE '"
 				+ SecurityFilter.escapeLikeString(
 						StringUtils.formatRut(filtro, false), "~")
 				+ "%' ESCAPE '~'"

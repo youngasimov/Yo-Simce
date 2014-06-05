@@ -3,6 +3,8 @@
  */
 package com.dreamer8.yosimce.server.hibernate.dao;
 
+import java.math.BigInteger;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -13,8 +15,7 @@ import com.dreamer8.yosimce.server.utils.SecurityFilter;
  * @author jorge
  * 
  */
-public class DocumentoTipoDAO extends
-		AbstractHibernateDAO<DocumentoTipo, Integer> {
+public class DocumentoTipoDAO extends AbstractHibernateDAO<DocumentoTipo, Integer> {
 	/**
 	 * 
 	 */
@@ -34,11 +35,11 @@ public class DocumentoTipoDAO extends
 
 		DocumentoTipo dt = null;
 		Session s = getSession();
-		String query = "SELECT dt.* FROM DOCUMENTO_TIPO dt"
-				+ " WHERE dt.nombre='" + SecurityFilter.escapeString(nombre)
-				+ "'";
+		String query = "SELECT dt.* FROM DOCUMENTO_TIPO dt" + " WHERE dt.nombre='" + SecurityFilter.escapeString(nombre) + "'";
 		Query q = s.createSQLQuery(query).addEntity(DocumentoTipo.class);
 		dt = ((DocumentoTipo) q.uniqueResult());
 		return dt;
 	}
+
+
 }

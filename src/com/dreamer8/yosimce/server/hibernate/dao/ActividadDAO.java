@@ -1485,12 +1485,12 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			eaidto = new EstadoActividadItemDTO();
 			eaidto.setIdComuna((Integer) o[0]);
 			eaidto.setIdRegion((Integer) o[1]);
-			eaidto.setTotalSinInformacion((o[2] == null) ? 0 : ((BigDecimal) o[2]).doubleValue());
-			eaidto.setTotalAnulada((o[3] == null) ? 0 : ((BigDecimal) o[3]).doubleValue());
-			eaidto.setTotalPorConfirmar((o[4] == null) ? 0 : ((BigDecimal) o[4]).doubleValue());
-			eaidto.setTotalConfirmado((o[5] == null) ? 0 : ((BigDecimal) o[5]).doubleValue());
-			eaidto.setTotalConfirmadoConCambios((o[6] == null) ? 0 : ((BigDecimal) o[6]).doubleValue());
-			eaidto.setTotalRealizada((o[7] == null) ? 0 : ((BigDecimal) o[7]).doubleValue());
+			eaidto.setTotalSinInformacion((o[2] == null) ? 0 : ((BigDecimal) o[2]).doubleValue()/3);
+			eaidto.setTotalAnulada((o[3] == null) ? 0 : ((BigDecimal) o[3]).doubleValue()/3);
+			eaidto.setTotalPorConfirmar((o[4] == null) ? 0 : ((BigDecimal) o[4]).doubleValue()/3);
+			eaidto.setTotalConfirmado((o[5] == null) ? 0 : ((BigDecimal) o[5]).doubleValue()/3);
+			eaidto.setTotalConfirmadoConCambios((o[6] == null) ? 0 : ((BigDecimal) o[6]).doubleValue()/3);
+			eaidto.setTotalRealizada((o[7] == null) ? 0 : ((BigDecimal) o[7]).doubleValue()/3);
 			eaidtos.add(eaidto);
 		}
 		return eaidtos;
