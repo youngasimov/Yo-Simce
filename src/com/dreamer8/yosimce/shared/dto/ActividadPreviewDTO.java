@@ -29,7 +29,10 @@ public class ActividadPreviewDTO implements Serializable {
 	private Integer cuestionariosPadresApoderadosRecibidosAplicados;
 	private Integer alumnosTotales;
 	private Integer alumnosEvaluados;
+	private Integer alumnosValidos;
+	private Integer alumnosNoParticipantes;
 	private Integer alumnosSincronizados;
+	private Integer alumnosAusentes;
 	private Double asistenciaAlumnosRelativa;
 	private Integer totalPc;
 	private Integer materialDefectuoso;
@@ -112,8 +115,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return cuestionariosPadresApoderadosEntregados;
 	}
 
-	public void setCuestionariosPadresApoderadosEntregados(
-			Integer cuestionariosPadresApoderadosEntregados) {
+	public void setCuestionariosPadresApoderadosEntregados(Integer cuestionariosPadresApoderadosEntregados) {
 		this.cuestionariosPadresApoderadosEntregados = cuestionariosPadresApoderadosEntregados;
 	}
 
@@ -121,8 +123,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return cuestionariosPadresApoderadosRecibidos;
 	}
 
-	public void setCuestionariosPadresApoderadosRecibidos(
-			Integer cuestionariosPadresApoderadosRecibidos) {
+	public void setCuestionariosPadresApoderadosRecibidos(Integer cuestionariosPadresApoderadosRecibidos) {
 		this.cuestionariosPadresApoderadosRecibidos = cuestionariosPadresApoderadosRecibidos;
 	}
 
@@ -148,6 +149,30 @@ public class ActividadPreviewDTO implements Serializable {
 
 	public void setAlumnosSincronizados(Integer alumnosSincronizados) {
 		this.alumnosSincronizados = alumnosSincronizados;
+	}
+
+	public Integer getAlumnosValidos() {
+		return alumnosValidos;
+	}
+
+	public void setAlumnosValidos(Integer alumnosValidos) {
+		this.alumnosValidos = alumnosValidos;
+	}
+
+	public Integer getAlumnosNoParticipantes() {
+		return alumnosNoParticipantes;
+	}
+
+	public void setAlumnosNoParticipantes(Integer alumnosNoParticipantes) {
+		this.alumnosNoParticipantes = alumnosNoParticipantes;
+	}
+
+	public Integer getAlumnosAusentes() {
+		return alumnosAusentes;
+	}
+
+	public void setAlumnosAusentes(Integer alumnosAusentes) {
+		this.alumnosAusentes = alumnosAusentes;
 	}
 
 	public Integer getTotalPc() {
@@ -226,8 +251,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return cuestionariosPadresApoderadosRecibidosAplicados;
 	}
 
-	public void setCuestionariosPadresApoderadosRecibidosAplicados(
-			Integer cuestionariosPadresApoderadosRecibidosAplicados) {
+	public void setCuestionariosPadresApoderadosRecibidosAplicados(Integer cuestionariosPadresApoderadosRecibidosAplicados) {
 		this.cuestionariosPadresApoderadosRecibidosAplicados = cuestionariosPadresApoderadosRecibidosAplicados;
 	}
 
@@ -259,8 +283,7 @@ public class ActividadPreviewDTO implements Serializable {
 		return detalleUsoMaterialContingecia;
 	}
 
-	public void setDetalleUsoMaterialContingecia(
-			String detalleUsoMaterialContingecia) {
+	public void setDetalleUsoMaterialContingecia(String detalleUsoMaterialContingecia) {
 		this.detalleUsoMaterialContingecia = detalleUsoMaterialContingecia;
 	}
 
@@ -271,11 +294,11 @@ public class ActividadPreviewDTO implements Serializable {
 	public void setCodigoPisa(String codigoPisa) {
 		this.codigoPisa = codigoPisa;
 	}
-	
+
 	public Double getAsistenciaAlumnosRelativa() {
 		return asistenciaAlumnosRelativa;
 	}
-	
+
 	public void setAsistenciaAlumnosRelativa(Double asistenciaAlumnos) {
 		this.asistenciaAlumnosRelativa = asistenciaAlumnos;
 	}

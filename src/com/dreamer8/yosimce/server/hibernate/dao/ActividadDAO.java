@@ -903,7 +903,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 				+ "u_ex.id as ex_id,u_ex.username as user_ex,u_ex.email as email_ex,u_ex.nombres as nom_ex,u_ex.apellido_paterno as ap_pat_ex,u_ex.apellido_materno as ap_mat_ex,"
 				+ "u_sup.id as sup_id,u_sup.username as user_sup,u_sup.email as email_sup,u_sup.nombres as nom_sup,u_sup.apellido_paterno as ap_pat_sup,u_sup.apellido_materno as ap_mat_sup,"
 				+ "a.contacto_nombre, a.contacto_telefono, a.contacto_email"
-				+ ",a.material_contingencia,a.detalle_material_contingencia,e.codigo as es_cod,a.total_pc";
+				+ ",a.material_contingencia,a.detalle_material_contingencia,e.codigo as es_cod,a.total_pc,a.total_alumnos_nee";
 		// if (idAplicacion == 2) {
 		// query += ",act_sinc.total_sinc,cuest_sinc.total_cuest_sinc";
 		// }
@@ -1090,7 +1090,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 		query += "a.contacto_nombre, a.contacto_telefono, a.contacto_email";
 
 		if (idAplicacion == 1) {
-			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo,a.total_pc";
+			query += ",a.material_contingencia,a.detalle_material_contingencia,e.codigo,a.total_pc,a.total_alumnos_nee";
 		}
 
 		// if (idAplicacion == 2) {
@@ -1120,7 +1120,7 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setCuestionariosPadresApoderadosEntregados((o[12] == null) ? 0 : (Integer) o[12]);
 			apdto.setCuestionariosPadresApoderadosRecibidos((o[13] == null) ? 0 : (Integer) o[13]);
 			apdto.setAlumnosTotales((o[9] == null) ? 0 : (Integer) o[9]);
-			apdto.setAlumnosEvaluados((o[10] == null) ? 0 : (apdto.getAlumnosTotales() - (Integer) o[10]));
+			apdto.setAlumnosAusentes((o[10] == null) ? 0 : (Integer) o[10]);
 			// if (idAplicacion == 2) {
 			// apdto.setAlumnosSincronizados((o[36] == null) ? 0
 			// : ((BigInteger) o[36]).intValue());
@@ -1129,8 +1129,10 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			// : ((BigInteger) o[37]).intValue());
 			// } else {
 			apdto.setAlumnosSincronizados((o[11] == null) ? 0 : (Integer) o[11]);
-//			apdto.setAsistenciaAlumnosRelativa((apdto.getAlumnosTotales() != 0) ? (apdto.getAlumnosEvaluados() * 100 / (double) apdto.getAlumnosTotales())
-//					: null);
+			// apdto.setAsistenciaAlumnosRelativa((apdto.getAlumnosTotales() !=
+			// 0) ? (apdto.getAlumnosEvaluados() * 100 / (double)
+			// apdto.getAlumnosTotales())
+			// : null);
 			// }
 			if (o[14] != null) {
 				ddto = new DocumentoDTO();
@@ -1157,7 +1159,11 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			apdto.setUsoMaterialContingencia((Boolean) o[36]);
 			apdto.setDetalleUsoMaterialContingecia((String) o[37]);
 			apdto.setCodigoPisa((String) o[38]);
-			apdto.setTotalPc((Integer) o[39]);
+			apdto.setTotalPc((o[39] == null) ? 0 : (Integer) o[39]);
+			apdto.setAlumnosNoParticipantes((o[40] == null) ? 0 : (Integer) o[40]);
+			apdto.setAlumnosValidos(apdto.getAlumnosTotales() - apdto.getAlumnosNoParticipantes());
+
+			apdto.setAlumnosEvaluados(apdto.getAlumnosValidos() - apdto.getAlumnosAusentes());
 			// }
 
 			apdtos.add(apdto);
@@ -1485,12 +1491,12 @@ public class ActividadDAO extends AbstractHibernateDAO<Actividad, Integer> {
 			eaidto = new EstadoActividadItemDTO();
 			eaidto.setIdComuna((Integer) o[0]);
 			eaidto.setIdRegion((Integer) o[1]);
-			eaidto.setTotalSinInformacion((o[2] == null) ? 0 : ((BigDecimal) o[2]).doubleValue()/3);
-			eaidto.setTotalAnulada((o[3] == null) ? 0 : ((BigDecimal) o[3]).doubleValue()/3);
-			eaidto.setTotalPorConfirmar((o[4] == null) ? 0 : ((BigDecimal) o[4]).doubleValue()/3);
-			eaidto.setTotalConfirmado((o[5] == null) ? 0 : ((BigDecimal) o[5]).doubleValue()/3);
-			eaidto.setTotalConfirmadoConCambios((o[6] == null) ? 0 : ((BigDecimal) o[6]).doubleValue()/3);
-			eaidto.setTotalRealizada((o[7] == null) ? 0 : ((BigDecimal) o[7]).doubleValue()/3);
+			eaidto.setTotalSinInformacion((o[2] == null) ? 0 : ((BigDecimal) o[2]).doubleValue() / 3);
+			eaidto.setTotalAnulada((o[3] == null) ? 0 : ((BigDecimal) o[3]).doubleValue() / 3);
+			eaidto.setTotalPorConfirmar((o[4] == null) ? 0 : ((BigDecimal) o[4]).doubleValue() / 3);
+			eaidto.setTotalConfirmado((o[5] == null) ? 0 : ((BigDecimal) o[5]).doubleValue() / 3);
+			eaidto.setTotalConfirmadoConCambios((o[6] == null) ? 0 : ((BigDecimal) o[6]).doubleValue() / 3);
+			eaidto.setTotalRealizada((o[7] == null) ? 0 : ((BigDecimal) o[7]).doubleValue() / 3);
 			eaidtos.add(eaidto);
 		}
 		return eaidtos;

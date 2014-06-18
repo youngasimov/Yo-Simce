@@ -142,6 +142,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 			throw ex;
 		} catch (NullPointerException ex) {
 			HibernateUtil.rollbackActiveOnly(s);
+			ex.printStackTrace();
 			throw ex;
 		} finally {
 			ManagedSessionContext.unbind(HibernateUtil.getSessionFactory());
@@ -1892,21 +1893,21 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 
 				String contenido;
 				if (total != 0) {
-					String header = "RBD;Código Pisa;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Total Computadores;Alumnos Total";
-					if (!(idAplicacion == 2 && idActividadTipo == 1)) {
-						header += ";Alumnos Evaluados;Alumnos Sincronizados";
-					}
-					header += ";Cuestionarios Entregados";
+					String header = "RBD;Código Pisa;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Total Computadores;Alumnos Seleccionados";
+
+					header += ";Alumnos No Participa;Alumnos Válidos;Alumnos Ausentes;Alumnos Evaluados;% Participación;Alumnos Sincronizados;Cuestionarios Entregados";
 					if (!(idAplicacion == 2 && idActividadTipo == 1)) {
 						header += ";Cuestionarios Recibidos";
 					}
-					if (idAplicacion == 2 && idActividadTipo == 2) {
-						header += ";Cuestionarios Aplicados";
-					}
-					header += ";Ocurrió Contingencia;Contingencia Inhabilitante";
-					if (idAplicacion == 1) {
-						header += ";Usa Material de Contingencia;Detalle Uso Material de Contingencia";
-					}
+					// if (idAplicacion == 2 && idActividadTipo == 2) {
+					// header += ";Cuestionarios Aplicados";
+					// }
+					// header +=
+					// ";Ocurrió Contingencia;Contingencia Inhabilitante";
+					// if (idAplicacion == 1) {
+					// header +=
+					// ";Usa Material de Contingencia;Detalle Uso Material de Contingencia";
+					// }
 					header += ";Región;Comuna;Examinador;Supervisor;Nombre Contacto;Teléfono Contacto;Email Contacto\r";
 					bw.write(header);
 				}
@@ -1916,6 +1917,8 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 
 					total -= lenght;
 					offset += lenght;
+
+					Double porcentajeParticipacion;
 
 					if (apdtos != null && !apdtos.isEmpty()) {
 						for (ActividadPreviewDTO apdto : apdtos) {
@@ -1927,10 +1930,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 							contenido += apdto.getEstadoAgenda() + ";";
 							contenido += apdto.getTotalPc() + ";";
 							contenido += apdto.getAlumnosTotales() + ";";
-							if (!(idAplicacion == 2 && idActividadTipo == 1)) {
-								contenido += apdto.getAlumnosEvaluados() + ";";
-								contenido += apdto.getAlumnosSincronizados() + ";";
-							}
+							contenido += apdto.getAlumnosNoParticipantes() + ";";
+							contenido += apdto.getAlumnosValidos() + ";";
+							contenido += apdto.getAlumnosAusentes() + ";";
+							contenido += apdto.getAlumnosEvaluados() + ";";
+							porcentajeParticipacion = ((apdto.getAlumnosEvaluados() == 0) ? 0.0 : ((double) (apdto.getAlumnosValidos() * 100) / (double) apdto
+									.getAlumnosEvaluados()));
+							contenido += porcentajeParticipacion.toString() + "%;";
 							contenido += apdto.getCuestionariosPadresApoderadosEntregados() + ";";
 							if (!(idAplicacion == 2 && idActividadTipo == 1)) {
 								contenido += apdto.getCuestionariosPadresApoderadosRecibidos() + ";";
@@ -1938,12 +1944,15 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 							if (idAplicacion == 2 && idActividadTipo == 2) {
 								contenido += apdto.getCuestionariosPadresApoderadosRecibidosAplicados() + ";";
 							}
-							contenido += apdto.getContingencia() + ";";
-							contenido += apdto.getContingenciaLimitante() + ";";
-							if (idAplicacion == 1) {
-								contenido += apdto.getUsoMaterialContingencia() + ";";
-								contenido += apdto.getDetalleUsoMaterialContingecia() + ";";
-							}
+							// contenido += apdto.getContingencia() + ";";
+							// contenido += apdto.getContingenciaLimitante() +
+							// ";";
+							// if (idAplicacion == 1) {
+							// contenido += apdto.getUsoMaterialContingencia() +
+							// ";";
+							// contenido +=
+							// apdto.getDetalleUsoMaterialContingecia() + ";";
+							// }
 							contenido += apdto.getRegion() + ";";
 							contenido += apdto.getComuna() + ";";
 							contenido += apdto.getNombreExaminador() + ";";
@@ -1977,6 +1986,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
 		} catch (NullPointerException ex) {
+			System.err.println(ex);
 			HibernateUtil.rollbackActiveOnly(s);
 			throw ex;
 		} catch (IOException e) {
