@@ -855,29 +855,20 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 
 			@Override
 			public String getValue(ActividadPreviewDTO o) {
-				double x = o.getAsistenciaAlumnosRelativa();
-				String p = x+"";
-				if(p.length()>4){
-					p = p.substring(0,4);
+				if(o.getAlumnosValidos()!=null && o.getAlumnosEvaluados()!=null && o.getAlumnosValidos()>0){
+					double x = 100*(((double) o.getAlumnosEvaluados())/((double) o.getAlumnosValidos()));
+					String p = x+"";
+					if(p.length()>4){
+						p = p.substring(0,4);
+					}
+					if(p.endsWith(".")){
+						p = p.substring(0,p.length()-1);
+					}
+					return p + "%";
+					
+				}else{
+					return "0%";
 				}
-				if(p.endsWith(".")){
-					p = p.substring(0,p.length()-1);
-				}
-				return p + "%";
-//				if(o.getAlumnosTotales()!=null && o.getAlumnosEvaluados()!=null && o.getAlumnosTotales()>0){
-//					double x = 100*(((double) o.getAlumnosEvaluados())/((double) o.getAlumnosTotales()));
-//					String p = x+"";
-//					if(p.length()>4){
-//						p = p.substring(0,4);
-//					}
-//					if(p.endsWith(".")){
-//						p = p.substring(0,p.length()-1);
-//					}
-//					return p + "%";
-//					
-//				}else{
-//					return "0%";
-//				}
 			}
 		};
 		porcentajeAsistenciaColumn.setSortable(false);
