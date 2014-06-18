@@ -282,7 +282,7 @@
 								<td> <e:ValueTextBox ui:field="alumnosAusentesBox" addStyleNames='{style.numberBox}'/> </td>
 							</tr>
 							<tr>
-								<td><my:HelperLabel text='Alumnos DS:' help='Indique la cantidad de alumnos Ds'/></td>
+								<td><my:HelperLabel text='Alumnos no participantes:' help='Indique la cantidad de alumnos que no participan en la actividad'/></td>
 								<td> <e:ValueTextBox ui:field="alumnosDsBox" addStyleNames='{style.numberBox}'/> </td>
 							</tr>
 						</table>

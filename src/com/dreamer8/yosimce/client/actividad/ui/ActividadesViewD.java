@@ -95,9 +95,12 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		private Header<String> tipoHeader = new TextHeader("Tipo");
 		private Header<String> estadoHeader = new TextHeader("estado");
 		
-		private Header<String> alumnosTotalesHeader = new TextHeader("Total");
-		private Header<String> porcentajeAsistenciaHeader = new TextHeader("Asistencia");
+		private Header<String> alumnosTotalesHeader = new TextHeader("Seleccionados");
+		private Header<String> alumnosNoParticipaHeader = new TextHeader("No participantes");
+		private Header<String> alumnosValidosHeader = new TextHeader("Válidos");
+		private Header<String> alumnosAusentesHeader = new TextHeader("Ausentes");
 		private Header<String> alumnosEvaluadosHeader = new TextHeader("Evaluados");
+		private Header<String> porcentajeAsistenciaHeader = new TextHeader("Participación");
 		//private Header<String> alumnosSincronizadosHeader = new TextHeader("Sinc.");
 		
 		private Header<String> formEntregadosHeader = new TextHeader("Entregados");
@@ -138,7 +141,7 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			th.style().trustedProperty("border-right", "10px solid white").endStyle();
 			th.text("Información de establecimiento").endTH();
 
-			th = tr.startTH().colSpan(3).className(style.groupHeaderCell());
+			th = tr.startTH().colSpan(6).className(style.groupHeaderCell());
 			th.style().trustedProperty("border-right", "10px solid white").endStyle();
 			th.text("Alumnos").endTH();
 			
@@ -177,8 +180,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 			buildHeader(tr, estadoHeader, estadoColumn, sortedColumn,isSortAscending, false, false);
 			
 			buildHeader(tr, alumnosTotalesHeader, alumnosTotalColumn, sortedColumn,isSortAscending, false, false);
-			buildHeader(tr, porcentajeAsistenciaHeader, porcentajeAsistenciaColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, alumnosNoParticipaHeader, alumnosNoParticipaColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, alumnosValidosHeader, alumnosValidosColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, alumnosAusentesHeader, alumnosAusentesColumn, sortedColumn,isSortAscending, false, false);
 			buildHeader(tr, alumnosEvaluadosHeader, alumnosEvaluadosColumn, sortedColumn,isSortAscending, false, false);
+			buildHeader(tr, porcentajeAsistenciaHeader, porcentajeAsistenciaColumn, sortedColumn,isSortAscending, false, false);
 			//buildHeader(tr, alumnosSincronizadosHeader, alumnosSincronizadosColumn, sortedColumn,isSortAscending, false, false);
 			
 			buildHeader(tr, formEntregadosHeader,cuestionarioEntregadosColumn , sortedColumn,isSortAscending, false, false);
@@ -311,8 +317,11 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 	private Column<ActividadPreviewDTO, String> estadoColumn;
 	
 	private Column<ActividadPreviewDTO, Number> alumnosTotalColumn;
-	private Column<ActividadPreviewDTO, String> porcentajeAsistenciaColumn;
+	private Column<ActividadPreviewDTO, Number> alumnosNoParticipaColumn;
+	private Column<ActividadPreviewDTO, Number> alumnosValidosColumn;
+	private Column<ActividadPreviewDTO, Number> alumnosAusentesColumn;
 	private Column<ActividadPreviewDTO, Number> alumnosEvaluadosColumn;
+	private Column<ActividadPreviewDTO, String> porcentajeAsistenciaColumn;
 	//private Column<ActividadPreviewDTO, Number> alumnosSincronizadosColumn;
 	
 	private Column<ActividadPreviewDTO, Number> cuestionarioEntregadosColumn;
@@ -794,28 +803,40 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		dataGrid.addColumn(alumnosTotalColumn);
 		dataGrid.setColumnWidth(i=i+1, 80, Unit.PX);
 		
-		porcentajeAsistenciaColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+		alumnosNoParticipaColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
 
 			@Override
-			public String getValue(ActividadPreviewDTO o) {
-				if(o.getAlumnosTotales()!=null && o.getAlumnosEvaluados()!=null && o.getAlumnosTotales()>0){
-					double x = 100*(((double) o.getAlumnosEvaluados())/((double) o.getAlumnosTotales()));
-					String p = x+"";
-					if(p.length()>4){
-						p = p.substring(0,4);
-					}
-					if(p.endsWith(".")){
-						p = p.substring(0,p.length()-1);
-					}
-					return p + "%";
-					
-				}else{
-					return "0%";
-				}
+			public Number getValue(ActividadPreviewDTO o) {
+				return o.getAlumnosNoParticipantes();
 			}
 		};
-		porcentajeAsistenciaColumn.setSortable(false);
-		dataGrid.addColumn(porcentajeAsistenciaColumn);
+		alumnosNoParticipaColumn.setSortable(false);
+		dataGrid.addColumn(alumnosNoParticipaColumn);
+		dataGrid.setColumnWidth(i=i+1, 80, Unit.PX);
+		
+		alumnosValidosColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				return o.getAlumnosValidos();
+			}
+		};
+		alumnosValidosColumn.setSortable(false);
+		dataGrid.addColumn(alumnosValidosColumn);
+		dataGrid.setColumnWidth(i=i+1, 80, Unit.PX);
+		
+		alumnosAusentesColumn = new Column<ActividadPreviewDTO, Number>(
+				new NumberCell()) {
+
+			@Override
+			public Number getValue(ActividadPreviewDTO o) {
+				return o.getAlumnosAusentes();
+			}
+		};
+		alumnosAusentesColumn.setSortable(false);
+		dataGrid.addColumn(alumnosAusentesColumn);
 		dataGrid.setColumnWidth(i=i+1, 80, Unit.PX);
 		
 		alumnosEvaluadosColumn = new Column<ActividadPreviewDTO, Number>(
@@ -829,6 +850,40 @@ public class ActividadesViewD extends Composite implements ActividadesView {
 		alumnosEvaluadosColumn.setSortable(false);
 		dataGrid.addColumn(alumnosEvaluadosColumn);
 		dataGrid.setColumnWidth(i=i+1, 90, Unit.PX);
+		
+		porcentajeAsistenciaColumn = new Column<ActividadPreviewDTO, String>(new TextCell()) {
+
+			@Override
+			public String getValue(ActividadPreviewDTO o) {
+				double x = o.getAsistenciaAlumnosRelativa();
+				String p = x+"";
+				if(p.length()>4){
+					p = p.substring(0,4);
+				}
+				if(p.endsWith(".")){
+					p = p.substring(0,p.length()-1);
+				}
+				return p + "%";
+//				if(o.getAlumnosTotales()!=null && o.getAlumnosEvaluados()!=null && o.getAlumnosTotales()>0){
+//					double x = 100*(((double) o.getAlumnosEvaluados())/((double) o.getAlumnosTotales()));
+//					String p = x+"";
+//					if(p.length()>4){
+//						p = p.substring(0,4);
+//					}
+//					if(p.endsWith(".")){
+//						p = p.substring(0,p.length()-1);
+//					}
+//					return p + "%";
+//					
+//				}else{
+//					return "0%";
+//				}
+			}
+		};
+		porcentajeAsistenciaColumn.setSortable(false);
+		dataGrid.addColumn(porcentajeAsistenciaColumn);
+		dataGrid.setColumnWidth(i=i+1, 80, Unit.PX);		
+		
 /*
 		alumnosSincronizadosColumn = new Column<ActividadPreviewDTO, Number>(
 				new NumberCell()) {
