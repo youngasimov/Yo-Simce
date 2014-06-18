@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1895,7 +1896,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 				if (total != 0) {
 					String header = "RBD;Código Pisa;Establecimiento;Curso;Tipo Establecimiento;Estado Actividad;Total Computadores;Alumnos Seleccionados";
 
-					header += ";Alumnos No Participa;Alumnos Válidos;Alumnos Ausentes;Alumnos Evaluados;% Participación;Alumnos Sincronizados;Cuestionarios Entregados";
+					header += ";Alumnos No Participa;Alumnos Válidos;Alumnos Ausentes;Alumnos Evaluados;% Participación;Cuestionarios Entregados";
 					if (!(idAplicacion == 2 && idActividadTipo == 1)) {
 						header += ";Cuestionarios Recibidos";
 					}
@@ -1919,6 +1920,7 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 					offset += lenght;
 
 					Double porcentajeParticipacion;
+					DecimalFormat df = new DecimalFormat("##0.00");
 
 					if (apdtos != null && !apdtos.isEmpty()) {
 						for (ActividadPreviewDTO apdto : apdtos) {
@@ -1934,9 +1936,13 @@ public class ActividadServiceImpl extends CustomRemoteServiceServlet implements 
 							contenido += apdto.getAlumnosValidos() + ";";
 							contenido += apdto.getAlumnosAusentes() + ";";
 							contenido += apdto.getAlumnosEvaluados() + ";";
-							porcentajeParticipacion = ((apdto.getAlumnosEvaluados() == 0) ? 0.0 : ((double) (apdto.getAlumnosValidos() * 100) / (double) apdto
-									.getAlumnosEvaluados()));
-							contenido += porcentajeParticipacion.toString() + "%;";
+							if (apdto.getAlumnosEvaluados() == 0) {
+								porcentajeParticipacion = 0.0;
+							} else {
+								porcentajeParticipacion = apdto.getAlumnosEvaluados() * 100.0;
+								porcentajeParticipacion /= apdto.getAlumnosValidos();
+							}
+							contenido += df.format(porcentajeParticipacion) + "%;";
 							contenido += apdto.getCuestionariosPadresApoderadosEntregados() + ";";
 							if (!(idAplicacion == 2 && idActividadTipo == 1)) {
 								contenido += apdto.getCuestionariosPadresApoderadosRecibidos() + ";";
